@@ -1090,6 +1090,10 @@ Advises `eldoc-print-current-symbol-info'."
   ("C-c n i" . org-roam-insert)
   ("C-c n g" . org-roam-show-graph))
 
+(use-package org-password-manager
+:config
+(add-hook 'org-mode-hook 'org-password-manager-key-bindings))
+
 (defun insert-property(&optional p)
   "insert PROPERTY value of pdftools link"
   (unless p (setq p "TEST"))
@@ -1360,16 +1364,16 @@ Advises `eldoc-print-current-symbol-info'."
     (defun toggle-lsp-ui-sideline ()
       (interactive)
       (if lsp-ui-sideline-mode (progn (message "Disable LSP UI Sideline Mode")
-                                      (lsp-ui-sideline-mode -1))
-        (progn (message "Enable LSP UI Sideline Mode")
-               (lsp-ui-sideline-mode 1))))
+				      (lsp-ui-sideline-mode -1))
+	(progn (message "Enable LSP UI Sideline Mode")
+	       (lsp-ui-sideline-mode 1))))
     (defun toggle-lsp-ui-doc ()
       (interactive)
       (if lsp-ui-doc-mode (progn (message "Disable LSP UI Doc Mode")
-                                 (lsp-ui-doc-mode -1)
-                                 (lsp-ui-doc--hide-frame))
-        (progn (lsp-ui-doc-mode 1)
-               (message "Enable LSP UI Doc mode"))))
+				 (lsp-ui-doc-mode -1)
+				 (lsp-ui-doc--hide-frame))
+	(progn (lsp-ui-doc-mode 1)
+	       (message "Enable LSP UI Doc mode"))))
 
     (defun my-lsp-ui-doc-glance (&optional w)
       "Trigger display hover information popup and hide it on next typing."
@@ -1389,22 +1393,19 @@ Advises `eldoc-print-current-symbol-info'."
 
 
     :bind ((:map lsp-ui-mode-map
-                ;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
-                ;;("C-q"   . lsp-ui-doc-show)
-                ("M-S-<f9>" . myDapDebugOn)
-                ("<f10>" . lsp-ui-imenu)
-                ("C-c S"   . toggle-lsp-ui-sideline)
-                ("C-c D"   . toggle-lsp-ui-doc))
-           (:map lsp-ui-imenu-mode-map
-                ("<RET>" . my-lsp-ui-imenu-view)
-                ))
+		 ;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
+		 ;;("C-q"   . lsp-ui-doc-show)
+		 ("M-S-<f9>" . myDapDebugOn)
+		 ("<f10>" . lsp-ui-imenu)
+		 ("C-c S"   . toggle-lsp-ui-sideline)
+		 ("C-c D"   . toggle-lsp-ui-doc))
+	   (:map lsp-ui-imenu-mode-map
+		 ("<RET>" . my-lsp-ui-imenu-view)
+		 ))
 
     :hook ((lsp-ui-mode . my-lsp-ui-mode-hook)))
 
   (use-package dap-mode
-    :straight(dap-mode :type git :host github :repo "emacs-lsp/dap-mode"
-                       :fork (:host github
-                                    :repo "rileyrg/dap-mode"))
     :demand t
     :commands (myDapDebugOn)
     :config
@@ -1412,19 +1413,19 @@ Advises `eldoc-print-current-symbol-info'."
     (require 'dap-gdb-lldb)
     ;;          (dap-gdb-lldb-setup)
     (add-hook 'dap-stopped-hook (lambda (arg)
-                                  (call-interactively #'dap-hydra)))
+				  (call-interactively #'dap-hydra)))
 
     (require 'dap-chrome)
 
-;; (dap-register-debug-template "Chrome Browse my-project"
-;;   (list :type "chrome"
-;;         :cwd nil
-;;         :mode "url"
-;;         :request "launch"
-;;         :webRoot "/home/rgr/Dropbox/homefiles/development/projects/react/my-app/"
-;;         :url "http://localhost:3000"
-;;         :sourceMap "true"
-;;         :name "Chrome Browse my-project"))
+    ;; (dap-register-debug-template "Chrome Browse my-project"
+    ;;   (list :type "chrome"
+    ;;         :cwd nil
+    ;;         :mode "url"
+    ;;         :request "launch"
+    ;;         :webRoot "/home/rgr/Dropbox/homefiles/development/projects/react/my-app/"
+    ;;         :url "http://localhost:3000"
+    ;;         :sourceMap "true"
+    ;;         :name "Chrome Browse my-project"))
 
 
     (defun myDapDebugOn(p)
@@ -1432,8 +1433,8 @@ Advises `eldoc-print-current-symbol-info'."
       (interactive "P")
       ;;         (centreCursorLineOn)
       (if p
-          (dap-debug nil)
-        (dap-debug-last))
+	  (dap-debug nil)
+	(dap-debug-last))
       ;;    (dap-hydra)
       )
     (defun my-lsp-mode-hook()
@@ -1441,12 +1442,12 @@ Advises `eldoc-print-current-symbol-info'."
       )
 
     :bind (:map dap-mode-map
-                ("<f9>" . dap-hydra)
-                ))
+		("<f9>" . dap-hydra)
+		))
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
-         ;; if you want which-key integration
-         (lsp-mode . my-lsp-mode-hook)))
+	 ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
+	 ;; if you want which-key integration
+	 (lsp-mode . my-lsp-mode-hook)))
 
 (defgroup rgr/serial-ports nil
   "serial port customization"

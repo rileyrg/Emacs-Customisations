@@ -1,155 +1,155 @@
 - [Project version control, git, .gitignore](#Project-version-control)
-- [Building Emacs from source.](#orgb115f84)
-  - [Cloning from github](#orga58e653)
-  - [compiling and adding symlinks on $PATH](#org06ba8f9)
+- [Building Emacs from source.](#org50dd845)
+  - [Cloning from github](#orgb5fc5af)
+  - [compiling and adding symlinks on $PATH](#org4d22a46)
 - [Setting up emacs as a default editor using a dot desktop file and associated protocol handler](#emacs-default-editor)
-    - [php.ini changes e.g /etc/php/7.3/php.ini](#org492f21f)
-    - [emacsclient-linenumber script to correctly parse the protocol in order to start emacs frame at correct line](#org1c48a03)
-    - [Gnome protocol handler desktop file](#org7cdaed5)
-    - [Always using emacsclient](#org57702f1)
+    - [php.ini changes e.g /etc/php/7.3/php.ini](#orgd26045d)
+    - [emacsclient-linenumber script to correctly parse the protocol in order to start emacs frame at correct line](#org4e75b08)
+    - [Gnome protocol handler desktop file](#org3dd8b19)
+    - [Always using emacsclient](#org56d68bd)
 - [package management with straight.el](#package-management)
-  - [straight.el bootstrap](#orge68d57d)
-  - [use-package works with straight.el](#org4124f87)
-    - [use-package helper](#org375781a)
+  - [straight.el bootstrap](#orge3a1314)
+  - [use-package works with straight.el](#orgd267335)
+    - [use-package helper](#org6022e44)
 - [Org-Babel and init.el tangling](#org-babel)
 - [Elisp library and custom-paths](#libraries-and-paths)
 - [Emacs daemon & startup](#emacs-daemon)
-- [Music](#orged6931e)
+- [Music](#org14f3226)
 - [Utility functions](#utility-functions)
-  - [toggle buffer](#org997d303)
-  - [scratch](#orgef5a816)
-  - [external utilities](#org52d7acc)
-    - [helpful](#org8eae41c)
+  - [toggle buffer](#orgcfb8412)
+  - [scratch](#org093e7a6)
+  - [external utilities](#org2a9ed84)
+    - [helpful](#org607306f)
 - [Configure main look and feel](#look-and-feel)
-  - [General](#org5c89c54)
-  - [Clipboard](#org0d8bcbd)
-  - [Ansi colour](#org7eea423)
-  - [Point History](#org85a853e)
+  - [General](#orgd6146d4)
+  - [Clipboard](#org2de3bd9)
+  - [Ansi colour](#org79e2ed5)
+  - [Point History](#orgfa3aab1)
 - [Shells](#shells)
-  - [Shell Switcher](#org2ff6e5e)
-  - [Eshell](#orge4fe280)
-    - [Eshell functions](#orgc9525c8)
-    - [EShell Aliases](#org84f2c84)
-    - [EShell config with Helm](#org73f6d03)
-  - [Docker](#org73fc594)
-    - [docker](#orgd921695)
+  - [Shell Switcher](#org37c8b22)
+  - [Eshell](#org3a60206)
+    - [Eshell functions](#orga6927d2)
+    - [EShell Aliases](#orge830ab4)
+    - [EShell config with Helm](#orgc1674de)
+  - [Docker](#org28bf2aa)
+    - [docker](#orgb1317fd)
 - [Helm, helm-mode](#helm-management)
 - [Projectile](#projectile-project-management)
 - [Buffers and Windows](#buffers-and-windows)
-  - [General](#orgb88495c)
-  - [Auto edit buffer as root](#org5175ade)
-  - [iBuffer](#org3f5af01)
-  - [dired - emacs file management](#orgec13b4d)
-    - [Dired Git Info](#org184fdd2)
-    - [dired hacks](#org4928902)
-  - [PosFrame](#orga51ec62)
-  - [PopWin,Popwin makes you free from the hell of annoying buffers such like **Help**, **Completions**, **compilation**, and etc.](#org83557cb)
-  - [Transpose windows, transpose-frame](#org409e31a)
-  - [Hyperbole](#orgaa96dfa)
-  - [Undo utilities](#org0da9b56)
-    - [undohist](#org5da7723)
-    - [undo-tree](#orga0ca576)
-    - [undo-fu](#org79b00c4)
-  - [Navigation](#orgb843a16)
-    - [Back Button](#org282effa)
-    - [Window hopping](#orga1c997c)
-    - [hopping around links](#orgf3c7364)
-    - [hopping around in the buffer](#org5e42020)
-  - [Elscreen](#orgde45722)
-- [Centaur Tabs](#org841779b)
-  - [Darkroom](#org4a514d0)
-  - [Outline Mode](#org0cb89f8)
+  - [General](#orgf6e88db)
+  - [Auto edit buffer as root](#org2b93cce)
+  - [iBuffer](#orgefb3739)
+  - [dired - emacs file management](#orgc474377)
+    - [Dired Git Info](#orgfce1b82)
+    - [dired hacks](#org0501795)
+  - [PosFrame](#org43ffc3e)
+  - [PopWin,Popwin makes you free from the hell of annoying buffers such like **Help**, **Completions**, **compilation**, and etc.](#orga72c28f)
+  - [Transpose windows, transpose-frame](#orge890365)
+  - [Hyperbole](#org39fec04)
+  - [Undo utilities](#orgd83be76)
+    - [undohist](#orgfa1d9fd)
+    - [undo-tree](#orgeea2e7d)
+    - [undo-fu](#org99a64f8)
+  - [Navigation](#org946278b)
+    - [Back Button](#org51499f2)
+    - [Window hopping](#org2f3dc18)
+    - [hopping around links](#orgf14d35c)
+    - [hopping around in the buffer](#orgb4efa64)
+  - [Elscreen](#org5115567)
+- [Centaur Tabs](#org019ee1c)
+  - [Darkroom](#org6ae82aa)
+  - [Outline Mode](#orge241b2f)
 - [Text tools](#text-tools)
-  - [Cursor/Region related](#orgf492f12)
-    - [General](#org86bc078)
-    - [expand-region](#org0b78d3a)
-    - [easy-kill](#orgc4556cc)
-  - [Folding/Hide Show](#org6391450)
-  - [flyspell](#org203ef29)
-  - [Completion](#org9383edc)
-    - [Snippets with yasnippet](#org2133408)
-    - [Company Mode](#org8b6e73a)
-    - [Which Key](#org08d9747)
-    - [Tying it call together](#orgde94414)
-  - [Searching non-helm](#orgaf22b71)
-  - [Abbrev Mode](#org07e5b6e)
-  - [Deft - text searching](#orgc91d1cd)
-  - [Google This](#org7dc9271)
-  - [Reference and dictionary](#orgb61f254)
-    - [utility funcs](#orga2c675c)
-    - [Dictionary](#org12ed54f)
-    - [Elisp reference](#org7921a7a)
-    - [GoldenDict - external lookup and reference](#org51fbc26)
-    - [DevDocs](#org1a0ddf1)
-    - [Zeal - Linux Dash](#orge977141)
-    - [DASH - API documentation for most languages](#org9780e92)
+  - [Cursor/Region related](#orga1af1df)
+    - [General](#orgd81d1dd)
+    - [expand-region](#org99f150c)
+    - [easy-kill](#org2d7cfb0)
+  - [Folding/Hide Show](#org043d1f0)
+  - [flyspell](#org9982d5f)
+  - [Completion](#org605a544)
+    - [Snippets with yasnippet](#org0095783)
+    - [Company Mode](#orgbcf336d)
+    - [Which Key](#orge653035)
+    - [Tying it call together](#org264def0)
+  - [Searching non-helm](#org736bc2c)
+  - [Abbrev Mode](#orgf913612)
+  - [Deft - text searching](#orgdef94e0)
+  - [Google This](#orgcc33dbb)
+  - [Reference and dictionary](#org751704e)
+    - [utility funcs](#org218be4f)
+    - [Dictionary](#org9055e46)
+    - [Elisp reference](#orgf47f82b)
+    - [GoldenDict - external lookup and reference](#orgeff084a)
+    - [DevDocs](#org9154f03)
+    - [Zeal - Linux Dash](#org3d202db)
+    - [DASH - API documentation for most languages](#orga32438f)
 - [Treemacs](#treemacs)
 - [Alerts](#alerts)
 - [Web](#web)
-  - [helper functions](#orgdcd32e4)
-  - [W3M - emacs text based web browser](#org750fcef)
-  - [EWW - emacs text based web browser](#org8bcd612)
-    - [open tasks :tangle no](#orge6af793)
-    - [code](#org683bc8a)
+  - [helper functions](#org35dd8ae)
+  - [W3M - emacs text based web browser](#org2e97daf)
+  - [EWW - emacs text based web browser](#orgbc31d90)
+    - [open tasks :tangle no](#org5428b78)
+    - [code](#org2392343)
 - [Online Chats](#online-chats)
-    - [Only one chat instance](#org2abb587)
-  - [Slackware](#org0041bbe)
-    - [Emacs Slack](#org4329655)
-    - [Emacs Gitter](#orgf01aa12)
+    - [Only one chat instance](#orged6d17e)
+  - [Slackware](#org0702fe9)
+    - [Emacs Slack](#org3e7f488)
+    - [Emacs Gitter](#org7bf047d)
 - [Org functionality](#org-mode)
-  - [Org Mode, org-mode](#orgd290ed3)
-    - [config](#org8ddd69b)
-    - [Journal, org-journal](#org930077c)
-    - [ROAM note taking, org-roam](#orgc7bc046)
-    - [Authoring in org-mode](#org91fbabb)
-    - [Passwords, org-password-manager](#orge507d5c)
-  - [Self documenting config file](#org0a97cdd)
+  - [Org Mode, org-mode](#org27fcfb3)
+    - [config](#org781f57b)
+    - [Journal, org-journal](#orgd4b3251)
+    - [ROAM note taking, org-roam](#org14f2dd9)
+    - [Authoring in org-mode](#orgf3d7557)
+    - [Passwords, org-password-manager](#org00fbf9d)
+  - [Self documenting config file](#org7f8c484)
 - [Email, gmail, Gnus](#email)
-- [Screen recording](#org7da2c9e)
-  - [Emacs screencasts](#orgd2d2322)
+- [Screen recording](#org6bed9cc)
+  - [Emacs screencasts](#org004ac65)
 - [Pomodoro](#pomodoro)
 - [Programming related](#programming)
-  - [General](#org4f63050)
-  - [Symfony](#org06ee6d1)
-    - [custom](#orgaa470dc)
-    - [Start a symfony web server when applicable](#org4a1cd7d)
-  - [Emacs Lisp, ELisp](#org145cbf3)
-    - [refactoring utlities](#org81209ff)
-    - [query symbol](#orgdf68a49)
-    - [Elisp completion and debugging](#orgf43648d)
-    - [Auto-compile](#orgfac1304)
-  - [JSON, YAML Configuration files](#org8d8e796)
-    - [JSON Editing](#org14e6576)
-    - [YAML](#orga0ce2c9)
-  - [Flycheck](#org54586e8)
-  - [Version Control](#orgc55e4b5)
-    - [It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs](#org0e0c702)
-    - [[Forge](https://github.com/magit/forge) ahead with Pull Requests](#orga4ae2c4)
-  - [Javascript](#org3d669f3)
-  - [RJSX](#orgb05d0f6)
-  - [Typescript](#org1a2125d)
-  - [Tide Mode](#org66af153)
-  - [Language Server Protocol (LSP)](#org1b9e73d)
-  - [Serial Port](#org14e1a1d)
-  - [PlatformIO](#org41bf9b1)
-  - [C](#orgcf7e221)
-    - [Clang provides us with some industry standard code prettiers](#org6fe6945)
-    - [C  modes hooks](#orga629045)
-  - [C++](#org78edeea)
-  - [C#](#org71e26a3)
-  - [Godot GDScript](#org49ec94f)
-  - [tasks :tangle no](#orgf34f91c)
-  - [PHP Mode](#org0ba757b)
-  - [Web,Symfony and Twig](#orgdce40a8)
-    - [The Code](#org47f2d94)
-  - [elf-mode - view the symbol list in a binary](#org66f63cf)
-  - [EDiff - comparing files in Emacs](#orgba3a435)
+  - [General](#org3b96f32)
+  - [Symfony](#orge60b697)
+    - [custom](#orgcf5cd91)
+    - [Start a symfony web server when applicable](#orge29bd69)
+  - [Emacs Lisp, ELisp](#org2903a39)
+    - [refactoring utlities](#orgf100c59)
+    - [query symbol](#org266d8b4)
+    - [Elisp completion and debugging](#orgf855ca1)
+    - [Auto-compile](#org14d7b1d)
+  - [JSON, YAML Configuration files](#orga19ea30)
+    - [JSON Editing](#orgc747442)
+    - [YAML](#org5392d7b)
+  - [Flycheck](#org756176d)
+  - [Version Control](#org9f6d6fe)
+    - [It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs](#orga077054)
+    - [[Forge](https://github.com/magit/forge) ahead with Pull Requests](#org165da64)
+  - [Javascript](#orgfe502a7)
+  - [RJSX](#orga34180f)
+  - [Typescript](#org23bfaae)
+  - [Tide Mode](#org0578854)
+  - [Language Server Protocol (LSP)](#orgf48c1b2)
+  - [Serial Port](#orgc5e9b57)
+  - [PlatformIO](#org2f70a14)
+  - [C](#orge7009b5)
+    - [Clang provides us with some industry standard code prettiers](#orgd891be6)
+    - [C  modes hooks](#org996858a)
+  - [C++](#orgead86d2)
+  - [C#](#org19b10c8)
+  - [Godot GDScript](#orgf3998c8)
+  - [tasks :tangle no](#org817013e)
+  - [PHP Mode](#org848e865)
+  - [Web,Symfony and Twig](#orgc4f7055)
+    - [The Code](#orge4a1987)
+  - [elf-mode - view the symbol list in a binary](#orgcad3059)
+  - [EDiff - comparing files in Emacs](#org412fa20)
 - [Macros & Utilities](#macros)
-  - [move to end of line, add a semi colon and move to next line](#org698a5e9)
+  - [move to end of line, add a semi colon and move to next line](#org75653ea)
 - [Privacy](#privacy)
 - [Host specific setting](#host-specifics)
 - [Themes](#screensaver-themes)
-  - [Themes](#orgc4e8bab)
+  - [Themes](#org3e37bab)
 
 
 
@@ -217,12 +217,12 @@ I like to exclude everything and then add in what is important. So the first lin
 ```
 
 
-<a id="orgb115f84"></a>
+<a id="org50dd845"></a>
 
 # Building Emacs from source.
 
 
-<a id="orga58e653"></a>
+<a id="orgb5fc5af"></a>
 
 ## Cloning from github
 
@@ -235,7 +235,7 @@ git checkout emacs-27
 ```
 
 
-<a id="org06ba8f9"></a>
+<a id="org4d22a46"></a>
 
 ## compiling and adding symlinks on $PATH
 
@@ -259,7 +259,7 @@ More info can be sourced starting from the EmacsWiki [here.](https://www.emacswi
 # Setting up emacs as a default editor using a dot desktop file and associated protocol handler
 
 
-<a id="org492f21f"></a>
+<a id="orgd26045d"></a>
 
 ### php.ini changes e.g /etc/php/7.3/php.ini
 
@@ -274,7 +274,7 @@ xdebug.remote_port = 9000
 ```
 
 
-<a id="org1c48a03"></a>
+<a id="org4e75b08"></a>
 
 ### emacsclient-linenumber script to correctly parse the protocol in order to start emacs frame at correct line
 
@@ -295,7 +295,7 @@ fi
 ```
 
 
-<a id="org7cdaed5"></a>
+<a id="org3dd8b19"></a>
 
 ### Gnome protocol handler desktop file
 
@@ -330,7 +330,7 @@ ln -sf  ~/config/mimeapps.lst ~/.local/share/applications/
 ```
 
 
-<a id="org57702f1"></a>
+<a id="org56d68bd"></a>
 
 ### Always using emacsclient
 
@@ -358,7 +358,7 @@ I've started using [straight.el](https://github.com/raxod502/straight.el) which,
 A very useful feature is the ability to "freeze" your setup so that later, should newer packages leave your config broken, you can revert to the stable suite. See [Configuration reproducibility](https://github.com/raxod502/straight.el#configuration-reproducibility) for more details.
 
 
-<a id="orge68d57d"></a>
+<a id="orge3a1314"></a>
 
 ## straight.el bootstrap
 
@@ -373,9 +373,9 @@ A very useful feature is the ability to "freeze" your setup so that later, shoul
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
+	(url-retrieve-synchronously
+	 "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+	 'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -388,7 +388,7 @@ A very useful feature is the ability to "freeze" your setup so that later, shoul
 ```
 
 
-<a id="org4124f87"></a>
+<a id="orgd267335"></a>
 
 ## use-package works with straight.el
 
@@ -400,17 +400,17 @@ The [use-package](https://github.com/jwiegley/use-package) wrapper still works j
     :type git
     :flavor melpa
     :files (:defaults (:exclude "bind-key.el"
-                                "bind-chord.el"
-                                "use-package-chords.el"
-                                "use-package-ensure-system-package.el")
-                      "use-package-pkg.el")
+				"bind-chord.el"
+				"use-package-chords.el"
+				"use-package-ensure-system-package.el")
+		      "use-package-pkg.el")
     :host github
     :repo "jwiegley/use-package"))
 (setq straight-use-package-by-default t)
 ```
 
 
-<a id="org375781a"></a>
+<a id="org6022e44"></a>
 
 ### use-package helper
 
@@ -488,10 +488,10 @@ It's loaded early so that the load-path is correct prior to package loading.
 ;; start emacs-server if not running
 (unless(daemonp)
   (add-hook 'after-init-hook (lambda ()
-                               (require 'server)
-                               (unless (server-running-p)
-                                 (message "Starting EmacsServer from init as not already running.")
-                                 (server-start)))))
+			       (require 'server)
+			       (unless (server-running-p)
+				 (message "Starting EmacsServer from init as not already running.")
+				 (server-start)))))
 
 (defun startHook()
   ;;(desktop-save-mode 1)
@@ -518,7 +518,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 ```
 
 
-<a id="orged6931e"></a>
+<a id="org14f3226"></a>
 
 # Music
 
@@ -534,7 +534,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 # Utility functions
 
 
-<a id="org997d303"></a>
+<a id="orgcfb8412"></a>
 
 ## toggle buffer
 
@@ -545,28 +545,28 @@ It's loaded early so that the load-path is correct prior to package loading.
   "jump to or from buffer named n else default to *Messages*"
   (interactive)
   (let ((n (or n
-               "*Messages*")))
+	       "*Messages*")))
     (switch-to-buffer (if (string= (buffer-name) n)
-                          (other-buffer) n))))
+			  (other-buffer) n))))
 ```
 
 
-<a id="orgef5a816"></a>
+<a id="org093e7a6"></a>
 
 ## scratch
 
 ```emacs-lisp
 (defun generate-setq-form-function (variable value)
   `(setq ,variable ',(sort (delete-dups (copy-tree value)) #'(lambda (x y)
-                                                               (string< (symbol-name x)
-                                                                        (symbol-name y))))))
+							       (string< (symbol-name x)
+									(symbol-name y))))))
 
 ;; (setq x 3)
 ;; (generate-setq-form-function x '(b e c f a))
 ```
 
 
-<a id="org52d7acc"></a>
+<a id="org2a9ed84"></a>
 
 ## external utilities
 
@@ -603,7 +603,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 ```
 
 
-<a id="org8eae41c"></a>
+<a id="org607306f"></a>
 
 ### helpful
 
@@ -642,7 +642,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 # Configure main look and feel
 
 
-<a id="org5c89c54"></a>
+<a id="orgd6146d4"></a>
 
 ## General
 
@@ -708,7 +708,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 ```
 
 
-<a id="org0d8bcbd"></a>
+<a id="org2de3bd9"></a>
 
 ## Clipboard
 
@@ -722,7 +722,7 @@ Allow terminal emacs to interact with the x clipboard.
 ```
 
 
-<a id="org7eea423"></a>
+<a id="org79e2ed5"></a>
 
 ## Ansi colour
 
@@ -735,7 +735,7 @@ Allow terminal emacs to interact with the x clipboard.
 ```
 
 
-<a id="org85a853e"></a>
+<a id="orgfa3aab1"></a>
 
 ## Point History
 
@@ -749,7 +749,7 @@ Allow terminal emacs to interact with the x clipboard.
 # Shells
 
 
-<a id="org2ff6e5e"></a>
+<a id="org37c8b22"></a>
 
 ## Shell Switcher
 
@@ -766,14 +766,14 @@ Allow terminal emacs to interact with the x clipboard.
 ```
 
 
-<a id="orge4fe280"></a>
+<a id="org3a60206"></a>
 
 ## Eshell
 
 [EShell](https://www.masteringemacs.org/article/complete-guide-mastering-eshell) is, amongst other things, convenient for cat/console debugging in Symfony etc to have all output in easily browsed Emacs buffers via [EShell redirection](https://www.emacswiki.org/emacs/EshellRedirection).
 
 
-<a id="orgc9525c8"></a>
+<a id="orga6927d2"></a>
 
 ### Eshell functions
 
@@ -788,7 +788,7 @@ Allow terminal emacs to interact with the x clipboard.
     ```
 
 
-<a id="org84f2c84"></a>
+<a id="orge830ab4"></a>
 
 ### EShell Aliases
 
@@ -836,7 +836,7 @@ alias gds cd ~/.emacs.d/straight/repos/emacs-gdscript-mode
 ```
 
 
-<a id="org73f6d03"></a>
+<a id="orgc1674de"></a>
 
 ### EShell config with Helm
 
@@ -867,9 +867,9 @@ alias gds cd ~/.emacs.d/straight/repos/emacs-gdscript-mode
         :config
         (defconst pcmpl-git-commands
           '("add" "bisect" "branch" "checkout" "clone"
-            "commit" "diff" "fetch" "grep"
-            "init" "log" "merge" "mv" "pull" "push" "rebase"
-            "reset" "rm" "show" "status" "tag" )
+    	"commit" "diff" "fetch" "grep"
+    	"init" "log" "merge" "mv" "pull" "push" "rebase"
+    	"reset" "rm" "show" "status" "tag" )
           "List of `git' commands")
 
         (defvar pcmpl-git-ref-list-cmd "git for-each-ref refs/ --format='%(refname)'"
@@ -878,12 +878,12 @@ alias gds cd ~/.emacs.d/straight/repos/emacs-gdscript-mode
         (defun pcmpl-git-get-refs (type)
           "Return a list of `git' refs filtered by TYPE"
           (with-temp-buffer
-            (insert (shell-command-to-string pcmpl-git-ref-list-cmd))
-            (goto-char (point-min))
-            (let ((ref-list))
-              (while (re-search-forward (concat "^refs/" type "/\\(.+\\)$") nil t)
-                (add-to-list 'ref-list (match-string 1)))
-              ref-list)))
+    	(insert (shell-command-to-string pcmpl-git-ref-list-cmd))
+    	(goto-char (point-min))
+    	(let ((ref-list))
+    	  (while (re-search-forward (concat "^refs/" type "/\\(.+\\)$") nil t)
+    	    (add-to-list 'ref-list (match-string 1)))
+    	  ref-list)))
 
         (defun pcomplete/git ()
           "Completion for `git'"
@@ -892,34 +892,34 @@ alias gds cd ~/.emacs.d/straight/repos/emacs-gdscript-mode
           ;; complete files/dirs forever if the command is `add' or `rm'
           (cond
            ((pcomplete-match (regexp-opt '("add" "rm")) 1)
-            (while (pcomplete-here (pcomplete-entries))))
+    	(while (pcomplete-here (pcomplete-entries))))
            ;; provide branch completion for the command `checkout'.
            ((pcomplete-match "checkout" 1)
-            (pcomplete-here* (pcmpl-git-get-refs "heads")))))    )
+    	(pcomplete-here* (pcmpl-git-get-refs "heads")))))    )
       (use-package
         eshell-git-prompt
         :config
         (eshell-git-prompt-use-theme 'powerline)
         (define-advice
-            eshell-git-prompt-powerline-dir
-            (:override ()
-                       short)
+    	eshell-git-prompt-powerline-dir
+    	(:override ()
+    		   short)
           "Show only last directory."
           (file-name-nondirectory (directory-file-name default-directory))))
       :bind (:map eshell-mode-map
-                  ;; ([remap eshell-previous-matching-input-from-input] . previous-line)
-                  ;; ([remap eshell-next-matching-input-from-input] . next-line)
-                  ;;([remap eshell-list-history] . helm-eshell-history)
-                  ("C-r" . helm-eshell-history)))
+    	      ;; ([remap eshell-previous-matching-input-from-input] . previous-line)
+    	      ;; ([remap eshell-next-matching-input-from-input] . next-line)
+    	      ;;([remap eshell-list-history] . helm-eshell-history)
+    	      ("C-r" . helm-eshell-history)))
     ```
 
 
-<a id="org73fc594"></a>
+<a id="org28bf2aa"></a>
 
 ## Docker
 
 
-<a id="orgd921695"></a>
+<a id="orgb1317fd"></a>
 
 ### docker
 
@@ -992,20 +992,20 @@ Incremental completion/searching and all sorts of wonderful things. [Emacs Incre
   ("C-h SPC" . helm-all-mark-rings)
   ("C-h C-SPC" . helm-global-mark-ring)
   (:map helm-map
-        ("C-z" . helm-execute-persistent-action))
+	("C-z" . helm-execute-persistent-action))
   (:map helm-command-map
-        (("@" . straight-use-package)
-         ("d" . helm-dictionary)
-         ("r" . helm-resume)
-         ("e" . helm-info-elisp)
-         ("g" . helm-google-suggest)
-         ("B". helm-chrome-bookmarks)
-         ("p". helm-top)
-         ("t". google-translate-at-point)
-         ("T". google-translate-query-translate)
-         ("b". helm-bookmarks)
-         ("u". browse-url-dwim)
-         ("o" . helm-multi-swoop))))
+	(("@" . straight-use-package)
+	 ("d" . helm-dictionary)
+	 ("r" . helm-resume)
+	 ("e" . helm-info-elisp)
+	 ("g" . helm-google-suggest)
+	 ("B". helm-chrome-bookmarks)
+	 ("p". helm-top)
+	 ("t". google-translate-at-point)
+	 ("T". google-translate-query-translate)
+	 ("b". helm-bookmarks)
+	 ("u". browse-url-dwim)
+	 ("o" . helm-multi-swoop))))
 ```
 
 
@@ -1032,7 +1032,7 @@ Incremental completion/searching and all sorts of wonderful things. [Emacs Incre
   (defun my-projectile-find-file(search)
     (interactive "P")
     (if search
-        (projectile-find-file)
+	(projectile-find-file)
       (projectile-find-file-dwim)))
   (helm-projectile-on)
   (projectile-mode 1)
@@ -1053,7 +1053,7 @@ Incremental completion/searching and all sorts of wonderful things. [Emacs Incre
 # Buffers and Windows
 
 
-<a id="orgb88495c"></a>
+<a id="orgf6e88db"></a>
 
 ## General
 
@@ -1066,8 +1066,8 @@ Incremental completion/searching and all sorts of wonderful things. [Emacs Incre
   "If there are multiple windows, then close the other pane and kill the buffer in it also."
   (interactive)
   (if (not (one-window-p))(progn
-                            (other-window 1)
-                            (kill-this-buffer))
+			    (other-window 1)
+			    (kill-this-buffer))
     (message "no next window to kill!")))
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 (global-set-key (kbd "C-x K") 'kill-next-window)
@@ -1078,7 +1078,7 @@ Incremental completion/searching and all sorts of wonderful things. [Emacs Incre
 ```
 
 
-<a id="org5175ade"></a>
+<a id="org2b93cce"></a>
 
 ## Auto edit buffer as root
 
@@ -1093,7 +1093,7 @@ A [package](https://github.com/ncaq/auto-sudoedit) that automatically reopens fi
 ```
 
 
-<a id="org3f5af01"></a>
+<a id="orgefb3739"></a>
 
 ## iBuffer
 
@@ -1104,12 +1104,12 @@ A [package](https://github.com/ncaq/auto-sudoedit) that automatically reopens fi
 ```
 
 
-<a id="orgec13b4d"></a>
+<a id="orgc474377"></a>
 
 ## dired - emacs file management
 
 
-<a id="org184fdd2"></a>
+<a id="orgfce1b82"></a>
 
 ### Dired Git Info
 
@@ -1120,7 +1120,7 @@ A [package](https://github.com/ncaq/auto-sudoedit) that automatically reopens fi
 ```
 
 
-<a id="org4928902"></a>
+<a id="org0501795"></a>
 
 ### dired hacks
 
@@ -1133,8 +1133,8 @@ Collection of useful dired additions found on github [here](https://github.com/F
       :config
       (use-package dash)
       :bind (:map dired-mode-map
-                  ("i" . dired-subtree-insert)
-                  (";" . dired-subtree-remove)))
+    	      ("i" . dired-subtree-insert)
+    	      (";" . dired-subtree-remove)))
     ```
 
 2.  dired filter
@@ -1161,7 +1161,7 @@ Collection of useful dired additions found on github [here](https://github.com/F
     ```
 
 
-<a id="orga51ec62"></a>
+<a id="org43ffc3e"></a>
 
 ## PosFrame
 
@@ -1172,7 +1172,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org83557cb"></a>
+<a id="orga72c28f"></a>
 
 ## PopWin,Popwin makes you free from the hell of annoying buffers such like **Help**, **Completions**, **compilation**, and etc.
 
@@ -1182,7 +1182,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org409e31a"></a>
+<a id="orge890365"></a>
 
 ## Transpose windows, transpose-frame
 
@@ -1193,15 +1193,15 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
     "Toggle between horizontal and vertical split with two windows."
     (interactive)
     (if (> (length (window-list)) 2)
-        (error "Can't toggle with more than 2 windows!")
+	(error "Can't toggle with more than 2 windows!")
       (let ((func (if (window-full-height-p)
-                      #'split-window-vertically
-                    #'split-window-horizontally)))
-        (delete-other-windows)
-        (funcall func)
-        (save-selected-window
-          (other-window 1)
-          (switch-to-buffer (other-buffer))))))
+		      #'split-window-vertically
+		    #'split-window-horizontally)))
+	(delete-other-windows)
+	(funcall func)
+	(save-selected-window
+	  (other-window 1)
+	  (switch-to-buffer (other-buffer))))))
   :bind
   ("C-M-t" . transpose-frame)
   ("C-c T" . window-split-toggle)
@@ -1209,7 +1209,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="orgaa96dfa"></a>
+<a id="org39fec04"></a>
 
 ## Hyperbole
 
@@ -1222,12 +1222,12 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org0da9b56"></a>
+<a id="orgd83be76"></a>
 
 ## Undo utilities
 
 
-<a id="org5da7723"></a>
+<a id="orgfa1d9fd"></a>
 
 ### undohist
 
@@ -1241,7 +1241,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="orga0ca576"></a>
+<a id="orgeea2e7d"></a>
 
 ### undo-tree
 
@@ -1255,7 +1255,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org79b00c4"></a>
+<a id="org99a64f8"></a>
 
 ### undo-fu
 
@@ -1269,12 +1269,12 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="orgb843a16"></a>
+<a id="org946278b"></a>
 
 ## Navigation
 
 
-<a id="org282effa"></a>
+<a id="org51499f2"></a>
 
 ### Back Button
 
@@ -1290,7 +1290,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="orga1c997c"></a>
+<a id="org2f3dc18"></a>
 
 ### Window hopping
 
@@ -1304,7 +1304,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="orgf3c7364"></a>
+<a id="orgf14d35c"></a>
 
 ### hopping around links
 
@@ -1317,13 +1317,13 @@ Quickly follow [links](https://github.com/abo-abo/ace-link) in Emacs.
   (ace-link-setup-default)
   :bind*
   (:map emacs-lisp-mode-map
-        ("C-c o" . ace-link-addr))
+	("C-c o" . ace-link-addr))
   ("C-c o" . ace-link)
   )
 ```
 
 
-<a id="org5e42020"></a>
+<a id="orgb4efa64"></a>
 
 ### hopping around in the buffer
 
@@ -1337,7 +1337,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgde45722"></a>
+<a id="org5115567"></a>
 
 ## Elscreen
 
@@ -1351,7 +1351,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org841779b"></a>
+<a id="org019ee1c"></a>
 
 # Centaur Tabs
 
@@ -1382,37 +1382,37 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
     All buffer name start with * will group to \"Emacs\".
     Other buffer group by `centaur-tabs-get-group-name' with project name."
       (list
-        (cond
-         ((or (string-equal "*" (substring (buffer-name) 0 1))
-              (memq major-mode '(magit-process-mode
-                                 magit-status-mode
-                                 magit-diff-mode
-                                 magit-log-mode
-                                 magit-file-mode
-                                 magit-blob-mode
-                                 magit-blame-mode
-                                 )))
-          "Emacs")
-         ((derived-mode-p 'prog-mode)
-          "Editing")
-         ((derived-mode-p 'dired-mode)
-          "Dired")
-         ((memq major-mode '(helpful-mode
-                             help-mode))
-          "Help")
-         ((memq major-mode '(org-mode
-                             org-agenda-clockreport-mode
-                             org-src-mode
-                             org-agenda-mode
-                             org-beamer-mode
-                             org-indent-mode
-                             org-bullets-mode
-                             org-cdlatex-mode
-                             org-agenda-log-mode
-                             diary-mode))
-          "OrgMode")
-         (t
-          (centaur-tabs-get-group-name (current-buffer))))))
+	(cond
+	 ((or (string-equal "*" (substring (buffer-name) 0 1))
+	      (memq major-mode '(magit-process-mode
+				 magit-status-mode
+				 magit-diff-mode
+				 magit-log-mode
+				 magit-file-mode
+				 magit-blob-mode
+				 magit-blame-mode
+				 )))
+	  "Emacs")
+	 ((derived-mode-p 'prog-mode)
+	  "Editing")
+	 ((derived-mode-p 'dired-mode)
+	  "Dired")
+	 ((memq major-mode '(helpful-mode
+			     help-mode))
+	  "Help")
+	 ((memq major-mode '(org-mode
+			     org-agenda-clockreport-mode
+			     org-src-mode
+			     org-agenda-mode
+			     org-beamer-mode
+			     org-indent-mode
+			     org-bullets-mode
+			     org-cdlatex-mode
+			     org-agenda-log-mode
+			     diary-mode))
+	  "OrgMode")
+	 (t
+	  (centaur-tabs-get-group-name (current-buffer))))))
 
   :hook
   (dired-mode . centaur-tabs-local-mode)
@@ -1423,7 +1423,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org4a514d0"></a>
+<a id="org6ae82aa"></a>
 
 ## Darkroom
 
@@ -1433,13 +1433,13 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 (use-package
   darkroom
   :config (define-globalized-minor-mode my-global-darkroom-mode darkroom-tentative-mode
-            (lambda ()
-              (darkroom-tentative-mode 1)))
+	    (lambda ()
+	      (darkroom-tentative-mode 1)))
   :bind ("<f7>" . 'darkroom-tentative-mode))
 ```
 
 
-<a id="org0cb89f8"></a>
+<a id="orge241b2f"></a>
 
 ## Outline Mode
 
@@ -1455,12 +1455,12 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 # Text tools
 
 
-<a id="orgf492f12"></a>
+<a id="orga1af1df"></a>
 
 ## Cursor/Region related
 
 
-<a id="org86bc078"></a>
+<a id="orgd81d1dd"></a>
 
 ### General
 
@@ -1470,21 +1470,21 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
   ;; a faster more concise alternative to MELPA's centered-cursor-mode
   (interactive)
   (setq  scroll-preserve-screen-position_t scroll-preserve-screen-position scroll-conservatively_t
-         scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
-         scroll-margin)
+	 scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
+	 scroll-margin)
   (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
-        scroll-margin 99999))
+	scroll-margin 99999))
 
 (defun centreCursorLineOff()
   (interactive)
   (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
-         scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
-         scroll-margin_t))
+	 scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
+	 scroll-margin_t))
 
 ```
 
 
-<a id="org0b78d3a"></a>
+<a id="org99f150c"></a>
 
 ### expand-region
 
@@ -1494,9 +1494,9 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 (use-package
   expand-region
   :config (defun er/select-call-f(arg)
-            (setq current-prefix-arg arg)
-            (call-interactively 'er/expand-region)
-            (exchange-point-and-mark))
+	    (setq current-prefix-arg arg)
+	    (call-interactively 'er/expand-region)
+	    (exchange-point-and-mark))
   (defun selectFunctionCall()
     (interactive)
     (er/select-call-f 3))
@@ -1506,7 +1506,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgc4556cc"></a>
+<a id="org2d7cfb0"></a>
 
 ### easy-kill
 
@@ -1519,7 +1519,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org6391450"></a>
+<a id="org043d1f0"></a>
 
 ## Folding/Hide Show
 
@@ -1532,7 +1532,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 \#+end<sub>src</sub>
 
 
-<a id="org203ef29"></a>
+<a id="org9982d5f"></a>
 
 ## flyspell
 
@@ -1546,19 +1546,19 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
     (ispell-word)
     )
   :bind (("C-<f8>" . flyspell-mode)
-        ("C-S-<f8>" . flyspell-buffer)
-        ("<f8>" . flyspell-check-next-highlighted-word)
-        ("S-<f8>" . flyspell-check-previous-highlighted-word)
-        ))
+	("C-S-<f8>" . flyspell-buffer)
+	("<f8>" . flyspell-check-next-highlighted-word)
+	("S-<f8>" . flyspell-check-previous-highlighted-word)
+	))
 ```
 
 
-<a id="org9383edc"></a>
+<a id="org605a544"></a>
 
 ## Completion
 
 
-<a id="org2133408"></a>
+<a id="org0095783"></a>
 
 ### Snippets with yasnippet
 
@@ -1577,7 +1577,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org8b6e73a"></a>
+<a id="orgbcf336d"></a>
 
 ### Company Mode
 
@@ -1606,7 +1606,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org08d9747"></a>
+<a id="orge653035"></a>
 
 ### Which Key
 
@@ -1620,15 +1620,15 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgde94414"></a>
+<a id="org264def0"></a>
 
 ### Tying it call together
 
 ```emacs-lisp
 (defun check-expansion ()
   (save-excursion (if (looking-at "\\_>") t (backward-char 1)
-                      (if (looking-at "\\.") t (backward-char 1)
-                          (if (looking-at "->") t nil)))))
+		      (if (looking-at "\\.") t (backward-char 1)
+			  (if (looking-at "->") t nil)))))
 
 (defun do-yas-expand ()
   (let ((yas-fallback-behavior 'return-nil))
@@ -1639,15 +1639,15 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
   (if (minibufferp)
       (minibuffer-complete)
     (if (or (not yas-minor-mode)
-            (null (do-yas-expand)))
-        (if (check-expansion)
-            (company-complete-common)
-          (yas/create-php-snippet)))))
+	    (null (do-yas-expand)))
+	(if (check-expansion)
+	    (company-complete-common)
+	  (yas/create-php-snippet)))))
 ;;              (indent-for-tab-command)))))
 ```
 
 
-<a id="orgaf22b71"></a>
+<a id="org736bc2c"></a>
 
 ## Searching non-helm
 
@@ -1656,7 +1656,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org07e5b6e"></a>
+<a id="orgf913612"></a>
 
 ## Abbrev Mode
 
@@ -1668,7 +1668,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgc91d1cd"></a>
+<a id="orgdef94e0"></a>
 
 ## Deft - text searching
 
@@ -1683,7 +1683,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org7dc9271"></a>
+<a id="orgcc33dbb"></a>
 
 ## Google This
 
@@ -1698,133 +1698,133 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgb61f254"></a>
+<a id="org751704e"></a>
 
 ## Reference and dictionary
 
 The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
 
 
-<a id="orga2c675c"></a>
+<a id="org218be4f"></a>
 
 ### utility funcs
 
 ```emacs-lisp
 
       (defgroup rgr/lookup-reference nil
-        "Define functions to be used for lookup"
-        :group 'rgr)
+	"Define functions to be used for lookup"
+	:group 'rgr)
 
       (defcustom mode-lookup-reference-functions-alist '(
-                                                         (nil (goldendict-dwim goldendict-dwim))
-                                                         (c++-mode  (my-lsp-ui-doc-glance my-dash))
-                                                         (gdscript-mode  (my-lsp-ui-doc-glance my-dash))
+							 (nil (goldendict-dwim goldendict-dwim))
+							 (c++-mode  (my-lsp-ui-doc-glance my-dash))
+							 (gdscript-mode  (my-lsp-ui-doc-glance my-dash))
 ;;                                                         (gdscript-mode  (my-gdscript-docs-browse-symbol-at-point my-dash))
-                                                         (php-mode  (my-lsp-ui-doc-glance my-dash))
-                                                         (web-mode  (my-lsp-ui-doc-glance my-devdocs))
-                                                         (org-mode (elisp-lookup-reference-dwim))
-                                                         (js2-mode (my-dash my-devdocs))
-                                                         (js-mode (my-dash my-devdocs))
-                                                         (rjsx-mode (my-dash my-devdocs))
-                                                         (typescript-mode (my-dash my-devdocs))
-                                                         (lisp-interaction-mode (elisp-lookup-reference-dwim my-dash))
-                                                         (emacs-lisp-mode (elisp-lookup-reference-dwim my-dash)))
-        "mode lookup functions"
-        :group 'rgr/lookup-reference)
+							 (php-mode  (my-lsp-ui-doc-glance my-dash))
+							 (web-mode  (my-lsp-ui-doc-glance my-devdocs))
+							 (org-mode (elisp-lookup-reference-dwim))
+							 (js2-mode (my-dash my-devdocs))
+							 (js-mode (my-dash my-devdocs))
+							 (rjsx-mode (my-dash my-devdocs))
+							 (typescript-mode (my-dash my-devdocs))
+							 (lisp-interaction-mode (elisp-lookup-reference-dwim my-dash))
+							 (emacs-lisp-mode (elisp-lookup-reference-dwim my-dash)))
+	"mode lookup functions"
+	:group 'rgr/lookup-reference)
 
       (defun get-mode-lookup-reference-functions(&optional m)
-        (let* ((m (if m m major-mode))
-               (default-funcs (copy-tree(cadr (assoc nil mode-lookup-reference-functions-alist))))
-               (mode-funcs (cadr (assoc m mode-lookup-reference-functions-alist))))
-          (if mode-funcs (progn
-                           (setcar default-funcs (car mode-funcs))
-                           (if (cadr mode-funcs)
-                               (setcdr default-funcs (cdr mode-funcs)))))
-          default-funcs)) ;; (get-mode-lookup-reference-functions 'org-mode)
+	(let* ((m (if m m major-mode))
+	       (default-funcs (copy-tree(cadr (assoc nil mode-lookup-reference-functions-alist))))
+	       (mode-funcs (cadr (assoc m mode-lookup-reference-functions-alist))))
+	  (if mode-funcs (progn
+			   (setcar default-funcs (car mode-funcs))
+			   (if (cadr mode-funcs)
+			       (setcdr default-funcs (cdr mode-funcs)))))
+	  default-funcs)) ;; (get-mode-lookup-reference-functions 'org-mode)
 
       (defcustom linguee-url-template "https://www.linguee.com/english-german/search?source=auto&query=%S%"
-        "linguee url search template"
-        :type 'string
-        :group 'rgr/lookup-reference)
+	"linguee url search template"
+	:type 'string
+	:group 'rgr/lookup-reference)
 
       (defcustom php-api-url-template "https://www.google.com/search?q=php[%S%]"
-        "php api url search template"
-        :type 'string
-        :group 'rgr/lookup-reference)
+	"php api url search template"
+	:type 'string
+	:group 'rgr/lookup-reference)
 
       (defcustom jquery-url-template "https://api.jquery.com/?s=%S%"
-        "jquery url search template"
-        :type 'string
-        :group 'rgr/lookup-reference)
+	"jquery url search template"
+	:type 'string
+	:group 'rgr/lookup-reference)
 
       (defcustom  lookup-reference-functions '(my-describe-symbol goldendict-dwim my-linguee-lookup my-dictionary-search my-jquery-lookup google-this-search)
-        "list of functions to be called via C-n prefix call to lookup-reference-dwim"
-        :type 'hook
-        :group 'rgr/lookup-reference)
+	"list of functions to be called via C-n prefix call to lookup-reference-dwim"
+	:type 'hook
+	:group 'rgr/lookup-reference)
 
       (defun sys-browser-lookup(w template)
-        (interactive)
-        (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (symbol-or-region-at-point-as-string-or-prompt)) template)))
+	(interactive)
+	(browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (symbol-or-region-at-point-as-string-or-prompt)) template)))
 
       (defun symbol-or-region-at-point-as-string-or-prompt()
-        "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
-        (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
-                      (if(use-region-p)
-                          (let ((sel-text
-                                 (buffer-substring-no-properties
-                                  (mark)
-                                  (point))))
-                            sel-text)
-                        (thing-at-point 'symbol)) nil))
-               (result (if w w (read-string "lookup:"))))
-          result))
+	"if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
+	(let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
+		      (if(use-region-p)
+			  (let ((sel-text
+				 (buffer-substring-no-properties
+				  (mark)
+				  (point))))
+			    sel-text)
+			(thing-at-point 'symbol)) nil))
+	       (result (if w w (read-string "lookup:"))))
+	  result))
 
       (defun my-describe-symbol(w)
-        (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
-        (let ((s (if (symbolp w) w (intern-soft w))))
-          (if s (describe-symbol s)
-            (message "No such symbol: %s" w))))
+	(interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+	(let ((s (if (symbolp w) w (intern-soft w))))
+	  (if s (describe-symbol s)
+	    (message "No such symbol: %s" w))))
 
       (defun my-linguee-lookup(w)
-        (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
-        (sys-browser-lookup w linguee-url-template))
+	(interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+	(sys-browser-lookup w linguee-url-template))
 
       (defun my-php-api-lookup(w)
-        (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
-        (let ((dash-docs-docsets '("PHP")))
-          (helm-dash w)))
+	(interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+	(let ((dash-docs-docsets '("PHP")))
+	  (helm-dash w)))
       ;; (sys-browser-lookup w php-api-url-template))
 
       (defun my-jquery-lookup(&optional w)
-        (interactive(cons (symbol-or-region-at-point-as-string-or-prompt) nil))
-        (let (;;(zeal-at-point-docset "jQuery")
-              (dash-docs-docsets '("jQuery")))
-          (helm-dash w)))
+	(interactive(cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+	(let (;;(zeal-at-point-docset "jQuery")
+	      (dash-docs-docsets '("jQuery")))
+	  (helm-dash w)))
       ;; (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
       ;; (sys-browser-lookup w jquery-url-template))
 
       (defun my-gdscript-docs-browse-symbol-at-point(&optional w)
-        (gdscript-docs-browse-symbol-at-point))
+	(gdscript-docs-browse-symbol-at-point))
 
       (defun lookup-reference-dwim(&optional secondary)
-        "if we have a numeric prefix then index into lookup-reference functions"
-        (interactive)
-        (let((w (symbol-or-region-at-point-as-string-or-prompt))
-             ;; PREFIX integer including 4... eg C-2 lookup-reference-dwim
-             (idx (if (and  current-prefix-arg (not (listp current-prefix-arg)))
-                      (- current-prefix-arg 1)
-                    nil)))
-          (if idx (let((f (nth idx lookup-reference-functions)))
-                    (funcall (if f f (car lookup-reference-functions)) w))
-            (let* ((funcs (get-mode-lookup-reference-functions))(p (car funcs))(s (cadr funcs)))
-              (if (not secondary)
-                  (unless (funcall p w)
-                    (if s (funcall s w)))
-                (if s (funcall s w)))))))
+	"if we have a numeric prefix then index into lookup-reference functions"
+	(interactive)
+	(let((w (symbol-or-region-at-point-as-string-or-prompt))
+	     ;; PREFIX integer including 4... eg C-2 lookup-reference-dwim
+	     (idx (if (and  current-prefix-arg (not (listp current-prefix-arg)))
+		      (- current-prefix-arg 1)
+		    nil)))
+	  (if idx (let((f (nth idx lookup-reference-functions)))
+		    (funcall (if f f (car lookup-reference-functions)) w))
+	    (let* ((funcs (get-mode-lookup-reference-functions))(p (car funcs))(s (cadr funcs)))
+	      (if (not secondary)
+		  (unless (funcall p w)
+		    (if s (funcall s w)))
+		(if s (funcall s w)))))))
 
       (defun lookup-reference-dwim-secondary()
-        (interactive)
-        (lookup-reference-dwim t))
+	(interactive)
+	(lookup-reference-dwim t))
 
       (bind-key* "C-q" 'lookup-reference-dwim) ;; overrides major mode bindings
       (bind-key* "C-S-q" 'lookup-reference-dwim-secondary)
@@ -1832,7 +1832,7 @@ The aim here is to link to different reference sources and have a sensible defau
 ```
 
 
-<a id="org12ed54f"></a>
+<a id="org9055e46"></a>
 
 ### Dictionary
 
@@ -1850,7 +1850,7 @@ The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
 ```
 
 
-<a id="org7921a7a"></a>
+<a id="orgf47f82b"></a>
 
 ### Elisp reference
 
@@ -1868,8 +1868,8 @@ The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
     (defun display-elisp-lookup-reference-popup(sym)
       (interactive)
       (popup+-normal (if (fboundp sym)
-                         (popup+-emacs-function sym)
-                       (popup+-emacs-variable sym))))
+    		     (popup+-emacs-function sym)
+    		   (popup+-emacs-variable sym))))
 
     (defun elisp-lookup-reference-dwim
         (&optional
@@ -1878,9 +1878,9 @@ The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
       (interactive)
       (let ((sym (if (symbolp w) w (intern-soft w))))
         (if (and sym
-                 (or (fboundp sym)
-                     (boundp sym)))
-            (display-elisp-lookup-reference-popup sym) nil)))
+    	     (or (fboundp sym)
+    		 (boundp sym)))
+    	(display-elisp-lookup-reference-popup sym) nil)))
     ```
 
 2.  constant help as you cursor around
@@ -1900,8 +1900,8 @@ The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
       (and my-contextual-help-mode
            (eldoc-mode 1)
            (if (fboundp 'eldoc-current-symbol)
-               (eldoc-current-symbol)
-             (elisp--current-symbol))
+    	   (eldoc-current-symbol)
+    	 (elisp--current-symbol))
            (my-contextual-help :force)))
 
     (defadvice eldoc-print-current-symbol-info (before my-contextual-help activate)
@@ -1921,18 +1921,18 @@ The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
       (let ((help-visible-p (get-buffer-window (help-buffer))))
         (when (or help-visible-p force)
           (let ((sym (if (fboundp 'eldoc-current-symbol)
-                         (eldoc-current-symbol)
-                       (elisp--current-symbol))))
-            ;; We ignore keyword symbols, as their help is redundant.
-            ;; If something else changes the help buffer contents, ensure we
-            ;; don't immediately revert back to the current symbol's help.
-            (and (not (keywordp sym))
-                 (or (not (eq sym my-contextual-help-last-symbol))
-                     (and force (not help-visible-p)))
-                 (setq my-contextual-help-last-symbol sym)
-                 sym
-                 (save-selected-window
-                   (help-xref-interned sym)))))))
+    		     (eldoc-current-symbol)
+    		   (elisp--current-symbol))))
+    	;; We ignore keyword symbols, as their help is redundant.
+    	;; If something else changes the help buffer contents, ensure we
+    	;; don't immediately revert back to the current symbol's help.
+    	(and (not (keywordp sym))
+    	     (or (not (eq sym my-contextual-help-last-symbol))
+    		 (and force (not help-visible-p)))
+    	     (setq my-contextual-help-last-symbol sym)
+    	     sym
+    	     (save-selected-window
+    	       (help-xref-interned sym)))))))
 
     (defun my-contextual-help-toggle ()
       "Intelligently enable or disable `my-contextual-help-mode'."
@@ -1945,7 +1945,7 @@ The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
     ```
 
 
-<a id="org51fbc26"></a>
+<a id="orgeff084a"></a>
 
 ### GoldenDict - external lookup and reference
 
@@ -1971,7 +1971,7 @@ trans -e google -s de -t en -show-original y -show-original-phonetics n -show-tr
 ```
 
 
-<a id="org1a0ddf1"></a>
+<a id="org9154f03"></a>
 
 ### DevDocs
 
@@ -1986,7 +1986,7 @@ trans -e google -s de -t en -show-original y -show-original-phonetics n -show-tr
 ```
 
 
-<a id="orge977141"></a>
+<a id="org3d202db"></a>
 
 ### Zeal - Linux Dash
 
@@ -2002,7 +2002,7 @@ trans -e google -s de -t en -show-original y -show-original-phonetics n -show-tr
 ```
 
 
-<a id="org9780e92"></a>
+<a id="orga32438f"></a>
 
 ### DASH - API documentation for most languages
 
@@ -2010,20 +2010,20 @@ Dash packages docs for many languages.
 
 ```emacs-lisp
       (use-package
-        helm-dash
-        :demand t
-        :custom
-        (dash-docs-common-docsets '("Emacs Lisp" "Docker"))
-        (dash-docs-docsets '())
-        :config
-           (setq helm-dash-browser-func 'eww-readable-url)
+	helm-dash
+	:demand t
+	:custom
+	(dash-docs-common-docsets '("Emacs Lisp" "Docker"))
+	(dash-docs-docsets '())
+	:config
+	   (setq helm-dash-browser-func 'eww-readable-url)
 ;;         (setq helm-dash-browser-func 'eww)
-        (defun my-dash (w)
-          (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
-          (message "my-dash: %s" w)
-          (message "docsets are: " dash-docs-docsets)
-          (helm-dash w)t)
-        :bind* ("C-c d" . 'my-dash))
+	(defun my-dash (w)
+	  (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+	  (message "my-dash: %s" w)
+	  (message "docsets are: " dash-docs-docsets)
+	  (helm-dash w)t)
+	:bind* ("C-c d" . 'my-dash))
 ```
 
 
@@ -2055,7 +2055,7 @@ Excellent [tree based navigation that works really well with projectile.](https:
       (treemacs-select-window)))
   :bind ("M-0"   . my-treemacs-select-window)
   (:map treemacs-mode-map
-        ("<right>" . treemacs-peek)))
+	("<right>" . treemacs-peek)))
 
 ```
 
@@ -2077,7 +2077,7 @@ Excellent [tree based navigation that works really well with projectile.](https:
 # Web
 
 
-<a id="orgdcd32e4"></a>
+<a id="org35dd8ae"></a>
 
 ## helper functions
 
@@ -2086,13 +2086,13 @@ Excellent [tree based navigation that works really well with projectile.](https:
   "Open the current URL in desktop browser."
   (interactive)
   (let((url (or
-             (if(fboundp 'eww-currentl-url)
-                 (eww-current-url)
-               (if(fboundp 'w3m-currentl-url)
-                   (w3m-current-url)
-                 nil)))))
+	     (if(fboundp 'eww-currentl-url)
+		 (eww-current-url)
+	       (if(fboundp 'w3m-currentl-url)
+		   (w3m-current-url)
+		 nil)))))
     (if url
-        (browse-url-xdg-open url)
+	(browse-url-xdg-open url)
       (message "No buffer url"))))
 
 (defun www-open-link-external ()
@@ -2100,12 +2100,12 @@ Excellent [tree based navigation that works really well with projectile.](https:
   (interactive)
   (let((anchor (url-get-url-at-point)))
     (if anchor
-        (browse-url-xdg-open anchor)
+	(browse-url-xdg-open anchor)
       (message "No valid anchor found at cursor!"))))
 ```
 
 
-<a id="org750fcef"></a>
+<a id="org2e97daf"></a>
 
 ## W3M - emacs text based web browser
 
@@ -2121,24 +2121,24 @@ Excellent [tree based navigation that works really well with projectile.](https:
   :bind
   ("C-c o" . 'browse-url)
   (:map w3m-mode-map
-        ("O" . www-open-current-page-external)
-        ("o" . www-open-link-external)))
+	("O" . www-open-current-page-external)
+	("o" . www-open-link-external)))
 ```
 
 
-<a id="org8bcd612"></a>
+<a id="orgbc31d90"></a>
 
 ## EWW - emacs text based web browser
 
 [Emacs-EWW](https://www.gnu.org/software/emacs/manual/html_mono/eww.html) is an in-editor text based web browser. Handy for text based resources, bookmarking etc. Bind a couple of keys to open in the system browser. Added some functions to [open some URLs in 'eww-readable](https://emacs.stackexchange.com/questions/36284/how-to-open-eww-in-readable-mode/47757) so that it skips headers and footers (normally bound to R in eww).
 
 
-<a id="orge6af793"></a>
+<a id="org5428b78"></a>
 
 ### open tasks :tangle no
 
 
-<a id="org683bc8a"></a>
+<a id="org2392343"></a>
 
 ### code
 
@@ -2154,7 +2154,7 @@ Excellent [tree based navigation that works really well with projectile.](https:
     ;; make current eww buffer eww-readable and then remove the hook that called this so normal buffers are not eww-readable.
     (message "in make-eww-reabable")
     (unwind-protect
-        ;;(eww-readable)
+	;;(eww-readable)
       (remove-hook 'eww-after-render-hook #'make-eww-readable)))
 
   (defun eww-readable-url (url)
@@ -2168,8 +2168,8 @@ Excellent [tree based navigation that works really well with projectile.](https:
   ("C-c o" . 'browse-url)
   ("C-c O" . 'eww-readable-url)
   (:map eww-mode-map
-        ("O" . www-open-current-page-external)
-        ("o" . www-open-link-external)))
+	("O" . www-open-current-page-external)
+	("o" . www-open-link-external)))
 ```
 
 
@@ -2206,19 +2206,19 @@ The code in [rgr-chat.el](../elisp/rgr-chat.el):
   (defun rgr/erc-quit()
     (when (get-buffer "irc.freenode.net:6667")
       (progn
-        (switch-to-buffer(get-buffer "irc.freenode.net:6667"))
-        (erc-cmd-QUIT "bye"))))
+	(switch-to-buffer(get-buffer "irc.freenode.net:6667"))
+	(erc-cmd-QUIT "bye"))))
 
   (defun rgr/erc-start()
     (interactive)
     (unless(get-buffer "irc.freenode.net:6667")
       (progn
-        (erc :server "irc.freenode.net"  :port 6667)
-        (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
+	(erc :server "irc.freenode.net"  :port 6667)
+	(add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
 
   (defun rgr/erc-format-nick (&optional user _channel-data)
     "Return the nickname of USER.
-             See also `erc-format-nick-function'."
+	     See also `erc-format-nick-function'."
     ;; (when user (format "%-024s" (erc-server-user-nickname user))))
     (when user (format "%s" (erc-server-user-nickname user))))
   :hook
@@ -2231,12 +2231,12 @@ The code in [rgr-chat.el](../elisp/rgr-chat.el):
   :config
   (defhydra slack-hydra (:color gold :hint none)
     "
-          team                       channel                   message              Entry
-          -------------------------------------------------------------------------------------------------
-          _c_: change current team   _s_: select channel       _i_: select im       _S_: start slack
-          _r_: register team         _l_: channel list update  _u_: im list update  _C_: close connections
-                                                                                    _q_: close hydra
-          "
+	  team                       channel                   message              Entry
+	  -------------------------------------------------------------------------------------------------
+	  _c_: change current team   _s_: select channel       _i_: select im       _S_: start slack
+	  _r_: register team         _l_: channel list update  _u_: im list update  _C_: close connections
+										    _q_: close hydra
+	  "
     ;; Team
     ("c" slack-change-current-team)
     ("r" slack-register-team)
@@ -2286,16 +2286,16 @@ The code in [rgr-chat.el](../elisp/rgr-chat.el):
   (dolist (fn rgr/chat-functions)
     (when (fboundp fn)
       (progn
-        (message "Calling %s in start-chats" (symbol-name fn))
-        (funcall fn))))
+	(message "Calling %s in start-chats" (symbol-name fn))
+	(funcall fn))))
   (add-hook 'kill-emacs-hook #'rgr/close-chats))
 
 (defun rgr/close-chats()
   (dolist (fn rgr/chat-close-functions)
     (when (fboundp fn)
       (progn
-        (message "Calling %s in close-chats" (symbol-name fn))
-        (funcall fn)))))
+	(message "Calling %s in close-chats" (symbol-name fn))
+	(funcall fn)))))
 
 (recentf-mode -1)
 (save-place-mode -1)
@@ -2311,7 +2311,7 @@ The code in [rgr-chat.el](../elisp/rgr-chat.el):
 ```
 
 
-<a id="org2abb587"></a>
+<a id="orged6d17e"></a>
 
 ### Only one chat instance
 
@@ -2343,19 +2343,19 @@ and the eshell func to call it:
 ```
 
 
-<a id="org0041bbe"></a>
+<a id="org0702fe9"></a>
 
 ## Slackware
 
 
-<a id="org4329655"></a>
+<a id="org3e7f488"></a>
 
 ### Emacs Slack
 
 [Slack](https://slack.com/intl/en-de/) interface for Emacs on [github](https://github.com/yuya373/emacs-slack). See [rgr-chat.el](./lisp/rgr-chat.el).
 
 
-<a id="orgf01aa12"></a>
+<a id="org7bf047d"></a>
 
 ### Emacs Gitter
 
@@ -2367,12 +2367,12 @@ and the eshell func to call it:
 # Org functionality
 
 
-<a id="orgd290ed3"></a>
+<a id="org27fcfb3"></a>
 
 ## Org Mode, org-mode
 
 
-<a id="org8ddd69b"></a>
+<a id="org781f57b"></a>
 
 ### config
 
@@ -2405,9 +2405,9 @@ and the eshell func to call it:
 (use-package
   org-bullets
   :config (add-hook 'org-mode-hook (lambda ()
-                                     (org-bullets-mode 1)
-                                     ;; (org-num-mode 1)
-                                     )))
+				     (org-bullets-mode 1)
+				     ;; (org-num-mode 1)
+				     )))
 
 (org-clock-persistence-insinuate)
 (add-hook 'auto-save-hook 'org-save-all-org-buffers)
@@ -2423,46 +2423,46 @@ and the eshell func to call it:
 (defface org-canceled
   ;; originally copied from font-lock-type-face
   (org-compatible-face nil '((((class color)
-                               (min-colors 16)
-                               (background light))
-                              (:foreground "darkgrey"
-                                           :bold t))
-                             (((class color)
-                               (min-colors 16)
-                               (background dark))
-                              (:foreground "grey"
-                                           :bold t))
-                             (((class color)
-                               (min-colors 8))
-                              (:foreground "grey"))
-                             (t
-                              (:bold t))))
+			       (min-colors 16)
+			       (background light))
+			      (:foreground "darkgrey"
+					   :bold t))
+			     (((class color)
+			       (min-colors 16)
+			       (background dark))
+			      (:foreground "grey"
+					   :bold t))
+			     (((class color)
+			       (min-colors 8))
+			      (:foreground "grey"))
+			     (t
+			      (:bold t))))
   "Face used for todo keywords that indicate DONE items."
   :group 'org-faces)
 
 (defface org-wait
   ;; originally copied from font-lock-type-face
   (org-compatible-face nil '((((class color)
-                               (min-colors 16)
-                               (background light))
-                              (:foreground "darkgrey"
-                                           :bold t))
-                             (((class color)
-                               (min-colors 16)
-                               (background dark))
-                              (:foreground "grey"
-                                           :bold t))
-                             (((class color)
-                               (min-colors 8))
-                              (:foreground "grey"))
-                             (t
-                              (:bold t))))
+			       (min-colors 16)
+			       (background light))
+			      (:foreground "darkgrey"
+					   :bold t))
+			     (((class color)
+			       (min-colors 16)
+			       (background dark))
+			      (:foreground "grey"
+					   :bold t))
+			     (((class color)
+			       (min-colors 8))
+			      (:foreground "grey"))
+			     (t
+			      (:bold t))))
   "Face used for todo keywords that indicate DONE items."
   :group 'org-faces)
 ```
 
 
-<a id="org930077c"></a>
+<a id="orgd4b3251"></a>
 
 ### Journal, org-journal
 
@@ -2475,7 +2475,7 @@ More advanced journalling courtesy of [org-journal](https://github.com/bastibe/o
 ```
 
 
-<a id="orgc7bc046"></a>
+<a id="org14f2dd9"></a>
 
 ### ROAM note taking, org-roam
 
@@ -2494,14 +2494,14 @@ More advanced journalling courtesy of [org-journal](https://github.com/bastibe/o
 ```
 
 
-<a id="org91fbabb"></a>
+<a id="orgf3d7557"></a>
 
 ### Authoring in org-mode
 
 Work in progress. Thread related to this is [here](https://www.reddit.com/r/orgmode/comments/6y59r2/using_org_mode_to_write_books/).
 
 
-<a id="orge507d5c"></a>
+<a id="org00fbf9d"></a>
 
 ### Passwords, org-password-manager
 
@@ -2518,7 +2518,7 @@ Work in progress. Thread related to this is [here](https://www.reddit.com/r/orgm
     hQEMA7IjL5SkHG4iAQf/RK74iKGuA+IXecpRBGLUY9oNP7pPtVL23UDqdkKqldH8 SCqwTBbR4lmonJN/d44ezTMjJd4tutxTST37FcGRBgGltaKRrBG4KX3h5BC/WDz1 kKX/nnmxzBNQC0lP9l1gIvBUPIgoKUEMhoXtSY6xaNvg6iGNIhQnW4KoQvhvS5KM TgnlvhlhbFjEcKgR4dOdnAvJDhDGU1ZAB6DPAfraSYICe2qBD1qFyix1hBH+4DYp CBgqOM+Mx2Jbs0MkJGl8/lmsgbYsssbxD8gjuNwgj3ZIckd6xDZofojjylyPWWBb DRsNrF1Qqws2g2boI28LhqOV7KxXCxHxZQ3PpjIGedKqAcqJlk8Igo/MLywxf0hJ H65Vndgdgn4BMJCG/c0KfsvweTRCWataVpuUT8wV34jCCn0U5XSqekCIwHjell0p cXTmIjm4aqwXjGFc927GQ37Rg/QDRG7EEXLy634+PUuiqtAoKVo9kz9fQcFKFlgv /Msuyn36n+Miw1sh1tig5DFdwoIilI2ByKyvjP1POIMMDg9me/trlK+MiQVpxiKw 0gVVrLnozFIRo7U= =R1XD &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
 
 
-<a id="org0a97cdd"></a>
+<a id="org7f8c484"></a>
 
 ## Self documenting config file
 
@@ -2531,7 +2531,7 @@ Work in progress. Thread related to this is [here](https://www.reddit.com/r/orgm
   (defun config-export-to-markdown()
     (interactive)
     (if (and (eq major-mode 'org-mode) (file-exists-p (concat (file-name-sans-extension (buffer-file-name)) ".md")))
-        (org-gfm-export-to-markdown)))
+	(org-gfm-export-to-markdown)))
 
   (add-hook 'after-save-hook 'config-export-to-markdown))
 
@@ -2550,7 +2550,7 @@ Work in progress. Thread related to this is [here](https://www.reddit.com/r/orgm
   :config
 
   (setq smtpmail-smtp-server "smtp.gmail.com" smtpmail-smtp-service 587 gnus-ignored-newsgroups
-        "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+	"^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
   (require 'bbdb)
   (require 'bbdb-vcard)
   (bbdb-initialize 'gnus 'message)
@@ -2570,12 +2570,12 @@ Work in progress. Thread related to this is [here](https://www.reddit.com/r/orgm
 ```
 
 
-<a id="org7da2c9e"></a>
+<a id="org6bed9cc"></a>
 
 # Screen recording
 
 
-<a id="orgd2d2322"></a>
+<a id="org004ac65"></a>
 
 ## Emacs screencasts
 
@@ -2603,11 +2603,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
   (pomidor-seconds (* 25 60))
   (pomidor-break-seconds (* 5 60))
   :hook (pomidor-mode . (lambda ()
-                          (display-line-numbers-mode -1) ; Emacs 26.1+
-                          (setq left-fringe-width 0 right-fringe-width 0)
-                          (setq left-margin-width 2 right-margin-width 0)
-                          ;; force fringe update
-                          (set-window-buffer nil (current-buffer)))))
+			  (display-line-numbers-mode -1) ; Emacs 26.1+
+			  (setq left-fringe-width 0 right-fringe-width 0)
+			  (setq left-margin-width 2 right-margin-width 0)
+			  ;; force fringe update
+			  (set-window-buffer nil (current-buffer)))))
 ```
 
 
@@ -2616,7 +2616,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 # Programming related
 
 
-<a id="org4f63050"></a>
+<a id="org3b96f32"></a>
 
 ## General
 
@@ -2640,12 +2640,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 ```
 
 
-<a id="org06ee6d1"></a>
+<a id="orge60b697"></a>
 
 ## Symfony
 
 
-<a id="orgaa470dc"></a>
+<a id="orgcf5cd91"></a>
 
 ### custom
 
@@ -2661,7 +2661,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 ```
 
 
-<a id="org4a1cd7d"></a>
+<a id="orge29bd69"></a>
 
 ### Start a symfony web server when applicable
 
@@ -2669,12 +2669,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 (use-package php-mode
   :config
   (add-to-list 'display-buffer-alist
-               (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
+	       (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
   (defun start-symfony-web-server()
     (interactive)
     (let ((default-directory (projectile-project-root)))
       (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
-          (async-shell-command symfony-server-command "*Symfony Web Server*"))))
+	  (async-shell-command symfony-server-command "*Symfony Web Server*"))))
   (defun php-mode-webserver-hook ()
     (interactive)
     (start-symfony-web-server)
@@ -2690,12 +2690,12 @@ We can trigger it using a .dir-locals.el
 ```
 
 
-<a id="org145cbf3"></a>
+<a id="org2903a39"></a>
 
 ## Emacs Lisp, ELisp
 
 
-<a id="org81209ff"></a>
+<a id="orgf100c59"></a>
 
 ### refactoring utlities
 
@@ -2705,11 +2705,11 @@ We can trigger it using a .dir-locals.el
   :bind
   ("C-c f" . elisp-format-region)
   (:map emacs-lisp-mode-map
-        ("C-c f" . elisp-format-region)))
+	("C-c f" . elisp-format-region)))
 ```
 
 
-<a id="orgdf68a49"></a>
+<a id="org266d8b4"></a>
 
 ### query symbol
 
@@ -2719,14 +2719,14 @@ We can trigger it using a .dir-locals.el
   (defun show-symbol-details ()
     (interactive)
     (popup-tip (format "intern-soft thing-at-point: %s, symbolp: %s, symbol-name:%s"
-                       (setq-local sym (intern-soft (thing-at-point 'symbol)))
-                       (symbolp sym)
-                       (symbol-name sym))))
+		       (setq-local sym (intern-soft (thing-at-point 'symbol)))
+		       (symbolp sym)
+		       (symbol-name sym))))
   :bind  ("C-M-S-s" . #'show-symbol-details))
 ```
 
 
-<a id="orgf43648d"></a>
+<a id="orgf855ca1"></a>
 
 ### Elisp completion and debugging
 
@@ -2759,7 +2759,7 @@ We can trigger it using a .dir-locals.el
 ```
 
 
-<a id="orgfac1304"></a>
+<a id="org14d7b1d"></a>
 
 ### Auto-compile
 
@@ -2775,12 +2775,12 @@ We can trigger it using a .dir-locals.el
 ```
 
 
-<a id="org8d8e796"></a>
+<a id="orga19ea30"></a>
 
 ## JSON, YAML Configuration files
 
 
-<a id="org14e6576"></a>
+<a id="orgc747442"></a>
 
 ### JSON Editing
 
@@ -2791,7 +2791,7 @@ JSON editing using [json-mode](https://github.com/joshwnj/json-mode)
 ```
 
 
-<a id="orga0ce2c9"></a>
+<a id="org5392d7b"></a>
 
 ### YAML
 
@@ -2806,7 +2806,7 @@ JSON editing using [json-mode](https://github.com/joshwnj/json-mode)
     ```
 
 
-<a id="org54586e8"></a>
+<a id="org756176d"></a>
 
 ## Flycheck
 
@@ -2816,18 +2816,18 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 (use-package
   flycheck
   :config (use-package
-            flycheck-pos-tip)
+	    flycheck-pos-tip)
   (flycheck-pos-tip-mode)
   (global-flycheck-mode))
 ```
 
 
-<a id="orgc55e4b5"></a>
+<a id="org9f6d6fe"></a>
 
 ## Version Control
 
 
-<a id="org0e0c702"></a>
+<a id="orga077054"></a>
 
 ### It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs
 
@@ -2845,7 +2845,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orga4ae2c4"></a>
+<a id="org165da64"></a>
 
 ### [Forge](https://github.com/magit/forge) ahead with Pull Requests
 
@@ -2855,7 +2855,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org3d669f3"></a>
+<a id="orgfe502a7"></a>
 
 ## Javascript
 
@@ -2879,10 +2879,10 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 (use-package prettier-js
   :custom
   (prettier-js-args '(
-                      "--trailing-comma" "all"
-                      "--bracket-spacing" "false"
-                      "--print-width" "80"
-                      )))
+		      "--trailing-comma" "all"
+		      "--bracket-spacing" "false"
+		      "--print-width" "80"
+		      )))
 
 (defun my-js-mode-hook ()
   (setq-local js-indent-level 2)
@@ -2897,7 +2897,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orgb05d0f6"></a>
+<a id="orga34180f"></a>
 
 ## RJSX
 
@@ -2913,7 +2913,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org1a2125d"></a>
+<a id="org23bfaae"></a>
 
 ## Typescript
 
@@ -2927,7 +2927,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org66af153"></a>
+<a id="org0578854"></a>
 
 ## Tide Mode
 
@@ -2952,7 +2952,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org1b9e73d"></a>
+<a id="orgf48c1b2"></a>
 
 ## Language Server Protocol (LSP)
 
@@ -2979,16 +2979,16 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     (defun toggle-lsp-ui-sideline ()
       (interactive)
       (if lsp-ui-sideline-mode (progn (message "Disable LSP UI Sideline Mode")
-                                      (lsp-ui-sideline-mode -1))
-        (progn (message "Enable LSP UI Sideline Mode")
-               (lsp-ui-sideline-mode 1))))
+				      (lsp-ui-sideline-mode -1))
+	(progn (message "Enable LSP UI Sideline Mode")
+	       (lsp-ui-sideline-mode 1))))
     (defun toggle-lsp-ui-doc ()
       (interactive)
       (if lsp-ui-doc-mode (progn (message "Disable LSP UI Doc Mode")
-                                 (lsp-ui-doc-mode -1)
-                                 (lsp-ui-doc--hide-frame))
-        (progn (lsp-ui-doc-mode 1)
-               (message "Enable LSP UI Doc mode"))))
+				 (lsp-ui-doc-mode -1)
+				 (lsp-ui-doc--hide-frame))
+	(progn (lsp-ui-doc-mode 1)
+	       (message "Enable LSP UI Doc mode"))))
 
     (defun my-lsp-ui-doc-glance (&optional w)
       "Trigger display hover information popup and hide it on next typing."
@@ -3008,22 +3008,19 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
 
     :bind ((:map lsp-ui-mode-map
-                ;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
-                ;;("C-q"   . lsp-ui-doc-show)
-                ("M-S-<f9>" . myDapDebugOn)
-                ("<f10>" . lsp-ui-imenu)
-                ("C-c S"   . toggle-lsp-ui-sideline)
-                ("C-c D"   . toggle-lsp-ui-doc))
-           (:map lsp-ui-imenu-mode-map
-                ("<RET>" . my-lsp-ui-imenu-view)
-                ))
+		 ;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
+		 ;;("C-q"   . lsp-ui-doc-show)
+		 ("M-S-<f9>" . myDapDebugOn)
+		 ("<f10>" . lsp-ui-imenu)
+		 ("C-c S"   . toggle-lsp-ui-sideline)
+		 ("C-c D"   . toggle-lsp-ui-doc))
+	   (:map lsp-ui-imenu-mode-map
+		 ("<RET>" . my-lsp-ui-imenu-view)
+		 ))
 
     :hook ((lsp-ui-mode . my-lsp-ui-mode-hook)))
 
   (use-package dap-mode
-    :straight(dap-mode :type git :host github :repo "emacs-lsp/dap-mode"
-                       :fork (:host github
-                                    :repo "rileyrg/dap-mode"))
     :demand t
     :commands (myDapDebugOn)
     :config
@@ -3031,19 +3028,19 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     (require 'dap-gdb-lldb)
     ;;          (dap-gdb-lldb-setup)
     (add-hook 'dap-stopped-hook (lambda (arg)
-                                  (call-interactively #'dap-hydra)))
+				  (call-interactively #'dap-hydra)))
 
     (require 'dap-chrome)
 
-;; (dap-register-debug-template "Chrome Browse my-project"
-;;   (list :type "chrome"
-;;         :cwd nil
-;;         :mode "url"
-;;         :request "launch"
-;;         :webRoot "/home/rgr/Dropbox/homefiles/development/projects/react/my-app/"
-;;         :url "http://localhost:3000"
-;;         :sourceMap "true"
-;;         :name "Chrome Browse my-project"))
+    ;; (dap-register-debug-template "Chrome Browse my-project"
+    ;;   (list :type "chrome"
+    ;;         :cwd nil
+    ;;         :mode "url"
+    ;;         :request "launch"
+    ;;         :webRoot "/home/rgr/Dropbox/homefiles/development/projects/react/my-app/"
+    ;;         :url "http://localhost:3000"
+    ;;         :sourceMap "true"
+    ;;         :name "Chrome Browse my-project"))
 
 
     (defun myDapDebugOn(p)
@@ -3051,8 +3048,8 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
       (interactive "P")
       ;;         (centreCursorLineOn)
       (if p
-          (dap-debug nil)
-        (dap-debug-last))
+	  (dap-debug nil)
+	(dap-debug-last))
       ;;    (dap-hydra)
       )
     (defun my-lsp-mode-hook()
@@ -3060,29 +3057,29 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
       )
 
     :bind (:map dap-mode-map
-                ("<f9>" . dap-hydra)
-                ))
+		("<f9>" . dap-hydra)
+		))
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
-         ;; if you want which-key integration
-         (lsp-mode . my-lsp-mode-hook)))
+	 ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
+	 ;; if you want which-key integration
+	 (lsp-mode . my-lsp-mode-hook)))
 ```
 
 1.  [.dir-local.el](file:///home/rgr/development/thirdparty/godot/bin) config for a debug template
 
     ```emacs-lisp
     ((c++-mode . ((dap-debug-template-configurations . (("Godot LLDB"
-                                                         :type "lldb"
-                                                         :request "launch"
-                                                         :target "/home/rgr/bin/godot")
-                                                        ("Godot GDB"
-                                                         :type "gdb"
-                                                         :request "launch"
-                                                         :target "/home/rgr/bin/godot"))))))
+    						     :type "lldb"
+    						     :request "launch"
+    						     :target "/home/rgr/bin/godot")
+    						    ("Godot GDB"
+    						     :type "gdb"
+    						     :request "launch"
+    						     :target "/home/rgr/bin/godot"))))))
     ```
 
 
-<a id="org14e1a1d"></a>
+<a id="orgc5e9b57"></a>
 
 ## Serial Port
 
@@ -3107,13 +3104,13 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     (serial-term rgr/serialIOPort rgr/serialIOPortBaud)))
 
 (global-set-key (kbd "C-c s")
-                (lambda()
-                  (interactive)
-                  (selectSerialPortBuffer)))
+		(lambda()
+		  (interactive)
+		  (selectSerialPortBuffer)))
 ```
 
 
-<a id="org41bf9b1"></a>
+<a id="org2f70a14"></a>
 
 ## PlatformIO
 
@@ -3124,12 +3121,12 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orgcf7e221"></a>
+<a id="orge7009b5"></a>
 
 ## C
 
 
-<a id="org6fe6945"></a>
+<a id="orgd891be6"></a>
 
 ### Clang provides us with some industry standard code prettiers
 
@@ -3141,7 +3138,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orga629045"></a>
+<a id="org996858a"></a>
 
 ### C  modes hooks
 
@@ -3150,9 +3147,9 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 (use-package
   ccls
   :hook ((c++-mode c-mode objc-mode) . (lambda ()
-                                         (ccls-use-default-rainbow-sem-highlight)
-                                         ;;                 (ccls-code-lens-mode)
-                                         )))
+					 (ccls-use-default-rainbow-sem-highlight)
+					 ;;                 (ccls-code-lens-mode)
+					 )))
 (defun my-c-setup ()
   "Set up my C mode."
   (platformio-mode))
@@ -3163,7 +3160,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org78edeea"></a>
+<a id="orgead86d2"></a>
 
 ## C++
 
@@ -3174,7 +3171,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org71e26a3"></a>
+<a id="org19b10c8"></a>
 
 ## C#
 
@@ -3186,7 +3183,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     ```
 
 
-<a id="org49ec94f"></a>
+<a id="orgf3998c8"></a>
 
 ## Godot GDScript
 
@@ -3196,31 +3193,31 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 (use-package gdscript-mode
   ;;       :disabled t
   :straight (gdscript-mode
-             :type git
-             :host github
-             :repo "rileyrg/emacs-gdscript-mode")
+	     :type git
+	     :host github
+	     :repo "rileyrg/emacs-gdscript-mode")
   :init
   (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
     "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
     (if (string-equal major-mode "gdscript-mode")
-        (let ((json-data (nth 0 args)))
-          (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
-                   (not (gethash "id" json-data nil))
-                   (not (gethash "method" json-data nil)))
-              nil ; (message "Method not found")
-            (apply original-function args)))
+	(let ((json-data (nth 0 args)))
+	  (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
+		   (not (gethash "id" json-data nil))
+		   (not (gethash "method" json-data nil)))
+	      nil ; (message "Method not found")
+	    (apply original-function args)))
       (apply original-function args)))
   (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
   )
 ```
 
 
-<a id="orgf34f91c"></a>
+<a id="org817013e"></a>
 
 ## tasks :tangle no
 
 
-<a id="org0ba757b"></a>
+<a id="org848e865"></a>
 
 ## PHP Mode
 
@@ -3276,27 +3273,27 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
   (use-package
     phpactor
     :config (use-package
-              company-phpactor))
+	      company-phpactor))
   :bind (:map php-mode-map
-              ( "C-c C-y" .  yas/create-php-snippet)
-              ( "C-S-<return>" . c-complete-line)
-              ( "C-<return>" . c-newline-below)
-              ( "C-S-y" . c-insert-previous-line)
-              ( "M-<return>" . php-transient-menu)))
+	      ( "C-c C-y" .  yas/create-php-snippet)
+	      ( "C-S-<return>" . c-complete-line)
+	      ( "C-<return>" . c-newline-below)
+	      ( "C-S-y" . c-insert-previous-line)
+	      ( "M-<return>" . php-transient-menu)))
 
 (use-package
   php-scratch
   :bind (:map php-mode-map
-              ("C-x s" . php-scratch)))
+	      ("C-x s" . php-scratch)))
 ```
 
 
-<a id="orgdce40a8"></a>
+<a id="orgc4f7055"></a>
 
 ## Web,Symfony and Twig
 
 
-<a id="org47f2d94"></a>
+<a id="orge4a1987"></a>
 
 ### The Code
 
@@ -3323,7 +3320,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ```
 
 
-<a id="org66f63cf"></a>
+<a id="orgcad3059"></a>
 
 ## elf-mode - view the symbol list in a binary
 
@@ -3337,7 +3334,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ```
 
 
-<a id="orgba3a435"></a>
+<a id="org412fa20"></a>
 
 ## EDiff - comparing files in Emacs
 
@@ -3358,7 +3355,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 # Macros & Utilities
 
 
-<a id="org698a5e9"></a>
+<a id="org75653ea"></a>
 
 ## move to end of line, add a semi colon and move to next line
 
@@ -3392,21 +3389,21 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 
 (load (expand-file-name "flowers.el.gpg" user-emacs-directory ))
 (eval-after-load "gnus" '(progn
-                           (setq circe-default-nick (nth 0 (auth-source-user-and-password "circe")))
-                           (setq circe-default-user (nth 1 (auth-source-user-and-password "circe")))
-                           (setq twit-user (nth 0 (auth-source-user-and-password "twitter")))
-                           (setq twit-pass (nth 1 (auth-source-user-and-password "twitter")))
-                           (setq twittering-username (nth 0 (auth-source-user-and-password
-                                                             "twitter")))
-                           (setq twittering-password (nth 1 (auth-source-user-and-password
-                                                             "twitter")))
-                           (setq twitter-username (nth 0 (auth-source-user-and-password "twitter")))
-                           (setq twitter-password (nth 1(auth-source-user-and-password "twitter")))
-                           (setq emms-player-mpd-server-password (nth 1
-                                                                      (auth-source-user-and-password
-                                                                       "emmsmpd"))          )
-                           (setq org-mobile-encryption-password (nth 1(auth-source-user-and-password
-                                                                       "org-mobile")))))
+			   (setq circe-default-nick (nth 0 (auth-source-user-and-password "circe")))
+			   (setq circe-default-user (nth 1 (auth-source-user-and-password "circe")))
+			   (setq twit-user (nth 0 (auth-source-user-and-password "twitter")))
+			   (setq twit-pass (nth 1 (auth-source-user-and-password "twitter")))
+			   (setq twittering-username (nth 0 (auth-source-user-and-password
+							     "twitter")))
+			   (setq twittering-password (nth 1 (auth-source-user-and-password
+							     "twitter")))
+			   (setq twitter-username (nth 0 (auth-source-user-and-password "twitter")))
+			   (setq twitter-password (nth 1(auth-source-user-and-password "twitter")))
+			   (setq emms-player-mpd-server-password (nth 1
+								      (auth-source-user-and-password
+								       "emmsmpd"))          )
+			   (setq org-mobile-encryption-password (nth 1(auth-source-user-and-password
+								       "org-mobile")))))
 ```
 
 
@@ -3431,7 +3428,7 @@ Sometimes needs machine specific settings eg a larger font on a bigger display.
 # Themes
 
 
-<a id="orgc4e8bab"></a>
+<a id="org3e37bab"></a>
 
 ## Themes
 
@@ -3439,7 +3436,7 @@ Sometimes needs machine specific settings eg a larger font on a bigger display.
 (use-package
   helm-themes
   :config (use-package
-            panda-theme)
+	    panda-theme)
   (use-package
     dracula-theme)
 

@@ -1,155 +1,155 @@
 - [Project version control, git, .gitignore](#Project-version-control)
-- [Building Emacs from source.](#orgf28071d)
-  - [Cloning from github](#org58e323a)
-  - [compiling and adding symlinks on $PATH](#orge54e8ab)
+- [Building Emacs from source.](#orgce03058)
+  - [Cloning from github](#org323a9d2)
+  - [compiling and adding symlinks on $PATH](#org49ad420)
 - [Setting up emacs as a default editor using a dot desktop file and associated protocol handler](#emacs-default-editor)
-    - [php.ini changes e.g /etc/php/7.3/php.ini](#orgabf3c99)
-    - [emacsclient-linenumber script to correctly parse the protocol in order to start emacs frame at correct line](#orgb7db525)
-    - [Gnome protocol handler desktop file](#org3a7536a)
-    - [Always using emacsclient](#orgddb375b)
+    - [php.ini changes e.g /etc/php/7.3/php.ini](#org73f5a06)
+    - [emacsclient-linenumber script to correctly parse the protocol in order to start emacs frame at correct line](#orgdadf259)
+    - [Gnome protocol handler desktop file](#org4079128)
+    - [Always using emacsclient](#org65f516e)
 - [package management with straight.el](#package-management)
-  - [straight.el bootstrap](#org34bb48e)
-  - [use-package works with straight.el](#org9bcc298)
-    - [use-package helper](#org8c96245)
+  - [straight.el bootstrap](#org6f10400)
+  - [use-package works with straight.el](#org72ff639)
+    - [use-package helper](#org2906ee2)
 - [Org-Babel and init.el tangling](#org-babel)
 - [Elisp library and custom-paths](#libraries-and-paths)
 - [Emacs daemon & startup](#emacs-daemon)
-- [Music](#org629b3ef)
+- [Music](#org407a327)
 - [Utility functions](#utility-functions)
-  - [toggle buffer](#orge89b73e)
-  - [scratch](#org2bc5887)
-  - [external utilities](#org148cd8d)
-    - [helpful](#org6ed56c0)
+  - [toggle buffer](#org2bf639b)
+  - [scratch](#orgd022a58)
+  - [external utilities](#orgf22fd99)
+    - [helpful](#org859a6dc)
 - [Configure main look and feel](#look-and-feel)
-  - [General](#org14fe797)
-  - [Clipboard](#orga7e45d5)
-  - [Ansi colour](#org473ae46)
-  - [Point History](#org4ab2277)
+  - [General](#org6f6def3)
+  - [Clipboard](#orgfb91184)
+  - [Ansi colour](#orgc50eb93)
+  - [Point History](#org2b71ba1)
 - [Shells](#shells)
-  - [Shell Switcher](#org268aec6)
-  - [Eshell](#org1503f75)
-    - [Eshell functions](#org975e281)
-    - [EShell Aliases](#org59af04e)
-    - [EShell config with Helm](#orgcbe6116)
-  - [Docker](#org20587a0)
-    - [docker](#org7c91823)
+  - [Shell Switcher](#org0ad23cf)
+  - [Eshell](#orgfcdd844)
+    - [Eshell functions](#orga4e17c1)
+    - [EShell Aliases](#orgc47b029)
+    - [EShell config with Helm](#orgfd83f26)
+  - [Docker](#org0ec9f71)
+    - [docker](#org95bf216)
 - [Helm, helm-mode](#helm-management)
 - [Projectile](#projectile-project-management)
 - [Buffers and Windows](#buffers-and-windows)
-  - [General](#org02ce50e)
-  - [Auto edit buffer as root](#orge36dc3b)
-  - [iBuffer](#orgf6a9ee2)
-  - [dired - emacs file management](#org32ccfcc)
-    - [Dired Git Info](#orgdc39acb)
-    - [dired hacks](#org091b6ee)
-  - [PosFrame](#orgc708a02)
-  - [PopWin,Popwin makes you free from the hell of annoying buffers such like **Help**, **Completions**, **compilation**, and etc.](#org1bfe269)
-  - [Transpose windows, transpose-frame](#org3c9efe8)
-  - [Hyperbole](#org4443918)
-  - [Undo utilities](#orgc72646c)
-    - [undohist](#org685cc04)
-    - [undo-tree](#org8f6086f)
-    - [undo-fu](#orgc309c0e)
-  - [Navigation](#org37c313d)
-    - [Back Button](#org0826446)
-    - [Window hopping](#org6fcb2e5)
-    - [hopping around links](#org6a253a5)
-    - [hopping around in the buffer](#org21aedff)
-  - [Elscreen](#org1252b6d)
-- [Centaur Tabs](#org9a71ab3)
-  - [Darkroom](#orgbb83cb1)
-  - [Outline Mode](#org820e5ac)
+  - [General](#orgdf80549)
+  - [Auto edit buffer as root](#orgd0c428b)
+  - [iBuffer](#orgf0a0e5a)
+  - [dired - emacs file management](#orgea3b96f)
+    - [Dired Git Info](#org33aa41c)
+    - [dired hacks](#orgbbd4c4a)
+  - [PosFrame](#org10da4f7)
+  - [PopWin,Popwin makes you free from the hell of annoying buffers such like **Help**, **Completions**, **compilation**, and etc.](#org93f772a)
+  - [Transpose windows, transpose-frame](#org4296ebf)
+  - [Hyperbole](#org1f29d54)
+  - [Undo utilities](#org45cdab7)
+    - [undohist](#orgebce2b8)
+    - [undo-tree](#org2d6e7d9)
+    - [undo-fu](#orga69f30f)
+  - [Navigation](#org6ecdff3)
+    - [Back Button](#org0c0e0e8)
+    - [Window hopping](#org0d45407)
+    - [hopping around links](#org3b28dc9)
+    - [hopping around in the buffer](#orgb32fdc3)
+  - [Elscreen](#orge49ee1c)
+- [Centaur Tabs](#org9b6775e)
+  - [Darkroom](#orgbb15a7f)
+  - [Outline Mode](#orgcae4cc9)
 - [Text tools](#text-tools)
-  - [Cursor/Region related](#org9c2a02b)
-    - [General](#org350225f)
-    - [expand-region](#orgd2671ed)
-    - [easy-kill](#orgcaad8e1)
-  - [flyspell](#orge438a6c)
-  - [Completion](#org93f09d2)
-    - [Snippets with yasnippet](#orgfce374a)
-    - [Company Mode](#org278e044)
-    - [Which Key](#org47ac53e)
-    - [Tying it call together](#org4238ad4)
-  - [Searching non-helm](#org5ccd256)
-  - [Abbrev Mode](#orgcb1b3a2)
-  - [Deft - text searching](#orgc354a0a)
-  - [Google This](#orgfea5a55)
-  - [Reference and dictionary](#org85f2c71)
-    - [utility funcs](#org933c005)
-    - [Dictionary](#orgc8b33a4)
-    - [Elisp reference](#orgf5b8180)
-    - [GoldenDict - external lookup and reference](#org9548bb6)
-    - [DevDocs](#org05c1cc4)
-    - [Zeal - Linux Dash](#org4c809a2)
-    - [DASH - API documentation for most languages](#orgccabf5e)
+  - [Cursor/Region related](#org28ff0aa)
+    - [General](#org2ed7acf)
+    - [expand-region](#org79e4ac2)
+    - [easy-kill](#orgdc3bb20)
+  - [Folding/Hide Show](#org07d2316)
+  - [flyspell](#org463ab55)
+  - [Completion](#orge3ed127)
+    - [Snippets with yasnippet](#orgcbfe4b1)
+    - [Company Mode](#org85071ff)
+    - [Which Key](#org8bde95c)
+    - [Tying it call together](#orge30fb41)
+  - [Searching non-helm](#org2412cb2)
+  - [Abbrev Mode](#org46d3518)
+  - [Deft - text searching](#orgc5eb45f)
+  - [Google This](#orgca6ccb9)
+  - [Reference and dictionary](#org6ea7b37)
+    - [utility funcs](#org6cedc40)
+    - [Dictionary](#org301971b)
+    - [Elisp reference](#org07f1242)
+    - [GoldenDict - external lookup and reference](#org1eb3dca)
+    - [DevDocs](#orgb5de623)
+    - [Zeal - Linux Dash](#org9c9a197)
+    - [DASH - API documentation for most languages](#orgc6dd66e)
 - [Treemacs](#treemacs)
 - [Alerts](#alerts)
 - [Web](#web)
-  - [helper functions](#org3479e98)
-  - [W3M - emacs text based web browser](#orgeebba6d)
-  - [EWW - emacs text based web browser](#orgee7ca82)
-    - [open tasks :tangle no](#org6c5ad40)
-    - [code](#orgf2a7254)
+  - [helper functions](#orgeac243b)
+  - [W3M - emacs text based web browser](#orgf8fe6c0)
+  - [EWW - emacs text based web browser](#org027d106)
+    - [open tasks :tangle no](#orgcc6982a)
+    - [code](#org8cf5d6a)
 - [Online Chats](#online-chats)
-    - [Only one chat instance](#org5051670)
-  - [Slackware](#orgfe8bb08)
-    - [Emacs Slack](#org574d6cf)
-    - [Emacs Gitter](#org661e859)
+    - [Only one chat instance](#orgfb19bf0)
+  - [Slackware](#org649784b)
+    - [Emacs Slack](#org43b3d23)
+    - [Emacs Gitter](#org2bbbd91)
 - [Org functionality](#org-mode)
-  - [Org Mode, org-mode](#org499f09c)
-    - [config](#org45eb59b)
-    - [Journal, org-journal](#org28ff427)
-    - [ROAM note taking, org-roam](#org9fa4238)
-    - [Authoring in org-mode](#orgf65027c)
-    - [Passwords, org-password-manager](#org973fbc8)
-    - [scratchpad                                              :tangle no:noexport:](#org3fc0636)
-  - [Self documenting config file](#org5c05a11)
+  - [Org Mode, org-mode](#org4d3b996)
+    - [config](#orge3dc565)
+    - [Journal, org-journal](#org4e548aa)
+    - [ROAM note taking, org-roam](#org5f744e3)
+    - [Authoring in org-mode](#orgf5d6c6b)
+    - [Passwords, org-password-manager](#org6286b08)
+  - [Self documenting config file](#org9412060)
 - [Email, gmail, Gnus](#email)
-- [Screen recording](#org2f1dd80)
-  - [Emacs screencasts](#org4078dde)
+- [Screen recording](#org6c836fc)
+  - [Emacs screencasts](#org61aaafd)
 - [Pomodoro](#pomodoro)
 - [Programming related](#programming)
-  - [General](#org51e62bf)
-  - [Symfony](#orgf7e208b)
-    - [custom](#orga805d8d)
-    - [Start a symfony web server when applicable](#orgaea139a)
-  - [Emacs Lisp, ELisp](#orgf195952)
-    - [refactoring utlities](#org5ff812d)
-    - [query symbol](#org0e28d40)
-    - [Elisp completion and debugging](#org934d738)
-    - [Auto-compile](#org411b4ab)
-  - [JSON, YAML Configuration files](#orge4422b1)
-    - [JSON Editing](#orge20501a)
-    - [YAML](#org6a702f3)
-  - [Flycheck](#orgaba477e)
-  - [Version Control](#org2ff3d1b)
-    - [It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs](#org407b5a4)
-    - [[Forge](https://github.com/magit/forge) ahead with Pull Requests](#org400493e)
-  - [Javascript](#orge9bfa7e)
-  - [RJSX](#orgbe19db3)
-  - [Typescript](#org29c84cd)
-  - [Tide Mode](#orga5489e1)
-  - [Language Server Protocol (LSP)](#org2f5fbb8)
-  - [Serial Port](#org4bc5b0e)
-  - [PlatformIO](#org8a9e5c7)
-  - [C](#orgd6a28ef)
-    - [Clang provides us with some industry standard code prettiers](#orgc7d21c0)
-    - [C  modes hooks](#org1943695)
-  - [C++](#orgdc1495a)
-  - [C#](#orgada4e1f)
-  - [Godot GDScript](#org4267298)
-  - [tasks :tangle no](#orga7bb780)
-  - [PHP Mode](#org58f4367)
-  - [Web,Symfony and Twig](#org15a9314)
-    - [The Code](#org7102214)
-  - [elf-mode - view the symbol list in a binary](#org8cbcf71)
-  - [EDiff - comparing files in Emacs](#orgc27e88d)
+  - [General](#orgec82d81)
+  - [Symfony](#orgac73a63)
+    - [custom](#org7fe8a7a)
+    - [Start a symfony web server when applicable](#org9812349)
+  - [Emacs Lisp, ELisp](#orgbf09a4f)
+    - [refactoring utlities](#org0eebfd2)
+    - [query symbol](#org65c2d44)
+    - [Elisp completion and debugging](#org011d03b)
+    - [Auto-compile](#orgd732787)
+  - [JSON, YAML Configuration files](#org5d799d1)
+    - [JSON Editing](#org000c1e9)
+    - [YAML](#orgf40fcb7)
+  - [Flycheck](#orga6f40ad)
+  - [Version Control](#org7746682)
+    - [It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs](#org0ff38b7)
+    - [[Forge](https://github.com/magit/forge) ahead with Pull Requests](#org2d06e31)
+  - [Javascript](#orgf3c72a6)
+  - [RJSX](#orge22ca55)
+  - [Typescript](#org4a953c0)
+  - [Tide Mode](#org003b13e)
+  - [Language Server Protocol (LSP)](#org14dbca5)
+  - [Serial Port](#org6bd56a4)
+  - [PlatformIO](#org3cc4e16)
+  - [C](#org2708ab4)
+    - [Clang provides us with some industry standard code prettiers](#orgf476b1d)
+    - [C  modes hooks](#org7b8cf48)
+  - [C++](#org7e283c6)
+  - [C#](#org4380f1c)
+  - [Godot GDScript](#orge549975)
+  - [tasks :tangle no](#org09bfa6d)
+  - [PHP Mode](#org60a64ca)
+  - [Web,Symfony and Twig](#org24c5346)
+    - [The Code](#orgb65b64f)
+  - [elf-mode - view the symbol list in a binary](#org1a52754)
+  - [EDiff - comparing files in Emacs](#orgfb8e5bd)
 - [Macros & Utilities](#macros)
-  - [move to end of line, add a semi colon and move to next line](#org6590bbc)
+  - [move to end of line, add a semi colon and move to next line](#orgbcf2b15)
 - [Privacy](#privacy)
 - [Host specific setting](#host-specifics)
 - [Themes](#screensaver-themes)
-  - [Themes](#orgc8054f3)
+  - [Themes](#org759f66c)
 
 
 
@@ -217,12 +217,12 @@ I like to exclude everything and then add in what is important. So the first lin
 ```
 
 
-<a id="orgf28071d"></a>
+<a id="orgce03058"></a>
 
 # Building Emacs from source.
 
 
-<a id="org58e323a"></a>
+<a id="org323a9d2"></a>
 
 ## Cloning from github
 
@@ -235,7 +235,7 @@ git checkout emacs-27
 ```
 
 
-<a id="orge54e8ab"></a>
+<a id="org49ad420"></a>
 
 ## compiling and adding symlinks on $PATH
 
@@ -259,7 +259,7 @@ More info can be sourced starting from the EmacsWiki [here.](https://www.emacswi
 # Setting up emacs as a default editor using a dot desktop file and associated protocol handler
 
 
-<a id="orgabf3c99"></a>
+<a id="org73f5a06"></a>
 
 ### php.ini changes e.g /etc/php/7.3/php.ini
 
@@ -274,7 +274,7 @@ xdebug.remote_port = 9000
 ```
 
 
-<a id="orgb7db525"></a>
+<a id="orgdadf259"></a>
 
 ### emacsclient-linenumber script to correctly parse the protocol in order to start emacs frame at correct line
 
@@ -295,7 +295,7 @@ fi
 ```
 
 
-<a id="org3a7536a"></a>
+<a id="org4079128"></a>
 
 ### Gnome protocol handler desktop file
 
@@ -330,7 +330,7 @@ ln -sf  ~/config/mimeapps.lst ~/.local/share/applications/
 ```
 
 
-<a id="orgddb375b"></a>
+<a id="org65f516e"></a>
 
 ### Always using emacsclient
 
@@ -358,7 +358,7 @@ I've started using [straight.el](https://github.com/raxod502/straight.el) which,
 A very useful feature is the ability to "freeze" your setup so that later, should newer packages leave your config broken, you can revert to the stable suite. See [Configuration reproducibility](https://github.com/raxod502/straight.el#configuration-reproducibility) for more details.
 
 
-<a id="org34bb48e"></a>
+<a id="org6f10400"></a>
 
 ## straight.el bootstrap
 
@@ -388,7 +388,7 @@ A very useful feature is the ability to "freeze" your setup so that later, shoul
 ```
 
 
-<a id="org9bcc298"></a>
+<a id="org72ff639"></a>
 
 ## use-package works with straight.el
 
@@ -410,7 +410,7 @@ The [use-package](https://github.com/jwiegley/use-package) wrapper still works j
 ```
 
 
-<a id="org8c96245"></a>
+<a id="org2906ee2"></a>
 
 ### use-package helper
 
@@ -518,7 +518,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 ```
 
 
-<a id="org629b3ef"></a>
+<a id="org407a327"></a>
 
 # Music
 
@@ -534,7 +534,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 # Utility functions
 
 
-<a id="orge89b73e"></a>
+<a id="org2bf639b"></a>
 
 ## toggle buffer
 
@@ -551,7 +551,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 ```
 
 
-<a id="org2bc5887"></a>
+<a id="orgd022a58"></a>
 
 ## scratch
 
@@ -566,7 +566,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 ```
 
 
-<a id="org148cd8d"></a>
+<a id="orgf22fd99"></a>
 
 ## external utilities
 
@@ -603,7 +603,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 ```
 
 
-<a id="org6ed56c0"></a>
+<a id="org859a6dc"></a>
 
 ### helpful
 
@@ -642,7 +642,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 # Configure main look and feel
 
 
-<a id="org14fe797"></a>
+<a id="org6f6def3"></a>
 
 ## General
 
@@ -665,6 +665,10 @@ It's loaded early so that the load-path is correct prior to package loading.
 
 (save-place-mode 1)
 (savehist-mode 1)
+
+(global-set-key (kbd "S-<f10>") #'menu-bar-open)
+(global-set-key (kbd "<f10>") #'imenu)
+
 
 (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list) (selected-frame)
 
@@ -704,7 +708,7 @@ It's loaded early so that the load-path is correct prior to package loading.
 ```
 
 
-<a id="orga7e45d5"></a>
+<a id="orgfb91184"></a>
 
 ## Clipboard
 
@@ -718,7 +722,7 @@ Allow terminal emacs to interact with the x clipboard.
 ```
 
 
-<a id="org473ae46"></a>
+<a id="orgc50eb93"></a>
 
 ## Ansi colour
 
@@ -731,7 +735,7 @@ Allow terminal emacs to interact with the x clipboard.
 ```
 
 
-<a id="org4ab2277"></a>
+<a id="org2b71ba1"></a>
 
 ## Point History
 
@@ -745,7 +749,7 @@ Allow terminal emacs to interact with the x clipboard.
 # Shells
 
 
-<a id="org268aec6"></a>
+<a id="org0ad23cf"></a>
 
 ## Shell Switcher
 
@@ -762,14 +766,14 @@ Allow terminal emacs to interact with the x clipboard.
 ```
 
 
-<a id="org1503f75"></a>
+<a id="orgfcdd844"></a>
 
 ## Eshell
 
 [EShell](https://www.masteringemacs.org/article/complete-guide-mastering-eshell) is, amongst other things, convenient for cat/console debugging in Symfony etc to have all output in easily browsed Emacs buffers via [EShell redirection](https://www.emacswiki.org/emacs/EshellRedirection).
 
 
-<a id="org975e281"></a>
+<a id="orga4e17c1"></a>
 
 ### Eshell functions
 
@@ -784,7 +788,7 @@ Allow terminal emacs to interact with the x clipboard.
     ```
 
 
-<a id="org59af04e"></a>
+<a id="orgc47b029"></a>
 
 ### EShell Aliases
 
@@ -832,7 +836,7 @@ alias gds cd ~/.emacs.d/straight/repos/emacs-gdscript-mode
 ```
 
 
-<a id="orgcbe6116"></a>
+<a id="orgfd83f26"></a>
 
 ### EShell config with Helm
 
@@ -910,12 +914,12 @@ alias gds cd ~/.emacs.d/straight/repos/emacs-gdscript-mode
     ```
 
 
-<a id="org20587a0"></a>
+<a id="org0ec9f71"></a>
 
 ## Docker
 
 
-<a id="org7c91823"></a>
+<a id="org95bf216"></a>
 
 ### docker
 
@@ -1014,10 +1018,11 @@ Incremental completion/searching and all sorts of wonderful things. [Emacs Incre
 ```emacs-lisp
 (use-package
   helm-projectile
-  :config
-  (use-package helm-ag
+  :demand
   :custom
-  (helm-ag-insert-at-point 'symbol))
+  (helm-ag-insert-at-point 'symbol)
+  :config
+  (use-package helm-ag)
   (defun my-projectile-grep(&optional deepsearch)
     (interactive "P")
     ;; (let((helm-rg--extra-args (if deepsearch "--no-ignore-vcs" nil)))
@@ -1038,8 +1043,7 @@ Incremental completion/searching and all sorts of wonderful things. [Emacs Incre
   ("<f5>" . 'helm-projectile-switch-to-buffer)
   (:map projectile-mode-map ("C-c p" . projectile-command-map))
   (:map projectile-command-map ("o"  . helm-multi-swoop-projectile))
-  (:map projectile-command-map ("g"  . helm-git-grep))
-  )
+  (:map projectile-command-map ("g"  . helm-git-grep)))
 
 ```
 
@@ -1049,7 +1053,7 @@ Incremental completion/searching and all sorts of wonderful things. [Emacs Incre
 # Buffers and Windows
 
 
-<a id="org02ce50e"></a>
+<a id="orgdf80549"></a>
 
 ## General
 
@@ -1074,7 +1078,7 @@ Incremental completion/searching and all sorts of wonderful things. [Emacs Incre
 ```
 
 
-<a id="orge36dc3b"></a>
+<a id="orgd0c428b"></a>
 
 ## Auto edit buffer as root
 
@@ -1089,7 +1093,7 @@ A [package](https://github.com/ncaq/auto-sudoedit) that automatically reopens fi
 ```
 
 
-<a id="orgf6a9ee2"></a>
+<a id="orgf0a0e5a"></a>
 
 ## iBuffer
 
@@ -1100,12 +1104,12 @@ A [package](https://github.com/ncaq/auto-sudoedit) that automatically reopens fi
 ```
 
 
-<a id="org32ccfcc"></a>
+<a id="orgea3b96f"></a>
 
 ## dired - emacs file management
 
 
-<a id="orgdc39acb"></a>
+<a id="org33aa41c"></a>
 
 ### Dired Git Info
 
@@ -1116,7 +1120,7 @@ A [package](https://github.com/ncaq/auto-sudoedit) that automatically reopens fi
 ```
 
 
-<a id="org091b6ee"></a>
+<a id="orgbbd4c4a"></a>
 
 ### dired hacks
 
@@ -1157,7 +1161,7 @@ Collection of useful dired additions found on github [here](https://github.com/F
     ```
 
 
-<a id="orgc708a02"></a>
+<a id="org10da4f7"></a>
 
 ## PosFrame
 
@@ -1168,7 +1172,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org1bfe269"></a>
+<a id="org93f772a"></a>
 
 ## PopWin,Popwin makes you free from the hell of annoying buffers such like **Help**, **Completions**, **compilation**, and etc.
 
@@ -1178,7 +1182,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org3c9efe8"></a>
+<a id="org4296ebf"></a>
 
 ## Transpose windows, transpose-frame
 
@@ -1205,7 +1209,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org4443918"></a>
+<a id="org1f29d54"></a>
 
 ## Hyperbole
 
@@ -1218,12 +1222,12 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="orgc72646c"></a>
+<a id="org45cdab7"></a>
 
 ## Undo utilities
 
 
-<a id="org685cc04"></a>
+<a id="orgebce2b8"></a>
 
 ### undohist
 
@@ -1237,7 +1241,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org8f6086f"></a>
+<a id="org2d6e7d9"></a>
 
 ### undo-tree
 
@@ -1251,7 +1255,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="orgc309c0e"></a>
+<a id="orga69f30f"></a>
 
 ### undo-fu
 
@@ -1265,12 +1269,12 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org37c313d"></a>
+<a id="org6ecdff3"></a>
 
 ## Navigation
 
 
-<a id="org0826446"></a>
+<a id="org0c0e0e8"></a>
 
 ### Back Button
 
@@ -1286,7 +1290,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org6fcb2e5"></a>
+<a id="org0d45407"></a>
 
 ### Window hopping
 
@@ -1300,7 +1304,7 @@ Pop a [posframe](https://melpa.org/#/posframe) (just a frame) at pointPop a posf
 ```
 
 
-<a id="org6a253a5"></a>
+<a id="org3b28dc9"></a>
 
 ### hopping around links
 
@@ -1319,7 +1323,7 @@ Quickly follow [links](https://github.com/abo-abo/ace-link) in Emacs.
 ```
 
 
-<a id="org21aedff"></a>
+<a id="orgb32fdc3"></a>
 
 ### hopping around in the buffer
 
@@ -1333,7 +1337,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org1252b6d"></a>
+<a id="orge49ee1c"></a>
 
 ## Elscreen
 
@@ -1347,7 +1351,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org9a71ab3"></a>
+<a id="org9b6775e"></a>
 
 # Centaur Tabs
 
@@ -1355,6 +1359,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 
 ```emacs-lisp
 (use-package centaur-tabs
+  :disabled
   :demand
   :init
   (setq centaur-tabs-enable-key-bindings t)
@@ -1418,7 +1423,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgbb83cb1"></a>
+<a id="orgbb15a7f"></a>
 
 ## Darkroom
 
@@ -1434,7 +1439,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org820e5ac"></a>
+<a id="orgcae4cc9"></a>
 
 ## Outline Mode
 
@@ -1450,12 +1455,12 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 # Text tools
 
 
-<a id="org9c2a02b"></a>
+<a id="org28ff0aa"></a>
 
 ## Cursor/Region related
 
 
-<a id="org350225f"></a>
+<a id="org2ed7acf"></a>
 
 ### General
 
@@ -1479,7 +1484,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgd2671ed"></a>
+<a id="org79e4ac2"></a>
 
 ### expand-region
 
@@ -1501,7 +1506,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgcaad8e1"></a>
+<a id="orgdc3bb20"></a>
 
 ### easy-kill
 
@@ -1514,7 +1519,20 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orge438a6c"></a>
+<a id="org07d2316"></a>
+
+## Folding/Hide Show
+
+[hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
+
+```emacs-lisp
+(add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
+```
+
+\#+end<sub>src</sub>
+
+
+<a id="org463ab55"></a>
 
 ## flyspell
 
@@ -1535,12 +1553,12 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org93f09d2"></a>
+<a id="orge3ed127"></a>
 
 ## Completion
 
 
-<a id="orgfce374a"></a>
+<a id="orgcbfe4b1"></a>
 
 ### Snippets with yasnippet
 
@@ -1559,7 +1577,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org278e044"></a>
+<a id="org85071ff"></a>
 
 ### Company Mode
 
@@ -1588,7 +1606,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org47ac53e"></a>
+<a id="org8bde95c"></a>
 
 ### Which Key
 
@@ -1602,7 +1620,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org4238ad4"></a>
+<a id="orge30fb41"></a>
 
 ### Tying it call together
 
@@ -1629,7 +1647,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org5ccd256"></a>
+<a id="org2412cb2"></a>
 
 ## Searching non-helm
 
@@ -1638,7 +1656,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgcb1b3a2"></a>
+<a id="org46d3518"></a>
 
 ## Abbrev Mode
 
@@ -1650,7 +1668,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgc354a0a"></a>
+<a id="orgc5eb45f"></a>
 
 ## Deft - text searching
 
@@ -1665,7 +1683,7 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="orgfea5a55"></a>
+<a id="orgca6ccb9"></a>
 
 ## Google This
 
@@ -1680,14 +1698,14 @@ Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-
 ```
 
 
-<a id="org85f2c71"></a>
+<a id="org6ea7b37"></a>
 
 ## Reference and dictionary
 
 The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
 
 
-<a id="org933c005"></a>
+<a id="org6cedc40"></a>
 
 ### utility funcs
 
@@ -1814,7 +1832,7 @@ The aim here is to link to different reference sources and have a sensible defau
 ```
 
 
-<a id="orgc8b33a4"></a>
+<a id="org301971b"></a>
 
 ### Dictionary
 
@@ -1832,7 +1850,7 @@ The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
 ```
 
 
-<a id="orgf5b8180"></a>
+<a id="org07f1242"></a>
 
 ### Elisp reference
 
@@ -1927,7 +1945,7 @@ The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
     ```
 
 
-<a id="org9548bb6"></a>
+<a id="org1eb3dca"></a>
 
 ### GoldenDict - external lookup and reference
 
@@ -1953,7 +1971,7 @@ trans -e google -s de -t en -show-original y -show-original-phonetics n -show-tr
 ```
 
 
-<a id="org05c1cc4"></a>
+<a id="orgb5de623"></a>
 
 ### DevDocs
 
@@ -1968,7 +1986,7 @@ trans -e google -s de -t en -show-original y -show-original-phonetics n -show-tr
 ```
 
 
-<a id="org4c809a2"></a>
+<a id="org9c9a197"></a>
 
 ### Zeal - Linux Dash
 
@@ -1984,7 +2002,7 @@ trans -e google -s de -t en -show-original y -show-original-phonetics n -show-tr
 ```
 
 
-<a id="orgccabf5e"></a>
+<a id="orgc6dd66e"></a>
 
 ### DASH - API documentation for most languages
 
@@ -2059,7 +2077,7 @@ Excellent [tree based navigation that works really well with projectile.](https:
 # Web
 
 
-<a id="org3479e98"></a>
+<a id="orgeac243b"></a>
 
 ## helper functions
 
@@ -2087,7 +2105,7 @@ Excellent [tree based navigation that works really well with projectile.](https:
 ```
 
 
-<a id="orgeebba6d"></a>
+<a id="orgf8fe6c0"></a>
 
 ## W3M - emacs text based web browser
 
@@ -2108,19 +2126,19 @@ Excellent [tree based navigation that works really well with projectile.](https:
 ```
 
 
-<a id="orgee7ca82"></a>
+<a id="org027d106"></a>
 
 ## EWW - emacs text based web browser
 
 [Emacs-EWW](https://www.gnu.org/software/emacs/manual/html_mono/eww.html) is an in-editor text based web browser. Handy for text based resources, bookmarking etc. Bind a couple of keys to open in the system browser. Added some functions to [open some URLs in 'eww-readable](https://emacs.stackexchange.com/questions/36284/how-to-open-eww-in-readable-mode/47757) so that it skips headers and footers (normally bound to R in eww).
 
 
-<a id="org6c5ad40"></a>
+<a id="orgcc6982a"></a>
 
 ### open tasks :tangle no
 
 
-<a id="orgf2a7254"></a>
+<a id="org8cf5d6a"></a>
 
 ### code
 
@@ -2293,7 +2311,7 @@ The code in [rgr-chat.el](../elisp/rgr-chat.el):
 ```
 
 
-<a id="org5051670"></a>
+<a id="orgfb19bf0"></a>
 
 ### Only one chat instance
 
@@ -2325,19 +2343,19 @@ and the eshell func to call it:
 ```
 
 
-<a id="orgfe8bb08"></a>
+<a id="org649784b"></a>
 
 ## Slackware
 
 
-<a id="org574d6cf"></a>
+<a id="org43b3d23"></a>
 
 ### Emacs Slack
 
 [Slack](https://slack.com/intl/en-de/) interface for Emacs on [github](https://github.com/yuya373/emacs-slack). See [rgr-chat.el](./lisp/rgr-chat.el).
 
 
-<a id="org661e859"></a>
+<a id="org2bbbd91"></a>
 
 ### Emacs Gitter
 
@@ -2349,18 +2367,19 @@ and the eshell func to call it:
 # Org functionality
 
 
-<a id="org499f09c"></a>
+<a id="org4d3b996"></a>
 
 ## Org Mode, org-mode
 
 
-<a id="org45eb59b"></a>
+<a id="orge3dc565"></a>
 
 ### config
 
 ```emacs-lisp
 
 (use-package org
+  :straight org-plus-contrib
   :custom
   (org-directory "~/.emacs.d/orgfiles")
   (org-agenda-files (list org-directory (concat org-directory "/projects" )))
@@ -2399,6 +2418,7 @@ and the eshell func to call it:
 ;; The following lines are always needed.  Choose your own keys.
 
 (add-hook 'org-mode-hook 'rgr/elisp-helpers)
+
 
 (defface org-canceled
   ;; originally copied from font-lock-type-face
@@ -2442,7 +2462,7 @@ and the eshell func to call it:
 ```
 
 
-<a id="org28ff427"></a>
+<a id="org4e548aa"></a>
 
 ### Journal, org-journal
 
@@ -2455,7 +2475,7 @@ More advanced journalling courtesy of [org-journal](https://github.com/bastibe/o
 ```
 
 
-<a id="org9fa4238"></a>
+<a id="org5f744e3"></a>
 
 ### ROAM note taking, org-roam
 
@@ -2474,46 +2494,31 @@ More advanced journalling courtesy of [org-journal](https://github.com/bastibe/o
 ```
 
 
-<a id="orgf65027c"></a>
+<a id="orgf5d6c6b"></a>
 
 ### Authoring in org-mode
 
 Work in progress. Thread related to this is [here](https://www.reddit.com/r/orgmode/comments/6y59r2/using_org_mode_to_write_books/).
 
 
-<a id="org973fbc8"></a>
+<a id="org6286b08"></a>
 
 ### Passwords, org-password-manager
 
-\#+begin<sub>src</sub> emacs-lisp (use-package org-password-manager :config (add-hook 'org-mode-hook 'org-password-manager-key-bindings)) \#+end<sub>srcr</sub>
+```emacs-lisp
+(use-package org-password-manager
+:config
+(add-hook 'org-mode-hook 'org-password-manager-key-bindings))
+```
 
 1.  Passwords     :crypt:
 
     &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
 
-    hQEMA7IjL5SkHG4iAQf+MgkIZnz7IHJO5H7bG8iQYbcCdmIb2BdGZL9liFpu0gjj wV7c7JVU+7VG9FOEDTzBhnXocVOh2/3S5m2R3debyISyDrQtCaBmYdPgPjuoLOO9 t/AwvsLT0fFAWIe7RxadcLU1QIunczpnsrIeZJvWWLGkBlobEPsiKJogQiH6WJJP BzatGFGP7cZ6g+A0+CHwJZ6QZDwpMO5/OHQQLpsqdnWTKY1e6GwIPR+0q/AZ3y7W ai40p8DE7fnXqf0iuyp+UeqbafR0uAMIW0s0JgGsMbOtJRhXyj3F8uh4G+yYN1Dv u3qxRVcDBDsTgLRu6E1ZmqlBE3dzoV6Q5bKs58eEZ9LpATQcsze4TkCFSOT6Aufx CB6Ur6D22BrQVQwCp3y6ewiPpInTebqXFCo4VOuxSZvuuEWgrI5LqUhOdW/iWaQt c1m6xk7SBUIvOrXCV0O9bMVbSwpS9kOLz5i2PziU/Uq0bWyF+urbFL3P60v/W2S1 0LcPBfyOITKhxX8Fgz5KqqBWjwvUzejo7HviG4GmPAoUez+EKBgYPv2ya7t2KRCc Sn8GNABUTykOs38nLpf2ivi3hsAztULz0xq9gU3Ec7UA/U5OWRw5gMyG2IUIEZHM +MZvDvA9G2vbM61gSwh05rDOgNnIfrnrlX91cdTTX9o7VvVhmDSswDHkE0pcT8VC PciePoI/zbNmFo8Q9u8tBCZqo6PDVAU5dclFHzK+SkiANjmv1Kfy0j1VpNLWJR4P 18iivgKYkfNwnDxcL6x2M4658lmNR73KkTlky7E5I9LmoQGAiitR4Z2v8g9tH/MK AGDR+BHvNC2osmqgijPM1pIb2gR4xEXkXFrGiMByGOJBiorfJMJSBByKwYP1Iwxz 7fyOKrOnh6eZpt1aFYiMkvkTQWqgc+on3NqU6sY6RIzeLkypbr0nzEVx8OdFXPov F9gW+L7BWNiZlNtWEo+ZtlNYRlbKCYxJtiZs/+4y3KVGFUnVLWPBELl+v2K+pU8J wPfgW8hJ2iZciVEXyO8kPvVt2pzAllupp8tLjMCRzyFdXJQxBpfKU1RRK4LoTQsZ HFv3VcJdcJGaJxScdBn5UQVhyiL/lrdDaiheY7MN8UUXjSuunevbuZQA8HvLzXKV bfhlVVsQtPmosud6jUQhEKgHKa4ufzhHVdERreDsYw== =l1tD &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
+    hQEMA7IjL5SkHG4iAQf/RK74iKGuA+IXecpRBGLUY9oNP7pPtVL23UDqdkKqldH8 SCqwTBbR4lmonJN/d44ezTMjJd4tutxTST37FcGRBgGltaKRrBG4KX3h5BC/WDz1 kKX/nnmxzBNQC0lP9l1gIvBUPIgoKUEMhoXtSY6xaNvg6iGNIhQnW4KoQvhvS5KM TgnlvhlhbFjEcKgR4dOdnAvJDhDGU1ZAB6DPAfraSYICe2qBD1qFyix1hBH+4DYp CBgqOM+Mx2Jbs0MkJGl8/lmsgbYsssbxD8gjuNwgj3ZIckd6xDZofojjylyPWWBb DRsNrF1Qqws2g2boI28LhqOV7KxXCxHxZQ3PpjIGedKqAcqJlk8Igo/MLywxf0hJ H65Vndgdgn4BMJCG/c0KfsvweTRCWataVpuUT8wV34jCCn0U5XSqekCIwHjell0p cXTmIjm4aqwXjGFc927GQ37Rg/QDRG7EEXLy634+PUuiqtAoKVo9kz9fQcFKFlgv /Msuyn36n+Miw1sh1tig5DFdwoIilI2ByKyvjP1POIMMDg9me/trlK+MiQVpxiKw 0gVVrLnozFIRo7U= =R1XD &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
 
 
-<a id="org3fc0636"></a>
-
-### scratchpad                                              :tangle no:noexport:
-
-```emacs-lisp
-(defun insert-property(&optional p)
-  "insert PROPERTY value of pdftools link"
-  (unless p (setq p "TEST"))
-  (message "property passed is: %s" p)
-  (let ((pvalue
-	 (save-window-excursion
-	   (message "%s" (org-capture-get :original-buffer))
-	   (switch-to-buffer (org-capture-get :original-buffer))
-	   (org-entry-get (point) p)
-	   )))
-    pva))
-```
-
-
-<a id="org5c05a11"></a>
+<a id="org9412060"></a>
 
 ## Self documenting config file
 
@@ -2565,12 +2570,12 @@ Work in progress. Thread related to this is [here](https://www.reddit.com/r/orgm
 ```
 
 
-<a id="org2f1dd80"></a>
+<a id="org6c836fc"></a>
 
 # Screen recording
 
 
-<a id="org4078dde"></a>
+<a id="org61aaafd"></a>
 
 ## Emacs screencasts
 
@@ -2611,7 +2616,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 # Programming related
 
 
-<a id="org51e62bf"></a>
+<a id="orgec82d81"></a>
 
 ## General
 
@@ -2635,12 +2640,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 ```
 
 
-<a id="orgf7e208b"></a>
+<a id="orgac73a63"></a>
 
 ## Symfony
 
 
-<a id="orga805d8d"></a>
+<a id="org7fe8a7a"></a>
 
 ### custom
 
@@ -2656,7 +2661,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 ```
 
 
-<a id="orgaea139a"></a>
+<a id="org9812349"></a>
 
 ### Start a symfony web server when applicable
 
@@ -2685,12 +2690,12 @@ We can trigger it using a .dir-locals.el
 ```
 
 
-<a id="orgf195952"></a>
+<a id="orgbf09a4f"></a>
 
 ## Emacs Lisp, ELisp
 
 
-<a id="org5ff812d"></a>
+<a id="org0eebfd2"></a>
 
 ### refactoring utlities
 
@@ -2704,7 +2709,7 @@ We can trigger it using a .dir-locals.el
 ```
 
 
-<a id="org0e28d40"></a>
+<a id="org65c2d44"></a>
 
 ### query symbol
 
@@ -2721,7 +2726,7 @@ We can trigger it using a .dir-locals.el
 ```
 
 
-<a id="org934d738"></a>
+<a id="org011d03b"></a>
 
 ### Elisp completion and debugging
 
@@ -2754,7 +2759,7 @@ We can trigger it using a .dir-locals.el
 ```
 
 
-<a id="org411b4ab"></a>
+<a id="orgd732787"></a>
 
 ### Auto-compile
 
@@ -2770,12 +2775,12 @@ We can trigger it using a .dir-locals.el
 ```
 
 
-<a id="orge4422b1"></a>
+<a id="org5d799d1"></a>
 
 ## JSON, YAML Configuration files
 
 
-<a id="orge20501a"></a>
+<a id="org000c1e9"></a>
 
 ### JSON Editing
 
@@ -2786,7 +2791,7 @@ JSON editing using [json-mode](https://github.com/joshwnj/json-mode)
 ```
 
 
-<a id="org6a702f3"></a>
+<a id="orgf40fcb7"></a>
 
 ### YAML
 
@@ -2801,7 +2806,7 @@ JSON editing using [json-mode](https://github.com/joshwnj/json-mode)
     ```
 
 
-<a id="orgaba477e"></a>
+<a id="orga6f40ad"></a>
 
 ## Flycheck
 
@@ -2817,12 +2822,12 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org2ff3d1b"></a>
+<a id="org7746682"></a>
 
 ## Version Control
 
 
-<a id="org407b5a4"></a>
+<a id="org0ff38b7"></a>
 
 ### It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs
 
@@ -2840,7 +2845,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org400493e"></a>
+<a id="org2d06e31"></a>
 
 ### [Forge](https://github.com/magit/forge) ahead with Pull Requests
 
@@ -2850,7 +2855,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orge9bfa7e"></a>
+<a id="orgf3c72a6"></a>
 
 ## Javascript
 
@@ -2858,8 +2863,10 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
 (use-package rjsx-mode
   :config
+  (use-package npm-mode)
   (defun my-js2-mode-hook ()
     ;;         (setq-local zeal-at-point-docset '("JavaScript" "jQuery"))
+    (npm-mode t)
     (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
   (add-hook 'js2-mode-hook 'my-js2-mode-hook)
   :init
@@ -2890,7 +2897,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orgbe19db3"></a>
+<a id="orge22ca55"></a>
 
 ## RJSX
 
@@ -2906,7 +2913,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org29c84cd"></a>
+<a id="org4a953c0"></a>
 
 ## Typescript
 
@@ -2920,7 +2927,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orga5489e1"></a>
+<a id="org003b13e"></a>
 
 ## Tide Mode
 
@@ -2945,7 +2952,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org2f5fbb8"></a>
+<a id="org14dbca5"></a>
 
 ## Language Server Protocol (LSP)
 
@@ -2994,27 +3001,48 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
       (lsp-ui-doc-mode -1)
       )
 
+    (defun my-lsp-ui-imenu-view()
+      (interactive)
+      (lsp-ui-imenu--view)
+      )
 
-    :bind (:map lsp-ui-mode-map
+
+    :bind ((:map lsp-ui-mode-map
 		;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
 		;;("C-q"   . lsp-ui-doc-show)
 		("M-S-<f9>" . myDapDebugOn)
+		("<f10>" . lsp-ui-imenu)
 		("C-c S"   . toggle-lsp-ui-sideline)
 		("C-c D"   . toggle-lsp-ui-doc))
+	   (:map lsp-ui-imenu-mode-map
+		("<RET>" . my-lsp-ui-imenu-view)
+		))
+
     :hook ((lsp-ui-mode . my-lsp-ui-mode-hook)))
 
   (use-package dap-mode
-    :straight(dap-mode :type git :host github :repo "emacs-lsp/dap-mode"
-		       :fork (:host github
-				    :repo "rileyrg/dap-mode"))
     :demand t
     :commands (myDapDebugOn)
     :config
-    (setq dap-auto-configure-features  '(locals breakpoints))
+    (setq dap-auto-configure-features '(sessions locals  tooltip))
     (require 'dap-gdb-lldb)
     ;;          (dap-gdb-lldb-setup)
     (add-hook 'dap-stopped-hook (lambda (arg)
-				  (call-interactively #'dap-hydra)))
+				  (call-interactively #'dap-hydra))))
+
+    (require 'dap-chrome)
+
+;; (dap-register-debug-template "Chrome Browse my-project"
+;;   (list :type "chrome"
+;;         :cwd nil
+;;         :mode "url"
+;;         :request "launch"
+;;         :webRoot "/home/rgr/Dropbox/homefiles/development/projects/react/my-app/"
+;;         :url "http://localhost:3000"
+;;         :sourceMap "true"
+;;         :name "Chrome Browse my-project"))
+
+
     (defun myDapDebugOn(p)
       "turn on dap modes"
       (interactive "P")
@@ -3051,7 +3079,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     ```
 
 
-<a id="org4bc5b0e"></a>
+<a id="org6bd56a4"></a>
 
 ## Serial Port
 
@@ -3082,7 +3110,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org8a9e5c7"></a>
+<a id="org3cc4e16"></a>
 
 ## PlatformIO
 
@@ -3093,12 +3121,12 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orgd6a28ef"></a>
+<a id="org2708ab4"></a>
 
 ## C
 
 
-<a id="orgc7d21c0"></a>
+<a id="orgf476b1d"></a>
 
 ### Clang provides us with some industry standard code prettiers
 
@@ -3110,7 +3138,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="org1943695"></a>
+<a id="org7b8cf48"></a>
 
 ### C  modes hooks
 
@@ -3132,7 +3160,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orgdc1495a"></a>
+<a id="org7e283c6"></a>
 
 ## C++
 
@@ -3143,7 +3171,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-<a id="orgada4e1f"></a>
+<a id="org4380f1c"></a>
 
 ## C#
 
@@ -3155,7 +3183,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     ```
 
 
-<a id="org4267298"></a>
+<a id="orge549975"></a>
 
 ## Godot GDScript
 
@@ -3184,12 +3212,12 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ```
 
 
-<a id="orga7bb780"></a>
+<a id="org09bfa6d"></a>
 
 ## tasks :tangle no
 
 
-<a id="org58f4367"></a>
+<a id="org60a64ca"></a>
 
 ## PHP Mode
 
@@ -3260,12 +3288,12 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ```
 
 
-<a id="org15a9314"></a>
+<a id="org24c5346"></a>
 
 ## Web,Symfony and Twig
 
 
-<a id="org7102214"></a>
+<a id="orgb65b64f"></a>
 
 ### The Code
 
@@ -3292,7 +3320,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ```
 
 
-<a id="org8cbcf71"></a>
+<a id="org1a52754"></a>
 
 ## elf-mode - view the symbol list in a binary
 
@@ -3306,7 +3334,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ```
 
 
-<a id="orgc27e88d"></a>
+<a id="orgfb8e5bd"></a>
 
 ## EDiff - comparing files in Emacs
 
@@ -3327,7 +3355,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 # Macros & Utilities
 
 
-<a id="org6590bbc"></a>
+<a id="orgbcf2b15"></a>
 
 ## move to end of line, add a semi colon and move to next line
 
@@ -3400,7 +3428,7 @@ Sometimes needs machine specific settings eg a larger font on a bigger display.
 # Themes
 
 
-<a id="orgc8054f3"></a>
+<a id="org759f66c"></a>
 
 ## Themes
 
