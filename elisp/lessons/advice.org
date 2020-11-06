@@ -1,0 +1,20 @@
+* advice
+** to do                                                           :tasklist:
+* code
+  :LOGBOOK:
+  - State "TODO"       from "TODO"       [2020-02-05 Wed 04:37]
+  - State "TODO"       from "TODO"       [2020-02-05 Wed 04:37]
+  - State "TODO"       from              [2020-02-05 Wed 04:37]
+  :END:
+  adding [[info:elisp#Advising Functions][advice]]
+  #+begin_src emacs-lisp 
+     (defun my-double (x)
+       (* x 2))
+     (defun my-increase (x)
+       (+ x 1))
+     (advice-add 'my-double :filter-return #'my-increase)
+     (my-double 3)
+  #+end_src
+
+  #+RESULTS:
+  : 7

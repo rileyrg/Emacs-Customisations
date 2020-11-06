@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+# add this to your path or symlink it from your bin directory
+cd ~/bin/thirdparty/emacs
+./configure --prefix="/usr/local"  --with-x-toolkit=yes
+make && sudo make install
+

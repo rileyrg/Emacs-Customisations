@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Emacs Window Manager
+Comment=This session logs you Emacs Window Manager
+Exec=/home/rgr/bin/emacs/bin/emacs
+TryExec=/home/rgr/bin/emacs/bin/emacs
+Type=Application
+DesktopNames=EXWM

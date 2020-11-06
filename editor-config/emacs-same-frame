@@ -1,0 +1,11 @@
+#!/bin/bash
+
+emacsclient -n -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
+if [ "$?" = "1" ]; then # testing exit status of last command
+    emacsclient -c -n -a "" "$@" #none found so create frame
+else
+    emacsclient -n -a "" "$@" #no need to create a frame
+fi
+pop-window "Emacs:" #bring it to the fg
+
+;;(frame-list)

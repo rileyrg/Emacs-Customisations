@@ -1,0 +1,31 @@
+#+STARTUP: overview
+* TODO project level tasks
+  :LOGBOOK:
+  - State "TODO"       from "TODO"       [2020-02-25 Tue 21:10]
+  - State "TODO"       from              [2020-02-25 Tue 21:09]
+  :END:
+
+#+begin_src emacs-lisp
+  (defun projectile-org-todo(arg)
+    "add a task to the project task file"
+  (interactive "P")
+  (let*((proj-dir (projectile-project-root))(projectile-task-list (expand-file-name "tasks.org" (projectile-project-root))))
+    (setq link (with-temp-buffer
+                 (org-store-link arg)
+                 (org-insert-link)
+                 (buffer-string)))))
+               
+  (global-set-key (kbd "C-c T") 'projectile-org-todo)
+#+end_src
+
+
+
+#+begin_src emacs-lisp
+  (defun projectile-org-switch-task-file()
+    (setq projectile-org-task-file (expand-file-name "project.org" (projectile-project-root)))
+    (message "New projectile org file is : %s" projectile-org-task-file))
+
+  (projectile-org-switch-task-file)
+
+  (add-hook 'projectile-after-switch-project-hook 'projectile-org-switch-task-file)
+#+end_src

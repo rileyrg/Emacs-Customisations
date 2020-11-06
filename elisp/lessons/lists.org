@@ -1,0 +1,47 @@
+* altering lists with [[info:elisp#Setcar][setcar]]
+#+begin_src emacs-lisp
+  (setq x '(1 2 3 4))
+  (setcar x 4)
+#+end_src
+
+#+RESULTS:
+: 4
+* altering nth element
+#+begin_src emacs-lisp
+  (setq x '(1 2 3 4))
+  (setcar (nthcdr 2 x) "xxx")
+  x
+#+end_src
+
+#+RESULTS:
+| 1 | 2 | xxx | 4 |
+
+* adding something to nth element
+#+begin_src emacs-lisp
+  (let ((v 99)(p 3)(l '(1 2 3 4)))
+  (setcar (nthcdr p l) (+ (car (nthcdr p l)) v))
+  l)
+#+end_src
+
+#+RESULTS:
+| 1 | 2 | 3 | 103 |
+
+* plist or property list
+#+begin_src emacs-lisp
+(setq m-point '(:beg 2811 :end 3018 :op "(" :cl ")" :prefix "" :suffix ""))
+(plist-get m-point :beg)
+#+end_src
+
+#+RESULTS:
+: 2811
+
+* mapcar
+  #+begin_src emacs-lisp
+
+    (let* ((rl "/home/rgr/Dropbox/homefiles/development/projects/godot/Platform Game")
+           (scenes (directory-files-recursively rl ".*.tscn" t))
+          (scene-list (mapcar (lambda (x) (file-relative-name x rl)) scenes)))
+      (message "%s" scene-list))
+  #+end_src
+  #+RESULTS:
+  : (Level1.tscn Steve.tscn)

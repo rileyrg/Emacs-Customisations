@@ -1,0 +1,38 @@
+alias HOME  $*
+alias god cd ~/bin/thirdparty/godot
+alias in ssh intel-nuc
+alias prj cd ~/development/Symfony/the_spacebar/
+alias gs git status
+alias clconf find ~/Dropbox/ -path "*(*s conflicted copy [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -exec rm -f {} \;
+alias sudo eshell/sudo $*
+alias twigs grep -i "twig.*"$1 *
+alias rgr rg --color=never $* > #<*ripgrep*>; switch-to-buffer "*ripgrep*"
+alias resemacshub resgithub.sh "Emacs customisation centered around lsp,helm,dap and projectile."
+alias to httplug.client.app.http_methods
+alias grep grep --color=always --exclude="*.lock" --exclude-dir=log --exclude-dir=cache -iR $*
+alias gg *grep -C 2 -iR $*
+alias awg aw|*grep -C 2 -i $*
+alias dconp co debug:container  --show-private $*
+alias dcon co debug:container  $*
+alias dc co debug:config $*
+alias cc co cache:clear
+alias hg helm-projectile-grep
+alias ll ls -l $*
+alias aw co debug:autowiring
+alias cdu co config:dump $1
+alias pg projectile-grep
+alias co bin/console --no-ansi $*
+alias pff helm-projectile-find-file $*
+alias ff helm-projectile-find-file
+alias em cd ~/.emacs.d
+alias dcg dc $1 |*grep -C 5 -i $2
+alias coenv co about
+alias R/W multiple sector transfer: Max = 1 Current = 1
+alias sp projectile-switch-open-project
+alias mlg ag -o -i --no-color -U --smart-case "(?=(?:.|\n)*?$1)(?:.|\n)*?$2" . > #<*mlg*> && switch-to-buffer "*mlg*"
+alias csr console server:run
+alias dr co debug:router
+alias dconparm dcon --parameters
+alias cr composer recipes $*
+alias property: $*
+alias gds cd ~/.emacs.d/straight/repos/emacs-gdscript-mode

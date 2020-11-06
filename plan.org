@@ -1,0 +1,60 @@
+#+STARTUP: content
+* STARTED Standalone Chat Client (Slack, ERC)
+[[file:elisp/rgr-chat.el::(use-package erc][rgr-char.el]]
+  :LOGBOOK:
+  - State "STARTED"    from "TODO"       [2020-01-25 Sat 21:39]
+  :END:
+** DONE register chats
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2020-01-25 Sat 19:07]
+   :END:
+   CLOSED: [2020-01-25 Sat 19:07]
+[[file:elisp/rgr-chat.el::(defcustom rgr/chat-functions nil][register chats in defcustom]]  
+** DONE toggle autostart
+   CLOSED: [2020-01-25 Sat 19:12]
+ :LOGBOOK:
+ - State "DONE"       from "STARTED"    [2020-01-25 Sat 19:12]
+   - State "STARTED"    from "TODO"       [2020-01-25 Sat 19:09]
+   :END:
+[[file:elisp/rgr-chat.el::(when(yes-or-no-p "start chats?")][prompt to start chats]]
+** DONE quit all
+   CLOSED: [2020-01-25 Sat 21:39]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2020-01-25 Sat 21:39]
+   :END:
+*** DONE create list of quit functions
+    CLOSED: [2020-01-25 Sat 21:38]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-01-25 Sat 21:38]
+    :END:
+[[file:elisp/rgr-chat.el::(defcustom rgr/chat-close-functions nil][close functions]]
+*** DONE close on quit hook
+    CLOSED: [2020-01-25 Sat 21:39]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-01-25 Sat 21:39]
+    :END:
+[[file:elisp/rgr-chat.el::(add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))][close hook]]
+** DONE env
+   CLOSED: [2020-01-25 Sat 21:37]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2020-01-25 Sat 21:37]
+   - State "TODO"       from "DONE"       [2020-01-25 Sat 21:37]
+   - State "DONE"       from "DONE"       [2020-01-25 Sat 21:37]
+   - State "DONE"       from "TODO"       [2020-01-25 Sat 08:36]
+   :END:
+*** DONE turn off history 
+    CLOSED: [2020-01-25 Sat 08:36]
+    :LOGBOOK:
+    - State "DONE"       from "DONE"       [2020-01-25 Sat 21:37]
+    - State "DONE"       from "STARTED"    [2020-01-25 Sat 08:36]
+    - State "STARTED"    from "TODO"       [2020-01-25 Sat 08:17]
+    :END:
+[[file:elisp/rgr-chat.el::(savehist-mode -1)][history off]]
+*** DONE turn off recentf
+    CLOSED: [2020-01-25 Sat 08:36]
+    :LOGBOOK:
+    - State "DONE"       from "DONE"       [2020-01-25 Sat 21:37]
+    - State "DONE"       from "TODO"       [2020-01-25 Sat 08:36]
+    :END:
+
+[[file:elisp/rgr-chat.el::(recentf-mode -1)][recentf off]]

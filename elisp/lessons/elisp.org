@@ -1,0 +1,35 @@
+* symbols                                                          :tasklist:
+#+begin_src emacs-lisp
+  (let (rgr hello)
+    (progn
+      ;; variable set to another symbol
+      (set 'rgr 'hello)
+      ;; here the variable evaluates to hello so hell is set to goodbye!
+      (set rgr 'goodbye)
+      ;; proof
+      (message "rgr is %s, while hello is %s" rgr hello)
+      ))
+#+end_src
+* functions
+** symbols and vars
+#+begin_src emacs-lisp
+  (let (rgr_fn rgr2_fn)
+    (progn
+      (set 'rgr_fn 'hello_fn)
+      (set rgr_fn '(message "hello from a function"))
+      (eval hello_fn)
+      (setq rgr2_fn '(message "hello from a function2"))
+      (eval rgr2_fn)
+      ))
+#+end_src
+** list appends
+#+begin_src emacs-lisp
+(defun my-hack (var) (interactive "v") (with-output-to-temp-buffer "*edit
+           var*" (princ "(setq ") (prin1 var) (princ " '") (pp (symbol-value var)) (princ ")") (terpri)))
+(my
+(defun append-to-list (list-var elements)
+  "Append ELEMENTS to the end of LIST-VAR.
+
+The return value is the new value of LIST-VAR."
+  (set list-var (append (symbol-value list-var) elements)))
+#+end_src

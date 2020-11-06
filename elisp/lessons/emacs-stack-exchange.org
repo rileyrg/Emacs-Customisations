@@ -1,0 +1,567 @@
+#+STARTUP: overview
+ 
+* 13:20 modified org tags                                       :@home:emacs:
+  :LOGBOOK:
+  - Refiled on [2020-03-05 Do 23:05]
+  :END:
+* DONE function within a function produces side effect but [[ https://emacs.stackexchange.com/questions/55443/function-within-a-function-produces-side-effect-but-failes-to-deliver-logic-test][failes to deliver logic test]] 
+  CLOSED: [2020-02-12 Wed 10:01] SCHEDULED: <2020-02-08 Sat>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2020-02-12 Wed 10:01]
+  - State "TODO"       from              [2020-02-12 Wed 10:01]
+  :END:
+** test
+   #+begin_src emacs-lisp
+   (defun ese-55443-1 ()
+     (not (eql (point)
+               (progn (ignore-errors (down-list))
+                      (point)))))
+   (ese-55443-1)
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+** check
+   #+begin_src emacs-lisp
+ (defun temp()
+   (message "temp called")
+   "done")
+ (defun ese-55443-2 (func)
+   "Check if inner or outer pair exists. 
+ Function employs `(up-list)` or `(down-list)` as argument to work."
+   (not (eql (point)
+         (progn (ignore-errors (funcall func))
+            (point)))))
+   (ese-55443-2 'up-list)
+   ;;(funcall 'temp)
+   ;;(ese-55443-2 'temp)
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+* DONE numbers to chars
+  CLOSED: [2020-02-12 Wed 10:01] SCHEDULED: <2020-02-09 Sun>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2020-02-12 Wed 10:01]
+  - State "TODO"       from              [2020-02-12 Wed 10:01]
+  :END:
+
+  [[https://emacs.stackexchange.com/questions/55449/how-to-replace-first-100-digits-with-letters][numbers to string]]
+  i#+RESULTS:
+  : aa
+
+* DONE adding to elements in a list
+  CLOSED: [2020-02-12 Wed 20:57]
+  :LOGBOOK:
+  - State "DONE"       from "STARTED"    [2020-02-12 Wed 20:57]
+  - State "STARTED"    from "DONE"       [2020-02-12 Wed 20:57]
+  - State "DONE"       from              [2020-02-12 Wed 20:57]
+  :END:
+  #+begin_src emacs-lisp
+
+(setq x '(1 2 3 4))
+(setq x (mapcar (apply-partially #'+ 2) x))
+
+(setq l nil)
+(dolist (i x)
+  (push (+ 2 i) l))
+l
+
+  #+end_src
+
+  #+RESULTS:
+  | 8 | 7 | 6 | 5 |
+
+* DONE [[https://emacs.stackexchange.com/questions/55451/access-plist-set-by-let-within-the-function][Access Plist set by let within the Function]]
+  CLOSED: [2020-02-12 Wed 10:00] SCHEDULED: <2020-02-09 Sun>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2020-02-12 Wed 10:00]
+  - State "TODO"       from              [2020-02-12 Wed 10:00]
+  :END:
+  #+begin_src emacs-lisp
+
+#+RESULTS:
+: 121
+
+  (use-package smartparens)
+
+  (defun outer-paren ()
+    "Move point to the  outermost parenthesis."
+    (interactive)
+    (ignore-errors
+      (while t
+        (up-list)))
+    (sp-backward-sexp))
+
+  (defun func ()
+    (let ((start (outer-paren))
+      (end (sp-forward-sexp)))
+      (narrow-to-region (plist-get start :beg ) (plist-get start :end ))))
+  (func)
+(setq pl '(:beg 121 :end 141))
+(plist-get pl :beg)
+  #+end_src
+
+* DONE [[https://emacs.stackexchange.com/questions/55461/how-to-deal-with-unwanted-cursor-movement-during-logic-test][How to deal with unwanted cursor movement during logic test]]
+  CLOSED: [2020-02-12 Wed 10:00]
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2020-02-12 Wed 10:00]
+  - State "TODO"       from              [2020-02-12 Wed 08:19]
+  :END:
+
+  #+begin_src emacs-lisp
+  (require 'smartparens)
+  (defun next-pair-exists-in (func)
+    "Check if inner or outer pair exists.
+  Function employs `up-list` or `down-list` as argument to work."
+    (setq-local reslt nil)
+    (save-excursion
+      (forward-char)
+      (setq rslt
+            (not (eql (point)
+                      (progn (ignore-errors (funcall func))
+                             (point))))))
+    rslt)
+
+  (defun paren-integrity ()
+    "Double quote must follow single quote."
+    (interactive)
+    (outer-paren) ;; bring cursor to outermost parenthesis
+    ;; check that two levels exist for the test.
+    (if (and (next-pair-exists-in #'down-list)
+             (next-pair-exists-in #'down-list))
+        (progn (single-quote-test) ;; make sure single quote is at point and move inwards.
+               (double-quote-test))
+      (single-quote-test)))
+  #+end_src
+
+  #+begin_src emacs-lisp
+(defun paren-integrity ()
+  "Double quote must follow single quote."
+  (interactive)
+  (save-excursion
+    (outer-paren)
+    (while (next-pair-exists-in #'down-list)
+      (backward-up-list)
+      (if (and (next-pair-exists-in #'down-list)
+               (next-pair-exists-in #'down-list))
+          (progn (backward-up-list 2)
+                 (single-quote-test)
+                 (double-quote-test))
+        (if (next-pair-exists-in #'down-list)
+            (single-quote-test))))))
+  #+end_src
+
+  #+RESULTS:
+  : paren-integrity
+
+* DONE [[https://emacs.stackexchange.com/questions/55465/how-do-i-get-flyspell-to-ignore-pandoc-citations-in-markdown][How do I get flyspell to ignore pandoc citations in markdown]]
+  CLOSED: [2020-02-12 Wed 10:00] SCHEDULED: <2020-02-12 Wed>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2020-02-12 Wed 10:00]
+  - State "TODO"       from "TODO"       [2020-02-12 Wed 08:37]
+  - Note taken on [2020-02-12 Wed 07:30] \\
+    note taken
+  - State "TODO"       from              [2020-02-12 Wed 07:29]
+  CLOCK: [2020-02-12 Wed 07:28]--[2020-02-12 Wed 07:29] =>  0:01
+  - break
+  :END:
+  #+begin_src emacs-lisp
+  (add-hook 'markdown-mode-hook
+            '(lambda ()
+               (setq flyspell-generic-check-word-predicate 'my-pandoc-flyspell-verify)))
+
+  (defun my-pandoc-flyspell-verify ()
+    (save-excursion
+      (forward-word -1)
+      (not (looking-back "@"))))
+  #+end_src
+
+* DONE [[https://emacs.stackexchange.com/questions/55462/org-capture-scheduled-for-next-tuesday-or-friday][org-capture scheduled for next Tuesday (or Friday)]]
+  CLOSED: [2020-02-13 Thu 12:50] SCHEDULED: <2020-02-12 Wed>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2020-02-13 Thu 12:50]
+  CLOCK: [2020-02-13 Thu 12:45]--[2020-02-13 Thu 12:47] =>  0:02
+  - State "TODO"       from "DONE"       [2020-02-13 Thu 12:45]
+  - State "DONE"       from "TODO"       [2020-02-12 Wed 10:00]
+  - State "TODO"       from              [2020-02-12 Wed 08:38]
+  :END:
+
+** DONE using gnu date
+   CLOSED: [2020-02-13 Thu 12:47]
+   :LOGBOOK:
+   - State "DONE"       from              [2020-02-13 Thu 12:47]
+   :END:
+   #+begin_src emacs-lisp
+
+   (defun schedule-next-friday-or-tuesday(&optional ti)
+     (setq dowt (string-to-number (format-time-string "%w" (if ti ti (current-time)))))
+     ;;(setq dowt 2)
+     (setq human-time (if(and (>= dowt 2) (<= dowt 4))
+                          "next Friday"
+                        "next Tuesday"))
+  
+     (parse-time-string (with-temp-buffer
+                          (call-process "env" nil t nil "LC_ALL=C" "LANGUAGE=" "date" "-d" human-time)
+                          (or (bobp) (delete-backward-char 1))
+                          (buffer-string))))
+
+   (schedule-next-friday-or-tuesday)
+
+   #+end_src
+
+   #+RESULTS:
+   | 0 | 0 | 0 | 14 | 2 | 2020 | 5 | -1 | nil |
+
+** DONE using org functions
+   CLOSED: [2020-02-14 Fri 10:08] SCHEDULED: <2020-02-14 Fri>
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2020-02-14 Fri 10:08]
+   - State "TODO"       from "DONE"       [2020-02-14 Fri 10:08]
+   CLOCK: [2020-02-13 Thu 12:49]--[2020-02-13 Thu 12:49] =>  0:00
+   - State "DONE"       from "TODO"       [2020-02-13 Thu 12:48]
+   CLOCK: [2020-02-13 Thu 12:47]--[2020-02-13 Thu 12:48] =>  0:01
+   - State "TODO"       from              [2020-02-13 Thu 12:47]
+   :END:
+
+   #+begin_src emacs-lisp
+  (defun schedule-next-tuesday-or-friday ()
+    (let* ((dow (format-time-string "%a" (current-time)))
+           (future-dow (pcase dow
+                         ((or "Sat" "Sun" "Mon") "Tue")
+                         (_ "Fri"))))
+      (format-time-string (car org-time-stamp-formats)
+                          (org-read-date nil t future-dow))))
+  (schedule-next-tuesday-or-friday)
+   #+end_src
+
+   #+RESULTS:
+   : <2020-02-14 Fri>
+
+* DONE [[https://emacs.stackexchange.com/questions/55475/whats-really-behind-an-assignment-in-emacs-lisp][What does variable assignement really do in elisp]]
+  CLOSED: [2020-02-12 Wed 20:56] SCHEDULED: <2020-02-12 Wed>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2020-02-12 Wed 20:56]
+  CLOCK: [2020-02-12 Wed 13:51]--[2020-02-12 Wed 13:51] =>  0:00
+  - State "TODO"       from              [2020-02-12 Wed 13:51]
+  :END:
+
+  #+begin_src emacs-lisp
+(setq x '(1 2 3 4))     ; define x
+(setq y x)              ; define y
+(setcar y 9)            ; modify CAR of y
+
+(setcar x 8)            ; modify CAR of y
+x                       ; -> (9 2 3 4): y has changed (ok)
+  #+end_src
+
+  #+RESULTS:
+  | 8 | 2 | 3 | 4 |
+
+  #+begin_src emacs-lisp 
+y         
+  #+end_src
+
+  #+RESULTS:
+  | 8 | 2 | 3 | 4 |
+
+  #+begin_src emacs-lisp 
+(setq y '(10 11 12))
+y
+  #+end_src
+
+  #+RESULTS:
+  | 10 | 11 | 12 |
+
+  #+begin_src emacs-lisp 
+x         
+  #+end_src
+
+  #+RESULTS:
+  | 8 | 2 | 3 | 4 |
+
+* DONE [[https://emacs.stackexchange.com/questions/55467/how-to-add-a-suffix-to-the-end-of-a-string-in-a-line][How to add a suffix to the end of a string in a line?]] 
+  CLOSED: [2020-02-12 Wed 20:56] SCHEDULED: <2020-02-13 Thu>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2020-02-12 Wed 20:56]
+  CLOCK: [2020-02-12 Wed 20:18]--[2020-02-12 Wed 20:24] =>  0:06
+  - done
+  CLOCK: [2020-02-12 Wed 20:02]--[2020-02-12 Wed 20:05] =>  0:03
+  - State "TODO"       from              [2020-02-12 Wed 20:02]
+  :END:
+  #+begin_src emacs-lisp
+      (query-replace-regexp "^This_[^[:space:]]+" "\\&@")
+  #+end_src
+  #+begin_src emacs-lisp
+      (query-replace-regexp "^This_[^[:space:]]+" "\\1@")
+  #+end_src
+
+  This_is_line_1@@@@@@    :  1
+  This_is_another_line@@@@@@  :2
+  This_is_3rd_line@@@@@@    :3
+  This_is_line_4@@@@@@ :4
+ 
+  ,----
+  | Go to the beginning of the buffer an call query-replace-regexp. You can call query-replace-regexp by the menu item "Edit → Replace → Replace Regexp". Alternatively you can use the key-sequence M-C-% that is shown beside the menu item.
+  | 
+  | Use ^[^[:space:]]+ as regular expression (regexp) and \&@ as replacement string.
+  | 
+  | Notes:
+  | 
+  | The first caret in the regexp matches the empty string at the beginnig of the line. It anchors the match at the beginning of the line.
+  | The outer braces [...] describe a character set. Each of the contained characters match.
+  | The caret in the character set negates the set. I.e., all characters not in the set do match.
+  | The [:space:] is the character class of characters with space syntax.
+  | The + matches one or more instances of the previous expression, i.e., of the character set.
+  | The regexp is greedy by default. That means as many as possible chars are matched.
+  | The \& in the replacement string references the full match.
+  `----
+
+* DONE [[https://emacs.stackexchange.com/questions/55463/getting-a-dialogue-box-of-custom-scripts][Getting a dialogue box of custom scripts]]                       :trash:
+  CLOSED: [2020-02-13 Thu 09:10] SCHEDULED: <2020-02-14 Fri>
+  :LOGBOOK:
+  - State "DONE"       from "STARTED"    [2020-02-13 Thu 09:10]
+  - State "STARTED"    from "TODO"       [2020-02-13 Thu 00:31]
+  CLOCK: [2020-02-12 Wed 22:17]--[2020-02-13 Thu 00:30] =>  2:13
+  - State "TODO"       from              [2020-02-12 Wed 22:16]
+  :END:
+  #+begin_src emacs-lisp
+  (defun foo ()
+    "Just an example script."
+    (interactive)
+    (message "*foo*"))
+
+  (defun bar ()
+    "Just another example script."
+    (interactive)
+    (message "*bar*"))
+
+  (easy-menu-define
+    my-script-menu
+    global-map
+    "My Scripts"
+    '("Scripts" ["Call foo" foo t])) ;; List of all menu items which you know when you create the menu.
+
+  (easy-menu-add-item ;; For adding menu items later on.
+   global-map
+   '(menu-bar Scripts)
+   ["Call bar" bar :keys ""])
+
+  (defun my-open-script-menu ()
+    "Open a popup menu at mouse location with my scripts."
+    (interactive)
+    (let* ((key-list (x-popup-menu t my-script-menu)) ;; x-popup-menu returns a list of events.
+       (key-sequence (vconcat key-list)) ;; ... but key sequences are vectors
+       (command (lookup-key my-script-menu key-sequence))) ;; now looking up the key sequence in the keymap
+      (when (commandp command) ;; when successful call the command
+        (call-interactively command))))
+
+  (global-set-key (kbd "C-c S") #'my-open-script-menu)
+
+  #+end_src
+
+  #+RESULTS:
+  : my-open-script-menu
+
+* DONE [[https://emacs.stackexchange.com/questions/54877/override-org-insert-link-for-those-that-match-a-pattern][Override org-insert-link for those that match a pattern]]
+  CLOSED: [2020-02-16 Sun 14:54] SCHEDULED: <2020-02-17 Mon>
+  :LOGBOOK:
+  - State "DONE"       from "WAITING"    [2020-02-16 Sun 14:54]
+  - State "WAITING"    from "TODO"       [2020-02-14 Fri 08:45] \\
+    moving on to key binding modes for a while
+  CLOCK: [2020-02-13 Thu 12:23]--[2020-02-13 Thu 12:45] =>  0:22
+  - State "TODO"       from              [2020-02-13 Thu 12:22]
+  CLOCK: [2020-02-13 Thu 09:11]--[2020-02-13 Thu 12:23] =>  3:12
+  :END:
+  ,----
+  | Usually advising functions can be used to change the behavior of a function. But for this interactive function it would get complicated when looking at the source.
+  | 
+  | Fortunately org-mode (version 9.1+) has a built-in method to add custom link types which is the preferred way in this case:
+  | 
+  | (org-link-set-parameters TYPE &rest PARAMETERS)
+  `----
+
+  #+NAME: ese-54877
+  #+begin_src emacs-lisp :results value
+    (defun insert-slack-data-link (&optional arg)
+      "Get the slack link and insert the data."
+  ;;    (insert (read-string "slack link: "))(buffer-string))
+      (read-string "slack link: "))
+
+    (org-link-set-parameters "slack" :complete #'insert-slack-data-link)
+
+    (with-temp-buffer
+      (org-insert-link)
+      (buffer-string))
+  #+end_src
+
+  #+RESULTS: ese-54877
+  : [[happy days]]
+
+* DONE [[https://emacs.stackexchange.com/questions/352/how-to-override-major-mode-bindings][How to override major mode bindings]]
+  CLOSED: [2020-02-16 Sun 14:54] SCHEDULED: <2020-02-17 Mon>
+  :LOGBOOK:
+  - State "DONE"       from "STARTED"    [2020-02-16 Sun 14:54]
+  - State "STARTED"    from "TODO"       [2020-02-15 Sat 07:44]
+  - State "TODO"       from              [2020-02-14 Fri 08:49]
+  :END:
+  ,----
+  | Sometimes my global keybindings are overridden by a major mode. An easy example is the following setting in my init file
+  | 
+  | (global-set-key (kbd "C-j") 'newline-and-indent)
+  | But annoyingly this keybinding is hidden by the "Lisp Interaction" major mode which is the default mode of the scratch buffer.
+  | 
+  | When I find myself in a situation where a major mode (or minor mode) is hiding my global keybinding, how can I get it back?
+  | 
+  | Note: My question is not "How can I bind C-j to newline-and-indent in "Lisp Interaction" mode?" I am interested in a much more general answer about how to deal with keymaps that clash or user keybindings that get hidden by some major/minor mode.
+  `----
+  #+begin_src emacs-lisp :results silent
+ (global-set-key (kbd "C-j") 'newline-and-indent)
+  #+end_src
+
+  #+begin_src emacs-lisp :results silent
+ (describe-key (kbd "C-j"))
+  #+end_src
+
+  #+begin_src emacs-lisp :results silent
+ (global-unset-key (kbd "C-j"))
+  #+end_src
+
+* [[https://emacs.stackexchange.com/questions/52709/how-to-unpack-a-tuple-from-org-sbe-evaluating-a-python-code-block-into-multiple][How to unpack a tuple from org-sbe evaluating a python code block into multiple columns of a org-table?]]
+
+  #+begin_src emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
+  #+end_src
+
+  #+RESULTS:
+
+  #+name: radius_phase_conv 
+  #+begin_src python :exports none :var a=2. :var b=2.
+  from cmath import polar
+  from math import degrees
+  num = complex(a,b)
+  r, phi = polar(num)
+  phi_deg = degrees(phi)
+  return round(r,5), round(phi_deg,5)
+  #+end_src
+
+  #+RESULTS: radius_phase_conv
+  | 2.82843 | 45.0 |
+
+  | a | b |                |
+  |---+---+----------------|
+  | 2 | 0 | (2.0 0.0)      |
+  | 1 | 1 | (1.41421 45.0) |
+  #+TBLFM: $3='(org-sbe "radius_phase_conv" (a $1) (b $2))
+
+* DONE [[https://emacs.stackexchange.com/questions/7602/what-is-the-point-of-quote-with-single-argument-and-comma-quote-arg][What is the point of quote with single argument and comma? (quote ,arg)]]
+  CLOSED: [2020-02-16 Sun 08:37] SCHEDULED: <2020-02-16 Sun>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2020-02-16 Sun 08:37]
+  - State "TODO"       from              [2020-02-16 Sun 08:37]
+  :END:
+
+  (quote x) makes x not be evaluated, but adding a , in front of x within quote makes it evaluated. What is then the point of using quote with a single argument with a comma in front of it, like so: (quote ,x)?
+
+  Motivated by line 59 from annoying arrows:
+
+  (put (quote ,cmd) 'aa--alts ,alternatives)
+
+  Why isn't (put cmd 'aa-alts ,alternatives) equally good?
+
+** Answer 1
+   The comma is used in the context of a [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html][backquoted (a.k.a. quasiquoted) list]], which allows you to evaluate some portions of the list selectively. See also this thread for an example of a use for backquoting.
+
+   A couple of simple examples:
+
+   #+begin_src emacs-lisp
+(setq a "a's value" b "b's value" c "c's value")
+'(a  b  c)                              ; => (a b c)
+`(,a b ,c)                              ; => ("a's value" b "c's value")
+   #+end_src
+
+   #+RESULTS:
+   | a's value | b | c's value |
+
+   simplest form same as quoted list
+   #+begin_src emacs-lisp
+     `(a list of (+ 2 3) elements)
+     ;; ⇒ (a list of (+ 2 3) elements)
+     '(a list of (+ 2 3) elements)
+     ;; ⇒ (a list of (+ 2 3) elements)
+   #+end_src
+
+   #+RESULTS:
+   | a | list | of | (+ 2 3) | elements |
+
+   now element is evaluated
+   #+begin_src emacs-lisp 
+ `(a list of ,(+ 2 3) elements)
+         ;;  ⇒ (a list of 5 elements)
+   #+end_src
+
+   #+RESULTS:
+   | a | list | of | 5 | elements |
+
+* [[https://emacs.stackexchange.com/questions/55553/how-to-insert-boilerplate-code-in-a-file-based-on-the-directory-in-which-it-is-c/55564#55564][boilerplate in directory]]
+#+begin_src emacs-lisp
+  (defun insert-boilerplate ()
+    (let ((boiler-plate-file (expand-file-name ".boilerplate" (file-name-directory (or buffer-file-name ""))))) (buffer-file-name)
+      (if (file-exists-p boiler-plate-file)
+          (insert-file-contents boiler-plate-file)))
+    nil)
+  (add-to-list 'find-file-not-found-functions #'insert-boilerplate)
+#+end_src
+
+* creating a friend file
+#+begin_src emacs-lisp
+(defun friend-file-root-name(f)
+    (string-match  "\\(.*\\)\\(_blah.txt\\)" f)
+    (match-string 1 f)
+    )
+
+  (defun custom-save-create-friend-file ()
+    (message "in custom save")
+    (when (friend-file-root-name (buffer-file-name))
+      (let ((friend-file (concat (friend-file-root-name (buffer-file-name)) "_friend.txt")))
+        (message "potential friend file is: %s" friend-file)
+        (unless (file-exists-p friend-file)
+          (with-temp-file friend-file
+            (message "need to create %s" friend-file)
+            (save-buffer)
+            )))))
+
+  (add-hook 'after-save-hook 'custom-save-create-friend-file)
+#+end_src
+
+(global-set-key (kbd "C-x M-v") #'find-file)
+
+* [[https://emacs.stackexchange.com/questions/55784/how-to-check-if-a-region-is-selected-by-mouse][How to check if a region is selected by mouse?]]
+
+[[help:mouse-set-region][mouse set region]]
+
+#+begin_src emacs-lisp
+  (defun register-mouse-select(&rest args)
+    (message "mouse select"))
+
+  (mouse-region
+
+  (advice-add 'mouse-set-region :after #'register-mouse-select)
+
+   (advice-remove 'mouse-set-region #'register-mouse-select)
+
+#+end_src
+
+* mode string from script
+
+#+begin_src emacs-lisp
+(defun myfunc ()
+   (setq mystring (format-time-string "%s")))
+(run-at-time 0 10 'myfunc)   
+(add-to-list 'global-mode-string 'mystring)
+
+#+end_src
