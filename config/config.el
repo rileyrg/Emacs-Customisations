@@ -1431,7 +1431,7 @@ Advises `eldoc-print-current-symbol-info'."
     (defun myDapDebugOn(p)
       "turn on dap modes"
       (interactive "P")
-      ;;         (centreCursorLineOn)
+      (centreCursorLineOn)
       (if p
 	  (dap-debug nil)
 	(dap-debug-last))
