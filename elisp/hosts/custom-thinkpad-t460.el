@@ -1,5 +1,5 @@
 (custom-set-faces
-'(default ((t (:height 85))))
+'(default ((t (:height 90))))
 )
 (message "%s loaded" (system-name))
 (provide 'custom-thinkpad-t460)

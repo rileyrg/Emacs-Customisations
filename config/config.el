@@ -84,61 +84,63 @@
   )
 
 ;; (set-language-environment 'utf-8)
-;; (setq default-process-coding-system '(utf-8 . utf-8)) ;; needed this for calling call-process-shell-command
-(require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T460.  It doesnt.
+     ;; (setq default-process-coding-system '(utf-8 . utf-8)) ;; needed this for calling call-process-shell-command
+     (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T460.  It doesnt.
 
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(show-paren-mode 1)
-(tooltip-mode 1)
-(display-time-mode 1)
+     (scroll-bar-mode -1)
+     (tool-bar-mode -1)
+     (menu-bar-mode -1)
+     (show-paren-mode 1)
+     (tooltip-mode 1)
+     (display-time-mode 1)
 
-(global-visual-line-mode 1)
+     (global-visual-line-mode 1)
 
-(delete-selection-mode 1)
+     (delete-selection-mode 1)
 
-(save-place-mode 1)
-(savehist-mode 1)
+     (save-place-mode 1)
+     (savehist-mode 1)
 
-(global-set-key (kbd "S-<f10>") #'menu-bar-open)
-(global-set-key (kbd "<f10>") #'imenu)
+     (global-set-key (kbd "S-<f10>") #'menu-bar-open)
+     (global-set-key (kbd "<f10>") #'imenu)
 
 
-(setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list) (selected-frame)
+     (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list) (selected-frame)
 
-(defalias 'yes-or-no-p 'y-or-n-p)
+     (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Auto refresh buffers
-(global-auto-revert-mode 1)
+     ;; Auto refresh buffers
+     (global-auto-revert-mode 1)
 
-;; Also auto refresh dired, but be quiet about it
-(setq global-auto-revert-non-file-buffers t)
-(setq auto-revert-verbose nil)
+     ;; Also auto refresh dired, but be quiet about it
+     (setq global-auto-revert-non-file-buffers t)
+     (setq auto-revert-verbose nil)
 
-(use-package boxquote
-  :bind*
-  ("C-S-r" . boxquote-region))
+(use-package boxquote :straight (:type git :host "https://github.com/"
+:repo "/davep/boxquote.el"))
+     ;; (use-package boxquote
+     ;;   :bind
+     ;;   ("C-S-r" . boxquote-region))
 
-(use-package
-  browse-url-dwim)
+     (use-package
+       browse-url-dwim)
 
-(use-package
-  all-the-icons)
+     (use-package
+       all-the-icons)
 
-(use-package
-  webpaste
-  :bind ("C-c y" . webpaste-paste-region)
-  ("C-c Y" . webpaste-paste-buffer))
+     (use-package
+       webpaste
+       :bind ("C-c y" . webpaste-paste-region)
+       ("C-c Y" . webpaste-paste-buffer))
 
-;; brings visual feedback to some operations by highlighting portions relating to the operations.
-(use-package
-  volatile-highlights
-  :init (volatile-highlights-mode 1))
-;; display dir name when core name clashes
-(require 'uniquify)
+     ;; brings visual feedback to some operations by highlighting portions relating to the operations.
+     (use-package
+       volatile-highlights
+       :init (volatile-highlights-mode 1))
+     ;; display dir name when core name clashes
+     (require 'uniquify)
 
-(global-set-key (kbd "C-c r") 'query-replace-regexp)
+     (global-set-key (kbd "C-c r") 'query-replace-regexp)
 
 (use-package xclip
   :demand t
@@ -1364,16 +1366,16 @@ Advises `eldoc-print-current-symbol-info'."
     (defun toggle-lsp-ui-sideline ()
       (interactive)
       (if lsp-ui-sideline-mode (progn (message "Disable LSP UI Sideline Mode")
-				      (lsp-ui-sideline-mode -1))
-	(progn (message "Enable LSP UI Sideline Mode")
-	       (lsp-ui-sideline-mode 1))))
+                                      (lsp-ui-sideline-mode -1))
+        (progn (message "Enable LSP UI Sideline Mode")
+               (lsp-ui-sideline-mode 1))))
     (defun toggle-lsp-ui-doc ()
       (interactive)
       (if lsp-ui-doc-mode (progn (message "Disable LSP UI Doc Mode")
-				 (lsp-ui-doc-mode -1)
-				 (lsp-ui-doc--hide-frame))
-	(progn (lsp-ui-doc-mode 1)
-	       (message "Enable LSP UI Doc mode"))))
+                                 (lsp-ui-doc-mode -1)
+                                 (lsp-ui-doc--hide-frame))
+        (progn (lsp-ui-doc-mode 1)
+               (message "Enable LSP UI Doc mode"))))
 
     (defun my-lsp-ui-doc-glance (&optional w)
       "Trigger display hover information popup and hide it on next typing."
@@ -1393,15 +1395,15 @@ Advises `eldoc-print-current-symbol-info'."
 
 
     :bind ((:map lsp-ui-mode-map
-		 ;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
-		 ;;("C-q"   . lsp-ui-doc-show)
-		 ("M-S-<f9>" . myDapDebugOn)
-		 ("<f10>" . lsp-ui-imenu)
-		 ("C-c S"   . toggle-lsp-ui-sideline)
-		 ("C-c D"   . toggle-lsp-ui-doc))
-	   (:map lsp-ui-imenu-mode-map
-		 ("<RET>" . my-lsp-ui-imenu-view)
-		 ))
+                 ;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
+                 ;;("C-q"   . lsp-ui-doc-show)
+                 ("M-S-<f9>" . myDapDebugOn)
+                 ("<f10>" . lsp-ui-imenu)
+                 ("C-c S"   . toggle-lsp-ui-sideline)
+                 ("C-c D"   . toggle-lsp-ui-doc))
+           (:map lsp-ui-imenu-mode-map
+                 ("<RET>" . my-lsp-ui-imenu-view)
+                 ))
 
     :hook ((lsp-ui-mode . my-lsp-ui-mode-hook)))
 
@@ -1409,11 +1411,19 @@ Advises `eldoc-print-current-symbol-info'."
     :demand t
     :commands (myDapDebugOn)
     :config
-    (setq dap-auto-configure-features '(sessions locals  tooltip))
+    (setq dap-ui-buffer-configurations
+          `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
+            (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
+            (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
+            (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
+            (,"*debug-window*" . ((side . bottom) (slot . 3) (window-width . 0.20)))))
+
+
+    (setq dap-auto-configure-features '(locals  tooltip))
     (require 'dap-gdb-lldb)
     ;;          (dap-gdb-lldb-setup)
     (add-hook 'dap-stopped-hook (lambda (arg)
-				  (call-interactively #'dap-hydra)))
+                                  (call-interactively #'dap-hydra)))
 
     (require 'dap-chrome)
 
@@ -1428,13 +1438,14 @@ Advises `eldoc-print-current-symbol-info'."
     ;;         :name "Chrome Browse my-project"))
 
 
+
     (defun myDapDebugOn(p)
       "turn on dap modes"
       (interactive "P")
       (centreCursorLineOn)
       (if p
-	  (dap-debug nil)
-	(dap-debug-last))
+          (dap-debug nil)
+        (dap-debug-last))
       ;;    (dap-hydra)
       )
     (defun my-lsp-mode-hook()
@@ -1442,12 +1453,12 @@ Advises `eldoc-print-current-symbol-info'."
       )
 
     :bind (:map dap-mode-map
-		("<f9>" . dap-hydra)
-		))
+                ("<f9>" . dap-hydra)
+                ))
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	 ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
-	 ;; if you want which-key integration
-	 (lsp-mode . my-lsp-mode-hook)))
+         ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
+         ;; if you want which-key integration
+         (lsp-mode . my-lsp-mode-hook)))
 
 (defgroup rgr/serial-ports nil
   "serial port customization"
