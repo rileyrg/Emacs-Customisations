@@ -73,14 +73,6 @@
  '(cursor-type 'box)
  '(custom-safe-themes
    '("972d69a06b8f6e5d43fb83ff59417511f09ba1a1783aab5e22c0e9cbd25ad458" "d234fa6da0282c254f00d534079374d1c6f3c3e600075bc65fe661fdd1947792" "7d6861c031212fca9b4a963ced6230be2aa3139570b85ea5e77619b1fd0351ad" "9b39b25c3a23b1be6e99a3648b91ebaf2a7efdde236e3472aa95f1708ec61d4f" "3f1dcd824a683e0ab194b3a1daac18a923eed4dba5269eecb050c718ab4d5a26" default))
- '(dap-stopped-hook
-   '(dap-ui--show-many-windows
-     (lambda
-       (arg)
-       (call-interactively #'dap-hydra))
-     (lambda
-       (arg)
-       (recenter-top-bottom))))
  '(dashboard-banner-logo-title "Welcome" t)
  '(dashboard-center-content t)
  '(dashboard-set-file-icons t)
@@ -398,7 +390,7 @@ SCHEDULED: %^{Delivery Date}t
  '(org-mobile-use-encryption nil t)
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-eww ol-gnus ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m))
- '(org-outline-path-complete-in-steps nil)
+ '(org-outline-path-complete-in-steps nil t)
  '(org-protocol-default-template-key "z")
  '(org-publish-timestamp-directory "~/.emacs.d/orgfiles/.org-timestamps/")
  '(org-refile-allow-creating-parent-nodes 'confirm)

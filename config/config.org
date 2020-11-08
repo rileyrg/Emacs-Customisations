@@ -286,7 +286,7 @@
           (savehist-mode 1)
 
           (global-set-key (kbd "S-<f10>") #'menu-bar-open)
-          (global-set-key (kbd "<f10>") #'imenu)
+;          (global-set-key (kbd "<f10>") #'imenu)
 
 
           (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list) (selected-frame)
@@ -2102,7 +2102,6 @@ cXTmIjm4aqwXjGFc927GQ37Rg/QDRG7EEXLy634+PUuiqtAoKVo9kz9fQcFKFlgv
                       ;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
                       ;;("C-q"   . lsp-ui-doc-show)
                       ("M-S-<f9>" . myDapDebugOn)
-                      ("<f10>" . lsp-ui-imenu)
                       ("C-c S"   . toggle-lsp-ui-sideline)
                       ("C-c D"   . toggle-lsp-ui-doc))
                 (:map lsp-ui-imenu-mode-map
@@ -2126,8 +2125,8 @@ cXTmIjm4aqwXjGFc927GQ37Rg/QDRG7EEXLy634+PUuiqtAoKVo9kz9fQcFKFlgv
          (setq dap-auto-configure-features '(locals  tooltip))
          (require 'dap-gdb-lldb)
          ;;          (dap-gdb-lldb-setup)
-         (add-hook 'dap-stopped-hook (lambda (arg)
-                                       (call-interactively #'dap-hydra)))
+         ;; (add-hook 'dap-stopped-hook (lambda (arg)
+         ;;                               (call-interactively #'dap-hydra)))
 
          (require 'dap-chrome)
 
@@ -2157,7 +2156,13 @@ cXTmIjm4aqwXjGFc927GQ37Rg/QDRG7EEXLy634+PUuiqtAoKVo9kz9fQcFKFlgv
            )
 
          :bind (:map dap-mode-map
+                     ("<f8>" . dap-continue)
+                     ("S-<f8>" . dap-disconnect)
+                     ("C-<f8>" . dap-debug-last)
                      ("<f9>" . dap-hydra)
+                     ("<f10>" . dap-next)
+                     ("<f11>" . dap-step-in)
+                     ("S-<f11>" . dap-step-out)
                      ))
        :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
               ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
