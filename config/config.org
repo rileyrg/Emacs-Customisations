@@ -2101,6 +2101,7 @@ cXTmIjm4aqwXjGFc927GQ37Rg/QDRG7EEXLy634+PUuiqtAoKVo9kz9fQcFKFlgv
          :bind ((:map lsp-ui-mode-map
                       ;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
                       ;;("C-q"   . lsp-ui-doc-show)
+                      ("C-S-<f10>" . lsp-ui-imenu)
                       ("M-S-<f9>" . myDapDebugOn)
                       ("C-c S"   . toggle-lsp-ui-sideline)
                       ("C-c D"   . toggle-lsp-ui-doc))

@@ -9,6 +9,7 @@
 !README.md
 !plan.org
 !.ignore
+!.projectile
 
 !/config
 !/config/*

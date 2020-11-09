@@ -1397,6 +1397,7 @@ Advises `eldoc-print-current-symbol-info'."
     :bind ((:map lsp-ui-mode-map
                  ;; rather use helm's imenu< C-c h i>             ("C-c m"   . lsp-ui-imenu)
                  ;;("C-q"   . lsp-ui-doc-show)
+                 ("C-S-<f10>" . lsp-ui-imenu)
                  ("M-S-<f9>" . myDapDebugOn)
                  ("C-c S"   . toggle-lsp-ui-sideline)
                  ("C-c D"   . toggle-lsp-ui-doc))
@@ -1452,6 +1453,9 @@ Advises `eldoc-print-current-symbol-info'."
       )
 
     :bind (:map dap-mode-map
+                ("<f8>" . dap-continue)
+                ("S-<f8>" . dap-disconnect)
+                ("C-<f8>" . dap-debug-last)
                 ("<f9>" . dap-hydra)
                 ("<f10>" . dap-next)
                 ("<f11>" . dap-step-in)
