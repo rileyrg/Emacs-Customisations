@@ -84,63 +84,62 @@
   )
 
 ;; (set-language-environment 'utf-8)
-          ;; (setq default-process-coding-system '(utf-8 . utf-8)) ;; needed this for calling call-process-shell-command
-          (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T460.  It doesnt.
+;; (setq default-process-coding-system '(utf-8 . utf-8)) ;; needed this for calling call-process-shell-command
+(require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T460.  It doesnt.
 
-          (scroll-bar-mode -1)
-          (tool-bar-mode -1)
-          (menu-bar-mode -1)
-          (show-paren-mode 1)
-          (tooltip-mode 1)
-          (display-time-mode 1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(show-paren-mode 1)
+(tooltip-mode 1)
+(display-time-mode 1)
 
-          (global-visual-line-mode 1)
+(global-visual-line-mode 1)
 
-          (delete-selection-mode 1)
+(delete-selection-mode 1)
 
-          (save-place-mode 1)
-          (savehist-mode 1)
+(save-place-mode 1)
+(savehist-mode 1)
 
-          (global-set-key (kbd "S-<f10>") #'menu-bar-open)
-;          (global-set-key (kbd "<f10>") #'imenu)
+(global-set-key (kbd "S-<f10>") #'menu-bar-open)
+                                        ;          (global-set-key (kbd "<f10>") #'imenu)
 
 
-          (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list) (selected-frame)
+(setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list) (selected-frame)
 
-          (defalias 'yes-or-no-p 'y-or-n-p)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
-          ;; Auto refresh buffers
-          (global-auto-revert-mode 1)
+;; Auto refresh buffers
+(global-auto-revert-mode 1)
 
-          ;; Also auto refresh dired, but be quiet about it
-          (setq global-auto-revert-non-file-buffers t)
-          (setq auto-revert-verbose nil)
+;; Also auto refresh dired, but be quiet about it
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 
-     (use-package boxquote :straight (:type git :host "https://github.com/"
-     :repo "/davep/boxquote.el"))
-          ;; (use-package boxquote
-          ;;   :bind
-          ;;   ("C-S-r" . boxquote-region))
+(use-package boxquote
+  :straight (:branch "main")
+  :bind
+  ("C-S-r" . boxquote-region))
 
-          (use-package
-            browse-url-dwim)
+(use-package
+  browse-url-dwim)
 
-          (use-package
-            all-the-icons)
+(use-package
+  all-the-icons)
 
-          (use-package
-            webpaste
-            :bind ("C-c y" . webpaste-paste-region)
-            ("C-c Y" . webpaste-paste-buffer))
+(use-package
+  webpaste
+  :bind ("C-c y" . webpaste-paste-region)
+  ("C-c Y" . webpaste-paste-buffer))
 
-          ;; brings visual feedback to some operations by highlighting portions relating to the operations.
-          (use-package
-            volatile-highlights
-            :init (volatile-highlights-mode 1))
-          ;; display dir name when core name clashes
-          (require 'uniquify)
+;; brings visual feedback to some operations by highlighting portions relating to the operations.
+(use-package
+  volatile-highlights
+  :init (volatile-highlights-mode 1))
+;; display dir name when core name clashes
+(require 'uniquify)
 
-          (global-set-key (kbd "C-c r") 'query-replace-regexp)
+(global-set-key (kbd "C-c r") 'query-replace-regexp)
 
 (use-package xclip
   :demand t
