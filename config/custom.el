@@ -390,7 +390,7 @@ SCHEDULED: %^{Delivery Date}t
  '(org-mobile-use-encryption nil t)
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-eww ol-gnus ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m))
- '(org-outline-path-complete-in-steps nil t)
+ '(org-outline-path-complete-in-steps nil)
  '(org-protocol-default-template-key "z")
  '(org-publish-timestamp-directory "~/.emacs.d/orgfiles/.org-timestamps/")
  '(org-refile-allow-creating-parent-nodes 'confirm)
