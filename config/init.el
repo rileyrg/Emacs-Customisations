@@ -10,8 +10,8 @@
 ;;   (straight-vc-git-default-protocol 'git)
 ;;   (straight-vc-git-force-protocol t))
 
-(use-package org
-  :straight org-plus-contrib)
+(use-package org :straight org-plus-contrib)
+(use-package ob-tangle :straight org-plus-contrib)
 
 (defun init-load()
   (interactive)
