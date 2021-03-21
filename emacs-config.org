@@ -2435,8 +2435,8 @@ Using org-babel to write out the config
         :custom
         (terminal-here-terminal-command (list "oneterminal"))
         :bind
-        ("C-<f5>" . #'terminal-here-launch)
-        ("C-<f6>" . #'terminal-here-project-launch))
+        ("C-<f5>" . #'terminal-here-project-launch)
+        ("C-S-<f5>" . #'terminal-here-launch))
     #+end_src
 *** Shell Switcher
     :PROPERTIES:

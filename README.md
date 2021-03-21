@@ -2165,8 +2165,8 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
   :custom
   (terminal-here-terminal-command (list "oneterminal"))
   :bind
-  ("C-<f5>" . #'terminal-here-launch)
-  ("C-<f6>" . #'terminal-here-project-launch))
+  ("C-<f5>" . #'terminal-here-project-launch)
+  ("C-S-<f5>" . #'terminal-here-launch))
 ```
 
 
