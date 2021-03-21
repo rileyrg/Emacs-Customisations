@@ -3723,15 +3723,14 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
 2.  virtualenvs
 
-    1.  auto-virtualenv
+    1.  auto-virtualenvwrapper
 
-        Note, looks for .venv <https://github.com/marcwebbie/auto-virtualenv>
+        <https://github.com/robert-zaremba/auto-virtualenvwrapper.el>
 
         ```emacs-lisp
-        (use-package auto-virtualenv
-          :demand
+        (use-package  auto-virtualenvwrapper
           :init
-          (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv))
+          (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate))
         ```
 
     2.  pyenv in a python project

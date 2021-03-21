@@ -3992,9 +3992,26 @@ Using org-babel to write out the config
      :PROPERTIES:
      :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-3d14ccbf
      :END:
-***** auto-virtualenv
+***** auto-virtualenvwrapper
+      :PROPERTIES:
+      :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-auto-virtualenvwrapper-bd500e27
+      :END:
+      https://github.com/robert-zaremba/auto-virtualenvwrapper.el
+      #+begin_src emacs-lisp
+        (use-package  auto-virtualenvwrapper
+          :init
+          (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate))
+      #+end_src
+***** CANCELLED auto-virtualenv                                   :CANCELLED:
+      CLOSED: [2021-03-21 Sun 23:09]
       :PROPERTIES:
       :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-pyenv_in_a_python_project-auto-virtualenv-32dfd407
+      :header-args:emacs-lisp: :tangle no
+      :END:
+      :LOGBOOK:
+      - Note taken on [2021-03-21 Sun 23:09] \\
+        use auto-virtualenvwrapper instead
+      - State "CANCELLED"  from              [2021-03-21 Sun 23:09]
       :END:
       Note, looks for .venv https://github.com/marcwebbie/auto-virtualenv
       #+begin_src emacs-lisp

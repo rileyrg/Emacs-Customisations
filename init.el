@@ -900,10 +900,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :init
   (advice-add 'python-mode :before 'elpy-enable))
 
-(use-package auto-virtualenv
-  :demand
+(use-package  auto-virtualenvwrapper
   :init
-  (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv))
+  (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate))
 
 (defun rgr/asm-mode-hook ()
   ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway
