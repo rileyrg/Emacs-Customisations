@@ -3737,8 +3737,10 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
         1.  creating the env in a project directory
 
+            note standard is to call project local .venv and that can be detected by the likes of [auto-virtualenvwrapper](#config-Programming_Language_related-Python-virtualenvs-auto-virtualenvwrapper-bd500e27)
+
             ```bash
-            python3 -m venv .env
+            python3 -m venv .venv
             ```
 
 

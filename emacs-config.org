@@ -4002,24 +4002,6 @@ Using org-babel to write out the config
           :init
           (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate))
       #+end_src
-***** CANCELLED auto-virtualenv                                   :CANCELLED:
-      CLOSED: [2021-03-21 Sun 23:09]
-      :PROPERTIES:
-      :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-pyenv_in_a_python_project-auto-virtualenv-32dfd407
-      :header-args:emacs-lisp: :tangle no
-      :END:
-      :LOGBOOK:
-      - Note taken on [2021-03-21 Sun 23:09] \\
-        use auto-virtualenvwrapper instead
-      - State "CANCELLED"  from              [2021-03-21 Sun 23:09]
-      :END:
-      Note, looks for .venv https://github.com/marcwebbie/auto-virtualenv
-      #+begin_src emacs-lisp
-        (use-package auto-virtualenv
-          :demand
-          :init
-          (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv))
-      #+end_src
 ***** pyenv in a python project
       :PROPERTIES:
       :header-args:emacs-lisp: :tangle no
@@ -4029,25 +4011,10 @@ Using org-babel to write out the config
        :PROPERTIES:
        :CUSTOM_ID: config-Late_load-pyenv_in_a_python_project-creating_the_env_in_a_project_directory-49006d11
        :END:
+       note standard is to call project local .venv and that can be
+       detected by the likes of [[#config-Programming_Language_related-Python-virtualenvs-auto-virtualenvwrapper-bd500e27][auto-virtualenvwrapper]]
        #+begin_src bash
-         python3 -m venv .env
-       #+end_src
-****** CANCELLED use dir-locals to trigger it                     :CANCELLED:
-       CLOSED: [2021-03-21 Sun 22:34]
-       :PROPERTIES:
-       :CUSTOM_ID: config-Late_load-pyenv_in_a_python_project-use_dir-locals_to_trigger_it-5c42166b
-       :END:
-       :LOGBOOK:
-       - State "CANCELLED"  from "TODO"       [2021-03-21 Sun 22:34]
-       - State "TODO"       from              [2021-03-21 Sun 22:19]
-       :END:
-       which is a shitty way of dealing with it as we need it per project..
-       #+begin_src emacs-lisp :tangle no
-         ((nil . (;;(python-check-command . "pylint")
-                  (eval . (let* ((dir (dir-locals-find-file "."))
-                                 (root-dir (if (stringp dir) dir (car dir))))
-                            (message "DIR LOCALS LOADED")
-                            (pyvenv-activate (expand-file-name ".env" root-dir )))))))
+         python3 -m venv .venv
        #+end_src
 *** C                                                                     :c:
     :PROPERTIES:
