@@ -1,0 +1,56 @@
+* DONE basic hello world
+  CLOSED: [2021-03-15 Mon 02:50] SCHEDULED: <2021-03-15 Mon>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2021-03-15 Mon 02:50]
+  - State "TODO"       from              [2021-03-15 Mon 02:45]
+  :END:
+  #+begin_src python :results output
+    print("Hello World!")
+  #+end_src
+
+  #+RESULTS:
+  : Hello World!
+
+* DONE hello world session
+  CLOSED: [2021-03-15 Mon 08:30] SCHEDULED: <2021-03-15 Mon>
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2021-03-15 Mon 08:30]
+  - State "TODO"       from              [2021-03-15 Mon 02:45]
+  :END:
+
+** session rgr
+   #+begin_src python :session rgr :results output
+     x=0
+     print("Hello WorldX! %d" % x)
+   #+end_src
+
+   #+RESULTS:
+   : Hello WorldX! 0
+
+   #+begin_src python :session rgr :results output
+     x=x+1
+     print("Hello WorldX! %d" % x)
+   #+end_src
+
+   #+RESULTS:
+   : Hello WorldX! 2
+** DONE session rgr2
+   CLOSED: [2021-03-15 Mon 02:52]
+   :LOGBOOK:
+   - State "DONE"       from              [2021-03-15 Mon 02:52]
+   :END:
+   #+begin_src python :session rgr2 :results output
+     x=0
+     print("Hello WorldX! %d" % x)
+   #+end_src
+
+   #+RESULTS:
+   : Hello WorldX! 0
+
+   #+begin_src python :session rgr2 :results output
+     x=x+16
+     print("Hello WorldX! %d" % x)
+   #+end_src
+
+   #+RESULTS:
+   : Hello WorldX! 48

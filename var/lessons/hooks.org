@@ -1,0 +1,32 @@
+* Tasklist                                                         :tasklist:
+** TODO rework
+   :PROPERTIES:
+   :DateCreated: <2020-02-06 Thu 21:35>
+   :END:
+* Code
+#+begin_src emacs-lisp 
+  (defun run-function-with-hook (mode-hook hook-fn hook-done-fn)
+    (add-hook mode-hook hook-fn)
+    (message "mode hooks before running: %s" (symbol-value mode-hook))
+    (remove-hook mode-hook hook-fn)
+    (message "%s" (symbol-function hook-done-fn))
+    (setq f "hello")
+    (fset 'f (lambda() (funcall hook-done-fn)))
+    (f)
+    ;; (funcall hook-done-fn)
+    )
+
+  (progn (fset 'f (lambda () "foo")) (f))
+
+  (defun myHookFn() ; (myHookFn)
+    (message "opening %s file" major-mode)) 
+
+  (defun myHookDoneFunc() ; (myHookDoneFunc)
+    (message "opened %s file" major-mode))
+
+  (run-function-with-hook 'org-mode-hook 'myHookFn 'myHookDoneFunc)
+
+#+end_src
+
+#+RESULTS:
+: opened org-mode file

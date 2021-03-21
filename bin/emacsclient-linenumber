@@ -1,0 +1,14 @@
+#!/usr/bin/bash
+# Maintained in emacs-config.org
+export GDK_NATIVE_WINDOWS=1
+file=`echo "$@" | sed 's/.*://;s/@.*$//'`
+line=`echo "$@" | sed 's/.*@//'`
+echo $file
+echo $line
+
+re='^[0-9]+$'
+if ! [[ $line =~ $re ]] ; then
+    exec emacsclient -c -a ""  $file
+else
+    exec emacsclient -c -a "" +$line  $file
+fi

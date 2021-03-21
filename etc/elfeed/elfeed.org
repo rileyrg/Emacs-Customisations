@@ -1,0 +1,20 @@
+* Blogs                                                              :elfeed:
+** Podcasts
+*** Literature                                                   :literature:
+**** https://feeds.megaphone.fm/somethingrhymeswithpurple             :words:
+** German                                                            :german:
+*** http://angelikasgerman.co.uk/blog/feed
+** Guitar
+*** https://www.theguitarlesson.com/guitar-lesson-blog/feed
+** entry-title: \(linux\|linus\|ubuntu\|kde\|gnome\)                  :linux:
+** http://git-annex.branchable.com/design/assistant/blog/index.rss :mustread:
+** http://feeds.feedburner.com/InformationIsBeautiful
+** [[http://orgmode.org][Org Mode Links supported as well]]
+** Software Development                                                 :dev:
+*** Emacs                                                    :emacs:mustread:
+**** http://www.terminally-incoherent.com/blog/feed
+**** http://nullprogram.com/feed
+**** entry-title: \(emacs\|org-mode\)
+**** http://planet.emacsen.org/atom.xml
+**** http://www.masteringemacs.org/feed
+**** https://emacs.stackexchange.com/feeds                   :stack:exchange:

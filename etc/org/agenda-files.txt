@@ -1,0 +1,5 @@
+~/.emacs.d/var/org/orgfiles/
+~/.emacs.d/var/org/orgfiles/journals/
+~/.emacs.d/var/lessons/
+~/.emacs.d/var/org/orgfiles/projects/
+~/development/projects/Python/python-lernen.de

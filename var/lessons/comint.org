@@ -1,0 +1,15 @@
+* comint fiddling
+#+begin_src emacs-lisp
+      (defun my-compile (&optional arg)
+        "Switch to correct buffer, then compile."
+        (interactive)
+        (let ((b (get-buffer "*PowerShell*"))
+              (p (get-process "shell")))
+          (if (and b p)
+              (with-current-buffer b
+                (apply comint-input-sender (list p compile-command)) ; (list "a" "b")
+                (message "hello")
+                (message "hello2")))))
+#+end_src
+#+RESULTS:
+: 4

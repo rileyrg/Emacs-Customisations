@@ -1,0 +1,219 @@
+* Tasks                                                            :tasklist:
+
+** DONE find out about symbol functions
+   CLOSED: [2020-02-14 Fri 10:06] SCHEDULED: <2020-02-07 Fri>
+   :PROPERTIES:
+   :DateCreated: <2020-02-06 Thu 22:51>
+   :END:
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2020-02-14 Fri 10:06]
+   - Refiled on [2020-02-06 Thu 22:52] \\
+     moved
+   :END:
+if I (defun f() ...) I can  (funcall 'v) AND (f). But if I (setq f  "hello") and (fset 'f '(lambda() ...) I can't (f). Why is that? In the first case (symbol-function 'f) returns a lambda.
+* Variables, Symbols, Functions - as one...
+Put the cursor in the code block and hit C-c C-c  : 'org-ctrl-c-ctrl-c . It knows to execute the code in the src block
+#+begin_src emacs-lisp
+(setq v "the value v")
+(defun v() "the function v")
+#+end_src
+
+#+RESULTS:
+: v
+
+Now this block! Whoops! The VALUE of v is used. And that doesnt have a symbol name!
+#+begin_src emacs-lisp
+(symbol-name v)
+#+end_src
+#+RESULTS:
+
+Now quote v...
+#+begin_src emacs-lisp
+(symbol-name 'v)
+#+end_src
+
+#+RESULTS:
+: v
+
+But is that really our v? Lets see if the symbol is associated with a value?
+#+begin_src emacs-lisp
+(symbol-value 'v)
+#+end_src
+
+#+RESULTS:
+: the value v
+
+It does indeed have a value. But what about our function v?
+#+begin_src emacs-lisp
+(fboundp 'v)
+#+end_src
+
+#+RESULTS:
+: t
+
+Yup, 'v is has a function bound to it!
+#+begin_src emacs-lisp
+(symbol-function 'v)
+#+end_src
+
+#+RESULTS:
+| lambda | nil | the function v |
+
+
+Can we release our little symbol from it's functionness?
+#+begin_src emacs-lisp
+(fmakunbound 'v)
+(fboundp 'v)
+#+end_src
+
+#+RESULTS:
+
+We can indeed. Lets redefine it,
+#+begin_src emacs-lisp
+(defun v() "the function v")
+(fboundp 'v)
+#+end_src
+
+#+RESULTS:
+: t
+
+What about it's traditional variable status?
+#+begin_src emacs-lisp
+(boundp 'v)
+#+end_src
+
+#+RESULTS:
+: t
+
+It's still bound to a variable value. How to call a function bound to a symbol?
+#+begin_src emacs-lisp
+(funcall 'v)
+#+end_src
+
+#+RESULTS:
+: the function v
+
+#+begin_src emacs-lisp
+(symbol-function 'v)
+#+end_src
+
+#+RESULTS:
+| lambda | nil | the function v |
+
+#+begin_src emacs-lisp
+(v)
+#+end_src
+
+#+RESULTS:
+: the function v
+
+Can we assign one symbol's bindings to another? Lets do it and confirm the function binding is transferred!
+#+begin_src emacs-lisp
+(setq y v)
+(funcall y)
+#+end_src
+
+No. Hmm.
+
+The value?
+#+begin_src emacs-lisp
+(symbol-value 'y)
+#+end_src
+
+#+RESULTS:
+: the value v
+
+The new y var has the value from v ok!
+
+Now lets frankenstein our new y symbol.
+
+** TODO erc interaction
+   :LOGBOOK:
+   - State "TODO"       from "TODO"       [2020-02-06 Thu 13:39]
+   - State "TODO"       from "TODO"       [2020-02-06 Thu 13:05]
+   - State "TODO"       from              [2020-02-06 Thu 13:04]
+   :END:
+[10:15:56]<rgr> I can bind a value and a function to a symbol v. (setq v "the value v"), (defun v() "function v"). grand.
+           (symbol-value 'v) gives "the value v" and (funcall v) returns "function v".  Whats the syntax for copying the
+           function that's bound to v but not the value ? eg (setq myNewFun (func v)) ?
+[10:16:39]<dale> rgr: (symbol-function 'v)
+[10:16:49]<rgr> oh of course. Thanks. stupid me.
+[10:17:34]<rgr> as a side note, using org babel src blocks is a great way to learn something like elisp. Very handy with block
+           execution and the results being quoted back into the buffer.
+[10:19:14]<rgr> while you're there dale, and to assign that to the function attribute of my symbol? Or just setq and it knows
+           because of its type?
+[10:19:56]<dale> rgr: Are you asking how to change the function bound in a symbol's function slot?
+[10:20:43]<dale> rgr: If so, that's probably (fset 'v #'some-function), or (setf (symbol-function 'v) #'some-function).
+[10:20:47]<rgr> yes but taking it from another symbol using (symbol-function 'x).
+[10:20:55]<rgr> ok thanks I can work it from there. cheers.
+[10:23:09]<dale> Oh, yeah, actually, what I wrote is just wrong.
+[10:23:32]<dale> (fset 'v (symbol-function 'some-function)) is what I should have written.
+[10:29:02]<rgr> 'some-symbol?
+[10:29:51]<rgr> let me try them out and get back
+[10:31:19]<rgr> oh lovely. finally getting down to brass tacks. nice. http://ix.io/28nj
+
+
+#+begin_src emacs-lisp
+(defun z () "function z")
+(setq z "the value z")
+(fset 'y (symbol-function 'z))
+(funcall 'y)
+(fset 'y2 (lambda() "y2"))
+(funcall 'y2)
+(y2)
+#+end_src
+
+#+RESULTS:
+: function z
+
+and another way of calling the function
+
+#+begin_src emacs-lisp
+(y)
+#+end_src
+
+#+RESULTS:
+: function z
+
+#+begin_src emacs-lisp
+(funcall (symbol-function 'y))
+#+end_src
+
+#+RESULTS:
+: function z
+
+#+begin_src emacs-lisp
+(defun f1() "function 1")
+(defun f2() "function 2")
+(setq flist '(f0 f1 f2 f3))
+
+(funcall (car (cdr flist)))
+(dolist (fn flist v)
+  (progn
+    (if(fboundp fn)
+      (message "result of calling function %s is %s" (symbol-name fn) (funcall fn))
+      (message "sorry but %s isnt a function." fn))))
+#+end_src
+
+#+RESULTS:
+: the value v
+
+#+begin_src emacs-lisp
+(defun call-a-function(f)
+(funcall f))
+
+(fset 'z '(lambda() "z"))
+(call-a-function 'z)
+
+(defun z2 ()
+"z2")
+
+(call-a-function (symbol-function 'z2))
+
+
+#+end_src
+
+
+# Local Variables:
+# eval: (setq-local org-confirm-babel-evaluate nil)
+# End:

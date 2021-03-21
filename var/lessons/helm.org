@@ -1,0 +1,14 @@
+
+* Helm completiom                                                  :tasklist:
+** from the function helper
+[[help:helm-completing-read-handlers-alist][helm-completing-read-handlers-alist info]]
+#+begin_src emacs-lisp
+#+end_src
+
+#+RESULTS:
+: ("b")
+
+# Local Variables:
+# eval: (setq-local org-confirm-babel-evaluate nil)
+# End:
+
