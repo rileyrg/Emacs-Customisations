@@ -176,8 +176,8 @@
   :custom
   (terminal-here-terminal-command (list "oneterminal"))
   :bind
-  ("C-<f5>" . #'terminal-here-launch)
-  ("C-<f6>" . #'terminal-here-project-launch))
+  ("C-<f5>" . #'terminal-here-project-launch)
+  ("C-S-<f5>" . #'terminal-here-launch))
 
 (use-package
   shell-switcher
@@ -899,6 +899,11 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (elpy-rpc-virtualenv-path 'current)
   :init
   (advice-add 'python-mode :before 'elpy-enable))
+
+(use-package auto-virtualenv
+  :demand
+  :init
+  (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv))
 
 (defun rgr/asm-mode-hook ()
   ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway

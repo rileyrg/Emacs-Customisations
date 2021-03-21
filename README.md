@@ -3721,6 +3721,27 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
       (advice-add 'python-mode :before 'elpy-enable))
     ```
 
+2.  virtualenvs
+
+    1.  auto-virtualenv
+
+        Note, looks for .venv <https://github.com/marcwebbie/auto-virtualenv>
+
+        ```emacs-lisp
+        (use-package auto-virtualenv
+          :demand
+          :init
+          (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv))
+        ```
+
+    2.  pyenv in a python project
+
+        1.  creating the env in a project directory
+
+            ```bash
+            python3 -m venv .env
+            ```
+
 
 ### C     :c:
 
@@ -3956,24 +3977,6 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ```emacs-lisp
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
 ```
-
-1.  pyenv in a python project
-
-    1.  creating the env in a project directory
-
-        ```bash
-        python3 -m venv .env
-        ```
-
-    2.  use dir-locals to trigger it
-
-        ```emacs-lisp
-        ((nil . (;;(python-check-command . "pylint")
-                 (eval . (let* ((dir (dir-locals-find-file "."))
-                                (root-dir (if (stringp dir) dir (car dir))))
-                           (message "DIR LOCALS LOADED")
-                           (pyvenv-activate (expand-file-name ".env" root-dir )))))))
-        ```
 
 
 # Associated emacs things
