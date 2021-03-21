@@ -173,9 +173,8 @@
 (require 'rgr/emms "rgr-emms" 'NOERROR)
 
 (use-package terminal-here
-  :disabled t
   :custom
-  (terminal-here-terminal-command (list "terminator" "-e zsh"))
+  (terminal-here-terminal-command (list "oneterminal"))
   :bind
   ("C-<f5>" . #'terminal-here-launch)
   ("C-<f6>" . #'terminal-here-project-launch))

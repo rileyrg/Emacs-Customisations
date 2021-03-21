@@ -55,9 +55,10 @@
     (mapcar '1+ [1 2 3 4])
   #+end_src
 
-** TODO figure out why can quote or not quote the lambda
-   SCHEDULED: <2021-03-25 Thu>
+** CANCELLED figure out why can quote or not quote the lambda     :CANCELLED:
+   CLOSED: [2021-03-21 Sun 17:52] SCHEDULED: <2021-03-25 Thu>
    :LOGBOOK:
+   - State "CANCELLED"  from "TODO"       [2021-03-21 Sun 17:52]
    - State "TODO"       from "DONE"       [2021-02-08 Mo 10:27]
    - State "DONE"       from              [2021-02-08 Mo 10:27]
    :END:

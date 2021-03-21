@@ -2426,15 +2426,14 @@ Using org-babel to write out the config
    :PROPERTIES:
    :CUSTOM_ID: shells
    :END:
-*** open [[https://github.com/davidshepherd7/terminal-here][default terminal]] in current/project  dir
+*** open terminal in current/project  dir
     :PROPERTIES:
     :CUSTOM_ID: Shells-open_https:github.comdavidshepherd7terminal-heredefault_terminal_in_currentproject_dir-ecd75d89
     :END:
     #+begin_src emacs-lisp
       (use-package terminal-here
-        :disabled t
         :custom
-        (terminal-here-terminal-command (list "terminator" "-e zsh"))
+        (terminal-here-terminal-command (list "oneterminal"))
         :bind
         ("C-<f5>" . #'terminal-here-launch)
         ("C-<f6>" . #'terminal-here-project-launch))

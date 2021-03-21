@@ -2158,13 +2158,12 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 ## Shells and Terminals
 
 
-### open [default terminal](https://github.com/davidshepherd7/terminal-here) in current/project  dir
+### open terminal in current/project  dir
 
 ```emacs-lisp
 (use-package terminal-here
-  :disabled t
   :custom
-  (terminal-here-terminal-command (list "terminator" "-e zsh"))
+  (terminal-here-terminal-command (list "oneterminal"))
   :bind
   ("C-<f5>" . #'terminal-here-launch)
   ("C-<f6>" . #'terminal-here-project-launch))
@@ -2469,37 +2468,33 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
     (use-package popper
       :ensure t
       :init
-      (defvar pfb "*my-posframe-buffer*")
-      ;;(setq popper-display-function #'rgr/popper-display-posframe)
+      (defvar pfb "*posframe buffer*")
+      ;;(setq popper-display-function 'rgr/popper-display-posframe)
       ;; (setq popper-group-function #'popper-group-by-projectile)
       (setq popper-reference-buffers
             '(
               "\\*Messages\\*"
-              "Output\\*$"
               help-mode
+              helpful-mode
               dictionary-mode
               compilation-mode))
       (popper-mode +1)
-      (defun rgr/popper-display-posframe(buf _)
-        (when (posframe-workable-p)
-          ;; (posframe-show buf
-          ;;                :position (point)
-          ;;
-          ;;                :width 72
-          ;;                :height 25
-          ;;                :border-width 3
-          ;;                :border-color "IndianRed")))
-        (with-current-buffer
-            (get-buffer-create pfb)
-          (erase-buffer)
-          (insert (with-current-buffer buf (buffer-string))))
-        (posframe-show (get-buffer pfb)
-                       :width 32
-                       :height 16
-                       :position t
-                       :poshandler #'posframe-poshandler-frame-top-center
-                       )))
-
+      (defun rgr/popper-display-posframe(buf &optional o)
+        (save-excursion
+          (let* ((db (generate-new-buffer pfb)))
+            (with-current-buffer db
+              (insert-buffer buf)
+              )
+            (posframe-show db
+                           :internal-border-width 2
+                           :internal-border-color "Orange"
+                           :border-width 3
+                           :border-color "IndianRed"
+                           :width (/ (* (frame-width) 2) 3)
+                           :height (/ (* (frame-height) 2) 3)
+                           :poshandler 'posframe-poshandler-frame-center
+                           :position t
+                           ))))
       :bind (("C-`"   . popper-toggle-latest)
              ("M-`"   . popper-cycle)
              ("C-M-`" . popper-toggle-type)))
