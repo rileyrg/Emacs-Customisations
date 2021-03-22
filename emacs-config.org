@@ -3981,9 +3981,10 @@ Using org-babel to write out the config
      :END:
      https://github.com/pythonic-emacs/anaconda-mode
      #+begin_src emacs-lisp
-       (use-package anaconda-mode
-         :config
-         (add-hook 'python-mode-hook 'anaconda-mode))
+              (use-package anaconda-mode
+                :config
+                (add-hook 'python-mode-hook 'anaconda-mode)
+                (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
      #+end_src
 **** CANCELLED Elpy, the Emacs Python IDE                    :elpy:CANCELLED:
      CLOSED: [2021-03-22 Mon 09:36]

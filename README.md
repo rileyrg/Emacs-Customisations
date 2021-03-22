@@ -3716,7 +3716,8 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
     ```emacs-lisp
     (use-package anaconda-mode
       :config
-      (add-hook 'python-mode-hook 'anaconda-mode))
+      (add-hook 'python-mode-hook 'anaconda-mode)
+      (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
     ```
 
 2.  virtualenvs

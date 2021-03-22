@@ -894,7 +894,8 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package anaconda-mode
   :config
-  (add-hook 'python-mode-hook 'anaconda-mode))
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
 (use-package  auto-virtualenv
   :init

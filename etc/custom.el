@@ -579,7 +579,7 @@ stehen ganz weit oben.
  '(company-tooltip-annotation ((t (:foreground "gold"))))
  '(company-tooltip-selection ((t (:background "SeaGreen4"))))
  '(ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
- '(ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))
+ '(ctrlf-highlight-passive ((t (:inherit nil :background "gray13" :foreground "white"))))
  '(cursor ((t (:background "gold" :foreground "black"))))
  '(dired-directory ((t (:foreground "burlywood" :weight extra-bold))))
  '(dired-symlink ((t (:inherit nil :foreground "yellow"))))
