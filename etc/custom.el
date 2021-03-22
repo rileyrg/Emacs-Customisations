@@ -620,7 +620,7 @@ stehen ganz weit oben.
  '(rainbow-delimiters-base-error-face ((t (:inherit rainbow-delimiters-base-face :background "gainsboro" :foreground "red"))))
  '(selectrum-current-candidate ((t (:inherit bold :extend t :background "#1e1e1e" :foreground "#ffffff" :underline "#854a03"))))
  '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
- '(tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+ '(tab-bar-tab ((t (:inherit bold :background "brown4" :foreground "#ffffff" :box (:line-width 2 :color "#0e0e0e")))))
  '(tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
  '(tooltip ((t (:inherit variable-pitch :background "dim gray" :foreground "orange"))))
  '(treemacs-git-modified-face ((t (:inherit font-lock-variable-name-face :background "yellow" :foreground "red")))))

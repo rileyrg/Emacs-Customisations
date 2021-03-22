@@ -892,17 +892,13 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (straight-use-package 'platformio-mode)
 
-(use-package elpy
-  :ensure t
-  :defer t
-  :custom
-  (elpy-rpc-virtualenv-path 'current)
-  :init
-  (advice-add 'python-mode :before 'elpy-enable))
+(use-package anaconda-mode
+  :config
+  (add-hook 'python-mode-hook 'anaconda-mode))
 
-(use-package  auto-virtualenvwrapper
+(use-package  auto-virtualenv
   :init
-  (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate))
+  (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
 
 (defun rgr/asm-mode-hook ()
   ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway

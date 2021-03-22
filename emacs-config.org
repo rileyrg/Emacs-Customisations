@@ -3975,9 +3975,25 @@ Using org-babel to write out the config
                                       ;; (require 'lsp-python-ms)
                                       (lsp)))
      #+end_src
-**** Elpy, the Emacs Python IDE                                        :elpy:
+**** Anaconda
+     :PROPERTIES:
+     :CUSTOM_ID: config-Programming_Language_related-Python-Anaconda-d30e2860
+     :END:
+     https://github.com/pythonic-emacs/anaconda-mode
+     #+begin_src emacs-lisp
+       (use-package anaconda-mode
+         :config
+         (add-hook 'python-mode-hook 'anaconda-mode))
+     #+end_src
+**** CANCELLED Elpy, the Emacs Python IDE                    :elpy:CANCELLED:
+     CLOSED: [2021-03-22 Mon 09:36]
      :PROPERTIES:
      :CUSTOM_ID: python-elpy
+     :header-args:emacs-lisp: :tangle no
+     :END:
+     :LOGBOOK:
+     - State "CANCELLED"  from              [2021-03-22 Mon 09:36] \\
+       paused while try anaconda
      :END:
      #+begin_src emacs-lisp
        (use-package elpy
@@ -3992,15 +4008,14 @@ Using org-babel to write out the config
      :PROPERTIES:
      :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-3d14ccbf
      :END:
-***** auto-virtualenvwrapper
+***** auto-virtualenv
       :PROPERTIES:
       :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-auto-virtualenvwrapper-bd500e27
       :END:
-      https://github.com/robert-zaremba/auto-virtualenvwrapper.el
       #+begin_src emacs-lisp
-        (use-package  auto-virtualenvwrapper
+        (use-package  auto-virtualenv
           :init
-          (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate))
+          (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
       #+end_src
 ***** pyenv in a python project
       :PROPERTIES:

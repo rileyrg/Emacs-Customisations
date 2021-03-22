@@ -3709,28 +3709,24 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
 ### Python     :python:
 
-1.  Elpy, the Emacs Python IDE     :elpy:
+1.  Anaconda
+
+    <https://github.com/pythonic-emacs/anaconda-mode>
 
     ```emacs-lisp
-    (use-package elpy
-      :ensure t
-      :defer t
-      :custom
-      (elpy-rpc-virtualenv-path 'current)
-      :init
-      (advice-add 'python-mode :before 'elpy-enable))
+    (use-package anaconda-mode
+      :config
+      (add-hook 'python-mode-hook 'anaconda-mode))
     ```
 
 2.  virtualenvs
 
-    1.  auto-virtualenvwrapper
-
-        <https://github.com/robert-zaremba/auto-virtualenvwrapper.el>
+    1.  auto-virtualenv
 
         ```emacs-lisp
-        (use-package  auto-virtualenvwrapper
+        (use-package  auto-virtualenv
           :init
-          (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate))
+          (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
         ```
 
     2.  pyenv in a python project
