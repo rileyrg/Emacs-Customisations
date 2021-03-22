@@ -3716,8 +3716,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
       :ensure t
       :defer t
       :custom
-      (elpy-rpc-python-command "python3")
-      (elpy-rpc-virtualenv-path 'default)
+      (elpy-rpc-virtualenv-path 'current)
       :init
       (advice-add 'python-mode :before 'elpy-enable))
     ```

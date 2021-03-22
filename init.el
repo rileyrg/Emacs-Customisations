@@ -896,8 +896,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :ensure t
   :defer t
   :custom
-  (elpy-rpc-python-command "python3")
-  (elpy-rpc-virtualenv-path 'default)
+  (elpy-rpc-virtualenv-path 'current)
   :init
   (advice-add 'python-mode :before 'elpy-enable))
 
