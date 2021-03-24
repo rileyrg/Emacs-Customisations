@@ -1039,34 +1039,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           ( "<f7>" . 'darkroom-mode))
         ```
 
-3.  Themes
-
-    1.  modus themes
-
-        <https://github.com/protesilaos/modus-themes>
-
-        ```emacs-lisp
-        (use-package modus-themes
-          :ensure
-          :init
-          ;; Add all your customizations prior to loading the themes
-          (setq modus-themes-slanted-constructs t
-                modus-themes-bold-constructs nil)
-
-          ;; Load the theme files before enabling a theme
-          (modus-themes-load-themes)
-          :config
-          (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
-        ```
-
-4.  Transparency
+3.  Transparency
 
     ```emacs-lisp
     (set-frame-parameter (selected-frame) 'alpha '(95 . 50))
     (add-to-list 'default-frame-alist '(alpha . (95 . 50)))
     ```
 
-5.  Clipboard
+4.  Clipboard
 
     Allow terminal emacs to interact with the x clipboard.
 
@@ -1077,7 +1057,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
       (xclip-mode))
     ```
 
-6.  Ansi colour
+5.  Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
 
@@ -1087,7 +1067,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
     ```
 
-7.  Tab Bar Mode
+6.  Tab Bar Mode
 
     ```emacs-lisp
 
@@ -1119,7 +1099,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                    ("s" . tab-bar-switch-to-tab))))
     ```
 
-8.  Memory
+7.  Memory
 
     1.  save-place-mode, remember position in files
 
@@ -1153,7 +1133,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
             (add-to-list 'recentf-exclude no-littering-etc-directory)))
         ```
 
-9.  provide
+8.  provide
 
     ```emacs-lisp
     (provide 'rgr/general-config)
@@ -3709,7 +3689,17 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
 ### Python     :python:
 
-1.  Anaconda
+1.  General
+
+    ```emacs-lisp
+    (use-package python-mode
+      :init
+      (setq python-shell-interpreter "ipython"
+            python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
+      )
+    ```
+
+2.  Anaconda
 
     <https://github.com/pythonic-emacs/anaconda-mode>
 
@@ -3720,7 +3710,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
       (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
     ```
 
-2.  virtualenvs
+3.  virtualenvs
 
     1.  auto-virtualenv
 
@@ -3967,6 +3957,39 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
   :demand t
   :config
   (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
+```
+
+
+## Startup
+
+```emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+```
+
+
+## Themes
+
+
+### modus themes
+
+<https://github.com/protesilaos/modus-themes>
+
+```emacs-lisp
+(use-package modus-themes
+  :demand
+  :ensure
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-slanted-constructs t
+        modus-themes-bold-constructs nil)
+
+  ;; Load the theme files before enabling a theme
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
 ```
 
 

@@ -897,10 +897,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-hook 'python-mode-hook 'anaconda-mode)
   (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
-(use-package  auto-virtualenv
-  :init
-  (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
-
 (defun rgr/asm-mode-hook ()
   ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway
   (local-unset-key (vector asm-comment-char))
@@ -1037,5 +1033,23 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :demand t
   :config
   (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
+
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+
+(use-package modus-themes
+  :demand
+  :ensure
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-slanted-constructs t
+        modus-themes-bold-constructs nil)
+
+  ;; Load the theme files before enabling a theme
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
 
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))

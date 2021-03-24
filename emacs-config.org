@@ -1188,30 +1188,6 @@ Using org-babel to write out the config
           ( "<f7>" . 'darkroom-mode))
       #+end_src
 
-**** Themes
-     :PROPERTIES:
-     :CUSTOM_ID: Configure_main_look_and_feel-Themes-e137c6ca
-     :END:
-***** modus themes
-      :PROPERTIES:
-      :CUSTOM_ID: config-General_configuration-library-Themes-modus_themes-04d9f527
-      :END:
-      https://github.com/protesilaos/modus-themes
-      #+begin_src emacs-lisp
-        (use-package modus-themes
-          :ensure
-          :init
-          ;; Add all your customizations prior to loading the themes
-          (setq modus-themes-slanted-constructs t
-                modus-themes-bold-constructs nil)
-
-          ;; Load the theme files before enabling a theme
-          (modus-themes-load-themes)
-          :config
-          (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
-      #+end_src
-
-
 **** Transparency
      :PROPERTIES:
      :CUSTOM_ID: Configure_main_look_and_feel-Transparency-d2ecc29e
@@ -3950,6 +3926,17 @@ Using org-babel to write out the config
     :PROPERTIES:
     :CUSTOM_ID: config-Programming_Language_related-Python
     :END:
+**** General
+     :PROPERTIES:
+     :CUSTOM_ID: config-Programming_Language_related-Python-General-2e40beff
+     :END:
+     #+begin_src emacs-lisp
+       (use-package python-mode
+         :init
+         (setq python-shell-interpreter "ipython"
+               python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
+         )
+     #+end_src
 **** CANCELLED lsp                                            :lsp:CANCELLED:
      CLOSED: [2021-03-16 Tue 01:10] SCHEDULED: <2021-03-18 Thu>
      :PROPERTIES:
@@ -4009,9 +3996,14 @@ Using org-babel to write out the config
      :PROPERTIES:
      :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-3d14ccbf
      :END:
-***** auto-virtualenv
+***** TODO auto-virtualenv
+      SCHEDULED: <2021-03-23 Tue>
       :PROPERTIES:
       :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-auto-virtualenvwrapper-bd500e27
+      :header-args:emacs-lisp: :tangle no
+      :END:
+      :LOGBOOK:
+      - State "TODO"       from              [2021-03-23 Tue 21:44]
       :END:
       #+begin_src emacs-lisp
         (use-package  auto-virtualenv
@@ -4318,6 +4310,39 @@ Using org-babel to write out the config
         :demand t
         :config
         (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
+    #+end_src
+** Startup
+   :PROPERTIES:
+   :CUSTOM_ID: config-Startup-6c88b604
+   :END:
+   #+begin_src emacs-lisp
+     (use-package dashboard
+       :ensure t
+       :config
+       (dashboard-setup-startup-hook))
+   #+end_src
+** Themes
+   :PROPERTIES:
+   :CUSTOM_ID: Configure_main_look_and_feel-Themes-e137c6ca
+   :END:
+*** modus themes
+    :PROPERTIES:
+    :CUSTOM_ID: config-General_configuration-library-Themes-modus_themes-04d9f527
+    :END:
+    https://github.com/protesilaos/modus-themes
+    #+begin_src emacs-lisp
+      (use-package modus-themes
+        :demand
+        :ensure
+        :init
+        ;; Add all your customizations prior to loading the themes
+        (setq modus-themes-slanted-constructs t
+              modus-themes-bold-constructs nil)
+
+        ;; Load the theme files before enabling a theme
+        (modus-themes-load-themes)
+        :config
+        (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
     #+end_src
 ** Late load
    :PROPERTIES:
