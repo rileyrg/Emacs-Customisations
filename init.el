@@ -892,10 +892,19 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (straight-use-package 'platformio-mode)
 
-(use-package anaconda-mode
-  :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+(use-package python-mode
+  :init
+  (setq python-shell-interpreter "ipython"
+        python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
+  )
+
+(use-package elpy
+  :ensure t
+  :defer t
+  :custom
+  (elpy-rpc-virtualenv-path 'current)
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
 
 (defun rgr/asm-mode-hook ()
   ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway

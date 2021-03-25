@@ -3962,9 +3962,15 @@ Using org-babel to write out the config
                                       ;; (require 'lsp-python-ms)
                                       (lsp)))
      #+end_src
-**** Anaconda
+**** CANCELLED Anaconda                                           :CANCELLED:
+     CLOSED: [2021-03-25 Thu 20:34]
      :PROPERTIES:
      :CUSTOM_ID: config-Programming_Language_related-Python-Anaconda-d30e2860
+     :header-args:emacs-lisp: :tangle no
+     :END:
+     :LOGBOOK:
+     - State "CANCELLED"  from              [2021-03-25 Thu 20:34] \\
+       keeps freezing so back on the shelf for a while
      :END:
      https://github.com/pythonic-emacs/anaconda-mode
      #+begin_src emacs-lisp
@@ -3973,13 +3979,14 @@ Using org-babel to write out the config
                 (add-hook 'python-mode-hook 'anaconda-mode)
                 (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
      #+end_src
-**** CANCELLED Elpy, the Emacs Python IDE                    :elpy:CANCELLED:
-     CLOSED: [2021-03-22 Mon 09:36]
+**** TODO Elpy, the Emacs Python IDE                                   :elpy:
      :PROPERTIES:
      :CUSTOM_ID: python-elpy
-     :header-args:emacs-lisp: :tangle no
      :END:
      :LOGBOOK:
+     - State "TODO"       from "STARTED"    [2021-03-25 Thu 20:39]
+     - State "STARTED"    from "TODO"       [2021-03-25 Thu 20:38]
+     - State "TODO"       from "CANCELLED"  [2021-03-25 Thu 20:34]
      - State "CANCELLED"  from              [2021-03-22 Mon 09:36] \\
        paused while try anaconda
      :END:

@@ -3699,15 +3699,16 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
       )
     ```
 
-2.  Anaconda
-
-    <https://github.com/pythonic-emacs/anaconda-mode>
+2.  Elpy, the Emacs Python IDE     :elpy:
 
     ```emacs-lisp
-    (use-package anaconda-mode
-      :config
-      (add-hook 'python-mode-hook 'anaconda-mode)
-      (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+    (use-package elpy
+      :ensure t
+      :defer t
+      :custom
+      (elpy-rpc-virtualenv-path 'current)
+      :init
+      (advice-add 'python-mode :before 'elpy-enable))
     ```
 
 3.  virtualenvs
