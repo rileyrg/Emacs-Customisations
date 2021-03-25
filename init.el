@@ -904,7 +904,14 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :custom
   (elpy-rpc-virtualenv-path 'current)
   :init
-  (advice-add 'python-mode :before 'elpy-enable))
+  (advice-add 'python-mode :before 'elpy-enable)
+  :config
+  (pyvenv-mode 1)
+  (pyvenv-tracking-mode 1))
+
+(use-package  auto-virtualenv
+  :init
+  (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
 
 (defun rgr/asm-mode-hook ()
   ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway

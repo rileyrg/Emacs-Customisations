@@ -3962,13 +3962,13 @@ Using org-babel to write out the config
                                       ;; (require 'lsp-python-ms)
                                       (lsp)))
      #+end_src
-**** CANCELLED Anaconda                                           :CANCELLED:
-     CLOSED: [2021-03-25 Thu 20:34]
+**** TODO Anaconda
      :PROPERTIES:
      :CUSTOM_ID: config-Programming_Language_related-Python-Anaconda-d30e2860
      :header-args:emacs-lisp: :tangle no
      :END:
      :LOGBOOK:
+     - State "TODO"       from "CANCELLED"  [2021-03-25 Thu 22:02]
      - State "CANCELLED"  from              [2021-03-25 Thu 20:34] \\
        keeps freezing so back on the shelf for a while
      :END:
@@ -3997,7 +3997,10 @@ Using org-babel to write out the config
          :custom
          (elpy-rpc-virtualenv-path 'current)
          :init
-         (advice-add 'python-mode :before 'elpy-enable))
+         (advice-add 'python-mode :before 'elpy-enable)
+         :config
+         (pyvenv-mode 1)
+         (pyvenv-tracking-mode 1))
      #+end_src
 **** virtualenvs
      :PROPERTIES:
@@ -4007,7 +4010,6 @@ Using org-babel to write out the config
       SCHEDULED: <2021-03-23 Tue>
       :PROPERTIES:
       :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-auto-virtualenvwrapper-bd500e27
-      :header-args:emacs-lisp: :tangle no
       :END:
       :LOGBOOK:
       - State "TODO"       from              [2021-03-23 Tue 21:44]
@@ -4017,7 +4019,7 @@ Using org-babel to write out the config
           :init
           (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
       #+end_src
-***** pyenv in a python project
+***** pyvenv in a python project
       :PROPERTIES:
       :header-args:emacs-lisp: :tangle no
       :CUSTOM_ID: config-Late_load-pyenv_in_a_python_project-245e2d3a

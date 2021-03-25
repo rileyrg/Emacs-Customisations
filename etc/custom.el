@@ -375,7 +375,6 @@ SCHEDULED: %^{Delivery Date}t
  '(ps-lpr-switches '("-o Duplex=DuplexNoTumble"))
  '(ps-paper-type 'a4)
  '(ps-spool-duplex t)
- '(py-python-command-args '("-colors" "Linux") t)
  '(rainbow-ansi-colors-major-mode-list '(sh-mode c-mode c++-mode php-mode emacs-lisp-mode))
  '(read-process-output-max 1048576 t)
  '(read-quoted-char-radix 16)

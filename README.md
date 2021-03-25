@@ -3699,7 +3699,18 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
       )
     ```
 
-2.  Elpy, the Emacs Python IDE     :elpy:
+2.  Anaconda
+
+    <https://github.com/pythonic-emacs/anaconda-mode>
+
+    ```emacs-lisp
+    (use-package anaconda-mode
+      :config
+      (add-hook 'python-mode-hook 'anaconda-mode)
+      (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+    ```
+
+3.  Elpy, the Emacs Python IDE     :elpy:
 
     ```emacs-lisp
     (use-package elpy
@@ -3708,10 +3719,13 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
       :custom
       (elpy-rpc-virtualenv-path 'current)
       :init
-      (advice-add 'python-mode :before 'elpy-enable))
+      (advice-add 'python-mode :before 'elpy-enable)
+      :config
+      (pyvenv-mode 1)
+      (pyvenv-tracking-mode 1))
     ```
 
-3.  virtualenvs
+4.  virtualenvs
 
     1.  auto-virtualenv
 
@@ -3721,7 +3735,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
           (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
         ```
 
-    2.  pyenv in a python project
+    2.  pyvenv in a python project
 
         1.  creating the env in a project directory
 
