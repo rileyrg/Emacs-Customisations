@@ -325,6 +325,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
           "\\*Messages\\*"
           help-mode
           helpful-mode
+          inferior-python-mode
           dictionary-mode
           compilation-mode))
   (popper-mode +1)
@@ -892,12 +893,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (straight-use-package 'platformio-mode)
 
-(use-package python-mode
-  :init
-  (setq python-shell-interpreter "ipython"
-        python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
-  )
-
 (use-package elpy
   :ensure t
   :defer t
@@ -905,9 +900,10 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (elpy-rpc-virtualenv-path 'current)
   :init
   (advice-add 'python-mode :before 'elpy-enable)
-  :config
-  (pyvenv-mode 1)
-  (pyvenv-tracking-mode 1))
+  :hook
+  (elpy-mode . (lambda ()
+                 (add-hook 'before-save-hook
+                           'elpy-format-code nil t))))
 
 (use-package  auto-virtualenv
   :init

@@ -1,0 +1,160 @@
+#+PROPERTY: header-args:python   :results output
+#+PROPERTY: header-args:python+   :session "*Python-comprehensions*"
+
+[[https://www.youtube.com/watch?v=3dt4OGnU5sM][Python Tutorial: Comprehensions - How they work and why you should be using them]]
+
+
+* list comprehensions
+
+  #+begin_src python
+    print("list-comprehensions")
+    nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    print(nums)
+  #+end_src
+
+  #+RESULTS:
+  : list-comprehensions
+  : [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+**  I want n for each n in nums
+
+   #+begin_src python
+     myl=[]
+     for n in nums:
+         myl.append(n)
+     print(myl)
+   #+end_src
+
+   #+RESULTS:
+   : [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+*** comprehension
+    #+begin_src python
+      myl = [ n for n in nums ]
+      print(myl)
+    #+end_src
+
+    #+RESULTS:
+    : [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+** I want n*n for each n in nums
+   #+begin_src python
+     myl=[]
+     for n in nums:
+         myl.append(n*n)
+     print(myl)
+   #+end_src
+
+   #+RESULTS:
+   : [1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+*** comprehension
+    #+begin_src python
+      myl = [ n*n for n in nums ]
+      print(myl)
+    #+end_src
+
+    #+RESULTS:
+    : [1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+***  using a map + lambda
+    #+begin_src python
+      myl=map(lambda n: n*n, nums)
+      print(list(myl))
+    #+end_src
+
+    #+RESULTS:
+    : [1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+** I want n for each n in nums if n is even
+   #+begin_src python
+     myl=[]
+     for n in nums:
+         if n % 2 == 0:
+             myl.append(n)
+     print(myl)
+   #+end_src
+
+   #+RESULTS:
+   : [2, 4, 6, 8]
+
+*** comprehension
+    #+begin_src python
+      myl = [n for n in nums if n % 2 == 0]
+      print(myl)
+    #+end_src
+
+    #+RESULTS:
+    : [2, 4, 6, 8]
+
+*** filter+lambda
+    #+begin_src python
+      myl = filter(lambda n:n%2==0,nums)
+      print(list(myl))
+    #+end_src
+
+    #+RESULTS:
+    : [2, 4, 6, 8]
+
+
+** I want a (letter, num) pair for each letter in "abcd" and eacg number in 0123
+   #+begin_src python
+     myl = []
+     for l in 'abcd':
+         for n in range(4):
+             myl.append((l, n))
+     print(myl)
+   #+end_src
+
+   #+RESULTS:
+   : [('a', 0), ('a', 1), ('a', 2), ('a', 3), ('b', 0), ('b', 1), ('b', 2), ('b', 3), ('c', 0), ('c', 1), ('c', 2), ('c', 3), ('d', 0), ('d', 1), ('d', 2), ('d', 3)]
+
+*** comprehension
+    #+begin_src python
+    myl = [(l, n) for l in "abcd" for n in range(4)]
+    print(myl)
+    #+end_src
+
+    #+RESULTS:
+    : [('a', 0), ('a', 1), ('a', 2), ('a', 3), ('b', 0), ('b', 1), ('b', 2), ('b', 3), ('c', 0), ('c', 1), ('c', 2), ('c', 3), ('d', 0), ('d', 1), ('d', 2), ('d', 3)]
+
+* dict comprehensions
+
+  #+begin_src python
+    names = ["Bruce", "Clark", "Peter"]
+    heroes = ["Batman", "Superman", "Spiderman"]
+    print(list(zip(names,heroes)))
+  #+end_src
+
+  #+RESULTS:
+  : [('Bruce', 'Batman'), ('Clark', 'Superman'), ('Peter', 'Spiderman')]
+
+** tradional
+   #+begin_src python
+     myd={}
+     for n,h in zip(names, heroes):
+         myd[n]=h
+     print(myd)
+   #+end_src
+
+   #+RESULTS:
+   : {'Bruce': 'Batman', 'Clark': 'Superman', 'Peter': 'Spiderman'}
+
+** dict comprehension
+   #+begin_src python
+     myd={n:h for n,h in zip(names,heroes)}
+     print(myd)
+   #+end_src
+
+   #+RESULTS:
+   : {'Bruce': 'Batman', 'Clark': 'Superman', 'Peter': 'Spiderman'}
+
+
+*** if name not equal to Peter
+   #+begin_src python
+     myd={n:h for n if n != "Peter",h in zip(names,heroes)}
+     print(myd)
+   #+end_src
+
+   #+RESULTS:

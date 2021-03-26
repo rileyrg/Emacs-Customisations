@@ -2748,6 +2748,7 @@ Using org-babel to write out the config
                  "\\*Messages\\*"
                  help-mode
                  helpful-mode
+                 inferior-python-mode
                  dictionary-mode
                  compilation-mode))
          (popper-mode +1)
@@ -3926,17 +3927,6 @@ Using org-babel to write out the config
     :PROPERTIES:
     :CUSTOM_ID: config-Programming_Language_related-Python
     :END:
-**** General
-     :PROPERTIES:
-     :CUSTOM_ID: config-Programming_Language_related-Python-General-2e40beff
-     :END:
-     #+begin_src emacs-lisp
-       (use-package python-mode
-         :init
-         (setq python-shell-interpreter "ipython"
-               python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
-         )
-     #+end_src
 **** CANCELLED lsp                                            :lsp:CANCELLED:
      CLOSED: [2021-03-16 Tue 01:10] SCHEDULED: <2021-03-18 Thu>
      :PROPERTIES:
@@ -3998,9 +3988,10 @@ Using org-babel to write out the config
          (elpy-rpc-virtualenv-path 'current)
          :init
          (advice-add 'python-mode :before 'elpy-enable)
-         :config
-         (pyvenv-mode 1)
-         (pyvenv-tracking-mode 1))
+         :hook
+         (elpy-mode . (lambda ()
+                        (add-hook 'before-save-hook
+                                  'elpy-format-code nil t))))
      #+end_src
 **** virtualenvs
      :PROPERTIES:

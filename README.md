@@ -2456,6 +2456,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
               "\\*Messages\\*"
               help-mode
               helpful-mode
+              inferior-python-mode
               dictionary-mode
               compilation-mode))
       (popper-mode +1)
@@ -3689,17 +3690,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
 ### Python     :python:
 
-1.  General
-
-    ```emacs-lisp
-    (use-package python-mode
-      :init
-      (setq python-shell-interpreter "ipython"
-            python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
-      )
-    ```
-
-2.  Anaconda
+1.  Anaconda
 
     <https://github.com/pythonic-emacs/anaconda-mode>
 
@@ -3710,7 +3701,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
       (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
     ```
 
-3.  Elpy, the Emacs Python IDE     :elpy:
+2.  Elpy, the Emacs Python IDE     :elpy:
 
     ```emacs-lisp
     (use-package elpy
@@ -3720,12 +3711,13 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
       (elpy-rpc-virtualenv-path 'current)
       :init
       (advice-add 'python-mode :before 'elpy-enable)
-      :config
-      (pyvenv-mode 1)
-      (pyvenv-tracking-mode 1))
+      :hook
+      (elpy-mode . (lambda ()
+                     (add-hook 'before-save-hook
+                               'elpy-format-code nil t))))
     ```
 
-4.  virtualenvs
+3.  virtualenvs
 
     1.  auto-virtualenv
 
