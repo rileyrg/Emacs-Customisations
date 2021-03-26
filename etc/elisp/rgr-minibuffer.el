@@ -179,34 +179,32 @@
               ("!" . consult-flycheck)))
 
 (use-package embark
-  :demand t
-  :config
-  (add-hook 'embark-target-finders
-            (defun current-candidate+category ()
-              (when selectrum-active-p
-                (cons (selectrum--get-meta 'category)
-                      (selectrum-get-current-candidate)))))
-
-  (add-hook 'embark-candidate-collectors
-            (defun current-candidates+category ()
-              (when selectrum-active-p
-                (cons (selectrum--get-meta 'category)
-                      (selectrum-get-current-candidates
-                       ;; Pass relative file names for dired.
-                       minibuffer-completing-file-name)))))
-
-  ;; No unnecessary computation delay after injection.
-  (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate)
-
-  ;; The following is not selectrum specific but included here for convenience.
-  ;; If you don't want to use which-key as a key prompter skip the following code.
-
-  (setq embark-action-indicator
-        (lambda (map) (which-key--show-keymap "Embark" map nil nil 'no-paging)
-          #'which-key--hide-popup-ignore-command)
-        embark-become-indicator embark-action-indicator)
+  :ensure t
   :bind
-  ("C-S-a" . embark-act)) ; pick some comfortable binding
+  (("C-S-a" . embark-act)       ;; pick some comfortable binding
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult
+  :ensure t
+  :after (embark consult)
+  :demand t ; only necessary if you have the hook below
+  ;; if you want to have consult previews as you move around an
+  ;; auto-updating embark collect buffer
+  :hook
+  (embark-collect-mode . embark-consult-preview-minor-mode))
 
 (use-package marginalia
   :custom

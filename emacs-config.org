@@ -692,83 +692,29 @@ Using org-babel to write out the config
 
          :init
 
-         ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
-         (fset 'multi-occur #'consult-multi-occur)
-         ;;(fset 'projectile-ripgrep 'consult-ripgrep)
+         ;; Optionally configure the register formatting. This improves the register
+         ;; preview for `consult-register', `consult-register-load',
+         ;; `consult-register-store' and the Emacs built-ins.
+         (setq register-preview-delay 0
+               register-preview-function #'consult-register-format)
 
+         ;; Optionally tweak the register preview window.
+         ;; This adds thin lines, sorting and hides the mode line of the window.
+         (advice-add #'register-preview :override #'consult-register-window)
+
+         ;; Use Consult to select xref locations with preview
+         (setq xref-show-xrefs-function #'consult-xref
+               xref-show-definitions-function #'consult-xref)
          ;; Configure other variables and modes in the :config section, after lazily loading the package
          :config
 
-         ;; Optionally configure a function which returns the project root directory
          (autoload 'projectile-project-root "projectile")
          (setq consult-project-root-function #'projectile-project-root)
-
-         ;; Optionally configure narrowing key.
-         ;; Both < and C-+ work reasonably well.
          (setq consult-narrow-key "<") ;; (kbd "C-+")
-         ;; Optionally make narrowing help available in the minibuffer.
-         ;; Probably not needed if you are using which-key.
-         ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-
-         ;; Optional configure a view library to be used by `consult-buffer'.
-         ;; The view library must provide two functions, one to open the view by name,
-         ;; and one function which must return a list of views as strings.
-         ;; Example: https://github.com/minad/bookmark-view/
-         ;; (setq consult-view-open-function #'bookmark-jump
-         ;;       consult-view-list-function #'bookmark-view-names)
-
-         ;; Optionally enable previews. Note that individual previews can be disabled
-         ;; via customization variables.
-         ;; (consult-preview-mode)
-
-         (defun mode-buffer-exists-p (mode)
-           (seq-some (lambda (buf)
-                       (provided-mode-derived-p
-                        (buffer-local-value 'major-mode buf)
-                        mode))
-                     (buffer-list)))
-
-         (defvar eshell-source
-           `(:category 'consult-new
-                       :name "EShell"
-                       :narrow ?e
-                       :face     'font-lock-constant-face
-                       :open
-                       ,(lambda (&rest _) (eshell))
-                       :items
-                       ,(lambda ()
-                          (unless (mode-buffer-exists-p 'eshell-mode)
-                            '("*eshell* (new)")))))
-
-         (defvar term-source
-           `(:category 'consult-new
-                       :name "Term"
-                       :narrow ?t
-                       :face     'font-lock-constant-face
-                       :open
-                       ,(lambda (&rest _)
-                          (ansi-term (or (getenv "SHELL") "/bin/sh")))
-                       :items
-                       ,(lambda ()
-                          (unless (mode-buffer-exists-p 'term-mode)
-                            '("*ansi-term* (new)")))))
-
-         (add-to-list 'consult-buffer-sources 'eshell-source 'append)
-         (add-to-list 'consult-buffer-sources 'term-source 'append)
-         )
-
-
-       ;; Enable Consult-Selectrum integration.
-       ;; This package should be installed if Selectrum is used.
-       (use-package consult-selectrum
-         :disabled t
-         :after selectrum
-         :demand t)
-
-       ;; Optionally add the `consult-flycheck' command.
-       (use-package consult-flycheck
-         :bind (:map flycheck-command-map
-                     ("!" . consult-flycheck)))
+         ;; Optionally add the `consult-flycheck' command.
+         (use-package consult-flycheck
+           :bind (:map flycheck-command-map
+                       ("!" . consult-flycheck))))
      #+end_src
 **** [[https://github.com/oantolin/embark][Embark]] Emacs Mini-Buffer Actions Rooted in Keymaps
      :PROPERTIES:
@@ -776,35 +722,43 @@ Using org-babel to write out the config
      :END:
      #+begin_src emacs-lisp
        (use-package embark
-         :demand t
-         :config
-         (add-hook 'embark-target-finders
-                   (defun current-candidate+category ()
-                     (when selectrum-active-p
-                       (cons (selectrum--get-meta 'category)
-                             (selectrum-get-current-candidate)))))
+         :ensure t
+         :bind
+         (("C-S-a" . embark-act)       ;; pick some comfortable binding
+          ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
-         (add-hook 'embark-candidate-collectors
-                   (defun current-candidates+category ()
-                     (when selectrum-active-p
-                       (cons (selectrum--get-meta 'category)
-                             (selectrum-get-current-candidates
-                              ;; Pass relative file names for dired.
-                              minibuffer-completing-file-name)))))
-
-         ;; No unnecessary computation delay after injection.
-         (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate)
-
-         ;; The following is not selectrum specific but included here for convenience.
-         ;; If you don't want to use which-key as a key prompter skip the following code.
-
+         :init
          (setq embark-action-indicator
-               (lambda (map) (which-key--show-keymap "Embark" map nil nil 'no-paging)
+               (lambda (map _target)
+                 (which-key--show-keymap "Embark" map nil nil 'no-paging)
                  #'which-key--hide-popup-ignore-command)
                embark-become-indicator embark-action-indicator)
-         :bind
-         ("C-S-a" . embark-act)) ; pick some comfortable binding
+         ;; Optionally replace the key help with a completing-read interface
+         (setq prefix-help-command #'embark-prefix-help-command)
+
+         :config
+
+         ;; Hide the mode line of the Embark live/completions buffers
+         (add-to-list 'display-buffer-alist
+                      '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                        nil
+                        (window-parameters (mode-line-format . none)))))
      #+end_src
+***** embark-consult
+      :PROPERTIES:
+      :CUSTOM_ID: config-Minibuffer_Enrichment_(search,_sudo_edit...)-library-Embark_Emacs_Mini-Buffer_Actions_Rooted_in_Keymaps-embark-consult-0c88a48a
+      :END:
+      #+begin_src emacs-lisp
+        (use-package embark-consult
+          :ensure t
+          :after (embark consult)
+          :demand t ; only necessary if you have the hook below
+          ;; if you want to have consult previews as you move around an
+          ;; auto-updating embark collect buffer
+          :hook
+          (embark-collect-mode . embark-consult-preview-minor-mode))
+
+      #+end_src
 **** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
      :PROPERTIES:
      :CUSTOM_ID: Marginalia
@@ -3952,12 +3906,17 @@ Using org-babel to write out the config
                                       ;; (require 'lsp-python-ms)
                                       (lsp)))
      #+end_src
-**** TODO Anaconda
+**** CANCELLED Anaconda                                  :anaconda:CANCELLED:
+     CLOSED: [2021-03-26 Fri 22:17]
      :PROPERTIES:
      :CUSTOM_ID: config-Programming_Language_related-Python-Anaconda-d30e2860
      :header-args:emacs-lisp: :tangle no
      :END:
      :LOGBOOK:
+     - State "CANCELLED"  from "WAITING"    [2021-03-26 Fri 22:17] \\
+       using elpy
+     - State "WAITING"    from "TODO"       [2021-03-26 Fri 22:16] \\
+       wait to see if elpy fails
      - State "TODO"       from "CANCELLED"  [2021-03-25 Thu 22:02]
      - State "CANCELLED"  from              [2021-03-25 Thu 20:34] \\
        keeps freezing so back on the shelf for a while
@@ -3969,11 +3928,15 @@ Using org-babel to write out the config
                 (add-hook 'python-mode-hook 'anaconda-mode)
                 (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
      #+end_src
-**** TODO Elpy, the Emacs Python IDE                                   :elpy:
+**** DONE Elpy, the Emacs Python IDE                                   :elpy:
+     CLOSED: [2021-03-26 Fri 22:17]
      :PROPERTIES:
      :CUSTOM_ID: python-elpy
      :END:
      :LOGBOOK:
+     - Note taken on [2021-03-26 Fri 22:17] \\
+       seems to work better than anaconda
+     - State "DONE"       from "TODO"       [2021-03-26 Fri 22:17]
      - State "TODO"       from "STARTED"    [2021-03-25 Thu 20:39]
      - State "STARTED"    from "TODO"       [2021-03-25 Thu 20:38]
      - State "TODO"       from "CANCELLED"  [2021-03-25 Thu 20:34]
@@ -3997,12 +3960,13 @@ Using org-babel to write out the config
      :PROPERTIES:
      :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-3d14ccbf
      :END:
-***** TODO auto-virtualenv
-      SCHEDULED: <2021-03-23 Tue>
+***** DONE auto-virtualenv
+      CLOSED: [2021-03-26 Fri 22:15] SCHEDULED: <2021-03-23 Tue>
       :PROPERTIES:
       :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-auto-virtualenvwrapper-bd500e27
       :END:
       :LOGBOOK:
+      - State "DONE"       from "TODO"       [2021-03-26 Fri 22:15]
       - State "TODO"       from              [2021-03-23 Tue 21:44]
       :END:
       #+begin_src emacs-lisp
@@ -4010,10 +3974,14 @@ Using org-babel to write out the config
           :init
           (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
       #+end_src
-***** pyvenv in a python project
+***** DONE pyvenv in a python project
+      CLOSED: [2021-03-26 Fri 22:15]
       :PROPERTIES:
       :header-args:emacs-lisp: :tangle no
       :CUSTOM_ID: config-Late_load-pyenv_in_a_python_project-245e2d3a
+      :END:
+      :LOGBOOK:
+      - State "DONE"       from              [2021-03-26 Fri 22:15]
       :END:
 ****** creating the env in a project directory
        :PROPERTIES:
