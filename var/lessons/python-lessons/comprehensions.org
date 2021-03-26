@@ -1,5 +1,4 @@
 #+PROPERTY: header-args:python   :results output
-#+PROPERTY: header-args:python+   :session "*Python-Learning*"
 
 [[https://www.youtube.com/watch?v=3dt4OGnU5sM][Python Tutorial: Comprehensions - How they work and why you should be using them]]
 
@@ -197,3 +196,40 @@
 
    #+RESULTS:
    : {1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+
+
+* Generator Expressions
+  :PROPERTIES:
+  :header-args:python: :session "*python-generators*"
+  :END:
+  #+begin_src python
+    nums = [*range(9)]
+    print(nums)
+  #+end_src
+
+  #+RESULTS:
+  : [0, 1, 2, 3, 4, 5, 6, 7, 8]
+
+#+begin_src python
+  def gen_func(nums):
+      for n in nums:
+          yield n*n
+
+  my_gen = gen_func(nums)
+
+  myl= [n for n in my_gen]
+  print(myl)
+#+end_src
+
+#+RESULTS:
+: [0, 1, 4, 9, 16, 25, 36, 49, 64]
+
+** comprehension
+   #+begin_src python
+     my_gen = (n*n for n in nums)
+     print([n for n in my_gen])
+   #+end_src
+
+   #+RESULTS:
+   : [0, 1, 4, 9, 16, 25, 36, 49, 64]
