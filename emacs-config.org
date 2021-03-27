@@ -3126,7 +3126,7 @@ Using org-babel to write out the config
      :CUSTOM_ID: Email,_gmail,_Gnus,_mu4e-mu4e-tasks-0832309d
      :END:
 ***** SOMEDAY checkout mu4e query fragments to subset search and bookmakrs discussed [[https://www.reddit.com/r/emacs/comments/l5kdsy/mu4e_contexts_root_search_query_limiter/][here]] :WAITING:
-      SCHEDULED: <2021-03-21 Sun>
+      SCHEDULED: <2021-04-06 Tue>
       :PROPERTIES:
       :CUSTOM_ID: Email,_gmail,_Gnus,_mu4e-mu4e_email_client-tasks-checkout_mu4e_query_fragments_to_subset_search_and_bookmakrs_discussed_https:www.reddit.comremacscommentsl5kdsymu4e_contexts_root_search_query_limiterhere-5fa601d2
       :END:
