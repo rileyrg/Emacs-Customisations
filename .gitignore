@@ -50,15 +50,6 @@
 !etc/straight/versions/default.el
 
 
-!var/lessons
-!var/lessons/*.org
-
-!var/lessons/bash-lessons
-!var/lessons/bash-lessons/*.org
-
-!var/lessons/python-lessons
-!var/lessons/python-lessons/*.org
-
 !editor-config
 !editor-config/*
 
