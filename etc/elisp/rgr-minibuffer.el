@@ -100,83 +100,29 @@
 
   :init
 
-  ;; Replace `multi-occur' with `consult-multi-occur', which is a drop-in replacement.
-  (fset 'multi-occur #'consult-multi-occur)
-  ;;(fset 'projectile-ripgrep 'consult-ripgrep)
+  ;; Optionally configure the register formatting. This improves the register
+  ;; preview for `consult-register', `consult-register-load',
+  ;; `consult-register-store' and the Emacs built-ins.
+  (setq register-preview-delay 0
+        register-preview-function #'consult-register-format)
 
+  ;; Optionally tweak the register preview window.
+  ;; This adds thin lines, sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
   ;; Configure other variables and modes in the :config section, after lazily loading the package
   :config
 
-  ;; Optionally configure a function which returns the project root directory
   (autoload 'projectile-project-root "projectile")
   (setq consult-project-root-function #'projectile-project-root)
-
-  ;; Optionally configure narrowing key.
-  ;; Both < and C-+ work reasonably well.
   (setq consult-narrow-key "<") ;; (kbd "C-+")
-  ;; Optionally make narrowing help available in the minibuffer.
-  ;; Probably not needed if you are using which-key.
-  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-
-  ;; Optional configure a view library to be used by `consult-buffer'.
-  ;; The view library must provide two functions, one to open the view by name,
-  ;; and one function which must return a list of views as strings.
-  ;; Example: https://github.com/minad/bookmark-view/
-  ;; (setq consult-view-open-function #'bookmark-jump
-  ;;       consult-view-list-function #'bookmark-view-names)
-
-  ;; Optionally enable previews. Note that individual previews can be disabled
-  ;; via customization variables.
-  ;; (consult-preview-mode)
-
-  (defun mode-buffer-exists-p (mode)
-    (seq-some (lambda (buf)
-                (provided-mode-derived-p
-                 (buffer-local-value 'major-mode buf)
-                 mode))
-              (buffer-list)))
-
-  (defvar eshell-source
-    `(:category 'consult-new
-                :name "EShell"
-                :narrow ?e
-                :face     'font-lock-constant-face
-                :open
-                ,(lambda (&rest _) (eshell))
-                :items
-                ,(lambda ()
-                   (unless (mode-buffer-exists-p 'eshell-mode)
-                     '("*eshell* (new)")))))
-
-  (defvar term-source
-    `(:category 'consult-new
-                :name "Term"
-                :narrow ?t
-                :face     'font-lock-constant-face
-                :open
-                ,(lambda (&rest _)
-                   (ansi-term (or (getenv "SHELL") "/bin/sh")))
-                :items
-                ,(lambda ()
-                   (unless (mode-buffer-exists-p 'term-mode)
-                     '("*ansi-term* (new)")))))
-
-  (add-to-list 'consult-buffer-sources 'eshell-source 'append)
-  (add-to-list 'consult-buffer-sources 'term-source 'append)
-  )
-
-
-;; Enable Consult-Selectrum integration.
-;; This package should be installed if Selectrum is used.
-(use-package consult-selectrum
-  :disabled t
-  :after selectrum
-  :demand t)
-
-;; Optionally add the `consult-flycheck' command.
-(use-package consult-flycheck
-  :bind (:map flycheck-command-map
-              ("!" . consult-flycheck)))
+  ;; Optionally add the `consult-flycheck' command.
+  (use-package consult-flycheck
+    :bind (:map flycheck-command-map
+                ("!" . consult-flycheck))))
 
 (use-package embark
   :ensure t
@@ -185,7 +131,11 @@
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
   :init
-
+  (setq embark-action-indicator
+        (lambda (map _target)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator)
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
 
