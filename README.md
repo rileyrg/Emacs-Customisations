@@ -3647,6 +3647,10 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
 ### Python     :python:
 
+```python
+(use-package python-mode)
+```
+
 1.  Elpy, the Emacs Python IDE     :elpy:
 
     ```emacs-lisp

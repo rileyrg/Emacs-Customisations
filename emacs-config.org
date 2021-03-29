@@ -3885,6 +3885,9 @@ Using org-babel to write out the config
     :PROPERTIES:
     :CUSTOM_ID: config-Programming_Language_related-Python
     :END:
+    #+begin_src python
+      (use-package python-mode)
+    #+end_src
 **** CANCELLED lsp                                            :lsp:CANCELLED:
      CLOSED: [2021-03-16 Tue 01:10] SCHEDULED: <2021-03-18 Thu>
      :PROPERTIES:
