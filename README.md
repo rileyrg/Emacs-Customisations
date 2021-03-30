@@ -1,4 +1,4 @@
-Using org-babel to write out the config
+This file generates [init.el](init.el) and other [org files](etc/elisp/) using [org-babel-tangle](#Org_functionality-Self_documenting_config_file-7dfe1f94)
 
 
 # [straight.el](https://github.com/raxod502/straight.el#bootstrapping-straightel) package management

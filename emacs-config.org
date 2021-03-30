@@ -25,7 +25,7 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el :tangle-mode (identity #o444)
 #+PROPERTY: header-args:gpg :cache no :tangle-mode (identity #o600)
 
-Using org-babel to write out the config
+This file generates [[file:init.el::defvar bootstrap-version][init.el]] and other [[file:etc/elisp/][org files]]  using [[#Org_functionality-Self_documenting_config_file-7dfe1f94][org-babel-tangle]]
 
 * [[https://github.com/raxod502/straight.el#bootstrapping-straightel][straight.el]] package management
   :PROPERTIES:
