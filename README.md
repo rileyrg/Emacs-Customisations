@@ -1371,14 +1371,14 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
         maintain a file pointing to agenda sources
 
         ```conf
-        ~/.emacs.d/var/org/orgfiles/
-        ~/.emacs.d/var/org/orgfiles/journals/
-        ~/.emacs.d/var/org/orgfiles/projects/
-        ~/development/projects/Python/python-lernen.de
+        ~/.emacs.d/var/org/orgfiles
+        ~/.emacs.d/var/org/orgfiles/journals
+        ~/.emacs.d/var/org/orgfiles/projects
         ~/development/education/lessons
         ~/development/education/lessons/bash
         ~/development/education/lessons/python
         ~/development/education/lessons/python/coreyschafer
+        ~/development/education/lessons/python/python-lernen.de
         ~/development/education/lessons/elisp
         ```
 
@@ -3918,13 +3918,6 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 
 
 ## Startup
-
-```emacs-lisp
-(use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook))
-```
 
 
 ## Themes

@@ -1574,14 +1574,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
       maintain a file pointing to agenda sources
       #+begin_src conf :tangle (no-littering-expand-etc-file-name "org/agenda-files.txt")
-        ~/.emacs.d/var/org/orgfiles/
-        ~/.emacs.d/var/org/orgfiles/journals/
-        ~/.emacs.d/var/org/orgfiles/projects/
-        ~/development/projects/Python/python-lernen.de
+        ~/.emacs.d/var/org/orgfiles
+        ~/.emacs.d/var/org/orgfiles/journals
+        ~/.emacs.d/var/org/orgfiles/projects
         ~/development/education/lessons
         ~/development/education/lessons/bash
         ~/development/education/lessons/python
         ~/development/education/lessons/python/coreyschafer
+        ~/development/education/lessons/python/python-lernen.de
         ~/development/education/lessons/elisp
       #+end_src
 ***** Journal, org-journal
@@ -4290,12 +4290,21 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    :PROPERTIES:
    :CUSTOM_ID: config-Startup-6c88b604
    :END:
-   #+begin_src emacs-lisp
-     (use-package dashboard
-       :ensure t
-       :config
-       (dashboard-setup-startup-hook))
-   #+end_src
+*** SOMEDAY Dashboard                                               :WAITING:
+    :PROPERTIES:
+    :header-args:emacs-lisp: :tangle no
+    :CUSTOM_ID: config-Startup-Dashboard-1eda176e
+    :END:
+    :LOGBOOK:
+    - State "SOMEDAY"    from              [2021-03-31 Wed 07:46]
+    :END:
+    problems with missing agenda files stops daemon starting up properly so put this on ice for now
+    #+begin_src emacs-lisp
+      (use-package dashboard
+        :ensure t
+        :config
+        (dashboard-setup-startup-hook))
+    #+end_src
 ** Themes
    :PROPERTIES:
    :CUSTOM_ID: Configure_main_look_and_feel-Themes-e137c6ca

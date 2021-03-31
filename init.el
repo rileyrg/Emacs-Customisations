@@ -1046,11 +1046,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-(use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook))
-
 (use-package modus-themes
   :demand
   :ensure
