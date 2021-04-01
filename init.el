@@ -324,6 +324,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
         '(
           "\\*Messages\\*"
           help-mode
+          magit-mode
           helpful-mode
           inferior-python-mode
           dictionary-mode
