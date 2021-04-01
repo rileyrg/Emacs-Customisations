@@ -90,7 +90,6 @@
          ("M-g s" . consult-grep)
          ("M-s m" . consult-multi-occur)
          ("M-y" . consult-yank-pop)
-         ("<f3>" . consult-ripgrep)
 
          ("<help> a" . consult-apropos)
          ;;("C-s" . consult-line)

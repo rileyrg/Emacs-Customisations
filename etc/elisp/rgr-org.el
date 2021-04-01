@@ -1,10 +1,13 @@
 (use-package org
   :custom
   (org-babel-default-header-args:python
-        '((:results  . "output")))
+   '((:results  . "output")))
   :config
   (use-package ob-async)
-
+  (require 'org-id)
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (require 'org-tempo)
   (defun rgr/org-refile-targets() ;;(rgr/org-refile-targets)
     (directory-files-recursively org-directory "^[[:alnum:]].*\\.\\(org\\|gpg\\)\\'"))
   (defun rgr/org-agenda (&optional arg)
@@ -19,29 +22,6 @@
   ("C-c C-l" . org-insert-link)
   ("C-c C-s" . org-schedule)
   ("C-c C-t" . org-todo))
-
-(require 'org-id)
-(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-
-(require 'org-crypt)
-(setq  org-crypt-key "rileyrg")
-(org-crypt-use-before-save-magic)
-
-(use-package org-journal
-  :demand t
-  :custom
-  (org-journal-dir (expand-file-name "journals" org-directory))
-  (org-journal-file-format "%Y%m%d.org")
-  (org-journal-date-format "%d/%m/%Y")
-  :config
-  ;;(add-to-list 'org-agenda-files org-journal-dir)
-
-  :hook (org-journal-mode  . (lambda ()
-                               (local-unset-key (kbd "C-c C-s"))))
-  :bind (
-         ("C-c S" . org-journal-search)
-         ("C-c J" . org-journal-new-entry)
-         ))
 
 (defun insert-property(&optional p)
   "insert PROPERTY value of pdftools link"

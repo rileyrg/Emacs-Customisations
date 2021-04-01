@@ -96,7 +96,6 @@
   :demand t
   :init
   (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
-  ;;:custom
   ;;(edebug-trace nil)
   :config
   (require 'edebug)

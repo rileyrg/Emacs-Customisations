@@ -16,7 +16,7 @@
  '(alert-fade-time 15)
  '(apropos-do-all t)
  '(async-shell-command-buffer 'confirm-kill-process)
- '(auth-sources '("~/.gnupg/auth/authinfo.gpg" "~/.gnupg/auth/authirc.gpp") nil nil "Customized with use-package auth-source")
+ '(auth-sources '("~/.gnupg/auth/authinfo.gpg" "~/.gnupg/auth/authirc.gpp"))
  '(auto-revert-check-vc-info t)
  '(auto-revert-remote-files t)
  '(backup-by-copying nil)

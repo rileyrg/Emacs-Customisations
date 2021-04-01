@@ -47,9 +47,6 @@
 (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
 
 (use-package auth-source
-  :demand
-  :custom
-  (auth-sources '("~/.gnupg/auth/authinfo.gpg" "~/.gnupg/auth/authirc.gpp"))
   :no-require t
   )
 
@@ -59,16 +56,6 @@
 (global-set-key (kbd "C-M-S-e") 'rgr/elisp-helpers-popup-help-enabled-toggle)
 
 (require 'rgr/daemon "rgr-daemon" 'NOERROR)
-
-;; (setq system-time-locale "C") ;; doesnt work with daemon
-;; (format-time-string "%A")
-;;(setq system-time-locale "de.UTF8")
-;; (setq system-time-locale nil)
-;;(format-time-string "%A")
-;; (set-locale-environment "en_GB.UTF8")
-;;(add-hook 'server-switch-hook (lambda()(set-locale-environment "en_GB.UTF8")))
-
-(add-hook 'emacs-startup-hook (lambda()(setq system-time-locale "C")))
 
 (require 'rgr/minibuffer "rgr-minibuffer" 'NOERROR)
 
@@ -97,25 +84,10 @@
          scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
          scroll-margin_t))
 
-(use-package
-  expand-region
-  :disabled
-  :config (defun er/select-call-f(arg)
-            (setq current-prefix-arg arg)
-            (call-interactively 'er/expand-region)
-            (exchange-point-and-mark))
-  (defun selectFunctionCall()
-    (interactive)
-    (er/select-call-f 3))
-  :bind ("<C-return>" . selectFunctionCall)
-  ("C-c e" . er/expand-region)
-  ("C-c c" . er/contract-region))
-
 (use-package easy-kill
   :config
   (global-set-key [remap kill-ring-save] 'easy-kill))
 
-(add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
 (use-package hideshow
   :config
   (defun toggle-selective-display (column)
@@ -211,46 +183,14 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (require 'em-smart)
   :config
   (defun eshell-mode-hook-func ()
-    (setq eshell-path-env (concat "/home/rgr/bin:" eshell-path-env))
-    (setenv "PATH" (concat "/home/rgr/bin:" (getenv "PATH")))
+    ;; (setq eshell-path-env (concat "/home/rgr/bin:" eshell-path-env))
+    ;; (setenv "PATH" (concat "/home/rgr/bin:" (getenv "PATH")))
     (setq pcomplete-cycle-completions nil))
   (add-to-list 'eshell-modules-list 'eshell-tramp)
   (add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
   (setq eshell-review-quick-commands nil)
   (setq eshell-smart-space-goes-to-end t)
-  (use-package pcomplete-extension
-    :config
-    (defconst pcmpl-git-commands
-      '("add" "bisect" "branch" "checkout" "clone"
-        "commit" "diff" "fetch" "grep"
-        "./init" "log" "merge" "mv" "pull" "push" "rebase"
-        "reset" "rm" "show" "status" "tag" )
-      "List of `git' commands")
 
-    (defvar pcmpl-git-ref-list-cmd "git for-each-ref refs/ --format='%(refname)'"
-      "The `git' command to run to get a list of refs")
-
-    (defun pcmpl-git-get-refs (type)
-      "Return a list of `git' refs filtered by TYPE"
-      (with-temp-buffer
-        (insert (shell-command-to-string pcmpl-git-ref-list-cmd))
-        (goto-char (point-min))
-        (let ((ref-list))
-          (while (re-search-forward (concat "^refs/" type "/\\(.+\\)$") nil t)
-            (add-to-list 'ref-list (match-string 1)))
-          ref-list)))
-
-    (defun pcomplete/git ()
-      "Completion for `git'"
-      ;; Completion for the command argument.
-      (pcomplete-here* pcmpl-git-commands)
-      ;; complete files/dirs forever if the command is `add' or `rm'
-      (cond
-       ((pcomplete-match (regexp-opt '("add" "rm")) 1)
-        (while (pcomplete-here (pcomplete-entries))))
-       ;; provide branch completion for the command `checkout'.
-       ((pcomplete-match "checkout" 1)
-        (pcomplete-here* (pcmpl-git-get-refs "heads")))))    )
   (use-package
     eshell-git-prompt
     :config
@@ -260,8 +200,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
         (:override ()
                    short)
       "Show only last directory."
-      (file-name-nondirectory (directory-file-name default-directory))))
-  )
+      (file-name-nondirectory (directory-file-name default-directory)))))
 
 (use-package docker
   :after projectile
@@ -527,29 +466,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (global-set-key (kbd "C-c i") 'eshell/chat-client)
 
-(use-package
-  gnus
-
-  :disabled t
-  :config
-
-  (setq smtpmail-smtp-server "smtp.gmail.com" smtpmail-smtp-service 587 gnus-ignored-newsgroups
-        "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
-  (require 'bbdb)
-  (require 'bbdb-vcard)
-  (bbdb-initialize 'gnus 'message)
-  (add-hook 'message-setup-hook 'bbdb-mail-aliases)
-  (defun rgr/gnus-themes()
-    (load-theme-buffer-local 'alect-light (current-buffer)))
-  (require 'gnus-desktop-notify)
-  (gnus-desktop-notify-mode)
-  (gnus-demon-add-scanmail)
-
-  (define-key gnus-summary-mode-map (kbd "M-o") 'ace-link-gnus)
-  (define-key gnus-article-mode-map (kbd "M-o") 'ace-link-gnus)
-  (setq bbdb-use-pop-up nil)
-  :bind	  ("C-c m".  'gnus))
-
 (use-package mu4e
 
   :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
@@ -696,34 +612,11 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package keycast
   )
 
-(use-package
-  pomidor
-  :bind (("S-<f7>" . pomidor))
-  :custom (pomidor-sound-tick nil)
-  (pomidor-sound-tack nil)
-  (pomidor-seconds (* 25 60))
-  (pomidor-break-seconds (* 5 60))
-  :hook (pomidor-mode . (lambda ()
-                          (display-line-numbers-mode -1) ; Emacs 26.1+
-                          (setq left-fringe-width 0 right-fringe-width 0)
-                          (setq left-margin-width 2 right-margin-width 0)
-                          ;; force fringe update
-                          (set-window-buffer nil (current-buffer)))))
-
 (unless (fboundp 'prog-mode)
   (defalias 'prog-mode 'fundamental-mode))
 
 (global-set-key (kbd "S-<f2>") 'linum-mode)
 (add-hook 'prog-mode-hook (lambda() (linum-mode t)))
-
-(use-package
-  smartparens
-  :disabled t
-  :commands (smartparens-mode)
-  :config (setq sp-show-pair-from-inside nil)
-  (require 'smartparens-config)
-  (sp-local-tag '(mhtml-mode html-mode) "b" "<span class=\"bold\">" "</span>")
-  (smartparens-global-mode t))
 
 (use-package rainbow-delimiters
   :config
@@ -751,8 +644,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-to-list 'compilation-error-regexp-alist-alist
                '(pascal
                  "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
-
-(use-package json-mode)
 
 (use-package
   yaml-mode
@@ -790,11 +681,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :after magit)
 
 (use-package orgit
-  :after magit
-  :demand t)
+  :after magit)
 
 (use-package git-gutter
-  :demand t
   :config
   (global-git-gutter-mode +1)
   :bind
@@ -848,24 +737,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
     (setq-local dash-docs-docsets '("React" "JavaScript")))
   (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 
-(use-package tide
-  :disabled t
-  :config
-  (defun setup-tide-mode ()
-    "Setup function for tide."
-    (interactive)
-    (tide-setup)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1)
-    (company-mode +1))
-
-  (setq company-tooltip-align-annotations t)
-  :init
-  (add-hook 'js2-mode-hook #'setup-tide-mode)
-  )
-
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 
 (defgroup rgr/serial-ports nil
@@ -892,7 +763,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
                   (interactive)
                   (selectSerialPortBuffer)))
 
-(straight-use-package 'platformio-mode)
+(use-package platformio-mode)
 
 (use-package elpy
   :ensure t
@@ -910,56 +781,16 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :init
   (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
 
-(defun rgr/asm-mode-hook ()
-  ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway
-  (local-unset-key (vector asm-comment-char))
-  ;; (local-unset-key "<return>") ; doesn't work. "RET" in a terminal.  http://emacs.stackexchange.com/questions/13286/how-can-i-stop-the-enter-key-from-triggering-a-completion-in-company-mode
-  (electric-indent-local-mode)  ; toggle off
-                                        ;  (setq tab-width 4)
-  (setq indent-tabs-mode nil)
-  ;; asm-mode sets it locally to nil, to "stay closer to the old TAB behaviour".
-  ;; (setq tab-always-indent (default-value 'tab-always-indent))
-
-  (defun asm-calculate-indentation ()
-    (or
-     ;; Flush labels to the left margin.
-                                        ;   (and (looking-at "\\(\\.\\|\\sw\\|\\s_\\)+:") 0)
-     (and (looking-at "[.@_[:word:]]+:") 0)
-     ;; Same thing for `;;;' comments.
-     (and (looking-at "\\s<\\s<\\s<") 0)
-     ;; %if nasm macro stuff goes to the left margin
-     (and (looking-at "%") 0)
-     (and (looking-at "c?global\\|section\\|default\\|align\\|INIT_..X") 0)
-     ;; Simple `;' comments go to the comment-column
-                                        ;(and (looking-at "\\s<\\(\\S<\\|\\'\\)") comment-column)
-     ;; The rest goes at column 4
-     (or 4)))
-  )
-
-(add-hook 'asm-mode-hook #'rgr/asm-mode-hook)
-
-(straight-use-package 'clang-format)
+(use-package clang-format)
 (setq clang-format-style-option "llvm")
 (fset 'c-indent-region 'clang-format-region)
 (fset 'c-indent-buffer 'clang-format-buffer)
 
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-(use-package
-  ccls
-  :hook ((c++-mode c-mode objc-mode) . (lambda ()
-                                         (require 'ccls)
-                                         (ccls-use-default-rainbow-sem-highlight)
-                                         ;;                 (ccls-code-lens-mode)
-                                         )))
-(defun rgr/c-setup ()
-  "Set up my C mode."
-  (platformio-mode))
-;;        (define-key c-mode-map (kbd "C-c s") #'selectSerialPort
-(add-hook 'c-mode-hook #'rgr/c-setup)
-(add-hook 'objc-mode-hook #'rgr/c-setup)
+(defun rgr/c++-mode-hook ()
+  (setq-local dash-docs-docsets '("C++")))
+(add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
 
 (use-package x86-lookup
-  :custom
   ( x86-lookup-pdf  (expand-file-name "pdf/intel-x86.pdf" user-emacs-directory))
   )
 
@@ -970,13 +801,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
 (use-package strace-mode)
-
-(defun rgr/c++-mode-hook ()
-  (setq-local dash-docs-docsets '("C++")))
-(add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
-
-(use-package csharp-mode)
-(use-package omnisharp)
 
 (use-package gdscript-mode
   ;;       :disabled t

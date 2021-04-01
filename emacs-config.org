@@ -25,11 +25,11 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el :tangle-mode (identity #o444)
 #+PROPERTY: header-args:gpg :cache no :tangle-mode (identity #o600)
 
-This file generates [[file:init.el::defvar bootstrap-version][init.el]] and other [[file:etc/elisp/][org files]]  using [[#Org_functionality-Self_documenting_config_file-7dfe1f94][org-babel-tangle]]
+This file generates [[file:init.el::defvar bootstrap-version][init.el]] and other [[file:etc/elisp/][org files]]  using [[https://orgmode.org/manual/Extracting-Source-Code.html][org-babel-tangle]]
 
 * [[https://github.com/raxod502/straight.el#bootstrapping-straightel][straight.el]] package management
   :PROPERTIES:
-  :CUSTOM_ID: straight_package_management
+  :ID:       7be978df-ed2c-4d29-b5b2-da0039312e68
   :END:
   #+begin_src emacs-lisp
     (defvar bootstrap-version)
@@ -78,7 +78,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Path to our own elisp
     :PROPERTIES:
-    :CUSTOM_ID: user_elisp_path
+    :ID:       64b907df-b368-455e-8568-c2449fc0440e
     :END:
     #+begin_src emacs-lisp
       (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
@@ -88,11 +88,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** Customization
    :PROPERTIES:
-   :CUSTOM_ID: Paths,_clutter_and_customisation-Customization-5078dd0a
+   :ID:       302b803c-5c00-4afa-8bea-46b03beefd91
    :END:
 *** Standard Emacs customisation
     :PROPERTIES:
-    :CUSTOM_ID: Paths_and_customisation-Standard_Emacs_customisation-33d6ef99
+    :ID:       35cdda6a-3830-4e7f-ba6d-956db0066d59
     :END:
     #+begin_src emacs-lisp
       (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
@@ -100,7 +100,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Load user customisations and gpg
     :PROPERTIES:
-    :CUSTOM_ID: customisations
+    :ID:       4695d758-01da-4669-9941-d4d56e9aa2bf
     :END:
     Load all files in certain directories.
     #+begin_src emacs-lisp
@@ -114,39 +114,41 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 **** early load
      :PROPERTIES:
-     :CUSTOM_ID: early_load
+     :ID:       aace5754-aeeb-46bf-8ed4-e8eda3ed2e9e
      :END:
      #+begin_src emacs-lisp
        (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
      #+end_src
 **** host specific
      :PROPERTIES:
-     :CUSTOM_ID: host_specific_load
+     :ID:       efe9afb5-3779-407d-a7a9-fd8968ea0f69
      :END:
      Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][custom file]].
      #+begin_src emacs-lisp
        (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
      #+end_src
-** [[https://www.gnu.org/software/emacs/manual/auth.html][Auth-Sources]]
+** TODO [[https://www.gnu.org/software/emacs/manual/auth.html][Auth-Sources]]
    :PROPERTIES:
-   :CUSTOM_ID: Authinfo-f08a2ff0
+   :ID:       8f8f4b02-bdd2-4ad9-81bb-c3dd14b2fe9d
+   :END:
+   :LOGBOOK:
+   - Note taken on [2021-04-01 Do 23:18] \\
+     why the no-require
+   - State "TODO"       from              [2021-04-01 Do 23:18]
    :END:
    Let emacs take care of security things automagically
    #+begin_src emacs-lisp
      (use-package auth-source
-       :demand
-       :custom
-       (auth-sources '("~/.gnupg/auth/authinfo.gpg" "~/.gnupg/auth/authirc.gpp"))
        :no-require t
        )
    #+end_src
 ** Macros & Utilities
    :PROPERTIES:
-   :CUSTOM_ID: macros-and-utilities
+   :ID:       733c70f3-5477-405f-bfeb-54089888b145
    :END:
 *** General utility functions
     :PROPERTIES:
-    :CUSTOM_ID: general-utility-functions
+    :ID:       c0eaf4f9-a8fc-43ea-84d8-24386ab3f90a
     :END:
     Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
     #+begin_src emacs-lisp
@@ -155,11 +157,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 **** rgr-utils library
      :PROPERTIES:
      :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
-     :CUSTOM_ID: rgr-utils-elisp
+     :ID:       0f8860c0-e1e1-41a8-bdb2-d062559ddd78
      :END:
 ***** line
       :PROPERTIES:
-      :CUSTOM_ID: code-line-funcs
+      :ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
       :END:
       #+begin_src emacs-lisp
         (defun c-complete-line()
@@ -181,21 +183,21 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** scratch
       :PROPERTIES:
-      :CUSTOM_ID: config-Macros_&_Utilities-General_utility_functions-rgr-utils_library-scratch-145b8bfe
+      :ID:       563d21f1-803e-40b1-9689-fa95ca9f44c3
       :END:
       #+begin_src emacs-lisp
         (use-package scratch)
       #+end_src
 ***** provide
       :PROPERTIES:
-      :CUSTOM_ID: Macros_&_Utilities-rgr-utils_code-provide-9ccde5c5
+      :ID:       1a15ae4d-fd90-4a41-b8d5-1efbec77bf8d
       :END:
       #+begin_src emacs-lisp
         (provide 'rgr/utils)
       #+end_src
 *** Emacs Lisp, ELisp Utils
     :PROPERTIES:
-    :CUSTOM_ID: elisp-utils
+    :ID:       eb119ffb-f073-4fe0-a8f4-b031291d9e4d
     :END:
     Load this relatively early in order to have utils available if there's a faied load
     Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
@@ -207,12 +209,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 **** rgr/elisp-utils library
      :PROPERTIES:
-     :CUSTOM_ID: elisp-utils-library
      :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp-utils.el" elisp-dir)
+     :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
      :END:
 ***** emacs source
       :PROPERTIES:
-      :CUSTOM_ID: Programming_Language_related-Emacs_Lisp,_ELisp-elisp_utils-rgrelisp-utils_library-emacs_source-c588f74e
+      :ID:       9cc94b1e-8608-4a19-b53a-bdb5d4530a7a
       :END:
       #+begin_src emacs-lisp
         (defcustom rgr/emacs-source (no-littering-expand-var-file-name "emacs-source/current") "where the source is for the current emacs")
@@ -220,7 +222,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** elisp checks
       :PROPERTIES:
-      :CUSTOM_ID: ReferenceLookupMedia-Reference_and_dictionary-Elisp_reference-elisp_checks-62f0b274
+      :ID:       ca5b425c-df7f-47e9-a095-a5c59159ceb4
       :END:
       #+begin_src emacs-lisp
         (defun rgr/elisp-edit-mode()
@@ -229,7 +231,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** helpful, enriched elisp help
       :PROPERTIES:
-      :CUSTOM_ID: elisp-helpful
+      :ID:       e5517321-9188-4c5f-abfe-6511580c6193
       :END:
       #+begin_src emacs-lisp
         (use-package helpful
@@ -260,7 +262,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** read and write elisp vars to file
       :PROPERTIES:
-      :CUSTOM_ID: read-write-vars
+      :ID:       82905a95-6e37-4114-ba77-4be0dd31a9ec
       :END:
       #+begin_src emacs-lisp
 
@@ -277,7 +279,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 ***** delayed idle help popup
       :PROPERTIES:
-      :CUSTOM_ID: elisp-delay-idle-popup
+      :ID:       b63bf2e5-4106-401a-a66c-7b7967d0d89e
       :END:
       #+begin_src emacs-lisp
         (defcustom rgr/elisp-helpers-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
@@ -333,7 +335,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** Elisp debugging
       :PROPERTIES:
-      :CUSTOM_ID: elisp-completion-debugging
+      :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
       :END:
       #+begin_src emacs-lisp
         (use-package
@@ -341,7 +343,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           :demand t
           :init
           (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
-          ;;:custom
           ;;(edebug-trace nil)
           :config
           (require 'edebug)
@@ -356,7 +357,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       | myELisp | edebug-x-mode |
 ***** Auto-compile
       :PROPERTIES:
-      :CUSTOM_ID: elisp-auto-compile
+      :ID:       32e5b009-9695-4c8e-8208-4bfa9e6adfac
       :END:
       #+begin_src emacs-lisp
         (use-package
@@ -371,7 +372,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** Formatting
       :PROPERTIES:
-      :CUSTOM_ID: elisp-formatting
+      :ID:       d360a0c5-e21a-445b-a9ae-d97d33dce966
       :END:
       #+begin_src emacs-lisp
         (use-package
@@ -382,7 +383,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** popup query symbol
       :PROPERTIES:
-      :CUSTOM_ID: Programming_related-Emacs_Lisp,_ELisp-query_symbol-977f62e1
+      :ID:       4745e152-bad7-4a31-8f9b-79cb62cdb430
       :END:
       #+begin_src emacs-lisp
         (use-package popup
@@ -398,14 +399,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** provide
       :PROPERTIES:
-      :CUSTOM_ID: Programming_Language_related-Emacs_Lisp,_ELisp-elisp_utils-rgrelisp-utils_library-provide-445b6239
+      :ID:       7dcc7be3-1449-44e8-aed9-c223334e150f
       :END:
       #+begin_src emacs-lisp
         (provide 'rgr/elisp-utils)
       #+end_src
 ** Emacs daemon & startup
    :PROPERTIES:
-   :CUSTOM_ID: emacs-daemon
+   :ID:       77ded746-89ff-4051-a4eb-a4d75d7917bc
    :END:
    Load up the daemon if not loaded, amongst other things.
 
@@ -416,8 +417,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    #+end_src
 *** rgr-daemon libarary
     :PROPERTIES:
-    :CUSTOM_ID: emacs-daemon-library
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-daemon.el" elisp-dir)
+    :ID:       ee7aaad4-5f12-4e5e-b7d7-91ed4296b129
     :END:
     #+begin_src emacs-lisp
 
@@ -456,75 +457,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** System
     :PROPERTIES:
-    :CUSTOM_ID: config-System-55131d57
+    :ID:       6db0294c-11d2-406b-9dd5-8129181c12d6
     :END:
-**** TODO date format
-     :PROPERTIES:
-     :CUSTOM_ID: config-System-date_format
-     :END:
-     :LOGBOOK:
-     - State "TODO"       from              [2021-03-03 Wed 10:48]
-     :END:
-     org-journal uses format-timestring which picks up sys locale. various elisp func
-     calls didnt work ended up using [[#config-Emacs_daemon_&_startup-System-date_format-simply_redefine_org_journal_date_function][own format]]
-***** CANCELLED using elisp                                       :CANCELLED:
-      SCHEDULED: <2021-03-13 Sat>
-      :PROPERTIES:
-      :CUSTOM_ID: config-Emacs_daemon_&_startup-System-date_format-using_elisp
-      :END:
-      :LOGBOOK:
-      - State "CANCELLED"  from              [2021-03-03 Wed 17:23] \\
-        doesnt work for daemon frames. maybe revisit.
-      :END:
-      https://stackoverflow.com/questions/28913294/emacs-org-mode-language-of-time-stamps
-      #+begin_src emacs-lisp
-        ;; (setq system-time-locale "C") ;; doesnt work with daemon
-        ;; (format-time-string "%A")
-        ;;(setq system-time-locale "de.UTF8")
-        ;; (setq system-time-locale nil)
-        ;;(format-time-string "%A")
-        ;; (set-locale-environment "en_GB.UTF8")
-        ;;(add-hook 'server-switch-hook (lambda()(set-locale-environment "en_GB.UTF8")))
-      #+end_src
-***** CANCELLED use locales                                       :CANCELLED:
-      CLOSED: [2021-03-03 Wed 17:48]
-      :PROPERTIES:
-      :CUSTOM_ID: config-Emacs_daemon_&_startup-System-date_format-use_locales
-      :END:
-      :LOGBOOK:
-      - State "CANCELLED"  from              [2021-03-03 Wed 17:48] \\
-        in the end did a
-
-        (setq system-time-locale "C") in emacs-startup-hook
-      :END:
-      #+begin_src bash
-        sudo localectl set-locale LC_TIME=en_GB.UTF8
-      #+end_src
-***** CANCELLED [#A] system-time-locale                           :CANCELLED:
-      SCHEDULED: <2021-03-03 Wed>
-      :PROPERTIES:
-      :CUSTOM_ID: System-date_format-system-time-locale
-      :END:
-      :LOGBOOK:
-      - State "CANCELLED"  from "DONE"       [2021-03-04 Do 09:47] \\
-        ok, this doesnt work either if you close emacs frames and recreate. gah.
-      - State "DONE"       from              [2021-03-03 Wed 17:50]
-      :END:
-      #+begin_src emacs-lisp
-        (add-hook 'emacs-startup-hook (lambda()(setq system-time-locale "C")))
-      #+end_src
-***** simply redefine org journal date function
-      :PROPERTIES:
-      :CUSTOM_ID: config-Emacs_daemon_&_startup-System-date_format-simply_redefine_org_journal_date_function
-      :END:
-      #+begin_quote
-      '(org-journal-date-format "%d/%m/%Y")
-      #+end_quote
-
-
 ** Minibuffer Enrichment (search, sudo edit...)
    :PROPERTIES:
-   :CUSTOM_ID: Completion_Frameworks_And_Enrichment
+   :ID:       ccdf6738-f921-4d2f-81ea-6dd00883867c
    :END:
    Various plugins for minibuffer enrichment
 
@@ -536,12 +473,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** library
     :PROPERTIES:
-    :CUSTOM_ID: rgr-minibuffer-library
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-minibuffer.el" elisp-dir)
+    :ID:       1c6e6128-9063-478b-b8a5-14f1953dd0ea
     :END:
 **** [[https://www.emacswiki.org/emacs/TrampMode][TRAMP]] (Transparent Remote Access, Multiple Protocols)
      :PROPERTIES:
-     :CUSTOM_ID: Tramp-fd162f34
+     :ID:       c193fd9e-7050-41eb-aaa2-bff0bac41f26
      :END:
      is a package for editing remote files, similar to AngeFtp or efs. Whereas the others use FTP to connect to the remote host and to transfer the files, TRAMP uses a remote shell connection (rlogin, telnet, ssh). It can transfer the files using rcp or a similar program, or it can encode the file contents (using uuencode or base64) and transfer them right through the shell connection.
      #+begin_src emacs-lisp
@@ -553,18 +490,18 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** fzf
      :PROPERTIES:
-     :CUSTOM_ID: Completion_Frameworks_And_Enrichment-fzf-2437fe78
+     :ID:       5bc5ae65-7df4-476a-b93b-d501fffd8471
      :END:
      #+begin_src emacs-lisp
        (use-package fzf)
      #+end_src
 **** file opening
      :PROPERTIES:
-     :CUSTOM_ID: Completion_Frameworks_And_Enrichment-file_opening-15870f4a
+     :ID:       42a5cc93-ab6e-46bd-bae6-0517215cdc47
      :END:
 ***** read only by default
       :PROPERTIES:
-      :CUSTOM_ID: read_only_default
+      :ID:       2e4d7063-2cc1-428c-ad44-21387feda57d
       :END:
       Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]] to edit it.
       #+begin_src emacs-lisp
@@ -576,14 +513,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** Priviliged file editing
       :PROPERTIES:
-      :CUSTOM_ID: Completion_Frameworks_And_Enrichment-Priviliged_file_editing-45fddb0b
+      :ID:       cfdbc3a9-af09-4608-86bb-de6b3d2f2b3a
       :END:
       #+begin_src emacs-lisp
         (use-package sudo-edit)
       #+end_src
 ***** find file at point - documented in the [[https://github.com/raxod502/selectrum/wiki/Additional-Configuration#complete-file-names-at-point][selectrum wiki]]
       :PROPERTIES:
-      :CUSTOM_ID: Completion_Frameworks_And_Enrichment-find_file_at_point_-_documented_in_the_https:github.comraxod502selectrumwikiAdditional-Configuration#complete-file-names-at-pointselectrum_wiki-ad02d20e
+      :ID:       bd247b04-92dc-4db6-911e-df716bd8574a
       :END:
       #+begin_src emacs-lisp
         (use-package ffap
@@ -605,7 +542,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 **** [[https://github.com/raxod502/ctrlf][ctrlf]] - back to basics search
      :PROPERTIES:
-     :CUSTOM_ID: ctrlf
+     :ID:       18bfbb73-aba5-4392-9f79-383bf6e3f3ef
      :END:
      #+begin_src emacs-lisp
        (use-package ctrlf
@@ -632,7 +569,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list
      :PROPERTIES:
-     :CUSTOM_ID: selectrum
+     :ID:       f7f2ea39-77f2-45bd-9402-0eb09ef74b39
      :END:
      #+begin_src emacs-lisp
        (use-package selectrum
@@ -642,7 +579,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.
      :PROPERTIES:
-     :CUSTOM_ID: prescient
+     :ID:       9b550059-5fc0-4534-80a6-9cb5e1c207c2
      :END:
      #+begin_src emacs-lisp
        (use-package prescient
@@ -655,7 +592,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** [[https://github.com/minad/consult][Consult]] provides various commands based on the Emacs completion function completing-read
      :PROPERTIES:
-     :CUSTOM_ID: consult
+     :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
      :END:
      #+begin_src emacs-lisp
        (use-package consult
@@ -682,7 +619,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                 ("M-g s" . consult-grep)
                 ("M-s m" . consult-multi-occur)
                 ("M-y" . consult-yank-pop)
-                ("<f3>" . consult-ripgrep)
 
                 ("<help> a" . consult-apropos)
                 ;;("C-s" . consult-line)
@@ -718,7 +654,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** [[https://github.com/oantolin/embark][Embark]] Emacs Mini-Buffer Actions Rooted in Keymaps
      :PROPERTIES:
-     :CUSTOM_ID: Embark
+     :ID:       39105473-5e9c-4bf6-91ac-0b9d21cac391
      :END:
      #+begin_src emacs-lisp
        (use-package embark
@@ -746,7 +682,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 ***** embark-consult
       :PROPERTIES:
-      :CUSTOM_ID: config-Minibuffer_Enrichment_(search,_sudo_edit...)-library-Embark_Emacs_Mini-Buffer_Actions_Rooted_in_Keymaps-embark-consult-0c88a48a
       :END:
       #+begin_src emacs-lisp
         (use-package embark-consult
@@ -761,7 +696,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 **** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
      :PROPERTIES:
-     :CUSTOM_ID: Marginalia
      :END:
 
      The [[https://github.com/minad/marginalia][marginalia]] pckage in emacs is very helpful.
@@ -777,7 +711,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** provide
      :PROPERTIES:
-     :CUSTOM_ID: Completion_Frameworks_And_Enrichment-rgr-minibuffer_library-provide-7692bb98
      :END:
      #+begin_src emacs-lisp
        (provide 'rgr/minibuffer)
@@ -785,7 +718,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 ** Completion
    :PROPERTIES:
-   :CUSTOM_ID: completion
    :END:
    Let emacs suggest completions
 
@@ -798,12 +730,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** library
     :PROPERTIES:
-    :CUSTOM_ID: completion-library
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" elisp-dir)
     :END:
 **** Abbrev Mode
      :PROPERTIES:
-     :CUSTOM_ID: Text_tools-Abbrev_Mode-b7116ab5
      :END:
      [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
      #+begin_src emacs-lisp
@@ -811,7 +741,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Snippets with yasnippet
      :PROPERTIES:
-     :CUSTOM_ID: yasnippet
      :END:
      #+begin_src emacs-lisp
        (use-package
@@ -829,7 +758,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Company Mode
      :PROPERTIES:
-     :CUSTOM_ID: company-mode
      :END:
      [[https://github.com/sebastiencs/company-box][company-box]] provides nice linked help on the highlighted completions when available.
 
@@ -856,7 +784,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Which Key
      :PROPERTIES:
-     :CUSTOM_ID: Text_tools-Completion-Which_Key-f475ea36
      :END:
      [[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
      #+begin_src emacs-lisp
@@ -867,7 +794,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Tying it all together
      :PROPERTIES:
-     :CUSTOM_ID: Text_tools-Completion-Tying_it_call_together-5260aafa
      :END:
      #+begin_src emacs-lisp
        (defun check-expansion ()
@@ -892,14 +818,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** provide
      :PROPERTIES:
-     :CUSTOM_ID: Completion_Frameworks_And_Enrichment-rgr-minibuffer_library-provide-7692bb98
      :END:
      #+begin_src emacs-lisp
        (provide 'rgr/completion)
      #+end_src
 ** Alert and Alert Learn
    :PROPERTIES:
-   :CUSTOM_ID: alert-learn
    :END:
    Added in a utility which pops up fortunes when idle and a hot key (see google-translate section to call up google-translate for the last fortune shown.. Handy for learning a language.
 
@@ -911,7 +835,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** library
     :PROPERTIES:
-    :CUSTOM_ID: alert-learn-elisp
     :END:
 
     Raw: [[file+sys:etc/elisp/rgr-alert-learn.el][rgr-alert-learn.el]].
@@ -1017,7 +940,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** General configuration
    :PROPERTIES:
-   :CUSTOM_ID: general-config
    :END:
    Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
    #+begin_src emacs-lisp
@@ -1026,12 +948,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** library
     :PROPERTIES:
-    :CUSTOM_ID: -4be109d6
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-general-config.el" elisp-dir)
     :END:
 **** General
      :PROPERTIES:
-     :CUSTOM_ID: Configure_main_look_and_feel-General-d3da3739
      :END:
 
      #+begin_src emacs-lisp
@@ -1117,22 +1037,18 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Accessibility
      :PROPERTIES:
-     :CUSTOM_ID: accessibility
      :END:
 ***** fonts
       :PROPERTIES:
-      :CUSTOM_ID: General_configuration-general_config_library-Accessibility-fonts-44f51541
       :END:
       JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]]
       :PROPERTIES:
-      :CUSTOM_ID: General_configuration-general_config_library-Accessibility-fonts-93efb5b8
       :END:
       #+begin_src emacs-lisp
         ;; (set-face-attribute 'default nil :height 60 :family "JetBrainsMono Nerd Font" :foundry "JB")
       #+end_src
 ***** Darkroom
       :PROPERTIES:
-      :CUSTOM_ID: darkroom
       :END:
       Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
       #+begin_src emacs-lisp
@@ -1144,7 +1060,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 **** Transparency
      :PROPERTIES:
-     :CUSTOM_ID: Configure_main_look_and_feel-Transparency-d2ecc29e
      :END:
      #+begin_src emacs-lisp
        (set-frame-parameter (selected-frame) 'alpha '(95 . 50))
@@ -1152,7 +1067,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Clipboard
      :PROPERTIES:
-     :CUSTOM_ID: Configure_main_look_and_feel-Clipboard-e000a1c3
      :END:
      Allow terminal emacs to interact with the x clipboard.
      #+begin_src emacs-lisp
@@ -1163,7 +1077,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Ansi colour
      :PROPERTIES:
-     :CUSTOM_ID: Configure_main_look_and_feel-Ansi_colour-99a94f80
      :END:
      [[https://www.emacswiki.org/emacs/AnsiColor][Ansi colour hooks]] to enable emacs buffers to handle ansi.
      #+begin_src emacs-lisp :tangle no
@@ -1173,7 +1086,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Tab Bar Mode
      :PROPERTIES:
-     :CUSTOM_ID: tab-bar-mode
      :END:
      #+begin_src emacs-lisp
 
@@ -1206,11 +1118,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Memory
      :PROPERTIES:
-     :CUSTOM_ID: Memory,_Completion_Frameworks_And_Enrichment-Memory-fac9f622
+     :ID:       0c968a1b-64ee-4000-87ab-326e18b5c01d
      :END:
 ***** save-place-mode, remember position in files
       :PROPERTIES:
-      :CUSTOM_ID: save_place_mode
+      :ID:       a861685b-392a-4e64-abec-9ba3e3439864
       :END:
       #+begin_src emacs-lisp
         (save-place-mode +1)
@@ -1218,7 +1130,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 ***** DONE save-hist-mode, save history
       CLOSED: [2021-01-14 Thu 18:28] SCHEDULED: <2021-01-11 Mo>
       :PROPERTIES:
-      :CUSTOM_ID: save_hist_mode
+      :ID:       1656b327-1530-483a-990f-3a273e151b63
       :END:
       :LOGBOOK:
       - State "DONE"       from              [2021-01-14 Thu 18:28]
@@ -1239,7 +1151,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** recentf-mode, remember recent files
       :PROPERTIES:
-      :CUSTOM_ID: recentf_mode
+      :ID:       e51a49a8-3668-4378-8f3a-2ce065069bc9
       :END:
       #+begin_src emacs-lisp
         (use-package recentf-ext
@@ -1254,14 +1166,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 **** provide
      :PROPERTIES:
-     :CUSTOM_ID: ReferenceLookupMedia-Google_related-provide-0a0bd237
+     :ID:       101d96b3-5d00-4d97-93c4-2c2f7aac8852
      :END:
      #+begin_src emacs-lisp
        (provide 'rgr/general-config)
      #+end_src
 ** Org functionality
    :PROPERTIES:
-   :CUSTOM_ID: org_mode
+   :ID:       98f4dbe1-6f34-4246-8ee6-96e8ab24d1b1
    :END:
    General org-mode config
 
@@ -1273,12 +1185,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** org library
     :PROPERTIES:
-    :CUSTOM_ID: org-library
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-org.el" elisp-dir)
+    :ID:       f0550fa8-9b91-43df-bc36-ff06d7ff00a0
     :END:
 **** Org Mode, org-mode
      :PROPERTIES:
-     :CUSTOM_ID: org_mode_config
+     :ID:       80d295c4-fe60-4bef-99e2-2f15bcb1e36a
      :END:
      :LOGBOOK:
      - State "TODO"       from              [2021-01-09 Sat 14:32]
@@ -1308,12 +1220,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          ("C-c C-l" . org-insert-link)
          ("C-c C-s" . org-schedule)
          ("C-c C-t" . org-todo))
-      #+end_src
+     #+end_src
 
 
 ***** org agenda
       :PROPERTIES:
-      :CUSTOM_ID: org-agenda-files
+      :ID:       1a27d0a1-8b17-4b86-84f7-aa7f0c006005
       :END:
       maintain a file pointing to agenda sources
       #+begin_src conf :tangle (no-littering-expand-etc-file-name "org/agenda-files.txt")
@@ -1327,34 +1239,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         ~/development/education/lessons/python/python-lernen.de
         ~/development/education/lessons/elisp
       #+end_src
-***** Journal, org-journal
-      :PROPERTIES:
-      :CUSTOM_ID: Org_functionality-Org_Mode,_org-mode-Journal,_org-journal-0c1d005b
-      :END:
-      More advanced journalling courtesy of [[https://github.com/bastibe/org-journal][org-journal]].
-      A great habit it to get into is use org journal to todo your day and refile at a later date.
-      Obviously add your journal files to your agenda files!
-      #+begin_src emacs-lisp
-        (use-package org-journal
-          :demand t
-          :custom
-          (org-journal-dir (expand-file-name "journals" org-directory))
-          (org-journal-file-format "%Y%m%d.org")
-          (org-journal-date-format "%d/%m/%Y")
-          :config
-          ;;(add-to-list 'org-agenda-files org-journal-dir)
-
-          :hook (org-journal-mode  . (lambda ()
-                                       (local-unset-key (kbd "C-c C-s"))))
-          :bind (
-                 ("C-c S" . org-journal-search)
-                 ("C-c J" . org-journal-new-entry)
-                 ))
-      #+end_src
 ***** OPEN scratchpad
       :PROPERTIES:
       :TEST:     HELLO WORLD
-      :CUSTOM_ID: Org_functionality-Org_Mode,_org-mode-scratchpad-7f99fe7f
+      :ID:       53686505-e0d6-43be-a3b8-0425035c429a
       :END:
       :LOGBOOK:
       - State "OPEN"       from              [2020-12-30 Wed 13:48] \\
@@ -1378,7 +1266,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       : insert-property
 **** Self documenting config file, tangling
      :PROPERTIES:
-     :CUSTOM_ID: Org_functionality-Self_documenting_config_file-7dfe1f94
+     :ID:       f1698a54-3747-413c-b7c0-e8452aac6374
      :END:
 
      Create a filename.export to auto export markdown
@@ -1415,22 +1303,22 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** provide
      :PROPERTIES:
-     :CUSTOM_ID: ReferenceLookupMedia-Google_related-provide-0a0bd237
+     :ID:       ddbaf9df-4c65-4b3f-b86f-88f174f349d1
      :END:
      #+begin_src emacs-lisp
        (provide 'rgr/org)
      #+end_src
 ** Text tools
    :PROPERTIES:
-   :CUSTOM_ID: Text_tools-c95056f4
+   :ID:       6c385a8b-078e-4905-9f27-29bdb4e63b0b
    :END:
 *** Cursor/Region related
     :PROPERTIES:
-    :CUSTOM_ID: Text_tools-CursorRegion_related-2167fa26
+    :ID:       63f2b25a-b0fc-4fdf-b893-fc2bd90ad454
     :END:
 **** General
      :PROPERTIES:
-     :CUSTOM_ID: Text_tools-CursorRegion_related-General-6bb1459d
+     :ID:       07ce72ec-d6b8-46ed-9c2e-790b6852386b
      :END:
      #+begin_src emacs-lisp
        (defun centreCursorLineOn()
@@ -1450,30 +1338,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                 scroll-margin_t))
 
      #+end_src
-**** expand-region
-     :PROPERTIES:
-     :CUSTOM_ID: Text_tools-CursorRegion_related-expand-region-397b2744
-     :END:
-     [[https://github.com/magnars/expand-region.el][expand-region]] is an Emacs extension to increase selected region by semantic units.
-
-     #+begin_src emacs-lisp
-       (use-package
-         expand-region
-         :disabled
-         :config (defun er/select-call-f(arg)
-                   (setq current-prefix-arg arg)
-                   (call-interactively 'er/expand-region)
-                   (exchange-point-and-mark))
-         (defun selectFunctionCall()
-           (interactive)
-           (er/select-call-f 3))
-         :bind ("<C-return>" . selectFunctionCall)
-         ("C-c e" . er/expand-region)
-         ("C-c c" . er/contract-region))
-     #+end_src
 **** easy-kill
      :PROPERTIES:
-     :CUSTOM_ID: Text_tools-CursorRegion_related-easy-kill-b77182e7
+     :ID:       8b629d70-a403-48f6-b6a1-b82470eae0dd
      :END:
      [[https://github.com/leoliu/easy-kill][easy-kill]] enables you to kill & Mark Things Easily in Emacs
      #+begin_src emacs-lisp
@@ -1483,11 +1350,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 *** Folding/Hide Show
     :PROPERTIES:
-    :CUSTOM_ID: Text_tools-FoldingHide_Show-7a85642e
+    :ID:       d7f8785f-3b79-4e7a-947b-008f7d985ae0
     :END:
     [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html][hs-minor-mode]] allows hiding and showing different blocks of text/code (folding).
     #+begin_src emacs-lisp
-      (add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
       (use-package hideshow
         :config
         (defun toggle-selective-display (column)
@@ -1513,7 +1379,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** flyspell
     :PROPERTIES:
-    :CUSTOM_ID: Text_tools-flyspell-c6d5ddd4
+    :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     :END:
     #+begin_src emacs-lisp
       (use-package flyspell
@@ -1538,7 +1404,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** rg, ripgrep
     :PROPERTIES:
-    :CUSTOM_ID: ripgrep
+    :ID:       994cd90f-bba4-4a3d-87f1-6cb9faba1270
     :END:
     rg is pretty quick
     #+begin_src emacs-lisp
@@ -1547,7 +1413,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 **** ~/bin/helm-rg-wrapper
      :PROPERTIES:
-     :CUSTOM_ID: Projectile-binhelm-rg-wrapper-8cfa9a92
+     :ID:       a8489fe7-5be2-47c0-b05a-d21f340f68b1
      :END:
 
      NB : left despite removing helm from config
@@ -1567,7 +1433,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 ***** .ignore for the emacs root sample
       :PROPERTIES:
-      :CUSTOM_ID: Text_tools-rg,_ripgrep-.ignore_for-3547e8b9
+      :ID:       30dcbb9c-3d7c-46e4-b01a-c1c74145db54
       :END:
       #+begin_src conf :tangle ~/.config/emacs/.ignore
         # Maintained in emacs-config.org
@@ -1581,7 +1447,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 *** ag, silver searcher
     :PROPERTIES:
-    :CUSTOM_ID: silver_searcher
+    :ID:       12989be9-e413-4839-9f03-578079955602
     :END:
     #+begin_src emacs-lisp
       (use-package
@@ -1589,7 +1455,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Deft - text searching
     :PROPERTIES:
-    :CUSTOM_ID: Text_tools-Deft_-_text_searching-f85ce6a5
+    :ID:       a4b2b37a-e9c8-4272-81fe-4e15ddeb635c
     :END:
     [[https://jblevins.org/projects/deft/][Deft]] is an Emacs mode for quickly browsing, filtering, and editing directories of plain text notes, inspired by Notational Velocity. It was designed for increased productivity when writing and taking notes by making it fast and simple to find the right file at the right time and by automating many of the usual tasks such as creating new files and saving files.
     #+begin_src emacs-lisp
@@ -1602,7 +1468,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** Reference/Lookup/Media
    :PROPERTIES:
-   :CUSTOM_ID: reference-lookup
+   :ID:       959f68c3-8447-4eb8-aaa8-86f828859f49
    :END:
    lookup and reference uilities and config
 
@@ -1614,13 +1480,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** reference library
     :PROPERTIES:
-    :CUSTOM_ID: reference-library
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-reference.el" elisp-dir)
+    :ID:       e74c6135-2abc-46db-844e-a2c638b00bae
     :END:
 
 **** Google related
      :PROPERTIES:
-     :CUSTOM_ID: google-utils
+     :ID:       ad7a67e5-aca2-495d-8d10-956fbe0aa708
      :END:
      Raw:[[file+sys:etc/elisp/rgr-google.el][rgr/google]]
      #+begin_src emacs-lisp
@@ -1628,12 +1494,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 ***** google utils code
       :PROPERTIES:
-      :CUSTOM_ID: google-utils-code
       :header-args:emacs-lisp: :tangle (expand-file-name "rgr-google.el" elisp-dir)
+      :ID:       3b5ec1bf-df07-48cb-b583-ac793c49d17b
       :END:
 ****** Google This
        :PROPERTIES:
-       :CUSTOM_ID: google-this
+       :ID:       e0e0dc51-94ae-44b8-b55c-b53d9a29c7aa
        :END:
        [[https://melpa.org/#/google-this][google-this]] includes an interface to [[https://translate.google.com/][google translate]].
        #+begin_src emacs-lisp
@@ -1647,7 +1513,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        #+end_src
 ****** Google translate
        :PROPERTIES:
-       :CUSTOM_ID: google-translate
+       :ID:       e410cd79-39c4-4724-b424-6082b20c70f1
        :END:
        #+begin_src emacs-lisp
          (use-package google-translate
@@ -1712,21 +1578,21 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        #+end_src
 ****** provide
        :PROPERTIES:
-       :CUSTOM_ID: ReferenceLookupMedia-Google_related-provide-0a0bd237
+       :ID:       1bdadb92-d493-4079-9587-92ba8328c89e
        :END:
        #+begin_src emacs-lisp
          (provide 'rgr/google)
        #+end_src
 **** Reference and dictionary
      :PROPERTIES:
-     :CUSTOM_ID: Text_tools-Reference_and_dictionary-d498cf0b
+     :ID:       c8d52b48-26e4-4585-a16a-c26454ff60b6
      :END:
 
      The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search  to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
 
 ***** utility funcs
       :PROPERTIES:
-      :CUSTOM_ID: Text_tools-Reference_and_dictionary-utility_funcs-b5391631
+      :ID:       a32c8536-be64-43fe-b740-210f0d891f14
       :END:
       #+begin_src emacs-lisp
 
@@ -1854,7 +1720,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** Dictionary
       :PROPERTIES:
-      :CUSTOM_ID: Text_tools-Reference_and_dictionary-Dictionary-a5cedaa6
+      :ID:       d6770b25-024f-45f4-b86f-7c98db38b34f
       :END:
       The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
       #+begin_src emacs-lisp
@@ -1872,7 +1738,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ****** Requires dictd.
        :PROPERTIES:
-       :CUSTOM_ID: Text_tools-Reference_and_dictionary-Dictionary-Requires_dictd.-8c3bc808
+       :ID:       b7022a82-6e34-481b-bdea-49dc5d82f051
        :END:
        #+begin_src bash
          sudo apt install dictd
@@ -1881,11 +1747,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 ***** Elisp reference
       :PROPERTIES:
-      :CUSTOM_ID: Text_tools-Reference_and_dictionary-Elisp_reference-42e06246
+      :ID:       f2e666e0-e5ee-460d-95d2-c4eac568db1e
       :END:
 ****** quick help for function etc at point
        :PROPERTIES:
-       :CUSTOM_ID: Text_tools-Reference_and_dictionary-Elisp_reference-quick_help_for_function_etc_at_point-772dc477
+       :ID:       199187b3-1dca-46dc-a5de-3dd5e4843140
        :END:
        If an elisp object is there it brings up the internal docs:
 
@@ -1923,7 +1789,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        #+end_src
 ***** GoldenDict - external lookup and reference
       :PROPERTIES:
-      :CUSTOM_ID: Text_tools-Reference_and_dictionary-GoldenDict_-_external_lookup_and_reference-aa3e7ae1
+      :ID:       f0cfea23-9466-4c55-8308-dc1dc478a591
       :END:
 
       When using goldendict-dwim why not add your program to the wonderful [[http://goldendict.org/][GoldenDict]]? A call to [[https://github.com/soimort/translate-shell][trans-shell]] in the dictionary programs tab gives us google translate:-
@@ -1948,7 +1814,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** DevDocs
       :PROPERTIES:
-      :CUSTOM_ID: Text_tools-Reference_and_dictionary-DevDocs-47be8419
+      :ID:       62f3a0a9-c781-455c-8cf8-0fbf7d02d7a4
       :END:
       #+begin_src emacs-lisp
         (use-package devdocs
@@ -1961,7 +1827,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** Zeal - Linux Dash
       :PROPERTIES:
-      :CUSTOM_ID: Text_tools-Reference_and_dictionary-Zeal_-_Linux_Dash-c5f5e38b
+      :ID:       7521fbd2-08e9-4323-9055-9e0b690474ed
       :END:
       #+begin_src emacs-lisp
         (use-package zeal-at-point
@@ -1975,7 +1841,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** DASH - API documentation for most languages
       :PROPERTIES:
-      :CUSTOM_ID: dash_docsets
+      :ID:       c05f8e5e-a34c-4e6c-89b9-f4586a6d1eea
       :END:
       Dash packages docs for many languages.
       #+begin_src emacs-lisp
@@ -1994,7 +1860,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 **** Man Pages
      :PROPERTIES:
-     :CUSTOM_ID: Text_tools-Man_Pages-45b2e304
+     :ID:       b432ab5d-12af-48db-989d-6392d88ac874
      :END:
      Use emacsclient if it's running. Might consider an alias
      #+begin_src conf
@@ -2008,7 +1874,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Elfeed
      :PROPERTIES:
-     :CUSTOM_ID: Referencelookup-Elfeed-2f3a25c8
+     :ID:       381fc830-2854-4eda-9744-efe1b0239f43
      :END:
      [[https://github.com/skeeto/elfeed][Elfeed]] is an extensible web feed reader for Emacs, supporting both Atom and RSS.
      #+begin_src emacs-lisp
@@ -2030,20 +1896,20 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 ***** elfeed-org
       :PROPERTIES:
-      :CUSTOM_ID: ReferenceLookupMedia-Elfeed-elfeed-org-25be5f4f
+      :ID:       63b211b7-3b48-451b-878e-0a6aa9e72c81
       :END:
       #+begin_src emacs-lisp
       #+end_src
 **** provide
      :PROPERTIES:
-     :CUSTOM_ID: ReferenceLookupMedia-Google_related-provide-0a0bd237
+     :ID:       05027204-7ce4-42a5-aebe-a4a495a9f2a3
      :END:
      #+begin_src emacs-lisp
        (provide 'rgr/reference)
      #+end_src
 ** EMMS
    :PROPERTIES:
-   :CUSTOM_ID: emms
+   :ID:       be00ecd2-a116-4edc-b013-d4dd06ab8d93
    :END:
    [[https://github.com/skeeto/elfeed][Emms]] is the Emacs Multimedia System. Emms displays and plays multimedia from within GNU/Emacs using a variety of external players and from different sources.
 
@@ -2055,8 +1921,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** rgr/emms library
     :PROPERTIES:
-    :CUSTOM_ID: emms-library
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-emms.el" elisp-dir)
+    :ID:       1ff18d20-e4ad-419d-a41d-3d6411901b2c
     :END:
 
     #+begin_src emacs-lisp
@@ -2101,11 +1967,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** Shells and Terminals
    :PROPERTIES:
-   :CUSTOM_ID: shells
+   :ID:       43faed64-da69-453f-9223-031a2fcf480b
    :END:
 *** open terminal in current/project  dir
     :PROPERTIES:
-    :CUSTOM_ID: Shells-open_https:github.comdavidshepherd7terminal-heredefault_terminal_in_currentproject_dir-ecd75d89
+    :ID:       6d6ee32d-a7d4-4ff8-aa71-3c70d04350d8
     :END:
     #+begin_src emacs-lisp
       (use-package terminal-here
@@ -2117,7 +1983,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Shell Switcher
     :PROPERTIES:
-    :CUSTOM_ID: Shells-Shell_Switcher-5832ad74
+    :ID:       a6c405c5-2de1-4214-95c1-075f3e7b301f
     :END:
     [[https://github.com/DamienCassou/shell-switcher][shell-switcher]] allows easier shell switching.
 
@@ -2133,16 +1999,16 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** Eshell
     :PROPERTIES:
-    :CUSTOM_ID: eshell
+    :ID:       2c5ff86a-e67a-4c3a-8e30-8099726be829
     :END:
     [[https://www.masteringemacs.org/article/complete-guide-mastering-eshell][EShell]] is, amongst other things,  convenient for cat/console debugging in Symfony etc to have all output in easily browsed Emacs buffers via [[https://www.emacswiki.org/emacs/EshellRedirection][EShell redirection]].
 **** Eshell functions
      :PROPERTIES:
-     :CUSTOM_ID: eshell_functions
+     :ID:       c55a189f-15e0-460e-83c0-17c64a699e6f
      :END:
 ***** Bootstrap  clean emacs
       :PROPERTIES:
-      :CUSTOM_ID: Shells-Eshell-Eshell_functions-Bootstrap_clean_emacs-abf81f9c
+      :ID:       b873ee7b-3395-4b29-86ef-1468fea5f152
       :END:
       #+begin_src emacs-lisp
         (defun eshell/emacs-clean (&rest args)
@@ -2154,11 +2020,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ****** ftrace - debugging the kernel utility funtions
        :PROPERTIES:
-       :CUSTOM_ID: Shells-Eshell-Eshell_functions-Bootstrap_clean_emacs-ftrace_-_debugging_the_kernel_utility_funtions-60c8ca40
+       :ID:       58f89fcf-a8c2-4362-b545-654395e3dc69
        :END:
 ******* run a function trace
         :PROPERTIES:
-        :CUSTOM_ID: Shells-Eshell-Eshell_functions-Bootstrap_clean_emacs-ftrace_-_debugging_the_kernel_utility_funtions-run_a_function_trace-f7b406e3
+        :ID:       d9e9214f-9a1f-420d-9e90-73b93849cc2d
         :END:
         #+begin_src emacs-lisp
           (defun eshell/_ftrace_fn (&rest args)
@@ -2172,7 +2038,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         #+end_src
 **** EShell Aliases
      :PROPERTIES:
-     :CUSTOM_ID: eshel_aliases
+     :ID:       013c2fd3-1ab8-44bf-a6a0-ef9e7e1be774
      :END:
      Be sure to check out [[http://www.howardism.org/Technical/Emacs/eshell.html][Aliases]]. Aliases are very powerful allowing you to mix up shell script, elisp raw and elisp library function. My current [[file+sys:eshell/alias][alias file]] (subject to change...) is currently, at this time of discovery:-
 
@@ -2180,123 +2046,50 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 **** EShell Config
      :PROPERTIES:
-     :CUSTOM_ID: eshell_config
+     :ID:       1d2e5cfc-70c6-4e6f-bd45-f91f1ffaaf09
      :END:
-****** TODO Tasks                                                  :tasklist:
-       :PROPERTIES:
-       :CUSTOM_ID: eshell_tasks
-       :END:
-       :LOGBOOK:
-       - State "TODO"       from              [2020-02-13 Thu 01:10]
-       :END:
-****** This setup uses the so called "plan 9" pattern documented [[https://www.masteringemacs.org/article/complete-guide-mastering-eshell][here]].
-       :PROPERTIES:
-       :CUSTOM_ID: eshell_config
-       :END:
-
-       #+begin_quote
-       If smart display is enabled it will also let you review the output of long-running commands by using SPC to move down a page and BACKSPACE to move up a page. If any other key is pressed it will jump the end of the buffer, essentially acting in the same way as if smart display wasn’t enabled.
-
-       Essentially, if Eshell detects that you want to review the last executed command, it will help you do so; if, on the other hand, you do not then Eshell will jump to the end of the buffer instead. It’s pretty clever about it, and there are switches you can toggle to fine-tune the behavior.
-       #+end_quote
-
-       Added in some pcomplete extensions for git from [[https://www.masteringemacs.org/article/pcomplete-context-sensitive-completion-emacs][Mastering Emacs]].
-
-       #+begin_src emacs-lisp
-         (use-package
-           eshell
-           :init
-           (require 'em-hist)
-           (require 'em-tramp)
-           (require 'em-smart)
-           :config
-           (defun eshell-mode-hook-func ()
-             (setq eshell-path-env (concat "/home/rgr/bin:" eshell-path-env))
-             (setenv "PATH" (concat "/home/rgr/bin:" (getenv "PATH")))
-             (setq pcomplete-cycle-completions nil))
-           (add-to-list 'eshell-modules-list 'eshell-tramp)
-           (add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
-           (setq eshell-review-quick-commands nil)
-           (setq eshell-smart-space-goes-to-end t)
-           (use-package pcomplete-extension
-             :config
-             (defconst pcmpl-git-commands
-               '("add" "bisect" "branch" "checkout" "clone"
-                 "commit" "diff" "fetch" "grep"
-                 "./init" "log" "merge" "mv" "pull" "push" "rebase"
-                 "reset" "rm" "show" "status" "tag" )
-               "List of `git' commands")
-
-             (defvar pcmpl-git-ref-list-cmd "git for-each-ref refs/ --format='%(refname)'"
-               "The `git' command to run to get a list of refs")
-
-             (defun pcmpl-git-get-refs (type)
-               "Return a list of `git' refs filtered by TYPE"
-               (with-temp-buffer
-                 (insert (shell-command-to-string pcmpl-git-ref-list-cmd))
-                 (goto-char (point-min))
-                 (let ((ref-list))
-                   (while (re-search-forward (concat "^refs/" type "/\\(.+\\)$") nil t)
-                     (add-to-list 'ref-list (match-string 1)))
-                   ref-list)))
-
-             (defun pcomplete/git ()
-               "Completion for `git'"
-               ;; Completion for the command argument.
-               (pcomplete-here* pcmpl-git-commands)
-               ;; complete files/dirs forever if the command is `add' or `rm'
-               (cond
-                ((pcomplete-match (regexp-opt '("add" "rm")) 1)
-                 (while (pcomplete-here (pcomplete-entries))))
-                ;; provide branch completion for the command `checkout'.
-                ((pcomplete-match "checkout" 1)
-                 (pcomplete-here* (pcmpl-git-get-refs "heads")))))    )
-           (use-package
-             eshell-git-prompt
-             :config
-             (eshell-git-prompt-use-theme 'powerline)
-             (define-advice
-                 eshell-git-prompt-powerline-dir
-                 (:override ()
-                            short)
-               "Show only last directory."
-               (file-name-nondirectory (directory-file-name default-directory))))
-           )
-       #+end_src
-*** Docker
-    :PROPERTIES:
-    :CUSTOM_ID: Shells-Docker-54aebfdb
-    :END:
-**** tasks                                                         :tasklist:
-     :PROPERTIES:
-     :CUSTOM_ID: Shells-Docker-tasks-39ccb43b
-     :END:
-***** DONE docker-tramp: work out how the hell to do this
-      CLOSED: [2020-03-22 So 01:34] SCHEDULED: <2020-03-24 Di>
-      :PROPERTIES:
-      :CUSTOM_ID: Shells-Docker-tasks-docker-tramp:_work_out_how_the_hell_to_do_this-845073dd
-      :END:
-      :LOGBOOK:
-      - State "DONE"       from "TODO"       [2020-03-22 So 01:34]
-      - State "TODO"       from              [2020-03-22 So 01:30]
-      :END:
-**** docker
-     :PROPERTIES:
-     :CUSTOM_ID: Shells-Docker-docker-eca19628
-     :END:
-     A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b][docker]].
      #+begin_src emacs-lisp
-       (use-package docker
-         :after projectile
-         :bind (:map projectile-mode-map ("C-c k" . docker)))
+       (use-package
+         eshell
+         :init
+         (require 'em-hist)
+         (require 'em-tramp)
+         (require 'em-smart)
+         :config
+         (defun eshell-mode-hook-func ()
+           ;; (setq eshell-path-env (concat "/home/rgr/bin:" eshell-path-env))
+           ;; (setenv "PATH" (concat "/home/rgr/bin:" (getenv "PATH")))
+           (setq pcomplete-cycle-completions nil))
+         (add-to-list 'eshell-modules-list 'eshell-tramp)
+         (add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
+         (setq eshell-review-quick-commands nil)
+         (setq eshell-smart-space-goes-to-end t)
+
+         (use-package
+           eshell-git-prompt
+           :config
+           (eshell-git-prompt-use-theme 'powerline)
+           (define-advice
+               eshell-git-prompt-powerline-dir
+               (:override ()
+                          short)
+             "Show only last directory."
+             (file-name-nondirectory (directory-file-name default-directory)))))
      #+end_src
+*** Docker
+    A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b][docker]].
+    #+begin_src emacs-lisp
+      (use-package docker
+        :after projectile
+        :bind (:map projectile-mode-map ("C-c k" . docker)))
+    #+end_src
 ** Buffers and Windows
    :PROPERTIES:
-   :CUSTOM_ID: buffers-and-windows
+   :ID:       6fed61bf-f3a5-4e9f-bda0-15548caa2a0f
    :END:
 *** toggle buffer
     :PROPERTIES:
-    :CUSTOM_ID: Emacs_daemon_&_startup-toggle_buffer-37113f61
+    :ID:       cf781280-b126-402f-9700-c061a385bf81
     :END:
     #+begin_src emacs-lisp
       (defun rgr/toggle-buffer(n)
@@ -2309,7 +2102,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** General
     :PROPERTIES:
-    :CUSTOM_ID: Buffers_and_Windows-General-3deb8148
+    :ID:       d8dd73d0-9574-42a4-a23a-b211c17de532
     :END:
     #+begin_src emacs-lisp
       (global-set-key (kbd "C-<f2>") 'rgr/toggle-buffer)
@@ -2330,11 +2123,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Buffer selection
     :PROPERTIES:
-    :CUSTOM_ID: buffer-selection
+    :ID:       31a7e1db-04ca-410d-9c24-dfdd393df074
     :END:
 **** Bufler
      :PROPERTIES:
-     :CUSTOM_ID: bufler
+     :ID:       b44d5a75-8846-4215-9b4f-a4f085aed0c8
      :END:
      [[https://github.com/alphapapa/bufler.el][Bufler]]  is like a butler for your buffers, presenting them to you in an organized way based on your instructions.
 
@@ -2348,11 +2141,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** dired - emacs file management                                     :dired:
     :PROPERTIES:
-    :CUSTOM_ID: dired
+    :ID:       0d37638b-55cd-4036-a0e0-6e6ab42a5046
     :END:
 **** Dired Git Info
      :PROPERTIES:
-     :CUSTOM_ID: Buffers_and_Windows-dired_-_emacs_file_management-Dired_Git_Info-62b306a6
+     :ID:       c6fe4735-2499-4fc0-a8d4-250fa8ce7c4b
      :END:
      #+begin_src emacs-lisp
        (use-package dired-git
@@ -2361,13 +2154,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** dired hacks
      :PROPERTIES:
-     :CUSTOM_ID: Buffers_and_Windows-dired_-_emacs_file_management-dired_hacks-20e1508f
+     :ID:       209d1415-fe48-4df2-b6bd-e51c769a4ea7
      :END:
      Collection of useful dired additions found on github [[https://github.com/Fuco1/dired-hacks][here]]. Found out about
      it at the useful emacs resource [[http://pragmaticemacs.com/category/dired/][*Pragmatic Emacs*]].
 ***** dired subtree
       :PROPERTIES:
-      :CUSTOM_ID: Buffers_and_Windows-dired_-_emacs_file_management-dired_hacks-dired_subtree-428f87ba
+      :ID:       faf0adb5-f75d-46cd-acd0-6d3739e4b517
       :END:
       #+begin_src emacs-lisp
         (use-package dired-subtree
@@ -2379,7 +2172,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** dired filter
       :PROPERTIES:
-      :CUSTOM_ID: Buffers_and_Windows-dired_-_emacs_file_management-dired_hacks-dired_filter-e04f3929
+      :ID:       31375a7b-3f6a-4a42-b8ba-ef657feed86f
       :END:
       More dired based filtering see [[help:dired-filter-prefix][dired-filter-prefix]]
       #+begin_src emacs-lisp
@@ -2390,7 +2183,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+end_src
 ***** dired quicksort
       :PROPERTIES:
-      :CUSTOM_ID: Buffers_and_Windows-dired_-_emacs_file_management-dired_hacks-dired_quicksort-b960d79f
+      :ID:       4f3efcf1-67e8-47c8-809b-4ab958852723
       :END:
       Dired sorting popup options from [[http://pragmaticemacs.com/emacs/speedy-sorting-in-dired-with-dired-quick-sort/][Pragmatic Emacs]].
       EDIT: cant clone from gitlab
@@ -2403,13 +2196,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** PopUp Utilities
     :PROPERTIES:
-    :CUSTOM_ID: config-Buffers_and_Windows-PopUp_Utilities-7a565021
+    :ID:       31d692c1-44b5-442f-876a-c0520ded03c5
     :END:
 **** CANCELLED popwin                                      :popwin:CANCELLED:
      CLOSED: [2021-03-18 Thu 21:36]
      :PROPERTIES:
-     :CUSTOM_ID: popwin
      :header-args:emacs-lisp: :tangle no
+     :ID:       31f8440b-2b54-41b9-bb4c-31d937e311d9
      :END:
      :LOGBOOK:
      - State "CANCELLED"  from              [2021-03-18 Thu 21:36] \\
@@ -2422,7 +2215,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** posframe                                                      :posframe:
      :PROPERTIES:
-     :CUSTOM_ID: config-Buffers_and_Windows-PopUp_Utilities-posframe-59c7e41c
+     :ID:       0f03bab9-b745-451a-a8ad-ab7703977c61
      :END:
      [[https://github.com/tumashu/posframe][Posframe]]
      can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
@@ -2431,11 +2224,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** popper                                                          :popper:
      :PROPERTIES:
-     :CUSTOM_ID: config-Buffers_and_Windows-PopUp_Utilities-popper-908bc8a3
+     :ID:       eee77fbe-0a8f-41ca-868c-e3cba953f452
      :END:
      [[https://github.com/karthink/popper][Popper]] is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
      :PROPERTIES:
-     :CUSTOM_ID: config-Buffers_and_Windows-PopUp_Utilities-popper-d5aab8e6
      :END:
      #+begin_src emacs-lisp
        (use-package popper
@@ -2476,7 +2268,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 *** Transpose windows, transpose-frame
     :PROPERTIES:
-    :CUSTOM_ID: Buffers_and_Windows-Transpose_windows,_transpose-frame-a974850f
+    :ID:       85dea853-453d-4b75-b063-1def33156894
     :END:
     #+begin_src emacs-lisp
       (use-package transpose-frame
@@ -2502,7 +2294,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Hyperbole
     :PROPERTIES:
-    :CUSTOM_ID: Buffers_and_Windows-Hyperbole-49ca9fff
+    :ID:       d76ee02c-98b4-4d90-9294-2082564c016b
     :END:
     [[https://www.emacswiki.org/emacs/Hyperbole][Hyperbole]] is more a window management system from what I can see. Need to explore it.
 
@@ -2514,11 +2306,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** Undo utilities
     :PROPERTIES:
-    :CUSTOM_ID: Buffers_and_Windows-Undo_utilities-2de236d5
+    :ID:       73972308-00a1-4f01-bc5b-58bb6ca7051e
     :END:
 **** undohist
      :PROPERTIES:
-     :CUSTOM_ID: Buffers_and_Windows-Undo_utilities-undohist-3a31cabd
+     :ID:       595f9906-8cf8-4358-9ab9-3919ba884b02
      :END:
      [[https://melpa.org/#/undohist][undo-hist]] provides persistent undo across sessions.
      #+begin_src emacs-lisp
@@ -2529,7 +2321,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** undo-tree
      :PROPERTIES:
-     :CUSTOM_ID: Buffers_and_Windows-Undo_utilities-undo-tree-8c213117
+     :ID:       e7059cce-c1b7-461e-9968-08124a274e81
      :END:
      [[https://github.com/apchamberlain/undo-tree.el][undo-tree]] visualises the sometimes complex undo ring and allow stepping along the timeline
      #+begin_src emacs-lisp
@@ -2540,7 +2332,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** undo-fu
      :PROPERTIES:
-     :CUSTOM_ID: Buffers_and_Windows-Undo_utilities-undo-fu-02fe91b9
+     :ID:       3404b76c-ab18-4ef8-9d64-ddf2e652c41f
      :END:
      #+begin_src emacs-lisp
        (use-package undo-fu
@@ -2552,11 +2344,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 *** Navigation
     :PROPERTIES:
-    :CUSTOM_ID: Buffers_and_Windows-Navigation-1688df0b
+    :ID:       7640ab3c-29c2-42c7-ad3e-357cee61c0dd
     :END:
 **** Back Button
      :PROPERTIES:
-     :CUSTOM_ID: Buffers_and_Windows-Navigation-Back_Button-86118baa
+     :ID:       bcf0ce67-956f-431f-b607-da2db3207a2a
      :END:
      [[https://github.com/rolandwalker/back-button][Back-Button]] provides better navigation on the [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Mark-Ring.html][local and global mark rings]]. The jury is still out on this one.
      #+begin_src emacs-lisp
@@ -2570,7 +2362,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** Window hopping
      :PROPERTIES:
-     :CUSTOM_ID: Buffers_and_Windows-Navigation-Window_hopping-be363f69
+     :ID:       024175d8-f05e-4c41-9c04-4a61d55a5d66
      :END:
      [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
      #+begin_src emacs-lisp
@@ -2581,7 +2373,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** hopping around links
      :PROPERTIES:
-     :CUSTOM_ID: Buffers_and_Windows-Navigation-hopping_around_links-5a4d3f22
+     :ID:       6a50d585-4163-4b7e-9dd8-b25fd0ee4e6b
      :END:
      Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
      #+begin_src emacs-lisp
@@ -2597,7 +2389,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** hopping around in the buffer
      :PROPERTIES:
-     :CUSTOM_ID: Buffers_and_Windows-Navigation-hopping_around_in_the_buffer-d8ad687c
+     :ID:       a1befd07-164b-4ee3-a6cb-c0f4c11094f0
      :END:
      Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-mode/wiki][wiki]] is a food source of info.
      #+begin_src emacs-lisp
@@ -2608,7 +2400,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 *** Elscreen
     :PROPERTIES:
-    :CUSTOM_ID: Buffers_and_Windows-Elscreen-a39a72e4
+    :ID:       20500a87-28d3-437c-9e23-54584a46390a
     :END:
     [[https://github.com/knu/elscreen][Elscreen]] provides tabs in Emacs.
     #+begin_src emacs-lisp
@@ -2619,11 +2411,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** System
    :PROPERTIES:
-   :CUSTOM_ID: config-System
+   :ID:       b9c4756b-0585-44b2-81a2-4bc2e6e3fb49
    :END:
 *** htop interface
     :PROPERTIES:
-    :CUSTOM_ID: htop_interface
+    :ID:       4dfa8e7b-fb50-40a3-b0f6-6ffb949839c0
     :END:
     #+begin_src emacs-lisp
       (defun htop-regexp()
@@ -2636,7 +2428,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** Treemacs
    :PROPERTIES:
-   :CUSTOM_ID: treemacs
+   :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
    :END:
    Excellent [[https://github.com/Alexander-Miller/treemacs][tree based navigation that works really well with projectile.]]
    #+begin_src emacs-lisp
@@ -2669,7 +2461,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 ** CANCELLED Web                                                  :CANCELLED:
    CLOSED: [2021-02-28 Sun 22:04] SCHEDULED: <2021-03-02 Di>
    :PROPERTIES:
-   :CUSTOM_ID: web
+   :ID:       c20e68bb-b7c9-4515-a1df-d64e64b6ec5a
    :END:
    :LOGBOOK:
    - State "CANCELLED"  from "TODO"       [2021-02-28 Sun 22:04]
@@ -2678,7 +2470,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    erm, cant remember why I tagged this. come back to it
 *** helper functions
     :PROPERTIES:
-    :CUSTOM_ID: Web-helper_functions-3c31aed5
+    :ID:       19ab7531-6c53-4d1e-a6b8-705e3903792c
     :END:
     #+begin_src emacs-lisp
       (defun www-open-current-page-external ()
@@ -2704,7 +2496,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** W3M - emacs text based web browser
     :PROPERTIES:
-    :CUSTOM_ID: Web-W3M_-_emacs_text_based_web_browser-94b4c8ba
+    :ID:       79a8b4ef-639c-4e9f-9aaa-202546ddacd5
     :END:
     [[https://github.com/emacs-w3m/emacs-w3m][W3M]] is an in-editor text based web browser. Handy for text based resources, bookmarking etc. Bind a couple of keys to open in the system browser.
     #+begin_src emacs-lisp
@@ -2720,7 +2512,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** EWW - emacs text based web browser
     :PROPERTIES:
-    :CUSTOM_ID: Web-EWW_-_emacs_text_based_web_browser-23e5981b
+    :ID:       79a4f568-4393-47e4-8ec0-9fdeb9324c2f
     :END:
     [[https://www.gnu.org/software/emacs/manual/html_mono/eww.html][Emacs-EWW]] is an in-editor text based web browser. Handy for text based resources, bookmarking etc. Bind a couple of keys to open in the system browser.
     Added some functions to [[https://emacs.stackexchange.com/questions/36284/how-to-open-eww-in-readable-mode/47757][open some URLs in 'eww-readable]] so that it skips headers and footers (normally bound to R in eww).
@@ -2756,7 +2548,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :END:
 ** Online Chats
    :PROPERTIES:
-   :CUSTOM_ID: online-chats
+   :ID:       04bb339b-884b-4571-a740-81d210097aa8
    :END:
    Add a "-chat" [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Command_002dLine-Arguments.html][command line switch]] to load the [[https://www.gnu.org/software/emacs/manual/html_mono/erc.html][Emacs IRC client]] and other such of choice.
    I created this as I tend to hop in and out of Emacs because of severe "[[https://alhassy.github.io/init/][configuration fever]]".
@@ -2769,8 +2561,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    #+end_src
 
    Small external script, [[./bin/oneemacs-chat][oneemacs-chat]], to create an erc instance if there isnt already one.
-
-   #+include: "./bin/oneemacs-chat" src shell
 
    #+begin_src bash :tangle "./bin/oneemacs-chat"
      #!/bin/bash
@@ -2802,11 +2592,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** Slackware
     :PROPERTIES:
-    :CUSTOM_ID: Online_Chats-Slackware-57955066
+    :ID:       ac82be15-49da-4d5e-979e-311d06bedf9e
     :END:
 **** Slack secrets                                           :noexport:crypt:
      :PROPERTIES:
-     :CUSTOM_ID: Online_Chats-Slackware-Slack_secrets-2d4d4ea2
+     :ID:       ccdf8942-5683-4df9-887d-6e6e7642a7a9
      :END:
      -----BEGIN PGP MESSAGE-----
 
@@ -2825,286 +2615,196 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      -----END PGP MESSAGE-----
 **** Emacs Slack
      :PROPERTIES:
-     :CUSTOM_ID: Online_Chats-Slackware-Emacs_Slack-d6bba110
+     :ID:       20db97bc-7c74-4a01-8b3e-d58c6d47eee9
      :END:
      [[https://slack.com/intl/en-de/][Slack]] interface for Emacs on [[https://github.com/yuya373/emacs-slack][github]]. See [[./lisp/rgr-chat.el][rgr-chat.el]].
 **** Emacs Gitter
      :PROPERTIES:
-     :CUSTOM_ID: Online_Chats-Slackware-Emacs_Gitter-43f52ee1
+     :ID:       44ac90de-f10d-45f7-9b0c-23651312a277
      :END:
      [[https://gitter.im/][Gitter]] interface for Emacs on [[https://github.com/xuchunyang/gitter.el][github]]. See [[./lisp/rgr-chat.el][rgr-chat.el]].
-** Email, gmail, Gnus, mu4e
+** Email
    :PROPERTIES:
-   :CUSTOM_ID: email
+   :ID:       1db35463-e9e1-4c38-b21f-437d475184e4
    :END:
-*** gnus
+*** mu4e
     :PROPERTIES:
-    :CUSTOM_ID: gnus
+    :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
     :END:
     #+begin_src emacs-lisp
-      (use-package
-        gnus
+      (use-package mu4e
 
-        :disabled t
+        :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
+        :commands (mu4e mu4e-update-index)
+        :custom
+        ( mail-user-agent 'mu4e-user-agent )
+        ( mail-user-agent 'mu4e-user-agent )
+        ( message-send-mail-function 'smtpmail-send-it )
+        ( mu4e-attachment-dir "~/Downloads" )
+        ( mu4e-change-filenames-when-moving t )
+        ( mu4e-compose-context-policy 'ask )
+        ( mu4e-confirm-quit nil )
+        ( mu4e-context-policy 'pick-first )
+        ( mu4e-compose-reply-recipients 'sender )
+        ( mu4e-headers-include-related nil )
+        ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
+        ( mu4e-decryption-policy 'ask )
+        ( mu4e-hide-index-messages t )
+        ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
+        ( mu4e-update-interval nil )
+        ( mu4e-use-fancy-chars t )
+        ( mu4e-view-prefer-html nil )
+        ( mu4e-view-show-addresses t )
+        ( smtpmail-smtp-service 587 )
+        ( user-full-name "Richard G.Riley" )
         :config
 
-        (setq smtpmail-smtp-server "smtp.gmail.com" smtpmail-smtp-service 587 gnus-ignored-newsgroups
-              "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
-        (require 'bbdb)
-        (require 'bbdb-vcard)
-        (bbdb-initialize 'gnus 'message)
-        (add-hook 'message-setup-hook 'bbdb-mail-aliases)
-        (defun rgr/gnus-themes()
-          (load-theme-buffer-local 'alect-light (current-buffer)))
-        (require 'gnus-desktop-notify)
-        (gnus-desktop-notify-mode)
-        (gnus-demon-add-scanmail)
 
-        (define-key gnus-summary-mode-map (kbd "M-o") 'ace-link-gnus)
-        (define-key gnus-article-mode-map (kbd "M-o") 'ace-link-gnus)
-        (setq bbdb-use-pop-up nil)
-        :bind	  ("C-c m".  'gnus))
+        (use-package mu4e-maildirs-extension
+          :custom
+          (mu4e-maildirs-extension-hide-empty-maildirs t)
+          :config
+          (mu4e-maildirs-extension))
+
+        (setq mu4e-contexts
+              `( ,(make-mu4e-context
+                   :name "aGmx"
+                   :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
+                   :match-func (lambda (msg)
+                                 (when msg
+                                   (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
+                   :vars '( ( user-mail-address . "rileyrg@gmx.de" )
+                            ( user-full-name . "Richard G. Riley" )
+                            ( smtpmail-smtp-server . "mail.gmx.net")
+                            ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
+                            ( mu4e-refile-folder . "/gmx/Archive" )
+                            ( mu4e-sent-folder . "/gmx/Sent" )
+                            ( mu4e-sent-messages-behavior . sent)
+                            ( mu4e-trash-folder . "/gmx/Bin" )
+                            ( mu4e-drafts-folder . "/gmx/Drafts" )
+                            ;; (mu4e-maildir-shortcuts .
+                            ;;  (("/gmx/INBOX"             . ?i)
+                            ;;    ("/gmx/Sent" . ?s)
+                            ;;    ("/gmx/Bin"     . ?b)
+                            ;;    ("/gmx/Drafts"    . ?d)
+                            ;;    ("/gmx/Spam"    . ?p)
+                            ;;    ("/gmx/Archive"  . ?a)))
+                            ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmx/INBOX and flag:unread" :key ?i)
+                                                (:name "Learning" :query "maildir:/gmx/Learning* and flag:unread" :key ?l)
+                                                (:name "All Today's messages" :query "maildir:/gmx/*  AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent) AND date:today..now " :key ?t)
+                                                (:name "Last 7 days" :query "maildir:/gmx/* AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent)  AND date:7d..now" :hide-unread t :key ?w)
+                                                (:name "All" :query "maildir:/gmx/* and not (maildir:/gmx/Spam or maildir:/gmx/Bin)" :key ?a)
+                                                (:name "Bin" :query "maildir:/gmx/Bin" :key ?b)
+                                                ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
+                                                (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
+                            ( mu4e-compose-signature  .
+                                                      (concat
+                                                       "Richard G. Riley\n"
+                                                       "Ein bier, ein Helbing.\n"))))
+                 ,(make-mu4e-context
+                   :name "bGmail"
+                   :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
+                   ;; no leave-func
+                   ;; we match based on the maildir of the message
+                   ;; this matches maildir /Arkham and its sub-directories
+                   :match-func (lambda (msg)
+                                 (when msg
+                                   (string-match-p "^/gmail" (mu4e-message-field msg :maildir))))
+                   :vars '( ( user-mail-address . "rileyrg@gmail.com"  )
+                            ( user-full-name . "Richie" )
+                            ( smtpmail-smtp-server . "smtp.gmail.com")
+                            ( mu4e-get-mail-command . "getmails gmail")
+                            ( mu4e-refile-folder . "/gmail/Archive" )
+                            ( mu4e-sent-folder . "/gmail/Sent" )
+                            ( mu4e-sent-messages-behavior . delete)
+                            ( mu4e-trash-folder . "/gmail/Bin" )
+                            ( mu4e-drafts-folder . "/gmail/Drafts" )
+                            ;; (mu4e-maildir-shortcuts .
+                            ;;   (("/gmail/INBOX"             . ?i)
+                            ;;    ("/gmail/Sent" . ?s)
+                            ;;    ("/gmail/Bin"     . ?b)
+                            ;;    ("/gmail/Drafts"    . ?d)
+                            ;;    ("/gmail/Spam"    . ?p)
+                            ;;    ("/gmail/Archive"  . ?a)))
+                            ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmail/INBOX and flag:unread" :key ?i)
+                                                (:name "All Today's messages" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:today..now " :key ?t)
+                                                (:name "Last 7 days" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:7d..now" :hide-unread t :key ?w)
+                                                (:name "All" :query "maildir:/gmail/* and not (maildir:/gmail/Spam or maildir:/gmail/Bin)" :key ?a)
+                                                (:name "Bin" :query "maildir:/gmail/Bin" :key ?b)
+                                                ;;                    (:name "Messages with images" :query "maildir:/gmail/* AND  NOT maildir:/gmail/Spam  AND  NOT maildir:/gmail/Sent" :key ?m)
+                                                (:name "Spam" :query "maildir:/gmail/Spam AND date:7d..now" :hide-unread t :key ?p)))
+                            ( mu4e-compose-signature . "Please change my email to 'rileyrg@gmx.de'.")))))
+
+        (defun mu4e-smarter-compose ()
+          "My settings for message composition."
+          (set-fill-column 72)
+          (flyspell-mode))
+
+        (defun rgr/mu4e-refresh()
+          (interactive)
+          (when (featurep 'alert)
+            (alert "refreshing mu4e indexes"))
+          (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
+
+        (add-to-list 'mu4e-view-actions
+                     '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+        (add-to-list 'mu4e-view-actions
+                     '("XWidget View" . mu4e-action-view-with-xwidget) t)
+        (add-to-list 'mu4e-view-actions
+                     '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
+        (require 'mu4e-contrib)
+        :hook ((mu4e-view-mode . visual-line-mode)
+               (mu4e-compose-mode . mu4e-smarter-compose)
+               (mu4e-view-mode-hook .
+                                    (lambda()
+                                      ;; try to emulate some of the eww key-bindings
+                                      (local-set-key (kbd "<tab>") 'shr-next-link)
+                                      (local-set-key (kbd "<backtab>") 'shr-previous-link))))
+        :bind	  (("C-c m".  'mu4e)
+                 (:map mu4e-main-mode-map
+                       ("m" . mu4e-compose-new))
+                 (:map mu4e-main-mode-map
+                       ("g" . rgr/mu4e-refresh))
+                 (:map mu4e-headers-mode-map
+                       ("C-c u" . mu4e-headers-mark-all-unread-read))))
+      ;;(
+      ;;:map mu4e-view-mode-map
+      ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
     #+end_src
-*** [[https://www.emacswiki.org/emacs/mu4e][mu4e]] email client
-    :PROPERTIES:
-    :CUSTOM_ID: mu4e_config
-    :END:
-**** tasks
-     :PROPERTIES:
-     :CUSTOM_ID: Email,_gmail,_Gnus,_mu4e-mu4e-tasks-0832309d
-     :END:
-***** SOMEDAY checkout mu4e query fragments to subset search and bookmakrs discussed [[https://www.reddit.com/r/emacs/comments/l5kdsy/mu4e_contexts_root_search_query_limiter/][here]] :WAITING:
-      SCHEDULED: <2021-04-06 Tue>
+***** CANCELLED [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to let us know of new emails :CANCELLED:
+      CLOSED: [2021-02-24 Wed 20:43] SCHEDULED: <2021-03-01 Mon>
       :PROPERTIES:
-      :CUSTOM_ID: Email,_gmail,_Gnus,_mu4e-mu4e_email_client-tasks-checkout_mu4e_query_fragments_to_subset_search_and_bookmakrs_discussed_https:www.reddit.comremacscommentsl5kdsymu4e_contexts_root_search_query_limiterhere-5fa601d2
+      :header-args:emacs-lisp: :tangle no
+      :ID:       30acfbc4-ec1e-4f59-a2e3-5fc91ba38ebf
       :END:
       :LOGBOOK:
-      - State "SOMEDAY"    from "TODO"       [2021-02-16 Di 11:45]
-      - State "TODO"       from              [2021-01-26 Tue 20:00]
-      :END:
-      [[https://gitlab.com/wavexx/mu4e-query-fragments.el][mu4e query fragments]]
-***** DONE check straight releases to get the pre-build command so we dont have to do it manually.
-      CLOSED: [2021-01-31 Sun 21:02] SCHEDULED: <2021-02-01 Mon>
-      :PROPERTIES:
-      :CUSTOM_ID: Email,_gmail,_Gnus,_mu4e-mu4e-tasks-check_straight_releases_to_get_the_pre-build_command_so_we_dont_have_to_do_it_manually.-c726d816
-      :END:
-      :LOGBOOK:
+      - State "CANCELLED"  from "SOMEDAY"    [2021-02-24 Wed 20:43] \\
+      too annoying
+      - State "SOMEDAY"    from "TODO"       [2021-02-01 Mon 13:12]
+      - Note taken on [2021-01-31 Sun 21:10] \\
+      vector error.
+      - State "TODO"       from "STARTED"    [2021-01-31 Sun 21:10]
+      - State "STARTED"    from "DONE"       [2021-01-31 Sun 21:02]
       - State "DONE"       from "TODO"       [2021-01-31 Sun 21:02]
-      - State "TODO"       from              [2021-01-14 Thu 18:27]
+      - Note taken on [2021-01-28 Do 23:32] \\
+      not working - parse errors
+      - State "TODO"       from "DONE"       [2021-01-28 Do 23:32]
+      - State "DONE"       from              [2021-01-28 Do 23:32]
       :END:
-**** config
-     :PROPERTIES:
-     :CUSTOM_ID: mu4e_basic_config
-     :END:
-     uses mu4e-contrib to provide mark all unread as read. Using [[https://www.reddit.com/r/emacs/comments/8q84dl/tip_how_to_easily_manage_your_emails_with_mu4e/e0hrbfg?utm_source=share&utm_medium=web2x&context=3][pandoc]] for htlm viewing.
-     #+begin_src emacs-lisp
-       (use-package mu4e
-
-         :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
-         :commands (mu4e mu4e-update-index)
-         :custom
-         ( mail-user-agent 'mu4e-user-agent )
-         ( mail-user-agent 'mu4e-user-agent )
-         ( message-send-mail-function 'smtpmail-send-it )
-         ( mu4e-attachment-dir "~/Downloads" )
-         ( mu4e-change-filenames-when-moving t )
-         ( mu4e-compose-context-policy 'ask )
-         ( mu4e-confirm-quit nil )
-         ( mu4e-context-policy 'pick-first )
-         ( mu4e-compose-reply-recipients 'sender )
-         ( mu4e-headers-include-related nil )
-         ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
-         ( mu4e-decryption-policy 'ask )
-         ( mu4e-hide-index-messages t )
-         ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
-         ( mu4e-update-interval nil )
-         ( mu4e-use-fancy-chars t )
-         ( mu4e-view-prefer-html nil )
-         ( mu4e-view-show-addresses t )
-         ( smtpmail-smtp-service 587 )
-         ( user-full-name "Richard G.Riley" )
-         :config
-
-
-         (use-package mu4e-maildirs-extension
-           :custom
-           (mu4e-maildirs-extension-hide-empty-maildirs t)
-           :config
-           (mu4e-maildirs-extension))
-
-         (setq mu4e-contexts
-               `( ,(make-mu4e-context
-                    :name "aGmx"
-                    :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
-                    :match-func (lambda (msg)
-                                  (when msg
-                                    (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
-                    :vars '( ( user-mail-address . "rileyrg@gmx.de" )
-                             ( user-full-name . "Richard G. Riley" )
-                             ( smtpmail-smtp-server . "mail.gmx.net")
-                             ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
-                             ( mu4e-refile-folder . "/gmx/Archive" )
-                             ( mu4e-sent-folder . "/gmx/Sent" )
-                             ( mu4e-sent-messages-behavior . sent)
-                             ( mu4e-trash-folder . "/gmx/Bin" )
-                             ( mu4e-drafts-folder . "/gmx/Drafts" )
-                             ;; (mu4e-maildir-shortcuts .
-                             ;;  (("/gmx/INBOX"             . ?i)
-                             ;;    ("/gmx/Sent" . ?s)
-                             ;;    ("/gmx/Bin"     . ?b)
-                             ;;    ("/gmx/Drafts"    . ?d)
-                             ;;    ("/gmx/Spam"    . ?p)
-                             ;;    ("/gmx/Archive"  . ?a)))
-                             ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmx/INBOX and flag:unread" :key ?i)
-                                                 (:name "Learning" :query "maildir:/gmx/Learning* and flag:unread" :key ?l)
-                                                 (:name "All Today's messages" :query "maildir:/gmx/*  AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent) AND date:today..now " :key ?t)
-                                                 (:name "Last 7 days" :query "maildir:/gmx/* AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent)  AND date:7d..now" :hide-unread t :key ?w)
-                                                 (:name "All" :query "maildir:/gmx/* and not (maildir:/gmx/Spam or maildir:/gmx/Bin)" :key ?a)
-                                                 (:name "Bin" :query "maildir:/gmx/Bin" :key ?b)
-                                                 ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
-                                                 (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                             ( mu4e-compose-signature  .
-                                                       (concat
-                                                        "Richard G. Riley\n"
-                                                        "Ein bier, ein Helbing.\n"))))
-                  ,(make-mu4e-context
-                    :name "bGmail"
-                    :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
-                    ;; no leave-func
-                    ;; we match based on the maildir of the message
-                    ;; this matches maildir /Arkham and its sub-directories
-                    :match-func (lambda (msg)
-                                  (when msg
-                                    (string-match-p "^/gmail" (mu4e-message-field msg :maildir))))
-                    :vars '( ( user-mail-address . "rileyrg@gmail.com"  )
-                             ( user-full-name . "Richie" )
-                             ( smtpmail-smtp-server . "smtp.gmail.com")
-                             ( mu4e-get-mail-command . "getmails gmail")
-                             ( mu4e-refile-folder . "/gmail/Archive" )
-                             ( mu4e-sent-folder . "/gmail/Sent" )
-                             ( mu4e-sent-messages-behavior . delete)
-                             ( mu4e-trash-folder . "/gmail/Bin" )
-                             ( mu4e-drafts-folder . "/gmail/Drafts" )
-                             ;; (mu4e-maildir-shortcuts .
-                             ;;   (("/gmail/INBOX"             . ?i)
-                             ;;    ("/gmail/Sent" . ?s)
-                             ;;    ("/gmail/Bin"     . ?b)
-                             ;;    ("/gmail/Drafts"    . ?d)
-                             ;;    ("/gmail/Spam"    . ?p)
-                             ;;    ("/gmail/Archive"  . ?a)))
-                             ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmail/INBOX and flag:unread" :key ?i)
-                                                 (:name "All Today's messages" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:today..now " :key ?t)
-                                                 (:name "Last 7 days" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:7d..now" :hide-unread t :key ?w)
-                                                 (:name "All" :query "maildir:/gmail/* and not (maildir:/gmail/Spam or maildir:/gmail/Bin)" :key ?a)
-                                                 (:name "Bin" :query "maildir:/gmail/Bin" :key ?b)
-                                                 ;;                    (:name "Messages with images" :query "maildir:/gmail/* AND  NOT maildir:/gmail/Spam  AND  NOT maildir:/gmail/Sent" :key ?m)
-                                                 (:name "Spam" :query "maildir:/gmail/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                             ( mu4e-compose-signature . "Please change my email to 'rileyrg@gmx.de'.")))))
-
-         (defun mu4e-smarter-compose ()
-           "My settings for message composition."
-           (set-fill-column 72)
-           (flyspell-mode))
-
-         (defun rgr/mu4e-refresh()
-           (interactive)
-           (when (featurep 'alert)
-             (alert "refreshing mu4e indexes"))
-           (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
-
-         (add-to-list 'mu4e-view-actions
-                      '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-         (add-to-list 'mu4e-view-actions
-                      '("XWidget View" . mu4e-action-view-with-xwidget) t)
-         (add-to-list 'mu4e-view-actions
-                      '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
-         (require 'mu4e-contrib)
-         :hook ((mu4e-view-mode . visual-line-mode)
-                (mu4e-compose-mode . mu4e-smarter-compose)
-                (mu4e-view-mode-hook .
-                                     (lambda()
-                                       ;; try to emulate some of the eww key-bindings
-                                       (local-set-key (kbd "<tab>") 'shr-next-link)
-                                       (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-         :bind	  (("C-c m".  'mu4e)
-                  (:map mu4e-main-mode-map
-                        ("m" . mu4e-compose-new))
-                  (:map mu4e-main-mode-map
-                        ("g" . rgr/mu4e-refresh))
-                  (:map mu4e-headers-mode-map
-                        ("C-c u" . mu4e-headers-mark-all-unread-read))))
-       ;;(
-       ;;:map mu4e-view-mode-map
-       ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
-     #+end_src
-**** CANCELLED [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to let us know of new emails :CANCELLED:
-     CLOSED: [2021-02-24 Wed 20:43] SCHEDULED: <2021-03-01 Mon>
-     :PROPERTIES:
-     :CUSTOM_ID: mu4e_alert
-     :header-args:emacs-lisp: :tangle no
-     :END:
-     :LOGBOOK:
-     - State "CANCELLED"  from "SOMEDAY"    [2021-02-24 Wed 20:43] \\
-       too annoying
-     - State "SOMEDAY"    from "TODO"       [2021-02-01 Mon 13:12]
-     - Note taken on [2021-01-31 Sun 21:10] \\
-       vector error.
-     - State "TODO"       from "STARTED"    [2021-01-31 Sun 21:10]
-     - State "STARTED"    from "DONE"       [2021-01-31 Sun 21:02]
-     - State "DONE"       from "TODO"       [2021-01-31 Sun 21:02]
-     - Note taken on [2021-01-28 Do 23:32] \\
-       not working - parse errors
-     - State "TODO"       from "DONE"       [2021-01-28 Do 23:32]
-     - State "DONE"       from              [2021-01-28 Do 23:32]
-     :END:
-     #+begin_src emacs-lisp
-       (use-package mu4e-alert
-         ;;:disabled t
-         :config
-         (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-         (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
-     #+end_src
-*** isync/mbsync
-    :PROPERTIES:
-    :CUSTOM_ID: isync_mbsync
-    :END:
-    The [[https://wiki.archlinux.org/index.php/Isync][isync]] package provides the imap - maildir sync app mbsync.
-**** ~/.mbsyncrc
-     :PROPERTIES:
-     :CUSTOM_ID: mbsync_config_rc
-     :END:
-     mbsync gmail config file (maintained in linux-init-files repo)
-     #+include: "~/Dropbox/homefiles/DotFiles/.mbsyncrc" src conf
-**** sync and index
-     :PROPERTIES:
-     :CUSTOM_ID: mbsync_sync_and_index
-     :END:
-     and now we fetch our imap stuff into maildir and index it. The [[https://wiki.debian.org/systemd/Services][Debian Wiki]] documents
-     how to use [[https://wiki.debian.org/systemd/Services][systemd services]] to and the [[https://wiki.archlinux.org/][arch wiki]] gives some concrete examples of how
-     to use [[https://wiki.archlinux.org/index.php/Isync#With_a_timer][mbsync user services]] to keep you maildir upto date.
-     #+begin_src bash
-       cd ~
-       mkdir -p ~/Maildir/gmail
-       mbsync personal
-       mu init --maildir=~/Maildir/gmail --rgr/address="$USEREMAIL"
-       mu index
-     #+end_src
-***** mu4e considerations using mbsync service
-      :PROPERTIES:
-      :CUSTOM_ID: Email,_gmail,_Gnus,_mu4e-isyncmbsync-sync_and_index-mu4e_considerations_using_mbsync_service-798d4cd6
-      :END:
-      Note that if using mu4e (which we are here ;)) then
-      #+begin_src emacs-lisp :tangle no
-        (setq mu4e-get-mail-command "true")
+      #+begin_src emacs-lisp
+        (use-package mu4e-alert
+          ;;:disabled t
+          :config
+          (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+          (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
       #+end_src
-      so that mu4e simply re-reads pre-indexed maildir as opposed fetching itself. (getsync got the mail).
 ** Screen recording
    :PROPERTIES:
-   :CUSTOM_ID: screen_recording
+   :ID:       3134a8a2-7e5b-4d79-9238-1bdf6dc63865
    :END:
 *** camcorder
     :PROPERTIES:
-    :CUSTOM_ID: Screen_recording-camcorder-9e3cfe17
+    :ID:       0e4b5c80-3293-4ec9-ad19-c27d97563736
     :END:
     do screen recording directly from emacs
     #+begin_src emacs-lisp
@@ -3114,7 +2814,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Emacs screencasts
     :PROPERTIES:
-    :CUSTOM_ID: emacs_screencasts_keycasts
+    :ID:       8d2cb70a-d7f2-49cf-b559-25e1641627cb
     :END:
     Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
     #+begin_src emacs-lisp
@@ -3123,33 +2823,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
     #+end_src
 
-** Pomodoro
-   :PROPERTIES:
-   :CUSTOM_ID: pomodoro
-   :END:
-   [[https://github.com/TatriX/pomidor][Pomidor]] is a simple and cool pomodoro technique timer.
-   #+begin_src emacs-lisp
-     (use-package
-       pomidor
-       :bind (("S-<f7>" . pomidor))
-       :custom (pomidor-sound-tick nil)
-       (pomidor-sound-tack nil)
-       (pomidor-seconds (* 25 60))
-       (pomidor-break-seconds (* 5 60))
-       :hook (pomidor-mode . (lambda ()
-                               (display-line-numbers-mode -1) ; Emacs 26.1+
-                               (setq left-fringe-width 0 right-fringe-width 0)
-                               (setq left-margin-width 2 right-margin-width 0)
-                               ;; force fringe update
-                               (set-window-buffer nil (current-buffer)))))
-   #+end_src
 ** Programming Language related
    :PROPERTIES:
-   :CUSTOM_ID: programming
+   :ID:       7070b720-582e-451c-8eed-47ab61cdd130
    :END:
 *** prog-mode hack
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-prog-mode_hack-08004990
+    :ID:       2e3c4e82-1056-47ea-ba0a-e4492fe56709
     :END:
     #+begin_src emacs-lisp
       (unless (fboundp 'prog-mode)
@@ -3157,33 +2837,18 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** linum-mode Show Line numbers
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-linum-mode_Show_Line_numbers-ac3a310e
+    :ID:       1c88f735-c6b7-41d1-b7ea-b09b1e70b539
     :END:
 
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-General-ac9e6746
     :END:
     #+begin_src emacs-lisp
       (global-set-key (kbd "S-<f2>") 'linum-mode)
       (add-hook 'prog-mode-hook (lambda() (linum-mode t)))
     #+end_src
-*** smartparens
-    :PROPERTIES:
-    :CUSTOM_ID: Programming_related-smartparens-b14ac32f
-    :END:
-    #+begin_src emacs-lisp
-      (use-package
-        smartparens
-        :disabled t
-        :commands (smartparens-mode)
-        :config (setq sp-show-pair-from-inside nil)
-        (require 'smartparens-config)
-        (sp-local-tag '(mhtml-mode html-mode) "b" "<span class=\"bold\">" "</span>")
-        (smartparens-global-mode t))
-    #+end_src
 *** rainbow delimiters
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-rainbow_delimiters-3c5e8cb9
+    :ID:       0551cfd4-3325-4b79-90e1-d0edd4c1304e
     :END:
     #+begin_src emacs-lisp
       (use-package rainbow-delimiters
@@ -3197,7 +2862,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Projectile
     :PROPERTIES:
-    :CUSTOM_ID: projectile-project-management
+    :ID:       16b8f4d2-eac6-470f-8ab5-fff9368964a7
     :END:
     :LOGBOOK:
     - State "TODO"       from              [2020-02-25 Tue 19:51]
@@ -3216,11 +2881,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** BASH                                                               :bash:
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-BASH-15618618
+    :ID:       4dd2f546-25a2-498f-ad8c-25a29c09a303
     :END:
 **** Navigating Bash set -x output
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-BASH-Navigating_Bash_set_-x_output-cc0831b0
+     :ID:       043858ea-c607-49f5-bf6e-74622398d1e5
      :END:
      #+begin_src emacs-lisp
        ;; try to work with next-error for bash's "set -x" output
@@ -3234,34 +2899,22 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 *** JSON, YAML Configuration files
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-JSON,_YAML_Configuration_files-0e8a0dac
+    :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
     :END:
-**** JSON Editing
-     :PROPERTIES:
-     :CUSTOM_ID: Programming_related-JSON,_YAML_Configuration_files-JSON_Editing-7c365c4b
-     :END:
-     JSON editing using [[https://github.com/joshwnj/json-mode][json-mode]]
-     #+begin_src emacs-lisp
-       (use-package json-mode)
-     #+end_src
 **** YAML
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-JSON,_YAML_Configuration_files-YAML-0a3fb035
+     :ID:       26c28417-3965-452a-a180-61de98d44ef5
      :END:
-***** Modes
-      :PROPERTIES:
-      :CUSTOM_ID: Programming_related-JSON,_YAML_Configuration_files-YAML-Modes-fb3b4ea1
-      :END:
-      #+begin_src emacs-lisp
-        (use-package
-          yaml-mode
-          :config
-          (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
-          )
-      #+end_src
+     #+begin_src emacs-lisp
+       (use-package
+         yaml-mode
+         :config
+         (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
+         )
+     #+end_src
 *** Flycheck
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Flycheck-a6fd25c7
+    :ID:       3268489e-6d4d-4089-95f7-796e0e0da9db
     :END:
     On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Emacs
     #+begin_src emacs-lisp
@@ -3274,14 +2927,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Version Control
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Version_Control-2f7da057
+    :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
     :END:
 **** It's [[https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs
      :PROPERTIES:
-     :CUSTOM_ID: config-Programming_Language_related-Version_Control-It's_https:github.commagitmagitMagit!_A_Git_porcelain_inside_Emacs-7a0ccd46
+     :ID:       af65c6af-be13-4c09-87ae-a128711ddc14
      :END:
      :PROPERTIES:
-     :CUSTOM_ID:
      magit
      :END:
      #+begin_src emacs-lisp
@@ -3297,11 +2949,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 ***** Task                                                         :tasklist:
       :PROPERTIES:
-      :CUSTOM_ID: Programming_related-Version_Control-It's_Magit!_A_Git_porcelain_inside_Emacs-Task-121a38b7
+      :ID:       5cfe71c8-50a9-4f2e-a71d-68ea476dade0
       :END:
 **** EDiff - comparing files in Emacs
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-EDiff_-_comparing_files_in_Emacs-aefdea8d
+     :ID:       8e09b947-9859-4b89-8354-3c39b1649c33
      :END:
      #+begin_src emacs-lisp
        (use-package ediff+
@@ -3316,7 +2968,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 **** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-Version_Control-https:github.commagitforgeForge_ahead_with_Pull_Requests-92c48a4b
+     :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
      :END:
      #+begin_src emacs-lisp
        (use-package forge
@@ -3324,21 +2976,19 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents
      :PROPERTIES:
-     :CUSTOM_ID: orgit
+     :ID:       66507d88-e049-4c4b-b3a6-e8fb932417a9
      :END:
      #+begin_src emacs-lisp
        (use-package orgit
-         :after magit
-         :demand t)
+         :after magit)
      #+end_src
 **** Git Gutter Mode
      :PROPERTIES:
-     :CUSTOM_ID: git-gutter
+     :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
      :END:
-     [[https://github.com/emacsorphanage/git-gutter][git-gutter.el]] is an Emacs port of the Sublime Text plugin GitGutter.
+     [[https://github.com/emacsorphanage/git-gutter][git-gutter.el]] is  an Emacs port of the Sublime Text plugin GitGutter.
      #+begin_src emacs-lisp
        (use-package git-gutter
-         :demand t
          :config
          (global-git-gutter-mode +1)
          :bind
@@ -3346,7 +2996,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 *** Javascript                                                           :js:
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Javascript-27ca755b
+    :ID:       27571c84-2c40-487d-abd0-3013c53b731b
     :END:
     #+begin_src emacs-lisp
 
@@ -3386,7 +3036,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** RJSX
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-RJSX-ce97f109
+    :ID:       58d9b950-aebb-49e9-bb6d-e6fb66103615
     :END:
     [[https://github.com/felipeochoa/rjsx-mode][rjsx-mode]] extends js2-mode to include jsx parsing.
     #+begin_src emacs-lisp
@@ -3399,7 +3049,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Typescript
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Typescript-e881ec58
     :END:
     #+begin_src emacs-lisp
       (use-package typescript-mode
@@ -3409,32 +3058,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           (setq-local dash-docs-docsets '("React" "JavaScript")))
         (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     #+end_src
-*** Tide Mode
-    :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Tide_Mode-61fba37a
-    :END:
-    #+begin_src emacs-lisp
-      (use-package tide
-        :disabled t
-        :config
-        (defun setup-tide-mode ()
-          "Setup function for tide."
-          (interactive)
-          (tide-setup)
-          (flycheck-mode +1)
-          (setq flycheck-check-syntax-automatically '(save mode-enabled))
-          (eldoc-mode +1)
-          (tide-hl-identifier-mode +1)
-          (company-mode +1))
-
-        (setq company-tooltip-align-annotations t)
-        :init
-        (add-hook 'js2-mode-hook #'setup-tide-mode)
-        )
-    #+end_src
 *** Language Server Protocol (LSP)                                      :lsp:
     :PROPERTIES:
-    :CUSTOM_ID: language-server-protocol
     :END:
     [[https://github.com/emacs-lsp][Emacs-lsp]] : Language Server Protocol client for Emacs
 
@@ -3446,7 +3071,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 **** library
      :PROPERTIES:
-     :CUSTOM_ID: language-server-protocol-library
      :header-args:emacs-lisp: :tangle (expand-file-name "rgr-lsp.el" elisp-dir)
      :END:
 
@@ -3574,7 +3198,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 ***** [[file:~/development/thirdparty/godot/bin][.dir-local.el]] config for a debug template
       :PROPERTIES:
-      :CUSTOM_ID: dir-local-godot
       :END:
       #+begin_src emacs-lisp  :tangle no
         ((c++-mode . ((dap-debug-template-configurations . (("Godot LLDB"
@@ -3589,7 +3212,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** Serial Port
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Serial_Port-d66d6c67
     :END:
     #+begin_src emacs-lisp
       (defgroup rgr/serial-ports nil
@@ -3618,70 +3240,22 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** PlatformIO
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-PlatformIO-c00368f6
     :END:
     [[https://github.com/emacsmirror/platformio-mode][platformio-mode]] is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [[https://docs.platformio.org/en/latest/ide/emacs.html][here]].
     #+begin_src emacs-lisp
-      (straight-use-package 'platformio-mode)
+      (use-package platformio-mode)
     #+end_src
 *** Python                                                           :python:
     :PROPERTIES:
-    :CUSTOM_ID: config-Programming_Language_related-Python
+    :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
     :END:
     #+begin_src python
       (use-package python-mode)
     #+end_src
-**** CANCELLED lsp                                            :lsp:CANCELLED:
-     CLOSED: [2021-03-16 Tue 01:10] SCHEDULED: <2021-03-18 Thu>
-     :PROPERTIES:
-     :CUSTOM_ID: python-lsp
-     :header-args:emacs-lisp: :tangle no
-     :END:
-     :LOGBOOK:
-     - State "CANCELLED"  from "STARTED"    [2021-03-16 Tue 01:10] \\
-       using elpy for now
-     - Note taken on [2021-03-16 Tue 00:52] \\
-       elpy vs lsp or both together?
-     - State "STARTED"    from "TODO"       [2021-03-16 Tue 00:52]
-     - State "TODO"       from              [2021-03-16 Tue 00:51]
-     :END:
-     #+begin_src emacs-lisp
-       ;; (use-package lsp-python-ms
-       ;;   :ensure t
-       ;;   :init (setq lsp-python-ms-auto-install-server t)
-       ;;   :hook (python-mode . (lambda ()
-       ;;                          ;; (require 'lsp-python-ms)
-       ;;                          (lsp-deferred))))
-       (add-hook 'python-mode-hook  (lambda ()
-                                      ;; (require 'lsp-python-ms)
-                                      (lsp)))
-     #+end_src
-**** CANCELLED Anaconda                                  :anaconda:CANCELLED:
-     CLOSED: [2021-03-26 Fri 22:17]
-     :PROPERTIES:
-     :CUSTOM_ID: config-Programming_Language_related-Python-Anaconda-d30e2860
-     :header-args:emacs-lisp: :tangle no
-     :END:
-     :LOGBOOK:
-     - State "CANCELLED"  from "WAITING"    [2021-03-26 Fri 22:17] \\
-       using elpy
-     - State "WAITING"    from "TODO"       [2021-03-26 Fri 22:16] \\
-       wait to see if elpy fails
-     - State "TODO"       from "CANCELLED"  [2021-03-25 Thu 22:02]
-     - State "CANCELLED"  from              [2021-03-25 Thu 20:34] \\
-       keeps freezing so back on the shelf for a while
-     :END:
-     https://github.com/pythonic-emacs/anaconda-mode
-     #+begin_src emacs-lisp
-              (use-package anaconda-mode
-                :config
-                (add-hook 'python-mode-hook 'anaconda-mode)
-                (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
-     #+end_src
 **** Elpy, the Emacs Python IDE                                        :elpy:
      :PROPERTIES:
-     :CUSTOM_ID: python-elpy
+     :ID:       dba1bfe5-5785-444e-9fb4-f2718710de60
      :END:
      :LOGBOOK:
      - Note taken on [2021-03-26 Fri 22:17] \\
@@ -3708,132 +3282,55 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 **** virtualenvs
      :PROPERTIES:
-     :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-3d14ccbf
+     :ID:       b0bee2e6-a4cb-46a1-88ca-50127643d675
      :END:
-***** DONE auto-virtualenv
-      CLOSED: [2021-03-26 Fri 22:15] SCHEDULED: <2021-03-23 Tue>
+***** auto-virtualenv
       :PROPERTIES:
-      :CUSTOM_ID: config-Programming_Language_related-Python-virtualenvs-auto-virtualenvwrapper-bd500e27
-      :END:
-      :LOGBOOK:
-      - State "DONE"       from "TODO"       [2021-03-26 Fri 22:15]
-      - State "TODO"       from              [2021-03-23 Tue 21:44]
+      :ID:       8608165c-a86e-4869-992c-a6809b4b014d
       :END:
       #+begin_src emacs-lisp
         (use-package  auto-virtualenv
           :init
           (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
       #+end_src
-***** DONE pyvenv in a python project
-      CLOSED: [2021-03-26 Fri 22:15]
-      :PROPERTIES:
-      :header-args:emacs-lisp: :tangle no
-      :CUSTOM_ID: config-Late_load-pyenv_in_a_python_project-245e2d3a
-      :END:
-      :LOGBOOK:
-      - State "DONE"       from              [2021-03-26 Fri 22:15]
-      :END:
-****** creating the env in a project directory
-       :PROPERTIES:
-       :CUSTOM_ID: config-Late_load-pyenv_in_a_python_project-creating_the_env_in_a_project_directory-49006d11
-       :END:
-       note standard is to call project local .venv and that can be
-       detected by the likes of [[#config-Programming_Language_related-Python-virtualenvs-auto-virtualenvwrapper-bd500e27][auto-virtualenvwrapper]]
-       #+begin_src bash
-         python3 -m venv .venv
-       #+end_src
 *** C                                                                     :c:
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-C
+    :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
     :END:
-**** asm
-     :PROPERTIES:
-     :CUSTOM_ID: Programming_related-C-asm-75e6438f
-     :END:
-     #+begin_src emacs-lisp
-       (defun rgr/asm-mode-hook ()
-         ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway
-         (local-unset-key (vector asm-comment-char))
-         ;; (local-unset-key "<return>") ; doesn't work. "RET" in a terminal.  http://emacs.stackexchange.com/questions/13286/how-can-i-stop-the-enter-key-from-triggering-a-completion-in-company-mode
-         (electric-indent-local-mode)  ; toggle off
-                                               ;  (setq tab-width 4)
-         (setq indent-tabs-mode nil)
-         ;; asm-mode sets it locally to nil, to "stay closer to the old TAB behaviour".
-         ;; (setq tab-always-indent (default-value 'tab-always-indent))
-
-         (defun asm-calculate-indentation ()
-           (or
-            ;; Flush labels to the left margin.
-                                               ;   (and (looking-at "\\(\\.\\|\\sw\\|\\s_\\)+:") 0)
-            (and (looking-at "[.@_[:word:]]+:") 0)
-            ;; Same thing for `;;;' comments.
-            (and (looking-at "\\s<\\s<\\s<") 0)
-            ;; %if nasm macro stuff goes to the left margin
-            (and (looking-at "%") 0)
-            (and (looking-at "c?global\\|section\\|default\\|align\\|INIT_..X") 0)
-            ;; Simple `;' comments go to the comment-column
-                                               ;(and (looking-at "\\s<\\(\\S<\\|\\'\\)") comment-column)
-            ;; The rest goes at column 4
-            (or 4)))
-         )
-
-       (add-hook 'asm-mode-hook #'rgr/asm-mode-hook)
-     #+end_src
 **** Clang provides us with some industry standard code prettiers     :clang:
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-C-Clang_provides_us_with_some_industry_standard_code_prettiers-846d04c8
+     :ID:       42ededa2-d031-47ae-9489-1bd0eec621c6
      :END:
      #+begin_src emacs-lisp
-       (straight-use-package 'clang-format)
+       (use-package clang-format)
        (setq clang-format-style-option "llvm")
        (fset 'c-indent-region 'clang-format-region)
        (fset 'c-indent-buffer 'clang-format-buffer)
      #+end_src
-**** C  modes hooks
-     :PROPERTIES:
-     :CUSTOM_ID: Programming_related-C-C_modes_hooks-04a1a897
-     :END:
-     #+begin_src emacs-lisp
-       (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-       (use-package
-         ccls
-         :hook ((c++-mode c-mode objc-mode) . (lambda ()
-                                                (require 'ccls)
-                                                (ccls-use-default-rainbow-sem-highlight)
-                                                ;;                 (ccls-code-lens-mode)
-                                                )))
-       (defun rgr/c-setup ()
-         "Set up my C mode."
-         (platformio-mode))
-       ;;        (define-key c-mode-map (kbd "C-c s") #'selectSerialPort
-       (add-hook 'c-mode-hook #'rgr/c-setup)
-       (add-hook 'objc-mode-hook #'rgr/c-setup)
-
-     #+end_src
-***** TODO look into rgr/c-setup and platformio code :tangle no
-      :PROPERTIES:
-      :CUSTOM_ID: Programming_related-C-C_modes_hooks-look_into_rgr/c-setup_and_platformio_code_:tangle_no-05d88c45
-      :END:
-      :LOGBOOK:
-      - State "TODO"       from              [2020-08-18 Di 20:48]
-      :END:
+*** C++                                                                 :cpp:
+    :PROPERTIES:
+    :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b
+    :END:
+    #+begin_src emacs-lisp
+      (defun rgr/c++-mode-hook ()
+        (setq-local dash-docs-docsets '("C++")))
+      (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
+    #+end_src
 *** Linux tools
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Linux_tools-799298c0
     :END:
 **** strace - highlight strace output
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-Linux_tools-strace_-_highlight_strace_output-5163d851
+     :ID:       533e9b7a-9255-4a68-8de6-0f82482edfea
      :END:
      #+begin_src emacs-lisp
        (use-package x86-lookup
-         :custom
          ( x86-lookup-pdf  (expand-file-name "pdf/intel-x86.pdf" user-emacs-directory))
          )
      #+end_src
 **** [[https://github.com/doublep/logview][logview]] - view system logfiles
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-Linux_tools-https:github.comdoubleplogviewlogview_-_view_system_logfiles-25631170
+     :ID:       bfd57f96-8cc4-41a1-81ab-e683345664e1
      :END:
      #+begin_src emacs-lisp
        (use-package logview
@@ -3844,44 +3341,18 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 *** Assembler
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Assembler-e2673169
+    :ID:       2bc81dc1-4f5f-47b9-9446-464af96a2365
     :END:
 **** [[https://nullprogram.com/blog/2015/11/21/][x86Lookup]]
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-Assembler-https:nullprogram.comblog20151121x86Lookup-c9ea32b1
+     :ID:       feb458b6-b2ab-4553-b2d9-95c121b29e7e
      :END:
      #+begin_src emacs-lisp
        (use-package strace-mode)
      #+end_src
-*** C++                                                                 :cpp:
-    :PROPERTIES:
-    :CUSTOM_ID: Programming_related-C++-ca997834
-    :END:
-    #+begin_src emacs-lisp
-      (defun rgr/c++-mode-hook ()
-        (setq-local dash-docs-docsets '("C++")))
-      (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
-    #+end_src
-*** C#                                                                   :c#:
-    :PROPERTIES:
-    :CUSTOM_ID: Programming_related-C#-a59bcf7f
-    :END:
-***** Loading CSharp support
-      :PROPERTIES:
-      :CUSTOM_ID: Programming_related-C#-Loading_CSharp_support-63d07660
-      :END:
-****** config
-       :PROPERTIES:
-       :CUSTOM_ID: Programming_related-C#-config-c98eb7f1
-       :END:
-       #+begin_src emacs-lisp
-         (use-package csharp-mode)
-         (use-package omnisharp)
-       #+end_src
-
 *** Godot GDScript                                                    :godot:
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Godot_GDScript-bfd74946
+    :ID:       19daf0bd-1652-4638-9d72-50f0b8af1586
     :END:
     This [[https://github.com/GDQuest/emacs-gdscript-mode][package]] adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     #+begin_src emacs-lisp
@@ -3906,35 +3377,18 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         )
     #+end_src
 
-***** TODO 19:03 godot scripts                                        :godot:
-      :PROPERTIES:
-      :CUSTOM_ID: Programming_related-Godot_GDScript-19:03_godot_scripts-84990f50
-      :END:
-      :LOGBOOK:
-      - State "TODO"       from              [2020-09-03 Do 19:13]
-      :END:
-
-      <rgr_> terminaolgy (and tools) : you run/play a scene which can be associated with scripts. Do you ever in the IDE run a script directly?
-      <GodotDiscord> <Calinou> you can, using an option in the script editor menu
-      <GodotDiscord> <Calinou> it's not very common though
-      <GodotDiscord> <Calinou> https://docs.godotengine.org/en/latest/tutorials/misc/running_code_in_the_editor.html
-      <GodotDiscord> <Calinou> see also the EditorScript class, which you need to extend from to use that feature: https://docs.godotengine.org/en/latest/classes/class_editorscript.html
-      <rgr_> thank you
-      <rgr_> now a niave Q as I dont have mono install installed. is the C# stuff also "script" and the files are "scripts"?
-      <GodotDiscord> <Calinou> yes, "script" is a generic term
-      <rgr_> and can be run the same way during development?
 *** Web,Symfony and Twig
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-Web,Symfony_and_Twig-07661086
+    :ID:       5c88e4a3-3af1-42e4-81ec-913b4fa88853
     :END:
 **** Tasks                                                         :tasklist:
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-Web,Symfony_and_Twig-Tasks-3233cc5a
+     :ID:       0d8f29bf-bbd2-4387-a8fa-e2907704dc82
      :END:
 ***** DONE put dash docset in here!
       CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 Fr>
       :PROPERTIES:
-      :CUSTOM_ID: Programming_related-Web,Symfony_and_Twig-Tasks-put_dash_docset_in_here!-d4d48059
+      :ID:       fc1fca41-5417-484d-ae16-5f6dcc2e4fa7
       :END:
       :LOGBOOK:
       - State "DONE"       from "TODO"       [2020-03-08 So 23:36]
@@ -3943,11 +3397,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 **** Symfony
      :PROPERTIES:
-     :CUSTOM_ID: Programming_related-Symfony-40bb2b75
+     :ID:       02d41cb7-37c1-4e61-aec1-7014650f29bc
      :END:
 ***** custom
       :PROPERTIES:
-      :CUSTOM_ID: Programming_related-Symfony-custom-98e62551
+      :ID:       0af7ade2-dc61-4d8c-a98b-b39db18b8370
       :END:
 
       #+begin_src emacs-lisp
@@ -3963,7 +3417,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 ***** Start a symfony web server when applicable
       :PROPERTIES:
-      :CUSTOM_ID: Programming_related-Symfony-Start_a_symfony_web_server_when_applicable-66add881
+      :ID:       e985339e-df07-40f2-b0c6-0356749a21c4
       :END:
       #+begin_src emacs-lisp
         (use-package php-mode
@@ -3993,7 +3447,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 ***** webmode
       :PROPERTIES:
-      :CUSTOM_ID: Programming_related-Web,Symfony_and_Twig-The_Code-481efe65
+      :ID:       1f6b744d-f3f8-4d7b-abbe-e8d765ee3cc8
       :END:
       #+begin_src emacs-lisp
         (use-package
@@ -4019,7 +3473,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 *** elf-mode - view the symbol list in a binary
     :PROPERTIES:
-    :CUSTOM_ID: Programming_related-elf-mode_-_view_the_symbol_list_in_a_binary-aa38fce8
+    :ID:       41cf30f2-5a70-4aab-aa93-2bd9a249b72f
     :END:
     [[https://oremacs.com/2016/08/28/elf-mode/][https://oremacs.com/2016/08/28/elf-mode/]]
 
@@ -4031,12 +3485,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** Startup
    :PROPERTIES:
-   :CUSTOM_ID: config-Startup-6c88b604
+   :ID:       35b5ff1f-b971-4b70-88d4-d8594d92fa15
    :END:
 *** SOMEDAY Dashboard                                               :WAITING:
     :PROPERTIES:
     :header-args:emacs-lisp: :tangle no
-    :CUSTOM_ID: config-Startup-Dashboard-1eda176e
+    :ID:       fbf8e53e-1d5e-495d-91be-7a975ac9b687
     :END:
     :LOGBOOK:
     - State "SOMEDAY"    from              [2021-03-31 Wed 07:46]
@@ -4050,11 +3504,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** Themes
    :PROPERTIES:
-   :CUSTOM_ID: Configure_main_look_and_feel-Themes-e137c6ca
+   :ID:       a03660f8-04b0-4a62-a6a3-24146f7db536
    :END:
 *** modus themes
     :PROPERTIES:
-    :CUSTOM_ID: config-General_configuration-library-Themes-modus_themes-04d9f527
+    :ID:       fa3ac5bf-2fbe-4e67-9032-0cb23a84c434
     :END:
     https://github.com/protesilaos/modus-themes
     #+begin_src emacs-lisp
@@ -4073,18 +3527,18 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** Late load
    :PROPERTIES:
-   :CUSTOM_ID: late_load
+   :ID:       574516c0-a821-47fb-b01f-97ec19789d65
    :END:
    #+begin_src emacs-lisp
      (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
    #+end_src
 * Associated emacs things
   :PROPERTIES:
-  :CUSTOM_ID: Associated_emacs_things-1028873e
+  :ID:       c77645d3-d03f-47ab-a30f-fc649c70ef31
   :END:
 ** Project version control, git, .gitignore
    :PROPERTIES:
-   :CUSTOM_ID: Project-version-control
+   :ID:       2e24eab4-5877-4f67-b769-033756e22988
    :END:
    :LOGBOOK:
    - State "DONE"       from              [2020-12-29 Tue 16:15]
@@ -4098,13 +3552,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    :END:
 *** .gitignore, exclusive
     :PROPERTIES:
-    :CUSTOM_ID: Associated_emacs_things-Project_version_control,_git,_.gitignore-.gitignore,_exclusive-0c4677f6
+    :ID:       e306737b-487d-46f5-8e24-a09d972409aa
     :END:
     I like to exclude everything and then add in what is important. So the first line of my [[file:.gitignore][gitignore]] is "*".
     #+include: "./.gitignore" src git
 *** master branch, no commit
     :PROPERTIES:
-    :CUSTOM_ID: Associated_emacs_things-Project_version_control,_git,_.gitignore-master_branch,_closed_to_sinners_and_fools_alike-d2530d80
+    :ID:       f51974ce-8b80-496e-ac0b-32b0962669d9
     :END:
     #+begin_src bash :tangle .git/hooks/pre-commit
       #!/bin/sh
@@ -4116,11 +3570,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** Setting up emacs as a default editor using a dot desktop file and associated protocol handler
    :PROPERTIES:
-   :CUSTOM_ID: emacs-default-editor
+   :ID:       ac99a443-46fe-4878-a311-db5bce8568e5
    :END:
 *** [[file:editor-config/php.ini][php.ini]] changes e.g /etc/php/7.3/php.ini
     :PROPERTIES:
-    :CUSTOM_ID: Associated_emacs_things-Setting_up_emacs_as_a_default_editor_using_a_dot_desktop_file_and_associated_protocol_handler-file:editor-configphp.iniphp.ini_changes_e.g_etcphp7.3php.ini-99a076b9
+    :ID:       32d189b9-f59e-49ef-bfde-d0184ff833f1
     :END:
     ~xdebug.file_link_format~ is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of  [[file+sys:editor-config/emacsclient.desktop][emacsclient.desktop]]  documented below.
     #+begin_src conf :tangle editor-config/php.ini"
@@ -4133,7 +3587,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+include: "./editor-config/php.ini" src eshell
 *** [[file:bin/emacsclient-linenumber][emacsclient-linenumber]] script to correctly parse the protocol in order to start emacs frame at correct line
     :PROPERTIES:
-    :CUSTOM_ID: Associated_emacs_things-Setting_up_emacs_as_a_default_editor_using_a_dot_desktop_file_and_associated_protocol_handler-file:binemacsclient-linenumberemacsclient-linenumber_script_to_correctly_parse_the_protocol_in_order_to_start_emacs_frame_at_correct_line-35ed3c5e
+    :ID:       6e22d271-57bb-47a0-853e-acbc91f1cbd4
     :END:
     #+begin_src bash :tangle bin/emacsclient-linenumber
       #!/usr/bin/bash
@@ -4153,7 +3607,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Gnome protocol handler desktop file
     :PROPERTIES:
-    :CUSTOM_ID: Associated_emacs_things-Setting_up_emacs_as_a_default_editor_using_a_dot_desktop_file_and_associated_protocol_handler-Gnome_protocol_handler_desktop_file-0c42ec7b
+    :ID:       b8c2fbcf-9487-4220-b5fe-2d7d352655dd
     :END:
     Copy [[file+sys:editor-config/emacsclient.desktop][emacsclient.desktop]] to  ~/.local/share/applications (Debian & Gnome - your mileage may vary...)
 
@@ -4174,7 +3628,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 *** Always using emacsclient
     :PROPERTIES:
-    :CUSTOM_ID: Associated_emacs_things-Setting_up_emacs_as_a_default_editor_using_a_dot_desktop_file_and_associated_protocol_handler-Always_using_emacsclient-bb1c16a0
+    :ID:       a2dda54e-6a70-4bbd-96ec-7dd38e49dbc0
     :END:
     Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc:
     #+begin_src shell
@@ -4182,7 +3636,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 ** [[file:bin/emacs-same-frame][bin/emacs-same-frame]] open emacs in the same frame
    :PROPERTIES:
-   :CUSTOM_ID: Associated_emacs_things-file:binemacs-same-framebinemacs-same-frame_open_emacs_in_the_same_frame-a8dea70f
+   :ID:       b85efbb3-22c8-46cb-937c-d398165750ad
    :END:
    #+begin_src bash :tangle bin/emacs-same-frame
      #!/bin/bash
