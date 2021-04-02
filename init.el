@@ -617,6 +617,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
   :bind* ("C-x g" . magit-status))
 
+(use-package orgit
+  :after magit)
+
 (use-package ediff+
   :custom
   (ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -627,9 +630,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
 
 (use-package forge
-  :after magit)
-
-(use-package orgit
   :after magit)
 
 (use-package git-gutter
@@ -715,21 +715,17 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package platformio-mode)
 
 (use-package python-mode
-  :ensure nil
-  :config
-  (setq lsp-pyls-plugins-flake8-enabled t)
-  (lsp-register-custom-settings
-   '(("pyls.plugins.pyls_mypy.enabled" t t)
-     ("pyls.plugins.pyls_mypy.live_mode" nil t)
-     ("pyls.plugins.pyls_black.enabled" t t)
-     ("pyls.plugins.pyls_isort.enabled" t t)
+  ;; :custom
+  ;; (python-shell-interpreter "ipython")
+  ;; (python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
+  )
 
-     ;; Disable these as they're duplicated by flake8
-     ("pyls.plugins.pycodestyle.enabled" nil t)
-     ("pyls.plugins.mccabe.enabled" nil t)
-     ("pyls.plugins.pyflakes.enabled" nil t)))
-  :hook
-  (python-mode . lsp-deferred))
+(use-package lsp-python-ms
+  :ensure t
+  :init (setq lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-python-ms)
+                         (lsp-deferred))))
 
 (use-package auto-virtualenv
   :demand t

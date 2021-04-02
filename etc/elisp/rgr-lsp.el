@@ -1,5 +1,7 @@
 ;; if you want to change prefix for lsp-mode keybindings.
 (use-package lsp-mode
+  :custom
+  (lsp-diagnostic-package :none)
   :config
   (use-package
     lsp-ui

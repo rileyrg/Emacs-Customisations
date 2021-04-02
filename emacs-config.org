@@ -424,7 +424,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    #+begin_src emacs-lisp
      (require 'rgr/daemon "rgr-daemon" 'NOERROR)
    #+end_src
-*** rgr-daemon libarary
+*** rgr-daemon libarary                                              :daemon:
     :PROPERTIES:
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-daemon.el" elisp-dir)
     :ID:       ee7aaad4-5f12-4e5e-b7d7-91ed4296b129
@@ -1197,7 +1197,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-org.el" elisp-dir)
     :ID:       f0550fa8-9b91-43df-bc36-ff06d7ff00a0
     :END:
-**** Org Mode, org-mode
+**** Org Mode, org-mode                                                 :org:
      :PROPERTIES:
      :ID:       80d295c4-fe60-4bef-99e2-2f15bcb1e36a
      :END:
@@ -1233,11 +1233,20 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+begin_src emacs-lisp
         (require 'org-id)
       #+end_src
-***** crypt
-      #+begin_src emacs-lisp
-        (require 'org-crypt)
-        (org-crypt-use-before-save-magic)
-      #+end_src
+***** crypt                                                           :crypt:
+-----BEGIN PGP MESSAGE-----
+
+hQEMA7IjL5SkHG4iAQgAyZIoE0Y/TVnr8THS2tMB692xjcRUcVqBc7vWNr6HK8vf
+JY/zJdMuT0DVeFDLQGMRXETr7a86RryVYc2q+fuhl3UJ4H1Ud6knF4oTAtQHLRow
+wK8vVGSMUuwka6rAK264ifopWCO9BsYPu5p03ZurKUnev9fpPD+fJZUNyr55d9rF
+I9cSRtP4SpAyXZZFiTs5gyvIqTidQz7rvSBKTX7Ap+4NYSgG0kfa2JnU1ULuG2hi
+4oovoYE/R3xWg/rKkMQGojWZwjjsB/t7nY88FVVGD/9PN8C7AuEDWFKQfmmESaaZ
+iG4rUsgDAVoIcNAf/kjgEINDlCf/5Ta2O3sWEnZV79KRAeYDVTa1JsV124amRsze
+VQUxEAanKo48PAJH6dxl/Hb7Tht+tzmEncsHAknzzLV3lOZnVdFLUDk6BrhvXt9Y
+RXGj03AE8R/AJZPk1v9Fy33gcq5gVHR2VQyzGQ9X4yBFcynzlZriFgYcteEhe+KK
+MFDBlUCKoWk5EP+UECg+0veHSHyGJiycX8vizAjrGzIjEw==
+=ql9c
+-----END PGP MESSAGE-----
 ***** async babel blocks
       #+begin_src emacs-lisp
         (use-package ob-async)
@@ -1869,7 +1878,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (provide 'rgr/reference)
      #+end_src
-** EMMS
+** EMMS                                                          :music:emms:
    :PROPERTIES:
    :ID:       be00ecd2-a116-4edc-b013-d4dd06ab8d93
    :END:
@@ -2486,7 +2495,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    :PROPERTIES:
    :ID:       1db35463-e9e1-4c38-b21f-437d475184e4
    :END:
-*** mu4e
+*** mu4e                                                         :email:mu4e:
     :PROPERTIES:
     :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
     :END:
@@ -2757,11 +2766,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         (flycheck-pos-tip-mode)
         (global-flycheck-mode))
     #+end_src
-*** Version Control
+*** Version Control                                                  :git:vc:
     :PROPERTIES:
     :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
     :END:
-**** It's [[https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs
+**** It's [[https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs                         :magit:
      :PROPERTIES:
      :ID:       af65c6af-be13-4c09-87ae-a128711ddc14
      :END:
@@ -2779,11 +2788,15 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
          :bind* ("C-x g" . magit-status))
      #+end_src
-***** Task                                                         :tasklist:
+***** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents
       :PROPERTIES:
-      :ID:       5cfe71c8-50a9-4f2e-a71d-68ea476dade0
+      :ID:       66507d88-e049-4c4b-b3a6-e8fb932417a9
       :END:
-**** EDiff - comparing files in Emacs
+      #+begin_src emacs-lisp
+        (use-package orgit
+          :after magit)
+      #+end_src
+**** EDiff - comparing files in Emacs                            :diff:ediff:
      :PROPERTIES:
      :ID:       8e09b947-9859-4b89-8354-3c39b1649c33
      :END:
@@ -2798,7 +2811,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
      #+end_src
 
-**** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests
+**** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests                        :forge:git:github:
      :PROPERTIES:
      :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
      :END:
@@ -2806,15 +2819,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (use-package forge
          :after magit)
      #+end_src
-**** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents
-     :PROPERTIES:
-     :ID:       66507d88-e049-4c4b-b3a6-e8fb932417a9
-     :END:
-     #+begin_src emacs-lisp
-       (use-package orgit
-         :after magit)
-     #+end_src
-**** Git Gutter Mode
+**** Git Gutter Mode                                                 :gutter:
      :PROPERTIES:
      :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
      :END:
@@ -3079,32 +3084,33 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
     :END:
 **** load python
+     :PROPERTIES:
+     :ID:       6221a9aa-6d3d-42a8-8a1e-c371333a1108
+     :END:
      #+begin_src emacs-lisp
        (use-package python-mode
-         :ensure nil
-         :config
-         (setq lsp-pyls-plugins-flake8-enabled t)
-         (lsp-register-custom-settings
-          '(("pyls.plugins.pyls_mypy.enabled" t t)
-            ("pyls.plugins.pyls_mypy.live_mode" nil t)
-            ("pyls.plugins.pyls_black.enabled" t t)
-            ("pyls.plugins.pyls_isort.enabled" t t)
-
-            ;; Disable these as they're duplicated by flake8
-            ("pyls.plugins.pycodestyle.enabled" nil t)
-            ("pyls.plugins.mccabe.enabled" nil t)
-            ("pyls.plugins.pyflakes.enabled" nil t)))
-         :hook
-         (python-mode . lsp-deferred))
-      #+end_src
-**** virtualenv
+         ;; :custom
+         ;; (python-shell-interpreter "ipython")
+         ;; (python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
+         )
+     #+end_src
+**** lsp                                                                :lsp:
+     #+begin_src emacs-lisp
+       (use-package lsp-python-ms
+         :ensure t
+         :init (setq lsp-python-ms-auto-install-server t)
+         :hook (python-mode . (lambda ()
+                                (require 'lsp-python-ms)
+                                (lsp-deferred))))
+     #+end_src
+**** virtualenv                                                  :virtualenv:
      #+begin_src emacs-lisp
        (use-package auto-virtualenv
          :demand t
          :config
          (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
      #+end_src
-**** blacken reformatting
+**** blacken reformatting                                           :blacken:
      #+begin_src emacs-lisp
        (use-package blacken
          :demand t
@@ -3311,7 +3317,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         :config
         (dashboard-setup-startup-hook))
     #+end_src
-** Themes
+** Themes                                                            :themes:
    :PROPERTIES:
    :ID:       a03660f8-04b0-4a62-a6a3-24146f7db536
    :END:
@@ -3359,7 +3365,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    need to think about this
    - State "TODO"       from              [2020-12-18 Fr 04:43]
    :END:
-*** .gitignore, exclusive
+*** .gitignore, exclusive                                         :gitignore:
     :PROPERTIES:
     :ID:       e306737b-487d-46f5-8e24-a09d972409aa
     :END:

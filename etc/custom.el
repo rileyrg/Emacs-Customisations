@@ -252,7 +252,6 @@ Would you like to play a game?
  '(lookup-reference-functions
    '(rgr/describe-symbol goldendict-dwim rgr/dictionary-search rgr/linguee-lookup rgr/jquery-lookup google-this-search))
  '(lsp-auto-guess-root t)
- '(lsp-python-ms-parse-dot-env-enabled nil nil nil "Customized with use-package lsp-python-ms")
  '(magit-diff-use-overlays nil t)
  '(magit-section-initial-visibility-alist '((stashes . hide) (unmerged . hide)))
  '(menu-bar-mode nil)

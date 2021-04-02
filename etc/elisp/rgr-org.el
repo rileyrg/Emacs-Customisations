@@ -20,9 +20,6 @@
 
 (require 'org-id)
 
-(require 'org-crypt)
-(org-crypt-use-before-save-magic)
-
 (use-package ob-async)
 
 (use-package ox-gfm)

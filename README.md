@@ -315,7 +315,7 @@ Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
     (require 'rgr/daemon "rgr-daemon" 'NOERROR)
 
 
-### rgr-daemon libarary
+### rgr-daemon libarary     :daemon:
 
 
     ;; start emacs-server if not running
@@ -973,7 +973,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org library
 
-1.  Org Mode, org-mode
+1.  Org Mode, org-mode     :org:
 
         (use-package org-plus-contrib
           :custom
@@ -1001,10 +1001,21 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
             (require 'org-id)
 
-    2.  crypt
+    2.  crypt     :crypt:
 
-            (require 'org-crypt)
-            (org-crypt-use-before-save-magic)
+        &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
+
+        hQEMA7IjL5SkHG4iAQgAyZIoE0Y/TVnr8THS2tMB692xjcRUcVqBc7vWNr6HK8vf
+        JY/zJdMuT0DVeFDLQGMRXETr7a86RryVYc2q+fuhl3UJ4H1Ud6knF4oTAtQHLRow
+        wK8vVGSMUuwka6rAK264ifopWCO9BsYPu5p03ZurKUnev9fpPD+fJZUNyr55d9rF
+        I9cSRtP4SpAyXZZFiTs5gyvIqTidQz7rvSBKTX7Ap+4NYSgG0kfa2JnU1ULuG2hi
+        4oovoYE/R3xWg/rKkMQGojWZwjjsB/t7nY88FVVGD/9PN8C7AuEDWFKQfmmESaaZ
+        iG4rUsgDAVoIcNAf/kjgEINDlCf/5Ta2O3sWEnZV79KRAeYDVTa1JsV124amRsze
+        VQUxEAanKo48PAJH6dxl/Hb7Tht+tzmEncsHAknzzLV3lOZnVdFLUDk6BrhvXt9Y
+        RXGj03AE8R/AJZPk1v9Fy33gcq5gVHR2VQyzGQ9X4yBFcynzlZriFgYcteEhe+KK
+        MFDBlUCKoWk5EP+UECg+0veHSHyGJiycX8vizAjrGzIjEw==
+        =ql9c
+        &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
 
     3.  async babel blocks
 
@@ -1539,7 +1550,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (provide 'rgr/reference)
 
 
-## EMMS
+## EMMS     :music:emms:
 
 [Emms](https://github.com/skeeto/elfeed) is the Emacs Multimedia System. Emms displays and plays multimedia from within GNU/Emacs using a variety of external players and from different sources.
 
@@ -2198,7 +2209,7 @@ The code in [rgr-chat.el](./elisp/rgr-chat.el):
 ## Email
 
 
-### mu4e
+### mu4e     :email:mu4e:
 
     (use-package mu4e
 
@@ -2438,9 +2449,9 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
       (global-flycheck-mode))
 
 
-### Version Control
+### Version Control     :git:vc:
 
-1.  It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs
+1.  It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs     :magit:
 
     magit
 
@@ -2454,7 +2465,12 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
           (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
           :bind* ("C-x g" . magit-status))
 
-2.  EDiff - comparing files in Emacs
+    1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents
+
+            (use-package orgit
+              :after magit)
+
+2.  EDiff - comparing files in Emacs     :diff:ediff:
 
         (use-package ediff+
           :custom
@@ -2465,17 +2481,12 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
             (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
           :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
 
-3.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
+3.  [Forge](https://github.com/magit/forge) ahead with Pull Requests     :forge:git:github:
 
         (use-package forge
           :after magit)
 
-4.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents
-
-        (use-package orgit
-          :after magit)
-
-5.  Git Gutter Mode
+4.  Git Gutter Mode     :gutter:
 
     [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
 
@@ -2725,30 +2736,28 @@ The build and install process id documented [here](https://docs.platformio.org/e
 1.  load python
 
         (use-package python-mode
-          :ensure nil
-          :config
-          (setq lsp-pyls-plugins-flake8-enabled t)
-          (lsp-register-custom-settings
-           '(("pyls.plugins.pyls_mypy.enabled" t t)
-             ("pyls.plugins.pyls_mypy.live_mode" nil t)
-             ("pyls.plugins.pyls_black.enabled" t t)
-             ("pyls.plugins.pyls_isort.enabled" t t)
+          ;; :custom
+          ;; (python-shell-interpreter "ipython")
+          ;; (python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
+          )
 
-             ;; Disable these as they're duplicated by flake8
-             ("pyls.plugins.pycodestyle.enabled" nil t)
-             ("pyls.plugins.mccabe.enabled" nil t)
-             ("pyls.plugins.pyflakes.enabled" nil t)))
-          :hook
-          (python-mode . lsp-deferred))
+2.  lsp     :lsp:
 
-2.  virtualenv
+        (use-package lsp-python-ms
+          :ensure t
+          :init (setq lsp-python-ms-auto-install-server t)
+          :hook (python-mode . (lambda ()
+                                 (require 'lsp-python-ms)
+                                 (lsp-deferred))))
+
+3.  virtualenv     :virtualenv:
 
         (use-package auto-virtualenv
           :demand t
           :config
           (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-3.  blacken reformatting
+4.  blacken reformatting     :blacken:
 
         (use-package blacken
           :demand t
@@ -2889,7 +2898,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ## Startup
 
 
-## Themes
+## Themes     :themes:
 
 
 ### modus themes
@@ -2921,7 +2930,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ## Project version control, git, .gitignore
 
 
-### .gitignore, exclusive
+### .gitignore, exclusive     :gitignore:
 
 I like to exclude everything and then add in what is important. So the first line of my [gitignore](.gitignore) is "\*".
 
