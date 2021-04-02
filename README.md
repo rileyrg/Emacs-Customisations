@@ -2566,15 +2566,9 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
         ;; if you want to change prefix for lsp-mode keybindings.
         (use-package lsp-mode
-          :custom
-          (lsp-enable-file-watchers . nil)
           :config
           (use-package
             lsp-ui
-            :custom
-            (lsp-ui-sideline-show-hover t)
-            (lsp-ui-sideline-delay 3)
-            (lsp-ui-doc-delay 1.7)
             :config
             ;; (use-package lsp-treemacs
             ;;   :config
@@ -2602,8 +2596,8 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
               ;; (message "lsp-ui-doc--displayed:%s" lsp-ui-doc--displayed)
               )
             (defun rgr/lsp-ui-mode-hook()
-              (lsp-ui-sideline-mode -1)
-              (lsp-ui-doc-mode -1)
+              (lsp-ui-sideline-mode +1)
+              (lsp-ui-doc-mode +1)
               )
 
             (defun rgr/lsp-ui-imenu-view()
@@ -2679,7 +2673,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
                         ("S-<f11>" . dap-step-out)
                         ))
           :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-                 ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
+                 ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp-deferred)
                  ;; if you want which-key integration
                  (lsp-mode . rgr/lsp-mode-hook)))
 
@@ -2734,29 +2728,52 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 ### Python     :python:
 
-    (use-package python-mode)
-
-1.  Elpy, the Emacs Python IDE     :elpy:
-
-        (use-package elpy
-          :ensure t
-          :defer t
-          :custom
-          (elpy-rpc-virtualenv-path 'current)
-          :init
-          (advice-add 'python-mode :before 'elpy-enable)
-          :hook
-          (elpy-mode . (lambda ()
-                         (add-hook 'before-save-hook
-                                   'elpy-format-code nil t))))
-
-2.  virtualenvs
+1.  virtualenvs
 
     1.  auto-virtualenv
+
+        Uses pyvenv whose docs are confusing as hell. Could  optionally set pyvenv-activate to ".venv" but seems wrong.
+        Should consider submitting a patch to pyenv so that it auto detects venvs as auto-virtualenv does.
+
+        :ID:       8854b3fe-e520-401e-a1fc-f725aa9e2a42
 
             (use-package  auto-virtualenv
               :init
               (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
+
+2.  lsp     :lsp:
+
+        (add-to-list 'flycheck-disabled-checkers 'python-pylint)
+        (add-to-list 'flycheck-disabled-checkers 'lsp)
+
+    1.  pyls
+
+        This is the best link on this : <https://www.mattduck.com/lsp-python-getting-started.html>
+
+            pip install pyls-black pyls-isort pyls-mypy pyls-flake8
+
+            (use-package lsp-mode
+              :config
+              (require 'lsp-pyls)
+              (lsp-register-custom-settings
+               '(("pyls.plugins.pyls_mypy.enabled" t t)
+                 ("pyls.plugins.pyls_mypy.live_mode" nil t)
+                 ("pyls.plugins.pyls_black.enabled" t t)
+                 ("pyls.plugins.pyls_flake8.enabled" t t)
+                 ("pyls.plugins.pyls_isort.enabled" t t)
+               ;; Disable these as they're duplicated by flake8
+                 ("pyls.plugins.pycodestyle.enabled" nil t)
+                 ("pyls.plugins.mccabe.enabled" nil t)
+                 ("pyls.plugins.pyflakes.enabled" nil t)))
+              :hook
+              ((python-mode . lsp-deferred)))
+
+3.  blacken - reformat python
+
+    <https://github.com/pythonic-emacs/blacken>
+
+        (use-package blacken
+          :hook (python-mode . blacken-mode))
 
 
 ### C     :c:

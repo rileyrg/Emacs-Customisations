@@ -3260,38 +3260,16 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :PROPERTIES:
      :ID:       b0bee2e6-a4cb-46a1-88ca-50127643d675
      :END:
-***** WAITING auto-virtualenv                                       :WAITING:
-      SCHEDULED: <2021-04-12 Mo>
+***** auto-virtualenv
+      Uses pyvenv whose docs are confusing as hell. Could  optionally set pyvenv-activate to ".venv" but seems wrong.
+      Should consider submitting a patch to pyenv so that it auto detects venvs as auto-virtualenv does.
       :PROPERTIES:
-      :ID:       8608165c-a86e-4869-992c-a6809b4b014d
-      :header-args:emacs-lisp: :tangle no
-      :END:
-      :LOGBOOK:
-      - State "WAITING"    from              [2021-04-02 Fr 14:52] \\
-        wait to see if pyvenv works, and if so, delete me
-      - State "CANCELLED"  from              [2021-04-02 Fr 13:50] \\
-        use pyvenv maybe
+      :ID:       8854b3fe-e520-401e-a1fc-f725aa9e2a42
       :END:
       #+begin_src emacs-lisp
         (use-package  auto-virtualenv
           :init
           (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
-      #+end_src
-***** pyvenv
-      :LOGBOOK:
-      - State "WAITING"    from              [2021-04-02 Fr 14:31] \\
-        waiting on whether auto venv test works better
-      :END:
-      #+begin_src emacs-lisp
-        (use-package pyvenv
-          :demand t
-          :custom
-          (pyvenv-activate ".venv")
-          :config
-        ;;  (setq pyvenv-workon "emacs")  ; Default venv - the docs are as clear as mud. Like pretty much everything with fucking python env config
-        ;; https://www.youtube.com/watch?v=-C8uVImkTQg&t=2s
-          (pyvenv-mode 1)
-          (pyvenv-tracking-mode 1))
       #+end_src
 **** lsp                                                                :lsp:
      #+begin_src emacs-lisp
@@ -3344,37 +3322,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                                  (add-hook 'hack-local-variables-hook (lambda()(setq-local flycheck-checker 'python-flake8)))
                                  )))
       #+end_src
-**** CANCELLED Elpy, the Emacs Python IDE                    :elpy:CANCELLED:
-     CLOSED: [2021-04-02 Fr 07:41]
-     :PROPERTIES:
-     :ID:       dba1bfe5-5785-444e-9fb4-f2718710de60
-     :header-args:emacs-lisp: :tangle no
-     :END:
-     :LOGBOOK:
-     - State "CANCELLED"  from              [2021-04-02 Fr 07:41] \\
-       cancelled by trying lsp again
-     - Note taken on [2021-03-26 Fri 22:17] \\
-       seems to work better than anaconda
-     - State "DONE"       from "TODO"       [2021-03-26 Fri 22:17]
-     - State "TODO"       from "STARTED"    [2021-03-25 Thu 20:39]
-     - State "STARTED"    from "TODO"       [2021-03-25 Thu 20:38]
-     - State "TODO"       from "CANCELLED"  [2021-03-25 Thu 20:34]
-     - State "CANCELLED"  from              [2021-03-22 Mon 09:36] \\
-       paused while try anaconda
-     :END:
-     #+begin_src emacs-lisp
-       (use-package elpy
-         :ensure t
-         :defer t
-         :custom
-         (elpy-rpc-virtualenv-path 'current)
-         :init
-         (advice-add 'python-mode :before 'elpy-enable)
-         :hook
-         (elpy-mode . (lambda ()
-                        (add-hook 'before-save-hook
-                                  'elpy-format-code nil t))))
-     #+end_src
 **** blacken - reformat python
      https://github.com/pythonic-emacs/blacken
      #+begin_src emacs-lisp

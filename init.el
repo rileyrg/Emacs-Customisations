@@ -765,15 +765,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package platformio-mode)
 
-(use-package pyvenv
-  :demand t
-  :custom
-  (pyvenv-activate ".venv")
-  :config
-;;  (setq pyvenv-workon "emacs")  ; Default venv - the docs are as clear as mud. Like pretty much everything with fucking python env config
-;; https://www.youtube.com/watch?v=-C8uVImkTQg&t=2s
-  (pyvenv-mode 1)
-  (pyvenv-tracking-mode 1))
+(use-package  auto-virtualenv
+  :init
+  (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
 
 (add-to-list 'flycheck-disabled-checkers 'python-pylint)
 (add-to-list 'flycheck-disabled-checkers 'lsp)
