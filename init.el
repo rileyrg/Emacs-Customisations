@@ -765,21 +765,37 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package platformio-mode)
 
-(use-package elpy
-  :ensure t
-  :defer t
+(use-package pyvenv
+  :demand t
   :custom
-  (elpy-rpc-virtualenv-path 'current)
-  :init
-  (advice-add 'python-mode :before 'elpy-enable)
-  :hook
-  (elpy-mode . (lambda ()
-                 (add-hook 'before-save-hook
-                           'elpy-format-code nil t))))
+  (pyvenv-activate ".venv")
+  :config
+;;  (setq pyvenv-workon "emacs")  ; Default venv - the docs are as clear as mud. Like pretty much everything with fucking python env config
+;; https://www.youtube.com/watch?v=-C8uVImkTQg&t=2s
+  (pyvenv-mode 1)
+  (pyvenv-tracking-mode 1))
 
-(use-package  auto-virtualenv
-  :init
-  (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
+(add-to-list 'flycheck-disabled-checkers 'python-pylint)
+(add-to-list 'flycheck-disabled-checkers 'lsp)
+
+(use-package lsp-mode
+  :config
+  (require 'lsp-pyls)
+  (lsp-register-custom-settings
+   '(("pyls.plugins.pyls_mypy.enabled" t t)
+     ("pyls.plugins.pyls_mypy.live_mode" nil t)
+     ("pyls.plugins.pyls_black.enabled" t t)
+     ("pyls.plugins.pyls_flake8.enabled" t t)
+     ("pyls.plugins.pyls_isort.enabled" t t)
+   ;; Disable these as they're duplicated by flake8
+     ("pyls.plugins.pycodestyle.enabled" nil t)
+     ("pyls.plugins.mccabe.enabled" nil t)
+     ("pyls.plugins.pyflakes.enabled" nil t)))
+  :hook
+  ((python-mode . lsp-deferred)))
+
+(use-package blacken
+  :hook (python-mode . blacken-mode))
 
 (use-package clang-format)
 (setq clang-format-style-option "llvm")

@@ -1,14 +1,8 @@
 ;; if you want to change prefix for lsp-mode keybindings.
 (use-package lsp-mode
-  :custom
-  (lsp-enable-file-watchers . nil)
   :config
   (use-package
     lsp-ui
-    :custom
-    (lsp-ui-sideline-show-hover t)
-    (lsp-ui-sideline-delay 3)
-    (lsp-ui-doc-delay 1.7)
     :config
     ;; (use-package lsp-treemacs
     ;;   :config
@@ -36,8 +30,8 @@
       ;; (message "lsp-ui-doc--displayed:%s" lsp-ui-doc--displayed)
       )
     (defun rgr/lsp-ui-mode-hook()
-      (lsp-ui-sideline-mode -1)
-      (lsp-ui-doc-mode -1)
+      (lsp-ui-sideline-mode +1)
+      (lsp-ui-doc-mode +1)
       )
 
     (defun rgr/lsp-ui-imenu-view()
@@ -113,7 +107,7 @@
                 ("S-<f11>" . dap-step-out)
                 ))
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
+         ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp-deferred)
          ;; if you want which-key integration
          (lsp-mode . rgr/lsp-mode-hook)))
 

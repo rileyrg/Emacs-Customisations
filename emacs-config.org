@@ -3077,15 +3077,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        ;; if you want to change prefix for lsp-mode keybindings.
        (use-package lsp-mode
-         :custom
-         (lsp-enable-file-watchers . nil)
          :config
          (use-package
            lsp-ui
-           :custom
-           (lsp-ui-sideline-show-hover t)
-           (lsp-ui-sideline-delay 3)
-           (lsp-ui-doc-delay 1.7)
            :config
            ;; (use-package lsp-treemacs
            ;;   :config
@@ -3113,8 +3107,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
              ;; (message "lsp-ui-doc--displayed:%s" lsp-ui-doc--displayed)
              )
            (defun rgr/lsp-ui-mode-hook()
-             (lsp-ui-sideline-mode -1)
-             (lsp-ui-doc-mode -1)
+             (lsp-ui-sideline-mode +1)
+             (lsp-ui-doc-mode +1)
              )
 
            (defun rgr/lsp-ui-imenu-view()
@@ -3190,7 +3184,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                        ("S-<f11>" . dap-step-out)
                        ))
          :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-                ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp)
+                ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp-deferred)
                 ;; if you want which-key integration
                 (lsp-mode . rgr/lsp-mode-hook)))
 
@@ -3250,14 +3244,115 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :PROPERTIES:
     :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
     :END:
-    #+begin_src python
-      (use-package python-mode)
-    #+end_src
-**** Elpy, the Emacs Python IDE                                        :elpy:
+**** CANCELLED loading up python-mode                             :CANCELLED:
+     CLOSED: [2021-04-02 Fr 12:59]
      :PROPERTIES:
-     :ID:       dba1bfe5-5785-444e-9fb4-f2718710de60
+     :header-args:emacs-lisp: :tangle no
      :END:
      :LOGBOOK:
+     - State "CANCELLED"  from              [2021-04-02 Fr 12:59] \\
+       use built in
+     :END:
+     #+begin_src emacs-lisp
+     (use-package python-mode)
+     #+end_src
+**** virtualenvs
+     :PROPERTIES:
+     :ID:       b0bee2e6-a4cb-46a1-88ca-50127643d675
+     :END:
+***** WAITING auto-virtualenv                                       :WAITING:
+      SCHEDULED: <2021-04-12 Mo>
+      :PROPERTIES:
+      :ID:       8608165c-a86e-4869-992c-a6809b4b014d
+      :header-args:emacs-lisp: :tangle no
+      :END:
+      :LOGBOOK:
+      - State "WAITING"    from              [2021-04-02 Fr 14:52] \\
+        wait to see if pyvenv works, and if so, delete me
+      - State "CANCELLED"  from              [2021-04-02 Fr 13:50] \\
+        use pyvenv maybe
+      :END:
+      #+begin_src emacs-lisp
+        (use-package  auto-virtualenv
+          :init
+          (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
+      #+end_src
+***** pyvenv
+      :LOGBOOK:
+      - State "WAITING"    from              [2021-04-02 Fr 14:31] \\
+        waiting on whether auto venv test works better
+      :END:
+      #+begin_src emacs-lisp
+        (use-package pyvenv
+          :demand t
+          :custom
+          (pyvenv-activate ".venv")
+          :config
+        ;;  (setq pyvenv-workon "emacs")  ; Default venv - the docs are as clear as mud. Like pretty much everything with fucking python env config
+        ;; https://www.youtube.com/watch?v=-C8uVImkTQg&t=2s
+          (pyvenv-mode 1)
+          (pyvenv-tracking-mode 1))
+      #+end_src
+**** lsp                                                                :lsp:
+     #+begin_src emacs-lisp
+     (add-to-list 'flycheck-disabled-checkers 'python-pylint)
+     (add-to-list 'flycheck-disabled-checkers 'lsp)
+     #+end_src
+***** pyls
+      This is the best link on this : https://www.mattduck.com/lsp-python-getting-started.html
+      #+begin_src bash
+        pip install pyls-black pyls-isort pyls-mypy pyls-flake8
+      #+end_src
+      #+begin_src emacs-lisp
+        (use-package lsp-mode
+          :config
+          (require 'lsp-pyls)
+          (lsp-register-custom-settings
+           '(("pyls.plugins.pyls_mypy.enabled" t t)
+             ("pyls.plugins.pyls_mypy.live_mode" nil t)
+             ("pyls.plugins.pyls_black.enabled" t t)
+             ("pyls.plugins.pyls_flake8.enabled" t t)
+             ("pyls.plugins.pyls_isort.enabled" t t)
+           ;; Disable these as they're duplicated by flake8
+             ("pyls.plugins.pycodestyle.enabled" nil t)
+             ("pyls.plugins.mccabe.enabled" nil t)
+             ("pyls.plugins.pyflakes.enabled" nil t)))
+          :hook
+          ((python-mode . lsp-deferred)))
+      #+end_src
+***** CANCELLED mspyls                                            :CANCELLED:
+      CLOSED: [2021-04-02 Fr 12:58]
+      :PROPERTIES:
+      :header-args:emacs-lisp: :tangle no
+      :END:
+      :LOGBOOK:
+      - Note taken on [2021-04-02 Fr 13:41] \\
+        cant find any way to enable flake8.
+      - State "CANCELLED"  from              [2021-04-02 Fr 12:58] \\
+        cant turn off lsp linter and replace with flake8
+      - State "CANCELLED"  from              [2021-04-02 Fr 08:09]
+      :END:
+      #+begin_src emacs-lisp
+        (use-package lsp-python-ms
+          :ensure t
+          :custom
+          (lsp-python-ms-auto-install-server t)
+          (lsp-python-ms-parse-dot-env-enabled t)
+          :config
+          :hook (python-mode . (lambda ()
+                                 (require 'lsp-python-ms)
+                                 (add-hook 'hack-local-variables-hook (lambda()(setq-local flycheck-checker 'python-flake8)))
+                                 )))
+      #+end_src
+**** CANCELLED Elpy, the Emacs Python IDE                    :elpy:CANCELLED:
+     CLOSED: [2021-04-02 Fr 07:41]
+     :PROPERTIES:
+     :ID:       dba1bfe5-5785-444e-9fb4-f2718710de60
+     :header-args:emacs-lisp: :tangle no
+     :END:
+     :LOGBOOK:
+     - State "CANCELLED"  from              [2021-04-02 Fr 07:41] \\
+       cancelled by trying lsp again
      - Note taken on [2021-03-26 Fri 22:17] \\
        seems to work better than anaconda
      - State "DONE"       from "TODO"       [2021-03-26 Fri 22:17]
@@ -3280,19 +3375,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                         (add-hook 'before-save-hook
                                   'elpy-format-code nil t))))
      #+end_src
-**** virtualenvs
-     :PROPERTIES:
-     :ID:       b0bee2e6-a4cb-46a1-88ca-50127643d675
-     :END:
-***** auto-virtualenv
-      :PROPERTIES:
-      :ID:       8608165c-a86e-4869-992c-a6809b4b014d
-      :END:
-      #+begin_src emacs-lisp
-        (use-package  auto-virtualenv
-          :init
-          (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
-      #+end_src
+**** blacken - reformat python
+     https://github.com/pythonic-emacs/blacken
+     #+begin_src emacs-lisp
+       (use-package blacken
+         :hook (python-mode . blacken-mode))
+     #+end_src
 *** C                                                                     :c:
     :PROPERTIES:
     :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d

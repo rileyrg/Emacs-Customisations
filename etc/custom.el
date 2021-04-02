@@ -198,10 +198,7 @@ Would you like to play a game?
  '(expand-region-smart-cursor t)
  '(fci-rule-color "#14151E" t)
  '(fill-column 256)
- '(flycheck-checkers
-   '(ada-gnat asciidoctor asciidoc bazel-buildifier c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint cuda-nvcc cwl d-dmd dockerfile-hadolint emacs-lisp emacs-lisp-checkdoc erlang-rebar3 erlang eruby-erubis eruby-ruumba fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-staticcheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-standard json-jsonlint json-python-json json-jq jsonnet less less-stylelint llvm-llc lua-luacheck lua markdown-markdownlint-cli markdown-mdl nix nix-linter opam perl perl-perlcritic php php-phpmd php-phpcs phpstan processing proselint protobuf-protoc protobuf-prototool pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile python-mypy r-lintr racket rpm-rpmlint rst-sphinx rst ruby-rubocop ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust rust-clippy scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tcl-nagelfar terraform terraform-tflint tex-chktex tex-lacheck texinfo textlint typescript-tslint verilog-verilator vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby yaml-yamllint lsp))
- '(flycheck-disabled-checkers '(emacs-lisp-checkdoc javascript-jshint json-jsonlist))
- '(flycheck-display-errors-delay 0.3 nil nil "Customized with use-package flycheck")
+ '(flycheck-disabled-checkers '(lsp))
  '(frecentf-ignore-paths
    '("/home/rgr/.config/emacs/persp-confs" "/home/rgr/.config/emacs/orgfiles"))
  '(gc-cons-threshold 100000000)
@@ -254,6 +251,8 @@ Would you like to play a game?
  '(large-file-warning-threshold nil)
  '(lookup-reference-functions
    '(rgr/describe-symbol goldendict-dwim rgr/dictionary-search rgr/linguee-lookup rgr/jquery-lookup google-this-search))
+ '(lsp-auto-guess-root t)
+ '(lsp-python-ms-parse-dot-env-enabled nil nil nil "Customized with use-package lsp-python-ms")
  '(magit-diff-use-overlays nil t)
  '(magit-section-initial-visibility-alist '((stashes . hide) (unmerged . hide)))
  '(menu-bar-mode nil)
