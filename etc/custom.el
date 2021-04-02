@@ -198,7 +198,7 @@ Would you like to play a game?
  '(expand-region-smart-cursor t)
  '(fci-rule-color "#14151E" t)
  '(fill-column 256)
- '(flycheck-disabled-checkers '(lsp))
+ ;; '(flycheck-disabled-checkers '(lsp))
  '(frecentf-ignore-paths
    '("/home/rgr/.config/emacs/persp-confs" "/home/rgr/.config/emacs/orgfiles"))
  '(gc-cons-threshold 100000000)

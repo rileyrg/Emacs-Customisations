@@ -2909,6 +2909,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        ;; if you want to change prefix for lsp-mode keybindings.
        (use-package lsp-mode
+         :custom
+         (lsp-diagnostic-package :none)
          :config
          (use-package
            lsp-ui
@@ -3078,10 +3080,22 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :END:
 **** load python
      #+begin_src emacs-lisp
-        (use-package python-mode
-          :ensure nil
-          :hook
-          (python-mode . lsp-deferred))
+       (use-package python-mode
+         :ensure nil
+         :config
+         (setq lsp-pyls-plugins-flake8-enabled t)
+         (lsp-register-custom-settings
+          '(("pyls.plugins.pyls_mypy.enabled" t t)
+            ("pyls.plugins.pyls_mypy.live_mode" nil t)
+            ("pyls.plugins.pyls_black.enabled" t t)
+            ("pyls.plugins.pyls_isort.enabled" t t)
+
+            ;; Disable these as they're duplicated by flake8
+            ("pyls.plugins.pycodestyle.enabled" nil t)
+            ("pyls.plugins.mccabe.enabled" nil t)
+            ("pyls.plugins.pyflakes.enabled" nil t)))
+         :hook
+         (python-mode . lsp-deferred))
       #+end_src
 **** virtualenv
      #+begin_src emacs-lisp
