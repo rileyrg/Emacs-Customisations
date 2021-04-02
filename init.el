@@ -21,6 +21,12 @@
 
 (use-package el-patch)
 
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+
 (use-package no-littering
   :config
   (setq auto-save-file-name-transforms
@@ -396,63 +402,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (:map treemacs-mode-map
         ("<right>" . treemacs-peek)))
 
-(defun www-open-current-page-external ()
-  "Open the current URL in desktop browser."
-  (interactive)
-  (let((url (or
-             (if(fboundp 'eww-current-url)
-                 (eww-current-url)
-               (if(fboundp 'w3m-current-url)
-                   (w3m-current-url)
-                 nil)))))
-    (if url
-        (browse-url-xdg-open url)
-      (message "No buffer url"))))
-
-(defun www-open-link-external ()
-  "Open the current link or image in Firefox."
-  (interactive)
-  (let((anchor (url-get-url-at-point)))
-    (if anchor
-        (browse-url-xdg-open anchor)
-      (message "No valid anchor found at cursor!"))))
-
-(use-package
-  w3m
-  :disabled t
-  :custom (browse-url-browser-function 'w3m-browse-url)
-  :bind
-  ("C-c o" . 'browse-url)
-  (:map w3m-mode-map
-        ("O" . www-open-current-page-external)
-        ("o" . www-open-link-external)))
-
-(use-package
-  eww
-  :demand t
-  :commands (eww-readable-url)
-  :config
-  (defun make-eww-readable()
-    ;; make current eww buffer eww-readable and then remove the hook that called this so normal buffers are not eww-readable.
-    (message "in make-eww-reabable")
-    (unwind-protect
-        ;;(eww-readable)
-        (remove-hook 'eww-after-render-hook #'make-eww-readable)))
-
-  (defun eww-readable-url (url)
-    ;; when the eww buffer has rendered call a hook function that implements eww-readable and then removes that hook.
-    ;; primarily for 'dash-docs-browser-func
-    (interactive "sURL:")
-    (add-hook 'eww-after-render-hook #'make-eww-readable)
-    (message "eww readable browsing: %s, hook is: %s " url eww-after-render-hook)
-    (eww url))
-  :bind
-  ("C-c M-o" . 'browse-url)
-  ("C-c M-O" . 'eww-readable-url)
-  (:map eww-mode-map
-        ("O" . www-open-current-page-external)
-        ("o" . www-open-link-external)))
-
 (defun rgr/load-chats(switch)
   (require  'rgr-chat))
 (add-to-list 'command-switch-alist '("chat" . rgr/load-chats))
@@ -765,31 +714,20 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package platformio-mode)
 
-(use-package  auto-virtualenv
-  :init
-  (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
-
-(add-to-list 'flycheck-disabled-checkers 'python-pylint)
-(add-to-list 'flycheck-disabled-checkers 'lsp)
-
-(use-package lsp-mode
-  :config
-  (require 'lsp-pyls)
-  (lsp-register-custom-settings
-   '(("pyls.plugins.pyls_mypy.enabled" t t)
-     ("pyls.plugins.pyls_mypy.live_mode" nil t)
-     ("pyls.plugins.pyls_black.enabled" t t)
-     ("pyls.plugins.pyls_flake8.enabled" t t)
-     ("pyls.plugins.pyls_isort.enabled" t t)
-   ;; Disable these as they're duplicated by flake8
-     ("pyls.plugins.pycodestyle.enabled" nil t)
-     ("pyls.plugins.mccabe.enabled" nil t)
-     ("pyls.plugins.pyflakes.enabled" nil t)))
+(use-package python-mode
+  :ensure nil
   :hook
-  ((python-mode . lsp-deferred)))
+  (python-mode . lsp-deferred))
+
+(use-package auto-virtualenv
+  :demand t
+  :config
+  (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
 (use-package blacken
-  :hook (python-mode . blacken-mode))
+  :demand t
+  :config
+  (add-hook 'python-mode-hook  #'blacken-mode))
 
 (use-package clang-format)
 (setq clang-format-style-option "llvm")
@@ -799,10 +737,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (defun rgr/c++-mode-hook ()
   (setq-local dash-docs-docsets '("C++")))
 (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
-
-(use-package x86-lookup
-  ( x86-lookup-pdf  (expand-file-name "pdf/intel-x86.pdf" user-emacs-directory))
-  )
 
 (use-package logview
   :demand t

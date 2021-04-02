@@ -55,6 +55,15 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
     (use-package el-patch)
   #+end_src
+
+** Updating packages
+   #+begin_src emacs-lisp
+     (use-package auto-package-update
+       :config
+       (setq auto-package-update-delete-old-versions t)
+       (setq auto-package-update-hide-results t)
+       (auto-package-update-maybe))
+   #+end_src
 * config
   :PROPERTIES:
   :CUSTOM_ID: b477a755
@@ -1196,16 +1205,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      - State "TODO"       from              [2021-01-09 Sat 14:32]
      :END:
      #+begin_src emacs-lisp
-       (use-package org
+       (use-package org-plus-contrib
          :custom
          (org-babel-default-header-args:python
           '((:results  . "output")))
          :config
-         (use-package ob-async)
-         (require 'org-id)
-         (require 'org-crypt)
-         (org-crypt-use-before-save-magic)
-         (require 'org-tempo)
          (defun rgr/org-refile-targets() ;;(rgr/org-refile-targets)
            (directory-files-recursively org-directory "^[[:alnum:]].*\\.\\(org\\|gpg\\)\\'"))
          (defun rgr/org-agenda (&optional arg)
@@ -1221,86 +1225,28 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          ("C-c C-s" . org-schedule)
          ("C-c C-t" . org-todo))
      #+end_src
-
-
-***** org agenda
+***** org-id
       :PROPERTIES:
-      :ID:       1a27d0a1-8b17-4b86-84f7-aa7f0c006005
+      :ID:       40320a82-ceaf-463f-a2fc-f68e3e92fccd
       :END:
-      maintain a file pointing to agenda sources
-      #+begin_src conf :tangle (no-littering-expand-etc-file-name "org/agenda-files.txt")
-        ~/.emacs.d/var/org/orgfiles
-        ~/.emacs.d/var/org/orgfiles/journals
-        ~/.emacs.d/var/org/orgfiles/projects
-        ~/development/education/lessons
-        ~/development/education/lessons/bash
-        ~/development/education/lessons/python
-        ~/development/education/lessons/python/coreyschafer
-        ~/development/education/lessons/python/python-lernen.de
-        ~/development/education/lessons/elisp
-      #+end_src
-***** OPEN scratchpad
-      :PROPERTIES:
-      :TEST:     HELLO WORLD
-      :ID:       53686505-e0d6-43be-a3b8-0425035c429a
-      :END:
-      :LOGBOOK:
-      - State "OPEN"       from              [2020-12-30 Wed 13:48] \\
-      scratch pad
-      :END:
+      create unique link IDs when sharing a link to an org section
       #+begin_src emacs-lisp
-        (defun insert-property(&optional p)
-          "insert PROPERTY value of pdftools link"
-          (unless p (setq p "TEST"))
-          (message "property passed is: %s" p)
-          (let ((pvalue
-                 (save-window-excursion
-                   (message "%s" (org-capture-get :original-buffer))
-                   (switch-to-buffer (org-capture-get :original-buffer))
-                   (org-entry-get (point) p)
-                   )))
-            pva))
+        (require 'org-id)
+      #+end_src
+***** crypt
+      #+begin_src emacs-lisp
+        (require 'org-crypt)
+        (org-crypt-use-before-save-magic)
+      #+end_src
+***** async babel blocks
+      #+begin_src emacs-lisp
+        (use-package ob-async)
       #+end_src
 
-      #+RESULTS:
-      : insert-property
-**** Self documenting config file, tangling
-     :PROPERTIES:
-     :ID:       f1698a54-3747-413c-b7c0-e8452aac6374
-     :END:
-
-     Create a filename.export to auto export markdown
-
-     #+begin_src emacs-lisp
-
-       (use-package f);; f-touch
-
-       (use-package ox-gfm);; github compliant markdown
-
-       ;; (defun rgr/org-tangle-and-export(&optional filename)
-       ;;   (when (buffer-file-name)
-       ;;     (let* ((filename (if filename filename (buffer-file-name)))
-       ;;            (f-org (concat (file-name-sans-extension filename) ".org"))
-       ;;            (f-export (concat (file-name-sans-extension f-org) ".export"))
-       ;;            (f-tangle (concat (file-name-sans-extension f-org) ".tangle"))
-       ;;            (alert-fade-time 3))
-       ;;       (when (and (file-exists-p f-export) (file-newer-than-file-p f-org f-export))
-       ;;         (when (featurep 'alert)
-       ;;           (alert (format "%s is older than %s,exporting." f-export f-org)))
-       ;;         (org-gfm-export-to-markdown)
-       ;;         (f-touch f-export))
-       ;;       (when (and (file-exists-p f-tangle) (file-newer-than-file-p f-org f-tangle))
-       ;;         (when(featurep 'alert)
-       ;;           (alert (format "%s is older than %s,tangling." f-tangle f-org)))
-       ;;         (org-babel-tangle)
-       ;;         (f-touch f-tangle)))))
-
-       ;; (advice-add #'magit-status :before (lambda()"look to see if we need to export and tangle"(interactive)(rgr/org-tangle-and-export)))
-
-       ;; ;;             (add-hook 'after-save-hook (lambda(tangle)(interactive "P")(when tangle (call-interactive #'rgr/org-tangle-and-export))))
-       ;; (add-hook 'after-save-hook (lambda()(when current-prefix-arg (rgr/org-tangle-and-export))))
-
-     #+end_src
+***** github compliant markup
+      #+begin_src emacs-lisp
+        (use-package ox-gfm)
+      #+end_src
 **** provide
      :PROPERTIES:
      :ID:       ddbaf9df-4c65-4b3f-b86f-88f174f349d1
@@ -1308,6 +1254,22 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (provide 'rgr/org)
      #+end_src
+*** org agenda
+    :PROPERTIES:
+    :ID:       1a27d0a1-8b17-4b86-84f7-aa7f0c006005
+    :END:
+    maintain a file pointing to agenda sources
+    #+begin_src conf :tangle (no-littering-expand-etc-file-name "org/agenda-files.txt")
+      ~/.emacs.d/var/org/orgfiles
+      ~/.emacs.d/var/org/orgfiles/journals
+      ~/.emacs.d/var/org/orgfiles/projects
+      ~/development/education/lessons
+      ~/development/education/lessons/bash
+      ~/development/education/lessons/python
+      ~/development/education/lessons/python/coreyschafer
+      ~/development/education/lessons/python/python-lernen.de
+      ~/development/education/lessons/elisp
+    #+end_src
 ** Text tools
    :PROPERTIES:
    :ID:       6c385a8b-078e-4905-9f27-29bdb4e63b0b
@@ -2198,21 +2160,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :PROPERTIES:
     :ID:       31d692c1-44b5-442f-876a-c0520ded03c5
     :END:
-**** CANCELLED popwin                                      :popwin:CANCELLED:
-     CLOSED: [2021-03-18 Thu 21:36]
-     :PROPERTIES:
-     :header-args:emacs-lisp: :tangle no
-     :ID:       31f8440b-2b54-41b9-bb4c-31d937e311d9
-     :END:
-     :LOGBOOK:
-     - State "CANCELLED"  from              [2021-03-18 Thu 21:36] \\
-       using popper for now
-     :END:
-     Free from the hell of annoying buffers such like *Help*, *Completions*, *compilation*, and etc.
-     #+begin_src emacs-lisp
-       (use-package popwin
-         :init (popwin-mode 1))
-     #+end_src
 **** posframe                                                      :posframe:
      :PROPERTIES:
      :ID:       0f03bab9-b745-451a-a8ad-ab7703977c61
@@ -2458,94 +2405,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
    #+end_src
 
-** CANCELLED Web                                                  :CANCELLED:
-   CLOSED: [2021-02-28 Sun 22:04] SCHEDULED: <2021-03-02 Di>
-   :PROPERTIES:
-   :ID:       c20e68bb-b7c9-4515-a1df-d64e64b6ec5a
-   :END:
-   :LOGBOOK:
-   - State "CANCELLED"  from "TODO"       [2021-02-28 Sun 22:04]
-   - State "TODO"       from              [2021-02-24 Mi 23:48]
-   :END:
-   erm, cant remember why I tagged this. come back to it
-*** helper functions
-    :PROPERTIES:
-    :ID:       19ab7531-6c53-4d1e-a6b8-705e3903792c
-    :END:
-    #+begin_src emacs-lisp
-      (defun www-open-current-page-external ()
-        "Open the current URL in desktop browser."
-        (interactive)
-        (let((url (or
-                   (if(fboundp 'eww-current-url)
-                       (eww-current-url)
-                     (if(fboundp 'w3m-current-url)
-                         (w3m-current-url)
-                       nil)))))
-          (if url
-              (browse-url-xdg-open url)
-            (message "No buffer url"))))
-
-      (defun www-open-link-external ()
-        "Open the current link or image in Firefox."
-        (interactive)
-        (let((anchor (url-get-url-at-point)))
-          (if anchor
-              (browse-url-xdg-open anchor)
-            (message "No valid anchor found at cursor!"))))
-    #+end_src
-*** W3M - emacs text based web browser
-    :PROPERTIES:
-    :ID:       79a8b4ef-639c-4e9f-9aaa-202546ddacd5
-    :END:
-    [[https://github.com/emacs-w3m/emacs-w3m][W3M]] is an in-editor text based web browser. Handy for text based resources, bookmarking etc. Bind a couple of keys to open in the system browser.
-    #+begin_src emacs-lisp
-      (use-package
-        w3m
-        :disabled t
-        :custom (browse-url-browser-function 'w3m-browse-url)
-        :bind
-        ("C-c o" . 'browse-url)
-        (:map w3m-mode-map
-              ("O" . www-open-current-page-external)
-              ("o" . www-open-link-external)))
-    #+end_src
-*** EWW - emacs text based web browser
-    :PROPERTIES:
-    :ID:       79a4f568-4393-47e4-8ec0-9fdeb9324c2f
-    :END:
-    [[https://www.gnu.org/software/emacs/manual/html_mono/eww.html][Emacs-EWW]] is an in-editor text based web browser. Handy for text based resources, bookmarking etc. Bind a couple of keys to open in the system browser.
-    Added some functions to [[https://emacs.stackexchange.com/questions/36284/how-to-open-eww-in-readable-mode/47757][open some URLs in 'eww-readable]] so that it skips headers and footers (normally bound to R in eww).
-    #+begin_src emacs-lisp
-      (use-package
-        eww
-        :demand t
-        :commands (eww-readable-url)
-        :config
-        (defun make-eww-readable()
-          ;; make current eww buffer eww-readable and then remove the hook that called this so normal buffers are not eww-readable.
-          (message "in make-eww-reabable")
-          (unwind-protect
-              ;;(eww-readable)
-              (remove-hook 'eww-after-render-hook #'make-eww-readable)))
-
-        (defun eww-readable-url (url)
-          ;; when the eww buffer has rendered call a hook function that implements eww-readable and then removes that hook.
-          ;; primarily for 'dash-docs-browser-func
-          (interactive "sURL:")
-          (add-hook 'eww-after-render-hook #'make-eww-readable)
-          (message "eww readable browsing: %s, hook is: %s " url eww-after-render-hook)
-          (eww url))
-        :bind
-        ("C-c M-o" . 'browse-url)
-        ("C-c M-O" . 'eww-readable-url)
-        (:map eww-mode-map
-              ("O" . www-open-current-page-external)
-              ("o" . www-open-link-external)))
-    #+end_src
-    :LOGBOOK:
-    - State "TODO"       from              [2020-08-18 Di 21:24]
-    :END:
 ** Online Chats
    :PROPERTIES:
    :ID:       04bb339b-884b-4571-a740-81d210097aa8
@@ -2771,33 +2630,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       ;;:map mu4e-view-mode-map
       ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
     #+end_src
-***** CANCELLED [[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] to let us know of new emails :CANCELLED:
-      CLOSED: [2021-02-24 Wed 20:43] SCHEDULED: <2021-03-01 Mon>
-      :PROPERTIES:
-      :header-args:emacs-lisp: :tangle no
-      :ID:       30acfbc4-ec1e-4f59-a2e3-5fc91ba38ebf
-      :END:
-      :LOGBOOK:
-      - State "CANCELLED"  from "SOMEDAY"    [2021-02-24 Wed 20:43] \\
-      too annoying
-      - State "SOMEDAY"    from "TODO"       [2021-02-01 Mon 13:12]
-      - Note taken on [2021-01-31 Sun 21:10] \\
-      vector error.
-      - State "TODO"       from "STARTED"    [2021-01-31 Sun 21:10]
-      - State "STARTED"    from "DONE"       [2021-01-31 Sun 21:02]
-      - State "DONE"       from "TODO"       [2021-01-31 Sun 21:02]
-      - Note taken on [2021-01-28 Do 23:32] \\
-      not working - parse errors
-      - State "TODO"       from "DONE"       [2021-01-28 Do 23:32]
-      - State "DONE"       from              [2021-01-28 Do 23:32]
-      :END:
-      #+begin_src emacs-lisp
-        (use-package mu4e-alert
-          ;;:disabled t
-          :config
-          (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-          (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
-      #+end_src
 ** Screen recording
    :PROPERTIES:
    :ID:       3134a8a2-7e5b-4d79-9238-1bdf6dc63865
@@ -3244,89 +3076,26 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :PROPERTIES:
     :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
     :END:
-**** CANCELLED loading up python-mode                             :CANCELLED:
-     CLOSED: [2021-04-02 Fr 12:59]
-     :PROPERTIES:
-     :header-args:emacs-lisp: :tangle no
-     :END:
-     :LOGBOOK:
-     - State "CANCELLED"  from              [2021-04-02 Fr 12:59] \\
-       use built in
-     :END:
+**** load python
      #+begin_src emacs-lisp
-     (use-package python-mode)
-     #+end_src
-**** virtualenvs
-     :PROPERTIES:
-     :ID:       b0bee2e6-a4cb-46a1-88ca-50127643d675
-     :END:
-***** auto-virtualenv
-      Uses pyvenv whose docs are confusing as hell. Could  optionally set pyvenv-activate to ".venv" but seems wrong.
-      Should consider submitting a patch to pyenv so that it auto detects venvs as auto-virtualenv does.
-      :PROPERTIES:
-      :ID:       8854b3fe-e520-401e-a1fc-f725aa9e2a42
-      :END:
-      #+begin_src emacs-lisp
-        (use-package  auto-virtualenv
-          :init
-          (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
-      #+end_src
-**** lsp                                                                :lsp:
-     #+begin_src emacs-lisp
-     (add-to-list 'flycheck-disabled-checkers 'python-pylint)
-     (add-to-list 'flycheck-disabled-checkers 'lsp)
-     #+end_src
-***** pyls
-      This is the best link on this : https://www.mattduck.com/lsp-python-getting-started.html
-      #+begin_src bash
-        pip install pyls-black pyls-isort pyls-mypy pyls-flake8
-      #+end_src
-      #+begin_src emacs-lisp
-        (use-package lsp-mode
-          :config
-          (require 'lsp-pyls)
-          (lsp-register-custom-settings
-           '(("pyls.plugins.pyls_mypy.enabled" t t)
-             ("pyls.plugins.pyls_mypy.live_mode" nil t)
-             ("pyls.plugins.pyls_black.enabled" t t)
-             ("pyls.plugins.pyls_flake8.enabled" t t)
-             ("pyls.plugins.pyls_isort.enabled" t t)
-           ;; Disable these as they're duplicated by flake8
-             ("pyls.plugins.pycodestyle.enabled" nil t)
-             ("pyls.plugins.mccabe.enabled" nil t)
-             ("pyls.plugins.pyflakes.enabled" nil t)))
+        (use-package python-mode
+          :ensure nil
           :hook
-          ((python-mode . lsp-deferred)))
+          (python-mode . lsp-deferred))
       #+end_src
-***** CANCELLED mspyls                                            :CANCELLED:
-      CLOSED: [2021-04-02 Fr 12:58]
-      :PROPERTIES:
-      :header-args:emacs-lisp: :tangle no
-      :END:
-      :LOGBOOK:
-      - Note taken on [2021-04-02 Fr 13:41] \\
-        cant find any way to enable flake8.
-      - State "CANCELLED"  from              [2021-04-02 Fr 12:58] \\
-        cant turn off lsp linter and replace with flake8
-      - State "CANCELLED"  from              [2021-04-02 Fr 08:09]
-      :END:
-      #+begin_src emacs-lisp
-        (use-package lsp-python-ms
-          :ensure t
-          :custom
-          (lsp-python-ms-auto-install-server t)
-          (lsp-python-ms-parse-dot-env-enabled t)
-          :config
-          :hook (python-mode . (lambda ()
-                                 (require 'lsp-python-ms)
-                                 (add-hook 'hack-local-variables-hook (lambda()(setq-local flycheck-checker 'python-flake8)))
-                                 )))
-      #+end_src
-**** blacken - reformat python
-     https://github.com/pythonic-emacs/blacken
+**** virtualenv
+     #+begin_src emacs-lisp
+       (use-package auto-virtualenv
+         :demand t
+         :config
+         (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
+     #+end_src
+**** blacken reformatting
      #+begin_src emacs-lisp
        (use-package blacken
-         :hook (python-mode . blacken-mode))
+         :demand t
+         :config
+         (add-hook 'python-mode-hook  #'blacken-mode))
      #+end_src
 *** C                                                                     :c:
     :PROPERTIES:
@@ -3354,15 +3123,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 *** Linux tools
     :PROPERTIES:
     :END:
-**** strace - highlight strace output
-     :PROPERTIES:
-     :ID:       533e9b7a-9255-4a68-8de6-0f82482edfea
-     :END:
-     #+begin_src emacs-lisp
-       (use-package x86-lookup
-         ( x86-lookup-pdf  (expand-file-name "pdf/intel-x86.pdf" user-emacs-directory))
-         )
-     #+end_src
 **** [[https://github.com/doublep/logview][logview]] - view system logfiles
      :PROPERTIES:
      :ID:       bfd57f96-8cc4-41a1-81ab-e683345664e1

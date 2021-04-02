@@ -27,6 +27,15 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/)  using 
     (use-package el-patch)
 
 
+## Updating packages
+
+    (use-package auto-package-update
+      :config
+      (setq auto-package-update-delete-old-versions t)
+      (setq auto-package-update-hide-results t)
+      (auto-package-update-maybe))
+
+
 # config
 
 
@@ -966,16 +975,11 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 1.  Org Mode, org-mode
 
-        (use-package org
+        (use-package org-plus-contrib
           :custom
           (org-babel-default-header-args:python
            '((:results  . "output")))
           :config
-          (use-package ob-async)
-          (require 'org-id)
-          (require 'org-crypt)
-          (org-crypt-use-before-save-magic)
-          (require 'org-tempo)
           (defun rgr/org-refile-targets() ;;(rgr/org-refile-targets)
             (directory-files-recursively org-directory "^[[:alnum:]].*\\.\\(org\\|gpg\\)\\'"))
           (defun rgr/org-agenda (&optional arg)
@@ -991,55 +995,43 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
           ("C-c C-s" . org-schedule)
           ("C-c C-t" . org-todo))
 
-    1.  org agenda
+    1.  org-id
 
-        maintain a file pointing to agenda sources
+        create unique link IDs when sharing a link to an org section
 
-            ~/.emacs.d/var/org/orgfiles
-            ~/.emacs.d/var/org/orgfiles/journals
-            ~/.emacs.d/var/org/orgfiles/projects
-            ~/development/education/lessons
-            ~/development/education/lessons/bash
-            ~/development/education/lessons/python
-            ~/development/education/lessons/python/coreyschafer
-            ~/development/education/lessons/python/python-lernen.de
-            ~/development/education/lessons/elisp
+            (require 'org-id)
 
-2.  Self documenting config file, tangling
+    2.  crypt
 
-    Create a filename.export to auto export markdown
+            (require 'org-crypt)
+            (org-crypt-use-before-save-magic)
 
+    3.  async babel blocks
 
-        (use-package f);; f-touch
+            (use-package ob-async)
 
-        (use-package ox-gfm);; github compliant markdown
+    4.  github compliant markup
 
-        ;; (defun rgr/org-tangle-and-export(&optional filename)
-        ;;   (when (buffer-file-name)
-        ;;     (let* ((filename (if filename filename (buffer-file-name)))
-        ;;            (f-org (concat (file-name-sans-extension filename) ".org"))
-        ;;            (f-export (concat (file-name-sans-extension f-org) ".export"))
-        ;;            (f-tangle (concat (file-name-sans-extension f-org) ".tangle"))
-        ;;            (alert-fade-time 3))
-        ;;       (when (and (file-exists-p f-export) (file-newer-than-file-p f-org f-export))
-        ;;         (when (featurep 'alert)
-        ;;           (alert (format "%s is older than %s,exporting." f-export f-org)))
-        ;;         (org-gfm-export-to-markdown)
-        ;;         (f-touch f-export))
-        ;;       (when (and (file-exists-p f-tangle) (file-newer-than-file-p f-org f-tangle))
-        ;;         (when(featurep 'alert)
-        ;;           (alert (format "%s is older than %s,tangling." f-tangle f-org)))
-        ;;         (org-babel-tangle)
-        ;;         (f-touch f-tangle)))))
+            (use-package ox-gfm)
 
-        ;; (advice-add #'magit-status :before (lambda()"look to see if we need to export and tangle"(interactive)(rgr/org-tangle-and-export)))
-
-        ;; ;;             (add-hook 'after-save-hook (lambda(tangle)(interactive "P")(when tangle (call-interactive #'rgr/org-tangle-and-export))))
-        ;; (add-hook 'after-save-hook (lambda()(when current-prefix-arg (rgr/org-tangle-and-export))))
-
-3.  provide
+2.  provide
 
         (provide 'rgr/org)
+
+
+### org agenda
+
+maintain a file pointing to agenda sources
+
+    ~/.emacs.d/var/org/orgfiles
+    ~/.emacs.d/var/org/orgfiles/journals
+    ~/.emacs.d/var/org/orgfiles/projects
+    ~/development/education/lessons
+    ~/development/education/lessons/bash
+    ~/development/education/lessons/python
+    ~/development/education/lessons/python/coreyschafer
+    ~/development/education/lessons/python/python-lernen.de
+    ~/development/education/lessons/elisp
 
 
 ## Text tools
@@ -2728,52 +2720,26 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 ### Python     :python:
 
-1.  virtualenvs
+1.  load python
 
-    1.  auto-virtualenv
+        (use-package python-mode
+          :ensure nil
+          :hook
+          (python-mode . lsp-deferred))
 
-        Uses pyvenv whose docs are confusing as hell. Could  optionally set pyvenv-activate to ".venv" but seems wrong.
-        Should consider submitting a patch to pyenv so that it auto detects venvs as auto-virtualenv does.
+2.  virtualenv
 
-        :ID:       8854b3fe-e520-401e-a1fc-f725aa9e2a42
+        (use-package auto-virtualenv
+          :demand t
+          :config
+          (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-            (use-package  auto-virtualenv
-              :init
-              (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
-
-2.  lsp     :lsp:
-
-        (add-to-list 'flycheck-disabled-checkers 'python-pylint)
-        (add-to-list 'flycheck-disabled-checkers 'lsp)
-
-    1.  pyls
-
-        This is the best link on this : <https://www.mattduck.com/lsp-python-getting-started.html>
-
-            pip install pyls-black pyls-isort pyls-mypy pyls-flake8
-
-            (use-package lsp-mode
-              :config
-              (require 'lsp-pyls)
-              (lsp-register-custom-settings
-               '(("pyls.plugins.pyls_mypy.enabled" t t)
-                 ("pyls.plugins.pyls_mypy.live_mode" nil t)
-                 ("pyls.plugins.pyls_black.enabled" t t)
-                 ("pyls.plugins.pyls_flake8.enabled" t t)
-                 ("pyls.plugins.pyls_isort.enabled" t t)
-               ;; Disable these as they're duplicated by flake8
-                 ("pyls.plugins.pycodestyle.enabled" nil t)
-                 ("pyls.plugins.mccabe.enabled" nil t)
-                 ("pyls.plugins.pyflakes.enabled" nil t)))
-              :hook
-              ((python-mode . lsp-deferred)))
-
-3.  blacken - reformat python
-
-    <https://github.com/pythonic-emacs/blacken>
+3.  blacken reformatting
 
         (use-package blacken
-          :hook (python-mode . blacken-mode))
+          :demand t
+          :config
+          (add-hook 'python-mode-hook  #'blacken-mode))
 
 
 ### C     :c:
@@ -2795,13 +2761,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 ### Linux tools
 
-1.  strace - highlight strace output
-
-        (use-package x86-lookup
-          ( x86-lookup-pdf  (expand-file-name "pdf/intel-x86.pdf" user-emacs-directory))
-          )
-
-2.  [logview](https://github.com/doublep/logview) - view system logfiles
+1.  [logview](https://github.com/doublep/logview) - view system logfiles
 
         (use-package logview
           :demand t

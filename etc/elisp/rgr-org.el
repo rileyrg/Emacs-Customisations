@@ -1,13 +1,8 @@
-(use-package org
+(use-package org-plus-contrib
   :custom
   (org-babel-default-header-args:python
    '((:results  . "output")))
   :config
-  (use-package ob-async)
-  (require 'org-id)
-  (require 'org-crypt)
-  (org-crypt-use-before-save-magic)
-  (require 'org-tempo)
   (defun rgr/org-refile-targets() ;;(rgr/org-refile-targets)
     (directory-files-recursively org-directory "^[[:alnum:]].*\\.\\(org\\|gpg\\)\\'"))
   (defun rgr/org-agenda (&optional arg)
@@ -23,43 +18,13 @@
   ("C-c C-s" . org-schedule)
   ("C-c C-t" . org-todo))
 
-(defun insert-property(&optional p)
-  "insert PROPERTY value of pdftools link"
-  (unless p (setq p "TEST"))
-  (message "property passed is: %s" p)
-  (let ((pvalue
-         (save-window-excursion
-           (message "%s" (org-capture-get :original-buffer))
-           (switch-to-buffer (org-capture-get :original-buffer))
-           (org-entry-get (point) p)
-           )))
-    pva))
+(require 'org-id)
 
-(use-package f);; f-touch
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
 
-(use-package ox-gfm);; github compliant markdown
+(use-package ob-async)
 
-;; (defun rgr/org-tangle-and-export(&optional filename)
-;;   (when (buffer-file-name)
-;;     (let* ((filename (if filename filename (buffer-file-name)))
-;;            (f-org (concat (file-name-sans-extension filename) ".org"))
-;;            (f-export (concat (file-name-sans-extension f-org) ".export"))
-;;            (f-tangle (concat (file-name-sans-extension f-org) ".tangle"))
-;;            (alert-fade-time 3))
-;;       (when (and (file-exists-p f-export) (file-newer-than-file-p f-org f-export))
-;;         (when (featurep 'alert)
-;;           (alert (format "%s is older than %s,exporting." f-export f-org)))
-;;         (org-gfm-export-to-markdown)
-;;         (f-touch f-export))
-;;       (when (and (file-exists-p f-tangle) (file-newer-than-file-p f-org f-tangle))
-;;         (when(featurep 'alert)
-;;           (alert (format "%s is older than %s,tangling." f-tangle f-org)))
-;;         (org-babel-tangle)
-;;         (f-touch f-tangle)))))
-
-;; (advice-add #'magit-status :before (lambda()"look to see if we need to export and tangle"(interactive)(rgr/org-tangle-and-export)))
-
-;; ;;             (add-hook 'after-save-hook (lambda(tangle)(interactive "P")(when tangle (call-interactive #'rgr/org-tangle-and-export))))
-;; (add-hook 'after-save-hook (lambda()(when current-prefix-arg (rgr/org-tangle-and-export))))
+(use-package ox-gfm)
 
 (provide 'rgr/org)

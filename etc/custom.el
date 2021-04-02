@@ -285,7 +285,7 @@ Would you like to play a game?
         :END:
 %i
 %a")
-     ("z" "default" entry
+     ("j" "journal" entry
       (file+olp+datetree "journal.org")
       "* %^{Title}
         :PROPERTIES:
@@ -309,13 +309,12 @@ SCHEDULED: %^{Delivery Date}t
  '(org-default-notes-file "refile.org" nil nil "Customized with use-package org")
  '(org-directory "/home/rgr/.emacs.d/var/org/orgfiles" nil nil "Customized with use-package org")
  '(org-enforce-todo-dependencies t nil nil "Customized with use-package org")
- '(org-export-backends '(md) nil nil "Customized with use-package org")
  '(org-goto-interface 'outline-path-completion)
  '(org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
  '(org-log-done 'time nil nil "Customized with use-package org")
  '(org-log-into-drawer t nil nil "Customized with use-package org")
  '(org-modules
-   '(ol-docview ol-eww org-id ol-info ol-w3m ol-eshell ol-bookmark ol-elisp-symbol ol-man))
+   '(org-crypt ol-docview ol-eww ol-info ol-irc ol-mhe ol-rmail ol-w3m ol-eshell ol-bookmark ol-elisp-symbol ol-man))
  '(org-outline-path-complete-in-steps nil)
  '(org-refile-allow-creating-parent-nodes 'confirm nil nil "Customized with use-package org")
  '(org-refile-targets
