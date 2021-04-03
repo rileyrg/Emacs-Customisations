@@ -2733,13 +2733,12 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 ### Python     :python:
 
-1.  load python
+    (require 'python)
 
-        (use-package python-mode
-          ;; :custom
-          ;; (python-shell-interpreter "ipython")
-          ;; (python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
-          )
+1.  ipython
+
+        (setq python-shell-interpreter "ipython")
+        (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
 2.  lsp     :lsp:
 

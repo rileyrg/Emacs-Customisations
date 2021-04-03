@@ -1234,19 +1234,19 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         (require 'org-id)
       #+end_src
 ***** crypt                                                           :crypt:
------BEGIN PGP MESSAGE-----
+      -----BEGIN PGP MESSAGE-----
 
-hQEMA7IjL5SkHG4iAQgAyZIoE0Y/TVnr8THS2tMB692xjcRUcVqBc7vWNr6HK8vf
-JY/zJdMuT0DVeFDLQGMRXETr7a86RryVYc2q+fuhl3UJ4H1Ud6knF4oTAtQHLRow
-wK8vVGSMUuwka6rAK264ifopWCO9BsYPu5p03ZurKUnev9fpPD+fJZUNyr55d9rF
-I9cSRtP4SpAyXZZFiTs5gyvIqTidQz7rvSBKTX7Ap+4NYSgG0kfa2JnU1ULuG2hi
-4oovoYE/R3xWg/rKkMQGojWZwjjsB/t7nY88FVVGD/9PN8C7AuEDWFKQfmmESaaZ
-iG4rUsgDAVoIcNAf/kjgEINDlCf/5Ta2O3sWEnZV79KRAeYDVTa1JsV124amRsze
-VQUxEAanKo48PAJH6dxl/Hb7Tht+tzmEncsHAknzzLV3lOZnVdFLUDk6BrhvXt9Y
-RXGj03AE8R/AJZPk1v9Fy33gcq5gVHR2VQyzGQ9X4yBFcynzlZriFgYcteEhe+KK
-MFDBlUCKoWk5EP+UECg+0veHSHyGJiycX8vizAjrGzIjEw==
-=ql9c
------END PGP MESSAGE-----
+      hQEMA7IjL5SkHG4iAQgAyZIoE0Y/TVnr8THS2tMB692xjcRUcVqBc7vWNr6HK8vf
+      JY/zJdMuT0DVeFDLQGMRXETr7a86RryVYc2q+fuhl3UJ4H1Ud6knF4oTAtQHLRow
+      wK8vVGSMUuwka6rAK264ifopWCO9BsYPu5p03ZurKUnev9fpPD+fJZUNyr55d9rF
+      I9cSRtP4SpAyXZZFiTs5gyvIqTidQz7rvSBKTX7Ap+4NYSgG0kfa2JnU1ULuG2hi
+      4oovoYE/R3xWg/rKkMQGojWZwjjsB/t7nY88FVVGD/9PN8C7AuEDWFKQfmmESaaZ
+      iG4rUsgDAVoIcNAf/kjgEINDlCf/5Ta2O3sWEnZV79KRAeYDVTa1JsV124amRsze
+      VQUxEAanKo48PAJH6dxl/Hb7Tht+tzmEncsHAknzzLV3lOZnVdFLUDk6BrhvXt9Y
+      RXGj03AE8R/AJZPk1v9Fy33gcq5gVHR2VQyzGQ9X4yBFcynzlZriFgYcteEhe+KK
+      MFDBlUCKoWk5EP+UECg+0veHSHyGJiycX8vizAjrGzIjEw==
+      =ql9c
+      -----END PGP MESSAGE-----
 ***** async babel blocks
       #+begin_src emacs-lisp
         (use-package ob-async)
@@ -3083,16 +3083,16 @@ MFDBlUCKoWk5EP+UECg+0veHSHyGJiycX8vizAjrGzIjEw==
     :PROPERTIES:
     :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
     :END:
-**** load python
-     :PROPERTIES:
-     :ID:       6221a9aa-6d3d-42a8-8a1e-c371333a1108
+    #+begin_src emacs-lisp
+      (require 'python)
+    #+end_src
+**** ipython
+     :LOGBOOK:
+     - State "SOMEDAY"    from              [2021-04-03 Sa 09:41]
      :END:
      #+begin_src emacs-lisp
-       (use-package python-mode
-         ;; :custom
-         ;; (python-shell-interpreter "ipython")
-         ;; (python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
-         )
+       (setq python-shell-interpreter "ipython")
+       (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
      #+end_src
 **** lsp                                                                :lsp:
      #+begin_src emacs-lisp

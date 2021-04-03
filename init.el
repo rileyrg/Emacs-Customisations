@@ -714,11 +714,10 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package platformio-mode)
 
-(use-package python-mode
-  ;; :custom
-  ;; (python-shell-interpreter "ipython")
-  ;; (python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
-  )
+(require 'python)
+
+(setq python-shell-interpreter "ipython")
+(setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
 (use-package lsp-python-ms
   :ensure t
