@@ -715,6 +715,14 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package platformio-mode)
 
 (require 'python)
+(defun rgr/create-or-use-python-shell(orig-fun &rest args)
+  "create a python shell if there isnt one"
+  (interactive)
+  (save-excursion(python-shell-get-or-create-process))
+  (apply orig-fun args)
+  (unless (get-buffer-window (python-shell-get-buffer))
+    (switch-to-buffer-other-window (python-shell-get-buffer))))
+(advice-add 'python-shell-send-buffer :around  #'rgr/create-or-use-python-shell)
 
 (setq python-shell-interpreter "ipython")
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")

@@ -2750,14 +2750,24 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 ### Python     :python:
 
-    (require 'python)
+1.  python-mode
 
-1.  ipython
+        (require 'python)
+        (defun rgr/create-or-use-python-shell(orig-fun &rest args)
+          "create a python shell if there isnt one"
+          (interactive)
+          (save-excursion(python-shell-get-or-create-process))
+          (apply orig-fun args)
+          (unless (get-buffer-window (python-shell-get-buffer))
+            (switch-to-buffer-other-window (python-shell-get-buffer))))
+        (advice-add 'python-shell-send-buffer :around  #'rgr/create-or-use-python-shell)
+
+2.  ipython
 
         (setq python-shell-interpreter "ipython")
         (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
-2.  lsp     :lsp:
+3.  lsp     :lsp:
 
         (use-package lsp-python-ms
           :ensure t
@@ -2766,14 +2776,14 @@ The build and install process id documented [here](https://docs.platformio.org/e
                                  (require 'lsp-python-ms)
                                  (lsp-deferred))))
 
-3.  virtualenv     :virtualenv:
+4.  virtualenv     :virtualenv:
 
         (use-package auto-virtualenv
           :demand t
           :config
           (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-4.  blacken reformatting     :blacken:
+5.  blacken reformatting     :blacken:
 
         (use-package blacken
           :demand t

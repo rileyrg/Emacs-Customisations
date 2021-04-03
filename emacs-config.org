@@ -3102,9 +3102,18 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :PROPERTIES:
     :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
     :END:
-    #+begin_src emacs-lisp
-      (require 'python)
-    #+end_src
+**** python-mode
+     #+begin_src emacs-lisp
+       (require 'python)
+       (defun rgr/create-or-use-python-shell(orig-fun &rest args)
+         "create a python shell if there isnt one"
+         (interactive)
+         (save-excursion(python-shell-get-or-create-process))
+         (apply orig-fun args)
+         (unless (get-buffer-window (python-shell-get-buffer))
+           (switch-to-buffer-other-window (python-shell-get-buffer))))
+       (advice-add 'python-shell-send-buffer :around  #'rgr/create-or-use-python-shell)
+     #+end_src
 **** ipython
      :LOGBOOK:
      - State "SOMEDAY"    from              [2021-04-03 Sa 09:41]
