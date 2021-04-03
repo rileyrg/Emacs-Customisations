@@ -1871,6 +1871,25 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
       #+begin_src emacs-lisp
       #+end_src
+**** pdf-tools
+     :PROPERTIES:
+     :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
+     :END:
+     [[https://github.com/politza/pdf-tools][pdf-tools]] is, among other things, a replacement of DocView for PDF files
+     #+begin_src emacs-lisp
+       (use-package pdf-tools
+         :demand t
+         :init
+         (pdf-tools-install)
+         :config
+         (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
+         (use-package org-pdftools
+           :hook (org-mode . org-pdftools-setup-link)))
+     #+end_src
+***** requirements
+      #+begin_src bash
+        sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
+      #+end_src
 **** provide
      :PROPERTIES:
      :ID:       05027204-7ce4-42a5-aebe-a4a495a9f2a3

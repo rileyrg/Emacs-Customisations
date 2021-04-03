@@ -1545,7 +1545,24 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
     1.  elfeed-org
 
-5.  provide
+5.  pdf-tools
+
+    [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
+
+        (use-package pdf-tools
+          :demand t
+          :init
+          (pdf-tools-install)
+          :config
+          (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
+          (use-package org-pdftools
+            :hook (org-mode . org-pdftools-setup-link)))
+
+    1.  requirements
+
+            sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
+
+6.  provide
 
         (provide 'rgr/reference)
 
