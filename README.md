@@ -975,13 +975,12 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 1.  Org Mode, org-mode     :org:
 
-        (use-package org-plus-contrib
+
+        (use-package org
           :custom
           (org-babel-default-header-args:python
            '((:results  . "output")))
           :config
-          (defun rgr/org-refile-targets() ;;(rgr/org-refile-targets)
-            (directory-files-recursively org-directory "^[[:alnum:]].*\\.\\(org\\|gpg\\)\\'"))
           (defun rgr/org-agenda (&optional arg)
             (interactive "P")
             (let ((org-agenda-tag-filter-preset '("-trash")))
@@ -993,7 +992,8 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
           ("C-c l" . org-store-link)
           ("C-c C-l" . org-insert-link)
           ("C-c C-s" . org-schedule)
-          ("C-c C-t" . org-todo))
+          ("C-c C-t" . org-todo)
+          (:map org-mode-map  ("M-." . find-function-at-point)))
 
     1.  org-id
 

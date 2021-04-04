@@ -62,28 +62,9 @@
  '(cursor-type 'box)
  '(custom-safe-themes
    '("7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "972d69a06b8f6e5d43fb83ff59417511f09ba1a1783aab5e22c0e9cbd25ad458" "d234fa6da0282c254f00d534079374d1c6f3c3e600075bc65fe661fdd1947792" "7d6861c031212fca9b4a963ced6230be2aa3139570b85ea5e77619b1fd0351ad" "9b39b25c3a23b1be6e99a3648b91ebaf2a7efdde236e3472aa95f1708ec61d4f" "3f1dcd824a683e0ab194b3a1daac18a923eed4dba5269eecb050c718ab4d5a26" default))
- '(dashboard-banner-logo-title "Welcome")
- '(dashboard-center-content t)
- '(dashboard-set-file-icons t)
- '(dashboard-set-heading-icons t)
- '(dashboard-startup-banner nil)
  '(delete-active-region 'kill)
  '(delete-old-versions t)
  '(delete-selection-mode t)
- '(desktop-base-file-name "emacs.desktop")
- '(desktop-load-locked-desktop t)
- '(desktop-minor-mode-table
-   '((defining-kbd-macro nil)
-     (isearch-mode nil)
-     (vc-mode nil)
-     (vc-dired-mode nil)
-     (erc-track-minor-mode nil)
-     (savehist-mode nil)))
- '(desktop-modes-not-to-save
-   '(tags-table-mode dired-mode markdown-mode lsp-mode elisp-mode))
- '(desktop-path '("~/.config/emacs/desktop") t)
- '(desktop-restore-frames nil)
- '(desktop-save t)
  '(devdocs-alist
    '((c-mode . "c")
      (c++-mode . "c++")
@@ -198,7 +179,6 @@ Would you like to play a game?
  '(expand-region-smart-cursor t)
  '(fci-rule-color "#14151E" t)
  '(fill-column 256)
- ;; '(flycheck-disabled-checkers '(lsp))
  '(frecentf-ignore-paths
    '("/home/rgr/.config/emacs/persp-confs" "/home/rgr/.config/emacs/orgfiles"))
  '(gc-cons-threshold 100000000)
@@ -252,9 +232,6 @@ Would you like to play a game?
  '(lookup-reference-functions
    '(rgr/describe-symbol goldendict-dwim rgr/dictionary-search rgr/linguee-lookup rgr/jquery-lookup google-this-search))
  '(lsp-auto-guess-root t)
- '(magit-diff-use-overlays nil t)
- '(magit-section-initial-visibility-alist '((stashes . hide) (unmerged . hide)))
- '(menu-bar-mode nil)
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")
  '(org-agenda-files "/home/rgr/.emacs.d/etc/org/agenda-files.txt" nil nil "Customized with use-package org")
  '(org-agenda-skip-scheduled-if-deadline-is-shown t nil nil "Customized with use-package org")
@@ -510,6 +487,7 @@ stehen ganz weit oben.
  '(rgr/alert-learn-period 300)
  '(rgr/chat-close-functions '(slack-ws-close rgr/erc-quit))
  '(rgr/chat-functions '(rgr/erc-start slack-start))
+ '(rgr/emacs-source '~/development/projects/C/emacs/src)
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
  '(rtags-completions-enabled t)
@@ -551,12 +529,9 @@ stehen ganz weit oben.
  '(synosaurus-backend 'synosaurus-backend-openthesaurus)
  '(synosaurus-choose-method 'popup)
  '(tab-always-indent 'complete)
- '(tags-add-tables nil)
  '(tags-revert-without-query t)
- '(tags-table-list
-   '("~/.config/emacs/" "~/development/gitprojects/barwebs/lib"))
+ '(tags-table-list '("/home/rgr/Dropbox/homefiles/dot-config/emacs"))
  '(thesaurus-bhl-api-key "140ced1a60f9c434bb1dbc6831d2f6e9" t)
- '(tool-bar-mode nil)
  '(tooltip-frame-parameters
    '((name . "tooltip")
      (internal-border-width . 2)

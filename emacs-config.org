@@ -1205,13 +1205,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      - State "TODO"       from              [2021-01-09 Sat 14:32]
      :END:
      #+begin_src emacs-lisp
-       (use-package org-plus-contrib
+
+       (use-package org
          :custom
          (org-babel-default-header-args:python
           '((:results  . "output")))
          :config
-         (defun rgr/org-refile-targets() ;;(rgr/org-refile-targets)
-           (directory-files-recursively org-directory "^[[:alnum:]].*\\.\\(org\\|gpg\\)\\'"))
          (defun rgr/org-agenda (&optional arg)
            (interactive "P")
            (let ((org-agenda-tag-filter-preset '("-trash")))
@@ -1223,7 +1222,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          ("C-c l" . org-store-link)
          ("C-c C-l" . org-insert-link)
          ("C-c C-s" . org-schedule)
-         ("C-c C-t" . org-todo))
+         ("C-c C-t" . org-todo)
+         (:map org-mode-map  ("M-." . find-function-at-point)))
+
      #+end_src
 ***** org-id
       :PROPERTIES:
@@ -3103,6 +3104,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
     :END:
 **** python-mode
+     :PROPERTIES:
+     :ID:       d14b8271-2894-4ef1-931e-173c9d4d8503
+     :END:
      #+begin_src emacs-lisp
        (require 'python)
        (defun rgr/create-or-use-python-shell(orig-fun &rest args)
