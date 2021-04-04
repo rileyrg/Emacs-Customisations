@@ -1206,7 +1206,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :END:
      #+begin_src emacs-lisp
 
-       (use-package org
+       (straight-use-package '(org-plus-contrib :includes (org)))
+
+       (use-package org-plus-contrib
          :custom
          (org-babel-default-header-args:python
           '((:results  . "output")))
@@ -3113,8 +3115,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :ID:       d14b8271-2894-4ef1-931e-173c9d4d8503
      :END:
      #+begin_src emacs-lisp
-       (require 'python)
-       (define-key python-mode-map (kbd "C-c C-c")  'rgr/python-shell-send-buffer)
+       (use-package  python
+         :defer t
+         :config
+         (eval-after-load 'python (lambda()(message "python loaded")(define-key python-mode-map (kbd "C-c C-c")  'rgr/python-shell-send-buffer))))
+
        (defun rgr/python-shell-send-buffer(&optional send-main msg)
          "create a python shell if there isnt one"
          (interactive (list current-prefix-arg t))
@@ -3135,7 +3140,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 **** lsp                                                                :lsp:
      #+begin_src emacs-lisp
        (use-package lsp-python-ms
-         :ensure t
          :init (setq lsp-python-ms-auto-install-server t)
          :hook (python-mode . (lambda ()
                                 (require 'lsp-python-ms)
@@ -3144,7 +3148,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 **** virtualenv                                                  :virtualenv:
      #+begin_src emacs-lisp
        (use-package auto-virtualenv
-         :demand t
          :config
          (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
      #+end_src

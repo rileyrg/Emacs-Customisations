@@ -976,7 +976,9 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 1.  Org Mode, org-mode     :org:
 
 
-        (use-package org
+        (straight-use-package '(org-plus-contrib :includes (org)))
+
+        (use-package org-plus-contrib
           :custom
           (org-babel-default-header-args:python
            '((:results  . "output")))
@@ -2759,8 +2761,11 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 1.  python-mode
 
-        (require 'python)
-        (define-key python-mode-map (kbd "C-c C-c")  'rgr/python-shell-send-buffer)
+        (use-package  python
+          :defer t
+          :config
+          (eval-after-load 'python (lambda()(message "python loaded")(define-key python-mode-map (kbd "C-c C-c")  'rgr/python-shell-send-buffer))))
+
         (defun rgr/python-shell-send-buffer(&optional send-main msg)
           "create a python shell if there isnt one"
           (interactive (list current-prefix-arg t))
@@ -2778,7 +2783,6 @@ The build and install process id documented [here](https://docs.platformio.org/e
 3.  lsp     :lsp:
 
         (use-package lsp-python-ms
-          :ensure t
           :init (setq lsp-python-ms-auto-install-server t)
           :hook (python-mode . (lambda ()
                                  (require 'lsp-python-ms)
@@ -2787,7 +2791,6 @@ The build and install process id documented [here](https://docs.platformio.org/e
 4.  virtualenv     :virtualenv:
 
         (use-package auto-virtualenv
-          :demand t
           :config
           (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 

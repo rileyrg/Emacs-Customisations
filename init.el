@@ -716,8 +716,11 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package platformio-mode)
 
-(require 'python)
-(define-key python-mode-map (kbd "C-c C-c")  'rgr/python-shell-send-buffer)
+(use-package  python
+  :defer t
+  :config
+  (eval-after-load 'python (lambda()(message "python loaded")(define-key python-mode-map (kbd "C-c C-c")  'rgr/python-shell-send-buffer))))
+
 (defun rgr/python-shell-send-buffer(&optional send-main msg)
   "create a python shell if there isnt one"
   (interactive (list current-prefix-arg t))
@@ -731,14 +734,12 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
 (use-package lsp-python-ms
-  :ensure t
   :init (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
                          (require 'lsp-python-ms)
                          (lsp-deferred))))
 
 (use-package auto-virtualenv
-  :demand t
   :config
   (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 

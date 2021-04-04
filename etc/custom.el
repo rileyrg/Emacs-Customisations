@@ -487,7 +487,6 @@ stehen ganz weit oben.
  '(rgr/alert-learn-period 300)
  '(rgr/chat-close-functions '(slack-ws-close rgr/erc-quit))
  '(rgr/chat-functions '(rgr/erc-start slack-start))
- '(rgr/emacs-source '~/development/projects/C/emacs/src)
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
  '(rtags-completions-enabled t)
