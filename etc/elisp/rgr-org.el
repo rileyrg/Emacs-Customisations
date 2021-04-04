@@ -1,6 +1,7 @@
 (straight-use-package '(org-plus-contrib :includes (org)))
 
-(use-package org-plus-contrib
+(use-package org
+  :demand t
   :custom
   (org-babel-default-header-args:python
    '((:results  . "output")))

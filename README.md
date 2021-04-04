@@ -978,7 +978,8 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
         (straight-use-package '(org-plus-contrib :includes (org)))
 
-        (use-package org-plus-contrib
+        (use-package org
+          :demand t
           :custom
           (org-babel-default-header-args:python
            '((:results  . "output")))
@@ -2761,18 +2762,20 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 1.  python-mode
 
-        (use-package  python
-          :bind
-          (:map python-mode-map ("C-c C-c"  .  rgr/python-shell-send-buffer)))
+        (use-package  python)
+          ;; :bind
+          ;; (:map python-mode-map ("C-c C-c"  .  rgr/python-shell-send-buffer)))
 
-        (defun rgr/python-shell-send-buffer(&optional send-main msg)
+        (defun rgr/python-shell-send-buffer(orig-func &rest args)
           "create a python shell if there isnt one"
-          (interactive (list current-prefix-arg t))
+          (interactive)
           (save-selected-window
             (save-excursion(run-python))
-            (call-interactively 'python-shell-send-buffer)
+            (funcall-interactively orig-func current-prefix-arg)
             (unless (get-buffer-window (python-shell-get-buffer))
               (switch-to-buffer-other-window (python-shell-get-buffer)))))
+        (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer)
+        ;;(advice-remove 'python-shell-send-buffer  'rgr/python-shell-send-buffer)
 
 2.  ipython
 

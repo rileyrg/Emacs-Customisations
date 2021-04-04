@@ -716,18 +716,20 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package platformio-mode)
 
-(use-package  python
-  :bind
-  (:map python-mode-map ("C-c C-c"  .  rgr/python-shell-send-buffer)))
+(use-package  python)
+  ;; :bind
+  ;; (:map python-mode-map ("C-c C-c"  .  rgr/python-shell-send-buffer)))
 
-(defun rgr/python-shell-send-buffer(&optional send-main msg)
+(defun rgr/python-shell-send-buffer(orig-func &rest args)
   "create a python shell if there isnt one"
-  (interactive (list current-prefix-arg t))
-  (save-excursion(python-shell-get-or-create-process))
-  (call-interactively 'python-shell-send-buffer)
-  (unless (get-buffer-window (python-shell-get-buffer))
-    (switch-to-buffer-other-window (python-shell-get-buffer))))
-;;(advice-remove 'python-shell-send-buffer 'rgr/create-or-use-python-shell)
+  (interactive)
+  (save-selected-window
+    (save-excursion(run-python))
+    (funcall-interactively orig-func current-prefix-arg)
+    (unless (get-buffer-window (python-shell-get-buffer))
+      (switch-to-buffer-other-window (python-shell-get-buffer)))))
+(advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer)
+;;(advice-remove 'python-shell-send-buffer  'rgr/python-shell-send-buffer)
 
 (setq python-shell-interpreter "ipython")
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
