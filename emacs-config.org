@@ -3503,3 +3503,22 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          pop-window "Emacs:"
      fi
    #+end_src
+** compiling emacs
+*** ~/bin/emacs-compile-opt
+#+begin_src bash :tangle bin/emacs-compile-opt
+  #!/usr/bin/bash
+  #Maintained in emacs-config.org
+  cd ~/development/projects/C/emacs/
+  mkdir -p emacs-build
+  ./configure --prefix=`pwd`/emacs-build --with-x-toolkit=lucid
+  make && make install
+#+end_src
+*** ~/bin/emacs-compile-dbg
+#+begin_src bash :tangle bin/emacs-compile-dbg
+  #!/usr/bin/bash
+  #Maintained in emacs-config.org
+  cd ~/development/projects/C/emacs/
+  mkdir -p emacs-build-dbg
+  ./configure --prefix=`pwd`/emacs-build-dbg --with-x-toolkit=lucid --enable-checking='yes,glyphs' --enable-check-lisp-object-type CFLAGS='-O0 -g3'
+  make && make install
+#+end_src

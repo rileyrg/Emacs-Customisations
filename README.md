@@ -3147,3 +3147,26 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
         emacsclient -n -a "" "$@"
         pop-window "Emacs:"
     fi
+
+
+## compiling emacs
+
+
+### ~/bin/emacs-compile-opt
+
+    #!/usr/bin/bash
+    #Maintained in emacs-config.org
+    cd ~/development/projects/C/emacs/
+    mkdir -p emacs-build
+    ./configure --prefix=`pwd`/emacs-build --with-x-toolkit=lucid
+    make && make install
+
+
+### ~/bin/emacs-compile-dbg
+
+    #!/usr/bin/bash
+    #Maintained in emacs-config.org
+    cd ~/development/projects/C/emacs/
+    mkdir -p emacs-build-dbg
+    ./configure --prefix=`pwd`/emacs-build-dbg --with-x-toolkit=lucid --enable-checking='yes,glyphs' --enable-check-lisp-object-type CFLAGS='-O0 -g3'
+    make && make install
