@@ -1745,6 +1745,13 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
               (file-name-nondirectory (directory-file-name default-directory)))))
 
 
+### vterm
+
+<https://github.com/akermu/emacs-libvterm>
+
+    (use-package vterm)
+
+
 ### Docker
 
 A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b).

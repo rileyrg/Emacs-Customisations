@@ -2067,6 +2067,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
              "Show only last directory."
              (file-name-nondirectory (directory-file-name default-directory)))))
      #+end_src
+*** vterm
+    https://github.com/akermu/emacs-libvterm
+    #+begin_src emacs-lisp
+      (use-package vterm)
+    #+end_src
 *** Docker
     A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b][docker]].
     #+begin_src emacs-lisp

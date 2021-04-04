@@ -208,6 +208,8 @@ creates a report in function-name.ftrace and opens it in a buffer"
       "Show only last directory."
       (file-name-nondirectory (directory-file-name default-directory)))))
 
+(use-package vterm)
+
 (use-package docker
   :after projectile
   :bind (:map projectile-mode-map ("C-c k" . docker)))
