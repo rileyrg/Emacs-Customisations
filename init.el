@@ -717,9 +717,8 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package platformio-mode)
 
 (use-package  python
-  :defer t
-  :config
-  (eval-after-load 'python (lambda()(message "python loaded")(define-key python-mode-map (kbd "C-c C-c")  'rgr/python-shell-send-buffer))))
+  :bind
+  (:map python-mode-map ("C-c C-c"  .  rgr/python-shell-send-buffer)))
 
 (defun rgr/python-shell-send-buffer(&optional send-main msg)
   "create a python shell if there isnt one"
