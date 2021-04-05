@@ -1004,21 +1004,10 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
             (require 'org-id)
 
-    2.  crypt     :crypt:
+    2.  crypt
 
-        &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
-
-        hQEMA7IjL5SkHG4iAQgAyZIoE0Y/TVnr8THS2tMB692xjcRUcVqBc7vWNr6HK8vf
-        JY/zJdMuT0DVeFDLQGMRXETr7a86RryVYc2q+fuhl3UJ4H1Ud6knF4oTAtQHLRow
-        wK8vVGSMUuwka6rAK264ifopWCO9BsYPu5p03ZurKUnev9fpPD+fJZUNyr55d9rF
-        I9cSRtP4SpAyXZZFiTs5gyvIqTidQz7rvSBKTX7Ap+4NYSgG0kfa2JnU1ULuG2hi
-        4oovoYE/R3xWg/rKkMQGojWZwjjsB/t7nY88FVVGD/9PN8C7AuEDWFKQfmmESaaZ
-        iG4rUsgDAVoIcNAf/kjgEINDlCf/5Ta2O3sWEnZV79KRAeYDVTa1JsV124amRsze
-        VQUxEAanKo48PAJH6dxl/Hb7Tht+tzmEncsHAknzzLV3lOZnVdFLUDk6BrhvXt9Y
-        RXGj03AE8R/AJZPk1v9Fy33gcq5gVHR2VQyzGQ9X4yBFcynzlZriFgYcteEhe+KK
-        MFDBlUCKoWk5EP+UECg+0veHSHyGJiycX8vizAjrGzIjEw==
-        =ql9c
-        &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
+            (require 'org-crypt)
+            (org-crypt-use-before-save-magic)
 
     3.  async babel blocks
 
@@ -2782,9 +2771,15 @@ The build and install process id documented [here](https://docs.platformio.org/e
 3.  lsp     :lsp:
 
         (use-package lsp-python-ms
-          :init (setq lsp-python-ms-auto-install-server t)
+
+          :straight (:type git :host github :repo "rileyrg/lsp-python-ms")
+
+          :custom
+          (lsp-python-ms-auto-install-server t)
+          (lsp-python-ms-parse-dot-env-enabled t)
+          :config
+          (require 'lsp-python-ms)
           :hook (python-mode . (lambda ()
-                                 (require 'lsp-python-ms)
                                  (lsp-deferred))))
 
 4.  virtualenv     :virtualenv:

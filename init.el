@@ -732,9 +732,15 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
 (use-package lsp-python-ms
-  :init (setq lsp-python-ms-auto-install-server t)
+
+  :straight (:type git :host github :repo "rileyrg/lsp-python-ms")
+
+  :custom
+  (lsp-python-ms-auto-install-server t)
+  (lsp-python-ms-parse-dot-env-enabled t)
+  :config
+  (require 'lsp-python-ms)
   :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
                          (lsp-deferred))))
 
 (use-package auto-virtualenv
