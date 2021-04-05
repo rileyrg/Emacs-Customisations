@@ -1096,7 +1096,7 @@ maintain a file pointing to agenda sources
 \#+end\_src
 
 
-### flyspell
+### flyspell     :flyspell:spell:
 
     (use-package flyspell
       :config
@@ -2396,7 +2396,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
 
 
-## Programming Language related
+## Programming Language related     :programming:
 
 
 ### prog-mode hack
@@ -2462,12 +2462,14 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           )
 
 
-### Flycheck
+### Flycheck     :flycheck:lint:
 
 On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
     (use-package
       flycheck
+      :custom
+      (flycheck-global-modes '(not org-mode))
       :config (use-package
                 flycheck-pos-tip)
       (flycheck-pos-tip-mode)
@@ -2795,7 +2797,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 3.  lsp     :lsp:
 
-    1.  microsoft python language server
+    1.  microsoft python language server     :lsp:
 
             (use-package lsp-python-ms
               :straight ( :local-repo "~/development/projects/emacs/lsp-python-ms/" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))

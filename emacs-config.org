@@ -1343,7 +1343,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+end_src
 
     #+end_src
-*** flyspell
+*** flyspell                                                 :flyspell:spell:
     :PROPERTIES:
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     :END:
@@ -2779,7 +2779,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
          )
      #+end_src
-*** Flycheck
+*** Flycheck                                                  :flycheck:lint:
     :PROPERTIES:
     :ID:       3268489e-6d4d-4089-95f7-796e0e0da9db
     :END:
@@ -2787,6 +2787,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+begin_src emacs-lisp
       (use-package
         flycheck
+        :custom
+        (flycheck-global-modes '(not org-mode))
         :config (use-package
                   flycheck-pos-tip)
         (flycheck-pos-tip-mode)
@@ -3150,7 +3152,7 @@ aN7TreVVjWnVKLSC2q8w0je1Xg==
        (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
      #+end_src
 **** lsp                                                                :lsp:
-***** microsoft python language server
+***** microsoft python language server                                  :lsp:
       #+begin_src emacs-lisp
         (use-package lsp-python-ms
           :straight ( :local-repo "~/development/projects/emacs/lsp-python-ms/" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))

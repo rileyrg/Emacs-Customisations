@@ -608,6 +608,8 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package
   flycheck
+  :custom
+  (flycheck-global-modes '(not org-mode))
   :config (use-package
             flycheck-pos-tip)
   (flycheck-pos-tip-mode)
