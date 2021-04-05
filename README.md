@@ -2502,6 +2502,22 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
         (use-package forge
           :after magit)
 
+    1.  token     :crypt:token:
+
+        &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
+
+        hQEMA7IjL5SkHG4iAQgAtrT0D/Vh8W+gptWrNSM6snmRejBtUiv4OMjoWwD/V9S0
+        LpvcJbcJAQN7KGEpGO7lUhk2faV+9t1WQmcT+UEpM5e5PW7HqFt39LnxBfFVPqYx
+        hBWzvOiXupdA+cGtj4o+yBug6EnH3KEMwJbXpdNHuQc3ihKb1/blItNXSSfEneWl
+        lwFYqsXaPbq0KO53TVmFd4XxcFWaJk9SKmWpEfE9AWff8GBtF5AbQaC+kWnzo8FT
+        LHbgDvU81/ZDyMPijRUJqICwJQHnSWdb9zK3lw5dn3Pm9xNSw45zJ+sPxVTjneW+
+        ZV5uNb9iQklsuZrDjLyDmKYcAWFd9yXDJe16TMez6NKCASwU0+JMPgyr3ju/R25c
+        c5eQY2pS+u/46aesAvhlyPsCN3juzjNJI1Otw2zRib1p6/P0k7HDHVEaWTDCIiGY
+        NDuvG4LSIn8cjeBbEvrPRQEJIesPsmxBqaTHEFWN/EWdHmeRuD7MW2kzTKoFF8B5
+        aN7TreVVjWnVKLSC2q8w0je1Xg==
+        =WFdw
+        &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
+
 4.  Git Gutter Mode     :gutter:
 
     [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
@@ -2770,17 +2786,19 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 3.  lsp     :lsp:
 
-        (use-package lsp-python-ms
+    1.  microsoft python language server
 
-          :straight (:type git :host github :repo "rileyrg/lsp-python-ms")
+            (use-package lsp-python-ms
 
-          :custom
-          (lsp-python-ms-auto-install-server t)
-          (lsp-python-ms-parse-dot-env-enabled t)
-          :config
-          (require 'lsp-python-ms)
-          :hook (python-mode . (lambda ()
-                                 (lsp-deferred))))
+              :straight ( :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
+
+              :custom
+              (lsp-python-ms-auto-install-server t)
+              (lsp-python-ms-parse-dot-env-enabled t)
+              :config
+              (require 'lsp-python-ms)
+              :hook (python-mode . (lambda ()
+                                     (lsp-deferred))))
 
 4.  virtualenv     :virtualenv:
 

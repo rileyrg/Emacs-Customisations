@@ -2838,6 +2838,21 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (use-package forge
          :after magit)
      #+end_src
+
+***** token                                                     :crypt:token:
+-----BEGIN PGP MESSAGE-----
+
+hQEMA7IjL5SkHG4iAQgAtrT0D/Vh8W+gptWrNSM6snmRejBtUiv4OMjoWwD/V9S0
+LpvcJbcJAQN7KGEpGO7lUhk2faV+9t1WQmcT+UEpM5e5PW7HqFt39LnxBfFVPqYx
+hBWzvOiXupdA+cGtj4o+yBug6EnH3KEMwJbXpdNHuQc3ihKb1/blItNXSSfEneWl
+lwFYqsXaPbq0KO53TVmFd4XxcFWaJk9SKmWpEfE9AWff8GBtF5AbQaC+kWnzo8FT
+LHbgDvU81/ZDyMPijRUJqICwJQHnSWdb9zK3lw5dn3Pm9xNSw45zJ+sPxVTjneW+
+ZV5uNb9iQklsuZrDjLyDmKYcAWFd9yXDJe16TMez6NKCASwU0+JMPgyr3ju/R25c
+c5eQY2pS+u/46aesAvhlyPsCN3juzjNJI1Otw2zRib1p6/P0k7HDHVEaWTDCIiGY
+NDuvG4LSIn8cjeBbEvrPRQEJIesPsmxBqaTHEFWN/EWdHmeRuD7MW2kzTKoFF8B5
+aN7TreVVjWnVKLSC2q8w0je1Xg==
+=WFdw
+-----END PGP MESSAGE-----
 **** Git Gutter Mode                                                 :gutter:
      :PROPERTIES:
      :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
@@ -3128,19 +3143,20 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
      #+end_src
 **** lsp                                                                :lsp:
-     #+begin_src emacs-lisp
-       (use-package lsp-python-ms
+***** microsoft python language server
+      #+begin_src emacs-lisp
+        (use-package lsp-python-ms
 
-         :straight (:type git :host github :repo "rileyrg/lsp-python-ms")
+          :straight ( :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
 
-         :custom
-         (lsp-python-ms-auto-install-server t)
-         (lsp-python-ms-parse-dot-env-enabled t)
-         :config
-         (require 'lsp-python-ms)
-         :hook (python-mode . (lambda ()
-                                (lsp-deferred))))
-     #+end_src
+          :custom
+          (lsp-python-ms-auto-install-server t)
+          (lsp-python-ms-parse-dot-env-enabled t)
+          :config
+          (require 'lsp-python-ms)
+          :hook (python-mode . (lambda ()
+                                 (lsp-deferred))))
+      #+end_src
 **** virtualenv                                                  :virtualenv:
      #+begin_src emacs-lisp
        (use-package auto-virtualenv
