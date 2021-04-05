@@ -2058,7 +2058,9 @@ Excellent [tree based navigation that works really well with projectile.](https:
         (interactive "P")
         (if close (treemacs)
           (treemacs-select-window)))
-      :bind ("M-0"   . rgr/treemacs-select-window)
+      :bind
+      ("M-9"   . rgr/treemacs-select-window)
+      ("M-0"   . treemacs)
       (:map treemacs-mode-map
             ("<right>" . treemacs-peek)))
 
