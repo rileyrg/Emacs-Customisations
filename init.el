@@ -733,7 +733,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package lsp-python-ms
 
-  :straight ( :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
+
+
+  :straight ( :local-repo "~/development/projects/emacs/lsp-python-ms/" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
 
   :custom
   (lsp-python-ms-auto-install-server t)
