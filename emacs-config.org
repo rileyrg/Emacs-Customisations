@@ -2401,6 +2401,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
             (error nil))))
       (global-set-key (kbd "C-S-p") 'htop-regexp)
     #+end_src
+*** explain-pause-mode
+  [[https://github.com/lastquestion/explain-pause-mode][explain-pause-mode]] is like an htop for emacs itself
+#+begin_src emacs-lisp
+  (use-package explain-pause-mode
+    :config
+    (explain-pause-mode))
+#+end_src
 ** Treemacs
    :PROPERTIES:
    :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516

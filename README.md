@@ -2025,6 +2025,15 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
     (global-set-key (kbd "C-S-p") 'htop-regexp)
 
 
+### explain-pause-mode
+
+[explain-pause-mode](https://github.com/lastquestion/explain-pause-mode) is like an htop for emacs itself
+
+    (use-package explain-pause-mode
+      :config
+      (explain-pause-mode))
+
+
 ## Treemacs
 
 Excellent [tree based navigation that works really well with projectile.](https://github.com/Alexander-Miller/treemacs)
@@ -2789,11 +2798,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
     1.  microsoft python language server
 
             (use-package lsp-python-ms
-
-
-
               :straight ( :local-repo "~/development/projects/emacs/lsp-python-ms/" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
-
               :custom
               (lsp-python-ms-auto-install-server t)
               (lsp-python-ms-parse-dot-env-enabled t)
