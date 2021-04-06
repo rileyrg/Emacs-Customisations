@@ -367,11 +367,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ("C-c j" . ace-jump-mode)
   )
 
-(use-package
-  elscreen
-  :disabled t
-  :config (elscreen-start))
-
 (defun htop-regexp()
   (interactive)
   (let ((s (completing-read (format "HTtop filter (%s): " (symbol-at-point)) minibuffer-history nil nil (symbol-at-point))))
