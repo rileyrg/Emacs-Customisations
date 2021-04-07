@@ -40,6 +40,7 @@
  '(ccls-initialization-options '(request: (timeout:5000)))
  '(ccls-root-files '(".ccls-root" ".projectile"))
  '(ccls-sem-highlight-method 'overlay)
+ '(centaur-tabs-enable-ido-completion nil)
  '(company-box-enable-icon nil)
  '(company-c-headers-path-user
    '("~/.platformio/packages/framework-arduinoavr/cores/arduino/Arduino.h"))
