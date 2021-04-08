@@ -588,6 +588,7 @@ stehen ganz weit oben.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 80))))
+ '(centaur-tabs-selected ((t (:inherit bold :background "dark orange" :foreground "#ffffff" :overline nil :underline "gainsboro"))))
  '(company-box-annotation ((t (:inherit company-tooltip-annotation :height 113))) t)
  '(company-box-candidate ((t (:foreground "white" :height 113))) t)
  '(company-box-scrollbar ((t nil)))

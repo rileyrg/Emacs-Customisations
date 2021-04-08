@@ -900,35 +900,82 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
         (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-6.  Tab Bar Mode
+6.  Tabs     :tabs:
 
+    1.  Centaur Tabs     :centaur:
 
-        (defun consult-buffer-other-tab ()
-          "Variant of `consult-buffer' which opens in other tab."
-          (interactive)
-          (let ((consult--buffer-display #'switch-to-buffer-other-tab))
-            (consult-buffer)))
+            (use-package centaur-tabs
+              :straight ( :local-repo "~/development/projects/emacs/centaur-tabs/" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
 
-        (use-package tab-bar
-          :defer t
-          :custom
-          (tab-bar-show t)
-          (tab-bar-close-button-show nil)
-          (tab-bar-new-button-show nil)
-          (tab-bar-tab-hints t)
-          (tab-bar-new-tab-choice "*scratch*")
-          (tab-bar-select-tab-modifiers '(control))
-          :custom-face
-          (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
-          (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
-          (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
-          :bind (:map tab-prefix-map
-                      (("x" . tab-close)
-                       ("b" . consult-buffer-other-tab)
-                       ("p" . tab-previous)
-                       ("n" . tab-next)
-                       ("c" . tab-bar-new-tab)
-                       ("s" . tab-bar-switch-to-tab))))
+              :custom
+              (centaur-tabs-style "bar")
+              (centaur-tabs-height 32)
+              (centaur-tabs-set-icons t)
+              (centaur-tabs-set-modified-marker t)
+              (centaur-tabs-show-navigation-buttons t)
+              (centaur-tabs-set-bar 'under)
+              (x-underline-at-descent-line t)
+              :config
+              (centaur-tabs-headline-match)
+              ;; (setq centaur-tabs-gray-out-icons 'buffer)
+              ;; (centaur-tabs-enable-buffer-reordering)
+              ;; (setq centaur-tabs-adjust-buffer-order t)
+              (centaur-tabs-mode +1)
+              ;; (setq uniquify-separator "/")
+              ;; (setq uniquify-buffer-name-style 'forward)
+              (defun centaur-tabs-buffer-groups ()
+                "`centaur-tabs-buffer-groups' control buffers' group rules.
+
+             Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+             All buffer name start with * will group to \"Emacs\".
+             Other buffer group by `centaur-tabs-get-group-name' with project name."
+                (list
+                 (cond
+                  ;; ((not (eq (file-remote-p (buffer-file-name)) nil))
+                  ;; "Remote")
+                  ((or (string-equal "*" (substring (buffer-name) 0 1))
+                       (memq major-mode '(magit-process-mode
+                                          magit-status-mode
+                                          magit-diff-mode
+                                          magit-log-mode
+                                          magit-file-mode
+                                          magit-blob-mode
+                                          magit-blame-mode
+                                          )))
+                   "Emacs")
+                  ((derived-mode-p 'prog-mode)
+                   "Editing")
+                  ;; ((derived-mode-p 'dired-mode)
+                  ;;  "Dired")
+                  ((memq major-mode '(helpful-mode
+                                      help-mode))
+                   "Help")
+                  ((memq major-mode '(org-mode
+                                      org-agenda-clockreport-mode
+                                      org-src-mode
+                                      org-agenda-mode
+                                      org-beamer-mode
+                                      org-indent-mode
+                                      org-bullets-mode
+                                      org-cdlatex-mode
+                                      org-agenda-log-mode
+                                      diary-mode))
+                   "OrgMode")
+                  (t
+                   (centaur-tabs-get-group-name (current-buffer))))))
+              :hook
+              (dashboard-mode . centaur-tabs-local-mode)
+              (term-mode . centaur-tabs-local-mode)
+              (calendar-mode . centaur-tabs-local-mode)
+              (org-agenda-mode . centaur-tabs-local-mode)
+              (helpful-mode . centaur-tabs-local-mode)
+              :bind
+              ("C-1" . centaur-tabs-backward)
+              ("C-2" . centaur-tabs-forward)
+              ("C-x t s" . centaur-tabs-switch-group)
+              ("C-x t p" . centaur-tabs-group-by-projectile-project)
+              ("C-x t g" . centaur-tabs-group-buffer-groups)
+              )
 
 7.  Memory
 
@@ -1554,7 +1601,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-6.  provide
+6.  markdown viewing
+
+        (use-package impatient-showdown)
+
+7.  provide
 
         (provide 'rgr/reference)
 
@@ -1735,13 +1786,6 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
                            short)
               "Show only last directory."
               (file-name-nondirectory (directory-file-name default-directory)))))
-
-
-### vterm
-
-<https://github.com/akermu/emacs-libvterm>
-
-    (use-package vterm)
 
 
 ### Docker
@@ -2001,16 +2045,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
           )
 
 
-### Elscreen
-
-[Elscreen](https://github.com/knu/elscreen) provides tabs in Emacs.
-
-    (use-package
-      elscreen
-      :disabled t
-      :config (elscreen-start))
-
-
 ## System
 
 
@@ -2040,7 +2074,6 @@ Excellent [tree based navigation that works really well with projectile.](https:
 
     (use-package
       treemacs
-                                            ;,:disabled t
       :config
       (treemacs-git-mode 'deferred)
       (use-package

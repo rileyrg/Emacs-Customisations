@@ -208,8 +208,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
       "Show only last directory."
       (file-name-nondirectory (directory-file-name default-directory)))))
 
-(use-package vterm)
-
 (use-package docker
   :after projectile
   :bind (:map projectile-mode-map ("C-c k" . docker)))
@@ -381,7 +379,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package
   treemacs
-                                        ;,:disabled t
   :config
   (treemacs-git-mode 'deferred)
   (use-package
@@ -556,10 +553,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 ;;(
 ;;:map mu4e-view-mode-map
 ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
-
-(use-package camcorder
-  :custom
-  (camcorder-output-directory  "~/tmp"))
 
 (use-package keycast
   )

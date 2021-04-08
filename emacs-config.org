@@ -1333,8 +1333,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 ***** github compliant markup
       #+begin_src emacs-lisp
-        (use-package ox-gfm :ensure t :demand t)
+        (use-package ox-gfm)
       #+end_src
+
 **** provide
      :PROPERTIES:
      :ID:       ddbaf9df-4c65-4b3f-b86f-88f174f349d1
@@ -1969,6 +1970,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+begin_src bash
         sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
       #+end_src
+**** markdown viewing
+      #+begin_src emacs-lisp
+        (use-package impatient-showdown)
+      #+end_src
+
 **** provide
      :PROPERTIES:
      :ID:       05027204-7ce4-42a5-aebe-a4a495a9f2a3
@@ -2145,7 +2151,15 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
              "Show only last directory."
              (file-name-nondirectory (directory-file-name default-directory)))))
      #+end_src
-*** vterm
+*** WAITING vterm                                                   :WAITING:
+    SCHEDULED: <2021-04-13 Tue>
+    :PROPERTIES:
+    :header-args:emacs-lisp: :tangle no
+    :END:
+    :LOGBOOK:
+    - State "WAITING"    from              [2021-04-08 Thu 01:09] \\
+      sick of it rebuilding
+    :END:
     https://github.com/akermu/emacs-libvterm
     #+begin_src emacs-lisp
       (use-package vterm)
@@ -2489,7 +2503,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    #+begin_src emacs-lisp
      (use-package
        treemacs
-                                             ;,:disabled t
        :config
        (treemacs-git-mode 'deferred)
        (use-package
@@ -2744,9 +2757,16 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    :PROPERTIES:
    :ID:       3134a8a2-7e5b-4d79-9238-1bdf6dc63865
    :END:
-*** camcorder
+*** TODO camcorder
+    SCHEDULED: <2021-04-08 Thu>
     :PROPERTIES:
     :ID:       0e4b5c80-3293-4ec9-ad19-c27d97563736
+    :header-args:emacs-lisp: :tangle no
+    :END:
+    :LOGBOOK:
+    - Note taken on [2021-04-08 Thu 01:09] \\
+      error building
+    - State "TODO"       from              [2021-04-08 Thu 01:09]
     :END:
     do screen recording directly from emacs
     #+begin_src emacs-lisp
