@@ -1601,9 +1601,13 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-6.  markdown viewing
+6.  impatient-showdow, markdown view live
 
-        (use-package impatient-showdown)
+    Preview markdown buffer live over HTTP using showdown.
+    <https://github.com/jcs-elpa/impatient-showdown>
+
+        (use-package impatient-showdown
+          :hook (markdown-mode . impatient-showdown-mode))
 
 7.  provide
 
@@ -1849,7 +1853,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
         (use-package dired-git
           :config
-          :hook ((dired-mode-hook . dired-git-mode)))
+          :hook (dired-mode . dired-git-mode))
 
 2.  dired hacks
 

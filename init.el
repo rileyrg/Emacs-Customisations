@@ -238,7 +238,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package dired-git
   :config
-  :hook ((dired-mode-hook . dired-git-mode)))
+  :hook (dired-mode . dired-git-mode))
 
 (use-package dired-subtree
   :config

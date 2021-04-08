@@ -1970,9 +1970,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+begin_src bash
         sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
       #+end_src
-**** markdown viewing
+**** impatient-showdow, markdown view live
+     Preview markdown buffer live over HTTP using showdown.
+     https://github.com/jcs-elpa/impatient-showdown
       #+begin_src emacs-lisp
-        (use-package impatient-showdown)
+        (use-package impatient-showdown
+          :hook (markdown-mode . impatient-showdown-mode))
       #+end_src
 
 **** provide
@@ -2238,7 +2241,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (use-package dired-git
          :config
-         :hook ((dired-mode-hook . dired-git-mode)))
+         :hook (dired-mode . dired-git-mode))
      #+end_src
 **** dired hacks
      :PROPERTIES:
