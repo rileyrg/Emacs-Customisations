@@ -39,18 +39,12 @@
   (ctrlf-auto-recenter t nil nil "Customized with use-package ctrlf")
   (ctrlf-highlight-current-line t)
   (ctrlf-auto-recenter t)
-  ;; (ctrlf-mode-bindings
-  ;;  '(("C-s" . ctrlf-forward-fuzzy-regexp)
-  ;;    ("C-r" . ctrlf-backward-fuzzy-regexp)
-  ;;    ("C-M-s" . ctrlf-forward-literal)
-  ;;    ("C-M-r" . ctrlf-backward-literal)
-  ;;    ("M-s _" . ctrlf-forward-regexp)
-  ;;    ))
-  (ctrlf-mode-bindings
-   '(("C-s" . ctrlf-forward-fuzzy-regexp)
-     ("C-r" . ctrlf-backward-fuzzy-regexp)
-     ))
   :config
+  (define-advice
+      ctrlf-change-search-style
+      (:after (&rest _))
+    (with-current-buffer (window-buffer (minibuffer-selected-window))
+      (setq-local ctrlf-default-search-style ctrlf--style)))
   (ctrlf-mode +1))
 
 (use-package selectrum

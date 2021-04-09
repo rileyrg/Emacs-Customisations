@@ -562,18 +562,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          (ctrlf-auto-recenter t nil nil "Customized with use-package ctrlf")
          (ctrlf-highlight-current-line t)
          (ctrlf-auto-recenter t)
-         ;; (ctrlf-mode-bindings
-         ;;  '(("C-s" . ctrlf-forward-fuzzy-regexp)
-         ;;    ("C-r" . ctrlf-backward-fuzzy-regexp)
-         ;;    ("C-M-s" . ctrlf-forward-literal)
-         ;;    ("C-M-r" . ctrlf-backward-literal)
-         ;;    ("M-s _" . ctrlf-forward-regexp)
-         ;;    ))
-         (ctrlf-mode-bindings
-          '(("C-s" . ctrlf-forward-fuzzy-regexp)
-            ("C-r" . ctrlf-backward-fuzzy-regexp)
-            ))
          :config
+         (define-advice
+             ctrlf-change-search-style
+             (:after (&rest _))
+           (with-current-buffer (window-buffer (minibuffer-selected-window))
+             (setq-local ctrlf-default-search-style ctrlf--style)))
          (ctrlf-mode +1))
      #+end_src
 **** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list
@@ -748,24 +742,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (setq-default abbrev-mode 1)
      #+end_src
-**** Snippets with yasnippet
-     :PROPERTIES:
-     :END:
-     #+begin_src emacs-lisp
-       (use-package
-         yasnippet
-         :init (yas-global-mode 1)
-         :config
-         (use-package
-           php-auto-yasnippets)
-         (use-package
-           el-autoyas)
-         (use-package
-           yasnippet-snippets)
-         (use-package
-           yasnippet-classic-snippets))
-     #+end_src
-**** Company Mode
+**** Company Mode                                                   :company:
      :PROPERTIES:
      :END:
      [[https://github.com/sebastiencs/company-box][company-box]] provides nice linked help on the highlighted completions when available.
@@ -779,7 +756,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          (add-hook 'after-init-hook 'global-company-mode)
          :custom
          (company-backends
-          '((company-capf :with company-dabbrev company-files company-ispell)))
+          '((company-capf :with company-dabbrev company-yasnippet company-files company-ispell)))
          :config
          (use-package
            company-box
@@ -789,9 +766,25 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
            :after company
            :config
            (company-prescient-mode +1))
-         ) ;; :bind ("C-<tab>" . company-complete))
+         :bind ("C-<tab>" . company-complete))
      #+end_src
-**** Which Key
+**** Snippets with yasnippet                             :snippets:yasnippet:
+     :PROPERTIES:
+     :END:
+     #+begin_src emacs-lisp
+       (use-package
+         yasnippet
+         :init (yas-global-mode 1)
+         :config
+         (require 'company-yasnippet)
+         (use-package
+           el-autoyas)
+         (use-package
+           yasnippet-snippets)
+         (use-package
+           yasnippet-classic-snippets))
+     #+end_src
+**** Which Key                                                    :which:key:
      :PROPERTIES:
      :END:
      [[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
@@ -1103,7 +1096,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :straight ( :local-repo "~/development/projects/emacs/centaur-tabs/" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
 
     :custom
-    (centaur-tabs-style "bar")
+    (centaur-tabs-style
+ "bar")
     (centaur-tabs-height 32)
     (centaur-tabs-set-icons t)
     (centaur-tabs-set-modified-marker t)
@@ -1165,8 +1159,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     (org-agenda-mode . centaur-tabs-local-mode)
     (helpful-mode . centaur-tabs-local-mode)
     :bind
-    ("C-1" . centaur-tabs-backward)
-    ("C-2" . centaur-tabs-forward)
+    ("C-<next>" . centaur-tabs-backward)
+    ("C-<prior>" . centaur-tabs-forward)
     ("C-x t s" . centaur-tabs-switch-group)
     ("C-x t p" . centaur-tabs-group-by-projectile-project)
     ("C-x t g" . centaur-tabs-group-buffer-groups)
@@ -2506,7 +2500,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    #+begin_src emacs-lisp
      (use-package
        treemacs
+       :custom
+       (treemacs-follow-after-init t)
        :config
+       (treemacs-follow-mode -1)
+       (treemacs-tag-follow-mode +1)
+       (treemacs-fringe-indicator-mode)
        (treemacs-git-mode 'deferred)
        (use-package
          treemacs-projectile)

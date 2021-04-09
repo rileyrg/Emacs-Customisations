@@ -1,25 +1,12 @@
 (setq-default abbrev-mode 1)
 
 (use-package
-  yasnippet
-  :init (yas-global-mode 1)
-  :config
-  (use-package
-    php-auto-yasnippets)
-  (use-package
-    el-autoyas)
-  (use-package
-    yasnippet-snippets)
-  (use-package
-    yasnippet-classic-snippets))
-
-(use-package
   company
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   :custom
   (company-backends
-   '((company-capf :with company-dabbrev company-files company-ispell)))
+   '((company-capf :with company-dabbrev company-yasnippet company-files company-ispell)))
   :config
   (use-package
     company-box
@@ -29,7 +16,19 @@
     :after company
     :config
     (company-prescient-mode +1))
-  ) ;; :bind ("C-<tab>" . company-complete))
+  :bind ("C-<tab>" . company-complete))
+
+(use-package
+  yasnippet
+  :init (yas-global-mode 1)
+  :config
+  (require 'company-yasnippet)
+  (use-package
+    el-autoyas)
+  (use-package
+    yasnippet-snippets)
+  (use-package
+    yasnippet-classic-snippets))
 
 (use-package
   which-key

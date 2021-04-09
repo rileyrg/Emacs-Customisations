@@ -379,7 +379,12 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package
   treemacs
+  :custom
+  (treemacs-follow-after-init t)
   :config
+  (treemacs-follow-mode -1)
+  (treemacs-tag-follow-mode +1)
+  (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
   (use-package
     treemacs-projectile)
