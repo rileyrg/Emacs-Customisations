@@ -962,7 +962,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (show-paren-mode 1)
        (winner-mode 1)
        (tooltip-mode 1)
+
        (global-auto-revert-mode)
+       ;; Also auto refresh dired, but be quiet about it
+       (setq global-auto-revert-non-file-buffers t)
+       (setq auto-revert-verbose nil)
 
        (global-visual-line-mode 1)
 
@@ -979,13 +983,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list)
 
        (defalias 'yes-or-no-p 'y-or-n-p)
-
-       ;; Auto refresh buffers
-       (global-auto-revert-mode 1)
-
-       ;; Also auto refresh dired, but be quiet about it
-       (setq global-auto-revert-non-file-buffers t)
-       (setq auto-revert-verbose nil)
 
        ;; ;; restore desktop
        (setq desktop-dirname (expand-file-name "desktop" user-emacs-directory))
