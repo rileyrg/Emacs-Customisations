@@ -417,6 +417,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 4.  [ctrlf](https://github.com/raxod502/ctrlf) - back to basics search
 
         (use-package ctrlf
+          :straight ( :local-repo "~/development/projects/emacs/ctrlf/" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
           :custom-face
           (ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
           (ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))
@@ -424,12 +425,8 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           (ctrlf-auto-recenter t nil nil "Customized with use-package ctrlf")
           (ctrlf-highlight-current-line t)
           (ctrlf-auto-recenter t)
+          (ctrlf-search-style-is-sticky t)
           :config
-          (define-advice
-              ctrlf-change-search-style
-              (:after (&rest _))
-            (with-current-buffer (window-buffer (minibuffer-selected-window))
-              (setq-local ctrlf-default-search-style ctrlf--style)))
           (ctrlf-mode +1))
 
 5.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list
