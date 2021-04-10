@@ -1091,8 +1091,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :straight ( :local-repo "~/development/projects/emacs/centaur-tabs/" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
     :custom
     (centaur-tabs-enable-ido-completion nil)
-    (centaur-tabs-set-bar nil)
+    (centaur-tabs-set-bar 'under)
     (x-underline-at-descent-line t)
+    :custom-face
+    (centaur-tabs-active-bar-face ((t (:background "orange"))))
     :config
     (centaur-tabs-enable-buffer-reordering)
     (centaur-tabs-group-by-projectile-project)
