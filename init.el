@@ -382,22 +382,21 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :custom
   (treemacs-follow-after-init t)
   :config
-  (treemacs-follow-mode -1)
-  (treemacs-tag-follow-mode +1)
+  (treemacs-follow-mode +1)
   (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
-  (use-package
-    treemacs-projectile)
+  (use-package treemacs-projectile
+    :after (treemacs projectile)
+    :ensure t)
 
-  (use-package
-    treemacs-icons-dired
+  (use-package treemacs-icons-dired
+    :after (treemacs dired)
+    :ensure t
     :config (treemacs-icons-dired-mode))
 
-  (use-package
-    treemacs-magit
-    :after treemacs
-    magit)
-  (defun rgr/treemacs-select-window (close)
+  (use-package treemacs-magit
+    :after (treemacs magit)
+    :ensure t)  (defun rgr/treemacs-select-window (close)
     (interactive "P")
     (if close (treemacs)
       (treemacs-select-window)))
