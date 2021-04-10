@@ -40,7 +40,6 @@
  '(ccls-initialization-options '(request: (timeout:5000)))
  '(ccls-root-files '(".ccls-root" ".projectile"))
  '(ccls-sem-highlight-method 'overlay)
- '(centaur-tabs-enable-ido-completion nil)
  '(company-box-enable-icon nil)
  '(company-c-headers-path-user
    '("~/.platformio/packages/framework-arduinoavr/cores/arduino/Arduino.h"))
@@ -586,7 +585,6 @@ stehen ganz weit oben.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 80))))
- '(centaur-tabs-selected ((t (:inherit bold :background "dark orange" :foreground "#ffffff" :overline nil :underline "gainsboro"))))
  '(company-box-annotation ((t (:inherit company-tooltip-annotation :height 113))) t)
  '(company-box-candidate ((t (:foreground "white" :height 113))) t)
  '(company-box-scrollbar ((t nil)))
@@ -634,9 +632,6 @@ stehen ganz weit oben.
  '(popup-face ((t (:inherit default))))
  '(rainbow-delimiters-base-error-face ((t (:inherit rainbow-delimiters-base-face :background "gainsboro" :foreground "red"))))
  '(selectrum-current-candidate ((t (:inherit bold :extend t :background "#2e2e2e" :foreground "#ffffff" :underline "burlywood"))))
- '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
- '(tab-bar-tab ((t (:inherit bold :background "dark orange" :foreground "#ffffff"))))
- '(tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
  '(tooltip ((t (:inherit variable-pitch :background "dim gray" :foreground "orange"))))
  '(treemacs-git-modified-face ((t (:inherit font-lock-variable-name-face :background "yellow" :foreground "red")))))
 
