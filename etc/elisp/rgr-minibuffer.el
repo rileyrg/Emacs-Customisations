@@ -32,7 +32,7 @@
   (ffap-bindings))
 
 (use-package ctrlf
-  :straight ( :local-repo "~/development/projects/emacs/ctrlf/" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
+  :straight ( :fork ( :type git :host github :repo "rileyrg/ctrlf"))
   :custom-face
   (ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
   (ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))

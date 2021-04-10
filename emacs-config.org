@@ -555,7 +555,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :END:
      #+begin_src emacs-lisp
        (use-package ctrlf
-         :straight ( :local-repo "~/development/projects/emacs/ctrlf/" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
+         :straight ( :fork ( :type git :host github :repo "rileyrg/ctrlf"))
          :custom-face
          (ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
          (ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))
@@ -949,88 +949,107 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :PROPERTIES:
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-general-config.el" elisp-dir)
     :END:
-**** General
+**** General                                              :blackout:modeline:
      :PROPERTIES:
      :END:
+***** a - unfiled
+      #+begin_src emacs-lisp
+        (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
+                                                ; t60
+        (scroll-bar-mode -1)
+        (tool-bar-mode -1)
+        (menu-bar-mode -1)
+        (show-paren-mode 1)
+        (winner-mode 1)
+        (tooltip-mode 1)
 
-     #+begin_src emacs-lisp
-       (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
-                                               ; t60
-       (scroll-bar-mode -1)
-       (tool-bar-mode -1)
-       (menu-bar-mode -1)
-       (show-paren-mode 1)
-       (winner-mode 1)
-       (tooltip-mode 1)
+        (global-auto-revert-mode)
+        ;; Also auto refresh dired, but be quiet about it
+        (setq global-auto-revert-non-file-buffers t)
+        (setq auto-revert-verbose nil)
 
-       (global-auto-revert-mode)
-       ;; Also auto refresh dired, but be quiet about it
-       (setq global-auto-revert-non-file-buffers t)
-       (setq auto-revert-verbose nil)
+        (global-visual-line-mode 1)
 
-       (global-visual-line-mode 1)
+        (setq column-number-mode t)
 
-       (setq column-number-mode t)
+        (delete-selection-mode 1)
 
-       (delete-selection-mode 1)
+        (global-set-key (kbd "S-<f1>") 'describe-face)
 
-       (global-set-key (kbd "S-<f1>") 'describe-face)
-
-       (global-set-key (kbd "S-<f10>") #'menu-bar-open)
-                                               ;          (global-set-key (kbd "<f10>") #'imenu)
-
-
-       (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list)
-
-       (defalias 'yes-or-no-p 'y-or-n-p)
-
-       ;; ;; restore desktop
-       (setq desktop-dirname (expand-file-name "desktop" user-emacs-directory))
-       ;; (desktop-save-mode 1)
-
-       (setq disabled-command-function nil)
-
-       (global-hl-line-mode t)
-
-       (use-package boxquote
-         :straight (:branch "main")
-         :bind
-         ("C-S-r" . boxquote-region))
-
-       (use-package
-         browse-url-dwim)
-
-       (use-package
-         all-the-icons)
-
-       (use-package beacon
-         :custom
-         (beacon-blink-delay 1)
-         (beacon-size 10)
-         (beacon-color "orange" nil nil "Customized with use-package beacon")
-         (beacon-blink-when-point-moves-horizontally 32)
-         (beacon-blink-when-point-moves-vertically 8)
-         :config
-         (beacon-mode 1))
-
-       (use-package
-         webpaste
-         :bind ("C-c y" . (lambda()(interactive)(call-interactively 'webpaste-paste-region)(deactivate-mark)))
-         ("C-c Y" . webpaste-paste-buffer))
-
-       ;; brings visual feedback to some operations by highlighting portions relating to the operations.
-       (use-package
-         volatile-highlights
-         :init (volatile-highlights-mode 1))
-       ;; display dir name when core name clashes
-       (require 'uniquify)
-
-       (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+        (global-set-key (kbd "S-<f10>") #'menu-bar-open)
+                                                ;          (global-set-key (kbd "<f10>") #'imenu)
 
 
-       (global-set-key (kbd "C-c r") 'query-replace-regexp)
+        (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list)
 
-     #+end_src
+        (defalias 'yes-or-no-p 'y-or-n-p)
+
+        ;; ;; restore desktop
+        (setq desktop-dirname (expand-file-name "desktop" user-emacs-directory))
+        ;; (desktop-save-mode 1)
+
+        (setq disabled-command-function nil)
+
+        (global-hl-line-mode t)
+
+        (use-package
+          browse-url-dwim)
+
+        (use-package
+          all-the-icons)
+
+        ;; display dir name when core name clashes
+        (require 'uniquify)
+
+        (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+
+
+        (global-set-key (kbd "C-c r") 'query-replace-regexp)
+
+      #+end_src
+***** beacon                                                         :beacon:
+      visual feedback as to cursor position
+      #+begin_src emacs-lisp
+        (use-package beacon
+          :custom
+          (beacon-blink-delay 1)
+          (beacon-size 10)
+          (beacon-color "orange" nil nil "Customized with use-package beacon")
+          (beacon-blink-when-point-moves-horizontally 32)
+          (beacon-blink-when-point-moves-vertically 8)
+          :config
+          (beacon-mode 1))
+
+      #+end_src
+***** blackout modeline                                            :blackout:
+      Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
+      #+begin_src emacs-lisp
+        (straight-use-package
+         '(blackout :host github :repo "raxod502/blackout"))
+      #+end_src
+***** boxquote                                                     :boxquote:
+      #+begin_src emacs-lisp
+        (use-package boxquote
+          :straight (:branch "main")
+          :bind
+          ("C-S-r" . boxquote-region))
+
+      #+end_src
+***** volatile-highlights                               :volatilehighlights:volatile:
+      brings visual feedback to some operations by highlighting portions relating to the operations.
+      #+begin_src emacs-lisp
+        (use-package
+          volatile-highlights
+          :init (volatile-highlights-mode 1))
+      #+end_src
+***** webpaste                                                     :webpaste:
+      #+begin_src emacs-lisp
+        (use-package
+          webpaste
+          :bind ("C-c y" . (lambda()(interactive)(call-interactively 'webpaste-paste-region)(deactivate-mark)))
+          ("C-c Y" . webpaste-paste-buffer))
+
+      #+end_src
 **** Accessibility
      :PROPERTIES:
      :END:
@@ -1085,25 +1104,25 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :LOGBOOK:
       - State "QUOTE"      from              [2021-04-06 Di 23:18]
       :END:
-#+begin_src emacs-lisp
-  (use-package centaur-tabs
-    :demand t
-    :straight ( :local-repo "~/development/projects/emacs/centaur-tabs/" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
-    :custom
-    (centaur-tabs-enable-ido-completion nil)
-    (centaur-tabs-set-bar 'under)
-    (x-underline-at-descent-line t)
-    :custom-face
-    (centaur-tabs-active-bar-face ((t (:background "orange"))))
-    :config
-    (centaur-tabs-enable-buffer-reordering)
-    (centaur-tabs-group-by-projectile-project)
-    (centaur-tabs-mode +1)
-    :bind
-    ("C-<next>" . centaur-tabs-backward)
-    ("C-<prior>" . centaur-tabs-forward)
-    ("C-x t s" . centaur-tabs-switch-group))
-#+end_src
+      #+begin_src emacs-lisp
+        (use-package centaur-tabs
+          :straight ( :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
+          :custom
+          (ccentaur-tabs-enable-key-bindings t)
+          (centaur-tabs-enable-ido-completion nil)
+          (centaur-tabs-set-bar 'under)
+          (x-underline-at-descent-line t)
+          :custom-face
+          (centaur-tabs-active-bar-face ((t (:background "orange"))))
+          :config
+          (centaur-tabs-enable-buffer-reordering)
+          (centaur-tabs-group-by-projectile-project)
+          (centaur-tabs-mode +1)
+          :bind
+          ("C-<next>" . centaur-tabs-backward)
+          ("C-<prior>" . centaur-tabs-forward)
+          ("C-x t s" . centaur-tabs-switch-group))
+      #+end_src
 ***** WAITING Tab Bar Mode                                   :tabbar:WAITING:
       :PROPERTIES:
       :header-args:emacs-lisp: :tangle no
@@ -1905,10 +1924,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 **** impatient-showdow, markdown view live
      Preview markdown buffer live over HTTP using showdown.
      https://github.com/jcs-elpa/impatient-showdown
-      #+begin_src emacs-lisp
-        (use-package impatient-showdown
-          :hook (markdown-mode . impatient-showdown-mode))
-      #+end_src
+     #+begin_src emacs-lisp
+       (use-package impatient-showdown
+         :hook (markdown-mode . impatient-showdown-mode))
+     #+end_src
 
 **** provide
      :PROPERTIES:
@@ -2424,12 +2443,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       (global-set-key (kbd "C-S-p") 'htop-regexp)
     #+end_src
 *** explain-pause-mode
-  [[https://github.com/lastquestion/explain-pause-mode][explain-pause-mode]] is like an htop for emacs itself
-#+begin_src emacs-lisp
-  (use-package explain-pause-mode
-    :config
-    (explain-pause-mode))
-#+end_src
+    [[https://github.com/lastquestion/explain-pause-mode][explain-pause-mode]] is like an htop for emacs itself
+    #+begin_src emacs-lisp
+      (use-package explain-pause-mode
+        :config
+        (explain-pause-mode))
+    #+end_src
 ** Treemacs
    :PROPERTIES:
    :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
@@ -2884,19 +2903,19 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 
 ***** token                                                     :crypt:token:
------BEGIN PGP MESSAGE-----
+      -----BEGIN PGP MESSAGE-----
 
-hQEMA7IjL5SkHG4iAQgAtrT0D/Vh8W+gptWrNSM6snmRejBtUiv4OMjoWwD/V9S0
-LpvcJbcJAQN7KGEpGO7lUhk2faV+9t1WQmcT+UEpM5e5PW7HqFt39LnxBfFVPqYx
-hBWzvOiXupdA+cGtj4o+yBug6EnH3KEMwJbXpdNHuQc3ihKb1/blItNXSSfEneWl
-lwFYqsXaPbq0KO53TVmFd4XxcFWaJk9SKmWpEfE9AWff8GBtF5AbQaC+kWnzo8FT
-LHbgDvU81/ZDyMPijRUJqICwJQHnSWdb9zK3lw5dn3Pm9xNSw45zJ+sPxVTjneW+
-ZV5uNb9iQklsuZrDjLyDmKYcAWFd9yXDJe16TMez6NKCASwU0+JMPgyr3ju/R25c
-c5eQY2pS+u/46aesAvhlyPsCN3juzjNJI1Otw2zRib1p6/P0k7HDHVEaWTDCIiGY
-NDuvG4LSIn8cjeBbEvrPRQEJIesPsmxBqaTHEFWN/EWdHmeRuD7MW2kzTKoFF8B5
-aN7TreVVjWnVKLSC2q8w0je1Xg==
-=WFdw
------END PGP MESSAGE-----
+      hQEMA7IjL5SkHG4iAQgAtrT0D/Vh8W+gptWrNSM6snmRejBtUiv4OMjoWwD/V9S0
+      LpvcJbcJAQN7KGEpGO7lUhk2faV+9t1WQmcT+UEpM5e5PW7HqFt39LnxBfFVPqYx
+      hBWzvOiXupdA+cGtj4o+yBug6EnH3KEMwJbXpdNHuQc3ihKb1/blItNXSSfEneWl
+      lwFYqsXaPbq0KO53TVmFd4XxcFWaJk9SKmWpEfE9AWff8GBtF5AbQaC+kWnzo8FT
+      LHbgDvU81/ZDyMPijRUJqICwJQHnSWdb9zK3lw5dn3Pm9xNSw45zJ+sPxVTjneW+
+      ZV5uNb9iQklsuZrDjLyDmKYcAWFd9yXDJe16TMez6NKCASwU0+JMPgyr3ju/R25c
+      c5eQY2pS+u/46aesAvhlyPsCN3juzjNJI1Otw2zRib1p6/P0k7HDHVEaWTDCIiGY
+      NDuvG4LSIn8cjeBbEvrPRQEJIesPsmxBqaTHEFWN/EWdHmeRuD7MW2kzTKoFF8B5
+      aN7TreVVjWnVKLSC2q8w0je1Xg==
+      =WFdw
+      -----END PGP MESSAGE-----
 **** Git Gutter Mode                                                 :gutter:
      :PROPERTIES:
      :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
@@ -3190,7 +3209,7 @@ aN7TreVVjWnVKLSC2q8w0je1Xg==
 ***** microsoft python language server                                  :lsp:
       #+begin_src emacs-lisp
         (use-package lsp-python-ms
-          :straight ( :local-repo "~/development/projects/emacs/lsp-python-ms/" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
+          :straight ( :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
           :custom
           (lsp-python-ms-auto-install-server t)
           (lsp-python-ms-parse-dot-env-enabled t)
@@ -3560,20 +3579,20 @@ aN7TreVVjWnVKLSC2q8w0je1Xg==
    #+end_src
 ** compiling emacs
 *** ~/bin/emacs-compile-opt
-#+begin_src bash :tangle bin/emacs-compile-opt
-  #!/usr/bin/bash
-  #Maintained in emacs-config.org
-  cd ~/development/projects/C/emacs/
-  mkdir -p emacs-build
-  ./configure --prefix=`pwd`/emacs-build --with-x-toolkit=lucid
-  make && make install
-#+end_src
+    #+begin_src bash :tangle bin/emacs-compile-opt
+      #!/usr/bin/bash
+      #Maintained in emacs-config.org
+      cd ~/development/projects/C/emacs/
+      mkdir -p emacs-build
+      ./configure --prefix=`pwd`/emacs-build --with-x-toolkit=lucid
+      make && make install
+    #+end_src
 *** ~/bin/emacs-compile-dbg
-#+begin_src bash :tangle bin/emacs-compile-dbg
-  #!/usr/bin/bash
-  #Maintained in emacs-config.org
-  cd ~/development/projects/C/emacs/
-  mkdir -p emacs-build-dbg
-  ./configure --prefix=`pwd`/emacs-build-dbg --with-x-toolkit=lucid --enable-checking='yes,glyphs' --enable-check-lisp-object-type CFLAGS='-O0 -g3'
-  make && make install
-#+end_src
+    #+begin_src bash :tangle bin/emacs-compile-dbg
+      #!/usr/bin/bash
+      #Maintained in emacs-config.org
+      cd ~/development/projects/C/emacs/
+      mkdir -p emacs-build-dbg
+      ./configure --prefix=`pwd`/emacs-build-dbg --with-x-toolkit=lucid --enable-checking='yes,glyphs' --enable-check-lisp-object-type CFLAGS='-O0 -g3'
+      make && make install
+    #+end_src

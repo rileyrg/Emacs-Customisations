@@ -36,16 +36,19 @@
 
 (global-hl-line-mode t)
 
-(use-package boxquote
-  :straight (:branch "main")
-  :bind
-  ("C-S-r" . boxquote-region))
-
 (use-package
   browse-url-dwim)
 
 (use-package
   all-the-icons)
+
+;; display dir name when core name clashes
+(require 'uniquify)
+
+(add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+
+
+(global-set-key (kbd "C-c r") 'query-replace-regexp)
 
 (use-package beacon
   :custom
@@ -57,22 +60,22 @@
   :config
   (beacon-mode 1))
 
+(straight-use-package
+ '(blackout :host github :repo "raxod502/blackout"))
+
+(use-package boxquote
+  :straight (:branch "main")
+  :bind
+  ("C-S-r" . boxquote-region))
+
+(use-package
+  volatile-highlights
+  :init (volatile-highlights-mode 1))
+
 (use-package
   webpaste
   :bind ("C-c y" . (lambda()(interactive)(call-interactively 'webpaste-paste-region)(deactivate-mark)))
   ("C-c Y" . webpaste-paste-buffer))
-
-;; brings visual feedback to some operations by highlighting portions relating to the operations.
-(use-package
-  volatile-highlights
-  :init (volatile-highlights-mode 1))
-;; display dir name when core name clashes
-(require 'uniquify)
-
-(add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
-
-
-(global-set-key (kbd "C-c r") 'query-replace-regexp)
 
 ;; (set-face-attribute 'default nil :height 60 :family "JetBrainsMono Nerd Font" :foundry "JB")
 
@@ -90,9 +93,9 @@
   (xclip-mode))
 
 (use-package centaur-tabs
-  :demand t
-  :straight ( :local-repo "~/development/projects/emacs/centaur-tabs/" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
+  :straight ( :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
   :custom
+  (ccentaur-tabs-enable-key-bindings t)
   (centaur-tabs-enable-ido-completion nil)
   (centaur-tabs-set-bar 'under)
   (x-underline-at-descent-line t)
