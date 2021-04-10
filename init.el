@@ -379,6 +379,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package
   treemacs
+  :straight ( :fork ( :type git :host github :repo "rileyrg/treemacs"))
   :custom
   (treemacs-follow-after-init t)
   :config
@@ -396,13 +397,13 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
   (use-package treemacs-magit
     :after (treemacs magit)
-    :ensure t)  (defun rgr/treemacs-select-window (close)
+    :ensure t)
+  (defun rgr/treemacs-select-window (close)
     (interactive "P")
     (if close (treemacs)
       (treemacs-select-window)))
   :bind
-  ("M-9"   . rgr/treemacs-select-window)
-  ("M-0"   . treemacs)
+  ("M-0"   . (lambda()(interactive)(treemacs t)))
   (:map treemacs-mode-map
         ("<right>" . treemacs-peek)))
 

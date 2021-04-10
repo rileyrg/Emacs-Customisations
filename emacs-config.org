@@ -2457,6 +2457,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    #+begin_src emacs-lisp
      (use-package
        treemacs
+       :straight ( :fork ( :type git :host github :repo "rileyrg/treemacs"))
        :custom
        (treemacs-follow-after-init t)
        :config
@@ -2474,13 +2475,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
        (use-package treemacs-magit
          :after (treemacs magit)
-         :ensure t)  (defun rgr/treemacs-select-window (close)
+         :ensure t)
+       (defun rgr/treemacs-select-window (close)
          (interactive "P")
          (if close (treemacs)
            (treemacs-select-window)))
        :bind
-       ("M-9"   . rgr/treemacs-select-window)
-       ("M-0"   . treemacs)
+       ("M-0"   . (lambda()(interactive)(treemacs t)))
        (:map treemacs-mode-map
              ("<right>" . treemacs-peek)))
 
