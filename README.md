@@ -2509,7 +2509,9 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 3.  [Forge](https://github.com/magit/forge) ahead with Pull Requests     :forge:git:github:
 
         (use-package forge
-          :after magit)
+          :after magit
+          :config
+          (use-package orgit-forge))
 
     1.  token     :crypt:token:
 

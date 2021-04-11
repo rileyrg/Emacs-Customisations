@@ -136,14 +136,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
      #+end_src
-** TODO [[https://www.gnu.org/software/emacs/manual/auth.html][Auth-Sources]]
+** [[https://www.gnu.org/software/emacs/manual/auth.html][Auth-Sources]]
    :PROPERTIES:
    :ID:       8f8f4b02-bdd2-4ad9-81bb-c3dd14b2fe9d
-   :END:
-   :LOGBOOK:
-   - Note taken on [2021-04-01 Do 23:18] \\
-     why the no-require
-   - State "TODO"       from              [2021-04-01 Do 23:18]
    :END:
    Let emacs take care of security things automagically
    #+begin_src emacs-lisp
@@ -2900,7 +2895,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :END:
      #+begin_src emacs-lisp
        (use-package forge
-         :after magit)
+         :after magit
+         :config
+         (use-package orgit-forge))
      #+end_src
 
 ***** token                                                     :crypt:token:

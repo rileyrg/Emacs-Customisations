@@ -633,7 +633,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
 
 (use-package forge
-  :after magit)
+  :after magit
+  :config
+  (use-package orgit-forge))
 
 (use-package git-gutter
   :config
