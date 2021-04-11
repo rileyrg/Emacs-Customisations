@@ -94,8 +94,9 @@
 
 (use-package centaur-tabs
   :straight ( :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
+  :demand
   :custom
-  (ccentaur-tabs-enable-key-bindings t)
+  (centaur-tabs-enable-key-bindings t)
   (centaur-tabs-enable-ido-completion nil)
   (centaur-tabs-set-bar 'under)
   (x-underline-at-descent-line t)

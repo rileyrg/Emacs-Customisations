@@ -179,6 +179,7 @@ Would you like to play a game?
  '(expand-region-smart-cursor t)
  '(fci-rule-color "#14151E" t)
  '(fill-column 256)
+ '(find-file-visit-truename t)
  '(frecentf-ignore-paths
    '("/home/rgr/.config/emacs/persp-confs" "/home/rgr/.config/emacs/orgfiles"))
  '(gc-cons-threshold 100000000)
@@ -585,6 +586,7 @@ stehen ganz weit oben.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 80))))
+ '(centaur-tabs-active-bar-face ((t (:background "orange"))))
  '(company-box-annotation ((t (:inherit company-tooltip-annotation :height 113))) t)
  '(company-box-candidate ((t (:foreground "white" :height 113))) t)
  '(company-box-scrollbar ((t nil)))
