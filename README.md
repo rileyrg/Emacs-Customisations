@@ -417,7 +417,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 4.  [ctrlf](https://github.com/raxod502/ctrlf) - back to basics search
 
         (use-package ctrlf
-          :straight ( :fork ( :type git :host github :repo "rileyrg/ctrlf"))
+          :straight (:local-repo "~/development/projects/emacs/ctrlf/" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
           :custom-face
           (ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
           (ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))
@@ -2032,29 +2032,17 @@ Excellent [tree based navigation that works really well with projectile.](https:
 
     (use-package
       treemacs
-      :straight ( :fork ( :type git :host github :repo "rileyrg/treemacs"))
+      :straight (:local-repo "~/development/projects/emacs/treemacs" :fork ( :type git :host github :repo "rileyrg/treemacs"))
       :custom
       (treemacs-follow-after-init t)
       :config
       (treemacs-follow-mode +1)
       (treemacs-fringe-indicator-mode)
       (treemacs-git-mode 'deferred)
-      (use-package treemacs-projectile
-        :after (treemacs projectile)
-        :ensure t)
-
       (use-package treemacs-icons-dired
-        :after (treemacs dired)
-        :ensure t
         :config (treemacs-icons-dired-mode))
-
-      (use-package treemacs-magit
-        :after (treemacs magit)
-        :ensure t)
-      (defun rgr/treemacs-select-window (close)
-        (interactive "P")
-        (if close (treemacs)
-          (treemacs-select-window)))
+      (use-package treemacs-projectile)
+      (use-package treemacs-magit)
       :bind
       ("M-0"   . (lambda()(interactive)(treemacs t)))
       (:map treemacs-mode-map
@@ -2800,7 +2788,8 @@ The build and install process id documented [here](https://docs.platformio.org/e
     1.  microsoft python language server     :lsp:
 
             (use-package lsp-python-ms
-              :straight ( :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
+
+              :straight (:local-repo "~/development/projects/emacs/lsp-python-ms/" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
               :custom
               (lsp-python-ms-auto-install-server t)
               (lsp-python-ms-parse-dot-env-enabled t)
