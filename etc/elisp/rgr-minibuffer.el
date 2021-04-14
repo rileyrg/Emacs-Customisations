@@ -32,7 +32,7 @@
   (ffap-bindings))
 
 (use-package ctrlf
-  :straight (:local-repo "~/development/projects/emacs/ctrlf/" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
+  :straight (:local-repo "~/development/projects/emacs/ctrlf" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
   :custom-face
   (ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
   (ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))
@@ -45,11 +45,13 @@
   (ctrlf-mode +1))
 
 (use-package selectrum
+  :demand t
   :config
   (selectrum-mode +1)
   :bind ("C-x C-z" . #'selectrum-repeat))
 
 (use-package prescient
+  :demand t
   :config
   (prescient-persist-mode +1)
   (if (featurep 'selectrum)

@@ -200,57 +200,37 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                 (cl-assert (eq (point) (point-min)))
                 (read (current-buffer))))
 
-    5.  delayed idle help popup
+    5.  popup elisp help
 
-            (defcustom rgr/elisp-helpers-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
-            (defcustom rgr/elisp-helpers-popup-help-enabled t "If popup elisp help is timer enabled" :type 'boolean)
+            (use-package tooltip-help
+              :demand t
+              :init
+              (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
+              (defcustom rgr/elisp-popup-help-enabled nil "If popup elisp help is timer enabled" :type 'boolean)
+              (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
+              :config
 
-            (defun rgr/elisp-helpers-popup-help-enabled-toggle()
-              (interactive)
-              (setq-local rgr/elisp-helpers-popup-help-enabled (not rgr/elisp-helpers-popup-help-enabled)))
+              ;; (defun describe-thing-in-popup ()
+              ;;   (interactive)
+              ;;   (let* ((thing (symbol-at-point))
+              ;;          (description (with-temp-buffer
+              ;;                         (describe-symbol thing)
+              ;;                         (buffer-string))))
+              ;;     (tooltip-show description)))
 
-            (defun rgr/elisp-helpers-popup-help-enable()
-              "buffer local rgr/elisp-helpers-popup-help-enabled on"
-              (setq-local rgr/elisp-helpers-popup-help-enabled rgr/elisp-helpers-popup-help-enabled))
+              (defun rgr/elisp-popup-help-toggle()
+                (interactive)
+                (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
 
-            (add-hook 'emacs-lisp-mode-hook #'rgr/elisp-helpers-popup-help-enable)
-            (add-hook 'lisp-interaction-mode-hook #'rgr/elisp-helpers-popup-help-enable)
-            (add-hook 'org-mode-hook #'rgr/elisp-helpers-popup-help-enable)
-            (add-hook 'help-mode-hook #'rgr/elisp-helpers-popup-help-enable)
+              (when rgr/elisp-popup-timer
+                (cancel-timer rgr/elisp-popup-timer))
 
-            (defun chunyang-elisp-function-or-variable-quickhelp (&optional symbol)
-              "Display summary of function or variable at point.
+              (setq rgr/elisp-popup-timer
+                    (run-with-idle-timer
+                     rgr/elisp-popup-help-delay t
+                     '(lambda()(th-show-help))))
 
-              Adapted from `describe-function-or-variable'."
-              (interactive)
-              (when rgr/elisp-helpers-popup-help-enabled
-                (let* ((v-or-f (variable-at-point))
-                       (found (symbolp v-or-f))
-                       (v-or-f (if found v-or-f (function-called-at-point))))
-                  (if (and v-or-f (symbolp v-or-f))
-                      (let* ((fdoc (when (fboundp v-or-f )
-                                     (or (documentation v-or-f  t) "Not documented.")))
-                             (fdoc-short (and (stringp fdoc)
-                                              (substring fdoc 0 (string-match "\n" fdoc))))
-                             (vdoc (when  (boundp v-or-f )
-                                     (or (documentation-property v-or-f  'variable-documentation t)
-                                         "Not documented as a variable.")))
-                             (vdoc-short (and (stringp vdoc)
-                                              (substring vdoc 0 (string-match "\n" vdoc)))))
-                        (and (require 'popup nil 'no-error)
-                             (popup-tip
-                              (or
-                               (and fdoc-short vdoc-short
-                                    (concat fdoc-short "\n\n"
-                                            (make-string 30 ?-) "\n" (symbol-name
-                                                                      v-or-f )
-                                            " is also a " "variable." "\n\n"
-                                            vdoc-short))
-                               fdoc-short
-                               vdoc-short)
-                              :margin t)))))))
-
-            (run-with-idle-timer rgr/elisp-helpers-popup-help-delay t '(lambda()(when (rgr/elisp-edit-mode) (chunyang-elisp-function-or-variable-quickhelp nil))))
+              :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
 
     6.  Elisp debugging
 
@@ -417,7 +397,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 4.  [ctrlf](https://github.com/raxod502/ctrlf) - back to basics search
 
         (use-package ctrlf
-          :straight (:local-repo "~/development/projects/emacs/ctrlf/" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
+          :straight (:local-repo "~/development/projects/emacs/ctrlf" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
           :custom-face
           (ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
           (ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))
@@ -432,6 +412,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 5.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list
 
         (use-package selectrum
+          :demand t
           :config
           (selectrum-mode +1)
           :bind ("C-x C-z" . #'selectrum-repeat))
@@ -439,6 +420,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 6.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
 
         (use-package prescient
+          :demand t
           :config
           (prescient-persist-mode +1)
           (if (featurep 'selectrum)
@@ -1865,7 +1847,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
           (setq popper-reference-buffers
                 '(
                   "\\*Messages\\*"
-                  help-mode
                   magit-mode
                   helpful-mode
                   inferior-python-mode
@@ -2022,6 +2003,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 [explain-pause-mode](https://github.com/lastquestion/explain-pause-mode) is like an htop for emacs itself
 
     (use-package explain-pause-mode
+      :disabled
       :config
       (explain-pause-mode))
 
@@ -2789,7 +2771,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
             (use-package lsp-python-ms
 
-              :straight (:local-repo "~/development/projects/emacs/lsp-python-ms/" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
+              :straight (:local-repo "~/development/projects/emacs/lsp-python-ms" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
               :custom
               (lsp-python-ms-auto-install-server t)
               (lsp-python-ms-parse-dot-env-enabled t)

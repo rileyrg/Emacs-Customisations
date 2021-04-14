@@ -268,7 +268,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (setq popper-reference-buffers
         '(
           "\\*Messages\\*"
-          help-mode
           magit-mode
           helpful-mode
           inferior-python-mode
@@ -372,10 +371,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
         (shell-command (format "htop-regexp %s" s))
       (error nil))))
 (global-set-key (kbd "C-S-p") 'htop-regexp)
-
-(use-package explain-pause-mode
-  :config
-  (explain-pause-mode))
 
 (use-package
   treemacs
@@ -724,7 +719,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package lsp-python-ms
 
-  :straight (:local-repo "~/development/projects/emacs/lsp-python-ms/" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
+  :straight (:local-repo "~/development/projects/emacs/lsp-python-ms" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
   :custom
   (lsp-python-ms-auto-install-server t)
   (lsp-python-ms-parse-dot-env-enabled t)
