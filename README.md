@@ -144,7 +144,6 @@ Load this relatively early in order to have utils available if there's a faied l
 Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
-    (global-set-key (kbd "C-M-S-e") 'rgr/elisp-helpers-popup-help-enabled-toggle)
 
 1.  rgr/elisp-utils library
 
@@ -202,35 +201,37 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     5.  popup elisp help
 
-            (use-package tooltip-help
-              :demand t
-              :init
-              (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
-              (defcustom rgr/elisp-popup-help-enabled nil "If popup elisp help is timer enabled" :type 'boolean)
-              (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
-              :config
+        1.  tooltip-help
 
-              ;; (defun describe-thing-in-popup ()
-              ;;   (interactive)
-              ;;   (let* ((thing (symbol-at-point))
-              ;;          (description (with-temp-buffer
-              ;;                         (describe-symbol thing)
-              ;;                         (buffer-string))))
-              ;;     (tooltip-show description)))
+                (use-package tooltip-help
+                  :demand t
+                  :init
+                  (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
+                  (defcustom rgr/elisp-popup-help-enabled t "If popup elisp help is timer enabled" :type 'boolean)
+                  (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
+                  :config
 
-              (defun rgr/elisp-popup-help-toggle()
-                (interactive)
-                (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
+                  ;; (defun describe-thing-in-popup ()
+                  ;;   (interactive)
+                  ;;   (let* ((thing (symbol-at-point))
+                  ;;          (description (with-temp-buffer
+                  ;;                         (describe-symbol thing)
+                  ;;                         (buffer-string))))
+                  ;;     (tooltip-show description)))
 
-              (when rgr/elisp-popup-timer
-                (cancel-timer rgr/elisp-popup-timer))
+                  (defun rgr/elisp-popup-help-toggle()
+                    (interactive)
+                    (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
 
-              (setq rgr/elisp-popup-timer
-                    (run-with-idle-timer
-                     rgr/elisp-popup-help-delay t
-                     '(lambda()(th-show-help))))
+                  (when rgr/elisp-popup-timer
+                    (cancel-timer rgr/elisp-popup-timer))
 
-              :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
+                  (setq rgr/elisp-popup-timer
+                        (run-with-idle-timer
+                         rgr/elisp-popup-help-delay t
+                         '(lambda()(when(and rgr/elisp-popup-help-enabled (rgr/elisp-edit-mode))(th-show-help)))))
+
+                  :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
 
     6.  Elisp debugging
 
@@ -868,12 +869,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :bind
               ( "<f7>" . 'darkroom-mode))
 
-3.  Transparency
-
-        (set-frame-parameter (selected-frame) 'alpha '(95 . 50))
-        (add-to-list 'default-frame-alist '(alpha . (95 . 50)))
-
-4.  Clipboard
+3.  Clipboard
 
     Allow terminal emacs to interact with the x clipboard.
 
@@ -882,7 +878,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :config
           (xclip-mode))
 
-5.  Ansi colour
+4.  Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
 
@@ -890,7 +886,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
         (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-6.  Tabs     :tabs:
+5.  Tabs     :tabs:
 
     1.  Centaur Tabs     :centaur:
 
@@ -898,7 +894,6 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :straight ( :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
               :demand
               :custom
-              (centaur-tabs-enable-key-bindings t)
               (centaur-tabs-enable-ido-completion nil)
               (centaur-tabs-set-bar 'under)
               (x-underline-at-descent-line t)
@@ -913,7 +908,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               ("C-<prior>" . centaur-tabs-forward)
               ("C-x t s" . centaur-tabs-switch-group))
 
-7.  Memory
+6.  Memory
 
     1.  save-place-mode, remember position in files
 
@@ -940,7 +935,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                   (add-to-list 'recentf-exclude no-littering-var-directory)
                 (add-to-list 'recentf-exclude no-littering-etc-directory)))
 
-8.  provide
+7.  provide
 
         (provide 'rgr/general-config)
 

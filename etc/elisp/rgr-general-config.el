@@ -84,9 +84,6 @@
   :bind
   ( "<f7>" . 'darkroom-mode))
 
-(set-frame-parameter (selected-frame) 'alpha '(95 . 50))
-(add-to-list 'default-frame-alist '(alpha . (95 . 50)))
-
 (use-package xclip
   :demand t
   :config
@@ -96,7 +93,6 @@
   :straight ( :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
   :demand
   :custom
-  (centaur-tabs-enable-key-bindings t)
   (centaur-tabs-enable-ido-completion nil)
   (centaur-tabs-set-bar 'under)
   (x-underline-at-descent-line t)

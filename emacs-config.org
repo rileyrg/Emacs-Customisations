@@ -208,7 +208,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
     #+begin_src emacs-lisp
       (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
-      (global-set-key (kbd "C-M-S-e") 'rgr/elisp-helpers-popup-help-enabled-toggle)
     #+end_src
 
 **** rgr/elisp-utils library
@@ -285,37 +284,96 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :PROPERTIES:
       :ID:       b63bf2e5-4106-401a-a66c-7b7967d0d89e
       :END:
-      #+begin_src emacs-lisp
-        (use-package tooltip-help
-          :demand t
-          :init
-          (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
-          (defcustom rgr/elisp-popup-help-enabled nil "If popup elisp help is timer enabled" :type 'boolean)
-          (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
-          :config
 
-          ;; (defun describe-thing-in-popup ()
-          ;;   (interactive)
-          ;;   (let* ((thing (symbol-at-point))
-          ;;          (description (with-temp-buffer
-          ;;                         (describe-symbol thing)
-          ;;                         (buffer-string))))
-          ;;     (tooltip-show description)))
 
-          (defun rgr/elisp-popup-help-toggle()
-            (interactive)
-            (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
+****** WAITING eldoc overlay                                        :WAITING:
+       :PROPERTIES:
+       :header-args:emacs-lisp: :tangle no
+       :END:
+       :LOGBOOK:
+       - State "WAITING"    from              [2021-04-15 Do 00:10]
+       :END:
+       #+begin_src emacs-lisp
+         (use-package eldoc-overlay
+           :init
+           (global-eldoc-overlay-mode +1))
+       #+end_src
+****** tooltip-help
+       :LOGBOOK:
+       - State "WAITING"    from              [2021-04-14 Mi 23:40] \\
+         wait on clippy
+       :END:
+       #+begin_src emacs-lisp
+         (use-package tooltip-help
+           :demand t
+           :init
+           (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
+           (defcustom rgr/elisp-popup-help-enabled t "If popup elisp help is timer enabled" :type 'boolean)
+           (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
+           :config
 
-          (when rgr/elisp-popup-timer
-            (cancel-timer rgr/elisp-popup-timer))
+           ;; (defun describe-thing-in-popup ()
+           ;;   (interactive)
+           ;;   (let* ((thing (symbol-at-point))
+           ;;          (description (with-temp-buffer
+           ;;                         (describe-symbol thing)
+           ;;                         (buffer-string))))
+           ;;     (tooltip-show description)))
 
-          (setq rgr/elisp-popup-timer
-                (run-with-idle-timer
-                 rgr/elisp-popup-help-delay t
-                 '(lambda()(th-show-help))))
+           (defun rgr/elisp-popup-help-toggle()
+             (interactive)
+             (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
 
-          :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
-      #+end_src
+           (when rgr/elisp-popup-timer
+             (cancel-timer rgr/elisp-popup-timer))
+
+           (setq rgr/elisp-popup-timer
+                 (run-with-idle-timer
+                  rgr/elisp-popup-help-delay t
+                  '(lambda()(when(and rgr/elisp-popup-help-enabled (rgr/elisp-edit-mode))(th-show-help)))))
+
+           :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
+       #+end_src
+****** WAITING clippy                                               :WAITING:
+       :PROPERTIES:
+       :header-args:emacs-lisp: :tangle no
+       :END:
+       :LOGBOOK:
+       - State "WAITING"    from              [2021-04-15 Do 00:10]
+       :END:
+       #+begin_src emacs-lisp
+         (use-package clippy
+           :demand t
+           :init
+           (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
+           (defcustom rgr/elisp-popup-help-enabled nil "If popup elisp help is timer enabled" :type 'boolean)
+           (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
+           (defvar rgr/elisp-popup-last nil "last symbol poppedup")
+           :config
+
+           (defun rgr/elisp-popup-help-toggle()
+             (interactive)
+             (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
+
+           (defun rgr/clippy()
+             (interactive)
+             (let ((tap (symbol-at-point)))
+               (if (not (eq tap rgr/elisp-popup-last))
+                   (if (fboundp tap)
+                       (clippy-describe-function tap)
+                     (clippy-describe-variable tap)))
+               (setq-local rgr/elisp-popup-last tap)))
+
+           (when rgr/elisp-popup-timer
+             (cancel-timer rgr/elisp-popup-timer))
+
+           (setq rgr/elisp-popup-timer
+                 (run-with-idle-timer
+                  rgr/elisp-popup-help-delay t
+                  '(lambda()(rgr/clippy))))
+
+           :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
+       #+end_src
 ***** Elisp debugging
       :PROPERTIES:
       :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
@@ -1049,8 +1107,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           ( "<f7>" . 'darkroom-mode))
       #+end_src
 
-**** Transparency
+**** WAITING Transparency                                           :WAITING:
      :PROPERTIES:
+     :header-args:emacs-lisp: :tangle no
+     :END:
+     :LOGBOOK:
+     - State "WAITING"    from              [2021-04-15 Do 23:06] \\
+       disable alpha for now - makes pop up help useless
      :END:
      #+begin_src emacs-lisp
        (set-frame-parameter (selected-frame) 'alpha '(95 . 50))
@@ -1085,7 +1148,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           :straight ( :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
           :demand
           :custom
-          (centaur-tabs-enable-key-bindings t)
           (centaur-tabs-enable-ido-completion nil)
           (centaur-tabs-set-bar 'under)
           (x-underline-at-descent-line t)

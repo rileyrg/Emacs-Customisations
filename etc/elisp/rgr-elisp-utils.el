@@ -45,7 +45,7 @@
   :demand t
   :init
   (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
-  (defcustom rgr/elisp-popup-help-enabled nil "If popup elisp help is timer enabled" :type 'boolean)
+  (defcustom rgr/elisp-popup-help-enabled t "If popup elisp help is timer enabled" :type 'boolean)
   (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
   :config
 
@@ -67,7 +67,7 @@
   (setq rgr/elisp-popup-timer
         (run-with-idle-timer
          rgr/elisp-popup-help-delay t
-         '(lambda()(th-show-help))))
+         '(lambda()(when(and rgr/elisp-popup-help-enabled (rgr/elisp-edit-mode))(th-show-help)))))
 
   :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
 

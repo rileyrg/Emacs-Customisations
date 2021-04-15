@@ -59,7 +59,6 @@
 (require 'rgr/utils "rgr-utils" 'NOERROR)
 
 (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
-(global-set-key (kbd "C-M-S-e") 'rgr/elisp-helpers-popup-help-enabled-toggle)
 
 (require 'rgr/daemon "rgr-daemon" 'NOERROR)
 

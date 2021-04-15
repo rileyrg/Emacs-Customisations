@@ -532,12 +532,6 @@ stehen ganz weit oben.
  '(tags-revert-without-query t)
  '(tags-table-list '("/home/rgr/Dropbox/homefiles/dot-config/emacs"))
  '(thesaurus-bhl-api-key "140ced1a60f9c434bb1dbc6831d2f6e9" t)
- '(tooltip-frame-parameters
-   '((name . "tooltip")
-     (internal-border-width . 2)
-     (border-width . 1)
-     (no-special-glyphs . t)
-     (alpha . 70)))
  '(twittering-connection-type-order '(wget curl urllib-http native urllib-https))
  '(twittering-mode-hook nil)
  '(twittering-status-format
@@ -579,6 +573,7 @@ stehen ganz weit oben.
  '(wg-session-file "~/.config/emacs/emacs_workgroups")
  '(whitespace-style '(tabs trailing lines-tail empty))
  '(windmove-wrap-around t)
+ '(xref-prompt-for-identifier nil)
  '(yank-pop-change-selection t)
  '(zone-programs [zone-matrix] t))
 
