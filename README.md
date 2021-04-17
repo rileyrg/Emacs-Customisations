@@ -201,38 +201,6 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     5.  popup elisp help
 
-        1.  tooltip-help
-
-                (use-package tooltip-help
-                  :demand t
-                  :init
-                  (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
-                  (defcustom rgr/elisp-popup-help-enabled t "If popup elisp help is timer enabled" :type 'boolean)
-                  (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
-                  :config
-
-                  ;; (defun describe-thing-in-popup ()
-                  ;;   (interactive)
-                  ;;   (let* ((thing (symbol-at-point))
-                  ;;          (description (with-temp-buffer
-                  ;;                         (describe-symbol thing)
-                  ;;                         (buffer-string))))
-                  ;;     (tooltip-show description)))
-
-                  (defun rgr/elisp-popup-help-toggle()
-                    (interactive)
-                    (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
-
-                  (when rgr/elisp-popup-timer
-                    (cancel-timer rgr/elisp-popup-timer))
-
-                  (setq rgr/elisp-popup-timer
-                        (run-with-idle-timer
-                         rgr/elisp-popup-help-delay t
-                         '(lambda()(when(and rgr/elisp-popup-help-enabled (rgr/elisp-edit-mode))(th-show-help)))))
-
-                  :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
-
     6.  Elisp debugging
 
             (use-package
@@ -433,35 +401,50 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
         (use-package consult
           ;; Replace bindings. Lazily loaded due by `use-package'.
-          :bind (("C-x M-:" . consult-complex-command)
+          :bind (;; C-c bindings (mode-specific-map)
                  ("C-c h" . consult-history)
-                 ;;               ("C-c m" . consult-mode-command)
-                 ("C-x b" . consult-buffer)
-                 ("C-x 4 b" . consult-buffer-other-window)
-                 ("C-x 5 b" . consult-buffer-other-frame)
-                 ("C-x r x" . consult-register)
-                 ("C-x r b" . consult-bookmark)
-                 ("M-g a" . consult-apropos)
-                 ("M-g g" . consult-goto-line)
-                 ("M-g M-g" . consult-goto-line)
-                 ("M-g o" . consult-outline)       ;; "M-s o" is a good alternative.
-                 ("M-g l" . consult-line)          ;; "M-s l" is a good alternative.
-                 ("M-g m" . consult-mark)          ;; I recommend to bind Consult navigation
-                 ("M-g k" . consult-global-mark)   ;; commands under the "M-g" prefix.
-                 ("M-g r" . consult-ripgrep)      ;; or consult-grep, consult-ripgrep
-                 ("M-g f" . consult-find)          ;; or consult-fdfind, consult-locate
-                 ("M-g i" . consult-project-imenu) ;; or consult-imenu
-                 ("M-g e" . consult-error)
-                 ("M-g s" . consult-grep)
+                 ("C-c m" . consult-mode-command)
+                 ("C-c b" . consult-bookmark)
+                 ("C-c k" . consult-kmacro)
+                 ;; C-x bindings (ctl-x-map)
+                 ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complet-command
+                 ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+                 ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+                 ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+                 ;; Custom M-# bindings for fast register access
+                 ("M-#" . consult-register-load)
+                 ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+                 ("C-M-#" . consult-register)
+                 ;; Other custom bindings
+                 ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+                 ("<help> a" . consult-apropos)            ;; orig. apropos-command
+                 ;; M-g bindings (goto-map)
+                 ("M-g e" . consult-compile-error)
+                 ("M-g g" . consult-goto-line)             ;; orig. goto-line
+                 ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+                 ("M-g o" . consult-outline)
+                 ("M-g m" . consult-mark)
+                 ("M-g k" . consult-global-mark)
+                 ("M-g i" . consult-imenu)
+                 ("M-g I" . consult-project-imenu)
+                 ;; M-s bindings (search-map)
+                 ("M-s f" . consult-find)
+                 ("M-s L" . consult-locate)
+                 ("M-s g" . consult-grep)
+                 ("M-s G" . consult-git-grep)
+                 ("M-s r" . consult-ripgrep)
+                 ("M-s l" . consult-line)
                  ("M-s m" . consult-multi-occur)
-                 ("M-y" . consult-yank-pop)
+                 ("M-s k" . consult-keep-lines)
+                 ("M-s u" . consult-focus-lines)
+                 ;; Isearch integration
+                 ("M-s e" . consult-isearch)
+                 :map isearch-mode-map
+                 ("M-e" . consult-isearch)                 ;; orig. isearch-edit-string
+                 ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
+                 ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
 
-                 ("<help> a" . consult-apropos)
-                 ;;("C-s" . consult-line)
-                 )
-
-          ;; The :init configuration is always executed (Not lazy!)
-
+          ;; The :init configuration is always executed (Not lazy)
           :init
 
           ;; Optionally configure the register formatting. This improves the register
@@ -477,16 +460,47 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; Use Consult to select xref locations with preview
           (setq xref-show-xrefs-function #'consult-xref
                 xref-show-definitions-function #'consult-xref)
-          ;; Configure other variables and modes in the :config section, after lazily loading the package
+
+          ;; Configure other variables and modes in the :config section,
+          ;; after lazily loading the package.
           :config
 
+          ;; Optionally configure preview. Note that the preview-key can also be
+          ;; configured on a per-command basis via `consult-config'. The default value
+          ;; is 'any, such that any key triggers the preview.
+          ;; (setq consult-preview-key 'any)
+          ;; (setq consult-preview-key (kbd "M-p"))
+          ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+
+          ;; Optionally configure the narrowing key.
+          ;; Both < and C-+ work reasonably well.
+          (setq consult-narrow-key "<") ;; (kbd "C-+")
+
+          ;; Optionally make narrowing help available in the minibuffer.
+          ;; Probably not needed if you are using which-key.
+          ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+
+          ;; Optionally configure a function which returns the project root directory.
+          ;; There are multiple reasonable alternatives to chose from:
+          ;; * projectile-project-root
+          ;; * vc-root-dir
+          ;; * project-roots
+          ;; * locate-dominating-file
           (autoload 'projectile-project-root "projectile")
           (setq consult-project-root-function #'projectile-project-root)
-          (setq consult-narrow-key "<") ;; (kbd "C-+")
-          ;; Optionally add the `consult-flycheck' command.
-          (use-package consult-flycheck
-            :bind (:map flycheck-command-map
-                        ("!" . consult-flycheck))))
+          ;; (setq consult-project-root-function
+          ;;       (lambda ()
+          ;;         (when-let (project (project-current))
+          ;;           (car (project-roots project)))))
+          ;; (setq consult-project-root-function #'vc-root-dir)
+          ;; (setq consult-project-root-function
+          ;;       (lambda () (locate-dominating-file "." ".git")))
+        )
+
+        ;; Optionally add the `consult-flycheck' command.
+        (use-package consult-flycheck
+          :bind (:map flycheck-command-map
+                      ("!" . consult-flycheck)))
 
 8.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
@@ -541,7 +555,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
         (provide 'rgr/minibuffer)
 
 
-## Completion
+## Completion     :completion:
 
 Let emacs suggest completions
 
@@ -558,31 +572,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
         (setq-default abbrev-mode 1)
 
-2.  Company Mode     :company:
-
-    [company-box](https://github.com/sebastiencs/company-box) provides nice linked help on the highlighted completions when available.
-
-    ![img](./images/company-box.png "company-box in action for php/lsp mode.")
-
-        (use-package
-          company
-          :init
-          (add-hook 'after-init-hook 'global-company-mode)
-          :custom
-          (company-backends
-           '((company-capf :with company-dabbrev company-yasnippet company-files company-ispell)))
-          :config
-          (use-package
-            company-box
-            :hook (company-mode . company-box-mode))
-          (require 'company-ispell)
-          (use-package company-prescient
-            :after company
-            :config
-            (company-prescient-mode +1))
-          :bind ("C-<tab>" . company-complete))
-
-3.  Snippets with yasnippet     :snippets:yasnippet:
+2.  Snippets with yasnippet     :snippets:yasnippet:
 
         (use-package
           yasnippet
@@ -596,7 +586,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           (use-package
             yasnippet-classic-snippets))
 
-4.  Which Key     :which:key:
+3.  Which Key     :which:key:
 
     [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
 
@@ -605,7 +595,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :demand t
           :config (which-key-mode))
 
-5.  Tying it all together
+4.  Tying it all together
 
         (defun check-expansion ()
           (save-excursion (if (looking-at "\\_>") t (backward-char 1)
@@ -627,7 +617,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
                   (yas/create-php-snippet)))))
         ;;              (indent-for-tab-command)))))
 
-6.  provide
+5.  provide
 
         (provide 'rgr/completion)
 

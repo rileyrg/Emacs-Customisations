@@ -41,36 +41,6 @@
     (cl-assert (eq (point) (point-min)))
     (read (current-buffer))))
 
-(use-package tooltip-help
-  :demand t
-  :init
-  (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
-  (defcustom rgr/elisp-popup-help-enabled t "If popup elisp help is timer enabled" :type 'boolean)
-  (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
-  :config
-
-  ;; (defun describe-thing-in-popup ()
-  ;;   (interactive)
-  ;;   (let* ((thing (symbol-at-point))
-  ;;          (description (with-temp-buffer
-  ;;                         (describe-symbol thing)
-  ;;                         (buffer-string))))
-  ;;     (tooltip-show description)))
-
-  (defun rgr/elisp-popup-help-toggle()
-    (interactive)
-    (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
-
-  (when rgr/elisp-popup-timer
-    (cancel-timer rgr/elisp-popup-timer))
-
-  (setq rgr/elisp-popup-timer
-        (run-with-idle-timer
-         rgr/elisp-popup-help-delay t
-         '(lambda()(when(and rgr/elisp-popup-help-enabled (rgr/elisp-edit-mode))(th-show-help)))))
-
-  :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
-
 (use-package
   edebug-x
   :demand t

@@ -286,11 +286,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
 
 
-****** WAITING eldoc overlay                                        :WAITING:
+****** CANCELLED eldoc overlay                                    :CANCELLED:
+       CLOSED: [2021-04-17 Sa 00:40]
        :PROPERTIES:
        :header-args:emacs-lisp: :tangle no
        :END:
        :LOGBOOK:
+       - State "CANCELLED"  from              [2021-04-17 Sa 00:40] \\
+         interferes with lsp
        - State "WAITING"    from              [2021-04-15 Do 00:10]
        :END:
        #+begin_src emacs-lisp
@@ -298,8 +301,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
            :init
            (global-eldoc-overlay-mode +1))
        #+end_src
-****** tooltip-help
+****** CANCELLED tooltip-help                                     :CANCELLED:
+       CLOSED: [2021-04-16 Fr 23:39]
+       :PROPERTIES:
+       :header-args:emacs-lisp: :tangle no
+       :END:
        :LOGBOOK:
+       - State "CANCELLED"  from              [2021-04-16 Fr 23:39] \\
+         unsupported functions
        - State "WAITING"    from              [2021-04-14 Mi 23:40] \\
          wait on clippy
        :END:
@@ -334,11 +343,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
            :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
        #+end_src
-****** WAITING clippy                                               :WAITING:
+****** CANCELLED clippy                                           :CANCELLED:
+       CLOSED: [2021-04-16 Fr 23:39]
        :PROPERTIES:
        :header-args:emacs-lisp: :tangle no
        :END:
        :LOGBOOK:
+       - State "CANCELLED"  from "WAITING"    [2021-04-16 Fr 23:39] \\
+         too ugly
        - State "WAITING"    from              [2021-04-15 Do 00:10]
        :END:
        #+begin_src emacs-lisp
@@ -631,35 +643,50 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (use-package consult
          ;; Replace bindings. Lazily loaded due by `use-package'.
-         :bind (("C-x M-:" . consult-complex-command)
+         :bind (;; C-c bindings (mode-specific-map)
                 ("C-c h" . consult-history)
-                ;;               ("C-c m" . consult-mode-command)
-                ("C-x b" . consult-buffer)
-                ("C-x 4 b" . consult-buffer-other-window)
-                ("C-x 5 b" . consult-buffer-other-frame)
-                ("C-x r x" . consult-register)
-                ("C-x r b" . consult-bookmark)
-                ("M-g a" . consult-apropos)
-                ("M-g g" . consult-goto-line)
-                ("M-g M-g" . consult-goto-line)
-                ("M-g o" . consult-outline)       ;; "M-s o" is a good alternative.
-                ("M-g l" . consult-line)          ;; "M-s l" is a good alternative.
-                ("M-g m" . consult-mark)          ;; I recommend to bind Consult navigation
-                ("M-g k" . consult-global-mark)   ;; commands under the "M-g" prefix.
-                ("M-g r" . consult-ripgrep)      ;; or consult-grep, consult-ripgrep
-                ("M-g f" . consult-find)          ;; or consult-fdfind, consult-locate
-                ("M-g i" . consult-project-imenu) ;; or consult-imenu
-                ("M-g e" . consult-error)
-                ("M-g s" . consult-grep)
+                ("C-c m" . consult-mode-command)
+                ("C-c b" . consult-bookmark)
+                ("C-c k" . consult-kmacro)
+                ;; C-x bindings (ctl-x-map)
+                ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complet-command
+                ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+                ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+                ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+                ;; Custom M-# bindings for fast register access
+                ("M-#" . consult-register-load)
+                ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+                ("C-M-#" . consult-register)
+                ;; Other custom bindings
+                ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+                ("<help> a" . consult-apropos)            ;; orig. apropos-command
+                ;; M-g bindings (goto-map)
+                ("M-g e" . consult-compile-error)
+                ("M-g g" . consult-goto-line)             ;; orig. goto-line
+                ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+                ("M-g o" . consult-outline)
+                ("M-g m" . consult-mark)
+                ("M-g k" . consult-global-mark)
+                ("M-g i" . consult-imenu)
+                ("M-g I" . consult-project-imenu)
+                ;; M-s bindings (search-map)
+                ("M-s f" . consult-find)
+                ("M-s L" . consult-locate)
+                ("M-s g" . consult-grep)
+                ("M-s G" . consult-git-grep)
+                ("M-s r" . consult-ripgrep)
+                ("M-s l" . consult-line)
                 ("M-s m" . consult-multi-occur)
-                ("M-y" . consult-yank-pop)
+                ("M-s k" . consult-keep-lines)
+                ("M-s u" . consult-focus-lines)
+                ;; Isearch integration
+                ("M-s e" . consult-isearch)
+                :map isearch-mode-map
+                ("M-e" . consult-isearch)                 ;; orig. isearch-edit-string
+                ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
+                ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
 
-                ("<help> a" . consult-apropos)
-                ;;("C-s" . consult-line)
-                )
-
-         ;; The :init configuration is always executed (Not lazy!)
-
+         ;; The :init configuration is always executed (Not lazy)
          :init
 
          ;; Optionally configure the register formatting. This improves the register
@@ -675,16 +702,47 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          ;; Use Consult to select xref locations with preview
          (setq xref-show-xrefs-function #'consult-xref
                xref-show-definitions-function #'consult-xref)
-         ;; Configure other variables and modes in the :config section, after lazily loading the package
+
+         ;; Configure other variables and modes in the :config section,
+         ;; after lazily loading the package.
          :config
 
+         ;; Optionally configure preview. Note that the preview-key can also be
+         ;; configured on a per-command basis via `consult-config'. The default value
+         ;; is 'any, such that any key triggers the preview.
+         ;; (setq consult-preview-key 'any)
+         ;; (setq consult-preview-key (kbd "M-p"))
+         ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+
+         ;; Optionally configure the narrowing key.
+         ;; Both < and C-+ work reasonably well.
+         (setq consult-narrow-key "<") ;; (kbd "C-+")
+
+         ;; Optionally make narrowing help available in the minibuffer.
+         ;; Probably not needed if you are using which-key.
+         ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+
+         ;; Optionally configure a function which returns the project root directory.
+         ;; There are multiple reasonable alternatives to chose from:
+         ;; * projectile-project-root
+         ;; * vc-root-dir
+         ;; * project-roots
+         ;; * locate-dominating-file
          (autoload 'projectile-project-root "projectile")
          (setq consult-project-root-function #'projectile-project-root)
-         (setq consult-narrow-key "<") ;; (kbd "C-+")
-         ;; Optionally add the `consult-flycheck' command.
-         (use-package consult-flycheck
-           :bind (:map flycheck-command-map
-                       ("!" . consult-flycheck))))
+         ;; (setq consult-project-root-function
+         ;;       (lambda ()
+         ;;         (when-let (project (project-current))
+         ;;           (car (project-roots project)))))
+         ;; (setq consult-project-root-function #'vc-root-dir)
+         ;; (setq consult-project-root-function
+         ;;       (lambda () (locate-dominating-file "." ".git")))
+       )
+
+       ;; Optionally add the `consult-flycheck' command.
+       (use-package consult-flycheck
+         :bind (:map flycheck-command-map
+                     ("!" . consult-flycheck)))
      #+end_src
 **** [[https://github.com/oantolin/embark][Embark]] Emacs Mini-Buffer Actions Rooted in Keymaps
      :PROPERTIES:
@@ -750,7 +808,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (provide 'rgr/minibuffer)
      #+end_src
 
-** Completion
+** Completion                                                    :completion:
    :PROPERTIES:
    :END:
    Let emacs suggest completions
@@ -773,8 +831,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (setq-default abbrev-mode 1)
      #+end_src
-**** Company Mode                                                   :company:
+**** WAITING Company Mode                                   :company:WAITING:
      :PROPERTIES:
+     :header-args:emacs-lisp: :tangle no
+     :END:
+     :LOGBOOK:
+     - State "WAITING"    from              [2021-04-18 So 00:33] \\
+       see if corfu is any good
      :END:
      [[https://github.com/sebastiencs/company-box][company-box]] provides nice linked help on the highlighted completions when available.
 
@@ -798,6 +861,42 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
            :config
            (company-prescient-mode +1))
          :bind ("C-<tab>" . company-complete))
+     #+end_src
+**** STARTED Corfu completion                                         :corfu:
+     :LOGBOOK:
+     - State "STARTED"    from "WAITING"    [2021-04-18 So 00:33]
+     - State "WAITING"    from              [2021-04-18 So 00:28] \\
+       need to sort out a recipe
+     :END:
+     #+begin_src emacs-lisp
+       ;; Configure corfu
+       (use-package corfu
+         :straight (corfu :type git :host github :repo "minad/corfu")
+         ;; Optionally use TAB for cycling, default is `corfu-complete'.
+         ;; :bind (:map corfu-map
+         ;;        ("TAB" . corfu-next)
+         ;;        ("S-TAB" . corfu-previous))
+
+         ;; Enable the overlay only for certain modes.
+         ;; For example it is not a useful UI for completions at point in the
+         ;; minibuffer.
+         :hook ((prog-mode . corfu-mode)
+                (eshell-mode . corfu-mode))
+
+         :config
+
+         ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
+         ;; (setq corfu-cycle t)
+         )
+       ;; A few more useful configurations...
+       (use-package emacs
+         :init
+         ;; TAB cycle if there are only few candidates
+         (setq completion-cycle-threshold 3)
+
+         ;; Enable indentation+completion using the TAB key.
+         ;; Completion is often bound to M-TAB.
+         (setq tab-always-indent 'complete))
      #+end_src
 **** Snippets with yasnippet                             :snippets:yasnippet:
      :PROPERTIES:
