@@ -1,3 +1,8 @@
+(use-package
+  which-key
+  :demand t
+  :config (which-key-mode))
+
 (setq-default abbrev-mode 1)
 
 ;; Configure corfu
@@ -28,42 +33,5 @@
   ;; Enable indentation+completion using the TAB key.
   ;; Completion is often bound to M-TAB.
   (setq tab-always-indent 'complete))
-
-(use-package
-  yasnippet
-  :init (yas-global-mode 1)
-  :config
-  (require 'company-yasnippet)
-  (use-package
-    el-autoyas)
-  (use-package
-    yasnippet-snippets)
-  (use-package
-    yasnippet-classic-snippets))
-
-(use-package
-  which-key
-  :demand t
-  :config (which-key-mode))
-
-(defun check-expansion ()
-  (save-excursion (if (looking-at "\\_>") t (backward-char 1)
-                      (if (looking-at "\\.") t (backward-char 1)
-                          (if (looking-at "->") t nil)))))
-
-(defun do-yas-expand ()
-  (let ((yas-fallback-behavior 'return-nil))
-    (yas-expand)))
-
-(defun tab-indent-or-complete ()
-  (interactive)
-  (if (minibufferp)
-      (minibuffer-complete)
-    (if (or (not yas-minor-mode)
-            (null (do-yas-expand)))
-        (if (check-expansion)
-            (company-complete-common)
-          (yas/create-php-snippet)))))
-;;              (indent-for-tab-command)))))
 
 (provide 'rgr/completion)

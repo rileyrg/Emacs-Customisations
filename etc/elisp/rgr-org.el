@@ -3,9 +3,12 @@
 (use-package org
   :demand t
   :custom
+  (org-fontify-done-headline t)
+  (org-fontify-todo-headline t)
   (org-babel-default-header-args:python
    '((:results  . "output")))
   :config
+  (set-face-attribute 'org-headline-done nil :strike-through t)
   (defun rgr/org-agenda (&optional arg)
     (interactive "P")
     (let ((org-agenda-tag-filter-preset '("-trash")))

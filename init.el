@@ -1,5 +1,6 @@
 (defvar bootstrap-version)
 (setq straight-base-dir (expand-file-name "etc" user-emacs-directory))
+(setq straight-check-for-modifications '(check-on-save find-when-checking))
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
       (bootstrap-version 5))
@@ -121,14 +122,10 @@
     (flyspell-goto-next-error)
     (ispell-word)
     )
-  (defun force-complete-ispell()
-    (interactive)
-    (let ((company-backends '(company-ispell)))
-      (company-complete)))
 
   :bind (("C-<f8>" . flyspell-mode)
          ("C-S-<f8>" . flyspell-buffer)
-         ("M-<f8>" . force-complete-ispell)
+         ("M-<f8>" . flyspell-word)
          ("<f8>" . flyspell-check-next-highlighted-word)
          ("S-<f8>" . flyspell-check-previous-highlighted-word)
          ))
@@ -268,6 +265,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
         '(
           "\\*Messages\\*"
           magit-mode
+          help-mode
           helpful-mode
           inferior-python-mode
           dictionary-mode
@@ -275,8 +273,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (popper-mode +1)
   (defun rgr/popper-display-posframe(buf &optional o)
     (save-excursion
-      (let* ((db (generate-new-buffer pfb)))
+      (let* ((db (get-buffer-create pfb)))
         (with-current-buffer db
+          (erase-buffer)
           (insert-buffer buf)
           )
         (posframe-show db
@@ -288,7 +287,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
                        :height (/ (* (frame-height) 2) 3)
                        :poshandler 'posframe-poshandler-frame-center
                        :position t
-                       ))))
+                       )db)))
   :bind (("C-`"   . popper-toggle-latest)
          ("M-`"   . popper-cycle)
          ("C-M-`" . popper-toggle-type)))

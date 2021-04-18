@@ -5,6 +5,7 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/)  using 
 
     (defvar bootstrap-version)
     (setq straight-base-dir (expand-file-name "etc" user-emacs-directory))
+    (setq straight-check-for-modifications '(check-on-save find-when-checking))
     (let ((bootstrap-file
            (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
           (bootstrap-version 5))
@@ -201,7 +202,65 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     5.  popup elisp help
 
-    6.  Elisp debugging
+    6.  eldoc context help     :eldoc:
+
+        based on my own stuff, modified by phils <https://www.emacswiki.org/emacs/ElDoc#h5o-8>
+
+            (define-minor-mode rgr/contextual-help-mode
+              "Show help for the elisp symbol at point in the current *Help* buffer.
+
+            Advises `eldoc-print-current-symbol-info'."
+              :lighter " eldoc-ctx"
+              :global t
+              (require 'help-fns)
+              (when (eq this-command 'rgr/contextual-help-mode)
+                (message "Contextual help is %s" (if rgr/contextual-help-mode "on" "off")))
+              (when rgr/contextual-help-mode
+                (eldoc-mode 1)
+                (rgr/contextual-help :force)))
+
+            (defadvice eldoc-print-current-symbol-info (before rgr/contextual-help activate)
+              "Triggers contextual elisp *Help*. Enabled by `rgr/contextual-help-mode'."
+              (and rgr/contextual-help-mode t
+                   ;;(derived-mode-p 'emacs-lisp-mode)
+                   (rgr/contextual-help)))
+
+            (defvar-local rgr/contextual-help-last-symbol nil
+              ;; Using a buffer-local variable for this means that we can't
+              ;; trigger changes to the help buffer simply by switching windows,
+              ;; which seems generally preferable to the alternative.
+              "The last symbol processed by `rgr/contextual-help' in this buffer.")
+
+            (defun rgr/help-visible-p ()
+               (or (get-buffer-window (help-buffer)) (seq-some (lambda (buf) (and (get-buffer-window buf 0) (eq (buffer-local-value 'major-mode buf) 'helpful-mode) buf)) (buffer-list))))
+
+            (defun rgr/contextual-help (&optional force)
+              "Describe function, variable, or face at point"
+
+              (let ((help-visible-p (or force (rgr/help-visible-p)))
+                    (sym (symbol-at-point)))
+                ;; We ignore keyword symbols, as their help is redundant.
+                ;; If something else changes the help buffer contents, ensure we
+                ;; don't immediately revert back to the current symbol's help.
+                (when (and sym help-visible-p)
+                  (and (not (eq sym rgr/contextual-help-last-symbol))
+                       (not (keywordp sym))
+                       (setq rgr/contextual-help-last-symbol sym)
+                       (save-selected-window
+                         (if (fboundp 'helpful-symbol)
+                               (helpful-symbol sym)
+                           (describe-symbol sym)))))))
+
+            (defun rgr/contextual-help-toggle ()
+              "Intelligently enable or disable `rgr/contextual-help-mode'."
+              (interactive)
+              (rgr/contextual-help-mode 'toggle))
+
+            (rgr/contextual-help-mode +1)
+
+            (global-set-key (kbd "M-<f1>") #'rgr/contextual-help-toggle)
+
+    7.  Elisp debugging
 
             (use-package
               edebug-x
@@ -217,7 +276,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                 (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
               )
 
-    7.  Auto-compile
+    8.  Auto-compile
 
             (use-package
               auto-compile
@@ -229,7 +288,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
             ;; (when (memq window-system '(mac ns x))
             ;;   (exec-path-from-shell-initialize))
 
-    8.  Formatting
+    9.  Formatting
 
             (use-package
               elisp-format
@@ -237,7 +296,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               (:map emacs-lisp-mode-map
                     ("C-c f" . elisp-format-region)))
 
-    9.  popup query symbol
+    10. popup query symbol
 
             (use-package popup
               :config
@@ -250,7 +309,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               :bind
               (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 
-    10. provide
+    11. provide
 
             (provide 'rgr/elisp-utils)
 
@@ -495,7 +554,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; (setq consult-project-root-function #'vc-root-dir)
           ;; (setq consult-project-root-function
           ;;       (lambda () (locate-dominating-file "." ".git")))
-        )
+          )
 
         ;; Optionally add the `consult-flycheck' command.
         (use-package consult-flycheck
@@ -566,27 +625,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 ### library
 
-1.  Abbrev Mode
-
-    [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
-
-        (setq-default abbrev-mode 1)
-
-2.  Snippets with yasnippet     :snippets:yasnippet:
-
-        (use-package
-          yasnippet
-          :init (yas-global-mode 1)
-          :config
-          (require 'company-yasnippet)
-          (use-package
-            el-autoyas)
-          (use-package
-            yasnippet-snippets)
-          (use-package
-            yasnippet-classic-snippets))
-
-3.  Which Key     :which:key:
+1.  Which Key     :which:key:
 
     [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
 
@@ -595,29 +634,13 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :demand t
           :config (which-key-mode))
 
-4.  Tying it all together
+2.  Abbrev Mode
 
-        (defun check-expansion ()
-          (save-excursion (if (looking-at "\\_>") t (backward-char 1)
-                              (if (looking-at "\\.") t (backward-char 1)
-                                  (if (looking-at "->") t nil)))))
+    [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
 
-        (defun do-yas-expand ()
-          (let ((yas-fallback-behavior 'return-nil))
-            (yas-expand)))
+        (setq-default abbrev-mode 1)
 
-        (defun tab-indent-or-complete ()
-          (interactive)
-          (if (minibufferp)
-              (minibuffer-complete)
-            (if (or (not yas-minor-mode)
-                    (null (do-yas-expand)))
-                (if (check-expansion)
-                    (company-complete-common)
-                  (yas/create-php-snippet)))))
-        ;;              (indent-for-tab-command)))))
-
-5.  provide
+3.  provide
 
         (provide 'rgr/completion)
 
@@ -949,9 +972,12 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
         (use-package org
           :demand t
           :custom
+          (org-fontify-done-headline t)
+          (org-fontify-todo-headline t)
           (org-babel-default-header-args:python
            '((:results  . "output")))
           :config
+          (set-face-attribute 'org-headline-done nil :strike-through t)
           (defun rgr/org-agenda (&optional arg)
             (interactive "P")
             (let ((org-agenda-tag-filter-preset '("-trash")))
@@ -1074,14 +1100,10 @@ maintain a file pointing to agenda sources
         (flyspell-goto-next-error)
         (ispell-word)
         )
-      (defun force-complete-ispell()
-        (interactive)
-        (let ((company-backends '(company-ispell)))
-          (company-complete)))
 
       :bind (("C-<f8>" . flyspell-mode)
              ("C-S-<f8>" . flyspell-buffer)
-             ("M-<f8>" . force-complete-ispell)
+             ("M-<f8>" . flyspell-word)
              ("<f8>" . flyspell-check-next-highlighted-word)
              ("S-<f8>" . flyspell-check-previous-highlighted-word)
              ))
@@ -1833,6 +1855,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
                 '(
                   "\\*Messages\\*"
                   magit-mode
+                  help-mode
                   helpful-mode
                   inferior-python-mode
                   dictionary-mode
@@ -1840,8 +1863,9 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
           (popper-mode +1)
           (defun rgr/popper-display-posframe(buf &optional o)
             (save-excursion
-              (let* ((db (generate-new-buffer pfb)))
+              (let* ((db (get-buffer-create pfb)))
                 (with-current-buffer db
+                  (erase-buffer)
                   (insert-buffer buf)
                   )
                 (posframe-show db
@@ -1853,7 +1877,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
                                :height (/ (* (frame-height) 2) 3)
                                :poshandler 'posframe-poshandler-frame-center
                                :position t
-                               ))))
+                               )db)))
           :bind (("C-`"   . popper-toggle-latest)
                  ("M-`"   . popper-cycle)
                  ("C-M-`" . popper-toggle-type)))
