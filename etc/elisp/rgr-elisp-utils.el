@@ -41,59 +41,75 @@
     (cl-assert (eq (point) (point-min)))
     (read (current-buffer))))
 
-(define-minor-mode rgr/contextual-help-mode
-  "Show help for the elisp symbol at point in the current *Help* buffer.
+(use-package eldoc-box)
 
-Advises `eldoc-print-current-symbol-info'."
-  :lighter " eldoc-ctx"
-  :global t
-  (require 'help-fns)
-  (when (eq this-command 'rgr/contextual-help-mode)
-    (message "Contextual help is %s" (if rgr/contextual-help-mode "on" "off")))
-  (when rgr/contextual-help-mode
-    (eldoc-mode 1)
-    (rgr/contextual-help :force)))
+(use-package emacs
+  :init
+  (defcustom rgr/elisp-context--delay 2.5 "How long to delay before context display" :type 'float)
+  (defcustom rgr/elisp-context--display-func 'rgr/elisp-context--display-posframe "The function called by `rgr/elisp-context-mode' timer `rgr/elisp-context-timer-func'." :type 'function)
+  (defcustom rgr/elisp-context--posframe-buffer "*rgr/elisp-context**" "Buffer name for posframe elisp context help")
+  (defvar rgr/elisp-context--timer nil  "Store the `rgr/elisp-context-mode' timer")
 
-(defadvice eldoc-print-current-symbol-info (before rgr/contextual-help activate)
-  "Triggers contextual elisp *Help*. Enabled by `rgr/contextual-help-mode'."
-  (and rgr/contextual-help-mode t
-       ;;(derived-mode-p 'emacs-lisp-mode)
-       (rgr/contextual-help)))
+  :config
+  (use-package posframe)
 
-(defvar-local rgr/contextual-help-last-symbol nil
-  ;; Using a buffer-local variable for this means that we can't
-  ;; trigger changes to the help buffer simply by switching windows,
-  ;; which seems generally preferable to the alternative.
-  "The last symbol processed by `rgr/contextual-help' in this buffer.")
+  (defun rgr/elisp-context--hide()
+    "Hide the `rgr/elisp-context--posframe-buffer'"
+    (posframe-hide rgr/elisp-context--posframe-buffer))
 
-(defun rgr/help-visible-p ()
-   (or (get-buffer-window (help-buffer)) (seq-some (lambda (buf) (and (get-buffer-window buf 0) (eq (buffer-local-value 'major-mode buf) 'helpful-mode) buf)) (buffer-list))))
+  (defun rgr/elisp-context--docstring(sym)
+    "Return the docstring attached to the symbol SYM"
+    (if (or (fboundp sym) (boundp sym))
+        (let ((help-xref-following t))
+          (save-window-excursion
+            (with-temp-buffer
+              (help-mode)
+              (describe-symbol sym)
+              (buffer-string))))
+      nil))
 
-(defun rgr/contextual-help (&optional force)
-  "Describe function, variable, or face at point"
+  (defun rgr/elisp-context--display-posframe()
+    "Show the docstring for the symbol at point in a posframe"
+    (interactive)
+    (let*((p (point))
+          (sym (symbol-at-point))
+          (docstring (if sym (rgr/elisp-context--docstring sym) nil)))
+      (if docstring
+          (posframe-show rgr/elisp-context--posframe-buffer
+                         :string docstring
+                         :left-fringe 8
+                         :right-fringe 8
+                         :internal-border-width 4
+                         :internal-border-color "gray"
+                         :border-width 1
+                         :border-color "orange"
+                         :position p
+                         )
+        (rgr/elisp-context--hide))))
 
-  (let ((help-visible-p (or force (rgr/help-visible-p)))
-        (sym (symbol-at-point)))
-    ;; We ignore keyword symbols, as their help is redundant.
-    ;; If something else changes the help buffer contents, ensure we
-    ;; don't immediately revert back to the current symbol's help.
-    (when (and sym help-visible-p)
-      (and (not (eq sym rgr/contextual-help-last-symbol))
-           (not (keywordp sym))
-           (setq rgr/contextual-help-last-symbol sym)
-           (save-selected-window
-             (if (fboundp 'helpful-symbol)
-                   (helpful-symbol sym)
-               (describe-symbol sym)))))))
+  (defun rgr/elisp-context--timer-func()
+    "function called every `rgr/elisp-context--delay' seconds when `rgr/elisp-context-mode is non-nil.
+It calls out to `rgr/elisp-context--display-func'."
+    (when rgr/elisp-context-mode
+      (funcall rgr/elisp-context--display-func)))
 
-(defun rgr/contextual-help-toggle ()
-  "Intelligently enable or disable `rgr/contextual-help-mode'."
-  (interactive)
-  (rgr/contextual-help-mode 'toggle))
+  (define-minor-mode rgr/elisp-context-mode
+    "minor-mode to popup help for the elisp symbol at point."
+    nil
+    :lighter " elisp-context"
+    (unless rgr/elisp-context--timer
+      (add-hook 'post-command-hook 'rgr/elisp-context--hide)
+      (setq  rgr/elisp-context--timer
+             (run-with-idle-timer
+              rgr/elisp-context--delay t
+              'rgr/elisp-context--timer-func))))
 
-(rgr/contextual-help-mode +1)
+  :hook
+  (emacs-lisp-mode . (lambda()(rgr/elisp-context-mode +1)))
 
-(global-set-key (kbd "M-<f1>") #'rgr/contextual-help-toggle)
+  :bind
+  ("M-<f2>" . (lambda()(interactive)(rgr/elisp-context--posframe-display)))
+  ("M-<f1>" . (lambda()(interactive)(rgr/elisp-context-mode 'toggle))))
 
 (use-package
   edebug-x

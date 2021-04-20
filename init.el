@@ -258,36 +258,19 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package popper
   :ensure t
   :init
-  (defvar pfb "*posframe buffer*")
+  (use-package posframe)
   ;;(setq popper-display-function 'rgr/popper-display-posframe)
   ;; (setq popper-group-function #'popper-group-by-projectile)
   (setq popper-reference-buffers
         '(
           "\\*Messages\\*"
           magit-mode
-          help-mode
+    ;;      help-mode
           helpful-mode
           inferior-python-mode
           dictionary-mode
           compilation-mode))
   (popper-mode +1)
-  (defun rgr/popper-display-posframe(buf &optional o)
-    (save-excursion
-      (let* ((db (get-buffer-create pfb)))
-        (with-current-buffer db
-          (erase-buffer)
-          (insert-buffer buf)
-          )
-        (posframe-show db
-                       :internal-border-width 2
-                       :internal-border-color "Orange"
-                       :border-width 3
-                       :border-color "IndianRed"
-                       :width (/ (* (frame-width) 2) 3)
-                       :height (/ (* (frame-height) 2) 3)
-                       :poshandler 'posframe-poshandler-frame-center
-                       :position t
-                       )db)))
   :bind (("C-`"   . popper-toggle-latest)
          ("M-`"   . popper-cycle)
          ("C-M-`" . popper-toggle-type)))

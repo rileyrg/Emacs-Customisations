@@ -286,7 +286,15 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :ID:       b63bf2e5-4106-401a-a66c-7b7967d0d89e
       :END:
 
-
+****** CANCELLED eldoc-box                                        :CANCELLED:
+       CLOSED: [2021-04-20 Di 07:27]
+       :LOGBOOK:
+       - State "CANCELLED"  from              [2021-04-20 Di 07:27] \\
+         doesn't work at all
+       :END:
+       #+begin_src emacs-lisp
+         (use-package eldoc-box)
+       #+end_src
 ****** CANCELLED eldoc overlay                                    :CANCELLED:
        CLOSED: [2021-04-17 Sa 00:40]
        :PROPERTIES:
@@ -303,11 +311,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
            (global-eldoc-overlay-mode +1))
        #+end_src
 ****** CANCELLED tooltip-help                                     :CANCELLED:
-       CLOSED: [2021-04-16 Fr 23:39]
+       CLOSED: [2021-04-20 Di 08:09]
        :PROPERTIES:
        :header-args:emacs-lisp: :tangle no
        :END:
        :LOGBOOK:
+       - State "CANCELLED"  from "STARTED"    [2021-04-20 Di 08:09] \\
+         use in rgr/context minor mode stuff
+       - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 07:29]
        - State "CANCELLED"  from              [2021-04-16 Fr 23:39] \\
          unsupported functions
        - State "WAITING"    from              [2021-04-14 Mi 23:40] \\
@@ -318,7 +329,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
            :demand t
            :init
            (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
-           (defcustom rgr/elisp-popup-help-enabled t "If popup elisp help is timer enabled" :type 'boolean)
+           (defcustom rgr/elisp-popup-help-enabled nil "Non-nil means popup " :type 'boolean)
            (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
            :config
 
@@ -388,65 +399,82 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
            :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
        #+end_src
 
-***** eldoc context help                                              :eldoc:
-      based on my own stuff, modified by phils https://www.emacswiki.org/emacs/ElDoc#h5o-8
+****** elisp context help                                             :elisp:
+       :LOGBOOK:
+       - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
+       - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
+       eldoc-box does this
+       :END:
+       Provide a minor mode that calls a display function for elisp context help. need to change it to be more generic.
+       #+begin_src emacs-lisp
+         (use-package emacs
+           :init
+           (defcustom rgr/elisp-context--delay 2.5 "How long to delay before context display" :type 'float)
+           (defcustom rgr/elisp-context--display-func 'rgr/elisp-context--display-posframe "The function called by `rgr/elisp-context-mode' timer `rgr/elisp-context-timer-func'." :type 'function)
+           (defcustom rgr/elisp-context--posframe-buffer "*rgr/elisp-context**" "Buffer name for posframe elisp context help")
+           (defvar rgr/elisp-context--timer nil  "Store the `rgr/elisp-context-mode' timer")
 
-      #+begin_src emacs-lisp
-        (define-minor-mode rgr/contextual-help-mode
-          "Show help for the elisp symbol at point in the current *Help* buffer.
+           :config
+           (use-package posframe)
 
-        Advises `eldoc-print-current-symbol-info'."
-          :lighter " eldoc-ctx"
-          :global t
-          (require 'help-fns)
-          (when (eq this-command 'rgr/contextual-help-mode)
-            (message "Contextual help is %s" (if rgr/contextual-help-mode "on" "off")))
-          (when rgr/contextual-help-mode
-            (eldoc-mode 1)
-            (rgr/contextual-help :force)))
+           (defun rgr/elisp-context--hide()
+             "Hide the `rgr/elisp-context--posframe-buffer'"
+             (posframe-hide rgr/elisp-context--posframe-buffer))
 
-        (defadvice eldoc-print-current-symbol-info (before rgr/contextual-help activate)
-          "Triggers contextual elisp *Help*. Enabled by `rgr/contextual-help-mode'."
-          (and rgr/contextual-help-mode t
-               ;;(derived-mode-p 'emacs-lisp-mode)
-               (rgr/contextual-help)))
+           (defun rgr/elisp-context--docstring(sym)
+             "Return the docstring attached to the symbol SYM"
+             (if (or (fboundp sym) (boundp sym))
+                 (let ((help-xref-following t))
+                   (save-window-excursion
+                     (with-temp-buffer
+                       (help-mode)
+                       (describe-symbol sym)
+                       (buffer-string))))
+               nil))
 
-        (defvar-local rgr/contextual-help-last-symbol nil
-          ;; Using a buffer-local variable for this means that we can't
-          ;; trigger changes to the help buffer simply by switching windows,
-          ;; which seems generally preferable to the alternative.
-          "The last symbol processed by `rgr/contextual-help' in this buffer.")
+           (defun rgr/elisp-context--display-posframe()
+             "Show the docstring for the symbol at point in a posframe"
+             (interactive)
+             (let*((p (point))
+                   (sym (symbol-at-point))
+                   (docstring (if sym (rgr/elisp-context--docstring sym) nil)))
+               (if docstring
+                   (posframe-show rgr/elisp-context--posframe-buffer
+                                  :string docstring
+                                  :left-fringe 8
+                                  :right-fringe 8
+                                  :internal-border-width 4
+                                  :internal-border-color "gray"
+                                  :border-width 1
+                                  :border-color "orange"
+                                  :position p
+                                  )
+                 (rgr/elisp-context--hide))))
 
-        (defun rgr/help-visible-p ()
-           (or (get-buffer-window (help-buffer)) (seq-some (lambda (buf) (and (get-buffer-window buf 0) (eq (buffer-local-value 'major-mode buf) 'helpful-mode) buf)) (buffer-list))))
+           (defun rgr/elisp-context--timer-func()
+             "function called every `rgr/elisp-context--delay' seconds when `rgr/elisp-context-mode is non-nil.
+         It calls out to `rgr/elisp-context--display-func'."
+             (when rgr/elisp-context-mode
+               (funcall rgr/elisp-context--display-func)))
 
-        (defun rgr/contextual-help (&optional force)
-          "Describe function, variable, or face at point"
+           (define-minor-mode rgr/elisp-context-mode
+             "minor-mode to popup help for the elisp symbol at point."
+             nil
+             :lighter " elisp-context"
+             (unless rgr/elisp-context--timer
+               (add-hook 'post-command-hook 'rgr/elisp-context--hide)
+               (setq  rgr/elisp-context--timer
+                      (run-with-idle-timer
+                       rgr/elisp-context--delay t
+                       'rgr/elisp-context--timer-func))))
 
-          (let ((help-visible-p (or force (rgr/help-visible-p)))
-                (sym (symbol-at-point)))
-            ;; We ignore keyword symbols, as their help is redundant.
-            ;; If something else changes the help buffer contents, ensure we
-            ;; don't immediately revert back to the current symbol's help.
-            (when (and sym help-visible-p)
-              (and (not (eq sym rgr/contextual-help-last-symbol))
-                   (not (keywordp sym))
-                   (setq rgr/contextual-help-last-symbol sym)
-                   (save-selected-window
-                     (if (fboundp 'helpful-symbol)
-                           (helpful-symbol sym)
-                       (describe-symbol sym)))))))
+           :hook
+           (emacs-lisp-mode . (lambda()(rgr/elisp-context-mode +1)))
 
-        (defun rgr/contextual-help-toggle ()
-          "Intelligently enable or disable `rgr/contextual-help-mode'."
-          (interactive)
-          (rgr/contextual-help-mode 'toggle))
-
-        (rgr/contextual-help-mode +1)
-
-        (global-set-key (kbd "M-<f1>") #'rgr/contextual-help-toggle)
-
-      #+end_src
+           :bind
+           ("M-<f2>" . (lambda()(interactive)(rgr/elisp-context--posframe-display)))
+           ("M-<f1>" . (lambda()(interactive)(rgr/elisp-context-mode 'toggle))))
+       #+end_src
 ***** Elisp debugging
       :PROPERTIES:
       :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
@@ -1115,7 +1143,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         (menu-bar-mode -1)
         (show-paren-mode 1)
         (winner-mode 1)
-        (tooltip-mode 1)
 
         (global-auto-revert-mode)
         ;; Also auto refresh dired, but be quiet about it
@@ -1265,7 +1292,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
       #+begin_src emacs-lisp
         (use-package centaur-tabs
-          :straight ( :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
+          :straight ( :local-repo "~/development/projects/emacs/centur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
           :demand
           :custom
           (centaur-tabs-enable-ido-completion nil)
@@ -2421,36 +2448,19 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (use-package popper
          :ensure t
          :init
-         (defvar pfb "*posframe buffer*")
+         (use-package posframe)
          ;;(setq popper-display-function 'rgr/popper-display-posframe)
          ;; (setq popper-group-function #'popper-group-by-projectile)
          (setq popper-reference-buffers
                '(
                  "\\*Messages\\*"
                  magit-mode
-                 help-mode
+           ;;      help-mode
                  helpful-mode
                  inferior-python-mode
                  dictionary-mode
                  compilation-mode))
          (popper-mode +1)
-         (defun rgr/popper-display-posframe(buf &optional o)
-           (save-excursion
-             (let* ((db (get-buffer-create pfb)))
-               (with-current-buffer db
-                 (erase-buffer)
-                 (insert-buffer buf)
-                 )
-               (posframe-show db
-                              :internal-border-width 2
-                              :internal-border-color "Orange"
-                              :border-width 3
-                              :border-color "IndianRed"
-                              :width (/ (* (frame-width) 2) 3)
-                              :height (/ (* (frame-height) 2) 3)
-                              :poshandler 'posframe-poshandler-frame-center
-                              :position t
-                              )db)))
          :bind (("C-`"   . popper-toggle-latest)
                 ("M-`"   . popper-cycle)
                 ("C-M-`" . popper-toggle-type)))

@@ -5,7 +5,6 @@
 (menu-bar-mode -1)
 (show-paren-mode 1)
 (winner-mode 1)
-(tooltip-mode 1)
 
 (global-auto-revert-mode)
 ;; Also auto refresh dired, but be quiet about it
@@ -90,7 +89,7 @@
   (xclip-mode))
 
 (use-package centaur-tabs
-  :straight ( :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
+  :straight ( :local-repo "~/development/projects/emacs/centur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
   :demand
   :custom
   (centaur-tabs-enable-ido-completion nil)
