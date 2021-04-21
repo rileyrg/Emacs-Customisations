@@ -109,7 +109,6 @@
      (popwin:display-buffer-condition popwin:display-buffer-action)))
  '(display-time-mode t)
  '(eldoc-box-only-multi-line t)
- '(eldoc-idle-delay 2.5)
  '(elpy-formatter 'autopep8)
  '(elscreen-display-tab nil)
  '(enable-local-eval t)

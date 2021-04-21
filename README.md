@@ -5,7 +5,6 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/)  using 
 
     (defvar bootstrap-version)
     (setq straight-base-dir (expand-file-name "etc" user-emacs-directory))
-    (setq straight-check-for-modifications '(check-on-save find-when-checking))
     (let ((bootstrap-file
            (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
           (bootstrap-version 5))
