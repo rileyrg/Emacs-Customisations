@@ -41,75 +41,13 @@
     (cl-assert (eq (point) (point-min)))
     (read (current-buffer))))
 
-(use-package eldoc-box)
-
-(use-package emacs
-  :init
-  (defcustom rgr/elisp-context--delay 2.5 "How long to delay before context display" :type 'float)
-  (defcustom rgr/elisp-context--display-func 'rgr/elisp-context--display-posframe "The function called by `rgr/elisp-context-mode' timer `rgr/elisp-context-timer-func'." :type 'function)
-  (defcustom rgr/elisp-context--posframe-buffer "*rgr/elisp-context**" "Buffer name for posframe elisp context help")
-  (defvar rgr/elisp-context--timer nil  "Store the `rgr/elisp-context-mode' timer")
-
-  :config
-  (use-package posframe)
-
-  (defun rgr/elisp-context--hide()
-    "Hide the `rgr/elisp-context--posframe-buffer'"
-    (posframe-hide rgr/elisp-context--posframe-buffer))
-
-  (defun rgr/elisp-context--docstring(sym)
-    "Return the docstring attached to the symbol SYM"
-    (if (or (fboundp sym) (boundp sym))
-        (let ((help-xref-following t))
-          (save-window-excursion
-            (with-temp-buffer
-              (help-mode)
-              (describe-symbol sym)
-              (buffer-string))))
-      nil))
-
-  (defun rgr/elisp-context--display-posframe()
-    "Show the docstring for the symbol at point in a posframe"
-    (interactive)
-    (let*((p (point))
-          (sym (symbol-at-point))
-          (docstring (if sym (rgr/elisp-context--docstring sym) nil)))
-      (if docstring
-          (posframe-show rgr/elisp-context--posframe-buffer
-                         :string docstring
-                         :left-fringe 8
-                         :right-fringe 8
-                         :internal-border-width 4
-                         :internal-border-color "gray"
-                         :border-width 1
-                         :border-color "orange"
-                         :position p
-                         )
-        (rgr/elisp-context--hide))))
-
-  (defun rgr/elisp-context--timer-func()
-    "function called every `rgr/elisp-context--delay' seconds when `rgr/elisp-context-mode is non-nil.
-It calls out to `rgr/elisp-context--display-func'."
-    (when rgr/elisp-context-mode
-      (funcall rgr/elisp-context--display-func)))
-
-  (define-minor-mode rgr/elisp-context-mode
-    "minor-mode to popup help for the elisp symbol at point."
-    nil
-    :lighter " elisp-context"
-    (unless rgr/elisp-context--timer
-      (add-hook 'post-command-hook 'rgr/elisp-context--hide)
-      (setq  rgr/elisp-context--timer
-             (run-with-idle-timer
-              rgr/elisp-context--delay t
-              'rgr/elisp-context--timer-func))))
-
+(use-package el-docstring-at-point
+  :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
   :hook
-  (emacs-lisp-mode . (lambda()(rgr/elisp-context-mode +1)))
-
+  (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
   :bind
-  ("M-<f2>" . (lambda()(interactive)(rgr/elisp-context--posframe-display)))
-  ("M-<f1>" . (lambda()(interactive)(rgr/elisp-context-mode 'toggle))))
+  ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display-posframe)))
+  ("M-<f1>" . (lambda()(interactive)(el-docstring-at-point-mode 'toggle))))
 
 (use-package
   edebug-x

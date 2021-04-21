@@ -1,5 +1,5 @@
 #+TITLE: Emacs configuration
-#+AUTHOR: Richard G. Riley
+#+AUTHOR: rileyrg
 #+EMAIL: rileyrg at g mx dot de
 #+DESCRIPTION: emacs configuration orientated around lsp-mode,dap and company-mode
 #+LANGUAGE: en
@@ -281,200 +281,22 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
             (read (current-buffer))))
       #+end_src
 
-***** popup elisp help
-      :PROPERTIES:
-      :ID:       b63bf2e5-4106-401a-a66c-7b7967d0d89e
+***** elisp popup help                                          :popup:elisp:
+      :LOGBOOK:
+      - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
+      - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
+      eldoc-box does this
       :END:
-
-****** CANCELLED eldoc-box                                        :CANCELLED:
-       CLOSED: [2021-04-20 Di 07:27]
-       :LOGBOOK:
-       - State "CANCELLED"  from              [2021-04-20 Di 07:27] \\
-         doesn't work at all
-       :END:
-       #+begin_src emacs-lisp
-         (use-package eldoc-box)
-       #+end_src
-****** CANCELLED eldoc overlay                                    :CANCELLED:
-       CLOSED: [2021-04-17 Sa 00:40]
-       :PROPERTIES:
-       :header-args:emacs-lisp: :tangle no
-       :END:
-       :LOGBOOK:
-       - State "CANCELLED"  from              [2021-04-17 Sa 00:40] \\
-         interferes with lsp
-       - State "WAITING"    from              [2021-04-15 Do 00:10]
-       :END:
-       #+begin_src emacs-lisp
-         (use-package eldoc-overlay
-           :init
-           (global-eldoc-overlay-mode +1))
-       #+end_src
-****** CANCELLED tooltip-help                                     :CANCELLED:
-       CLOSED: [2021-04-20 Di 08:09]
-       :PROPERTIES:
-       :header-args:emacs-lisp: :tangle no
-       :END:
-       :LOGBOOK:
-       - State "CANCELLED"  from "STARTED"    [2021-04-20 Di 08:09] \\
-         use in rgr/context minor mode stuff
-       - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 07:29]
-       - State "CANCELLED"  from              [2021-04-16 Fr 23:39] \\
-         unsupported functions
-       - State "WAITING"    from              [2021-04-14 Mi 23:40] \\
-         wait on clippy
-       :END:
-       #+begin_src emacs-lisp
-         (use-package tooltip-help
-           :demand t
-           :init
-           (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
-           (defcustom rgr/elisp-popup-help-enabled nil "Non-nil means popup " :type 'boolean)
-           (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
-           :config
-
-           ;; (defun describe-thing-in-popup ()
-           ;;   (interactive)
-           ;;   (let* ((thing (symbol-at-point))
-           ;;          (description (with-temp-buffer
-           ;;                         (describe-symbol thing)
-           ;;                         (buffer-string))))
-           ;;     (tooltip-show description)))
-
-           (defun rgr/elisp-popup-help-toggle()
-             (interactive)
-             (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
-
-           (when rgr/elisp-popup-timer
-             (cancel-timer rgr/elisp-popup-timer))
-
-           (setq rgr/elisp-popup-timer
-                 (run-with-idle-timer
-                  rgr/elisp-popup-help-delay t
-                  '(lambda()(when(and rgr/elisp-popup-help-enabled (rgr/elisp-edit-mode))(th-show-help)))))
-
-           :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
-       #+end_src
-****** CANCELLED clippy                                           :CANCELLED:
-       CLOSED: [2021-04-16 Fr 23:39]
-       :PROPERTIES:
-       :header-args:emacs-lisp: :tangle no
-       :END:
-       :LOGBOOK:
-       - State "CANCELLED"  from "WAITING"    [2021-04-16 Fr 23:39] \\
-         too ugly
-       - State "WAITING"    from              [2021-04-15 Do 00:10]
-       :END:
-       #+begin_src emacs-lisp
-         (use-package clippy
-           :demand t
-           :init
-           (defcustom rgr/elisp-popup-help-delay 1.5 "How long to delay for auto popup of symbol at point" :type 'float)
-           (defcustom rgr/elisp-popup-help-enabled nil "If popup elisp help is timer enabled" :type 'boolean)
-           (defvar rgr/elisp-popup-timer nil "Timer for popping up elisp help when idle")
-           (defvar rgr/elisp-popup-last nil "last symbol poppedup")
-           :config
-
-           (defun rgr/elisp-popup-help-toggle()
-             (interactive)
-             (setq-local rgr/elisp-popup-help-enabled (not rgr/elisp-popup-help-enabled)))
-
-           (defun rgr/clippy()
-             (interactive)
-             (let ((tap (symbol-at-point)))
-               (if (not (eq tap rgr/elisp-popup-last))
-                   (if (fboundp tap)
-                       (clippy-describe-function tap)
-                     (clippy-describe-variable tap)))
-               (setq-local rgr/elisp-popup-last tap)))
-
-           (when rgr/elisp-popup-timer
-             (cancel-timer rgr/elisp-popup-timer))
-
-           (setq rgr/elisp-popup-timer
-                 (run-with-idle-timer
-                  rgr/elisp-popup-help-delay t
-                  '(lambda()(rgr/clippy))))
-
-           :bind (:map emacs-lisp-mode-map  ("M-<f1>" . rgr/elisp-popup-help-toggle)))
-       #+end_src
-
-****** elisp context help                                             :elisp:
-       :LOGBOOK:
-       - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
-       - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
-       eldoc-box does this
-       :END:
-       Provide a minor mode that calls a display function for elisp context help. need to change it to be more generic.
-       #+begin_src emacs-lisp
-         (use-package emacs
-           :init
-           (defcustom rgr/elisp-context--delay 2.5 "How long to delay before context display" :type 'float)
-           (defcustom rgr/elisp-context--display-func 'rgr/elisp-context--display-posframe "The function called by `rgr/elisp-context-mode' timer `rgr/elisp-context-timer-func'." :type 'function)
-           (defcustom rgr/elisp-context--posframe-buffer "*rgr/elisp-context**" "Buffer name for posframe elisp context help")
-           (defvar rgr/elisp-context--timer nil  "Store the `rgr/elisp-context-mode' timer")
-
-           :config
-           (use-package posframe)
-
-           (defun rgr/elisp-context--hide()
-             "Hide the `rgr/elisp-context--posframe-buffer'"
-             (posframe-hide rgr/elisp-context--posframe-buffer))
-
-           (defun rgr/elisp-context--docstring(sym)
-             "Return the docstring attached to the symbol SYM"
-             (if (or (fboundp sym) (boundp sym))
-                 (let ((help-xref-following t))
-                   (save-window-excursion
-                     (with-temp-buffer
-                       (help-mode)
-                       (describe-symbol sym)
-                       (buffer-string))))
-               nil))
-
-           (defun rgr/elisp-context--display-posframe()
-             "Show the docstring for the symbol at point in a posframe"
-             (interactive)
-             (let*((p (point))
-                   (sym (symbol-at-point))
-                   (docstring (if sym (rgr/elisp-context--docstring sym) nil)))
-               (if docstring
-                   (posframe-show rgr/elisp-context--posframe-buffer
-                                  :string docstring
-                                  :left-fringe 8
-                                  :right-fringe 8
-                                  :internal-border-width 4
-                                  :internal-border-color "gray"
-                                  :border-width 1
-                                  :border-color "orange"
-                                  :position p
-                                  )
-                 (rgr/elisp-context--hide))))
-
-           (defun rgr/elisp-context--timer-func()
-             "function called every `rgr/elisp-context--delay' seconds when `rgr/elisp-context-mode is non-nil.
-         It calls out to `rgr/elisp-context--display-func'."
-             (when rgr/elisp-context-mode
-               (funcall rgr/elisp-context--display-func)))
-
-           (define-minor-mode rgr/elisp-context-mode
-             "minor-mode to popup help for the elisp symbol at point."
-             nil
-             :lighter " elisp-context"
-             (unless rgr/elisp-context--timer
-               (add-hook 'post-command-hook 'rgr/elisp-context--hide)
-               (setq  rgr/elisp-context--timer
-                      (run-with-idle-timer
-                       rgr/elisp-context--delay t
-                       'rgr/elisp-context--timer-func))))
-
-           :hook
-           (emacs-lisp-mode . (lambda()(rgr/elisp-context-mode +1)))
-
-           :bind
-           ("M-<f2>" . (lambda()(interactive)(rgr/elisp-context--posframe-display)))
-           ("M-<f1>" . (lambda()(interactive)(rgr/elisp-context-mode 'toggle))))
-       #+end_src
+      Display a poup containing docstring.
+      #+begin_src emacs-lisp
+        (use-package el-docstring-at-point
+          :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+          :hook
+          (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
+          :bind
+          ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display-posframe)))
+          ("M-<f1>" . (lambda()(interactive)(el-docstring-at-point-mode 'toggle))))
+      #+end_src
 ***** Elisp debugging
       :PROPERTIES:
       :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
