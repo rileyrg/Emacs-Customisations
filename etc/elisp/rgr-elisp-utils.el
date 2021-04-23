@@ -1,4 +1,4 @@
-(defcustom rgr/emacs-source (no-littering-expand-var-file-name "emacs-source/current") "where the source is for the current emacs")
+(defcustom rgr/emacs-source (no-littering-expand-var-file-name "emacs-source/current") "where the source is for the current emacs" :type '(string))
 (setq source-directory rgr/emacs-source)
 
 (defun rgr/elisp-edit-mode()

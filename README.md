@@ -151,7 +151,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     1.  emacs source
 
-            (defcustom rgr/emacs-source (no-littering-expand-var-file-name "emacs-source/current") "where the source is for the current emacs")
+            (defcustom rgr/emacs-source (no-littering-expand-var-file-name "emacs-source/current") "where the source is for the current emacs" :type '(string))
             (setq source-directory rgr/emacs-source)
 
     2.  elisp checks
@@ -975,7 +975,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org86973a6)
+See `org-agenda-files` [org-agenda-files](#org6fd38b8)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
