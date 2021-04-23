@@ -22,7 +22,7 @@
 #+PROPERTY: header-args    :results silent
 #+PROPERTY: header-args:bash :tangle-mode (identity #o555)
 #+PROPERTY: header-args:conf :tangle-mode (identity #o444)
-#+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el :tangle-mode (identity #o444)
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :tangle-mode (identity #o444)
 #+PROPERTY: header-args:gpg :cache no :tangle-mode (identity #o600)
 
 This file generates [[file:init.el::defvar bootstrap-version][init.el]] and other [[file:etc/elisp/][org files]]  using [[https://orgmode.org/manual/Extracting-Source-Code.html][org-babel-tangle]]
@@ -1453,7 +1453,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :PROPERTIES:
       :ID:       30dcbb9c-3d7c-46e4-b01a-c1c74145db54
       :END:
-      #+begin_src conf :tangle ~/.config/emacs/.ignore
+      #+begin_src conf :tangle ~/.emacs.d/.ignore
         # Maintained in emacs-config.org
         *.md
         auto-save
@@ -1950,9 +1950,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (provide 'rgr/reference)
      #+end_src
-** EMMS                                                          :music:emms:
+** CANCELLED EMMS                                      :music:emms:CANCELLED:
+   CLOSED: [2021-04-23 Fr 23:12]
    :PROPERTIES:
    :ID:       be00ecd2-a116-4edc-b013-d4dd06ab8d93
+   :header-args:emacs-lisp: :tangle no
+   :END:
+   :LOGBOOK:
+   - State "CANCELLED"  from              [2021-04-23 Fr 23:12]
    :END:
    [[https://github.com/skeeto/elfeed][Emms]] is the Emacs Multimedia System. Emms displays and plays multimedia from within GNU/Emacs using a variety of external players and from different sources.
 
@@ -2059,7 +2064,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           (interactive)
           (message "args are %s" args)
           (save-window-excursion
-            (shell-command "emacs -Q -l ~/.config/emacs/straight/repos/straight.el/bootstrap.el &")))
+            (shell-command "emacs -Q -l ~/.emacs.d/straight/repos/straight.el/bootstrap.el &")))
       #+end_src
 ****** ftrace - debugging the kernel utility funtions
        :PROPERTIES:
@@ -2085,7 +2090,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :END:
      Be sure to check out [[http://www.howardism.org/Technical/Emacs/eshell.html][Aliases]]. Aliases are very powerful allowing you to mix up shell script, elisp raw and elisp library function. My current [[file+sys:eshell/alias][alias file]] (subject to change...) is currently, at this time of discovery:-
 
-     #+include: "~/.config/emacs/etc/eshell/alias" src bash
+     #+include: "~/.emacs.d/etc/eshell/alias" src bash
 
 **** EShell Config
      :PROPERTIES:
@@ -2531,21 +2536,30 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :PROPERTIES:
      :ID:       ccdf8942-5683-4df9-887d-6e6e7642a7a9
      :END:
-     -----BEGIN PGP MESSAGE-----
+-----BEGIN PGP MESSAGE-----
 
-     hQEMA7IjL5SkHG4iAQf+MDWXCbvyg4UURIAcZHb8obHJtnr0CGNglcNzeDJTmgO6
-     cJ5AdDNYRgRv/Br9R0C/xxuzjFGr+kmVAyq3ukZrrUHS3Gle9JpzYPIqG4XaYlcR
-     MCq1Zo0ASBXps57pbSFaHSBUlcwQwfJ2PA0qlSdSTbjQMJLfxGxleQ8UuoFWh0y0
-     GyZ23JbJsOM7bnqTsWZzIVUaHqHsm3mKCrCvbrvypVKuPfQrDu67JYo2PnzxOcew
-     XCVh7mupD8dBTxDogywbFfrGuzpQ+Jjuys5NvwAtG72kHd64nQkbglioK6iRfaw+
-     tkNip9iB8yXxHGvePB84dxIY3BQkEN2Ex0nADC+xMdLALAEH8OPj2FswT3jV+7gX
-     TUJ05F7K9lOYYk9MINYkuJyhtmDO6mDAX9Nnwip9//EdNa9s/9DTjE/8XJ37i6fW
-     Y4W1/D08lzW0B0FE5JqjzMwlyajU5MWtlyU3Tfo35ks7dsEgFddNApea+8V8IVRF
-     9Bdc9yQkiFsffoasw69I3gx59h8UpsCHpEKm6Z32u2/JKMXNRIetqFa9YmYogxwv
-     9A9hQRkl+5I2shDZkefPK+8pkn2yhnWo5THtDTWRSiTBIgTDRKh9TWv1RYu+SnoK
-     1lBiWniBb/Nzqga54c1YGs38vH/KWmWQlcVUhX3F
-     =WGFw
-     -----END PGP MESSAGE-----
+hQEMA7IjL5SkHG4iAQgApq/zAw2py1infLtGaRCYHf/ZSes2hijmYJzAc9tfRBSE
+JQloaB6/ISLkXmVnCmk5cvTmlxNwL737xb0de61yctjz99WycuSczMkp4xUiuLko
+0Vm/5SWyMQPittyZYHrWtHl+OLCs+X1xECwMnbDHomPPuBnlz9Fe7iesQxHWySwp
+fBOT6j0ss5s20gLa0aDStXxBRhq40I2c9oe54ja/BCMNyTXkNJA/hukVEX8Wfpw4
+RricBugztD7W4toNHhqHnhe6OtxNBbko2+7u1UpmmNObJL6qvbGob06tNicU/lKF
+rk1uDrx7PEeRQMzcKYeQHWwp5UkvIa/VaYIiaWnsY9LpAXYGQXeVSZzVuNR7HOTi
+aFPCVohgOEOkOvwV5e3byWj5U3RQYOfIQepl6iDSyHvZpDzSzMofYPV6Yvm6W8y0
+cvouLF1ksYtE4zLPToQ5I9Npj4yJIgHXXlmE/Dpx7/CsmiMv0ddDc9idMPuLImwA
+H3Ypmx0gjVbQlER2qOxZcsqfRxhey66I2mseZKt+okomCE+GjPBrTAadyVB7tig0
++/8G4Kz+46h43jbCMEi5FjvbFxvutQIrTNh1MjQhZBvNFijgAxkeKuLm5SFcY/DJ
+GYffMfbwtwcAdZnabq/bMOaLMaSgIKz5iOCtfsBnbU29brbAWJVLhclqIfRLWbbZ
+9CSqcJ9l0Mo1MHA31Ue69cX2IhXfOaopMC6MSikQqdmJcWsN0gW4FNMtjjFdXwNU
+4p04MmlItGumn+XnsqOK5SWlle030hiYKYB/wyBY5MFRKDWPRoIW7xRgl2b5RaD/
+8JrY37XbLZokWqMYFzVg7TRZs1WBX3km0o//Qe0nN7INk5Zui8CoFb8LPDmwQ370
+xxhREdzumWnbGCnIWmympjV0fezHXEBdRLpTAnB3Xp9LtHIV186Qc8/KaDFdHtMA
+dWqYFowY0ZZ7Mf4Oth348HmFVirBlHRCgPvnMHJL+D4TO0uyitziIZGN/SnsQp9s
+BA5vLbJdLOJ3vCoSaB8BgZSrVoudvUMngYxskOkTclSVtwlZ7zERN42UAJnBv2in
+wXYdpnyUIaoNctxNXmJ+aQjVOcdI0k90BI9a0p11LpbfATNNIrUpxoN+14rU1GPR
+Kzl8bwDpZq75JHQAklMfbtBy/K8PZasD8IxqeRTBPo2DQ2KTQV82rE3C+rEAFEkf
+siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
+=pfap
+-----END PGP MESSAGE-----
 **** Emacs Slack
      :PROPERTIES:
      :ID:       20db97bc-7c74-4a01-8b3e-d58c6d47eee9
@@ -2865,9 +2879,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
          :bind* ("C-x g" . magit-status))
      #+end_src
-***** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents
+***** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
       :PROPERTIES:
       :ID:       66507d88-e049-4c4b-b3a6-e8fb932417a9
+      :END:
+      :LOGBOOK:
+      - State "CANCELLED"  from              [2021-04-23 Fr 23:10]
       :END:
       #+begin_src emacs-lisp
         (use-package orgit
@@ -2900,19 +2917,28 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 
 ***** token                                                     :crypt:token:
-      -----BEGIN PGP MESSAGE-----
+-----BEGIN PGP MESSAGE-----
 
-      hQEMA7IjL5SkHG4iAQgAtrT0D/Vh8W+gptWrNSM6snmRejBtUiv4OMjoWwD/V9S0
-      LpvcJbcJAQN7KGEpGO7lUhk2faV+9t1WQmcT+UEpM5e5PW7HqFt39LnxBfFVPqYx
-      hBWzvOiXupdA+cGtj4o+yBug6EnH3KEMwJbXpdNHuQc3ihKb1/blItNXSSfEneWl
-      lwFYqsXaPbq0KO53TVmFd4XxcFWaJk9SKmWpEfE9AWff8GBtF5AbQaC+kWnzo8FT
-      LHbgDvU81/ZDyMPijRUJqICwJQHnSWdb9zK3lw5dn3Pm9xNSw45zJ+sPxVTjneW+
-      ZV5uNb9iQklsuZrDjLyDmKYcAWFd9yXDJe16TMez6NKCASwU0+JMPgyr3ju/R25c
-      c5eQY2pS+u/46aesAvhlyPsCN3juzjNJI1Otw2zRib1p6/P0k7HDHVEaWTDCIiGY
-      NDuvG4LSIn8cjeBbEvrPRQEJIesPsmxBqaTHEFWN/EWdHmeRuD7MW2kzTKoFF8B5
-      aN7TreVVjWnVKLSC2q8w0je1Xg==
-      =WFdw
-      -----END PGP MESSAGE-----
+hQEMA7IjL5SkHG4iAQgAnyC1NPS3sWV9r7kriSvL4IF53g076qwmEHvmPjBaUp9R
+QeQyyp8ek1MOSQP4zPbn0s5gAALMdP/UbEjocudP0e3bY2BYLJstTC7av1LS5Vzq
+NpoecGRrlUCISRAMCRx/2MpE6o2E3RdAd0P2RQ4vGmaIEJ0vHkfP8RnYd8M+wacy
+y58rcuxmGBaLNGEOOywb2icYVrjKXxSdRDXL6/LTjkQHXuPjpD27WIA2ASExh64t
+1XIA6Gs0vXc8CF+ppt9tb48TwCyONhH9PtE1CURhH6FRPSKkxXD/eq/BhoVzjT//
+9lu269+Q2H6QHQAh0CeT9wuqpSHxXu/fKDNrG/DGmNLpAfSrO4bepZGOAWKnDQFP
+Dkr1FEpb43SRZgyP3KDEad5F7uZzYDf7FVLxfNlWzhuFErzLVTHlUxWBAcY22a8R
+2AuS6D+0vpJUSXqXEYQJ+R/GqHe1h+6mBnAyloz9eSU7X9kYPUv3cEAkWYrkGLt0
+Or7cfbtFL+GUQpVVNELOZftK1h4S3StfJJerc5YluQBqHUQkCIZMa6AS48uV958b
+JC9WHZIgGzkb/3GLV/rAEwgOhlmfWavmP/MXIEl5YBOpyOSkpVm4CKqNOx7+Sby+
+2Gh45i5qQhRfBW6880zrgnRSa6rlXHrzd4gL32sSKGON6YEhngJRzZzZhf+0IgpR
+QXRk7H0novz5DBUHAcecOGqNikTVvwBXI12sFjh6YMbVD0FhkokSjHqipJqXCwDc
+In6uBDyBjOjcJa0M7KzEN5MsN9RJK00vrBao+b8mpROUCpVAF/ZL5ofMTu72qJ2P
+Plpk2ab+ZpAxm+B7am9r2CojjDDz/D8aFFR+bLx/0c1AnCUDnvqjBmNKxCHD2jIR
+B4ghhzUfYFDgnm7u2vg3ycTxuP1ys74Z82Ufw3YZeiroG+uM/h90eyXJsEHv6pmj
+mXO4USgtApYLqNUfSptcjw1nDnUnSus2/DjIZZTg0GNMQi013kHkrodKmAs2V3/o
+NmmXwjbGwdqpZzbwiG2yrw5BwkdKPQQ4PRsyUVuyWfrYAFLLtfXuFGIIfoQ2DiSl
+EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
+=FmGT
+-----END PGP MESSAGE-----
 **** Git Gutter Mode                                                 :gutter:
      :PROPERTIES:
      :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512

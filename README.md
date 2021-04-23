@@ -975,7 +975,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org06e1367)
+See `org-agenda-files` [org-agenda-files](#org86973a6)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1513,57 +1513,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (provide 'rgr/reference)
 
 
-## EMMS     :music:emms:
-
-[Emms](https://github.com/skeeto/elfeed) is the Emacs Multimedia System. Emms displays and plays multimedia from within GNU/Emacs using a variety of external players and from different sources.
-
-Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
-
-    (require 'rgr/emms "rgr-emms" 'NOERROR)
-
-
-### rgr/emms library
-
-    (use-package
-      emms
-      :custom
-      (emms-source-file-default-directory "~/Music" emms-info-asynchronously t emms-show-format "♪ %s")
-      (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
-      (emms-history-start-playing nil)
-      :config
-      (defun rgr/emms-play-url()
-        (interactive)
-        (let* ((url (thing-at-point-url-at-point))
-               (url (if (and (not current-prefix-arg)
-                             url) url (read-string (format "URL to play %s: " (if url url "")) nil
-                             nil url))))
-          (message "Playing: %s" url)
-          (kill-new url)
-          (emms-play-url url)))
-      (defun rgr/emms-play-playlist()
-        (interactive)
-        (let(( emms-source-file-default-directory (expand-file-name "Playlists/" emms-source-file-default-directory)))
-          (call-interactively 'emms-play-playlist)))
-      (require 'emms-setup)
-      (emms-all)
-      (emms-default-players)
-      (require 'emms-history)
-      (emms-history-load)
-      :bind ("C-c e e" . #'emms-smart-browse)
-      ("C-c e j" . #'emms-seek-backward)
-      ("C-c e l" . #'emms-seek-forward)
-      ("C-c e p" . #'rgr/emms-play-playlist)
-      ;;        ("C-c e p" . #'emms-play-playlist)
-      ("C-c e <SPC>" . #'emms-pause)
-      ("C-c e o" . #'rgr/emms-play-url)
-      (:map emms-playlist-mode-map
-            ("<SPC>" . #'emms-pause)
-            ("j" . #'emms-seek-backward)
-            ("l" . #'emms-seek-forward)
-            ("k" . #'emms-pause)))
-    (provide 'rgr/emms)
-
-
 ## Shells and Terminals
 
 
@@ -1603,7 +1552,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
               (interactive)
               (message "args are %s" args)
               (save-window-excursion
-                (shell-command "emacs -Q -l ~/.config/emacs/straight/repos/straight.el/bootstrap.el &")))
+                (shell-command "emacs -Q -l ~/.emacs.d/straight/repos/straight.el/bootstrap.el &")))
 
         1.  ftrace - debugging the kernel utility funtions
 
@@ -2411,7 +2360,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
           (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
           :bind* ("C-x g" . magit-status))
 
-    1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents
+    1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents     :CANCELLED:
 
             (use-package orgit
               :after magit)
@@ -2438,16 +2387,25 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
         &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
 
-        hQEMA7IjL5SkHG4iAQgAtrT0D/Vh8W+gptWrNSM6snmRejBtUiv4OMjoWwD/V9S0
-        LpvcJbcJAQN7KGEpGO7lUhk2faV+9t1WQmcT+UEpM5e5PW7HqFt39LnxBfFVPqYx
-        hBWzvOiXupdA+cGtj4o+yBug6EnH3KEMwJbXpdNHuQc3ihKb1/blItNXSSfEneWl
-        lwFYqsXaPbq0KO53TVmFd4XxcFWaJk9SKmWpEfE9AWff8GBtF5AbQaC+kWnzo8FT
-        LHbgDvU81/ZDyMPijRUJqICwJQHnSWdb9zK3lw5dn3Pm9xNSw45zJ+sPxVTjneW+
-        ZV5uNb9iQklsuZrDjLyDmKYcAWFd9yXDJe16TMez6NKCASwU0+JMPgyr3ju/R25c
-        c5eQY2pS+u/46aesAvhlyPsCN3juzjNJI1Otw2zRib1p6/P0k7HDHVEaWTDCIiGY
-        NDuvG4LSIn8cjeBbEvrPRQEJIesPsmxBqaTHEFWN/EWdHmeRuD7MW2kzTKoFF8B5
-        aN7TreVVjWnVKLSC2q8w0je1Xg==
-        =WFdw
+        hQEMA7IjL5SkHG4iAQgAnyC1NPS3sWV9r7kriSvL4IF53g076qwmEHvmPjBaUp9R
+        QeQyyp8ek1MOSQP4zPbn0s5gAALMdP/UbEjocudP0e3bY2BYLJstTC7av1LS5Vzq
+        NpoecGRrlUCISRAMCRx/2MpE6o2E3RdAd0P2RQ4vGmaIEJ0vHkfP8RnYd8M+wacy
+        y58rcuxmGBaLNGEOOywb2icYVrjKXxSdRDXL6/LTjkQHXuPjpD27WIA2ASExh64t
+        1XIA6Gs0vXc8CF+ppt9tb48TwCyONhH9PtE1CURhH6FRPSKkxXD/eq/BhoVzjT//
+        9lu269+Q2H6QHQAh0CeT9wuqpSHxXu/fKDNrG/DGmNLpAfSrO4bepZGOAWKnDQFP
+        Dkr1FEpb43SRZgyP3KDEad5F7uZzYDf7FVLxfNlWzhuFErzLVTHlUxWBAcY22a8R
+        2AuS6D+0vpJUSXqXEYQJ+R/GqHe1h+6mBnAyloz9eSU7X9kYPUv3cEAkWYrkGLt0
+        Or7cfbtFL+GUQpVVNELOZftK1h4S3StfJJerc5YluQBqHUQkCIZMa6AS48uV958b
+        JC9WHZIgGzkb/3GLV/rAEwgOhlmfWavmP/MXIEl5YBOpyOSkpVm4CKqNOx7+Sby+
+        2Gh45i5qQhRfBW6880zrgnRSa6rlXHrzd4gL32sSKGON6YEhngJRzZzZhf+0IgpR
+        QXRk7H0novz5DBUHAcecOGqNikTVvwBXI12sFjh6YMbVD0FhkokSjHqipJqXCwDc
+        In6uBDyBjOjcJa0M7KzEN5MsN9RJK00vrBao+b8mpROUCpVAF/ZL5ofMTu72qJ2P
+        Plpk2ab+ZpAxm+B7am9r2CojjDDz/D8aFFR+bLx/0c1AnCUDnvqjBmNKxCHD2jIR
+        B4ghhzUfYFDgnm7u2vg3ycTxuP1ys74Z82Ufw3YZeiroG+uM/h90eyXJsEHv6pmj
+        mXO4USgtApYLqNUfSptcjw1nDnUnSus2/DjIZZTg0GNMQi013kHkrodKmAs2V3/o
+        NmmXwjbGwdqpZzbwiG2yrw5BwkdKPQQ4PRsyUVuyWfrYAFLLtfXuFGIIfoQ2DiSl
+        EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
+        =FmGT
         &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
 
 4.  Git Gutter Mode     :gutter:

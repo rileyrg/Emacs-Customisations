@@ -89,7 +89,7 @@
   (xclip-mode))
 
 (use-package centaur-tabs
-  :straight ( :local-repo "~/development/projects/emacs/centur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
+  :straight ( :local-repo "~/development/projects/emacs/centaur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
   :demand
   :custom
   (centaur-tabs-enable-ido-completion nil)

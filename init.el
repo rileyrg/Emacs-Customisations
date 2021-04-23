@@ -145,8 +145,6 @@
 
 (require 'rgr/reference "rgr-reference" 'NOERROR)
 
-(require 'rgr/emms "rgr-emms" 'NOERROR)
-
 (use-package terminal-here
   :custom
   (terminal-here-terminal-command (list "oneterminal"))
@@ -167,7 +165,7 @@
   (interactive)
   (message "args are %s" args)
   (save-window-excursion
-    (shell-command "emacs -Q -l ~/.config/emacs/straight/repos/straight.el/bootstrap.el &")))
+    (shell-command "emacs -Q -l ~/.emacs.d/straight/repos/straight.el/bootstrap.el &")))
 
 (defun eshell/_ftrace_fn (&rest args)
   "useage: _ftrace_fn &optional function-name(def:printf)  depth(def:1)
