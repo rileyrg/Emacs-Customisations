@@ -108,6 +108,8 @@
    '(("\\*Symfony Web Server\\*.*" display-buffer-no-window)
      (popwin:display-buffer-condition popwin:display-buffer-action)))
  '(display-time-mode t)
+ '(el-docstring-at-point--display-func 'el-docstring-at-point--posframe)
+ '(el-docstring-at-point--posframe-poshandler 'posframe-poshandler-frame-top-right-corner)
  '(eldoc-box-only-multi-line t)
  '(elpy-formatter 'autopep8)
  '(elscreen-display-tab nil)

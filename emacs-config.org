@@ -47,7 +47,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       (load bootstrap-file nil 'nomessage))
 
     (setq straight-use-package-by-default t)
-    (straight-use-package 'use-package)
+
+    (eval-when-compile
+      (straight-use-package 'use-package))
 
     (use-package straight
       :custom
@@ -280,20 +282,21 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
             (read (current-buffer))))
       #+end_src
 
-***** elisp popup help                                          :popup:elisp:
+***** elisp popup context help                                  :popup:elisp:
       :LOGBOOK:
       - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
       - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
       eldoc-box does this
       :END:
-      Display a poup containing docstring.
+      Display a poup containing docstring at point
       #+begin_src emacs-lisp
         (use-package el-docstring-at-point
-          :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+          :straight (el-docstring-at-point :branch "quickpeek" :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+          :demand
           :hook
           (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
           :bind
-          ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display-posframe)))
+          ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display)))
           ("M-<f1>" . (lambda()(interactive)(el-docstring-at-point-mode 'toggle))))
       #+end_src
 ***** Elisp debugging
@@ -2466,7 +2469,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (use-package treemacs-projectile)
        (use-package treemacs-magit)
        :bind
-       ("M-0"   . (lambda()(interactive)(treemacs t)))
+       ("M-0"   . 'treemacs-select-window)
        (:map treemacs-mode-map
              ("<right>" . treemacs-peek)))
 
@@ -2826,8 +2829,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+begin_src emacs-lisp
       (use-package
         flycheck
+        :demand
         :custom
         (flycheck-global-modes '(not org-mode))
+        (flycheck-emacs-lisp-load-path 'inherit)
         :config (use-package
                   flycheck-pos-tip)
         (flycheck-pos-tip-mode)

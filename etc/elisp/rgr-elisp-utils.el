@@ -42,11 +42,12 @@
     (read (current-buffer))))
 
 (use-package el-docstring-at-point
-  :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+  :straight (el-docstring-at-point :branch "quickpeek" :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+  :demand
   :hook
   (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
   :bind
-  ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display-posframe)))
+  ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display)))
   ("M-<f1>" . (lambda()(interactive)(el-docstring-at-point-mode 'toggle))))
 
 (use-package

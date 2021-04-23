@@ -13,7 +13,9 @@
   (load bootstrap-file nil 'nomessage))
 
 (setq straight-use-package-by-default t)
-(straight-use-package 'use-package)
+
+(eval-when-compile
+  (straight-use-package 'use-package))
 
 (use-package straight
   :custom
@@ -366,7 +368,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (use-package treemacs-projectile)
   (use-package treemacs-magit)
   :bind
-  ("M-0"   . (lambda()(interactive)(treemacs t)))
+  ("M-0"   . 'treemacs-select-window)
   (:map treemacs-mode-map
         ("<right>" . treemacs-peek)))
 
@@ -566,8 +568,10 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package
   flycheck
+  :demand
   :custom
   (flycheck-global-modes '(not org-mode))
+  (flycheck-emacs-lisp-load-path 'inherit)
   :config (use-package
             flycheck-pos-tip)
   (flycheck-pos-tip-mode)
