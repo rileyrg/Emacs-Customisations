@@ -422,6 +422,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ;; C-x bindings (ctl-x-map)
                  ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complet-command
                  ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+                 ("<f10>" . consult-buffer)                ;; orig. switch-to-buffer
                  ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
                  ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
                  ;; Custom M-# bindings for fast register access
@@ -442,10 +443,12 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ("M-g I" . consult-project-imenu)
                  ;; M-s bindings (search-map)
                  ("M-s f" . consult-find)
+                 ("<f4>" . consult-find)
                  ("M-s L" . consult-locate)
                  ("M-s g" . consult-grep)
                  ("M-s G" . consult-git-grep)
                  ("M-s r" . consult-ripgrep)
+                 ("<f3>" . consult-ripgrep)
                  ("M-s l" . consult-line)
                  ("M-s m" . consult-multi-occur)
                  ("M-s k" . consult-keep-lines)
@@ -857,7 +860,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     1.  Centaur Tabs     :centaur:
 
             (use-package centaur-tabs
-              :straight ( :local-repo "~/development/projects/emacs/centur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
+              :straight ( :local-repo "~/development/projects/emacs/centaur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
               :demand
               :custom
               (centaur-tabs-enable-ido-completion nil)
@@ -972,7 +975,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org16a8ada)
+See `org-agenda-files` [org-agenda-files](#org06e1367)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1089,9 +1092,7 @@ rg is pretty quick
     1.  .ignore for the emacs root sample
 
             # Maintained in emacs-config.org
-            !*
-            .git
-            .cache
+            *.md
             auto-save
             history
             undohist
@@ -2347,6 +2348,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :config
       (projectile-mode +1)
       :bind ("<f2>" . 'projectile-dired)
+      ("<f5>" . 'projectile-switch-project)
       ("<f12>" . projectile-run-eshell)
       ("M-<RET>" . projectile-run-eshell)
       (:map projectile-mode-map ( "C-c p" . projectile-command-map)))

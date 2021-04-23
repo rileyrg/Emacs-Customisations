@@ -547,6 +547,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   (projectile-mode +1)
   :bind ("<f2>" . 'projectile-dired)
+  ("<f5>" . 'projectile-switch-project)
   ("<f12>" . projectile-run-eshell)
   ("M-<RET>" . projectile-run-eshell)
   (:map projectile-mode-map ( "C-c p" . projectile-command-map)))

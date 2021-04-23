@@ -1,7 +1,4 @@
 # Maintained in emacs-config.org
-!*
-.git
-.cache
 auto-save
 history
 undohist

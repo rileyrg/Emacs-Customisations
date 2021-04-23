@@ -564,6 +564,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                 ;; C-x bindings (ctl-x-map)
                 ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complet-command
                 ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+                ("<f10>" . consult-buffer)                ;; orig. switch-to-buffer
                 ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
                 ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
                 ;; Custom M-# bindings for fast register access
@@ -584,10 +585,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                 ("M-g I" . consult-project-imenu)
                 ;; M-s bindings (search-map)
                 ("M-s f" . consult-find)
+                ("<f4>" . consult-find)
                 ("M-s L" . consult-locate)
                 ("M-s g" . consult-grep)
                 ("M-s G" . consult-git-grep)
                 ("M-s r" . consult-ripgrep)
+                ("<f3>" . consult-ripgrep)
                 ("M-s l" . consult-line)
                 ("M-s m" . consult-multi-occur)
                 ("M-s k" . consult-keep-lines)
@@ -1116,7 +1119,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
       #+begin_src emacs-lisp
         (use-package centaur-tabs
-          :straight ( :local-repo "~/development/projects/emacs/centur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
+          :straight ( :local-repo "~/development/projects/emacs/centaur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
           :demand
           :custom
           (centaur-tabs-enable-ido-completion nil)
@@ -1452,9 +1455,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
       #+begin_src conf :tangle ~/.config/emacs/.ignore
         # Maintained in emacs-config.org
-        !*
-        .git
-        .cache
+        *.md
         auto-save
         history
         undohist
@@ -2787,6 +2788,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         :config
         (projectile-mode +1)
         :bind ("<f2>" . 'projectile-dired)
+        ("<f5>" . 'projectile-switch-project)
         ("<f12>" . projectile-run-eshell)
         ("M-<RET>" . projectile-run-eshell)
         (:map projectile-mode-map ( "C-c p" . projectile-command-map)))
