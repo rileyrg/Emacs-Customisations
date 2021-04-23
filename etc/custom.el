@@ -246,7 +246,6 @@ Would you like to play a game?
       ((agenda "" nil)
        (alltodo "" nil))
       nil)))
- '(org-agenda-files "/home/rgr/.emacs.d/etc/org/agenda-files.txt" nil nil "Customized with use-package org")
  '(org-agenda-skip-scheduled-if-deadline-is-shown t nil nil "Customized with use-package org")
  '(org-agenda-start-on-weekday 0 nil nil "Customized with use-package org")
  '(org-babel-load-languages '((emacs-lisp . t) (python . t) (shell . t)) nil nil "Customized with use-package org")

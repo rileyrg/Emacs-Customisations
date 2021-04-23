@@ -1256,6 +1256,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (use-package org
          :demand t
          :custom
+         (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
          (org-fontify-done-headline t)
          (org-fontify-todo-headline t)
          (org-babel-default-header-args:python
@@ -1307,12 +1308,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (provide 'rgr/org)
      #+end_src
-*** org agenda
+*** org agenda files
     :PROPERTIES:
     :ID:       1a27d0a1-8b17-4b86-84f7-aa7f0c006005
+    :header-args:conf: :tangle no
     :END:
-    maintain a file pointing to agenda sources
-    #+begin_src conf :tangle (no-littering-expand-etc-file-name "org/agenda-files.txt")
+    See ~org-agenda-files~ [[id:80d295c4-fe60-4bef-99e2-2f15bcb1e36a][org-agenda-files]]
+    maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    #+begin_src conf
       ~/.emacs.d/var/org/orgfiles
       ~/.emacs.d/var/org/orgfiles/journals
       ~/.emacs.d/var/org/orgfiles/projects

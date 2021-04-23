@@ -18,7 +18,9 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/)  using 
       (load bootstrap-file nil 'nomessage))
 
     (setq straight-use-package-by-default t)
-    (straight-use-package 'use-package)
+
+    (eval-when-compile
+      (straight-use-package 'use-package))
 
     (use-package straight
       :custom
@@ -199,16 +201,17 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                 (cl-assert (eq (point) (point-min)))
                 (read (current-buffer))))
 
-    5.  elisp popup help     :popup:elisp:
+    5.  elisp popup context help     :popup:elisp:
 
-        Display a poup containing docstring.
+        Display a poup containing docstring at point
 
             (use-package el-docstring-at-point
-              :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+              :straight (el-docstring-at-point :branch "quickpeek" :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+              :demand
               :hook
               (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
               :bind
-              ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display-posframe)))
+              ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display)))
               ("M-<f1>" . (lambda()(interactive)(el-docstring-at-point-mode 'toggle))))
 
     6.  Elisp debugging
@@ -922,6 +925,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
         (use-package org
           :demand t
           :custom
+          (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
           (org-fontify-done-headline t)
           (org-fontify-todo-headline t)
           (org-babel-default-header-args:python
@@ -966,9 +970,10 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
         (provide 'rgr/org)
 
 
-### org agenda
+### org agenda files
 
-maintain a file pointing to agenda sources
+See `org-agenda-files` [org-agenda-files](#org16a8ada)
+maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
     ~/.emacs.d/var/org/orgfiles/journals
@@ -1968,7 +1973,7 @@ Excellent [tree based navigation that works really well with projectile.](https:
       (use-package treemacs-projectile)
       (use-package treemacs-magit)
       :bind
-      ("M-0"   . (lambda()(interactive)(treemacs t)))
+      ("M-0"   . 'treemacs-select-window)
       (:map treemacs-mode-map
             ("<right>" . treemacs-peek)))
 
@@ -2378,8 +2383,10 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
     (use-package
       flycheck
+      :demand
       :custom
       (flycheck-global-modes '(not org-mode))
+      (flycheck-emacs-lisp-load-path 'inherit)
       :config (use-package
                 flycheck-pos-tip)
       (flycheck-pos-tip-mode)

@@ -7,4 +7,3 @@
 ~/development/education/lessons/python/coreyschafer
 ~/development/education/lessons/python/python-lernen.de
 ~/development/education/lessons/elisp
-~/development/projects/emacs/
