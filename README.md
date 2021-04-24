@@ -4,7 +4,8 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/)  using 
 # [straight.el](https://github.com/raxod502/straight.el#bootstrapping-straightel) package management
 
     (defvar bootstrap-version)
-    (setq straight-base-dir (expand-file-name "etc" user-emacs-directory))
+    (setq straight-base-dir (expand-file-name "" user-emacs-directory))
+    (setq straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
     (let ((bootstrap-file
            (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
           (bootstrap-version 5))
@@ -1000,7 +1001,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgbfc6c2f)
+See `org-agenda-files` [org-agenda-files](#org0cdb22c)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1929,6 +1930,8 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
     [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
 
         (use-package ace-window
+          :init
+          (defalias 'other-window 'ace-window)
           :bind*
           ("M-o" . ace-window)
           ("M-S o" . ace-delete-window))
@@ -2949,8 +2952,6 @@ I like to exclude everything and then add in what is important. So the first lin
 
     *
     *.*
-
-    !.projectile
 
     !.gitignore
     !.ignore
