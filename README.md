@@ -149,18 +149,13 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 1.  rgr/elisp-utils library
 
-    1.  emacs source
-
-            (defcustom rgr/emacs-source (no-littering-expand-var-file-name "emacs-source/current") "where the source is for the current emacs" :type '(string))
-            (setq source-directory rgr/emacs-source)
-
-    2.  elisp checks
+    1.  elisp checks
 
             (defun rgr/elisp-edit-mode()
               "return non nil if this buffer edits elisp"
               (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 
-    3.  helpful, enriched elisp help
+    2.  helpful, enriched elisp help
 
             (use-package helpful
               :config
@@ -188,7 +183,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               ;; look at interactive functions.
               (global-set-key (kbd "C-h C") #'helpful-command))
 
-    4.  read and write elisp vars to file
+    3.  read and write elisp vars to file
 
 
             (defun rgr/elisp-write-var (f v)
@@ -201,20 +196,19 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                 (cl-assert (eq (point) (point-min)))
                 (read (current-buffer))))
 
-    5.  elisp popup context help     :popup:elisp:
+    4.  elisp popup context help     :popup:elisp:
 
         Display a poup containing docstring at point
 
             (use-package el-docstring-at-point
-              :straight (el-docstring-at-point :branch "quickpeek" :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
-              :demand
+              :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
               :hook
               (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
               :bind
               ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display)))
               ("M-<f1>" . (lambda()(interactive)(el-docstring-at-point-mode 'toggle))))
 
-    6.  Elisp debugging
+    5.  Elisp debugging
 
             (use-package
               edebug-x
@@ -230,7 +224,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                 (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
               )
 
-    7.  Auto-compile
+    6.  Auto-compile
 
             (use-package
               auto-compile
@@ -242,7 +236,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
             ;; (when (memq window-system '(mac ns x))
             ;;   (exec-path-from-shell-initialize))
 
-    8.  Formatting
+    7.  Formatting
 
             (use-package
               elisp-format
@@ -250,7 +244,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               (:map emacs-lisp-mode-map
                     ("C-c f" . elisp-format-region)))
 
-    9.  popup query symbol
+    8.  popup query symbol
 
             (use-package popup
               :config
@@ -263,7 +257,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               :bind
               (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 
-    10. provide
+    9.  provide
 
             (provide 'rgr/elisp-utils)
 
@@ -975,7 +969,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org6fd38b8)
+See `org-agenda-files` [org-agenda-files](#org7caa35f)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1511,6 +1505,57 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 7.  provide
 
         (provide 'rgr/reference)
+
+
+## EMMS     :music:emms:CANCELLED:
+
+[Emms](https://github.com/skeeto/elfeed) is the Emacs Multimedia System. Emms displays and plays multimedia from within GNU/Emacs using a variety of external players and from different sources.
+
+Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
+
+    (require 'rgr/emms "rgr-emms" 'NOERROR)
+
+
+### rgr/emms library
+
+    (use-package
+      emms
+      :custom
+      (emms-source-file-default-directory "~/Music" emms-info-asynchronously t emms-show-format "♪ %s")
+      (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+      (emms-history-start-playing nil)
+      :config
+      (defun rgr/emms-play-url()
+        (interactive)
+        (let* ((url (thing-at-point-url-at-point))
+               (url (if (and (not current-prefix-arg)
+                             url) url (read-string (format "URL to play %s: " (if url url "")) nil
+                             nil url))))
+          (message "Playing: %s" url)
+          (kill-new url)
+          (emms-play-url url)))
+      (defun rgr/emms-play-playlist()
+        (interactive)
+        (let(( emms-source-file-default-directory (expand-file-name "Playlists/" emms-source-file-default-directory)))
+          (call-interactively 'emms-play-playlist)))
+      (require 'emms-setup)
+      (emms-all)
+      (emms-default-players)
+      (require 'emms-history)
+      (emms-history-load)
+      :bind ("C-c e e" . #'emms-smart-browse)
+      ("C-c e j" . #'emms-seek-backward)
+      ("C-c e l" . #'emms-seek-forward)
+      ("C-c e p" . #'rgr/emms-play-playlist)
+      ;;        ("C-c e p" . #'emms-play-playlist)
+      ("C-c e <SPC>" . #'emms-pause)
+      ("C-c e o" . #'rgr/emms-play-url)
+      (:map emms-playlist-mode-map
+            ("<SPC>" . #'emms-pause)
+            ("j" . #'emms-seek-backward)
+            ("l" . #'emms-seek-forward)
+            ("k" . #'emms-pause)))
+    (provide 'rgr/emms)
 
 
 ## Shells and Terminals
@@ -2831,9 +2876,6 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
       :demand t
       :config
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
-
-
-## Startup
 
 
 ## Themes     :themes:

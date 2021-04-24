@@ -145,6 +145,8 @@
 
 (require 'rgr/reference "rgr-reference" 'NOERROR)
 
+(require 'rgr/emms "rgr-emms" 'NOERROR)
+
 (use-package terminal-here
   :custom
   (terminal-here-terminal-command (list "oneterminal"))

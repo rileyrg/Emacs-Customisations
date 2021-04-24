@@ -217,14 +217,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp-utils.el" elisp-dir)
      :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
      :END:
-***** emacs source
-      :PROPERTIES:
-      :ID:       9cc94b1e-8608-4a19-b53a-bdb5d4530a7a
-      :END:
-      #+begin_src emacs-lisp
-        (defcustom rgr/emacs-source (no-littering-expand-var-file-name "emacs-source/current") "where the source is for the current emacs" :type '(string))
-        (setq source-directory rgr/emacs-source)
-      #+end_src
 ***** elisp checks
       :PROPERTIES:
       :ID:       ca5b425c-df7f-47e9-a095-a5c59159ceb4
@@ -291,8 +283,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       Display a poup containing docstring at point
       #+begin_src emacs-lisp
         (use-package el-docstring-at-point
-          :straight (el-docstring-at-point :branch "quickpeek" :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
-          :demand
+          :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
           :hook
           (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
           :bind
@@ -1950,11 +1941,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (provide 'rgr/reference)
      #+end_src
-** CANCELLED EMMS                                      :music:emms:CANCELLED:
-   CLOSED: [2021-04-23 Fr 23:12]
+
+** EMMS                                                :music:emms:CANCELLED:
    :PROPERTIES:
    :ID:       be00ecd2-a116-4edc-b013-d4dd06ab8d93
-   :header-args:emacs-lisp: :tangle no
    :END:
    :LOGBOOK:
    - State "CANCELLED"  from              [2021-04-23 Fr 23:12]
@@ -3435,25 +3425,6 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
         :demand t
         :config
         (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
-    #+end_src
-** Startup
-   :PROPERTIES:
-   :ID:       35b5ff1f-b971-4b70-88d4-d8594d92fa15
-   :END:
-*** SOMEDAY Dashboard                                               :WAITING:
-    :PROPERTIES:
-    :header-args:emacs-lisp: :tangle no
-    :ID:       fbf8e53e-1d5e-495d-91be-7a975ac9b687
-    :END:
-    :LOGBOOK:
-    - State "SOMEDAY"    from              [2021-03-31 Wed 07:46]
-    :END:
-    problems with missing agenda files stops daemon starting up properly so put this on ice for now
-    #+begin_src emacs-lisp
-      (use-package dashboard
-        :ensure t
-        :config
-        (dashboard-setup-startup-hook))
     #+end_src
 ** Themes                                                            :themes:
    :PROPERTIES:

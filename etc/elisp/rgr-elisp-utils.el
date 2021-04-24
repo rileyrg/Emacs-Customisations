@@ -1,6 +1,3 @@
-(defcustom rgr/emacs-source (no-littering-expand-var-file-name "emacs-source/current") "where the source is for the current emacs" :type '(string))
-(setq source-directory rgr/emacs-source)
-
 (defun rgr/elisp-edit-mode()
   "return non nil if this buffer edits elisp"
   (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
@@ -42,8 +39,7 @@
     (read (current-buffer))))
 
 (use-package el-docstring-at-point
-  :straight (el-docstring-at-point :branch "quickpeek" :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
-  :demand
+  :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
   :hook
   (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
   :bind

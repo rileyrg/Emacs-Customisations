@@ -6,10 +6,6 @@
  '(Man-notify-method 'bully)
  '(TeX-macro-global
    '("~/texlive/2013" "~/texlive/2013/texmf-dist/bibtex/bst/" "~/texlive/2013/texmf-dist/tex/" "~/texlive/texmf-local/tex/"))
- '(ack-and-a-half-prompt-for-directory t t)
- '(ack-and-a-half-regexp-search nil t)
- '(ack-executable "/usr/bin/ack" t)
- '(ack-prompt-for-directory t t)
  '(ag-arguments '("--smart-case" "--stats" "--multiline" "-U"))
  '(ag-ignore-list '("value" "cache" "log" "data"))
  '(alert-default-style 'libnotify nil nil "Customized with use-package alert")
@@ -183,9 +179,6 @@ Would you like to play a game?
  '(expand-region-smart-cursor t)
  '(fci-rule-color "#14151E" t)
  '(fill-column 256)
- '(find-file-visit-truename t)
- '(frecentf-ignore-paths
-   '("/home/rgr/.config/emacs/persp-confs" "/home/rgr/.config/emacs/orgfiles"))
  '(gc-cons-threshold 100000000)
  '(gdb-many-windows t)
  '(gdb-show-main t)
@@ -483,7 +476,6 @@ stehen ganz weit oben.
  '(rgr/alert-learn-period 300)
  '(rgr/chat-close-functions '(slack-ws-close rgr/erc-quit))
  '(rgr/chat-functions '(rgr/erc-start slack-start))
- '(rgr/emacs-source "~/development/projects/emacs/emacs/src")
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
  '(rtags-completions-enabled t)
