@@ -200,13 +200,13 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
         Display a poup containing docstring at point
 
-            (use-package el-docstring-at-point
-              :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+            (use-package el-docstring-sap
+              :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
               :hook
-              (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
+              (emacs-lisp-mode . (lambda()(el-docstring-sap-mode +1)))
               :bind
-              ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display)))
-              ("M-<f1>" . (lambda()(interactive)(el-docstring-at-point-mode 'toggle))))
+              ("M-<f2>" . (lambda()(interactive)(el-docstring-sap--display)))
+              ("M-<f1>" . (lambda()(interactive)(el-docstring-sap-mode 'toggle))))
 
     5.  Elisp debugging
 
@@ -591,7 +591,38 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
         (setq-default abbrev-mode 1)
 
-3.  provide
+3.  Corfu completion     :corfu:
+
+        ;; Configure corfu
+        (use-package corfu
+          :straight (corfu :type git :host github :repo "minad/corfu")
+          ;; Optionally use TAB for cycling, default is `corfu-complete'.
+          ;; :bind (:map corfu-map
+          ;;        ("TAB" . corfu-next)
+          ;;        ("S-TAB" . corfu-previous))
+
+          ;; Enable the overlay only for certain modes.
+          ;; For example it is not a useful UI for completions at point in the
+          ;; minibuffer.
+          :hook ((prog-mode . corfu-mode)
+                 (eshell-mode . corfu-mode))
+
+          :config
+
+          ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
+          ;; (setq corfu-cycle t)
+          )
+        ;; A few more useful configurations...
+        (use-package emacs
+          :init
+          ;; TAB cycle if there are only few candidates
+          (setq completion-cycle-threshold 3)
+
+          ;; Enable indentation+completion using the TAB key.
+          ;; Completion is often bound to M-TAB.
+          (setq tab-always-indent 'complete))
+
+4.  provide
 
         (provide 'rgr/completion)
 
@@ -969,7 +1000,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7caa35f)
+See `org-agenda-files` [org-agenda-files](#orgbfc6c2f)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2390,6 +2421,8 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
 
 ### Version Control     :git:vc:
+
+    (setq vc-handled-backends nil)
 
 1.  It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs     :magit:
 

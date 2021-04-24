@@ -578,6 +578,8 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (flycheck-pos-tip-mode)
   (global-flycheck-mode))
 
+(setq vc-handled-backends nil)
+
 ;; (use-package
 ;;   diff-hl
 ;;   :init (global-diff-hl-mode 1))

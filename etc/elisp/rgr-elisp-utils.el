@@ -38,13 +38,13 @@
     (cl-assert (eq (point) (point-min)))
     (read (current-buffer))))
 
-(use-package el-docstring-at-point
-  :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+(use-package el-docstring-sap
+  :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
   :hook
-  (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
+  (emacs-lisp-mode . (lambda()(el-docstring-sap-mode +1)))
   :bind
-  ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display)))
-  ("M-<f1>" . (lambda()(interactive)(el-docstring-at-point-mode 'toggle))))
+  ("M-<f2>" . (lambda()(interactive)(el-docstring-sap--display)))
+  ("M-<f1>" . (lambda()(interactive)(el-docstring-sap-mode 'toggle))))
 
 (use-package
   edebug-x

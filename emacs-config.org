@@ -1,7 +1,7 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: rileyrg
 #+EMAIL: rileyrg at g mx dot de
-#+DESCRIPTION: emacs configuration orientated around lsp-mode,dap and company-mode
+#+DESCRIPTION: emacs configuration
 #+LANGUAGE: en
 #+STARTUP: overview
 
@@ -282,13 +282,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
       Display a poup containing docstring at point
       #+begin_src emacs-lisp
-        (use-package el-docstring-at-point
-          :straight (el-docstring-at-point :local-repo "~/development/projects/emacs/el-docstring-at-point" :type git :host github :repo "rileyrg/el-docstring-at-point" )
+        (use-package el-docstring-sap
+          :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
           :hook
-          (emacs-lisp-mode . (lambda()(el-docstring-at-point-mode +1)))
+          (emacs-lisp-mode . (lambda()(el-docstring-sap-mode +1)))
           :bind
-          ("M-<f2>" . (lambda()(interactive)(el-docstring-at-point--display)))
-          ("M-<f1>" . (lambda()(interactive)(el-docstring-at-point-mode 'toggle))))
+          ("M-<f2>" . (lambda()(interactive)(el-docstring-sap--display)))
+          ("M-<f1>" . (lambda()(interactive)(el-docstring-sap-mode 'toggle))))
       #+end_src
 ***** Elisp debugging
       :PROPERTIES:
@@ -779,7 +779,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
            (company-prescient-mode +1))
          :bind ("C-<tab>" . company-complete))
      #+end_src
-**** STARTED Corfu completion                                         :corfu:
+**** Corfu completion                                                 :corfu:
      :LOGBOOK:
      - State "STARTED"    from "WAITING"    [2021-04-18 So 00:33]
      - State "WAITING"    from              [2021-04-18 So 00:28] \\
@@ -2851,6 +2851,9 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
     :PROPERTIES:
     :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
     :END:
+    #+begin_src emacs-lisp
+    (setq vc-handled-backends nil)
+    #+end_src
 **** It's [[https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs                         :magit:
      :PROPERTIES:
      :ID:       af65c6af-be13-4c09-87ae-a128711ddc14
