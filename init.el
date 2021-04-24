@@ -1,5 +1,6 @@
 (defvar bootstrap-version)
-(setq straight-base-dir (expand-file-name "etc" user-emacs-directory))
+(setq straight-base-dir (expand-file-name "" user-emacs-directory))
+(setq straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
       (bootstrap-version 5))
@@ -327,6 +328,8 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ("M-<right>" . next-buffer))
 
 (use-package ace-window
+  :init
+  (defalias 'other-window 'ace-window)
   :bind*
   ("M-o" . ace-window)
   ("M-S o" . ace-delete-window))
