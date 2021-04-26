@@ -90,7 +90,8 @@
 
 (use-package centaur-tabs
   :straight ( :local-repo "~/development/projects/emacs/centaur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
-  :demand
+  :init
+  (centaur-tabs-mode +1)
   :custom
   (centaur-tabs-enable-ido-completion nil)
   (centaur-tabs-set-bar 'under)
@@ -100,10 +101,11 @@
   :config
   (centaur-tabs-enable-buffer-reordering)
   (centaur-tabs-group-by-projectile-project)
-  (centaur-tabs-mode +1)
   :bind
-  ("C-<next>" . centaur-tabs-backward)
-  ("C-<prior>" . centaur-tabs-forward)
+  ("C-<next>" . centaur-tabs-backward-group)
+  ("C-<prior>" . centaur-tabs-forward-group)
+  ("M-<next>" . centaur-tabs-backward)
+  ("M-<prior>" . centaur-tabs-forward)
   ("C-x t s" . centaur-tabs-switch-group))
 
 (save-place-mode +1)

@@ -887,7 +887,8 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
             (use-package centaur-tabs
               :straight ( :local-repo "~/development/projects/emacs/centaur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
-              :demand
+              :init
+              (centaur-tabs-mode +1)
               :custom
               (centaur-tabs-enable-ido-completion nil)
               (centaur-tabs-set-bar 'under)
@@ -897,10 +898,11 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :config
               (centaur-tabs-enable-buffer-reordering)
               (centaur-tabs-group-by-projectile-project)
-              (centaur-tabs-mode +1)
               :bind
-              ("C-<next>" . centaur-tabs-backward)
-              ("C-<prior>" . centaur-tabs-forward)
+              ("C-<next>" . centaur-tabs-backward-group)
+              ("C-<prior>" . centaur-tabs-forward-group)
+              ("M-<next>" . centaur-tabs-backward)
+              ("M-<prior>" . centaur-tabs-forward)
               ("C-x t s" . centaur-tabs-switch-group))
 
 6.  Memory
@@ -1001,7 +1003,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org0cdb22c)
+See `org-agenda-files` [org-agenda-files](#orgb7547f3)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
