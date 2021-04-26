@@ -132,11 +132,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
               (end-of-line)
               (newline-and-indent))
 
-    2.  scratch
-
-            (use-package scratch)
-
-    3.  provide
+    2.  provide
 
             (provide 'rgr/utils)
 
@@ -148,7 +144,14 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 
-1.  rgr/elisp-utils library
+1.  scratch
+
+        (use-package scratch
+          :bind ("<f2>" . (lambda()
+                            (interactive)
+                            (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*")))))
+
+2.  rgr/elisp-utils library
 
     1.  elisp checks
 
@@ -163,6 +166,12 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               ;; Note that the built-in `describe-function' includes both functions
               ;; and macros. `helpful-function' is functions only, so we provide
               ;; `helpful-callable' as a drop-in replacement.
+              (global-set-key (kbd "C-h e")
+                              (lambda()
+                                (interactive)
+                                (if(get-buffer "*info*")
+                                    (switch-to-buffer "*info*")
+                                  (info "elisp"))))
               (global-set-key (kbd "C-h f") #'helpful-callable)
 
               (global-set-key (kbd "C-h v") #'helpful-variable)
@@ -1003,7 +1012,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb7547f3)
+See `org-agenda-files` [org-agenda-files](#orgebf1be6)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1744,21 +1753,11 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ### General
 
-    (global-set-key (kbd "C-<f2>") 'rgr/toggle-buffer)
-    (global-set-key (kbd "C-h d") (lambda()(interactive)(apropos-documentation (symbol-or-region-at-point-as-string-or-prompt))))
-    (defun kill-next-window ()
-      "If there are multiple windows, then close the other pane and kill the buffer in it also."
-      (interactive)
-      (if (not (one-window-p))(progn
-                                (other-window 1)
-                                (kill-this-buffer))
-        (message "no next window to kill!")))
-    (global-set-key (kbd "C-x k") 'kill-current-buffer)
-    (global-set-key (kbd "C-x K") 'kill-next-window)
-    (defun rgr/switch-to-buffer-list (buffer alist)
-      (message "in rgr/switch-to-buffer-list")
-      (select-window  (display-buffer-use-some-window buffer alist)))
-    (add-hook 'before-save-hook 'delete-trailing-whitespace)
+    (use-package emacs
+      :demand
+      :config
+      (add-hook 'before-save-hook 'delete-trailing-whitespace)
+      :bind ("C-x k" . 'kill-current-buffer))
 
 
 ### Buffer selection
@@ -2375,9 +2374,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package projectile
       :custom
       (projectile-completion-system 'default)
-      :config
+      :init
       (projectile-mode +1)
-      :bind ("<f2>" . 'projectile-dired)
+      :bind
       ("<f5>" . 'projectile-switch-project)
       ("<f12>" . projectile-run-eshell)
       ("M-<RET>" . projectile-run-eshell)
@@ -2427,21 +2426,18 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
 ### Version Control     :git:vc:
 
-    (setq vc-handled-backends nil)
-
 1.  It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs     :magit:
 
     magit
 
-        ;; (use-package
-        ;;   diff-hl
-        ;;   :init (global-diff-hl-mode 1))
-
         (use-package
           magit
+          :custom
+          (vc-handled-backends '(git))
           :config
           (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-          :bind* ("C-x g" . magit-status))
+          :bind
+          ("C-x g" . magit-status))
 
     1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents     :CANCELLED:
 

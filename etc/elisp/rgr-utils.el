@@ -15,6 +15,4 @@
   (end-of-line)
   (newline-and-indent))
 
-(use-package scratch)
-
 (provide 'rgr/utils)

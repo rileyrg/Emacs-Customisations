@@ -188,13 +188,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           (end-of-line)
           (newline-and-indent))
       #+end_src
-***** scratch
-      :PROPERTIES:
-      :ID:       563d21f1-803e-40b1-9689-fa95ca9f44c3
-      :END:
-      #+begin_src emacs-lisp
-        (use-package scratch)
-      #+end_src
 ***** provide
       :PROPERTIES:
       :ID:       1a15ae4d-fd90-4a41-b8d5-1efbec77bf8d
@@ -213,6 +206,16 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
     #+end_src
 
+**** scratch
+     :PROPERTIES:
+     :ID:       563d21f1-803e-40b1-9689-fa95ca9f44c3
+     :END:
+     #+begin_src emacs-lisp
+       (use-package scratch
+         :bind ("<f2>" . (lambda()
+                           (interactive)
+                           (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*")))))
+     #+end_src
 **** rgr/elisp-utils library
      :PROPERTIES:
      :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp-utils.el" elisp-dir)
@@ -237,6 +240,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           ;; Note that the built-in `describe-function' includes both functions
           ;; and macros. `helpful-function' is functions only, so we provide
           ;; `helpful-callable' as a drop-in replacement.
+          (global-set-key (kbd "C-h e")
+                          (lambda()
+                            (interactive)
+                            (if(get-buffer "*info*")
+                                (switch-to-buffer "*info*")
+                              (info "elisp"))))
           (global-set-key (kbd "C-h f") #'helpful-callable)
 
           (global-set-key (kbd "C-h v") #'helpful-variable)
@@ -2161,21 +2170,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :ID:       d8dd73d0-9574-42a4-a23a-b211c17de532
     :END:
     #+begin_src emacs-lisp
-      (global-set-key (kbd "C-<f2>") 'rgr/toggle-buffer)
-      (global-set-key (kbd "C-h d") (lambda()(interactive)(apropos-documentation (symbol-or-region-at-point-as-string-or-prompt))))
-      (defun kill-next-window ()
-        "If there are multiple windows, then close the other pane and kill the buffer in it also."
-        (interactive)
-        (if (not (one-window-p))(progn
-                                  (other-window 1)
-                                  (kill-this-buffer))
-          (message "no next window to kill!")))
-      (global-set-key (kbd "C-x k") 'kill-current-buffer)
-      (global-set-key (kbd "C-x K") 'kill-next-window)
-      (defun rgr/switch-to-buffer-list (buffer alist)
-        (message "in rgr/switch-to-buffer-list")
-        (select-window  (display-buffer-use-some-window buffer alist)))
-      (add-hook 'before-save-hook 'delete-trailing-whitespace)
+      (use-package emacs
+        :demand
+        :config
+        (add-hook 'before-save-hook 'delete-trailing-whitespace)
+        :bind ("C-x k" . 'kill-current-buffer))
     #+end_src
 *** Buffer selection
     :PROPERTIES:
@@ -2794,9 +2793,9 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
       (use-package projectile
         :custom
         (projectile-completion-system 'default)
-        :config
+        :init
         (projectile-mode +1)
-        :bind ("<f2>" . 'projectile-dired)
+        :bind
         ("<f5>" . 'projectile-switch-project)
         ("<f12>" . projectile-run-eshell)
         ("M-<RET>" . projectile-run-eshell)
@@ -2856,9 +2855,6 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
     :PROPERTIES:
     :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
     :END:
-    #+begin_src emacs-lisp
-    (setq vc-handled-backends nil)
-    #+end_src
 **** It's [[https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs                         :magit:
      :PROPERTIES:
      :ID:       af65c6af-be13-4c09-87ae-a128711ddc14
@@ -2867,15 +2863,14 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
      magit
      :END:
      #+begin_src emacs-lisp
-       ;; (use-package
-       ;;   diff-hl
-       ;;   :init (global-diff-hl-mode 1))
-
        (use-package
          magit
+         :custom
+         (vc-handled-backends '(git))
          :config
          (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-         :bind* ("C-x g" . magit-status))
+         :bind
+         ("C-x g" . magit-status))
      #+end_src
 ***** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
       :PROPERTIES:

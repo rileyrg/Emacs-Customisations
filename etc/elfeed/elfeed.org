@@ -14,7 +14,7 @@
 *** Emacs                                                    :emacs:mustread:
 **** http://www.terminally-incoherent.com/blog/feed
 **** http://nullprogram.com/feed
-**** entry-title: \(emacs\|org-mode\)
+**** https://blog.tecosaur.com/tmio/rss.xml
 **** http://planet.emacsen.org/atom.xml
 **** http://www.masteringemacs.org/feed
 **** https://emacs.stackexchange.com/feeds                   :stack:exchange:

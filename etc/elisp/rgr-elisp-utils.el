@@ -7,6 +7,12 @@
   ;; Note that the built-in `describe-function' includes both functions
   ;; and macros. `helpful-function' is functions only, so we provide
   ;; `helpful-callable' as a drop-in replacement.
+  (global-set-key (kbd "C-h e")
+                  (lambda()
+                    (interactive)
+                    (if(get-buffer "*info*")
+                        (switch-to-buffer "*info*")
+                      (info "elisp"))))
   (global-set-key (kbd "C-h f") #'helpful-callable)
 
   (global-set-key (kbd "C-h v") #'helpful-variable)

@@ -63,6 +63,11 @@
 
 (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 
+(use-package scratch
+  :bind ("<f2>" . (lambda()
+                    (interactive)
+                    (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*")))))
+
 (require 'rgr/daemon "rgr-daemon" 'NOERROR)
 
 (require 'rgr/minibuffer "rgr-minibuffer" 'NOERROR)
@@ -218,21 +223,11 @@ creates a report in function-name.ftrace and opens it in a buffer"
     (switch-to-buffer (if (string= (buffer-name) n)
                           (other-buffer) n))))
 
-(global-set-key (kbd "C-<f2>") 'rgr/toggle-buffer)
-(global-set-key (kbd "C-h d") (lambda()(interactive)(apropos-documentation (symbol-or-region-at-point-as-string-or-prompt))))
-(defun kill-next-window ()
-  "If there are multiple windows, then close the other pane and kill the buffer in it also."
-  (interactive)
-  (if (not (one-window-p))(progn
-                            (other-window 1)
-                            (kill-this-buffer))
-    (message "no next window to kill!")))
-(global-set-key (kbd "C-x k") 'kill-current-buffer)
-(global-set-key (kbd "C-x K") 'kill-next-window)
-(defun rgr/switch-to-buffer-list (buffer alist)
-  (message "in rgr/switch-to-buffer-list")
-  (select-window  (display-buffer-use-some-window buffer alist)))
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(use-package emacs
+  :demand
+  :config
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  :bind ("C-x k" . 'kill-current-buffer))
 
 (use-package dired-git
   :config
@@ -547,9 +542,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package projectile
   :custom
   (projectile-completion-system 'default)
-  :config
+  :init
   (projectile-mode +1)
-  :bind ("<f2>" . 'projectile-dired)
+  :bind
   ("<f5>" . 'projectile-switch-project)
   ("<f12>" . projectile-run-eshell)
   ("M-<RET>" . projectile-run-eshell)
@@ -581,17 +576,14 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (flycheck-pos-tip-mode)
   (global-flycheck-mode))
 
-(setq vc-handled-backends nil)
-
-;; (use-package
-;;   diff-hl
-;;   :init (global-diff-hl-mode 1))
-
 (use-package
   magit
+  :custom
+  (vc-handled-backends '(git))
   :config
   (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-  :bind* ("C-x g" . magit-status))
+  :bind
+  ("C-x g" . magit-status))
 
 (use-package orgit
   :after magit)
