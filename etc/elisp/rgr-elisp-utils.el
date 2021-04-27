@@ -2,6 +2,8 @@
   "return non nil if this buffer edits elisp"
   (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 
+(use-package package-lint)
+
 (use-package helpful
   :config
   ;; Note that the built-in `describe-function' includes both functions
@@ -65,16 +67,6 @@
     (interactive)
     (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
   )
-
-(use-package
-  auto-compile
-  :demand
-  :config
-  (auto-compile-on-load-mode 1)
-  (auto-compile-on-save-mode 1))
-
-;; (when (memq window-system '(mac ns x))
-;;   (exec-path-from-shell-initialize))
 
 (use-package
   elisp-format

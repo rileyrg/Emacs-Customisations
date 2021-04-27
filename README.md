@@ -1,5 +1,7 @@
 This file generates [init.el](init.el) and other [org files](etc/elisp/)  using [org-babel-tangle](https://orgmode.org/manual/Extracting-Source-Code.html)
 
+    ;;; init.el --- init  -*- no-byte-compile: t -*-
+
 
 # [straight.el](https://github.com/raxod502/straight.el#bootstrapping-straightel) package management
 
@@ -59,6 +61,20 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/)  using 
     (add-to-list 'load-path elisp-dir)
     (let ((default-directory elisp-dir))
       (normal-top-level-add-subdirs-to-load-path))
+
+
+## Auto-compile
+
+    ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+    (use-package
+      auto-compile
+      :init
+      (setq load-prefer-newer t)
+      (auto-compile-on-load-mode 1)
+      (auto-compile-on-save-mode 1))
+    (provide 'rgr/early-init)
+
+    (require 'rgr/early-init "rgr-early-init")
 
 
 ## Customization
@@ -137,7 +153,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (provide 'rgr/utils)
 
 
-### Emacs Lisp, ELisp Utils
+### Emacs Lisp, ELisp Utils     :elisp:utils:
 
 Load this relatively early in order to have utils available if there's a faied load
 Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
@@ -159,7 +175,13 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               "return non nil if this buffer edits elisp"
               (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 
-    2.  helpful, enriched elisp help
+    2.  linting     :lint:
+
+        [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
+
+            (use-package package-lint)
+
+    3.  helpful, enriched elisp help
 
             (use-package helpful
               :config
@@ -193,7 +215,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               ;; look at interactive functions.
               (global-set-key (kbd "C-h C") #'helpful-command))
 
-    3.  read and write elisp vars to file
+    4.  read and write elisp vars to file
 
 
             (defun rgr/elisp-write-var (f v)
@@ -206,7 +228,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                 (cl-assert (eq (point) (point-min)))
                 (read (current-buffer))))
 
-    4.  elisp popup context help     :popup:elisp:
+    5.  elisp popup context help     :popup:elisp:
 
         Display a poup containing docstring at point
 
@@ -218,7 +240,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               ("M-<f2>" . (lambda()(interactive)(el-docstring-sap--display)))
               ("M-<f1>" . (lambda()(interactive)(el-docstring-sap-mode 'toggle))))
 
-    5.  Elisp debugging
+    6.  Elisp debugging
 
             (use-package
               edebug-x
@@ -233,18 +255,6 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                 (interactive)
                 (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
               )
-
-    6.  Auto-compile
-
-            (use-package
-              auto-compile
-              :demand
-              :config
-              (auto-compile-on-load-mode 1)
-              (auto-compile-on-save-mode 1))
-
-            ;; (when (memq window-system '(mac ns x))
-            ;;   (exec-path-from-shell-initialize))
 
     7.  Formatting
 
@@ -1012,7 +1022,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgebf1be6)
+See `org-agenda-files` [org-agenda-files](#org397a1e6)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1097,10 +1107,9 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
         )
 
       :bind (("C-<f8>" . flyspell-mode)
+             ("S-<f8>" . flyspell-check-previous-highlighted-word)
              ("C-S-<f8>" . flyspell-buffer)
              ("M-<f8>" . flyspell-word)
-             ("<f8>" . flyspell-check-next-highlighted-word)
-             ("S-<f8>" . flyspell-check-previous-highlighted-word)
              ))
 
 
@@ -2414,14 +2423,18 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
     (use-package
       flycheck
-      :demand
       :custom
       (flycheck-global-modes '(not org-mode))
       (flycheck-emacs-lisp-load-path 'inherit)
       :config (use-package
-                flycheck-pos-tip)
-      (flycheck-pos-tip-mode)
-      (global-flycheck-mode))
+                flycheck-pos-tip
+                :config
+                (flycheck-pos-tip-mode))
+      :bind ("<f8>" . (lambda()
+                        (interactive)
+                        (flycheck-mode 'toggle)
+                        (let((s (if flycheck-mode "on" "off")))
+                          (message "flycheck %s" s)))))
 
 
 ### Version Control     :git:vc:

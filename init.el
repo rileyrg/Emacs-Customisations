@@ -1,3 +1,5 @@
+;;; init.el --- init  -*- no-byte-compile: t -*-
+
 (defvar bootstrap-version)
 (setq straight-base-dir (expand-file-name "" user-emacs-directory))
 (setq straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
@@ -39,6 +41,8 @@
 (add-to-list 'load-path elisp-dir)
 (let ((default-directory elisp-dir))
   (normal-top-level-add-subdirs-to-load-path))
+
+(require 'rgr/early-init "rgr-early-init")
 
 (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
 (load custom-file 'noerror)
@@ -131,10 +135,9 @@
     )
 
   :bind (("C-<f8>" . flyspell-mode)
+         ("S-<f8>" . flyspell-check-previous-highlighted-word)
          ("C-S-<f8>" . flyspell-buffer)
          ("M-<f8>" . flyspell-word)
-         ("<f8>" . flyspell-check-next-highlighted-word)
-         ("S-<f8>" . flyspell-check-previous-highlighted-word)
          ))
 
 (use-package
@@ -567,14 +570,18 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package
   flycheck
-  :demand
   :custom
   (flycheck-global-modes '(not org-mode))
   (flycheck-emacs-lisp-load-path 'inherit)
   :config (use-package
-            flycheck-pos-tip)
-  (flycheck-pos-tip-mode)
-  (global-flycheck-mode))
+            flycheck-pos-tip
+            :config
+            (flycheck-pos-tip-mode))
+  :bind ("<f8>" . (lambda()
+                    (interactive)
+                    (flycheck-mode 'toggle)
+                    (let((s (if flycheck-mode "on" "off")))
+                      (message "flycheck %s" s)))))
 
 (use-package
   magit

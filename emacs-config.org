@@ -27,6 +27,10 @@
 
 This file generates [[file:init.el::defvar bootstrap-version][init.el]] and other [[file:etc/elisp/][org files]]  using [[https://orgmode.org/manual/Extracting-Source-Code.html][org-babel-tangle]]
 
+#+begin_src emacs-lisp
+  ;;; init.el --- init  -*- no-byte-compile: t -*-
+#+end_src
+
 * [[https://github.com/raxod502/straight.el#bootstrapping-straightel][straight.el]] package management
   :PROPERTIES:
   :ID:       7be978df-ed2c-4d29-b5b2-da0039312e68
@@ -98,6 +102,23 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       (let ((default-directory elisp-dir))
         (normal-top-level-add-subdirs-to-load-path))
     #+end_src
+** Auto-compile
+   :PROPERTIES:
+   :ID:       32e5b009-9695-4c8e-8208-4bfa9e6adfac
+   :END:
+#+begin_src emacs-lisp :tangle (expand-file-name "rgr-early-init.el" elisp-dir)
+  ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+  (use-package
+    auto-compile
+    :init
+    (setq load-prefer-newer t)
+    (auto-compile-on-load-mode 1)
+    (auto-compile-on-save-mode 1))
+  (provide 'rgr/early-init)
+#+end_src
+#+begin_src emacs-lisp
+  (require 'rgr/early-init "rgr-early-init")
+#+end_src
 ** Customization
    :PROPERTIES:
    :ID:       302b803c-5c00-4afa-8bea-46b03beefd91
@@ -195,7 +216,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       #+begin_src emacs-lisp
         (provide 'rgr/utils)
       #+end_src
-*** Emacs Lisp, ELisp Utils
+*** Emacs Lisp, ELisp Utils                                     :elisp:utils:
     :PROPERTIES:
     :ID:       eb119ffb-f073-4fe0-a8f4-b031291d9e4d
     :END:
@@ -229,6 +250,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         (defun rgr/elisp-edit-mode()
           "return non nil if this buffer edits elisp"
           (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
+      #+end_src
+***** linting                                                          :lint:
+      [[https://github.com/purcell/package-lint][package-lint]] provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
+      #+begin_src emacs-lisp
+        (use-package package-lint)
       #+end_src
 ***** helpful, enriched elisp help
       :PROPERTIES:
@@ -322,21 +348,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
       #+RESULTS:
       | myELisp | edebug-x-mode |
-***** Auto-compile
-      :PROPERTIES:
-      :ID:       32e5b009-9695-4c8e-8208-4bfa9e6adfac
-      :END:
-      #+begin_src emacs-lisp
-        (use-package
-          auto-compile
-          :demand
-          :config
-          (auto-compile-on-load-mode 1)
-          (auto-compile-on-save-mode 1))
-
-        ;; (when (memq window-system '(mac ns x))
-        ;;   (exec-path-from-shell-initialize))
-      #+end_src
 ***** Formatting
       :PROPERTIES:
       :ID:       d360a0c5-e21a-445b-a9ae-d97d33dce966
@@ -1416,11 +1427,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           )
 
         :bind (("C-<f8>" . flyspell-mode)
+               ("S-<f8>" . flyspell-check-previous-highlighted-word)
                ("C-S-<f8>" . flyspell-buffer)
                ("M-<f8>" . flyspell-word)
-               ("<f8>" . flyspell-check-next-highlighted-word)
-               ("S-<f8>" . flyspell-check-previous-highlighted-word)
                ))
+
 
     #+end_src
 *** rg, ripgrep
@@ -2842,14 +2853,18 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
     #+begin_src emacs-lisp
       (use-package
         flycheck
-        :demand
         :custom
         (flycheck-global-modes '(not org-mode))
         (flycheck-emacs-lisp-load-path 'inherit)
         :config (use-package
-                  flycheck-pos-tip)
-        (flycheck-pos-tip-mode)
-        (global-flycheck-mode))
+                  flycheck-pos-tip
+                  :config
+                  (flycheck-pos-tip-mode))
+        :bind ("<f8>" . (lambda()
+                          (interactive)
+                          (flycheck-mode 'toggle)
+                          (let((s (if flycheck-mode "on" "off")))
+                            (message "flycheck %s" s)))))
     #+end_src
 *** Version Control                                                  :git:vc:
     :PROPERTIES:
