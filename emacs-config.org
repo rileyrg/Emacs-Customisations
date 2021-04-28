@@ -53,8 +53,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
     (setq straight-use-package-by-default t)
 
-    (eval-when-compile
-      (straight-use-package 'use-package))
+    (straight-use-package 'use-package)
 
     (use-package straight
       :custom
@@ -321,10 +320,11 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         (use-package el-docstring-sap
           :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
           :hook
-          (emacs-lisp-mode . (lambda()(el-docstring-sap-mode +1)))
+          (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
-          ("M-<f2>" . (lambda()(interactive)(el-docstring-sap--display)))
-          ("M-<f1>" . (lambda()(interactive)(el-docstring-sap-mode 'toggle))))
+          ("M-<f2>" . 'el-docstring-sap--display)
+          ("M-<f1>" . 'el-docstring-sap-mode))
+
       #+end_src
 ***** Elisp debugging
       :PROPERTIES:
@@ -2854,12 +2854,14 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
       (use-package
         flycheck
         :custom
-        (flycheck-global-modes '(not org-mode))
+        ;;(flycheck-global-modes '(not org-mode))
         (flycheck-emacs-lisp-load-path 'inherit)
+        ;;(flycheck-check-syntax-automatically '(save))
         :config (use-package
                   flycheck-pos-tip
                   :config
                   (flycheck-pos-tip-mode))
+        (global-flycheck-mode +1)
         :bind ("<f8>" . (lambda()
                           (interactive)
                           (flycheck-mode 'toggle)

@@ -17,8 +17,7 @@
 
 (setq straight-use-package-by-default t)
 
-(eval-when-compile
-  (straight-use-package 'use-package))
+(straight-use-package 'use-package)
 
 (use-package straight
   :custom
@@ -571,12 +570,14 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package
   flycheck
   :custom
-  (flycheck-global-modes '(not org-mode))
+  ;;(flycheck-global-modes '(not org-mode))
   (flycheck-emacs-lisp-load-path 'inherit)
+  ;;(flycheck-check-syntax-automatically '(save))
   :config (use-package
             flycheck-pos-tip
             :config
             (flycheck-pos-tip-mode))
+  (global-flycheck-mode +1)
   :bind ("<f8>" . (lambda()
                     (interactive)
                     (flycheck-mode 'toggle)

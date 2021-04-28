@@ -22,8 +22,7 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/)  using 
 
     (setq straight-use-package-by-default t)
 
-    (eval-when-compile
-      (straight-use-package 'use-package))
+    (straight-use-package 'use-package)
 
     (use-package straight
       :custom
@@ -235,10 +234,10 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
             (use-package el-docstring-sap
               :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
               :hook
-              (emacs-lisp-mode . (lambda()(el-docstring-sap-mode +1)))
+              (emacs-lisp-mode . el-docstring-sap-mode)
               :bind
-              ("M-<f2>" . (lambda()(interactive)(el-docstring-sap--display)))
-              ("M-<f1>" . (lambda()(interactive)(el-docstring-sap-mode 'toggle))))
+              ("M-<f2>" . 'el-docstring-sap--display)
+              ("M-<f1>" . 'el-docstring-sap-mode))
 
     6.  Elisp debugging
 
@@ -1022,7 +1021,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org397a1e6)
+See `org-agenda-files` [org-agenda-files](#orga53523f)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2424,12 +2423,14 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     (use-package
       flycheck
       :custom
-      (flycheck-global-modes '(not org-mode))
+      ;;(flycheck-global-modes '(not org-mode))
       (flycheck-emacs-lisp-load-path 'inherit)
+      ;;(flycheck-check-syntax-automatically '(save))
       :config (use-package
                 flycheck-pos-tip
                 :config
                 (flycheck-pos-tip-mode))
+      (global-flycheck-mode +1)
       :bind ("<f8>" . (lambda()
                         (interactive)
                         (flycheck-mode 'toggle)

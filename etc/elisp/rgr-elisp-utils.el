@@ -49,10 +49,10 @@
 (use-package el-docstring-sap
   :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
   :hook
-  (emacs-lisp-mode . (lambda()(el-docstring-sap-mode +1)))
+  (emacs-lisp-mode . el-docstring-sap-mode)
   :bind
-  ("M-<f2>" . (lambda()(interactive)(el-docstring-sap--display)))
-  ("M-<f1>" . (lambda()(interactive)(el-docstring-sap-mode 'toggle))))
+  ("M-<f2>" . 'el-docstring-sap--display)
+  ("M-<f1>" . 'el-docstring-sap-mode))
 
 (use-package
   edebug-x
