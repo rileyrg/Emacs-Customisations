@@ -251,6 +251,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
       #+end_src
 ***** linting                                                          :lint:
+      :PROPERTIES:
+      :ID:       2f4d8bac-b94c-4bd8-bf58-b08cb86bc0a7
+      :END:
       [[https://github.com/purcell/package-lint][package-lint]] provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
       #+begin_src emacs-lisp
         (use-package package-lint)
@@ -2185,7 +2188,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         :demand
         :config
         (add-hook 'before-save-hook 'delete-trailing-whitespace)
-        :bind ("C-x k" . 'kill-current-buffer))
+        :bind
+        ("C-x k" . 'kill-current-buffer)
+        ("M-0" . 'delete-window)
+        ("M-1" . 'delete-other-windows))
     #+end_src
 *** Buffer selection
     :PROPERTIES:
@@ -2483,7 +2489,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (use-package treemacs-projectile)
        (use-package treemacs-magit)
        :bind
-       ("M-0"   . 'treemacs-select-window)
+       ("M-9"   . 'treemacs-select-window)
        (:map treemacs-mode-map
              ("<right>" . treemacs-peek)))
 

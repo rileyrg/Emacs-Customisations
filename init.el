@@ -229,7 +229,10 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :demand
   :config
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  :bind ("C-x k" . 'kill-current-buffer))
+  :bind
+  ("C-x k" . 'kill-current-buffer)
+  ("M-0" . 'delete-window)
+  ("M-1" . 'delete-other-windows))
 
 (use-package dired-git
   :config
@@ -368,7 +371,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (use-package treemacs-projectile)
   (use-package treemacs-magit)
   :bind
-  ("M-0"   . 'treemacs-select-window)
+  ("M-9"   . 'treemacs-select-window)
   (:map treemacs-mode-map
         ("<right>" . treemacs-peek)))
 
