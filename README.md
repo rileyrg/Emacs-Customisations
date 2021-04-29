@@ -536,7 +536,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
         (use-package embark
           :ensure t
           :bind
-          (("C-S-a" . embark-act)       ;; pick some comfortable binding
+          (("M-e" . embark-act)       ;; pick some comfortable binding
            ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
           :init
@@ -1021,7 +1021,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orga53523f)
+See `org-agenda-files` [org-agenda-files](#org378f4c1)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1765,7 +1765,10 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
       :demand
       :config
       (add-hook 'before-save-hook 'delete-trailing-whitespace)
-      :bind ("C-x k" . 'kill-current-buffer))
+      :bind
+      ("C-x k" . 'kill-current-buffer)
+      ("M-0" . 'delete-window)
+      ("M-1" . 'delete-other-windows))
 
 
 ### Buffer selection
@@ -2011,7 +2014,7 @@ Excellent [tree based navigation that works really well with projectile.](https:
       (use-package treemacs-projectile)
       (use-package treemacs-magit)
       :bind
-      ("M-0"   . 'treemacs-select-window)
+      ("M-9"   . 'treemacs-select-window)
       (:map treemacs-mode-map
             ("<right>" . treemacs-peek)))
 

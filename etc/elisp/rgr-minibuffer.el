@@ -168,7 +168,7 @@
 (use-package embark
   :ensure t
   :bind
-  (("C-S-a" . embark-act)       ;; pick some comfortable binding
+  (("M-e" . embark-act)       ;; pick some comfortable binding
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
   :init
