@@ -22,7 +22,9 @@
   ("C-c C-l" . org-insert-link)
   ("C-c C-s" . org-schedule)
   ("C-c C-t" . org-todo)
-  (:map org-mode-map  ("M-." . find-function-at-point)))
+  (:map org-mode-map  ("M-." . find-function-at-point)
+        ("<f11>" . org-edit-special))
+  (:map org-src-mode-map ("<f11>" . org-edit-src-exit)))
 
 (require 'org-id)
 

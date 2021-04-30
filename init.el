@@ -573,7 +573,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package
   flycheck
   :custom
-  ;;(flycheck-global-modes '(not org-mode))
+  (flycheck-global-modes '(not org-src-mode))
   (flycheck-emacs-lisp-load-path 'inherit)
   ;;(flycheck-check-syntax-automatically '(save))
   :config (use-package

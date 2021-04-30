@@ -435,7 +435,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ;; C-x bindings (ctl-x-map)
                  ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complet-command
                  ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-                 ("<f10>" . consult-buffer)                ;; orig. switch-to-buffer
                  ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
                  ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
                  ;; Custom M-# bindings for fast register access
@@ -446,6 +445,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ("M-y" . consult-yank-pop)                ;; orig. yank-pop
                  ("<help> a" . consult-apropos)            ;; orig. apropos-command
                  ;; M-g bindings (goto-map)
+                 ("M-g b" . consult-buffer)                ;; orig. switch-to-buffer
                  ("M-g e" . consult-compile-error)
                  ("M-g g" . consult-goto-line)             ;; orig. goto-line
                  ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
@@ -993,7 +993,9 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
           ("C-c C-l" . org-insert-link)
           ("C-c C-s" . org-schedule)
           ("C-c C-t" . org-todo)
-          (:map org-mode-map  ("M-." . find-function-at-point)))
+          (:map org-mode-map  ("M-." . find-function-at-point)
+                ("<f11>" . org-edit-special))
+          (:map org-src-mode-map ("<f11>" . org-edit-src-exit)))
 
     1.  org-id
 
@@ -1021,7 +1023,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org378f4c1)
+See `org-agenda-files` [org-agenda-files](#org8b1cd99)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2426,7 +2428,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     (use-package
       flycheck
       :custom
-      ;;(flycheck-global-modes '(not org-mode))
+      (flycheck-global-modes '(not org-src-mode))
       (flycheck-emacs-lisp-load-path 'inherit)
       ;;(flycheck-check-syntax-automatically '(save))
       :config (use-package
