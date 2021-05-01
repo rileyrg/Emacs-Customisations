@@ -226,7 +226,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
     #+end_src
 
-**** scratch
+**** scratch,messages
      :PROPERTIES:
      :ID:       563d21f1-803e-40b1-9689-fa95ca9f44c3
      :END:
@@ -234,7 +234,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (use-package scratch
          :bind ("<f2>" . (lambda()
                            (interactive)
-                           (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*")))))
+                           (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
+         ("C-<f2>" . (lambda()
+                       (interactive)
+                       (switch-to-buffer(messages-buffer)))))
      #+end_src
 **** rgr/elisp-utils library
      :PROPERTIES:
@@ -325,8 +328,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
-          ("M-<f2>" . 'el-docstring-sap--display)
-          ("M-<f1>" . 'el-docstring-sap-mode))
+          ("M-<f2>" . el-docstring-sap--display)
+          ("M-<f1>" . el-docstring-sap-mode))
 
       #+end_src
 ***** Elisp debugging
@@ -2863,7 +2866,7 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
       (use-package
         flycheck
         :custom
-        (flycheck-global-modes '(not org-src-mode))
+        (flycheck-global-modes '(not org-mode org-src-mode))
         (flycheck-emacs-lisp-load-path 'inherit)
         ;;(flycheck-check-syntax-automatically '(save))
         :config (use-package

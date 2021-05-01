@@ -159,12 +159,15 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 
-1.  scratch
+1.  scratch,messages
 
         (use-package scratch
           :bind ("<f2>" . (lambda()
                             (interactive)
-                            (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*")))))
+                            (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
+          ("C-<f2>" . (lambda()
+                        (interactive)
+                        (switch-to-buffer(messages-buffer)))))
 
 2.  rgr/elisp-utils library
 
@@ -236,8 +239,8 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
               :hook
               (emacs-lisp-mode . el-docstring-sap-mode)
               :bind
-              ("M-<f2>" . 'el-docstring-sap--display)
-              ("M-<f1>" . 'el-docstring-sap-mode))
+              ("M-<f2>" . el-docstring-sap--display)
+              ("M-<f1>" . el-docstring-sap-mode))
 
     6.  Elisp debugging
 
@@ -1023,7 +1026,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org8b1cd99)
+See `org-agenda-files` [org-agenda-files](#org89f1a75)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2428,7 +2431,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     (use-package
       flycheck
       :custom
-      (flycheck-global-modes '(not org-src-mode))
+      (flycheck-global-modes '(not org-mode org-src-mode))
       (flycheck-emacs-lisp-load-path 'inherit)
       ;;(flycheck-check-syntax-automatically '(save))
       :config (use-package

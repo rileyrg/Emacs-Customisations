@@ -51,8 +51,8 @@
   :hook
   (emacs-lisp-mode . el-docstring-sap-mode)
   :bind
-  ("M-<f2>" . 'el-docstring-sap--display)
-  ("M-<f1>" . 'el-docstring-sap-mode))
+  ("M-<f2>" . el-docstring-sap--display)
+  ("M-<f1>" . el-docstring-sap-mode))
 
 (use-package
   edebug-x

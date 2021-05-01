@@ -69,7 +69,10 @@
 (use-package scratch
   :bind ("<f2>" . (lambda()
                     (interactive)
-                    (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*")))))
+                    (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
+  ("C-<f2>" . (lambda()
+                (interactive)
+                (switch-to-buffer(messages-buffer)))))
 
 (require 'rgr/daemon "rgr-daemon" 'NOERROR)
 
@@ -573,7 +576,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package
   flycheck
   :custom
-  (flycheck-global-modes '(not org-src-mode))
+  (flycheck-global-modes '(not org-mode org-src-mode))
   (flycheck-emacs-lisp-load-path 'inherit)
   ;;(flycheck-check-syntax-automatically '(save))
   :config (use-package
