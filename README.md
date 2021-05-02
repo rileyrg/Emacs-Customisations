@@ -994,7 +994,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         JetBrains fonts are nice. See [nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
 
         ```emacs-lisp
-        ;; (set-face-attribute 'default nil :height 60 :family "JetBrainsMono Nerd Font" :foundry "JB")
+        (set-face-attribute 'default nil :height 100 :family "JetBrainsMono Nerd Font" :foundry "JB")
         ```
 
     2.  Darkroom
@@ -1182,7 +1182,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org386c198) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org9ea2406) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles

@@ -1086,7 +1086,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :PROPERTIES:
       :END:
       #+begin_src emacs-lisp
-        ;; (set-face-attribute 'default nil :height 60 :family "JetBrainsMono Nerd Font" :foundry "JB")
+        (set-face-attribute 'default nil :height 100 :family "JetBrainsMono Nerd Font" :foundry "JB")
       #+end_src
 ***** Darkroom
       :PROPERTIES:

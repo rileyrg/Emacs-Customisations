@@ -105,6 +105,7 @@
    '(("\\*Symfony Web Server\\*.*" display-buffer-no-window)
      (popwin:display-buffer-condition popwin:display-buffer-action)))
  '(display-time-mode t)
+ '(el-docstring-sap--display-func 'el-docstring-sap--popup)
  '(el-docstring-sap--posframe-poshandler nil)
  '(eldoc-box-only-multi-line t)
  '(elpy-formatter 'autopep8)

@@ -233,7 +233,13 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :bind
-  ("C-x k" . 'kill-current-buffer)
+  ("C-x k" . (lambda()
+               (interactive)
+               (if (equal (buffer-name) "*scratch*")
+                   (progn
+                     (message "Can't delete *scratch*. Are you mad? Closing window instead.")
+                     (delete-window))
+                 (kill-current-buffer))))
   ("M-0" . 'delete-window)
   ("M-1" . 'delete-other-windows))
 

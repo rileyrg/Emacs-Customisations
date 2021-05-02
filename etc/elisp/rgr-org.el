@@ -33,6 +33,8 @@
 
 (use-package ob-async)
 
-(use-package ox-gfm)
+(use-package
+  ox-gfm
+  :demand)
 
 (provide 'rgr/org)

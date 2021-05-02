@@ -76,7 +76,7 @@
   :bind ("C-c y" . (lambda()(interactive)(call-interactively 'webpaste-paste-region)(deactivate-mark)))
   ("C-c Y" . webpaste-paste-buffer))
 
-;; (set-face-attribute 'default nil :height 60 :family "JetBrainsMono Nerd Font" :foundry "JB")
+(set-face-attribute 'default nil :height 100 :family "JetBrainsMono Nerd Font" :foundry "JB")
 
 (use-package
   darkroom
