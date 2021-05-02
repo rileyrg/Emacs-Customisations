@@ -1324,7 +1324,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
 ***** github compliant markup
       #+begin_src emacs-lisp
-        (use-package ox-gfm)
+        (use-package
+          ox-gfm
+          :demand)
       #+end_src
 
 **** provide
@@ -2195,7 +2197,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         :config
         (add-hook 'before-save-hook 'delete-trailing-whitespace)
         :bind
-        ("C-x k" . 'kill-current-buffer)
+        ("C-x k" . (lambda()
+                     (interactive)
+                     (if (equal (buffer-name) "*scratch*")
+                         (progn
+                           (message "Can't delete *scratch*. Are you mad? Closing window instead.")
+                           (delete-window))
+                       (kill-current-buffer))))
         ("M-0" . 'delete-window)
         ("M-1" . 'delete-other-windows))
     #+end_src
