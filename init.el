@@ -235,9 +235,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :bind
   ("C-x k" . (lambda()
                (interactive)
-               (if (equal (buffer-name) "*scratch*")
+               (if (member (buffer-name) '("*Messages*" "*scratch*"))
                    (progn
-                     (message "Can't delete *scratch*. Are you mad? Closing window instead.")
+                     (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
                      (delete-window))
                  (kill-current-buffer))))
   ("M-0" . 'delete-window)

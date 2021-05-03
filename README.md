@@ -1182,7 +1182,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgf3e2db9) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org1dc080c) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2015,22 +2015,24 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ### General
 
-```emacs-lisp
-(use-package emacs
-  :demand
-  :config
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  :bind
-  ("C-x k" . (lambda()
-               (interactive)
-               (if (equal (buffer-name) "*scratch*")
-                   (progn
-                     (message "Can't delete *scratch*. Are you mad? Closing window instead.")
-                     (delete-window))
-                 (kill-current-buffer))))
-  ("M-0" . 'delete-window)
-  ("M-1" . 'delete-other-windows))
-```
+1.  buffer deletion - but keep scratch and messages!
+
+    ```emacs-lisp
+    (use-package emacs
+      :demand
+      :config
+      (add-hook 'before-save-hook 'delete-trailing-whitespace)
+      :bind
+      ("C-x k" . (lambda()
+                   (interactive)
+                   (if (member (buffer-name) '("*Messages*" "*scratch*"))
+                       (progn
+                         (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+                         (delete-window))
+                     (kill-current-buffer))))
+      ("M-0" . 'delete-window)
+      ("M-1" . 'delete-other-windows))
+    ```
 
 
 ### Buffer selection

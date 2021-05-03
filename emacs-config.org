@@ -2191,22 +2191,23 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     :PROPERTIES:
     :ID:       d8dd73d0-9574-42a4-a23a-b211c17de532
     :END:
-    #+begin_src emacs-lisp
-      (use-package emacs
-        :demand
-        :config
-        (add-hook 'before-save-hook 'delete-trailing-whitespace)
-        :bind
-        ("C-x k" . (lambda()
-                     (interactive)
-                     (if (equal (buffer-name) "*scratch*")
-                         (progn
-                           (message "Can't delete *scratch*. Are you mad? Closing window instead.")
-                           (delete-window))
-                       (kill-current-buffer))))
-        ("M-0" . 'delete-window)
-        ("M-1" . 'delete-other-windows))
-    #+end_src
+**** buffer deletion - but keep scratch and messages!
+     #+begin_src emacs-lisp
+       (use-package emacs
+         :demand
+         :config
+         (add-hook 'before-save-hook 'delete-trailing-whitespace)
+         :bind
+         ("C-x k" . (lambda()
+                      (interactive)
+                      (if (member (buffer-name) '("*Messages*" "*scratch*"))
+                          (progn
+                            (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+                            (delete-window))
+                        (kill-current-buffer))))
+         ("M-0" . 'delete-window)
+         ("M-1" . 'delete-other-windows))
+     #+end_src
 *** Buffer selection
     :PROPERTIES:
     :ID:       31a7e1db-04ca-410d-9c24-dfdd393df074
