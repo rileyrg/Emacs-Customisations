@@ -1182,7 +1182,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org9ea2406) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgf3e2db9) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2258,7 +2258,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
     ```emacs-lisp
     (use-package ace-jump-mode
       :bind
-      ("C-c j" . ace-jump-mode)
+      ("M-s c" . ace-jump-mode)
       )
     ```
 

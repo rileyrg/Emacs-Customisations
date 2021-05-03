@@ -355,7 +355,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package ace-jump-mode
   :bind
-  ("C-c j" . ace-jump-mode)
+  ("M-s c" . ace-jump-mode)
   )
 
 (defun htop-regexp()

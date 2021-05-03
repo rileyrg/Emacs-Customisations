@@ -2452,7 +2452,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (use-package ace-jump-mode
          :bind
-         ("C-c j" . ace-jump-mode)
+         ("M-s c" . ace-jump-mode)
          )
      #+end_src
 ** System
