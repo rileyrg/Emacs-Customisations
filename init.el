@@ -64,16 +64,6 @@
 
 (require 'rgr/utils "rgr-utils" 'NOERROR)
 
-(require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
-
-(use-package scratch
-  :bind ("<f2>" . (lambda()
-                    (interactive)
-                    (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
-  ("C-<f2>" . (lambda()
-                (interactive)
-                (switch-to-buffer(messages-buffer)))))
-
 (require 'rgr/daemon "rgr-daemon" 'NOERROR)
 
 (require 'rgr/minibuffer "rgr-minibuffer" 'NOERROR)
@@ -538,6 +528,16 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package keycast
   )
+
+(require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
+
+(use-package scratch
+  :bind ("<f2>" . (lambda()
+                    (interactive)
+                    (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
+  ("C-<f2>" . (lambda()
+                (interactive)
+                (switch-to-buffer(messages-buffer)))))
 
 (unless (fboundp 'prog-mode)
   (defalias 'prog-mode 'fundamental-mode))

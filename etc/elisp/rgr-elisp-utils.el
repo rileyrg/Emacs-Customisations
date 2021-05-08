@@ -1,3 +1,7 @@
+(use-package smartparens
+  :hook
+  ((emacs-lisp-mode . smartparens-mode)))
+
 (defun rgr/elisp-edit-mode()
   "return non nil if this buffer edits elisp"
   (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
@@ -35,16 +39,6 @@
   ;; don't find this very useful, but it's frequently useful to only
   ;; look at interactive functions.
   (global-set-key (kbd "C-h C") #'helpful-command))
-
-(defun rgr/elisp-write-var (f v)
-  (with-temp-file f
-    (prin1 v (current-buffer))))
-
-(defun rgr/elisp-read-var (f)
-  (with-temp-buffer
-    (insert-file-contents f)
-    (cl-assert (eq (point) (point-min)))
-    (read (current-buffer))))
 
 (use-package el-docstring-sap
   :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )

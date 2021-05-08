@@ -186,6 +186,23 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
      :ID:       0f8860c0-e1e1-41a8-bdb2-d062559ddd78
      :END:
+***** read and write elisp vars to file
+      :PROPERTIES:
+      :ID:       82905a95-6e37-4114-ba77-4be0dd31a9ec
+      :END:
+      #+begin_src emacs-lisp
+
+        (defun rgr/elisp-write-var (f v)
+          (with-temp-file f
+            (prin1 v (current-buffer))))
+
+        (defun rgr/elisp-read-var (f)
+          (with-temp-buffer
+            (insert-file-contents f)
+            (cl-assert (eq (point) (point-min)))
+            (read (current-buffer))))
+      #+end_src
+
 ***** line
       :PROPERTIES:
       :ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
@@ -214,179 +231,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
       #+begin_src emacs-lisp
         (provide 'rgr/utils)
-      #+end_src
-*** Emacs Lisp, ELisp Utils                                     :elisp:utils:
-    :PROPERTIES:
-    :ID:       eb119ffb-f073-4fe0-a8f4-b031291d9e4d
-    :END:
-    Load this relatively early in order to have utils available if there's a faied load
-    Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
-
-    #+begin_src emacs-lisp
-      (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
-    #+end_src
-
-**** scratch,messages
-     :PROPERTIES:
-     :ID:       563d21f1-803e-40b1-9689-fa95ca9f44c3
-     :END:
-     #+begin_src emacs-lisp
-       (use-package scratch
-         :bind ("<f2>" . (lambda()
-                           (interactive)
-                           (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
-         ("C-<f2>" . (lambda()
-                       (interactive)
-                       (switch-to-buffer(messages-buffer)))))
-     #+end_src
-**** rgr/elisp-utils library
-     :PROPERTIES:
-     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp-utils.el" elisp-dir)
-     :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
-     :END:
-***** elisp checks
-      :PROPERTIES:
-      :ID:       ca5b425c-df7f-47e9-a095-a5c59159ceb4
-      :END:
-      #+begin_src emacs-lisp
-        (defun rgr/elisp-edit-mode()
-          "return non nil if this buffer edits elisp"
-          (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
-      #+end_src
-***** linting                                                          :lint:
-      :PROPERTIES:
-      :ID:       2f4d8bac-b94c-4bd8-bf58-b08cb86bc0a7
-      :END:
-      [[https://github.com/purcell/package-lint][package-lint]] provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
-      #+begin_src emacs-lisp
-        (use-package package-lint)
-      #+end_src
-***** helpful, enriched elisp help
-      :PROPERTIES:
-      :ID:       e5517321-9188-4c5f-abfe-6511580c6193
-      :END:
-      #+begin_src emacs-lisp
-        (use-package helpful
-          :config
-          ;; Note that the built-in `describe-function' includes both functions
-          ;; and macros. `helpful-function' is functions only, so we provide
-          ;; `helpful-callable' as a drop-in replacement.
-          (global-set-key (kbd "C-h e")
-                          (lambda()
-                            (interactive)
-                            (if(get-buffer "*info*")
-                                (switch-to-buffer "*info*")
-                              (info "elisp"))))
-          (global-set-key (kbd "C-h f") #'helpful-callable)
-
-          (global-set-key (kbd "C-h v") #'helpful-variable)
-          (global-set-key (kbd "C-h k") #'helpful-key)
-          ;;I also recommend the following keybindings to get the most out of helpful:
-          ;; Lookup the current symbol at point. C-c C-d is a common keybinding
-          ;; for this in lisp modes.
-          (global-set-key (kbd "C-h SPC") #'helpful-at-point)
-          ;; Look up *F*unctions (excludes macros).
-          ;;
-          ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
-          ;; already links to the manual, if a function is referenced there.
-          (global-set-key (kbd "C-h F") #'helpful-function)
-
-          ;; Look up *C*ommands.
-          ;;
-          ;; By default, C-h C is bound to describe `describe-coding-system'. I
-          ;; don't find this very useful, but it's frequently useful to only
-          ;; look at interactive functions.
-          (global-set-key (kbd "C-h C") #'helpful-command))
-      #+end_src
-***** read and write elisp vars to file
-      :PROPERTIES:
-      :ID:       82905a95-6e37-4114-ba77-4be0dd31a9ec
-      :END:
-      #+begin_src emacs-lisp
-
-        (defun rgr/elisp-write-var (f v)
-          (with-temp-file f
-            (prin1 v (current-buffer))))
-
-        (defun rgr/elisp-read-var (f)
-          (with-temp-buffer
-            (insert-file-contents f)
-            (cl-assert (eq (point) (point-min)))
-            (read (current-buffer))))
-      #+end_src
-
-***** elisp popup context help                                  :popup:elisp:
-      :LOGBOOK:
-      - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
-      - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
-      eldoc-box does this
-      :END:
-      Display a poup containing docstring at point
-      #+begin_src emacs-lisp
-        (use-package el-docstring-sap
-          :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
-          :hook
-          (emacs-lisp-mode . el-docstring-sap-mode)
-          :bind
-          ("M-<f2>" . el-docstring-sap--display)
-          ("M-<f1>" . el-docstring-sap-mode))
-
-      #+end_src
-***** Elisp debugging
-      :PROPERTIES:
-      :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
-      :END:
-      #+begin_src emacs-lisp
-        (use-package
-          edebug-x
-          :demand t
-          :init
-          (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
-          ;;(edebug-trace nil)
-          :config
-          (require 'edebug)
-          (defun instrumentForDebugging()
-            "use the universal prefix arg (C-u) to remove instrumentation"
-            (interactive)
-            (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
-          )
-      #+end_src
-
-      #+RESULTS:
-      | myELisp | edebug-x-mode |
-***** Formatting
-      :PROPERTIES:
-      :ID:       d360a0c5-e21a-445b-a9ae-d97d33dce966
-      :END:
-      #+begin_src emacs-lisp
-        (use-package
-          elisp-format
-          :bind
-          (:map emacs-lisp-mode-map
-                ("C-c f" . elisp-format-region)))
-      #+end_src
-***** popup query symbol
-      :PROPERTIES:
-      :ID:       4745e152-bad7-4a31-8f9b-79cb62cdb430
-      :END:
-      #+begin_src emacs-lisp
-        (use-package popup
-          :config
-          (defun rgr/show-symbol-details ()
-            (interactive)
-            (popup-tip (format "intern-soft thing-at-point: %s, symbolp: %s, symbol-name:%s"
-                               (setq-local sym (intern-soft (thing-at-point 'symbol)))
-                               (symbolp sym)
-                               (symbol-name sym))))
-          :bind
-          (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
-      #+end_src
-***** provide
-      :PROPERTIES:
-      :ID:       7dcc7be3-1449-44e8-aed9-c223334e150f
-      :END:
-      #+begin_src emacs-lisp
-        (provide 'rgr/elisp-utils)
       #+end_src
 ** Emacs daemon & startup
    :PROPERTIES:
@@ -2783,6 +2627,169 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
    :PROPERTIES:
    :ID:       7070b720-582e-451c-8eed-47ab61cdd130
    :END:
+
+*** Emacs Lisp, ELisp Utils                                     :elisp:utils:
+    :PROPERTIES:
+    :ID:       eb119ffb-f073-4fe0-a8f4-b031291d9e4d
+    :END:
+    Load this relatively early in order to have utils available if there's a faied load
+    Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
+
+    #+begin_src emacs-lisp
+      (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
+    #+end_src
+
+**** scratch,messages
+     :PROPERTIES:
+     :ID:       563d21f1-803e-40b1-9689-fa95ca9f44c3
+     :END:
+     #+begin_src emacs-lisp
+       (use-package scratch
+         :bind ("<f2>" . (lambda()
+                           (interactive)
+                           (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
+         ("C-<f2>" . (lambda()
+                       (interactive)
+                       (switch-to-buffer(messages-buffer)))))
+     #+end_src
+**** rgr/elisp-utils library
+     :PROPERTIES:
+     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp-utils.el" elisp-dir)
+     :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
+     :END:
+***** smartparens
+      #+begin_src emacs-lisp
+        (use-package smartparens
+          :hook
+          ((emacs-lisp-mode . smartparens-mode)))
+      #+end_src
+***** elisp checks
+      :PROPERTIES:
+      :ID:       ca5b425c-df7f-47e9-a095-a5c59159ceb4
+      :END:
+      #+begin_src emacs-lisp
+        (defun rgr/elisp-edit-mode()
+          "return non nil if this buffer edits elisp"
+          (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
+      #+end_src
+***** linting                                                          :lint:
+      :PROPERTIES:
+      :ID:       2f4d8bac-b94c-4bd8-bf58-b08cb86bc0a7
+      :END:
+      [[https://github.com/purcell/package-lint][package-lint]] provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
+      #+begin_src emacs-lisp
+        (use-package package-lint)
+      #+end_src
+***** helpful, enriched elisp help
+      :PROPERTIES:
+      :ID:       e5517321-9188-4c5f-abfe-6511580c6193
+      :END:
+      #+begin_src emacs-lisp
+        (use-package helpful
+          :config
+          ;; Note that the built-in `describe-function' includes both functions
+          ;; and macros. `helpful-function' is functions only, so we provide
+          ;; `helpful-callable' as a drop-in replacement.
+          (global-set-key (kbd "C-h e")
+                          (lambda()
+                            (interactive)
+                            (if(get-buffer "*info*")
+                                (switch-to-buffer "*info*")
+                              (info "elisp"))))
+          (global-set-key (kbd "C-h f") #'helpful-callable)
+
+          (global-set-key (kbd "C-h v") #'helpful-variable)
+          (global-set-key (kbd "C-h k") #'helpful-key)
+          ;;I also recommend the following keybindings to get the most out of helpful:
+          ;; Lookup the current symbol at point. C-c C-d is a common keybinding
+          ;; for this in lisp modes.
+          (global-set-key (kbd "C-h SPC") #'helpful-at-point)
+          ;; Look up *F*unctions (excludes macros).
+          ;;
+          ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+          ;; already links to the manual, if a function is referenced there.
+          (global-set-key (kbd "C-h F") #'helpful-function)
+
+          ;; Look up *C*ommands.
+          ;;
+          ;; By default, C-h C is bound to describe `describe-coding-system'. I
+          ;; don't find this very useful, but it's frequently useful to only
+          ;; look at interactive functions.
+          (global-set-key (kbd "C-h C") #'helpful-command))
+      #+end_src
+***** elisp popup context help                                  :popup:elisp:
+      :LOGBOOK:
+      - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
+      - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
+      eldoc-box does this
+      :END:
+      Display a poup containing docstring at point
+      #+begin_src emacs-lisp
+        (use-package el-docstring-sap
+          :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+          :hook
+          (emacs-lisp-mode . el-docstring-sap-mode)
+          :bind
+          ("M-<f2>" . el-docstring-sap--display)
+          ("M-<f1>" . el-docstring-sap-mode))
+
+      #+end_src
+***** Elisp debugging
+      :PROPERTIES:
+      :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
+      :END:
+      #+begin_src emacs-lisp
+        (use-package
+          edebug-x
+          :demand t
+          :init
+          (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
+          ;;(edebug-trace nil)
+          :config
+          (require 'edebug)
+          (defun instrumentForDebugging()
+            "use the universal prefix arg (C-u) to remove instrumentation"
+            (interactive)
+            (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
+          )
+      #+end_src
+
+      #+RESULTS:
+      | myELisp | edebug-x-mode |
+***** Formatting
+      :PROPERTIES:
+      :ID:       d360a0c5-e21a-445b-a9ae-d97d33dce966
+      :END:
+      #+begin_src emacs-lisp
+        (use-package
+          elisp-format
+          :bind
+          (:map emacs-lisp-mode-map
+                ("C-c f" . elisp-format-region)))
+      #+end_src
+***** popup query symbol
+      :PROPERTIES:
+      :ID:       4745e152-bad7-4a31-8f9b-79cb62cdb430
+      :END:
+      #+begin_src emacs-lisp
+        (use-package popup
+          :config
+          (defun rgr/show-symbol-details ()
+            (interactive)
+            (popup-tip (format "intern-soft thing-at-point: %s, symbolp: %s, symbol-name:%s"
+                               (setq-local sym (intern-soft (thing-at-point 'symbol)))
+                               (symbolp sym)
+                               (symbol-name sym))))
+          :bind
+          (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
+      #+end_src
+***** provide
+      :PROPERTIES:
+      :ID:       7dcc7be3-1449-44e8-aed9-c223334e150f
+      :END:
+      #+begin_src emacs-lisp
+        (provide 'rgr/elisp-utils)
+      #+end_src
 *** prog-mode hack
     :PROPERTIES:
     :ID:       2e3c4e82-1056-47ea-ba0a-e4492fe56709

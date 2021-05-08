@@ -1,3 +1,13 @@
+(defun rgr/elisp-write-var (f v)
+  (with-temp-file f
+    (prin1 v (current-buffer))))
+
+(defun rgr/elisp-read-var (f)
+  (with-temp-buffer
+    (insert-file-contents f)
+    (cl-assert (eq (point) (point-min)))
+    (read (current-buffer))))
+
 (defun c-complete-line()
   (interactive)
   (end-of-line)
