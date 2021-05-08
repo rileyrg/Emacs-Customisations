@@ -2148,12 +2148,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
              "Show only last directory."
              (file-name-nondirectory (directory-file-name default-directory)))))
      #+end_src
-*** WAITING vterm                                                   :WAITING:
-    SCHEDULED: <2021-04-13 Tue>
+*** CANCELLED vterm                                               :CANCELLED:
+    CLOSED: [2021-05-08 Sat 16:11] SCHEDULED: <2021-04-13 Tue>
     :PROPERTIES:
     :header-args:emacs-lisp: :tangle no
     :END:
     :LOGBOOK:
+    - State "CANCELLED"  from "WAITING"    [2021-05-08 Sat 16:11]
     - State "WAITING"    from "DONE"       [2021-04-18 So 23:04]
     - State "DONE"       from "WAITING"    [2021-04-18 So 23:04]
     - State "WAITING"    from              [2021-04-08 Thu 01:09] \\
@@ -2748,13 +2749,15 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
    :PROPERTIES:
    :ID:       3134a8a2-7e5b-4d79-9238-1bdf6dc63865
    :END:
-*** TODO camcorder
-    SCHEDULED: <2021-04-08 Thu>
+*** CANCELLED camcorder                                           :CANCELLED:
+    CLOSED: [2021-05-08 Sat 16:14]
     :PROPERTIES:
     :ID:       0e4b5c80-3293-4ec9-ad19-c27d97563736
     :header-args:emacs-lisp: :tangle no
     :END:
     :LOGBOOK:
+    - State "CANCELLED"  from              [2021-05-08 Sat 16:14] \\
+      unknown variable camcorder-
     - Note taken on [2021-04-08 Thu 01:09] \\
       error building
     - State "TODO"       from              [2021-04-08 Thu 01:09]

@@ -1182,7 +1182,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org1dc080c) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org520fd62) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2641,17 +2641,6 @@ The code in [rgr-chat.el](./elisp/rgr-chat.el):
 
 
 ## Screen recording
-
-
-### camcorder
-
-do screen recording directly from emacs
-
-```emacs-lisp
-(use-package camcorder
-  :custom
-  (camcorder-output-directory  "~/tmp"))
-```
 
 
 ### Emacs screencasts
