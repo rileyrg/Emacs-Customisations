@@ -1475,6 +1475,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
      The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search  to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
 
+****** TODO [#A] look at making get region or symbol function interactive as an exercise
+       SCHEDULED: <2021-05-09 Sun>
+       :LOGBOOK:
+       - State "TODO"       from              [2021-05-09 Sun 11:27]
+       :END:
+
 ***** utility funcs
       :PROPERTIES:
       :ID:       a32c8536-be64-43fe-b740-210f0d891f14
@@ -2657,11 +2663,26 @@ siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
      :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp-utils.el" elisp-dir)
      :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
      :END:
-***** smartparens
+***** CANCELLED smartparens                                       :CANCELLED:
+      CLOSED: [2021-05-09 Sun 11:35]
+      :PROPERTIES:
+      :header-args:emacs-lisp: :tangle no
+      :END:
+      :LOGBOOK:
+      - State "CANCELLED"  from              [2021-05-09 Sun 11:35] \\
+        too much hassle. not 1337 enough
+      :END:
       #+begin_src emacs-lisp
         (use-package smartparens
           :hook
           ((emacs-lisp-mode . smartparens-mode)))
+      #+end_src
+***** electric-pair-mode
+      [[info:emacs#Matching][auto insert closing brackets]]
+      #+begin_src emacs-lisp
+        (use-package emacs
+          :hook
+          ((emacs-lisp-mode . electric-pair-mode)))
       #+end_src
 ***** elisp checks
       :PROPERTIES:

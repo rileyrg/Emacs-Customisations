@@ -1,6 +1,6 @@
-(use-package smartparens
+(use-package emacs
   :hook
-  ((emacs-lisp-mode . smartparens-mode)))
+  ((emacs-lisp-mode . electric-pair-mode)))
 
 (defun rgr/elisp-edit-mode()
   "return non nil if this buffer edits elisp"

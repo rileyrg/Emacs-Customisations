@@ -1043,7 +1043,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org2d4101b) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org41684ee) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1317,6 +1317,8 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 2.  Reference and dictionary
 
     The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
+
+    1.  look at making get region or symbol function interactive as an exercise
 
     1.  utility funcs
 
@@ -2540,12 +2542,14 @@ Load this relatively early in order to have utils available if there's a faied l
 
 2.  rgr/elisp-utils library
 
-    1.  smartparens
+    1.  electric-pair-mode
+
+        [auto insert closing brackets](emacs#Matching)
 
         ```emacs-lisp
-        (use-package smartparens
+        (use-package emacs
           :hook
-          ((emacs-lisp-mode . smartparens-mode)))
+          ((emacs-lisp-mode . electric-pair-mode)))
         ```
 
     2.  elisp checks
