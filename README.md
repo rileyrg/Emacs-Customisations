@@ -154,7 +154,25 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
 1.  rgr-utils library
 
-    1.  read and write elisp vars to file
+    1.  thing at point or region or input
+
+        ```emacs-lisp
+        (defun rgr/region-symbol-query()
+          "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
+          (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
+                        (if(use-region-p)
+                            (let ((sel-text
+                                   (buffer-substring-no-properties
+                                    (mark)
+                                    (point))))
+                              sel-text)
+                          (thing-at-point 'symbol)) nil))
+                 (result (if w w (read-string "lookup:"))))
+            result))
+
+        ```
+
+    2.  read and write elisp vars to file
 
         ```emacs-lisp
 
@@ -169,7 +187,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (read (current-buffer))))
         ```
 
-    2.  line
+    3.  line
 
         ```emacs-lisp
         (defun c-complete-line()
@@ -190,7 +208,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           (newline-and-indent))
         ```
 
-    3.  provide
+    4.  provide
 
         ```emacs-lisp
         (provide 'rgr/utils)
@@ -390,7 +408,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
              ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
              ("M-g o" . consult-outline)
              ("M-g m" . consult-mark)
-             ("M-g k" . consult-global-mark)
+             ("M-g M" . consult-global-mark)
              ("M-g i" . consult-imenu)
              ("M-g I" . consult-project-imenu)
              ;; M-s bindings (search-map)
@@ -1043,7 +1061,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org41684ee) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orga5842d5) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1268,7 +1286,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (when current-prefix-arg
                   ;;swap source and dest languages
                   (google-translate-swap-default-languages))
-                (let  ((phrase (if phrase phrase (symbol-or-region-at-point-as-string-or-prompt))))
+                (let  ((phrase (if phrase phrase (rgr/region-symbol-query))))
                   (switch-to-buffer "*Google Translations*")
                   ;; need to make aminor mode and do this properly based on file - org-mode?
                   (local-set-key (kbd "<return>") (lambda() (interactive)
@@ -1378,43 +1396,30 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
         (defun sys-browser-lookup(w template)
           (interactive)
-          (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (symbol-or-region-at-point-as-string-or-prompt)) template)))
-
-        (defun symbol-or-region-at-point-as-string-or-prompt()
-          "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
-          (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
-                        (if(use-region-p)
-                            (let ((sel-text
-                                   (buffer-substring-no-properties
-                                    (mark)
-                                    (point))))
-                              sel-text)
-                          (thing-at-point 'symbol)) nil))
-                 (result (if w w (read-string "lookup:"))))
-            result))
+          (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (rgr/region-symbol-query)) template)))
 
         (defun rgr/describe-symbol(w)
-          (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+          (interactive (cons (rgr/region-symbol-query) nil))
           (let ((s (if (symbolp w) w (intern-soft w))))
             (if s (describe-symbol s)
               (message "No such symbol: %s" w))))
 
         (defun rgr/linguee-lookup(w)
-          (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+          (interactive (cons (rgr/region-symbol-query) nil))
           (sys-browser-lookup w linguee-url-template))
 
         (defun rgr/php-api-lookup(w)
-          (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+          (interactive (cons (rgr/region-symbol-query) nil))
           (let ((dash-docs-docsets '("PHP")))
             (dash-docs-search w)))
         ;; (sys-browser-lookup w php-api-url-template))
 
         (defun rgr/jquery-lookup(&optional w)
-          (interactive(cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+          (interactive(cons (rgr/region-symbol-query) nil))
           (let (;;(zeal-at-point-docset "jQuery")
                 (dash-docs-docsets '("jQuery")))
             (dash-docs-search w)))
-        ;; (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+        ;; (interactive (cons (rgr/region-symbol-query) nil))
         ;; (sys-browser-lookup w jquery-url-template))
 
         (defun rgr/gdscript-docs-browse-symbol-at-point(&optional w)
@@ -1423,7 +1428,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (defun lookup-reference-dwim(&optional secondary)
           "if we have a numeric prefix then index into lookup-reference functions"
           (interactive)
-          (let((w (symbol-or-region-at-point-as-string-or-prompt))
+          (let((w (rgr/region-symbol-query))
                ;; PREFIX integer including 4... eg C-2 lookup-reference-dwim
                (idx (if (and  current-prefix-arg (not (listp current-prefix-arg)))
                         (- current-prefix-arg 1)
@@ -1459,7 +1464,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (use-package mw-thesaurus)
           (defun rgr/dictionary-search(&optional w)
             (interactive)
-            (dictionary-search (if w w (symbol-or-region-at-point-as-string-or-prompt))))
+            (dictionary-search (if w w (rgr/region-symbol-query))))
           :bind
           ("<f6>" . rgr/dictionary-search)
           ("S-<f6>" . mw-thesaurus-lookup-at-point))
@@ -1488,7 +1493,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (defun rgr/elisp-lookup-reference-dwim (&optional sym)
               "Checks to see if the 'thing' is known to elisp and, if so, use internal docs and return symbol else return nil to signal maybe fallback"
               (interactive)
-              (let* ((sym (if sym sym (symbol-or-region-at-point-as-string-or-prompt)))
+              (let* ((sym (if sym sym (rgr/region-symbol-query)))
                      (sym (if (symbolp sym) sym (intern-soft sym))))
                 (when sym
                   (if (fboundp sym)
@@ -1526,7 +1531,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                w)
             "lookup word at region, thing at point or prompt for something, in goldendict. Use a prefix to force prompting."
             (interactive)
-            (let ((w (if w w (symbol-or-region-at-point-as-string-or-prompt))))
+            (let ((w (if w w (rgr/region-symbol-query))))
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-c g" . goldendict-dwim)))
         ```
@@ -1569,7 +1574,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (setq dash-docs-common-docsets '("C++" "Emacs Lisp" "Docker"))
           (setq dash-docs-docsets '("C++" "Emacs Lisp" "Docker"))
           (defun rgr/dash (w)
-            (interactive (cons (symbol-or-region-at-point-as-string-or-prompt) nil))
+            (interactive (cons (rgr/region-symbol-query) nil))
             (message "docsets are: %s" dash-docs-docsets)
             (message "%s" (dash-docs-search w)))
           :bind ("C-c d" . 'rgr/dash))

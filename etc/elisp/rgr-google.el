@@ -27,7 +27,7 @@
     (when current-prefix-arg
       ;;swap source and dest languages
       (google-translate-swap-default-languages))
-    (let  ((phrase (if phrase phrase (symbol-or-region-at-point-as-string-or-prompt))))
+    (let  ((phrase (if phrase phrase (rgr/region-symbol-query))))
       (switch-to-buffer "*Google Translations*")
       ;; need to make aminor mode and do this properly based on file - org-mode?
       (local-set-key (kbd "<return>") (lambda() (interactive)

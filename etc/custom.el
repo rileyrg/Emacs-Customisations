@@ -556,6 +556,7 @@ stehen ganz weit oben.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 80))))
  '(centaur-tabs-active-bar-face ((t (:background "orange"))))
+ '(centaur-tabs-selected ((t (:inherit bold :background "chocolate" :foreground "#ffffff" :overline nil :underline "orange"))))
  '(company-box-annotation ((t (:inherit company-tooltip-annotation :height 113))) t)
  '(company-box-candidate ((t (:foreground "white" :height 113))) t)
  '(company-box-scrollbar ((t nil)))
