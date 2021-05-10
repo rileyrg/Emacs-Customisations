@@ -60,8 +60,8 @@
         (select-window (display-buffer "*Google Translate*"))))
 
   :bind
-  ("C-c t" . rgr/google-translate-at-point)
-  ("C-c T" . rgr/google-translate-query-translate)
+  ("C-c T" . rgr/google-translate-at-point)
+  ("C-c t" . rgr/google-translate-query-translate)
   ("C-c b" . rgr/google-translate-in-history-buffer))
 
 (provide 'rgr/google)

@@ -69,13 +69,16 @@
   (slack-register-team
    :name "emacs-slack"
    :default t
-   :token slack-api-token
+   :token (setq slack-api-token (get-auth-info "licenses" "slack-api-token"))
    :subscribed-channels slack-subscribed-channels
    :full-and-display-names t)
   :bind
   ("C-c S" . slack-hydra/body))
 
-(use-package gitter :demand d)
+(use-package gitter
+  :demand
+  :config
+  (setq gitter-token (get-auth-info "licenses" "gitter-token")))
 
 
 (defgroup rgr/chat-clients nil

@@ -159,16 +159,44 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
      #+end_src
-** [[https://www.gnu.org/software/emacs/manual/auth.html][Auth-Sources]]
-   :PROPERTIES:
-   :ID:       8f8f4b02-bdd2-4ad9-81bb-c3dd14b2fe9d
-   :END:
-   Let emacs take care of security things automagically
-   #+begin_src emacs-lisp
-     (use-package auth-source
-       :no-require t
-       )
-   #+end_src
+** Security
+*** [[https://www.gnu.org/software/emacs/manual/auth.html][Auth-Sources]]
+    :PROPERTIES:
+    :ID:       8f8f4b02-bdd2-4ad9-81bb-c3dd14b2fe9d
+    :END:
+    Let emacs take care of security things automagically
+**** get-auth-info
+     Thanks to https://gist.github.com/letoh/5497116 . auth-source is pretty tricky for the part time hacker.
+     example:
+     #+begin_src emacs-lisp :tangle no
+       (setq passw (get-auth-info "licenses" "my-auth-token"))
+     #+end_src
+     #+begin_src emacs-lisp
+       (use-package auth-source
+         :init
+         (defun get-auth-info (host user &optional port)
+           "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
+           (let* ((info (nth 0 (auth-source-search
+                               :host host
+                               :user user
+                               :port port
+                               :require '(:user :secret)
+                               :create nil)))
+                  (secret (plist-get info :secret)))
+             (if (functionp secret)
+                 (funcall secret)
+               secret))))
+     #+end_src
+*** Pass
+    Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
+    #+begin_src emacs-lisp :tangle no
+      (car (process-lines "pass" "Chat/slack-api-token"))
+    #+end_src
+
+    #+begin_src emacs-lisp
+      (use-package pass)
+    #+end_src
+
 ** Macros & Utilities
    :PROPERTIES:
    :ID:       733c70f3-5477-405f-bfeb-54089888b145
@@ -1471,8 +1499,8 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                  (select-window (display-buffer "*Google Translate*"))))
 
            :bind
-           ("C-c t" . rgr/google-translate-at-point)
-           ("C-c T" . rgr/google-translate-query-translate)
+           ("C-c T" . rgr/google-translate-at-point)
+           ("C-c t" . rgr/google-translate-query-translate)
            ("C-c b" . rgr/google-translate-in-history-buffer))
 
 
@@ -2408,48 +2436,16 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    The code in [[./elisp/rgr-chat.el][rgr-chat.el]]:
    #+include: "./etc/elisp/rgr-chat.el" src emacs-lisp
 
-*** Slackware
+*** Emacs Slack
     :PROPERTIES:
-    :ID:       ac82be15-49da-4d5e-979e-311d06bedf9e
+    :ID:       20db97bc-7c74-4a01-8b3e-d58c6d47eee9
     :END:
-**** Slack secrets                                           :noexport:crypt:
-     :PROPERTIES:
-     :ID:       ccdf8942-5683-4df9-887d-6e6e7642a7a9
-     :END:
------BEGIN PGP MESSAGE-----
-
-hQEMA7IjL5SkHG4iAQgApq/zAw2py1infLtGaRCYHf/ZSes2hijmYJzAc9tfRBSE
-JQloaB6/ISLkXmVnCmk5cvTmlxNwL737xb0de61yctjz99WycuSczMkp4xUiuLko
-0Vm/5SWyMQPittyZYHrWtHl+OLCs+X1xECwMnbDHomPPuBnlz9Fe7iesQxHWySwp
-fBOT6j0ss5s20gLa0aDStXxBRhq40I2c9oe54ja/BCMNyTXkNJA/hukVEX8Wfpw4
-RricBugztD7W4toNHhqHnhe6OtxNBbko2+7u1UpmmNObJL6qvbGob06tNicU/lKF
-rk1uDrx7PEeRQMzcKYeQHWwp5UkvIa/VaYIiaWnsY9LpAXYGQXeVSZzVuNR7HOTi
-aFPCVohgOEOkOvwV5e3byWj5U3RQYOfIQepl6iDSyHvZpDzSzMofYPV6Yvm6W8y0
-cvouLF1ksYtE4zLPToQ5I9Npj4yJIgHXXlmE/Dpx7/CsmiMv0ddDc9idMPuLImwA
-H3Ypmx0gjVbQlER2qOxZcsqfRxhey66I2mseZKt+okomCE+GjPBrTAadyVB7tig0
-+/8G4Kz+46h43jbCMEi5FjvbFxvutQIrTNh1MjQhZBvNFijgAxkeKuLm5SFcY/DJ
-GYffMfbwtwcAdZnabq/bMOaLMaSgIKz5iOCtfsBnbU29brbAWJVLhclqIfRLWbbZ
-9CSqcJ9l0Mo1MHA31Ue69cX2IhXfOaopMC6MSikQqdmJcWsN0gW4FNMtjjFdXwNU
-4p04MmlItGumn+XnsqOK5SWlle030hiYKYB/wyBY5MFRKDWPRoIW7xRgl2b5RaD/
-8JrY37XbLZokWqMYFzVg7TRZs1WBX3km0o//Qe0nN7INk5Zui8CoFb8LPDmwQ370
-xxhREdzumWnbGCnIWmympjV0fezHXEBdRLpTAnB3Xp9LtHIV186Qc8/KaDFdHtMA
-dWqYFowY0ZZ7Mf4Oth348HmFVirBlHRCgPvnMHJL+D4TO0uyitziIZGN/SnsQp9s
-BA5vLbJdLOJ3vCoSaB8BgZSrVoudvUMngYxskOkTclSVtwlZ7zERN42UAJnBv2in
-wXYdpnyUIaoNctxNXmJ+aQjVOcdI0k90BI9a0p11LpbfATNNIrUpxoN+14rU1GPR
-Kzl8bwDpZq75JHQAklMfbtBy/K8PZasD8IxqeRTBPo2DQ2KTQV82rE3C+rEAFEkf
-siJDGfEvJ1s75MFY/V21QPI3Ogedp+2/J5DVtShy+LpQOYI8YEEgz/WLdBKx
-=pfap
------END PGP MESSAGE-----
-**** Emacs Slack
-     :PROPERTIES:
-     :ID:       20db97bc-7c74-4a01-8b3e-d58c6d47eee9
-     :END:
-     [[https://slack.com/intl/en-de/][Slack]] interface for Emacs on [[https://github.com/yuya373/emacs-slack][github]]. See [[./lisp/rgr-chat.el][rgr-chat.el]].
-**** Emacs Gitter
-     :PROPERTIES:
-     :ID:       44ac90de-f10d-45f7-9b0c-23651312a277
-     :END:
-     [[https://gitter.im/][Gitter]] interface for Emacs on [[https://github.com/xuchunyang/gitter.el][github]]. See [[./lisp/rgr-chat.el][rgr-chat.el]].
+    [[https://slack.com/intl/en-de/][Slack]] interface for Emacs on [[https://github.com/yuya373/emacs-slack][github]]. See [[etc/elisp/rgr-chat.el][rgr-chat.el]].
+*** Emacs Gitter
+    :PROPERTIES:
+    :ID:       44ac90de-f10d-45f7-9b0c-23651312a277
+    :END:
+    [[https://gitter.im/][Gitter]] interface for Emacs on [[https://github.com/xuchunyang/gitter.el][github]]. See [[etc/elisp/rgr-chat.el][rgr-chat.el]].
 ** Email
    :PROPERTIES:
    :ID:       1db35463-e9e1-4c38-b21f-437d475184e4
@@ -3440,6 +3436,7 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
       #+begin_src emacs-lisp
         (use-package php-mode
           :config
+          (setq lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
           (add-to-list 'display-buffer-alist
                        (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
           (defun start-symfony-web-server()

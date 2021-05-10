@@ -59,8 +59,21 @@
 (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
 
 (use-package auth-source
-  :no-require t
-  )
+  :init
+  (defun get-auth-info (host user &optional port)
+    "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
+    (let* ((info (nth 0 (auth-source-search
+                        :host host
+                        :user user
+                        :port port
+                        :require '(:user :secret)
+                        :create nil)))
+           (secret (plist-get info :secret)))
+      (if (functionp secret)
+          (funcall secret)
+        secret))))
+
+(use-package pass)
 
 (require 'rgr/utils "rgr-utils" 'NOERROR)
 
@@ -787,6 +800,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package php-mode
   :config
+  (setq lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
   (add-to-list 'display-buffer-alist
                (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
   (defun start-symfony-web-server()
