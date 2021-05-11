@@ -179,7 +179,7 @@
                  (window-parameters (mode-line-format . none))))
   :bind
   ("M-e" . embark-act)       ;; pick some comfortable binding
-   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
 (use-package embark-consult
   :after (embark consult)

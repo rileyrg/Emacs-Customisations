@@ -48,7 +48,7 @@
     (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
       (condition-case nil
           (message "load-el-gpg loading %s" f)
-          (load f 'no-error)
+        (load f 'no-error)
         (error nil)))))
 
 (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
@@ -65,7 +65,10 @@
 
 (require 'rgr/completion "rgr-completion" 'NOERROR)
 
-(require  'rgr/alert-learn "rgr-alert-learn" 'NOERROR)
+(use-package lazy-lang-learn
+  :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
+  :bind
+  ("C-c L" . rgr/google-translate-learn))
 
 (require  'rgr/general-config "rgr-general-config" 'NOERROR)
 
@@ -260,7 +263,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
         '(
           "\\*Messages\\*"
           magit-mode
-    ;;      help-mode
+          ;;      help-mode
           helpful-mode
           inferior-python-mode
           dictionary-mode
@@ -447,9 +450,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
                                           ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
                                           (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
                       ( mu4e-compose-signature  .
-                                                (concat
-                                                 "Richard G. Riley\n"
-                                                 "Ein bier, ein Helbing.\n"))))
+                        (concat
+                         "Richard G. Riley\n"
+                         "Ein bier, ein Helbing.\n"))))
            ,(make-mu4e-context
              :name "bGmail"
              :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))

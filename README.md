@@ -83,7 +83,14 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/) using [
 ```
 
 
-## Auto-compile
+## rgr-early-init, auto-compile
+
+```emacs-lisp
+(require 'rgr/early-init "rgr-early-init")
+```
+
+
+### rgr-early-init library
 
 ```emacs-lisp
 ;;; rgr-early-init.el  -*- no-byte-compile: t -*-
@@ -94,10 +101,6 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/) using [
   (auto-compile-on-load-mode 1)
   (auto-compile-on-save-mode 1))
 (provide 'rgr/early-init)
-```
-
-```emacs-lisp
-(require 'rgr/early-init "rgr-early-init")
 ```
 
 
@@ -123,7 +126,7 @@ Load all files in certain directories.
     (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
       (condition-case nil
           (message "load-el-gpg loading %s" f)
-          (load f 'no-error)
+        (load f 'no-error)
         (error nil)))))
 ```
 
@@ -266,7 +269,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
     ```
 
 
-## Emacs daemon & startup
+## Emacs daemon & startup     :daemon:startup:
 
 Load up the daemon if not loaded, amongst other things.
 
@@ -277,7 +280,7 @@ Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
 ```
 
 
-### rgr-daemon libarary     :daemon:
+### rgr-daemon library     :daemon:
 
 ```emacs-lisp
 
@@ -318,7 +321,7 @@ Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
 ```
 
 
-## Minibuffer Enrichment (search, sudo edit&#x2026;)
+## Minibuffer Enrichment (search, sudo edit&#x2026;)     :minibuffer:
 
 Various plugins for minibuffer enrichment
 
@@ -557,7 +560,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                      (window-parameters (mode-line-format . none))))
       :bind
       ("M-e" . embark-act)       ;; pick some comfortable binding
-       ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+      ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
     ```
 
     1.  embark-consult
@@ -667,118 +670,11 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 ## Alert and Alert Learn
 
-Added in a utility which pops up fortunes when idle and a hot key (see google-translate section to call up google-translate for the last fortune shown.. Handy for learning a language.
-
-Raw: [rgr/alert-learn](etc/elisp/rgr-alert-learn.el).
-
 ```emacs-lisp
-(require  'rgr/alert-learn "rgr-alert-learn" 'NOERROR)
-```
-
-
-### library
-
-Raw: [rgr-alert-learn.el](etc/elisp/rgr-alert-learn.el).
-
-```emacs-lisp
-
-(use-package
-  alert
-  :demand
-  :init
-  (defvar rgr/alert-learn-history  nil "list of learns in rgr/alert-learn")
-  (defgroup rgr/alert-learn nil "Options to control the Alert based popup learning" :group 'rgr)
-  (defcustom rgr/alert-learn-on t "Whether pop up learning is on" :type 'boolean :group 'rgr/alert-learn)
-  (defcustom rgr/alert-learn-command "fortune de" "Shell command to run to generate a learn" :type 'boolean :group 'rgr/alert-learn)
-  (defcustom rgr/alert-learn-period 120 "How many seconds before another learn is displayed when idle" :type 'integer :group 'rgr/alert-learn)
-  (defcustom rgr/alert-learn-fade-time 30 "How many seconds before the learn fades out" :type 'integer :group 'rgr/alert-learn)
-  (defcustom rgr/alert-learn-history-auto-save  t "Auto save learn history?" :type 'boolean :group 'rgr/alert-learn)
-  (defcustom rgr/alert-learn-history-file  (if (featurep 'no-littering) (no-littering-expand-var-file-name "alert-learn/alert-learn.txt" ) (expand-file-name "alert-learn.alist" user-emacs-directory)) "filename in which to save learns" :type '() :group 'rgr/alert-learn)
-  (defcustom rgr/alert-learn-history-length 200 "How many learns to store in history" :type 'integer :group 'rgr/alert-learn)
-  :config
-
-  (defvar rgr/alert-learn-timer nil "timer object for alert-learn prompt")
-
-  (let ((dir (file-name-directory rgr/alert-learn-history-file)))
-    (unless (file-exists-p dir)
-      (make-directory dir)))
-
-  (defun rgr/alert-learn-history-save()
-    (when rgr/alert-learn-history-auto-save
-      (rgr/elisp-write-var rgr/alert-learn-history-file (butlast rgr/alert-learn-history (- (length rgr/alert-learn-history) rgr/alert-learn-history-length)))))
-
-  (defun rgr/alert-learn-history-load()
-    (when rgr/alert-learn-history-auto-save
-      (setq rgr/alert-learn-history (rgr/elisp-read-var rgr/alert-learn-history-file))))
-
-  (defun rgr/alert-learn-select-from-history()
-    (interactive)
-    (if rgr/alert-learn-history ;; select from old ones by bubbling one to top
-        (let ((learn (completing-read "Select learn:" rgr/alert-learn-history)))
-          (when learn
-            (setq rgr/alert-learn-history (remove learn rgr/alert-learn-history))
-            (add-to-list 'rgr/alert-learn-history learn)
-            (rgr/alert-learn-history-save)))
-      (message "No previous learns."))
-    (car rgr/alert-learn-history))
-
-  (defun rgr/alert-fortune(&optional title id)
-    ;; alert a fortune and return it. (rgr/alert-fortune)
-    (let ((f (shell-command-to-string rgr/alert-learn-command)))
-      (alert  f :title (or title "Fortune favours the brave...") :id (or id 'emacs))
-      f))
-
-  (defun rgr/alert-learn()
-    ;; alert a learn and store it. (rgr/alert-learn)
-    (interactive)
-    (let ((alert-fade-time rgr/alert-learn-fade-time)
-          (learn (rgr/alert-fortune "Learn Now..." "learn")))
-      (add-to-list 'rgr/alert-learn-history learn)
-      (rgr/alert-learn-history-save)
-      ;;
-      )
-    nil)
-
-  (defun rgr/alert-learn-timer()
-    "start or remove learn timer as appropriate."
-    (if rgr/alert-learn-on
-        (unless rgr/alert-learn-timer
-          (setq rgr/alert-learn-timer
-                (run-with-idle-timer rgr/alert-learn-period t 'rgr/alert-learn)))
-      (when rgr/alert-learn-timer
-        (cancel-timer rgr/alert-learn-timer)
-        (setq rgr/alert-learn-timer nil))))
-
-  (defun rgr/google-translate-learn(&optional prefix)
-    "prefix 1 to toggle on/off, 2 to create a new learn, anything else to swap languages"
-    (interactive "P")
-    (when prefix
-      (if (eq prefix 0) ;; C-u 0 to toggle on/off
-          (progn
-            (setq rgr/alert-learn-on (if rgr/alert-learn-on nil t))
-            (rgr/alert-learn-timer))
-        (if (eq prefix 1) ;; C-u 1 to create new learn
-            (rgr/alert-learn)
-          (if (eq prefix 2) ;; C-u 2 to select an old learn and relearn it
-              (rgr/alert-learn-select-from-history)
-            (google-translate-swap-default-languages)))))
-    (when rgr/alert-learn-on
-      (let ((learn (car rgr/alert-learn-history)))
-        (when learn
-          (google-translate-translate google-translate-default-source-language google-translate-default-target-language (car rgr/alert-learn-history))
-          (if google-translate-pop-up-buffer-set-focus
-              (select-window (display-buffer "*Google Translate*")))))))
-
-  (rgr/alert-learn-history-load)
-
-  (rgr/alert-learn-timer)
-
+(use-package lazy-lang-learn
+  :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
   :bind
   ("C-c L" . rgr/google-translate-learn))
-
-(provide 'rgr/alert-learn)
-
-
 ```
 
 
@@ -1102,7 +998,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org0b38de8) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgcd5b539) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2032,7 +1928,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
             '(
               "\\*Messages\\*"
               magit-mode
-        ;;      help-mode
+              ;;      help-mode
               helpful-mode
               inferior-python-mode
               dictionary-mode
@@ -2466,9 +2362,9 @@ The code in [rgr-chat](etc/elisp/rgr-chat.el) :
                                           ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
                                           (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
                       ( mu4e-compose-signature  .
-                                                (concat
-                                                 "Richard G. Riley\n"
-                                                 "Ein bier, ein Helbing.\n"))))
+                        (concat
+                         "Richard G. Riley\n"
+                         "Ein bier, ein Helbing.\n"))))
            ,(make-mu4e-context
              :name "bGmail"
              :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))

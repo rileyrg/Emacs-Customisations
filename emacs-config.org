@@ -32,9 +32,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
   :PROPERTIES:
   :ID:       7be978df-ed2c-4d29-b5b2-da0039312e68
   :END:
-#+begin_src emacs-lisp
+  #+begin_src emacs-lisp
     ;;; init.el   -*- no-byte-compile: t -*-
-#+end_src
+  #+end_src
 ** early-init.el
    :PROPERTIES:
    :header-args:emacs-lisp: :tangle (expand-file-name "early-init.el" user-emacs-directory)
@@ -109,23 +109,27 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       (let ((default-directory elisp-dir))
         (normal-top-level-add-subdirs-to-load-path))
     #+end_src
-** Auto-compile
+** rgr-early-init, auto-compile
    :PROPERTIES:
    :ID:       32e5b009-9695-4c8e-8208-4bfa9e6adfac
    :END:
-#+begin_src emacs-lisp :tangle (expand-file-name "rgr-early-init.el" elisp-dir)
-  ;;; rgr-early-init.el  -*- no-byte-compile: t -*-
-  (use-package
-    auto-compile
-    :init
-    (setq load-prefer-newer t)
-    (auto-compile-on-load-mode 1)
-    (auto-compile-on-save-mode 1))
-  (provide 'rgr/early-init)
-#+end_src
-#+begin_src emacs-lisp
-  (require 'rgr/early-init "rgr-early-init")
-#+end_src
+   #+begin_src emacs-lisp
+     (require 'rgr/early-init "rgr-early-init")
+   #+end_src
+*** rgr-early-init library
+    :PROPERTIES:
+    :header-args:emacs-lisp: :tangle (expand-file-name "rgr-early-init.el" elisp-dir)
+    :END:
+    #+begin_src emacs-lisp
+      ;;; rgr-early-init.el  -*- no-byte-compile: t -*-
+      (use-package
+        auto-compile
+        :init
+        (setq load-prefer-newer t)
+        (auto-compile-on-load-mode 1)
+        (auto-compile-on-save-mode 1))
+      (provide 'rgr/early-init)
+    #+end_src
 ** Customization
    :PROPERTIES:
    :ID:       302b803c-5c00-4afa-8bea-46b03beefd91
@@ -150,7 +154,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
             (condition-case nil
                 (message "load-el-gpg loading %s" f)
-                (load f 'no-error)
+              (load f 'no-error)
               (error nil)))))
     #+end_src
 **** early load
@@ -169,9 +173,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
      #+end_src
 ** Security
-    #+begin_src emacs-lisp
-      (require 'rgr/security "rgr-security" 'NOERROR)
-    #+end_src
+   #+begin_src emacs-lisp
+     (require 'rgr/security "rgr-security" 'NOERROR)
+   #+end_src
 *** rgr-security library
     :PROPERTIES:
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-security.el" elisp-dir)
@@ -210,18 +214,17 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (use-package pass)
      #+end_src
 **** provide
- #+begin_src emacs-lisp
-   (provide 'rgr/security)
- #+end_src
-
+     #+begin_src emacs-lisp
+       (provide 'rgr/security)
+     #+end_src
 ** Utilities
-    :PROPERTIES:
-    :ID:       c0eaf4f9-a8fc-43ea-84d8-24386ab3f90a
-    :END:
-    Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
-    #+begin_src emacs-lisp
-      (require 'rgr/utils "rgr-utils" 'NOERROR)
-    #+end_src
+   :PROPERTIES:
+   :ID:       c0eaf4f9-a8fc-43ea-84d8-24386ab3f90a
+   :END:
+   Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
+   #+begin_src emacs-lisp
+     (require 'rgr/utils "rgr-utils" 'NOERROR)
+   #+end_src
 *** rgr-utils library
     :PROPERTIES:
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
@@ -288,7 +291,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          (end-of-line)
          (newline-and-indent))
      #+end_src
-** Emacs daemon & startup
+** Emacs daemon & startup                                    :daemon:startup:
    :PROPERTIES:
    :ID:       77ded746-89ff-4051-a4eb-a4d75d7917bc
    :END:
@@ -299,7 +302,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    #+begin_src emacs-lisp
      (require 'rgr/daemon "rgr-daemon" 'NOERROR)
    #+end_src
-*** rgr-daemon libarary                                              :daemon:
+*** rgr-daemon library                                               :daemon:
     :PROPERTIES:
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-daemon.el" elisp-dir)
     :ID:       ee7aaad4-5f12-4e5e-b7d7-91ed4296b129
@@ -341,8 +344,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
       (provide 'rgr/daemon)
     #+end_src
-
-** Minibuffer Enrichment (search, sudo edit...)
+** Minibuffer Enrichment (search, sudo edit...)                  :minibuffer:
    :PROPERTIES:
    :ID:       ccdf6738-f921-4d2f-81ea-6dd00883867c
    :END:
@@ -596,7 +598,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                         (window-parameters (mode-line-format . none))))
          :bind
          ("M-e" . embark-act)       ;; pick some comfortable binding
-          ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+         ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
      #+end_src
 ***** embark-consult
       :PROPERTIES:
@@ -741,118 +743,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 ** Alert and Alert Learn
    :PROPERTIES:
    :END:
-   Added in a utility which pops up fortunes when idle and a hot key (see google-translate section to call up google-translate for the last fortune shown.. Handy for learning a language.
-
-   Raw: [[file+sys:etc/elisp/rgr-alert-learn.el][rgr/alert-learn]].
    #+begin_src emacs-lisp
-     (require  'rgr/alert-learn "rgr-alert-learn" 'NOERROR)
+     (use-package lazy-lang-learn
+       :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
+       :bind
+       ("C-c L" . rgr/google-translate-learn))
    #+end_src
-
-*** library
-    :PROPERTIES:
-    :END:
-
-    Raw: [[file+sys:etc/elisp/rgr-alert-learn.el][rgr-alert-learn.el]].
-    #+begin_src emacs-lisp :tangle (expand-file-name "rgr-alert-learn.el" elisp-dir)
-
-      (use-package
-        alert
-        :demand
-        :init
-        (defvar rgr/alert-learn-history  nil "list of learns in rgr/alert-learn")
-        (defgroup rgr/alert-learn nil "Options to control the Alert based popup learning" :group 'rgr)
-        (defcustom rgr/alert-learn-on t "Whether pop up learning is on" :type 'boolean :group 'rgr/alert-learn)
-        (defcustom rgr/alert-learn-command "fortune de" "Shell command to run to generate a learn" :type 'boolean :group 'rgr/alert-learn)
-        (defcustom rgr/alert-learn-period 120 "How many seconds before another learn is displayed when idle" :type 'integer :group 'rgr/alert-learn)
-        (defcustom rgr/alert-learn-fade-time 30 "How many seconds before the learn fades out" :type 'integer :group 'rgr/alert-learn)
-        (defcustom rgr/alert-learn-history-auto-save  t "Auto save learn history?" :type 'boolean :group 'rgr/alert-learn)
-        (defcustom rgr/alert-learn-history-file  (if (featurep 'no-littering) (no-littering-expand-var-file-name "alert-learn/alert-learn.txt" ) (expand-file-name "alert-learn.alist" user-emacs-directory)) "filename in which to save learns" :type '() :group 'rgr/alert-learn)
-        (defcustom rgr/alert-learn-history-length 200 "How many learns to store in history" :type 'integer :group 'rgr/alert-learn)
-        :config
-
-        (defvar rgr/alert-learn-timer nil "timer object for alert-learn prompt")
-
-        (let ((dir (file-name-directory rgr/alert-learn-history-file)))
-          (unless (file-exists-p dir)
-            (make-directory dir)))
-
-        (defun rgr/alert-learn-history-save()
-          (when rgr/alert-learn-history-auto-save
-            (rgr/elisp-write-var rgr/alert-learn-history-file (butlast rgr/alert-learn-history (- (length rgr/alert-learn-history) rgr/alert-learn-history-length)))))
-
-        (defun rgr/alert-learn-history-load()
-          (when rgr/alert-learn-history-auto-save
-            (setq rgr/alert-learn-history (rgr/elisp-read-var rgr/alert-learn-history-file))))
-
-        (defun rgr/alert-learn-select-from-history()
-          (interactive)
-          (if rgr/alert-learn-history ;; select from old ones by bubbling one to top
-              (let ((learn (completing-read "Select learn:" rgr/alert-learn-history)))
-                (when learn
-                  (setq rgr/alert-learn-history (remove learn rgr/alert-learn-history))
-                  (add-to-list 'rgr/alert-learn-history learn)
-                  (rgr/alert-learn-history-save)))
-            (message "No previous learns."))
-          (car rgr/alert-learn-history))
-
-        (defun rgr/alert-fortune(&optional title id)
-          ;; alert a fortune and return it. (rgr/alert-fortune)
-          (let ((f (shell-command-to-string rgr/alert-learn-command)))
-            (alert  f :title (or title "Fortune favours the brave...") :id (or id 'emacs))
-            f))
-
-        (defun rgr/alert-learn()
-          ;; alert a learn and store it. (rgr/alert-learn)
-          (interactive)
-          (let ((alert-fade-time rgr/alert-learn-fade-time)
-                (learn (rgr/alert-fortune "Learn Now..." "learn")))
-            (add-to-list 'rgr/alert-learn-history learn)
-            (rgr/alert-learn-history-save)
-            ;;
-            )
-          nil)
-
-        (defun rgr/alert-learn-timer()
-          "start or remove learn timer as appropriate."
-          (if rgr/alert-learn-on
-              (unless rgr/alert-learn-timer
-                (setq rgr/alert-learn-timer
-                      (run-with-idle-timer rgr/alert-learn-period t 'rgr/alert-learn)))
-            (when rgr/alert-learn-timer
-              (cancel-timer rgr/alert-learn-timer)
-              (setq rgr/alert-learn-timer nil))))
-
-        (defun rgr/google-translate-learn(&optional prefix)
-          "prefix 1 to toggle on/off, 2 to create a new learn, anything else to swap languages"
-          (interactive "P")
-          (when prefix
-            (if (eq prefix 0) ;; C-u 0 to toggle on/off
-                (progn
-                  (setq rgr/alert-learn-on (if rgr/alert-learn-on nil t))
-                  (rgr/alert-learn-timer))
-              (if (eq prefix 1) ;; C-u 1 to create new learn
-                  (rgr/alert-learn)
-                (if (eq prefix 2) ;; C-u 2 to select an old learn and relearn it
-                    (rgr/alert-learn-select-from-history)
-                  (google-translate-swap-default-languages)))))
-          (when rgr/alert-learn-on
-            (let ((learn (car rgr/alert-learn-history)))
-              (when learn
-                (google-translate-translate google-translate-default-source-language google-translate-default-target-language (car rgr/alert-learn-history))
-                (if google-translate-pop-up-buffer-set-focus
-                    (select-window (display-buffer "*Google Translate*")))))))
-
-        (rgr/alert-learn-history-load)
-
-        (rgr/alert-learn-timer)
-
-        :bind
-        ("C-c L" . rgr/google-translate-learn))
-
-      (provide 'rgr/alert-learn)
-
-
-    #+end_src
 ** General configuration
    :PROPERTIES:
    :END:
@@ -1369,7 +1265,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
       #+begin_src conf :tangle ~/.emacs.d/.ignore
         # Maintained in emacs-config.org
-        *.md
+        ,*.md
         auto-save
         history
         undohist
@@ -2195,7 +2091,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                '(
                  "\\*Messages\\*"
                  magit-mode
-           ;;      help-mode
+                 ;;      help-mode
                  helpful-mode
                  inferior-python-mode
                  dictionary-mode
@@ -2512,9 +2408,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                                                 ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
                                                 (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
                             ( mu4e-compose-signature  .
-                                                      (concat
-                                                       "Richard G. Riley\n"
-                                                       "Ein bier, ein Helbing.\n"))))
+                              (concat
+                               "Richard G. Riley\n"
+                               "Ein bier, ein Helbing.\n"))))
                  ,(make-mu4e-context
                    :name "bGmail"
                    :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
@@ -2969,28 +2865,28 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+end_src
 
 ***** token                                                     :crypt:token:
------BEGIN PGP MESSAGE-----
+      -----BEGIN PGP MESSAGE-----
 
-hQEMA7IjL5SkHG4iAQgAnyC1NPS3sWV9r7kriSvL4IF53g076qwmEHvmPjBaUp9R
-QeQyyp8ek1MOSQP4zPbn0s5gAALMdP/UbEjocudP0e3bY2BYLJstTC7av1LS5Vzq
-NpoecGRrlUCISRAMCRx/2MpE6o2E3RdAd0P2RQ4vGmaIEJ0vHkfP8RnYd8M+wacy
-y58rcuxmGBaLNGEOOywb2icYVrjKXxSdRDXL6/LTjkQHXuPjpD27WIA2ASExh64t
-1XIA6Gs0vXc8CF+ppt9tb48TwCyONhH9PtE1CURhH6FRPSKkxXD/eq/BhoVzjT//
-9lu269+Q2H6QHQAh0CeT9wuqpSHxXu/fKDNrG/DGmNLpAfSrO4bepZGOAWKnDQFP
-Dkr1FEpb43SRZgyP3KDEad5F7uZzYDf7FVLxfNlWzhuFErzLVTHlUxWBAcY22a8R
-2AuS6D+0vpJUSXqXEYQJ+R/GqHe1h+6mBnAyloz9eSU7X9kYPUv3cEAkWYrkGLt0
-Or7cfbtFL+GUQpVVNELOZftK1h4S3StfJJerc5YluQBqHUQkCIZMa6AS48uV958b
-JC9WHZIgGzkb/3GLV/rAEwgOhlmfWavmP/MXIEl5YBOpyOSkpVm4CKqNOx7+Sby+
-2Gh45i5qQhRfBW6880zrgnRSa6rlXHrzd4gL32sSKGON6YEhngJRzZzZhf+0IgpR
-QXRk7H0novz5DBUHAcecOGqNikTVvwBXI12sFjh6YMbVD0FhkokSjHqipJqXCwDc
-In6uBDyBjOjcJa0M7KzEN5MsN9RJK00vrBao+b8mpROUCpVAF/ZL5ofMTu72qJ2P
-Plpk2ab+ZpAxm+B7am9r2CojjDDz/D8aFFR+bLx/0c1AnCUDnvqjBmNKxCHD2jIR
-B4ghhzUfYFDgnm7u2vg3ycTxuP1ys74Z82Ufw3YZeiroG+uM/h90eyXJsEHv6pmj
-mXO4USgtApYLqNUfSptcjw1nDnUnSus2/DjIZZTg0GNMQi013kHkrodKmAs2V3/o
-NmmXwjbGwdqpZzbwiG2yrw5BwkdKPQQ4PRsyUVuyWfrYAFLLtfXuFGIIfoQ2DiSl
-EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
-=FmGT
------END PGP MESSAGE-----
+      hQEMA7IjL5SkHG4iAQgAnyC1NPS3sWV9r7kriSvL4IF53g076qwmEHvmPjBaUp9R
+      QeQyyp8ek1MOSQP4zPbn0s5gAALMdP/UbEjocudP0e3bY2BYLJstTC7av1LS5Vzq
+      NpoecGRrlUCISRAMCRx/2MpE6o2E3RdAd0P2RQ4vGmaIEJ0vHkfP8RnYd8M+wacy
+      y58rcuxmGBaLNGEOOywb2icYVrjKXxSdRDXL6/LTjkQHXuPjpD27WIA2ASExh64t
+      1XIA6Gs0vXc8CF+ppt9tb48TwCyONhH9PtE1CURhH6FRPSKkxXD/eq/BhoVzjT//
+      9lu269+Q2H6QHQAh0CeT9wuqpSHxXu/fKDNrG/DGmNLpAfSrO4bepZGOAWKnDQFP
+      Dkr1FEpb43SRZgyP3KDEad5F7uZzYDf7FVLxfNlWzhuFErzLVTHlUxWBAcY22a8R
+      2AuS6D+0vpJUSXqXEYQJ+R/GqHe1h+6mBnAyloz9eSU7X9kYPUv3cEAkWYrkGLt0
+      Or7cfbtFL+GUQpVVNELOZftK1h4S3StfJJerc5YluQBqHUQkCIZMa6AS48uV958b
+      JC9WHZIgGzkb/3GLV/rAEwgOhlmfWavmP/MXIEl5YBOpyOSkpVm4CKqNOx7+Sby+
+      2Gh45i5qQhRfBW6880zrgnRSa6rlXHrzd4gL32sSKGON6YEhngJRzZzZhf+0IgpR
+      QXRk7H0novz5DBUHAcecOGqNikTVvwBXI12sFjh6YMbVD0FhkokSjHqipJqXCwDc
+      In6uBDyBjOjcJa0M7KzEN5MsN9RJK00vrBao+b8mpROUCpVAF/ZL5ofMTu72qJ2P
+      Plpk2ab+ZpAxm+B7am9r2CojjDDz/D8aFFR+bLx/0c1AnCUDnvqjBmNKxCHD2jIR
+      B4ghhzUfYFDgnm7u2vg3ycTxuP1ys74Z82Ufw3YZeiroG+uM/h90eyXJsEHv6pmj
+      mXO4USgtApYLqNUfSptcjw1nDnUnSus2/DjIZZTg0GNMQi013kHkrodKmAs2V3/o
+      NmmXwjbGwdqpZzbwiG2yrw5BwkdKPQQ4PRsyUVuyWfrYAFLLtfXuFGIIfoQ2DiSl
+      EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
+      =FmGT
+      -----END PGP MESSAGE-----
 **** Git Gutter Mode                                                 :gutter:
      :PROPERTIES:
      :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
