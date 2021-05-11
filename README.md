@@ -14,11 +14,8 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/) using [
 ```emacs-lisp
 (defvar bootstrap-version)
 
-(setq straight-base-dir (expand-file-name "" user-emacs-directory)
-      straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
-
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
@@ -115,6 +112,7 @@ Load all files in certain directories.
   (when (file-exists-p load-dir)
     (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
       (condition-case nil
+          (message "load-el-gpg loading %s" f)
           (load f 'no-error)
         (error nil)))))
 ```
@@ -152,21 +150,19 @@ Load all files in certain directories.
     ```
 
     ```emacs-lisp
-    (use-package emacs
-      :init
-      (require 'auth-source)
-      (defun get-auth-info (host user &optional port)
-        "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
-        (let* ((info (nth 0 (auth-source-search
-                            :host host
-                            :user user
-                            :port port
-                            :require '(:user :secret)
-                            :create nil)))
-               (secret (plist-get info :secret)))
-          (if (functionp secret)
-              (funcall secret)
-            secret))))
+    (require 'auth-source)
+    (defun get-auth-info (host user &optional port)
+      "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
+      (let* ((info (nth 0 (auth-source-search
+                           :host host
+                           :user user
+                           :port port
+                           :require '(:user :secret)
+                           :create nil)))
+             (secret (plist-get info :secret)))
+        (if (functionp secret)
+            (funcall secret)
+          secret)))
     ```
 
 2.  Pass
@@ -1094,7 +1090,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgd5f2fdb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgc4f4863) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3265,8 +3261,9 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 
         ```emacs-lisp
         (use-package php-mode
+          :custom
+          (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
           :config
-          (setq lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
           (add-to-list 'display-buffer-alist
                        (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
           (defun start-symfony-web-server()
@@ -3278,7 +3275,6 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
             (interactive)
             (start-symfony-web-server)
             ))
-        ;;:hook (php-mode . php-mode-webserver-hook))
         ```
 
         We can trigger it using a .dir-locals.el
