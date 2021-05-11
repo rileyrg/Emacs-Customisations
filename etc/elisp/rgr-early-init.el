@@ -1,4 +1,4 @@
-;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+;;; rgr-early-init.el  -*- no-byte-compile: t -*-
 (use-package
   auto-compile
   :init

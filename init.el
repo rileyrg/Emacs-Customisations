@@ -1,3 +1,5 @@
+;;; init.el   -*- no-byte-compile: t -*-
+
 (defvar bootstrap-version)
 
 (let ((bootstrap-file
@@ -64,7 +66,6 @@
 (require 'rgr/completion "rgr-completion" 'NOERROR)
 
 (require  'rgr/alert-learn "rgr-alert-learn" 'NOERROR)
-(alert "Emacs is starting!")
 
 (require  'rgr/general-config "rgr-general-config" 'NOERROR)
 

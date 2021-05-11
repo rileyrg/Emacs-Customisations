@@ -5,11 +5,10 @@
                                (unless (server-running-p)
                                  (message "Starting EmacsServer from init as not already running.")
                                  (server-start))
-                               ))
-  )
+                               )))
 
 (defun startHook()
-  (message "In emacs-startup-hook"))
+  )
 
 (add-hook 'emacs-startup-hook 'startHook)
 
@@ -27,5 +26,9 @@
 
 (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
 (global-set-key (kbd "C-x C-c") 'nil)
+
+(use-package alert
+  :init
+  (alert "Emacs is starting..."))
 
 (provide 'rgr/daemon)

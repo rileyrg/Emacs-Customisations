@@ -32,18 +32,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
   :PROPERTIES:
   :ID:       7be978df-ed2c-4d29-b5b2-da0039312e68
   :END:
-
-** compiling init.el
-   :PROPERTIES:
-   :header-args:emacs-lisp: :tangle no
-   :END:
-
-   #+begin_src emacs-lisp
-   ;;; init.el --- init  -*- no-byte-compile: t -*-
-   #+end_src
-
-
-
+#+begin_src emacs-lisp
+    ;;; init.el   -*- no-byte-compile: t -*-
+#+end_src
 ** early-init.el
    :PROPERTIES:
    :header-args:emacs-lisp: :tangle (expand-file-name "early-init.el" user-emacs-directory)
@@ -123,7 +114,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    :ID:       32e5b009-9695-4c8e-8208-4bfa9e6adfac
    :END:
 #+begin_src emacs-lisp :tangle (expand-file-name "rgr-early-init.el" elisp-dir)
-  ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+  ;;; rgr-early-init.el  -*- no-byte-compile: t -*-
   (use-package
     auto-compile
     :init
@@ -322,11 +313,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                                      (unless (server-running-p)
                                        (message "Starting EmacsServer from init as not already running.")
                                        (server-start))
-                                     ))
-        )
+                                     )))
 
       (defun startHook()
-        (message "In emacs-startup-hook"))
+        )
 
       (add-hook 'emacs-startup-hook 'startHook)
 
@@ -344,6 +334,10 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
 
       (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
       (global-set-key (kbd "C-x C-c") 'nil)
+
+      (use-package alert
+        :init
+        (alert "Emacs is starting..."))
 
       (provide 'rgr/daemon)
     #+end_src
@@ -752,7 +746,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    Raw: [[file+sys:etc/elisp/rgr-alert-learn.el][rgr/alert-learn]].
    #+begin_src emacs-lisp
      (require  'rgr/alert-learn "rgr-alert-learn" 'NOERROR)
-     (alert "Emacs is starting!")
    #+end_src
 
 *** library

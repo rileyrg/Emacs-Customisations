@@ -1,15 +1,25 @@
 This file generates [init.el](init.el) and other [org files](etc/elisp/) using [org-babel-tangle](https://orgmode.org/manual/Extracting-Source-Code.html)
 
-```emacs-lisp
-;;; init.el --- init  -*- no-byte-compile: t -*-
-```
-
 
 # straight.el package management
 
 [straight.el](https://github.com/raxod502/straight.el#features): next-generation, purely functional package manager for the Emacs hacker.
 
 :ID: 7be978df-ed2c-4d29-b5b2-da0039312e68
+
+```emacs-lisp
+;;; init.el   -*- no-byte-compile: t -*-
+```
+
+
+## early-init.el
+
+```emacs-lisp
+(setq package-enable-at-startup nil)
+```
+
+
+## bootstrap
 
 ```emacs-lisp
 (defvar bootstrap-version)
@@ -76,7 +86,7 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/) using [
 ## Auto-compile
 
 ```emacs-lisp
-;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+;;; rgr-early-init.el  -*- no-byte-compile: t -*-
 (use-package
   auto-compile
   :init
@@ -278,11 +288,10 @@ Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
                                (unless (server-running-p)
                                  (message "Starting EmacsServer from init as not already running.")
                                  (server-start))
-                               ))
-  )
+                               )))
 
 (defun startHook()
-  (message "In emacs-startup-hook"))
+  )
 
 (add-hook 'emacs-startup-hook 'startHook)
 
@@ -300,6 +309,10 @@ Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
 
 (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
 (global-set-key (kbd "C-x C-c") 'nil)
+
+(use-package alert
+  :init
+  (alert "Emacs is starting..."))
 
 (provide 'rgr/daemon)
 ```
@@ -660,7 +673,6 @@ Raw: [rgr/alert-learn](etc/elisp/rgr-alert-learn.el).
 
 ```emacs-lisp
 (require  'rgr/alert-learn "rgr-alert-learn" 'NOERROR)
-(alert "Emacs is starting!")
 ```
 
 
@@ -1090,7 +1102,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgc4f4863) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org0b38de8) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3369,6 +3381,7 @@ I like to exclude everything and then add in what is important. So the first lin
 !.ignore
 
 !emacs-config.org
+!earlyinit.el
 !init.el
 !README.md
 
