@@ -1,5 +1,3 @@
-;;; init.el --- init  -*- no-byte-compile: t -*-
-
 (defvar bootstrap-version)
 
 (let ((bootstrap-file

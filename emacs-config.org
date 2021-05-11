@@ -27,38 +27,57 @@
 
 This file generates [[file:init.el::defvar bootstrap-version][init.el]] and other [[file:etc/elisp/][org files]]  using [[https://orgmode.org/manual/Extracting-Source-Code.html][org-babel-tangle]]
 
-#+begin_src emacs-lisp
-  ;;; init.el --- init  -*- no-byte-compile: t -*-
-#+end_src
-
 * straight.el package management
   [[https://github.com/raxod502/straight.el#features][straight.el]]: next-generation, purely functional package manager for the Emacs hacker.
   :PROPERTIES:
   :ID:       7be978df-ed2c-4d29-b5b2-da0039312e68
   :END:
-  #+begin_src emacs-lisp
-    (defvar bootstrap-version)
 
-    (let ((bootstrap-file
-           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-          (bootstrap-version 5))
-      (unless (file-exists-p bootstrap-file)
-        (with-current-buffer
-            (url-retrieve-synchronously
-             "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-             'silent 'inhibit-cookies)
-          (goto-char (point-max))
-          (eval-print-last-sexp)))
-      (load bootstrap-file nil 'nomessage))
+** compiling init.el
+   :PROPERTIES:
+   :header-args:emacs-lisp: :tangle no
+   :END:
 
-    (straight-use-package 'use-package)
+   #+begin_src emacs-lisp
+   ;;; init.el --- init  -*- no-byte-compile: t -*-
+   #+end_src
 
-    (use-package straight
-      :custom
-      (straight-use-package-by-default t)
-      (straight-vc-git-default-protocol 'ssh))
 
-  #+end_src
+
+** early-init.el
+   :PROPERTIES:
+   :header-args:emacs-lisp: :tangle (expand-file-name "early-init.el" user-emacs-directory)
+   :END:
+
+   #+begin_src emacs-lisp
+     (setq package-enable-at-startup nil)
+   #+end_src
+
+**  bootstrap
+
+   #+begin_src emacs-lisp
+     (defvar bootstrap-version)
+
+     (let ((bootstrap-file
+            (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+           (bootstrap-version 5))
+       (unless (file-exists-p bootstrap-file)
+         (with-current-buffer
+             (url-retrieve-synchronously
+              "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+              'silent 'inhibit-cookies)
+           (goto-char (point-max))
+           (eval-print-last-sexp)))
+       (load bootstrap-file nil 'nomessage))
+
+     (straight-use-package 'use-package)
+
+     (use-package straight
+       :custom
+       (straight-use-package-by-default t)
+       (straight-vc-git-default-protocol 'ssh))
+
+   #+end_src
 
 ** Updating packages
    #+begin_src emacs-lisp

@@ -5,6 +5,7 @@
 !.ignore
 
 !emacs-config.org
+!earlyinit.el
 !init.el
 !README.md
 
