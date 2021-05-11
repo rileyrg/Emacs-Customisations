@@ -31,14 +31,17 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
   ;;; init.el --- init  -*- no-byte-compile: t -*-
 #+end_src
 
-* [[https://github.com/raxod502/straight.el#bootstrapping-straightel][straight.el]] package management
+* straight.el package management
+  [[https://github.com/raxod502/straight.el#features][straight.el]]: next-generation, purely functional package manager for the Emacs hacker.
   :PROPERTIES:
   :ID:       7be978df-ed2c-4d29-b5b2-da0039312e68
   :END:
   #+begin_src emacs-lisp
     (defvar bootstrap-version)
-    (setq straight-base-dir (expand-file-name "" user-emacs-directory))
-    (setq straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
+
+    (setq straight-base-dir (expand-file-name "" user-emacs-directory)
+          straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
+
     (let ((bootstrap-file
            (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
           (bootstrap-version 5))
@@ -51,15 +54,13 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           (eval-print-last-sexp)))
       (load bootstrap-file nil 'nomessage))
 
-    (setq straight-use-package-by-default t)
-
     (straight-use-package 'use-package)
 
     (use-package straight
       :custom
+      (straight-use-package-by-default t)
       (straight-vc-git-default-protocol 'ssh))
 
-    (use-package el-patch)
   #+end_src
 
 ** Updating packages
@@ -160,20 +161,26 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
      #+end_src
 ** Security
-*** [[https://www.gnu.org/software/emacs/manual/auth.html][Auth-Sources]]
+    #+begin_src emacs-lisp
+      (require 'rgr/security "rgr-security" 'NOERROR)
+    #+end_src
+*** rgr-security library
     :PROPERTIES:
-    :ID:       8f8f4b02-bdd2-4ad9-81bb-c3dd14b2fe9d
+    :header-args:emacs-lisp: :tangle (expand-file-name "rgr-security.el" elisp-dir)
     :END:
-    Let emacs take care of security things automagically
-**** get-auth-info
-     Thanks to https://gist.github.com/letoh/5497116 . auth-source is pretty tricky for the part time hacker.
+**** Auth-Sources, get-auth-info
+     :PROPERTIES:
+     :ID:       8f8f4b02-bdd2-4ad9-81bb-c3dd14b2fe9d
+     :END:
+     Let emacs take care of security things automagically.
      example:
      #+begin_src emacs-lisp :tangle no
        (setq passw (get-auth-info "licenses" "my-auth-token"))
      #+end_src
      #+begin_src emacs-lisp
-       (use-package auth-source
+       (use-package emacs
          :init
+         (require 'auth-source)
          (defun get-auth-info (host user &optional port)
            "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
            (let* ((info (nth 0 (auth-source-search
@@ -187,21 +194,21 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                  (funcall secret)
                secret))))
      #+end_src
-*** Pass
-    Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
-    #+begin_src emacs-lisp :tangle no
-      (car (process-lines "pass" "Chat/slack-api-token"))
-    #+end_src
+**** Pass
+     Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
+     #+begin_src emacs-lisp :tangle no
+       (car (process-lines "pass" "Chat/slack-api-token"))
+     #+end_src
 
-    #+begin_src emacs-lisp
-      (use-package pass)
-    #+end_src
+     #+begin_src emacs-lisp
+       (use-package pass)
+     #+end_src
+**** provide
+ #+begin_src emacs-lisp
+   (provide 'rgr/security)
+ #+end_src
 
-** Macros & Utilities
-   :PROPERTIES:
-   :ID:       733c70f3-5477-405f-bfeb-54089888b145
-   :END:
-*** General utility functions
+** Utilities
     :PROPERTIES:
     :ID:       c0eaf4f9-a8fc-43ea-84d8-24386ab3f90a
     :END:
@@ -209,73 +216,72 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     #+begin_src emacs-lisp
       (require 'rgr/utils "rgr-utils" 'NOERROR)
     #+end_src
-**** rgr-utils library
+*** rgr-utils library
+    :PROPERTIES:
+    :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
+    :END:
+**** thing at point or region or input
+     #+begin_src emacs-lisp
+       (defun rgr/region-symbol-query()
+         "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
+         (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
+                       (if(use-region-p)
+                           (let ((sel-text
+                                  (buffer-substring-no-properties
+                                   (mark)
+                                   (point))))
+                             sel-text)
+                         (thing-at-point 'symbol)) nil))
+                (result (if w w (read-string "lookup:"))))
+           result))
+
+     #+end_src
+**** read and write elisp vars to file
      :PROPERTIES:
-     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
-     :ID:       0f8860c0-e1e1-41a8-bdb2-d062559ddd78
+     :ID:       82905a95-6e37-4114-ba77-4be0dd31a9ec
      :END:
-***** thing at point or region or input
-      #+begin_src emacs-lisp
-        (defun rgr/region-symbol-query()
-          "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
-          (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
-                        (if(use-region-p)
-                            (let ((sel-text
-                                   (buffer-substring-no-properties
-                                    (mark)
-                                    (point))))
-                              sel-text)
-                          (thing-at-point 'symbol)) nil))
-                 (result (if w w (read-string "lookup:"))))
-            result))
+     #+begin_src emacs-lisp
 
-      #+end_src
-***** read and write elisp vars to file
-      :PROPERTIES:
-      :ID:       82905a95-6e37-4114-ba77-4be0dd31a9ec
-      :END:
-      #+begin_src emacs-lisp
+       (defun rgr/elisp-write-var (f v)
+         (with-temp-file f
+           (prin1 v (current-buffer))))
 
-        (defun rgr/elisp-write-var (f v)
-          (with-temp-file f
-            (prin1 v (current-buffer))))
+       (defun rgr/elisp-read-var (f)
+         (with-temp-buffer
+           (insert-file-contents f)
+           (cl-assert (eq (point) (point-min)))
+           (read (current-buffer))))
+     #+end_src
 
-        (defun rgr/elisp-read-var (f)
-          (with-temp-buffer
-            (insert-file-contents f)
-            (cl-assert (eq (point) (point-min)))
-            (read (current-buffer))))
-      #+end_src
-
-***** line
-      :PROPERTIES:
-      :ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
-      :END:
-      #+begin_src emacs-lisp
-        (defun c-complete-line()
-          (interactive)
-          (end-of-line)
-          (unless (eql ?\; (char-after (- (point-at-eol) 1)))
-            (progn (insert ";")))
-          (newline-and-indent))
-        (defun c-insert-previous-line()
-          (interactive)
-          (previous-line)
-          (end-of-line)
-          (newline-and-indent)
-          (insert (string-trim (current-kill 0))))
-        (defun c-newline-below()
-          (interactive)
-          (end-of-line)
-          (newline-and-indent))
-      #+end_src
-***** provide
-      :PROPERTIES:
-      :ID:       1a15ae4d-fd90-4a41-b8d5-1efbec77bf8d
-      :END:
-      #+begin_src emacs-lisp
-        (provide 'rgr/utils)
-      #+end_src
+**** provide
+     :PROPERTIES:
+     :ID:       1a15ae4d-fd90-4a41-b8d5-1efbec77bf8d
+     :END:
+     #+begin_src emacs-lisp
+       (provide 'rgr/utils)
+     #+end_src
+**** line
+     :PROPERTIES:
+     :ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
+     :END:
+     #+begin_src emacs-lisp
+       (defun c-complete-line()
+         (interactive)
+         (end-of-line)
+         (unless (eql ?\; (char-after (- (point-at-eol) 1)))
+           (progn (insert ";")))
+         (newline-and-indent))
+       (defun c-insert-previous-line()
+         (interactive)
+         (previous-line)
+         (end-of-line)
+         (newline-and-indent)
+         (insert (string-trim (current-kill 0))))
+       (defun c-newline-below()
+         (interactive)
+         (end-of-line)
+         (newline-and-indent))
+     #+end_src
 ** Emacs daemon & startup
    :PROPERTIES:
    :ID:       77ded746-89ff-4051-a4eb-a4d75d7917bc
@@ -327,10 +333,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       (provide 'rgr/daemon)
     #+end_src
 
-*** System
-    :PROPERTIES:
-    :ID:       6db0294c-11d2-406b-9dd5-8129181c12d6
-    :END:
 ** Minibuffer Enrichment (search, sudo edit...)
    :PROPERTIES:
    :ID:       ccdf6738-f921-4d2f-81ea-6dd00883867c
@@ -427,7 +429,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
          (ctrlf-highlight-current-line t)
          (ctrlf-auto-recenter t)
          (ctrlf-search-style-is-sticky t)
-         :config
+         :init
          (ctrlf-mode +1))
      #+end_src
 **** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list
@@ -436,7 +438,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :END:
      #+begin_src emacs-lisp
        (use-package selectrum
-         :demand t
          :config
          (selectrum-mode +1)
          :bind ("C-x C-z" . #'selectrum-repeat))
@@ -447,7 +448,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :END:
      #+begin_src emacs-lisp
        (use-package prescient
-         :demand t
          :config
          (prescient-persist-mode +1)
          (if (featurep 'selectrum)
@@ -572,12 +572,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      :END:
      #+begin_src emacs-lisp
        (use-package embark
-         :ensure t
-         :bind
-         (("M-e" . embark-act)       ;; pick some comfortable binding
-          ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-
-         :init
+         :config
          (setq embark-action-indicator
                (lambda (map _target)
                  (which-key--show-keymap "Embark" map nil nil 'no-paging)
@@ -585,23 +580,21 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
                embark-become-indicator embark-action-indicator)
          ;; Optionally replace the key help with a completing-read interface
          (setq prefix-help-command #'embark-prefix-help-command)
-
-         :config
-
          ;; Hide the mode line of the Embark live/completions buffers
          (add-to-list 'display-buffer-alist
                       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                         nil
-                        (window-parameters (mode-line-format . none)))))
+                        (window-parameters (mode-line-format . none))))
+         :bind
+         ("M-e" . embark-act)       ;; pick some comfortable binding
+          ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
      #+end_src
 ***** embark-consult
       :PROPERTIES:
       :END:
       #+begin_src emacs-lisp
         (use-package embark-consult
-          :ensure t
           :after (embark consult)
-          :demand t ; only necessary if you have the hook below
           ;; if you want to have consult previews as you move around an
           ;; auto-updating embark collect buffer
           :hook
@@ -618,7 +611,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
        (use-package marginalia
          :custom
          (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-         :config
+         :init
          (marginalia-mode)
          (advice-add #'marginalia-cycle :after
                      (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
@@ -642,7 +635,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
    #+end_src
 
 
-*** library
+*** rgr-completion library
     :PROPERTIES:
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" elisp-dir)
     :END:
@@ -2433,19 +2426,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      (global-set-key (kbd "C-c i") 'eshell/chat-client)
    #+end_src
 
-   The code in [[./elisp/rgr-chat.el][rgr-chat.el]]:
+   The code in  [[file:etc/elisp/rgr-chat.el][rgr-chat]] :
    #+include: "./etc/elisp/rgr-chat.el" src emacs-lisp
 
-*** Emacs Slack
-    :PROPERTIES:
-    :ID:       20db97bc-7c74-4a01-8b3e-d58c6d47eee9
-    :END:
-    [[https://slack.com/intl/en-de/][Slack]] interface for Emacs on [[https://github.com/yuya373/emacs-slack][github]]. See [[etc/elisp/rgr-chat.el][rgr-chat.el]].
-*** Emacs Gitter
-    :PROPERTIES:
-    :ID:       44ac90de-f10d-45f7-9b0c-23651312a277
-    :END:
-    [[https://gitter.im/][Gitter]] interface for Emacs on [[https://github.com/xuchunyang/gitter.el][github]]. See [[etc/elisp/rgr-chat.el][rgr-chat.el]].
 ** Email
    :PROPERTIES:
    :ID:       1db35463-e9e1-4c38-b21f-437d475184e4

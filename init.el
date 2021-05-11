@@ -1,8 +1,10 @@
 ;;; init.el --- init  -*- no-byte-compile: t -*-
 
 (defvar bootstrap-version)
-(setq straight-base-dir (expand-file-name "" user-emacs-directory))
-(setq straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
+
+(setq straight-base-dir (expand-file-name "" user-emacs-directory)
+      straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
+
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
       (bootstrap-version 5))
@@ -15,15 +17,12 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(setq straight-use-package-by-default t)
-
 (straight-use-package 'use-package)
 
 (use-package straight
   :custom
+  (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
-
-(use-package el-patch)
 
 (use-package auto-package-update
   :config
@@ -58,22 +57,7 @@
 
 (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
 
-(use-package auth-source
-  :init
-  (defun get-auth-info (host user &optional port)
-    "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
-    (let* ((info (nth 0 (auth-source-search
-                        :host host
-                        :user user
-                        :port port
-                        :require '(:user :secret)
-                        :create nil)))
-           (secret (plist-get info :secret)))
-      (if (functionp secret)
-          (funcall secret)
-        secret))))
-
-(use-package pass)
+(require 'rgr/security "rgr-security" 'NOERROR)
 
 (require 'rgr/utils "rgr-utils" 'NOERROR)
 

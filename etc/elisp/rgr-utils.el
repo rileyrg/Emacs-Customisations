@@ -21,6 +21,8 @@
     (cl-assert (eq (point) (point-min)))
     (read (current-buffer))))
 
+(provide 'rgr/utils)
+
 (defun c-complete-line()
   (interactive)
   (end-of-line)
@@ -37,5 +39,3 @@
   (interactive)
   (end-of-line)
   (newline-and-indent))
-
-(provide 'rgr/utils)

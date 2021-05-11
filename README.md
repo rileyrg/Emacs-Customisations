@@ -5,12 +5,18 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/) using [
 ```
 
 
-# [straight.el](https://github.com/raxod502/straight.el#bootstrapping-straightel) package management
+# straight.el package management
+
+[straight.el](https://github.com/raxod502/straight.el#features): next-generation, purely functional package manager for the Emacs hacker.
+
+:ID: 7be978df-ed2c-4d29-b5b2-da0039312e68
 
 ```emacs-lisp
 (defvar bootstrap-version)
-(setq straight-base-dir (expand-file-name "" user-emacs-directory))
-(setq straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
+
+(setq straight-base-dir (expand-file-name "" user-emacs-directory)
+      straight-build-dir (expand-file-name "var/straight/build" user-emacs-directory))
+
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
       (bootstrap-version 5))
@@ -23,15 +29,13 @@ This file generates [init.el](init.el) and other [org files](etc/elisp/) using [
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(setq straight-use-package-by-default t)
-
 (straight-use-package 'use-package)
 
 (use-package straight
   :custom
+  (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 
-(use-package el-patch)
 ```
 
 
@@ -130,21 +134,61 @@ Load all files in certain directories.
     ```
 
 
-## [Auth-Sources](https://www.gnu.org/software/emacs/manual/auth.html)
-
-Let emacs take care of security things automagically
+## Security
 
 ```emacs-lisp
-(use-package auth-source
-  :no-require t
-  )
+(require 'rgr/security "rgr-security" 'NOERROR)
 ```
 
 
-## Macros & Utilities
+### rgr-security library
+
+1.  Auth-Sources, get-auth-info
+
+    Let emacs take care of security things automagically. example:
+
+    ```emacs-lisp
+    (setq passw (get-auth-info "licenses" "my-auth-token"))
+    ```
+
+    ```emacs-lisp
+    (use-package emacs
+      :init
+      (require 'auth-source)
+      (defun get-auth-info (host user &optional port)
+        "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
+        (let* ((info (nth 0 (auth-source-search
+                            :host host
+                            :user user
+                            :port port
+                            :require '(:user :secret)
+                            :create nil)))
+               (secret (plist-get info :secret)))
+          (if (functionp secret)
+              (funcall secret)
+            secret))))
+    ```
+
+2.  Pass
+
+    Uses the unix command line `pass` utility. Can be used via `process-lines` e.g
+
+    ```emacs-lisp
+    (car (process-lines "pass" "Chat/slack-api-token"))
+    ```
+
+    ```emacs-lisp
+    (use-package pass)
+    ```
+
+3.  provide
+
+    ```emacs-lisp
+    (provide 'rgr/security)
+    ```
 
 
-### General utility functions
+## Utilities
 
 Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
@@ -152,67 +196,68 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 (require 'rgr/utils "rgr-utils" 'NOERROR)
 ```
 
-1.  rgr-utils library
 
-    1.  thing at point or region or input
+### rgr-utils library
 
-        ```emacs-lisp
-        (defun rgr/region-symbol-query()
-          "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
-          (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
-                        (if(use-region-p)
-                            (let ((sel-text
-                                   (buffer-substring-no-properties
-                                    (mark)
-                                    (point))))
-                              sel-text)
-                          (thing-at-point 'symbol)) nil))
-                 (result (if w w (read-string "lookup:"))))
-            result))
+1.  thing at point or region or input
 
-        ```
+    ```emacs-lisp
+    (defun rgr/region-symbol-query()
+      "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
+      (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
+                    (if(use-region-p)
+                        (let ((sel-text
+                               (buffer-substring-no-properties
+                                (mark)
+                                (point))))
+                          sel-text)
+                      (thing-at-point 'symbol)) nil))
+             (result (if w w (read-string "lookup:"))))
+        result))
 
-    2.  read and write elisp vars to file
+    ```
 
-        ```emacs-lisp
+2.  read and write elisp vars to file
 
-        (defun rgr/elisp-write-var (f v)
-          (with-temp-file f
-            (prin1 v (current-buffer))))
+    ```emacs-lisp
 
-        (defun rgr/elisp-read-var (f)
-          (with-temp-buffer
-            (insert-file-contents f)
-            (cl-assert (eq (point) (point-min)))
-            (read (current-buffer))))
-        ```
+    (defun rgr/elisp-write-var (f v)
+      (with-temp-file f
+        (prin1 v (current-buffer))))
 
-    3.  line
+    (defun rgr/elisp-read-var (f)
+      (with-temp-buffer
+        (insert-file-contents f)
+        (cl-assert (eq (point) (point-min)))
+        (read (current-buffer))))
+    ```
 
-        ```emacs-lisp
-        (defun c-complete-line()
-          (interactive)
-          (end-of-line)
-          (unless (eql ?\; (char-after (- (point-at-eol) 1)))
-            (progn (insert ";")))
-          (newline-and-indent))
-        (defun c-insert-previous-line()
-          (interactive)
-          (previous-line)
-          (end-of-line)
-          (newline-and-indent)
-          (insert (string-trim (current-kill 0))))
-        (defun c-newline-below()
-          (interactive)
-          (end-of-line)
-          (newline-and-indent))
-        ```
+3.  provide
 
-    4.  provide
+    ```emacs-lisp
+    (provide 'rgr/utils)
+    ```
 
-        ```emacs-lisp
-        (provide 'rgr/utils)
-        ```
+4.  line
+
+    ```emacs-lisp
+    (defun c-complete-line()
+      (interactive)
+      (end-of-line)
+      (unless (eql ?\; (char-after (- (point-at-eol) 1)))
+        (progn (insert ";")))
+      (newline-and-indent))
+    (defun c-insert-previous-line()
+      (interactive)
+      (previous-line)
+      (end-of-line)
+      (newline-and-indent)
+      (insert (string-trim (current-kill 0))))
+    (defun c-newline-below()
+      (interactive)
+      (end-of-line)
+      (newline-and-indent))
+    ```
 
 
 ## Emacs daemon & startup
@@ -262,9 +307,6 @@ Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
 
 (provide 'rgr/daemon)
 ```
-
-
-### System
 
 
 ## Minibuffer Enrichment (search, sudo edit&#x2026;)
@@ -352,7 +394,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (ctrlf-highlight-current-line t)
       (ctrlf-auto-recenter t)
       (ctrlf-search-style-is-sticky t)
-      :config
+      :init
       (ctrlf-mode +1))
     ```
 
@@ -360,7 +402,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
     ```emacs-lisp
     (use-package selectrum
-      :demand t
       :config
       (selectrum-mode +1)
       :bind ("C-x C-z" . #'selectrum-repeat))
@@ -370,7 +411,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
     ```emacs-lisp
     (use-package prescient
-      :demand t
       :config
       (prescient-persist-mode +1)
       (if (featurep 'selectrum)
@@ -493,12 +533,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
     ```emacs-lisp
     (use-package embark
-      :ensure t
-      :bind
-      (("M-e" . embark-act)       ;; pick some comfortable binding
-       ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-
-      :init
+      :config
       (setq embark-action-indicator
             (lambda (map _target)
               (which-key--show-keymap "Embark" map nil nil 'no-paging)
@@ -506,23 +541,21 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             embark-become-indicator embark-action-indicator)
       ;; Optionally replace the key help with a completing-read interface
       (setq prefix-help-command #'embark-prefix-help-command)
-
-      :config
-
       ;; Hide the mode line of the Embark live/completions buffers
       (add-to-list 'display-buffer-alist
                    '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                      nil
-                     (window-parameters (mode-line-format . none)))))
+                     (window-parameters (mode-line-format . none))))
+      :bind
+      ("M-e" . embark-act)       ;; pick some comfortable binding
+       ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
     ```
 
     1.  embark-consult
 
         ```emacs-lisp
         (use-package embark-consult
-          :ensure t
           :after (embark consult)
-          :demand t ; only necessary if you have the hook below
           ;; if you want to have consult previews as you move around an
           ;; auto-updating embark collect buffer
           :hook
@@ -538,7 +571,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     (use-package marginalia
       :custom
       (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-      :config
+      :init
       (marginalia-mode)
       (advice-add #'marginalia-cycle :after
                   (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
@@ -562,7 +595,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 ```
 
 
-### library
+### rgr-completion library
 
 1.  Which Key     :which:key:
 
@@ -1061,7 +1094,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orga5842d5) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgd5f2fdb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1319,8 +1352,8 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                     (select-window (display-buffer "*Google Translate*"))))
 
               :bind
-              ("C-c t" . rgr/google-translate-at-point)
-              ("C-c T" . rgr/google-translate-query-translate)
+              ("C-c T" . rgr/google-translate-at-point)
+              ("C-c t" . rgr/google-translate-query-translate)
               ("C-c b" . rgr/google-translate-in-history-buffer))
 
 
@@ -2224,7 +2257,7 @@ and the eshell func to call it:
 (global-set-key (kbd "C-c i") 'eshell/chat-client)
 ```
 
-The code in [rgr-chat.el](./elisp/rgr-chat.el):
+The code in [rgr-chat](etc/elisp/rgr-chat.el) :
 
 ```emacs-lisp
 (use-package erc :demand t
@@ -2297,13 +2330,16 @@ The code in [rgr-chat.el](./elisp/rgr-chat.el):
   (slack-register-team
    :name "emacs-slack"
    :default t
-   :token slack-api-token
+   :token (setq slack-api-token (get-auth-info "licenses" "slack-api-token"))
    :subscribed-channels slack-subscribed-channels
    :full-and-display-names t)
   :bind
   ("C-c S" . slack-hydra/body))
 
-(use-package gitter :demand d)
+(use-package gitter
+  :demand
+  :config
+  (setq gitter-token (get-auth-info "licenses" "gitter-token")))
 
 
 (defgroup rgr/chat-clients nil
@@ -2348,17 +2384,6 @@ The code in [rgr-chat.el](./elisp/rgr-chat.el):
 
 (provide 'rgr-chat)
 ```
-
-
-### Slackware
-
-1.  Emacs Slack
-
-    [Slack](https://slack.com/intl/en-de/) interface for Emacs on [github](https://github.com/yuya373/emacs-slack). See [rgr-chat.el](./lisp/rgr-chat.el).
-
-2.  Emacs Gitter
-
-    [Gitter](https://gitter.im/) interface for Emacs on [github](https://github.com/xuchunyang/gitter.el). See [rgr-chat.el](./lisp/rgr-chat.el).
 
 
 ## Email
@@ -3241,6 +3266,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
         ```emacs-lisp
         (use-package php-mode
           :config
+          (setq lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
           (add-to-list 'display-buffer-alist
                        (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
           (defun start-symfony-web-server()

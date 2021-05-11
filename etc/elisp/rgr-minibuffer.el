@@ -41,17 +41,15 @@
   (ctrlf-highlight-current-line t)
   (ctrlf-auto-recenter t)
   (ctrlf-search-style-is-sticky t)
-  :config
+  :init
   (ctrlf-mode +1))
 
 (use-package selectrum
-  :demand t
   :config
   (selectrum-mode +1)
   :bind ("C-x C-z" . #'selectrum-repeat))
 
 (use-package prescient
-  :demand t
   :config
   (prescient-persist-mode +1)
   (if (featurep 'selectrum)
@@ -166,12 +164,7 @@
               ("!" . consult-flycheck)))
 
 (use-package embark
-  :ensure t
-  :bind
-  (("M-e" . embark-act)       ;; pick some comfortable binding
-   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-
-  :init
+  :config
   (setq embark-action-indicator
         (lambda (map _target)
           (which-key--show-keymap "Embark" map nil nil 'no-paging)
@@ -179,19 +172,17 @@
         embark-become-indicator embark-action-indicator)
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
-
-  :config
-
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
-                 (window-parameters (mode-line-format . none)))))
+                 (window-parameters (mode-line-format . none))))
+  :bind
+  ("M-e" . embark-act)       ;; pick some comfortable binding
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
 (use-package embark-consult
-  :ensure t
   :after (embark consult)
-  :demand t ; only necessary if you have the hook below
   ;; if you want to have consult previews as you move around an
   ;; auto-updating embark collect buffer
   :hook
@@ -200,7 +191,7 @@
 (use-package marginalia
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-  :config
+  :init
   (marginalia-mode)
   (advice-add #'marginalia-cycle :after
               (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
