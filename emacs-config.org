@@ -153,8 +153,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         (when (file-exists-p load-dir)
           (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
             (condition-case nil
-                (message "load-el-gpg loading %s" f)
-              (load f 'no-error)
+                (progn
+                  (message "load-el-gpg loading %s" f)
+                  (load f 'no-error))
               (error nil)))))
     #+end_src
 **** early load
@@ -872,7 +873,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :PROPERTIES:
       :END:
       #+begin_src emacs-lisp
-        (set-face-attribute 'default nil :height 100 :family "JetBrainsMono Nerd Font" :foundry "JB")
+        (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
       #+end_src
 ***** Darkroom
       :PROPERTIES:
@@ -3397,8 +3398,6 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
     https://github.com/protesilaos/modus-themes
     #+begin_src emacs-lisp
       (use-package modus-themes
-        :demand
-        :ensure
         :init
         ;; Add all your customizations prior to loading the themes
         (setq modus-themes-slanted-constructs t

@@ -537,7 +537,6 @@ stehen ganz weit oben.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 80))))
  '(centaur-tabs-active-bar-face ((t (:background "orange"))))
  '(centaur-tabs-selected ((t (:inherit bold :background "chocolate" :foreground "#ffffff" :overline nil :underline "orange"))))
  '(company-box-annotation ((t (:inherit company-tooltip-annotation :height 113))) t)

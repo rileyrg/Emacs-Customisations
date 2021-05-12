@@ -47,8 +47,9 @@
   (when (file-exists-p load-dir)
     (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
       (condition-case nil
-          (message "load-el-gpg loading %s" f)
-        (load f 'no-error)
+          (progn
+            (message "load-el-gpg loading %s" f)
+            (load f 'no-error))
         (error nil)))))
 
 (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
@@ -825,8 +826,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
 (use-package modus-themes
-  :demand
-  :ensure
   :init
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-slanted-constructs t

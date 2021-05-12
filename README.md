@@ -125,8 +125,9 @@ Load all files in certain directories.
   (when (file-exists-p load-dir)
     (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
       (condition-case nil
-          (message "load-el-gpg loading %s" f)
-        (load f 'no-error)
+          (progn
+            (message "load-el-gpg loading %s" f)
+            (load f 'no-error))
         (error nil)))))
 ```
 
@@ -672,6 +673,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 ```emacs-lisp
 (use-package lazy-lang-learn
+  :disabled
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
   :bind
   ("C-c L" . rgr/google-translate-learn))
@@ -810,7 +812,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         JetBrains fonts are nice. See [nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
 
         ```emacs-lisp
-        (set-face-attribute 'default nil :height 100 :family "JetBrainsMono Nerd Font" :foundry "JB")
+        (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
         ```
 
     2.  Darkroom
@@ -998,7 +1000,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgcd5b539) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgbd1a690) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3238,8 +3240,6 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 
 ```emacs-lisp
 (use-package modus-themes
-  :demand
-  :ensure
   :init
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-slanted-constructs t
