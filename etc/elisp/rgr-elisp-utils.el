@@ -1,7 +1,3 @@
-(use-package emacs
-  :hook
-  ((emacs-lisp-mode . electric-pair-mode)))
-
 (defun rgr/elisp-edit-mode()
   "return non nil if this buffer edits elisp"
   (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))

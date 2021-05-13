@@ -67,10 +67,9 @@
 (require 'rgr/completion "rgr-completion" 'NOERROR)
 
 (use-package lazy-lang-learn
-  :disabled
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
   :bind
-  ("C-c L" . rgr/google-translate-learn))
+  ("C-c L" . lazy-lang-learn-mode))
 
 (require  'rgr/general-config "rgr-general-config" 'NOERROR)
 

@@ -741,15 +741,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      #+begin_src emacs-lisp
        (provide 'rgr/completion)
      #+end_src
-** Alert and Alert Learn
+** Lazy Language Learning, lazy-lang-learn
    :PROPERTIES:
    :END:
    #+begin_src emacs-lisp
      (use-package lazy-lang-learn
-       :disabled
        :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
        :bind
-       ("C-c L" . rgr/google-translate-learn))
+       ("C-c L" . lazy-lang-learn-mode))
    #+end_src
 ** General configuration
    :PROPERTIES:
@@ -2565,7 +2564,14 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
           :hook
           ((emacs-lisp-mode . smartparens-mode)))
       #+end_src
-***** electric-pair-mode
+***** CANCELLED electric-pair-mode                                :CANCELLED:
+      CLOSED: [2021-05-13 Thu 21:53]
+      :PROPERTIES:
+      :header-args:emacs-lisp: :tangle no
+      :END:
+      :LOGBOOK:
+      - State "CANCELLED"  from              [2021-05-13 Thu 21:53]
+      :END:
       [[info:emacs#Matching][auto insert closing brackets]]
       #+begin_src emacs-lisp
         (use-package emacs

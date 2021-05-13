@@ -518,7 +518,7 @@ stehen ganz weit oben.
  '(twittering-use-master-password t)
  '(uniquify-buffer-name-style 'forward nil (uniquify))
  '(url-standalone-mode nil)
- '(user-full-name "rileyrg" nil nil "Customized with use-package mu4e")
+ '(user-full-name "Richard G.Riley" nil nil "Customized with use-package mu4e")
  '(user-mail-address "rileyrg@gmx.de")
  '(vc-follow-symlinks t)
  '(visible-bell t)
@@ -537,6 +537,7 @@ stehen ganz weit oben.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:height 105))))
  '(centaur-tabs-active-bar-face ((t (:background "orange"))))
  '(centaur-tabs-selected ((t (:inherit bold :background "chocolate" :foreground "#ffffff" :overline nil :underline "orange"))))
  '(company-box-annotation ((t (:inherit company-tooltip-annotation :height 113))) t)
@@ -586,6 +587,7 @@ stehen ganz weit oben.
  '(popup-face ((t (:inherit default))))
  '(rainbow-delimiters-base-error-face ((t (:inherit rainbow-delimiters-base-face :background "gainsboro" :foreground "red"))))
  '(selectrum-current-candidate ((t (:inherit bold :extend t :background "#2e2e2e" :foreground "#ffffff" :underline "burlywood"))))
+ '(show-paren-match ((t (:background "forest green" :foreground "#ffffff"))))
  '(tooltip ((t (:inherit variable-pitch :background "dim gray" :foreground "orange"))))
  '(treemacs-git-modified-face ((t (:inherit font-lock-variable-name-face :background "yellow" :foreground "red")))))
 
