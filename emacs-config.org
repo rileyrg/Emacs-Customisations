@@ -25,13 +25,30 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :tangle-mode (identity #o444)
 #+PROPERTY: header-args:gpg :cache no :tangle-mode (identity #o600)
 
-This file generates [[file:init.el::defvar bootstrap-version][init.el]] and other [[file:etc/elisp/][org files]]  using [[https://orgmode.org/manual/Extracting-Source-Code.html][org-babel-tangle]]
+* Introduction
+
+Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]] and other [[file:etc/elisp/][emacs elisp utility files]]  using [[https://orgmode.org/manual/Extracting-Source-Code.html][org-babel-tangle]].
+
+** Own libraries
+
+   These libraries are seperate stand alone github libraries.
+
+*** el-docstring-sap
+
+    Provides docstring help for symbol at point.
+
+    [[https://github.com/rileyrg/el-docstring-sap][https://github.com/rileyrg/el-docstring-sap]]
+
+
+*** lazy-lang-learn
+
+    A small "game" like utility that displays snippets to glance at. You can then
+    invoke google translate on them. Stores history.
+
+    [[https://github.com/rileyrg/lazy-lang-learn]]
 
 * straight.el package management
   [[https://github.com/raxod502/straight.el#features][straight.el]]: next-generation, purely functional package manager for the Emacs hacker.
-  :PROPERTIES:
-  :ID:       7be978df-ed2c-4d29-b5b2-da0039312e68
-  :END:
   #+begin_src emacs-lisp
     ;;; init.el   -*- no-byte-compile: t -*-
   #+end_src
@@ -748,7 +765,9 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
      (use-package lazy-lang-learn
        :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
        :bind
-       ("C-c L" . lazy-lang-learn-mode))
+       ("C-c L" . lazy-lang-learn-mode)
+       ("<f12>" . lazy-lang-learn-translate)
+       ("S-<f12>" . lazy-lang-learn-translate-from-history))
    #+end_src
 ** General configuration
    :PROPERTIES:
@@ -2640,12 +2659,12 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
       :END:
       Display a poup containing docstring at point
       #+begin_src emacs-lisp
-        (use-package el-docstring-sap
+        (use-package el-docstring-sap-
           :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
-          ("M-<f2>" . el-docstring-sap--display)
+          ("M-<f2>" . el-docstring-sap-display)
           ("M-<f1>" . el-docstring-sap-mode))
 
       #+end_src
@@ -2754,7 +2773,7 @@ This file generates [[file:init.el::defvar bootstrap-version][init.el]] and othe
         (projectile-mode +1)
         :bind
         ("<f5>" . 'projectile-switch-project)
-        ("<f12>" . projectile-run-eshell)
+        ("C-<f12>" . projectile-run-eshell)
         ("M-<RET>" . projectile-run-eshell)
         (:map projectile-mode-map ( "C-c p" . projectile-command-map)))
     #+end_src

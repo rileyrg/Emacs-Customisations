@@ -1,11 +1,30 @@
-This file generates [init.el](init.el) and other [org files](etc/elisp/) using [org-babel-tangle](https://orgmode.org/manual/Extracting-Source-Code.html)
+# Introduction
+
+Emacs customisation generates [init.el](init.el) and other [emacs elisp utility files](etc/elisp/) using [org-babel-tangle](https://orgmode.org/manual/Extracting-Source-Code.html).
+
+
+## Own libraries
+
+These libraries are seperate stand alone github libraries.
+
+
+### el-docstring-sap
+
+Provides docstring help for symbol at point.
+
+[https://github.com/rileyrg/el-docstring-sap](https://github.com/rileyrg/el-docstring-sap)
+
+
+### lazy-lang-learn
+
+A small "game" like utility that displays snippets to glance at. You can then invoke google translate on them. Stores history.
+
+<https://github.com/rileyrg/lazy-lang-learn>
 
 
 # straight.el package management
 
 [straight.el](https://github.com/raxod502/straight.el#features): next-generation, purely functional package manager for the Emacs hacker.
-
-:ID: 7be978df-ed2c-4d29-b5b2-da0039312e68
 
 ```emacs-lisp
 ;;; init.el   -*- no-byte-compile: t -*-
@@ -669,14 +688,15 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     ```
 
 
-## Alert and Alert Learn
+## Lazy Language Learning, lazy-lang-learn
 
 ```emacs-lisp
 (use-package lazy-lang-learn
-  :disabled
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
   :bind
-  ("C-c L" . rgr/google-translate-learn))
+  ("C-c L" . lazy-lang-learn-mode)
+  ("<f12>" . lazy-lang-learn-translate)
+  ("S-<f12>" . lazy-lang-learn-translate-from-history))
 ```
 
 
@@ -1000,7 +1020,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgbd1a690) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org37b045b) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2478,17 +2498,7 @@ Load this relatively early in order to have utils available if there's a faied l
 
 2.  rgr/elisp-utils library
 
-    1.  electric-pair-mode
-
-        [auto insert closing brackets](emacs#Matching)
-
-        ```emacs-lisp
-        (use-package emacs
-          :hook
-          ((emacs-lisp-mode . electric-pair-mode)))
-        ```
-
-    2.  elisp checks
+    1.  elisp checks
 
         ```emacs-lisp
         (defun rgr/elisp-edit-mode()
@@ -2496,7 +2506,7 @@ Load this relatively early in order to have utils available if there's a faied l
           (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
         ```
 
-    3.  linting     :lint:
+    2.  linting     :lint:
 
         [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
 
@@ -2504,7 +2514,7 @@ Load this relatively early in order to have utils available if there's a faied l
         (use-package package-lint)
         ```
 
-    4.  helpful, enriched elisp help
+    3.  helpful, enriched elisp help
 
         ```emacs-lisp
         (use-package helpful
@@ -2540,22 +2550,22 @@ Load this relatively early in order to have utils available if there's a faied l
           (global-set-key (kbd "C-h C") #'helpful-command))
         ```
 
-    5.  elisp popup context help     :popup:elisp:
+    4.  elisp popup context help     :popup:elisp:
 
         Display a poup containing docstring at point
 
         ```emacs-lisp
-        (use-package el-docstring-sap
+        (use-package el-docstring-sap-
           :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
-          ("M-<f2>" . el-docstring-sap--display)
+          ("M-<f2>" . el-docstring-sap-display)
           ("M-<f1>" . el-docstring-sap-mode))
 
         ```
 
-    6.  Elisp debugging
+    5.  Elisp debugging
 
         ```emacs-lisp
         (use-package
@@ -2573,7 +2583,7 @@ Load this relatively early in order to have utils available if there's a faied l
           )
         ```
 
-    7.  Formatting
+    6.  Formatting
 
         ```emacs-lisp
         (use-package
@@ -2583,7 +2593,7 @@ Load this relatively early in order to have utils available if there's a faied l
                 ("C-c f" . elisp-format-region)))
         ```
 
-    8.  popup query symbol
+    7.  popup query symbol
 
         ```emacs-lisp
         (use-package popup
@@ -2598,7 +2608,7 @@ Load this relatively early in order to have utils available if there's a faied l
           (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
         ```
 
-    9.  provide
+    8.  provide
 
         ```emacs-lisp
         (provide 'rgr/elisp-utils)
@@ -2647,7 +2657,7 @@ Load this relatively early in order to have utils available if there's a faied l
   (projectile-mode +1)
   :bind
   ("<f5>" . 'projectile-switch-project)
-  ("<f12>" . projectile-run-eshell)
+  ("C-<f12>" . projectile-run-eshell)
   ("M-<RET>" . projectile-run-eshell)
   (:map projectile-mode-map ( "C-c p" . projectile-command-map)))
 ```

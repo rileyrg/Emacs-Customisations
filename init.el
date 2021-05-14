@@ -69,7 +69,9 @@
 (use-package lazy-lang-learn
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
   :bind
-  ("C-c L" . lazy-lang-learn-mode))
+  ("C-c L" . lazy-lang-learn-mode)
+  ("<f12>" . lazy-lang-learn-translate)
+  ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
 (require  'rgr/general-config "rgr-general-config" 'NOERROR)
 
@@ -558,7 +560,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (projectile-mode +1)
   :bind
   ("<f5>" . 'projectile-switch-project)
-  ("<f12>" . projectile-run-eshell)
+  ("C-<f12>" . projectile-run-eshell)
   ("M-<RET>" . projectile-run-eshell)
   (:map projectile-mode-map ( "C-c p" . projectile-command-map)))
 
