@@ -414,7 +414,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           (ffap-bindings))
         ```
 
-4.  [ctrlf](https://github.com/raxod502/ctrlf) - back to basics search
+4.  [ctrlf](https://github.com/raxod502/ctrlf) - back to basics search     :ctrlf:
 
     ```emacs-lisp
     (use-package ctrlf
@@ -431,7 +431,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (ctrlf-mode +1))
     ```
 
-5.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list
+5.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list     :selectrum:
 
     ```emacs-lisp
     (use-package selectrum
@@ -440,7 +440,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       :bind ("C-x C-z" . #'selectrum-repeat))
     ```
 
-6.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
+6.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.     :prescient:
 
     ```emacs-lisp
     (use-package prescient
@@ -452,7 +452,18 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (selectrum-prescient-mode +1))))
     ```
 
-7.  [Consult](https://github.com/minad/consult) provides various commands based on the Emacs completion function completing-read
+7.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components     :orderless:
+
+    ```emacs-lisp
+    (use-package orderless
+      :custom
+      (completion-styles '(orderless))
+      (selectrum-prescient-enable-filtering nil)
+      (selectrum-refine-candidates-function #'orderless-filter)
+      (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+    ```
+
+8.  [Consult](https://github.com/minad/consult) provides various commands based on the Emacs completion function completing-read     :consult:
 
     ```emacs-lisp
     (use-package consult
@@ -560,7 +571,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   ("!" . consult-flycheck)))
     ```
 
-8.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
+9.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
     ```emacs-lisp
     (use-package embark
@@ -594,7 +605,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
         ```
 
-9.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
+10. [Marginalia](https://en.wikipedia.org/wiki/Marginalia) are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
 
     The [marginalia](https://github.com/minad/marginalia) pckage in emacs is very helpful.
 
@@ -608,7 +619,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
     ```
 
-10. provide
+11. provide
 
     ```emacs-lisp
     (provide 'rgr/minibuffer)
@@ -1019,7 +1030,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb56d426) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgd0c888f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles

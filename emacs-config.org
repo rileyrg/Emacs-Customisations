@@ -444,7 +444,7 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
                                 #'completion-file-name-table)))) 'append)
           (ffap-bindings))
       #+end_src
-**** [[https://github.com/raxod502/ctrlf][ctrlf]] - back to basics search
+**** [[https://github.com/raxod502/ctrlf][ctrlf]] - back to basics search                                    :ctrlf:
      :PROPERTIES:
      :ID:       18bfbb73-aba5-4392-9f79-383bf6e3f3ef
      :END:
@@ -462,9 +462,13 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
          :init
          (ctrlf-mode +1))
      #+end_src
-**** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list
+**** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list      :selectrum:
      :PROPERTIES:
      :ID:       f7f2ea39-77f2-45bd-9402-0eb09ef74b39
+     :END:
+     :LOGBOOK:
+     - State "WAITING"    from              [2021-05-15 Sat 16:21] \\
+       wait to see if need
      :END:
      #+begin_src emacs-lisp
        (use-package selectrum
@@ -472,7 +476,7 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
          (selectrum-mode +1)
          :bind ("C-x C-z" . #'selectrum-repeat))
      #+end_src
-**** [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.
+**** [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.                    :prescient:
      :PROPERTIES:
      :ID:       9b550059-5fc0-4534-80a6-9cb5e1c207c2
      :END:
@@ -485,7 +489,16 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
                :config
                (selectrum-prescient-mode +1))))
      #+end_src
-**** [[https://github.com/minad/consult][Consult]] provides various commands based on the Emacs completion function completing-read
+**** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
+     #+begin_src emacs-lisp
+       (use-package orderless
+         :custom
+         (completion-styles '(orderless))
+         (selectrum-prescient-enable-filtering nil)
+         (selectrum-refine-candidates-function #'orderless-filter)
+         (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+     #+end_src
+**** [[https://github.com/minad/consult][Consult]] provides various commands based on the Emacs completion function completing-read :consult:
      :PROPERTIES:
      :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
      :END:
