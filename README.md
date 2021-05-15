@@ -1030,7 +1030,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgd0c888f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgfc65bb1) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2063,16 +2063,16 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 2.  Window hopping
 
-    [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
+    1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
 
-    ```emacs-lisp
-    (use-package ace-window
-      :init
-      (defalias 'other-window 'ace-window)
-      :bind*
-      ("M-o" . ace-window)
-      ("M-S o" . ace-delete-window))
-    ```
+        ```emacs-lisp
+        (use-package ace-window
+          :init
+          (defalias 'other-window 'ace-window)
+          :bind*
+          ("M-o" . ace-window)
+          ("M-S o" . ace-delete-window))
+        ```
 
 3.  hopping around links
 

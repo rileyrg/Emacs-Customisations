@@ -45,6 +45,11 @@
   :init
   (ctrlf-mode +1))
 
+(use-package selectrum
+  :config
+  (selectrum-mode +1)
+  :bind ("C-x C-z" . #'selectrum-repeat))
+
 (use-package prescient
   :config
   (prescient-persist-mode +1)

@@ -2231,15 +2231,15 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
      :PROPERTIES:
      :ID:       024175d8-f05e-4c41-9c04-4a61d55a5d66
      :END:
-     [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
-     #+begin_src emacs-lisp
-       (use-package ace-window
-         :init
-         (defalias 'other-window 'ace-window)
-         :bind*
-         ("M-o" . ace-window)
-         ("M-S o" . ace-delete-window))
-     #+end_src
+***** [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
+      #+begin_src emacs-lisp
+        (use-package ace-window
+          :init
+          (defalias 'other-window 'ace-window)
+          :bind*
+          ("M-o" . ace-window)
+          ("M-S o" . ace-delete-window))
+      #+end_src
 **** hopping around links
      :PROPERTIES:
      :ID:       6a50d585-4163-4b7e-9dd8-b25fd0ee4e6b
