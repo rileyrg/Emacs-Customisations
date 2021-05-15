@@ -52,6 +52,15 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
   #+begin_src emacs-lisp
     ;;; init.el   -*- no-byte-compile: t -*-
   #+end_src
+
+* TODO error with straight in latest gcceamcs pull workaround
+  See github https://github.com/raxod502/straight.el/issues/757#issuecomment-839827576
+  #+begin_src emacs-lisp
+    (setq comp-deferred-compilation-deny-list nil)
+  #+end_src
+  :LOGBOOK:
+  - State "TODO"       from              [2021-05-15 Sat 21:39]
+  :END:
 ** early-init.el
    :PROPERTIES:
    :header-args:emacs-lisp: :tangle (expand-file-name "early-init.el" user-emacs-directory)

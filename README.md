@@ -31,6 +31,15 @@ A small "game" like utility that displays snippets to glance at. You can then in
 ```
 
 
+# error with straight in latest gcceamcs pull workaround
+
+See github <https://github.com/raxod502/straight.el/issues/757#issuecomment-839827576>
+
+```emacs-lisp
+(setq comp-deferred-compilation-deny-list nil)
+```
+
+
 ## early-init.el
 
 ```emacs-lisp
@@ -1030,7 +1039,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgfc65bb1) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org420c46f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
