@@ -4,7 +4,8 @@
   (tramp-default-method "ssh")
   )
 
-(use-package fzf)
+(use-package fzf
+  :bind (("M-g z" . fzf)))
 
 (defun maybe-read-only-mode()
   (when (cond ((eq major-mode 'org-mode) t))
@@ -88,12 +89,10 @@
          ("M-g I" . consult-project-imenu)
          ;; M-s bindings (search-map)
          ("M-s f" . consult-find)
-         ("<f4>" . consult-find)
          ("M-s L" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
          ("M-s r" . consult-ripgrep)
-         ("<f3>" . consult-ripgrep)
          ("M-s l" . consult-line)
          ("M-s m" . consult-multi-occur)
          ("M-s k" . consult-keep-lines)

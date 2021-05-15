@@ -369,7 +369,8 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 2.  fzf
 
     ```emacs-lisp
-    (use-package fzf)
+    (use-package fzf
+      :bind (("M-g z" . fzf)))
     ```
 
 3.  file opening
@@ -485,12 +486,10 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
              ("M-g I" . consult-project-imenu)
              ;; M-s bindings (search-map)
              ("M-s f" . consult-find)
-             ("<f4>" . consult-find)
              ("M-s L" . consult-locate)
              ("M-s g" . consult-grep)
              ("M-s G" . consult-git-grep)
              ("M-s r" . consult-ripgrep)
-             ("<f3>" . consult-ripgrep)
              ("M-s l" . consult-line)
              ("M-s m" . consult-multi-occur)
              ("M-s k" . consult-keep-lines)
@@ -1020,7 +1019,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org37b045b) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb56d426) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2656,9 +2655,6 @@ Load this relatively early in order to have utils available if there's a faied l
   :init
   (projectile-mode +1)
   :bind
-  ("<f5>" . 'projectile-switch-project)
-  ("C-<f12>" . projectile-run-eshell)
-  ("M-<RET>" . projectile-run-eshell)
   (:map projectile-mode-map ( "C-c p" . projectile-command-map)))
 ```
 

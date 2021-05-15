@@ -559,9 +559,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :init
   (projectile-mode +1)
   :bind
-  ("<f5>" . 'projectile-switch-project)
-  ("C-<f12>" . projectile-run-eshell)
-  ("M-<RET>" . projectile-run-eshell)
   (:map projectile-mode-map ( "C-c p" . projectile-command-map)))
 
 ;; try to work with next-error for bash's "set -x" output
