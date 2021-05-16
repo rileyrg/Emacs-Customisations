@@ -50,6 +50,13 @@
   (selectrum-mode +1)
   :bind ("C-x C-z" . #'selectrum-repeat))
 
+(use-package orderless
+  :custom
+  (completion-styles '(orderless))
+  (selectrum-prescient-enable-filtering nil)
+  (selectrum-refine-candidates-function #'orderless-filter)
+  (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+
 (use-package prescient
   :config
   (prescient-persist-mode +1)
@@ -57,13 +64,6 @@
       (use-package selectrum-prescient
         :config
         (selectrum-prescient-mode +1))))
-
-(use-package orderless
-  :custom
-  (completion-styles '(orderless))
-  (selectrum-prescient-enable-filtering nil)
-  (selectrum-refine-candidates-function #'orderless-filter)
-  (selectrum-highlight-candidates-function #'orderless-highlight-matches))
 
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.

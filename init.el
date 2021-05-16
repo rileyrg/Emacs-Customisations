@@ -235,6 +235,12 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ("M-0" . 'delete-window)
   ("M-1" . 'delete-other-windows))
 
+(use-package bufler
+  :config
+  (bufler-tabs-mode t)
+  :bind
+  ("C-x C-b" . 'bufler))
+
 (use-package dired-git
   :config
   :hook (dired-mode . dired-git-mode))
@@ -517,7 +523,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
                                 ;; try to emulate some of the eww key-bindings
                                 (local-set-key (kbd "<tab>") 'shr-next-link)
                                 (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-  :bind	  (("C-c m".  'mu4e)
+  :bind	  (("C-c u".  'mu4e)
            (:map mu4e-main-mode-map
                  ("m" . mu4e-compose-new))
            (:map mu4e-main-mode-map

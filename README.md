@@ -449,7 +449,18 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       :bind ("C-x C-z" . #'selectrum-repeat))
     ```
 
-6.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.     :prescient:
+6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components     :orderless:
+
+    ```emacs-lisp
+    (use-package orderless
+      :custom
+      (completion-styles '(orderless))
+      (selectrum-prescient-enable-filtering nil)
+      (selectrum-refine-candidates-function #'orderless-filter)
+      (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+    ```
+
+7.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.     :prescient:
 
     ```emacs-lisp
     (use-package prescient
@@ -459,17 +470,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           (use-package selectrum-prescient
             :config
             (selectrum-prescient-mode +1))))
-    ```
-
-7.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components     :orderless:
-
-    ```emacs-lisp
-    (use-package orderless
-      :custom
-      (completion-styles '(orderless))
-      (selectrum-prescient-enable-filtering nil)
-      (selectrum-refine-candidates-function #'orderless-filter)
-      (selectrum-highlight-candidates-function #'orderless-highlight-matches))
     ```
 
 8.  [Consult](https://github.com/minad/consult) provides various commands based on the Emacs completion function completing-read     :consult:
@@ -1039,7 +1039,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org420c46f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org42c6137) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2465,7 +2465,7 @@ The code in [rgr-chat](etc/elisp/rgr-chat.el) :
                                 ;; try to emulate some of the eww key-bindings
                                 (local-set-key (kbd "<tab>") 'shr-next-link)
                                 (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-  :bind	  (("C-c m".  'mu4e)
+  :bind	  (("C-c u".  'mu4e)
            (:map mu4e-main-mode-map
                  ("m" . mu4e-compose-new))
            (:map mu4e-main-mode-map

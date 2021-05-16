@@ -485,6 +485,15 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
          (selectrum-mode +1)
          :bind ("C-x C-z" . #'selectrum-repeat))
      #+end_src
+**** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
+     #+begin_src emacs-lisp
+       (use-package orderless
+         :custom
+         (completion-styles '(orderless))
+         (selectrum-prescient-enable-filtering nil)
+         (selectrum-refine-candidates-function #'orderless-filter)
+         (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+     #+end_src
 **** [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.                    :prescient:
      :PROPERTIES:
      :ID:       9b550059-5fc0-4534-80a6-9cb5e1c207c2
@@ -497,15 +506,6 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
              (use-package selectrum-prescient
                :config
                (selectrum-prescient-mode +1))))
-     #+end_src
-**** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
-     #+begin_src emacs-lisp
-       (use-package orderless
-         :custom
-         (completion-styles '(orderless))
-         (selectrum-prescient-enable-filtering nil)
-         (selectrum-refine-candidates-function #'orderless-filter)
-         (selectrum-highlight-candidates-function #'orderless-highlight-matches))
      #+end_src
 **** [[https://github.com/minad/consult][Consult]] provides various commands based on the Emacs completion function completing-read :consult:
      :PROPERTIES:
@@ -641,6 +641,7 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
      #+end_src
 ***** embark-consult
       :PROPERTIES:
+      :ID:       3e03dd9a-fbb6-4766-892c-4529c343187a
       :END:
       #+begin_src emacs-lisp
         (use-package embark-consult
@@ -653,6 +654,7 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
       #+end_src
 **** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
      :PROPERTIES:
+     :ID:       f3802197-c745-40b2-ac0d-72d7da291aaf
      :END:
 
      The [[https://github.com/minad/marginalia][marginalia]] pckage in emacs is very helpful.
@@ -2038,7 +2040,7 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
      :END:
      [[https://github.com/alphapapa/bufler.el][Bufler]]  is like a butler for your buffers, presenting them to you in an organized way based on your instructions.
 
-     #+begin_src emacs-lisp :tangle no
+     #+begin_src emacs-lisp
        (use-package bufler
          :config
          (bufler-tabs-mode t)
@@ -2511,7 +2513,7 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
                                       ;; try to emulate some of the eww key-bindings
                                       (local-set-key (kbd "<tab>") 'shr-next-link)
                                       (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-        :bind	  (("C-c m".  'mu4e)
+        :bind	  (("C-c u".  'mu4e)
                  (:map mu4e-main-mode-map
                        ("m" . mu4e-compose-new))
                  (:map mu4e-main-mode-map
