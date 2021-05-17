@@ -2034,10 +2034,16 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
     :PROPERTIES:
     :ID:       31a7e1db-04ca-410d-9c24-dfdd393df074
     :END:
-**** Bufler
+**** CANCELLED Bufler                                             :CANCELLED:
+CLOSED: [2021-05-17 Mo 19:59]
      :PROPERTIES:
      :ID:       b44d5a75-8846-4215-9b4f-a4f085aed0c8
+     :header-args:emacs-lisp: :tangle no
      :END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-05-17 Mo 19:59] \\
+  nah
+:END:
      [[https://github.com/alphapapa/bufler.el][Bufler]]  is like a butler for your buffers, presenting them to you in an organized way based on your instructions.
 
      #+begin_src emacs-lisp

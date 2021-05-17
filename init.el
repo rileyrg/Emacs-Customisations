@@ -235,12 +235,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ("M-0" . 'delete-window)
   ("M-1" . 'delete-other-windows))
 
-(use-package bufler
-  :config
-  (bufler-tabs-mode t)
-  :bind
-  ("C-x C-b" . 'bufler))
-
 (use-package dired-git
   :config
   :hook (dired-mode . dired-git-mode))

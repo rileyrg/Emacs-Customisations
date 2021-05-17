@@ -1039,7 +1039,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org42c6137) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgd39e032) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1882,18 +1882,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 
 ### Buffer selection
-
-1.  Bufler
-
-    [Bufler](https://github.com/alphapapa/bufler.el) is like a butler for your buffers, presenting them to you in an organized way based on your instructions.
-
-    ```emacs-lisp
-    (use-package bufler
-      :config
-      (bufler-tabs-mode t)
-      :bind
-      ("C-x C-b" . 'bufler))
-    ```
 
 
 ### dired - emacs file management     :dired:
