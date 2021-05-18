@@ -53,14 +53,18 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
     ;;; init.el   -*- no-byte-compile: t -*-
   #+end_src
 
-* TODO error with straight in latest gcceamcs pull workaround
+** DONE error with straight in latest gcceamcs pull workaround
+CLOSED: [2021-05-18 Tue 18:21]
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "DONE"       from              [2021-05-18 Tue 18:21]
+:END:
   See github https://github.com/raxod502/straight.el/issues/757#issuecomment-839827576
   #+begin_src emacs-lisp
     (setq comp-deferred-compilation-deny-list nil)
   #+end_src
-  :LOGBOOK:
-  - State "TODO"       from              [2021-05-15 Sat 21:39]
-  :END:
 ** early-init.el
    :PROPERTIES:
    :header-args:emacs-lisp: :tangle (expand-file-name "early-init.el" user-emacs-directory)
@@ -367,7 +371,8 @@ Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]
 
       (use-package alert
         :init
-        (alert "Emacs is starting..."))
+        (let ((alert-fade-time 5))
+          (alert "Emacs is starting..." :title "Emacs")))
 
       (provide 'rgr/daemon)
     #+end_src
@@ -3579,7 +3584,7 @@ CLOSED: [2021-05-17 Mo 19:59]
          emacsclient -n -c -a "" "$@" #none found so create frame
      else
          emacsclient -n -a "" "$@"
-         pop-window "Emacs:"
+         pop-window "Emacs"
      fi
    #+end_src
 ** compiling emacs

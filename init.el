@@ -1,7 +1,5 @@
 ;;; init.el   -*- no-byte-compile: t -*-
 
-(setq comp-deferred-compilation-deny-list nil)
-
 (defvar bootstrap-version)
 
 (let ((bootstrap-file

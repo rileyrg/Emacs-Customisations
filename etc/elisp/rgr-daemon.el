@@ -29,6 +29,7 @@
 
 (use-package alert
   :init
-  (alert "Emacs is starting..."))
+  (let ((alert-fade-time 5))
+    (alert "Emacs is starting..." :title "Emacs")))
 
 (provide 'rgr/daemon)
