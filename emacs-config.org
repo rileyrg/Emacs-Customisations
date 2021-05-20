@@ -657,7 +657,8 @@ CLOSED: [2021-05-18 Tue 18:21]
           (embark-collect-mode . embark-consult-preview-minor-mode))
 
       #+end_src
-**** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
+**** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] margin annotations for info on line
+     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
      :PROPERTIES:
      :ID:       f3802197-c745-40b2-ac0d-72d7da291aaf
      :END:
