@@ -673,7 +673,10 @@ CLOSED: [2021-05-18 Tue 18:21]
          (advice-add #'marginalia-cycle :after
                      (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
      #+end_src
-**** affe Asynchronous Fuzzy Finder for Emacs
+**** [[https://github.com/minad/affe][affe]] Asynchronous Fuzzy Finder for Emacs
+:PROPERTIES:
+:ID:       c29a8a56-5c74-4625-9b06-3963e234bb0f
+:END:
 #+begin_src emacs-lisp
   (use-package affe
     :straight (affe :local-repo "~/development/projects/emacs/affe" :type git :host github :repo "minad/affe" )
