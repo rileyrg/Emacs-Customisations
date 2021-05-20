@@ -411,7 +411,7 @@ CLOSED: [2021-05-18 Tue 18:21]
      :END:
      #+begin_src emacs-lisp
        (use-package fzf
-         :bind (("M-g z" . fzf)))
+         :bind (("M-s z" . fzf)))
      #+end_src
 **** file opening
      :PROPERTIES:
@@ -547,11 +547,11 @@ CLOSED: [2021-05-18 Tue 18:21]
                 ("M-g i" . consult-imenu)
                 ("M-g I" . consult-project-imenu)
                 ;; M-s bindings (search-map)
-                ("M-s f" . consult-find)
+                ("M-s f" . affe-find)
                 ("M-s L" . consult-locate)
                 ("M-s g" . consult-grep)
                 ("M-s G" . consult-git-grep)
-                ("M-s r" . consult-ripgrep)
+                ("M-s r" . affe-grep)
                 ("M-s l" . consult-line)
                 ("M-s m" . consult-multi-occur)
                 ("M-s k" . consult-keep-lines)
@@ -673,6 +673,19 @@ CLOSED: [2021-05-18 Tue 18:21]
          (advice-add #'marginalia-cycle :after
                      (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
      #+end_src
+**** affe Asynchronous Fuzzy Finder for Emacs
+#+begin_src emacs-lisp
+  (use-package affe
+    :straight (affe :local-repo "~/development/projects/emacs/affe" :type git :host github :repo "minad/affe" )
+    :after orderless
+    :config
+    ;; Configure Orderless
+    (setq affe-regexp-function #'orderless-pattern-compiler
+          affe-highlight-function #'orderless-highlight-matches)
+
+    ;; Manual preview key for `affe-grep'
+    (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
+#+end_src
 **** provide
      :PROPERTIES:
      :END:
@@ -1107,7 +1120,7 @@ CLOSED: [2021-05-18 Tue 18:21]
      :END:
      #+begin_src emacs-lisp
 
-       (straight-use-package '(org-plus-contrib :includes (org)))
+       ;;(straight-use-package '(org-plus-contrib :includes (org)))
 
        (use-package org
          :demand t
@@ -1464,9 +1477,11 @@ CLOSED: [2021-05-18 Tue 18:21]
 
      The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search  to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
 
-****** TODO [#A] look at making get region or symbol function interactive as an exercise
-       SCHEDULED: <2021-05-09 Sun>
+****** CANCELLED [#A] look at making get region or symbol function interactive as an exercise :CANCELLED:
+       CLOSED: [2021-05-19 Wed 20:30] SCHEDULED: <2021-05-09 Sun>
        :LOGBOOK:
+       - State "CANCELLED"  from "TODO"       [2021-05-19 Wed 20:30] \\
+         nope
        - State "TODO"       from              [2021-05-09 Sun 11:27]
        :END:
 

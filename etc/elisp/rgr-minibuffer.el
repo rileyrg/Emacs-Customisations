@@ -5,7 +5,7 @@
   )
 
 (use-package fzf
-  :bind (("M-g z" . fzf)))
+  :bind (("M-s z" . fzf)))
 
 (defun maybe-read-only-mode()
   (when (cond ((eq major-mode 'org-mode) t))
@@ -95,11 +95,11 @@
          ("M-g i" . consult-imenu)
          ("M-g I" . consult-project-imenu)
          ;; M-s bindings (search-map)
-         ("M-s f" . consult-find)
+         ("M-s f" . affe-find)
          ("M-s L" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
+         ("M-s r" . affe-grep)
          ("M-s l" . consult-line)
          ("M-s m" . consult-multi-occur)
          ("M-s k" . consult-keep-lines)
@@ -201,5 +201,16 @@
   (marginalia-mode)
   (advice-add #'marginalia-cycle :after
               (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
+
+(use-package affe
+  :straight (affe :local-repo "~/development/projects/emacs/affe" :type git :host github :repo "minad/affe" )
+  :after orderless
+  :config
+  ;; Configure Orderless
+  (setq affe-regexp-function #'orderless-pattern-compiler
+        affe-highlight-function #'orderless-highlight-matches)
+
+  ;; Manual preview key for `affe-grep'
+  (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
 
 (provide 'rgr/minibuffer)

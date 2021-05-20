@@ -380,7 +380,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
     ```emacs-lisp
     (use-package fzf
-      :bind (("M-g z" . fzf)))
+      :bind (("M-s z" . fzf)))
     ```
 
 3.  file opening
@@ -506,11 +506,11 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
              ("M-g i" . consult-imenu)
              ("M-g I" . consult-project-imenu)
              ;; M-s bindings (search-map)
-             ("M-s f" . consult-find)
+             ("M-s f" . affe-find)
              ("M-s L" . consult-locate)
              ("M-s g" . consult-grep)
              ("M-s G" . consult-git-grep)
-             ("M-s r" . consult-ripgrep)
+             ("M-s r" . affe-grep)
              ("M-s l" . consult-line)
              ("M-s m" . consult-multi-occur)
              ("M-s k" . consult-keep-lines)
@@ -629,7 +629,22 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
     ```
 
-11. provide
+11. affe Asynchronous Fuzzy Finder for Emacs
+
+    ```emacs-lisp
+    (use-package affe
+      :straight (affe :local-repo "~/development/projects/emacs/affe" :type git :host github :repo "minad/affe" )
+      :after orderless
+      :config
+      ;; Configure Orderless
+      (setq affe-regexp-function #'orderless-pattern-compiler
+            affe-highlight-function #'orderless-highlight-matches)
+
+      ;; Manual preview key for `affe-grep'
+      (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
+    ```
+
+12. provide
 
     ```emacs-lisp
     (provide 'rgr/minibuffer)
@@ -971,7 +986,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
     ```emacs-lisp
 
-    (straight-use-package '(org-plus-contrib :includes (org)))
+    ;;(straight-use-package '(org-plus-contrib :includes (org)))
 
     (use-package org
       :demand t
@@ -1040,7 +1055,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org15bccbc) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orge5e2715) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1314,8 +1329,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 2.  Reference and dictionary
 
     The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
-
-    1.  look at making get region or symbol function interactive as an exercise
 
     1.  utility funcs
 
