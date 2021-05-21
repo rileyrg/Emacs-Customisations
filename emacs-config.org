@@ -1993,11 +1993,8 @@ CLOSED: [2021-05-18 Tue 18:21]
              "Show only last directory."
              (file-name-nondirectory (directory-file-name default-directory)))))
      #+end_src
-*** CANCELLED vterm                                               :CANCELLED:
-    CLOSED: [2021-05-08 Sat 16:11] SCHEDULED: <2021-04-13 Tue>
-    :PROPERTIES:
-    :header-args:emacs-lisp: :tangle no
-    :END:
+*** vterm
+    SCHEDULED: <2021-04-13 Tue>
     :LOGBOOK:
     - State "CANCELLED"  from "WAITING"    [2021-05-08 Sat 16:11]
     - State "WAITING"    from "DONE"       [2021-04-18 So 23:04]
@@ -2007,7 +2004,8 @@ CLOSED: [2021-05-18 Tue 18:21]
     :END:
     https://github.com/akermu/emacs-libvterm
     #+begin_src emacs-lisp
-      (use-package vterm)
+      (use-package vterm
+        :custom (vterm-shell "/usr/bin/zsh"))
     #+end_src
 *** Docker
     A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b][docker]].
@@ -2042,15 +2040,16 @@ CLOSED: [2021-05-18 Tue 18:21]
        (use-package emacs
          :demand
          :config
+       (defun rgr/kill-current-buffer()
+                             (interactive)
+                             (if (member (buffer-name) '("*Messages*" "*scratch*"))
+                                 (progn
+                                   (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+                                   (delete-window))
+                               (kill-current-buffer)))
          (add-hook 'before-save-hook 'delete-trailing-whitespace)
          :bind
-         ("C-x k" . (lambda()
-                      (interactive)
-                      (if (member (buffer-name) '("*Messages*" "*scratch*"))
-                          (progn
-                            (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-                            (delete-window))
-                        (kill-current-buffer))))
+         ("C-x k" . rgr/kill-current-buffer)
          ("M-0" . 'delete-window)
          ("M-1" . 'delete-other-windows))
      #+end_src

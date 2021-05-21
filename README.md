@@ -1059,7 +1059,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org986870b) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org806ce54) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1850,6 +1850,16 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
     ```
 
 
+### vterm
+
+<https://github.com/akermu/emacs-libvterm>
+
+```emacs-lisp
+(use-package vterm
+  :custom (vterm-shell "/usr/bin/zsh"))
+```
+
+
 ### Docker
 
 A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b).
@@ -1885,15 +1895,16 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
     (use-package emacs
       :demand
       :config
+    (defun rgr/kill-current-buffer()
+                          (interactive)
+                          (if (member (buffer-name) '("*Messages*" "*scratch*"))
+                              (progn
+                                (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+                                (delete-window))
+                            (kill-current-buffer)))
       (add-hook 'before-save-hook 'delete-trailing-whitespace)
       :bind
-      ("C-x k" . (lambda()
-                   (interactive)
-                   (if (member (buffer-name) '("*Messages*" "*scratch*"))
-                       (progn
-                         (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-                         (delete-window))
-                     (kill-current-buffer))))
+      ("C-x k" . rgr/kill-current-buffer)
       ("M-0" . 'delete-window)
       ("M-1" . 'delete-other-windows))
     ```

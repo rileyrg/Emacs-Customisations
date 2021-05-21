@@ -206,6 +206,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
       "Show only last directory."
       (file-name-nondirectory (directory-file-name default-directory)))))
 
+(use-package vterm
+  :custom (vterm-shell "/usr/bin/zsh"))
+
 (use-package docker
   :after projectile
   :bind (:map projectile-mode-map ("C-c k" . docker)))
@@ -221,15 +224,16 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package emacs
   :demand
   :config
+(defun rgr/kill-current-buffer()
+                      (interactive)
+                      (if (member (buffer-name) '("*Messages*" "*scratch*"))
+                          (progn
+                            (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+                            (delete-window))
+                        (kill-current-buffer)))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :bind
-  ("C-x k" . (lambda()
-               (interactive)
-               (if (member (buffer-name) '("*Messages*" "*scratch*"))
-                   (progn
-                     (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-                     (delete-window))
-                 (kill-current-buffer))))
+  ("C-x k" . rgr/kill-current-buffer)
   ("M-0" . 'delete-window)
   ("M-1" . 'delete-other-windows))
 
