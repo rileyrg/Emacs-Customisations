@@ -1059,7 +1059,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org806ce54) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org03aa68d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1714,33 +1714,6 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 ## Shells and Terminals
 
 
-### open terminal in current/project  dir
-
-```emacs-lisp
-(use-package terminal-here
-  :custom
-  (terminal-here-terminal-command (list "oneterminal"))
-  :bind
-  ("C-<f5>" . #'terminal-here-project-launch)
-  ("C-S-<f5>" . #'terminal-here-launch))
-```
-
-
-### Shell Switcher
-
-[shell-switcher](https://github.com/DamienCassou/shell-switcher) allows easier shell switching.
-
-```emacs-lisp
-(use-package
-  shell-switcher
-  :config (setq shell-switcher-mode t)
-  ;;(add-hook 'eshell-mode-hook 'shell-switcher-manually-register-shell)
-  :bind
-  ("M-<f12>" . shell-switcher-switch-buffer)
-  ("C-<f12>" . shell-switcher-new-shell))
-```
-
-
 ### Eshell
 
 [EShell](https://www.masteringemacs.org/article/complete-guide-mastering-eshell) is, amongst other things, convenient for cat/console debugging in Symfony etc to have all output in easily browsed Emacs buffers via [EShell redirection](https://www.emacswiki.org/emacs/EshellRedirection).
@@ -1856,7 +1829,9 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 
 ```emacs-lisp
 (use-package vterm
-  :custom (vterm-shell "/usr/bin/zsh"))
+  :custom (vterm-shell "/usr/bin/zsh")
+  :bind
+  ("C-<f12>" . vterm))
 ```
 
 

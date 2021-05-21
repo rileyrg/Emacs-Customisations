@@ -148,21 +148,6 @@
 
 (require 'rgr/emms "rgr-emms" 'NOERROR)
 
-(use-package terminal-here
-  :custom
-  (terminal-here-terminal-command (list "oneterminal"))
-  :bind
-  ("C-<f5>" . #'terminal-here-project-launch)
-  ("C-S-<f5>" . #'terminal-here-launch))
-
-(use-package
-  shell-switcher
-  :config (setq shell-switcher-mode t)
-  ;;(add-hook 'eshell-mode-hook 'shell-switcher-manually-register-shell)
-  :bind
-  ("M-<f12>" . shell-switcher-switch-buffer)
-  ("C-<f12>" . shell-switcher-new-shell))
-
 (defun eshell/emacs-clean (&rest args)
   "run a clean emacs"
   (interactive)
@@ -207,7 +192,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
       (file-name-nondirectory (directory-file-name default-directory)))))
 
 (use-package vterm
-  :custom (vterm-shell "/usr/bin/zsh"))
+  :custom (vterm-shell "/usr/bin/zsh")
+  :bind
+  ("C-<f12>" . vterm))
 
 (use-package docker
   :after projectile

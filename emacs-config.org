@@ -1886,34 +1886,6 @@ CLOSED: [2021-05-18 Tue 18:21]
    :PROPERTIES:
    :ID:       43faed64-da69-453f-9223-031a2fcf480b
    :END:
-*** open terminal in current/project  dir
-    :PROPERTIES:
-    :ID:       6d6ee32d-a7d4-4ff8-aa71-3c70d04350d8
-    :END:
-    #+begin_src emacs-lisp
-      (use-package terminal-here
-        :custom
-        (terminal-here-terminal-command (list "oneterminal"))
-        :bind
-        ("C-<f5>" . #'terminal-here-project-launch)
-        ("C-S-<f5>" . #'terminal-here-launch))
-    #+end_src
-*** Shell Switcher
-    :PROPERTIES:
-    :ID:       a6c405c5-2de1-4214-95c1-075f3e7b301f
-    :END:
-    [[https://github.com/DamienCassou/shell-switcher][shell-switcher]] allows easier shell switching.
-
-    #+begin_src emacs-lisp
-      (use-package
-        shell-switcher
-        :config (setq shell-switcher-mode t)
-        ;;(add-hook 'eshell-mode-hook 'shell-switcher-manually-register-shell)
-        :bind
-        ("M-<f12>" . shell-switcher-switch-buffer)
-        ("C-<f12>" . shell-switcher-new-shell))
-    #+end_src
-
 *** Eshell
     :PROPERTIES:
     :ID:       2c5ff86a-e67a-4c3a-8e30-8099726be829
@@ -2005,7 +1977,9 @@ CLOSED: [2021-05-18 Tue 18:21]
     https://github.com/akermu/emacs-libvterm
     #+begin_src emacs-lisp
       (use-package vterm
-        :custom (vterm-shell "/usr/bin/zsh"))
+        :custom (vterm-shell "/usr/bin/zsh")
+        :bind
+        ("C-<f12>" . vterm))
     #+end_src
 *** Docker
     A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b][docker]].
