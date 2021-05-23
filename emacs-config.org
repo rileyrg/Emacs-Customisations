@@ -1979,7 +1979,7 @@ CLOSED: [2021-05-18 Tue 18:21]
       (use-package vterm
         :custom (vterm-shell "/usr/bin/zsh")
         :bind
-        ("C-<f12>" . vterm))
+        ("C-<f12>" . vterm)("M-g v" . vterm))
     #+end_src
 *** Docker
     A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b][docker]].
@@ -3444,7 +3444,7 @@ CLOSED: [2021-05-17 Mo 19:59]
     :ID:       fa3ac5bf-2fbe-4e67-9032-0cb23a84c434
     :END:
     https://github.com/protesilaos/modus-themes
-    #+begin_src emacs-lisp
+    #+begin_src emacs-lisp :tangle no
       (use-package modus-themes
         :init
         ;; Add all your customizations prior to loading the themes
@@ -3456,6 +3456,18 @@ CLOSED: [2021-05-17 Mo 19:59]
         :config
         (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
     #+end_src
+*** humanoid themes
+:PROPERTIES:
+:ID:       c3a6a618-fbe0-4dae-8610-d8f6ef4a8a0a
+:END:
+https://github.com/humanoid-colors/emacs-humanoid-themes
+    #+begin_src emacs-lisp
+      (use-package humanoid-themes
+        :init
+        ;; Add all your customizations prior to loading the themes
+        (load-theme 'humanoid-dark t))
+    #+end_src
+
 ** Late load
    :PROPERTIES:
    :ID:       574516c0-a821-47fb-b01f-97ec19789d65

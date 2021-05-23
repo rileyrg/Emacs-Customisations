@@ -1059,7 +1059,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org03aa68d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb2309ec) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1831,7 +1831,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 (use-package vterm
   :custom (vterm-shell "/usr/bin/zsh")
   :bind
-  ("C-<f12>" . vterm))
+  ("C-<f12>" . vterm)("M-g v" . vterm))
 ```
 
 
@@ -3267,6 +3267,18 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
   (modus-themes-load-themes)
   :config
   (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
+```
+
+
+### humanoid themes
+
+<https://github.com/humanoid-colors/emacs-humanoid-themes>
+
+```emacs-lisp
+(use-package humanoid-themes
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (load-theme 'humanoid-dark t))
 ```
 
 

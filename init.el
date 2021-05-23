@@ -194,7 +194,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package vterm
   :custom (vterm-shell "/usr/bin/zsh")
   :bind
-  ("C-<f12>" . vterm))
+  ("C-<f12>" . vterm)("M-g v" . vterm))
 
 (use-package docker
   :after projectile
@@ -814,15 +814,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-(use-package modus-themes
+(use-package humanoid-themes
   :init
   ;; Add all your customizations prior to loading the themes
-  (setq modus-themes-slanted-constructs t
-        modus-themes-bold-constructs nil)
-
-  ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes)
-  :config
-  (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
+  (load-theme 'humanoid-dark t))
 
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
