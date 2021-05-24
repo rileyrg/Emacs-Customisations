@@ -18,6 +18,7 @@
 (delete-selection-mode 1)
 
 (global-set-key (kbd "S-<f1>") 'describe-face)
+(global-set-key (kbd "C-<f1>") 'manual-entry)
 
 (global-set-key (kbd "S-<f10>") #'menu-bar-open)
                                         ;          (global-set-key (kbd "<f10>") #'imenu)
@@ -87,26 +88,6 @@
   :demand t
   :config
   (xclip-mode))
-
-(use-package centaur-tabs
-  :straight ( :local-repo "~/development/projects/emacs/centaur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
-  :init
-  (centaur-tabs-mode +1)
-  :custom
-  (centaur-tabs-enable-ido-completion nil)
-  (centaur-tabs-set-bar 'under)
-  (x-underline-at-descent-line t)
-  :custom-face
-  (centaur-tabs-active-bar-face ((t (:background "orange"))))
-  :config
-  (centaur-tabs-enable-buffer-reordering)
-  (centaur-tabs-group-by-projectile-project)
-  :bind
-  ("C-<next>" . centaur-tabs-backward-group)
-  ("C-<prior>" . centaur-tabs-forward-group)
-  ("M-<next>" . centaur-tabs-backward)
-  ("M-<prior>" . centaur-tabs-forward)
-  ("C-x t s" . centaur-tabs-switch-group))
 
 (save-place-mode +1)
 

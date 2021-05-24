@@ -851,6 +851,7 @@ CLOSED: [2021-05-18 Tue 18:21]
         (delete-selection-mode 1)
 
         (global-set-key (kbd "S-<f1>") 'describe-face)
+        (global-set-key (kbd "C-<f1>") 'manual-entry)
 
         (global-set-key (kbd "S-<f10>") #'menu-bar-open)
                                                 ;          (global-set-key (kbd "<f10>") #'imenu)
@@ -980,9 +981,20 @@ CLOSED: [2021-05-18 Tue 18:21]
        (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
        (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
      #+end_src
-**** Tabs                                                              :tabs:
-***** Centaur Tabs                                                  :centaur:
+**** CANCELLED Tabs                                          :tabs:CANCELLED:
+CLOSED: [2021-05-24 Mo 19:54]
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-05-24 Mo 19:54] \\
+  nope
+:END:
+***** CANCELLED Centaur Tabs                              :centaur:CANCELLED:
+CLOSED: [2021-05-24 Mo 19:54]
       :LOGBOOK:
+      - State "CANCELLED"  from              [2021-05-24 Mo 19:54] \\
+        nope
       - State "QUOTE"      from              [2021-04-06 Di 23:18]
       :END:
       #+begin_src emacs-lisp
@@ -1006,11 +1018,14 @@ CLOSED: [2021-05-18 Tue 18:21]
           ("M-<prior>" . centaur-tabs-forward)
           ("C-x t s" . centaur-tabs-switch-group))
       #+end_src
-***** WAITING Tab Bar Mode                                   :tabbar:WAITING:
+***** CANCELLED Tab Bar Mode                               :tabbar:CANCELLED:
+CLOSED: [2021-05-24 Mo 19:54]
       :PROPERTIES:
       :header-args:emacs-lisp: :tangle no
       :END:
       :LOGBOOK:
+      - State "CANCELLED"  from "WAITING"    [2021-05-24 Mo 19:54] \\
+        nope
       - State "WAITING"    from              [2021-04-06 Di 20:45] \\
         wait on appraisal of centaur tabs mode
       :END:
@@ -3444,7 +3459,7 @@ CLOSED: [2021-05-17 Mo 19:59]
     :ID:       fa3ac5bf-2fbe-4e67-9032-0cb23a84c434
     :END:
     https://github.com/protesilaos/modus-themes
-    #+begin_src emacs-lisp :tangle no
+    #+begin_src emacs-lisp
       (use-package modus-themes
         :init
         ;; Add all your customizations prior to loading the themes
@@ -3459,6 +3474,7 @@ CLOSED: [2021-05-17 Mo 19:59]
 *** humanoid themes
 :PROPERTIES:
 :ID:       c3a6a618-fbe0-4dae-8610-d8f6ef4a8a0a
+:header-args:emacs-lisp: :tangle no
 :END:
 https://github.com/humanoid-colors/emacs-humanoid-themes
     #+begin_src emacs-lisp

@@ -814,9 +814,15 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-(use-package humanoid-themes
+(use-package modus-themes
   :init
   ;; Add all your customizations prior to loading the themes
-  (load-theme 'humanoid-dark t))
+  (setq modus-themes-slanted-constructs t
+        modus-themes-bold-constructs nil)
+
+  ;; Load the theme files before enabling a theme
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
 
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))

@@ -225,7 +225,7 @@ Would you like to play a game?
       nil)))
  '(org-agenda-skip-scheduled-if-deadline-is-shown t nil nil "Customized with use-package org")
  '(org-agenda-start-on-weekday 0 nil nil "Customized with use-package org")
- '(org-babel-load-languages '((emacs-lisp . t) (python . t) (shell . t)) nil nil "Customized with use-package org")
+ '(org-babel-load-languages '((emacs-lisp . t) (python . t) (shell . t) (css . t)))
  '(org-capture-templates
    '(("t" "Todo" entry
       (file+headline "refile.org" "Tasks To Refile")
@@ -568,8 +568,7 @@ stehen ganz weit oben.
  '(lsp-ui-sideline-current-symbol ((t (:foreground "tomato" :box (:line-width -1 :color "light gray") :weight ultra-bold :height 0.99))))
  '(lsp-ui-sideline-symbol ((t (:foreground "dark gray" :box (:line-width -1 :color "white smoke") :height 0.99))))
  '(org-archived ((t (:background "#181a20" :foreground "#a8a8a8" :height 0.8))))
- '(org-block-begin-line ((t nil)))
- '(org-block-end-line ((t (:inherit nil :extend t))))
+ '(org-block ((t (:inherit fixed-pitch :extend t :background "gray10" :foreground "gray93"))))
  '(org-level-1 ((t (:inherit bold :foreground "yellow" :height 1.3))))
  '(org-scheduled-previously ((t (:background "gray8" :foreground "yellow" :inverse-video nil))))
  '(org-tag ((t (:background "#373844" :foreground "dark orange" :weight bold))))

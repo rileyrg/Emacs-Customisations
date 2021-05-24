@@ -775,6 +775,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (delete-selection-mode 1)
 
         (global-set-key (kbd "S-<f1>") 'describe-face)
+        (global-set-key (kbd "C-<f1>") 'manual-entry)
 
         (global-set-key (kbd "S-<f10>") #'menu-bar-open)
                                                 ;          (global-set-key (kbd "<f10>") #'imenu)
@@ -906,33 +907,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
     ```
 
-5.  Tabs     :tabs:
-
-    1.  Centaur Tabs     :centaur:
-
-        ```emacs-lisp
-        (use-package centaur-tabs
-          :straight ( :local-repo "~/development/projects/emacs/centaur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
-          :init
-          (centaur-tabs-mode +1)
-          :custom
-          (centaur-tabs-enable-ido-completion nil)
-          (centaur-tabs-set-bar 'under)
-          (x-underline-at-descent-line t)
-          :custom-face
-          (centaur-tabs-active-bar-face ((t (:background "orange"))))
-          :config
-          (centaur-tabs-enable-buffer-reordering)
-          (centaur-tabs-group-by-projectile-project)
-          :bind
-          ("C-<next>" . centaur-tabs-backward-group)
-          ("C-<prior>" . centaur-tabs-forward-group)
-          ("M-<next>" . centaur-tabs-backward)
-          ("M-<prior>" . centaur-tabs-forward)
-          ("C-x t s" . centaur-tabs-switch-group))
-        ```
-
-6.  Memory
+5.  Memory
 
     1.  save-place-mode, remember position in files
 
@@ -966,7 +941,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
             (add-to-list 'recentf-exclude no-littering-etc-directory)))
         ```
 
-7.  provide
+6.  provide
 
     ```emacs-lisp
     (provide 'rgr/general-config)
@@ -1059,7 +1034,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb2309ec) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org3bd10e3) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
