@@ -194,7 +194,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package vterm
   :custom (vterm-shell "/usr/bin/zsh")
   :bind
-  ("C-<f12>" . vterm)("M-g v" . vterm))
+  ("M-g v" . vterm))
 
 (use-package docker
   :after projectile
@@ -349,7 +349,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package
   treemacs
-  :straight (:local-repo "~/development/projects/emacs/treemacs" :fork ( :type git :host github :repo "rileyrg/treemacs"))
   :custom
   (treemacs-follow-after-init t)
   :config
@@ -708,8 +707,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
 (use-package lsp-python-ms
-
-  :straight (:local-repo "~/development/projects/emacs/lsp-python-ms" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
   :custom
   (lsp-python-ms-auto-install-server t)
   (lsp-python-ms-parse-dot-env-enabled t)

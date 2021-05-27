@@ -18,7 +18,7 @@
 (delete-selection-mode 1)
 
 (global-set-key (kbd "S-<f1>") 'describe-face)
-(global-set-key (kbd "C-<f1>") 'manual-entry)
+(global-set-key (kbd "M-m") 'manual-entry)
 
 (global-set-key (kbd "S-<f10>") #'menu-bar-open)
                                         ;          (global-set-key (kbd "<f10>") #'imenu)

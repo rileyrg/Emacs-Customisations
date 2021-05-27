@@ -111,6 +111,12 @@
          ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
          ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
 
+
+  ;; Enable automatic preview at point in the *Completions* buffer.
+  ;; This is relevant when you use the default completion UI,
+  ;; and not necessary for Selectrum, Vertico etc.
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+
   ;; The :init configuration is always executed (Not lazy)
   :init
 
@@ -132,39 +138,45 @@
   ;; after lazily loading the package.
   :config
 
-  ;; Optionally configure preview. Note that the preview-key can also be
-  ;; configured on a per-command basis via `consult-config'. The default value
+  ;; Optionally configure preview. The default value
   ;; is 'any, such that any key triggers the preview.
   ;; (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key (kbd "M-p"))
+  ;; (setq consult-preview-key (kbd "M-."))
   ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+  ;; For some commands and buffer sources it is useful to configure the
+  ;; :preview-key on a per-command basis using the `consult-customize' macro.
+  (consult-customize
+   consult-line consult-ripgrep consult-git-grep consult-grep consult-search
+   :default nil
+   consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file
+   consult--source-file consult--source-project-file consult--source-bookmark
+   :preview-key (kbd "M-."))
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
   (setq consult-narrow-key "<") ;; (kbd "C-+")
 
   ;; Optionally make narrowing help available in the minibuffer.
-  ;; Probably not needed if you are using which-key.
+  ;; You may want to use `embark-prefix-help-command' or which-key instead.
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
 
   ;; Optionally configure a function which returns the project root directory.
-  ;; There are multiple reasonable alternatives to chose from:
-  ;; * projectile-project-root
-  ;; * vc-root-dir
-  ;; * project-roots
-  ;; * locate-dominating-file
-  (autoload 'projectile-project-root "projectile")
-  (setq consult-project-root-function #'projectile-project-root)
-  ;; (setq consult-project-root-function
-  ;;       (lambda ()
-  ;;         (when-let (project (project-current))
-  ;;           (car (project-roots project)))))
+  ;; There are multiple reasonable alternatives to chose from.
+       ;;;; 1. project.el (project-roots)
+  (setq consult-project-root-function
+        (lambda ()
+          (when-let (project (project-current))
+            (car (project-roots project)))))
+       ;;;; 2. projectile.el (projectile-project-root)
+  ;; (autoload 'projectile-project-root "projectile")
+  ;; (setq consult-project-root-function #'projectile-project-root)
+       ;;;; 3. vc.el (vc-root-dir)
   ;; (setq consult-project-root-function #'vc-root-dir)
-  ;; (setq consult-project-root-function
-  ;;       (lambda () (locate-dominating-file "." ".git")))
+       ;;;; 4. locate-dominating-file
+  ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
+  ;; Optionally add the `consult-flycheck' command.
   )
 
-;; Optionally add the `consult-flycheck' command.
 (use-package consult-flycheck
   :bind (:map flycheck-command-map
               ("!" . consult-flycheck)))

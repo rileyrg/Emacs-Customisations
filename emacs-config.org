@@ -563,6 +563,12 @@ CLOSED: [2021-05-18 Tue 18:21]
                 ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
                 ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
 
+
+         ;; Enable automatic preview at point in the *Completions* buffer.
+         ;; This is relevant when you use the default completion UI,
+         ;; and not necessary for Selectrum, Vertico etc.
+         :hook (completion-list-mode . consult-preview-at-point-mode)
+
          ;; The :init configuration is always executed (Not lazy)
          :init
 
@@ -584,39 +590,45 @@ CLOSED: [2021-05-18 Tue 18:21]
          ;; after lazily loading the package.
          :config
 
-         ;; Optionally configure preview. Note that the preview-key can also be
-         ;; configured on a per-command basis via `consult-config'. The default value
+         ;; Optionally configure preview. The default value
          ;; is 'any, such that any key triggers the preview.
          ;; (setq consult-preview-key 'any)
-         ;; (setq consult-preview-key (kbd "M-p"))
+         ;; (setq consult-preview-key (kbd "M-."))
          ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+         ;; For some commands and buffer sources it is useful to configure the
+         ;; :preview-key on a per-command basis using the `consult-customize' macro.
+         (consult-customize
+          consult-line consult-ripgrep consult-git-grep consult-grep consult-search
+          :default nil
+          consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file
+          consult--source-file consult--source-project-file consult--source-bookmark
+          :preview-key (kbd "M-."))
 
          ;; Optionally configure the narrowing key.
          ;; Both < and C-+ work reasonably well.
          (setq consult-narrow-key "<") ;; (kbd "C-+")
 
          ;; Optionally make narrowing help available in the minibuffer.
-         ;; Probably not needed if you are using which-key.
+         ;; You may want to use `embark-prefix-help-command' or which-key instead.
          ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
 
          ;; Optionally configure a function which returns the project root directory.
-         ;; There are multiple reasonable alternatives to chose from:
-         ;; * projectile-project-root
-         ;; * vc-root-dir
-         ;; * project-roots
-         ;; * locate-dominating-file
-         (autoload 'projectile-project-root "projectile")
-         (setq consult-project-root-function #'projectile-project-root)
-         ;; (setq consult-project-root-function
-         ;;       (lambda ()
-         ;;         (when-let (project (project-current))
-         ;;           (car (project-roots project)))))
+         ;; There are multiple reasonable alternatives to chose from.
+              ;;;; 1. project.el (project-roots)
+         (setq consult-project-root-function
+               (lambda ()
+                 (when-let (project (project-current))
+                   (car (project-roots project)))))
+              ;;;; 2. projectile.el (projectile-project-root)
+         ;; (autoload 'projectile-project-root "projectile")
+         ;; (setq consult-project-root-function #'projectile-project-root)
+              ;;;; 3. vc.el (vc-root-dir)
          ;; (setq consult-project-root-function #'vc-root-dir)
-         ;; (setq consult-project-root-function
-         ;;       (lambda () (locate-dominating-file "." ".git")))
+              ;;;; 4. locate-dominating-file
+         ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
+         ;; Optionally add the `consult-flycheck' command.
          )
 
-       ;; Optionally add the `consult-flycheck' command.
        (use-package consult-flycheck
          :bind (:map flycheck-command-map
                      ("!" . consult-flycheck)))
@@ -851,7 +863,7 @@ CLOSED: [2021-05-18 Tue 18:21]
         (delete-selection-mode 1)
 
         (global-set-key (kbd "S-<f1>") 'describe-face)
-        (global-set-key (kbd "C-<f1>") 'manual-entry)
+        (global-set-key (kbd "M-m") 'manual-entry)
 
         (global-set-key (kbd "S-<f10>") #'menu-bar-open)
                                                 ;          (global-set-key (kbd "<f10>") #'imenu)
@@ -999,7 +1011,6 @@ CLOSED: [2021-05-24 Mo 19:54]
       :END:
       #+begin_src emacs-lisp
         (use-package centaur-tabs
-          :straight ( :local-repo "~/development/projects/emacs/centaur-tabs" :fork ( :type git :host github :repo "rileyrg/centaur-tabs"))
           :init
           (centaur-tabs-mode +1)
           :custom
@@ -1809,8 +1820,6 @@ CLOSED: [2021-05-24 Mo 19:54]
      #+begin_src emacs-lisp
        (use-package pdf-tools
          :demand t
-         :init
-         (pdf-tools-install)
          :config
          (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
          (use-package org-pdftools
@@ -1994,7 +2003,7 @@ CLOSED: [2021-05-24 Mo 19:54]
       (use-package vterm
         :custom (vterm-shell "/usr/bin/zsh")
         :bind
-        ("C-<f12>" . vterm)("M-g v" . vterm))
+        ("M-g v" . vterm))
     #+end_src
 *** Docker
     A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b][docker]].
@@ -2332,7 +2341,6 @@ CLOSED: [2021-05-17 Mo 19:59]
    #+begin_src emacs-lisp
      (use-package
        treemacs
-       :straight (:local-repo "~/development/projects/emacs/treemacs" :fork ( :type git :host github :repo "rileyrg/treemacs"))
        :custom
        (treemacs-follow-after-init t)
        :config
@@ -3245,8 +3253,6 @@ CLOSED: [2021-05-17 Mo 19:59]
 ***** microsoft python language server                                  :lsp:
       #+begin_src emacs-lisp
         (use-package lsp-python-ms
-
-          :straight (:local-repo "~/development/projects/emacs/lsp-python-ms" :fork ( :type git :host github :repo "rileyrg/lsp-python-ms"))
           :custom
           (lsp-python-ms-auto-install-server t)
           (lsp-python-ms-parse-dot-env-enabled t)
