@@ -196,9 +196,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :bind
   ("M-g v" . vterm))
 
-(use-package docker
-  :after projectile
-  :bind (:map projectile-mode-map ("C-c k" . docker)))
+(use-package docker)
 
 (defun rgr/toggle-buffer(n)
   "jump to or from buffer named n else default to *Messages*"
@@ -252,7 +250,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :init
   (use-package posframe)
   ;;(setq popper-display-function 'rgr/popper-display-posframe)
-  ;; (setq popper-group-function #'popper-group-by-projectile)
   (setq popper-reference-buffers
         '(
           "\\*Messages\\*"
@@ -357,7 +354,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (treemacs-git-mode 'deferred)
   (use-package treemacs-icons-dired
     :config (treemacs-icons-dired-mode))
-  (use-package treemacs-projectile)
   (use-package treemacs-magit)
   :bind
   ("M-9"   . 'treemacs-select-window)
@@ -543,13 +539,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
-(use-package projectile
-  :custom
-  (projectile-completion-system 'default)
-  :init
-  (projectile-mode +1)
-  :bind
-  (:map projectile-mode-map ( "C-c p" . projectile-command-map)))
+(use-package project)
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
@@ -778,7 +768,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
                (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
   (defun start-symfony-web-server()
     (interactive)
-    (let ((default-directory (projectile-project-root)))
+    (let ((default-directory (project-root (project-current t))))
       (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
           (async-shell-command symfony-server-command "*Symfony Web Server*"))))
   (defun php-mode-webserver-hook ()

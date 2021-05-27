@@ -1046,7 +1046,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgecc76a4) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org130006a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1158,34 +1158,6 @@ rg is pretty quick
 (use-package
   ripgrep)
 ```
-
-1.  ~/bin/helm-rg-wrapper
-
-    NB : left despite removing helm from config
-
-    [The issue is that helm-projectile automatically adds options like &#x2013;ignore \*.o to ag. When it tries to send the same options to rg (which doesn't have an &#x2013;ignore option), you get errors. This behavior currently is not configurable.](https://gist.github.com/pesterhazy/fabd629fbb89a6cd3d3b92246ff29779#gistcomment-2352523)
-
-    A workaround is to create a wrapper script that removes these options, named rg-wrapper
-
-    ```bash
-    #!/usr/bin/bash
-    #Maintained in linux-scripts-and-configs.org
-    # correcting applied ignores in helm/projectile emacs
-    set -euo pipefail
-    newargs="$(echo "$@" | sed 's/\-\-ignore .* //')"
-    rg $newargs
-    ```
-
-    1.  .ignore for the emacs root sample
-
-        ```conf
-        # Maintained in emacs-config.org
-        *.md
-        auto-save
-        history
-        undohist
-        var/*.el
-        ```
 
 
 ### ag, silver searcher
@@ -1825,9 +1797,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b).
 
 ```emacs-lisp
-(use-package docker
-  :after projectile
-  :bind (:map projectile-mode-map ("C-c k" . docker)))
+(use-package docker)
 ```
 
 
@@ -1941,7 +1911,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
       :init
       (use-package posframe)
       ;;(setq popper-display-function 'rgr/popper-display-posframe)
-      ;; (setq popper-group-function #'popper-group-by-projectile)
       (setq popper-reference-buffers
             '(
               "\\*Messages\\*"
@@ -2118,8 +2087,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ## Treemacs
 
-Excellent [tree based navigation that works really well with projectile.](https://github.com/Alexander-Miller/treemacs)
-
 ```emacs-lisp
 (use-package
   treemacs
@@ -2131,7 +2098,6 @@ Excellent [tree based navigation that works really well with projectile.](https:
   (treemacs-git-mode 'deferred)
   (use-package treemacs-icons-dired
     :config (treemacs-icons-dired-mode))
-  (use-package treemacs-projectile)
   (use-package treemacs-magit)
   :bind
   ("M-9"   . 'treemacs-select-window)
@@ -2640,18 +2606,12 @@ Load this relatively early in order to have utils available if there's a faied l
 ```
 
 
-### Projectile
+### Project Management
 
-[Projectile](https://github.com/bbatsov/projectile) is all about being "project aware". Find files, grep and similar are aware of your [project root](https://projectile.readthedocs.io/en/latest/configuration/) making such tasks project local. Can't do without it.
+Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/project/>
 
 ```emacs-lisp
-(use-package projectile
-  :custom
-  (projectile-completion-system 'default)
-  :init
-  (projectile-mode +1)
-  :bind
-  (:map projectile-mode-map ( "C-c p" . projectile-command-map)))
+(use-package project)
 ```
 
 
@@ -3178,7 +3138,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
                        (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
           (defun start-symfony-web-server()
             (interactive)
-            (let ((default-directory (projectile-project-root)))
+            (let ((default-directory (project-root (project-current t))))
               (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
                   (async-shell-command symfony-server-command "*Symfony Web Server*"))))
           (defun php-mode-webserver-hook ()

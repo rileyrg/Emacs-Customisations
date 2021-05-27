@@ -1021,7 +1021,6 @@ CLOSED: [2021-05-24 Mo 19:54]
           (centaur-tabs-active-bar-face ((t (:background "orange"))))
           :config
           (centaur-tabs-enable-buffer-reordering)
-          (centaur-tabs-group-by-projectile-project)
           :bind
           ("C-<next>" . centaur-tabs-backward-group)
           ("C-<prior>" . centaur-tabs-forward-group)
@@ -1330,38 +1329,6 @@ CLOSED: [2021-05-24 Mo 19:54]
       (use-package
         ripgrep)
     #+end_src
-**** ~/bin/helm-rg-wrapper
-     :PROPERTIES:
-     :ID:       a8489fe7-5be2-47c0-b05a-d21f340f68b1
-     :END:
-
-     NB : left despite removing helm from config
-
-     [[https://gist.github.com/pesterhazy/fabd629fbb89a6cd3d3b92246ff29779#gistcomment-2352523][The issue is that helm-projectile automatically adds options like --ignore *.o to ag. When it tries to send the same options to rg (which doesn't have an --ignore option), you get  errors. This behavior currently is not configurable.]]
-
-     A workaround is to create a wrapper script that removes these options, named rg-wrapper
-
-
-     #+begin_src bash :tangle bin/helm-rg-wrapper
-       #!/usr/bin/bash
-       #Maintained in linux-scripts-and-configs.org
-       # correcting applied ignores in helm/projectile emacs
-       set -euo pipefail
-       newargs="$(echo "$@" | sed 's/\-\-ignore .* //')"
-       rg $newargs
-     #+end_src
-***** .ignore for the emacs root sample
-      :PROPERTIES:
-      :ID:       30dcbb9c-3d7c-46e4-b01a-c1c74145db54
-      :END:
-      #+begin_src conf :tangle ~/.emacs.d/.ignore
-        # Maintained in emacs-config.org
-        ,*.md
-        auto-save
-        history
-        undohist
-        var/*.el
-      #+end_src
 *** ag, silver searcher
     :PROPERTIES:
     :ID:       12989be9-e413-4839-9f03-578079955602
@@ -2008,9 +1975,7 @@ CLOSED: [2021-05-24 Mo 19:54]
 *** Docker
     A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b][docker]].
     #+begin_src emacs-lisp
-      (use-package docker
-        :after projectile
-        :bind (:map projectile-mode-map ("C-c k" . docker)))
+      (use-package docker)
     #+end_src
 ** Buffers and Windows
    :PROPERTIES:
@@ -2156,7 +2121,6 @@ CLOSED: [2021-05-17 Mo 19:59]
          :init
          (use-package posframe)
          ;;(setq popper-display-function 'rgr/popper-display-posframe)
-         ;; (setq popper-group-function #'popper-group-by-projectile)
          (setq popper-reference-buffers
                '(
                  "\\*Messages\\*"
@@ -2337,7 +2301,6 @@ CLOSED: [2021-05-17 Mo 19:59]
    :PROPERTIES:
    :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
    :END:
-   Excellent [[https://github.com/Alexander-Miller/treemacs][tree based navigation that works really well with projectile.]]
    #+begin_src emacs-lisp
      (use-package
        treemacs
@@ -2349,7 +2312,6 @@ CLOSED: [2021-05-17 Mo 19:59]
        (treemacs-git-mode 'deferred)
        (use-package treemacs-icons-dired
          :config (treemacs-icons-dired-mode))
-       (use-package treemacs-projectile)
        (use-package treemacs-magit)
        :bind
        ("M-9"   . 'treemacs-select-window)
@@ -2806,23 +2768,11 @@ CLOSED: [2021-05-17 Mo 19:59]
         (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
     #+end_src
-*** Projectile
-    :PROPERTIES:
-    :ID:       16b8f4d2-eac6-470f-8ab5-fff9368964a7
-    :END:
-    :LOGBOOK:
-    - State "TODO"       from              [2020-02-25 Tue 19:51]
-    :END:
-    [[https://github.com/bbatsov/projectile][Projectile]] is all about being "project aware". Find files, grep and similar are aware of your [[https://projectile.readthedocs.io/en/latest/configuration/][project root]] making such tasks project local. Can't do without it.
-    #+begin_src emacs-lisp
-      (use-package projectile
-        :custom
-        (projectile-completion-system 'default)
-        :init
-        (projectile-mode +1)
-        :bind
-        (:map projectile-mode-map ( "C-c p" . projectile-command-map)))
-    #+end_src
+*** Project Management
+Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project/
+#+begin_src emacs-lisp
+  (use-package project)
+#+end_src
 *** BASH                                                               :bash:
     :PROPERTIES:
     :ID:       4dd2f546-25a2-498f-ad8c-25a29c09a303
@@ -3400,7 +3350,7 @@ CLOSED: [2021-05-17 Mo 19:59]
                        (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
           (defun start-symfony-web-server()
             (interactive)
-            (let ((default-directory (projectile-project-root)))
+            (let ((default-directory (project-root (project-current t))))
               (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
                   (async-shell-command symfony-server-command "*Symfony Web Server*"))))
           (defun php-mode-webserver-hook ()
