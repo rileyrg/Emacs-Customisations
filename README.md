@@ -424,24 +424,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           (ffap-bindings))
         ```
 
-4.  [ctrlf](https://github.com/raxod502/ctrlf) - back to basics search     :ctrlf:
-
-    ```emacs-lisp
-    (use-package ctrlf
-      :straight (:local-repo "~/development/projects/emacs/ctrlf" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
-      :custom-face
-      (ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
-      (ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))
-      :custom
-      (ctrlf-auto-recenter t nil nil "Customized with use-package ctrlf")
-      (ctrlf-highlight-current-line t)
-      (ctrlf-auto-recenter t)
-      (ctrlf-search-style-is-sticky t)
-      :init
-      (ctrlf-mode +1))
-    ```
-
-5.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list     :selectrum:
+4.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list     :selectrum:
 
     ```emacs-lisp
     (use-package selectrum
@@ -450,7 +433,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       :bind ("C-x C-z" . #'selectrum-repeat))
     ```
 
-6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components     :orderless:
+5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components     :orderless:
 
     ```emacs-lisp
     (use-package orderless
@@ -461,7 +444,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (selectrum-highlight-candidates-function #'orderless-highlight-matches))
     ```
 
-7.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.     :prescient:
+6.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.     :prescient:
 
     ```emacs-lisp
     (use-package prescient
@@ -473,7 +456,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (selectrum-prescient-mode +1))))
     ```
 
-8.  [Consult](https://github.com/minad/consult) provides various commands based on the Emacs completion function completing-read     :consult:
+7.  [Consult](https://github.com/minad/consult) provides various commands based on the Emacs completion function completing-read     :consult:
 
     ```emacs-lisp
     (use-package consult
@@ -593,7 +576,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   ("!" . consult-flycheck)))
     ```
 
-9.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
+8.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
     ```emacs-lisp
     (use-package embark
@@ -627,7 +610,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
         ```
 
-10. [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+9.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
 
@@ -645,7 +628,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
     ```
 
-11. [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
+10. [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
 
     ```emacs-lisp
     (use-package affe
@@ -660,7 +643,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
     ```
 
-12. provide
+11. provide
 
     ```emacs-lisp
     (provide 'rgr/minibuffer)
@@ -1046,7 +1029,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org130006a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org0fbd463) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2281,7 +2264,7 @@ The code in [rgr-chat](etc/elisp/rgr-chat.el) :
 ```emacs-lisp
 (use-package mu4e
 
-  :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
+  ;; :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
   :commands (mu4e mu4e-update-index)
   :custom
   ( mail-user-agent 'mu4e-user-agent )
@@ -2526,7 +2509,14 @@ Load this relatively early in order to have utils available if there's a faied l
 
         ```
 
-    5.  Elisp debugging
+    5.  lispy
+
+        ```emacs-lisp
+        (use-package lispy
+          :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
+        ```
+
+    6.  Elisp debugging
 
         ```emacs-lisp
         (use-package
@@ -2544,7 +2534,7 @@ Load this relatively early in order to have utils available if there's a faied l
           )
         ```
 
-    6.  Formatting
+    7.  Formatting
 
         ```emacs-lisp
         (use-package
@@ -2554,7 +2544,7 @@ Load this relatively early in order to have utils available if there's a faied l
                 ("C-c f" . elisp-format-region)))
         ```
 
-    7.  popup query symbol
+    8.  popup query symbol
 
         ```emacs-lisp
         (use-package popup
@@ -2569,7 +2559,7 @@ Load this relatively early in order to have utils available if there's a faied l
           (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
         ```
 
-    8.  provide
+    9.  provide
 
         ```emacs-lisp
         (provide 'rgr/elisp-utils)
@@ -2631,9 +2621,15 @@ Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/projec
     ```
 
 
-### JSON, YAML Configuration files
+### JSON, YAML Configuration files     :json:
 
-1.  YAML
+1.  JSONNavigator
+
+    ```emacs-lisp
+    (use-package json-navigator)
+    ```
+
+2.  YAML
 
     ```emacs-lisp
     (use-package
@@ -2641,6 +2637,7 @@ Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/projec
       :config
       (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
       )
+
     ```
 
 

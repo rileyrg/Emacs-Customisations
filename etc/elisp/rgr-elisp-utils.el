@@ -44,6 +44,9 @@
   ("M-<f2>" . el-docstring-sap-display)
   ("M-<f1>" . el-docstring-sap-mode))
 
+(use-package lispy
+  :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
+
 (use-package
   edebug-x
   :demand t

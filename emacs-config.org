@@ -458,24 +458,6 @@ CLOSED: [2021-05-18 Tue 18:21]
                                 #'completion-file-name-table)))) 'append)
           (ffap-bindings))
       #+end_src
-**** [[https://github.com/raxod502/ctrlf][ctrlf]] - back to basics search                                    :ctrlf:
-     :PROPERTIES:
-     :ID:       18bfbb73-aba5-4392-9f79-383bf6e3f3ef
-     :END:
-     #+begin_src emacs-lisp
-       (use-package ctrlf
-         :straight (:local-repo "~/development/projects/emacs/ctrlf" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
-         :custom-face
-         (ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
-         (ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))
-         :custom
-         (ctrlf-auto-recenter t nil nil "Customized with use-package ctrlf")
-         (ctrlf-highlight-current-line t)
-         (ctrlf-auto-recenter t)
-         (ctrlf-search-style-is-sticky t)
-         :init
-         (ctrlf-mode +1))
-     #+end_src
 **** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list      :selectrum:
      :PROPERTIES:
      :ID:       f7f2ea39-77f2-45bd-9402-0eb09ef74b39
@@ -2375,7 +2357,7 @@ CLOSED: [2021-05-17 Mo 19:59]
     #+begin_src emacs-lisp
       (use-package mu4e
 
-        :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
+        ;; :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
         :commands (mu4e mu4e-update-index)
         :custom
         ( mail-user-agent 'mu4e-user-agent )
@@ -2679,6 +2661,11 @@ CLOSED: [2021-05-17 Mo 19:59]
           ("M-<f1>" . el-docstring-sap-mode))
 
       #+end_src
+***** lispy
+#+begin_src emacs-lisp
+  (use-package lispy
+    :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
+#+end_src
 ***** Elisp debugging
       :PROPERTIES:
       :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
@@ -2791,10 +2778,14 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
                       '(pascal
                         "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
      #+end_src
-*** JSON, YAML Configuration files
+*** JSON, YAML Configuration files                                     :json:
     :PROPERTIES:
     :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
     :END:
+**** JSONNavigator
+#+begin_src emacs-lisp
+  (use-package json-navigator)
+#+end_src
 **** YAML
      :PROPERTIES:
      :ID:       26c28417-3965-452a-a180-61de98d44ef5
@@ -2805,6 +2796,7 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
          :config
          (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
          )
+
      #+end_src
 *** Flycheck                                                  :flycheck:lint:
     :PROPERTIES:

@@ -375,7 +375,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package mu4e
 
-  :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
+  ;; :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
   :commands (mu4e mu4e-update-index)
   :custom
   ( mail-user-agent 'mu4e-user-agent )
@@ -549,6 +549,8 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-to-list 'compilation-error-regexp-alist-alist
                '(pascal
                  "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
+
+(use-package json-navigator)
 
 (use-package
   yaml-mode

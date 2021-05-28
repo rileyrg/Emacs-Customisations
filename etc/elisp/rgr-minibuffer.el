@@ -32,19 +32,6 @@
                         #'completion-file-name-table)))) 'append)
   (ffap-bindings))
 
-(use-package ctrlf
-  :straight (:local-repo "~/development/projects/emacs/ctrlf" :fork ( :type git :host github :repo "rileyrg/ctrlf"))
-  :custom-face
-  (ctrlf-highlight-active ((t (:inherit nil :background "gold" :foreground "dim gray"))))
-  (ctrlf-highlight-passive ((t (:inherit nil :background "red4" :foreground "white"))))
-  :custom
-  (ctrlf-auto-recenter t nil nil "Customized with use-package ctrlf")
-  (ctrlf-highlight-current-line t)
-  (ctrlf-auto-recenter t)
-  (ctrlf-search-style-is-sticky t)
-  :init
-  (ctrlf-mode +1))
-
 (use-package selectrum
   :config
   (selectrum-mode +1)
