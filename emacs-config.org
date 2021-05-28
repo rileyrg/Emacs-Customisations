@@ -851,7 +851,7 @@ CLOSED: [2021-05-18 Tue 18:21]
                                                 ;          (global-set-key (kbd "<f10>") #'imenu)
 
 
-        (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" "Emacs: %b")) ;; used to select the window again (frame-list)
+        (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
 
         (defalias 'yes-or-no-p 'y-or-n-p)
 
