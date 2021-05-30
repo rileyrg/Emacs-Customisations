@@ -172,7 +172,7 @@
   (defun rgr/devdocs()
     (interactive)
     (if current-prefix-arg
-        (devdocs-browser-open-in)
+        (call-interactively 'devdocs-browser-open-in)
       (devdocs-browser-open)))
   :bind ("C-c v" . rgr/devdocs))
 
