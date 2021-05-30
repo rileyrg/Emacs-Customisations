@@ -39,23 +39,6 @@
 
 (require 'rgr/early-init "rgr-early-init")
 
-(setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-(load custom-file 'noerror)
-
-(defun load-el-gpg (load-dir)
-  (message "attempting mass load from %s." load-dir)
-  (when (file-exists-p load-dir)
-    (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
-      (condition-case nil
-          (progn
-            (message "load-el-gpg loading %s" f)
-            (load f 'no-error))
-        (error nil)))))
-
-(load-el-gpg (no-littering-expand-etc-file-name "early-load"))
-
-(load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
-
 (require 'rgr/security "rgr-security" 'NOERROR)
 
 (require 'rgr/utils "rgr-utils" 'NOERROR)

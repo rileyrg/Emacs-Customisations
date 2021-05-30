@@ -66,15 +66,13 @@ CLOSED: [2021-05-18 Tue 18:21]
     (setq comp-deferred-compilation-deny-list nil)
   #+end_src
 ** early-init.el
-   :PROPERTIES:
-   :header-args:emacs-lisp: :tangle (expand-file-name "early-init.el" user-emacs-directory)
-   :END:
-
    #+begin_src emacs-lisp
+     (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+     (load custom-file 'noerror)
      (setq package-enable-at-startup nil)
    #+end_src
 
-**  bootstrap
+** bootstrap
 
    #+begin_src emacs-lisp
      (defvar bootstrap-version)
@@ -150,7 +148,8 @@ CLOSED: [2021-05-18 Tue 18:21]
     :PROPERTIES:
     :header-args:emacs-lisp: :tangle (expand-file-name "rgr-early-init.el" elisp-dir)
     :END:
-    #+begin_src emacs-lisp
+**** auto compile
+#+begin_src emacs-lisp
       ;;; rgr-early-init.el  -*- no-byte-compile: t -*-
       (use-package
         auto-compile
@@ -158,21 +157,8 @@ CLOSED: [2021-05-18 Tue 18:21]
         (setq load-prefer-newer t)
         (auto-compile-on-load-mode 1)
         (auto-compile-on-save-mode 1))
-      (provide 'rgr/early-init)
     #+end_src
-** Customization
-   :PROPERTIES:
-   :ID:       302b803c-5c00-4afa-8bea-46b03beefd91
-   :END:
-*** Standard Emacs customisation
-    :PROPERTIES:
-    :ID:       35cdda6a-3830-4e7f-ba6d-956db0066d59
-    :END:
-    #+begin_src emacs-lisp
-      (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-      (load custom-file 'noerror)
-    #+end_src
-*** Load user customisations and gpg
+**** Load user customisations and gpg
     :PROPERTIES:
     :ID:       4695d758-01da-4669-9941-d4d56e9aa2bf
     :END:
@@ -188,14 +174,14 @@ CLOSED: [2021-05-18 Tue 18:21]
                   (load f 'no-error))
               (error nil)))))
     #+end_src
-**** early load
+***** early load
      :PROPERTIES:
      :ID:       aace5754-aeeb-46bf-8ed4-e8eda3ed2e9e
      :END:
      #+begin_src emacs-lisp
        (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
      #+end_src
-**** host specific
+***** host specific
      :PROPERTIES:
      :ID:       efe9afb5-3779-407d-a7a9-fd8968ea0f69
      :END:
@@ -203,6 +189,10 @@ CLOSED: [2021-05-18 Tue 18:21]
      #+begin_src emacs-lisp
        (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
      #+end_src
+**** provide
+#+begin_src emacs-lisp
+      (provide 'rgr/early-init)
+#+end_src
 ** Security
    #+begin_src emacs-lisp
      (require 'rgr/security "rgr-security" 'NOERROR)

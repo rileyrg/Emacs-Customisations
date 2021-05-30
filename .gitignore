@@ -5,9 +5,9 @@
 !.ignore
 
 !emacs-config.org
-!earlyinit.el
 !init.el
 !README.md
+!custom.el
 
 !info
 !info/*
@@ -15,7 +15,6 @@
 !etc
 !var
 
-!etc/custom.el
 !etc/abbrev.el
 
 !etc/early-load
