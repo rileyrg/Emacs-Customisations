@@ -374,8 +374,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (global-set-key (kbd "C-c i") 'eshell/chat-client)
 
 (use-package mu4e
-
-  ;; :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
+ :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
   :commands (mu4e mu4e-update-index)
   :custom
   ( mail-user-agent 'mu4e-user-agent )

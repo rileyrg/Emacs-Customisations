@@ -96,6 +96,7 @@
      (sass-mode . "sass")
      (scala-mode . "scala")
      (tcl-mode . "tcl")))
+ '(devdocs-browser-cache-directory "/home/rgr/.emacs.d/var/devdocs-browser")
  '(diary-file "~/.diary")
  '(diary-list-include-blanks t)
  '(diary-mark-entries-hook '(diary-mark-included-diary-files))

@@ -1673,19 +1673,6 @@ CLOSED: [2021-05-24 Mo 19:54]
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-c g" . goldendict-dwim)))
       #+end_src
-***** DevDocs
-      :PROPERTIES:
-      :ID:       62f3a0a9-c781-455c-8cf8-0fbf7d02d7a4
-      :END:
-      #+begin_src emacs-lisp
-        (use-package devdocs
-          :commands (rgr/devdocs)
-          :config
-          (defun rgr/devdocs (&optional w)
-            (interactive)
-            (devdocs-search)t)
-          :bind* ("C-c v" . 'rgr/devdocs))
-      #+end_src
 ***** Zeal - Linux Dash
       :PROPERTIES:
       :ID:       7521fbd2-08e9-4323-9055-9e0b690474ed
@@ -1700,6 +1687,22 @@ CLOSED: [2021-05-24 Mo 19:54]
             (zeal-at-point)t)
           :bind* ("C-c z" . 'rgr/zeal))
       #+end_src
+***** emacs-devdocs-browser
+#+begin_src emacs-lisp
+
+  (use-package devdocs-browser
+    :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
+    :custom
+    (devdocs-browser-cache-directory (no-littering-expand-var-file-name "devdocs-browser"))
+    :config
+    (defun rgr/devdocs()
+      (interactive)
+      (if current-prefix-arg
+          (devdocs-browser-open-in)
+        (devdocs-browser-open)))
+    :bind ("C-c v" . rgr/devdocs))
+#+end_src
+
 ***** DASH - API documentation for most languages
       :PROPERTIES:
       :ID:       c05f8e5e-a34c-4e6c-89b9-f4586a6d1eea
@@ -2356,8 +2359,7 @@ CLOSED: [2021-05-17 Mo 19:59]
     :END:
     #+begin_src emacs-lisp
       (use-package mu4e
-
-        ;; :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
+       :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
         :commands (mu4e mu4e-update-index)
         :custom
         ( mail-user-agent 'mu4e-user-agent )

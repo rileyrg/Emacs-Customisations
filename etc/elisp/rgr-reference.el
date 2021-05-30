@@ -155,14 +155,6 @@
       (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
   :bind (("C-c g" . goldendict-dwim)))
 
-(use-package devdocs
-  :commands (rgr/devdocs)
-  :config
-  (defun rgr/devdocs (&optional w)
-    (interactive)
-    (devdocs-search)t)
-  :bind* ("C-c v" . 'rgr/devdocs))
-
 (use-package zeal-at-point
   :disabled t ;;way too buggy
   :commands (rgr/zeal)
@@ -171,6 +163,18 @@
     (interactive)
     (zeal-at-point)t)
   :bind* ("C-c z" . 'rgr/zeal))
+
+(use-package devdocs-browser
+  :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
+  :custom
+  (devdocs-browser-cache-directory (no-littering-expand-var-file-name "devdocs-browser"))
+  :config
+  (defun rgr/devdocs()
+    (interactive)
+    (if current-prefix-arg
+        (devdocs-browser-open-in)
+      (devdocs-browser-open)))
+  :bind ("C-c v" . rgr/devdocs))
 
 (use-package
   dash-docs
