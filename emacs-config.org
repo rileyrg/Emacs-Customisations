@@ -52,15 +52,10 @@
   ;;; init.el --- init  -*- no-byte-compile: t -*-
   #+end_src
 
-* custom
-  #+begin_src emacs-lisp
-(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-(load custom-file 'noerror)
-  #+end_src
-
 * early-init
   #+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
 ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+(setq package-enable-at-startup nil)
 (setq load-prefer-newer t)
 (add-to-list 'load-path (expand-file-name "lib/packed" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lib/auto-compile" user-emacs-directory))
@@ -178,11 +173,12 @@ DRONES_DIR = $(shell git config "borg.drones-directory" || echo "lib")
 -include $(DRONES_DIR)/borg/borg.mk
 
 bootstrap-borg:
-@git submodule--helper clone --name borg --path $(DRONES_DIR)/borg \
---url git@github.com:emacscollective/borg.git
-@cd $(DRONES_DIR)/borg; git symbolic-ref HEAD refs/heads/master
-@cd $(DRONES_DIR)/borg; git reset --hard HEAD
+	@git submodule--helper clone --name borg --path $(DRONES_DIR)/borg \
+		--url git@github.com:emacscollective/borg.git
+	@cd $(DRONES_DIR)/borg; git symbolic-ref HEAD refs/heads/master
+	@cd $(DRONES_DIR)/borg; git reset --hard HEAD
     #+end_src
+
 * config
   :PROPERTIES:
   :CUSTOM_ID: b477a755
@@ -190,6 +186,12 @@ bootstrap-borg:
   :LOGBOOK:
   CLOCK: [2021-02-24 Wed 22:42]
   :END:
+** custom
+   #+begin_src emacs-lisp
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+(load custom-file 'noerror)
+   #+end_src
+
 ** Paths, clutter
    :PROPERTIES:
    :CUSTOM_ID: Paths_and_clutter
@@ -1189,7 +1191,6 @@ bootstrap-borg:
   (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
   (org-fontify-done-headline t)
   (org-fontify-todo-headline t)
-  (org-src-preserve-indentation t)
   (org-babel-default-header-args:python
    '((:results  . "output")))
   :config
@@ -2117,17 +2118,6 @@ sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-de
               ("i" . dired-subtree-insert)
               (";" . dired-subtree-remove)))
       #+end_src
-***** dired filter
-      :PROPERTIES:
-      :ID:       31375a7b-3f6a-4a42-b8ba-ef657feed86f
-      :END:
-      More dired based filtering see [[help:dired-filter-prefix][dired-filter-prefix]]
-      #+begin_src emacs-lisp
-(use-package dired-filter
-  :config
-  (use-package dash)
-  )
-      #+end_src
 ***** dired quicksort
       :PROPERTIES:
       :ID:       4f3efcf1-67e8-47c8-809b-4ab958852723
@@ -2728,11 +2718,6 @@ fi
   ("M-<f1>" . el-docstring-sap-mode))
 
       #+end_src
-***** lispy
-      #+begin_src emacs-lisp
-(use-package lispy
-  :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
-      #+end_src
 ***** Elisp debugging
       :PROPERTIES:
       :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
@@ -3074,6 +3059,7 @@ fi
 (use-package lsp-mode
   :custom
   (lsp-diagnostic-package :none)
+  (lsp-auto-configure t)
   :config
   (use-package
     lsp-ui
@@ -3515,6 +3501,7 @@ fi
    #+begin_src emacs-lisp
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
    #+end_src
+
 * Associated emacs things
   :PROPERTIES:
   :ID:       c77645d3-d03f-47ab-a30f-fc649c70ef31

@@ -1,8 +1,5 @@
   ;;; init.el --- init  -*- no-byte-compile: t -*-
 
-(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-(load custom-file 'noerror)
-
 (add-to-list 'load-path (expand-file-name "lib/borg" user-emacs-directory))
 (require 'borg)
 (borg-initialize)
@@ -11,6 +8,9 @@
                           'magit-insert-modules
                           'magit-insert-stashes
                           'append))
+
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+(load custom-file 'noerror)
 
 (use-package no-littering
   :config
@@ -205,11 +205,6 @@
   :bind (:map dired-mode-map
               ("i" . dired-subtree-insert)
               (";" . dired-subtree-remove)))
-
-(use-package dired-filter
-  :config
-  (use-package dash)
-  )
 
 (use-package dired-quick-sort
   :disabled t

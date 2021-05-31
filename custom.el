@@ -362,7 +362,7 @@ SCHEDULED: %^{Delivery Date}t
       ("WAITING")
       ("CANCELLED")
       ("NEXT"))))
- '(package-selected-packages '(corfu borg))
+ '(package-selected-packages '(pass corfu borg))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)

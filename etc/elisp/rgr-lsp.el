@@ -2,6 +2,7 @@
 (use-package lsp-mode
   :custom
   (lsp-diagnostic-package :none)
+  (lsp-auto-configure t)
   :config
   (use-package
     lsp-ui

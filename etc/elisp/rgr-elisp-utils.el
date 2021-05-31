@@ -36,9 +36,6 @@
   ;; look at interactive functions.
   (global-set-key (kbd "C-h C") #'helpful-command))
 
-(use-package lispy
-  :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
-
 (use-package
   edebug-x
   :demand t
