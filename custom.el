@@ -49,7 +49,6 @@
  '(compilation-error-regexp-alist
    '(bash-xset-x dotnet-warning dotnet-error msbuild-warning msbuild-error xbuild-warning xbuild-error dotnet-testfail typescript-nglint-warning typescript-nglint-error typescript-tslint typescript-tsc-pretty typescript-tsc absoft ada aix ant bash borland python-tracebacks-and-caml cmake cmake-info comma cucumber msft edg-1 edg-2 epc ftnchek gradle-kotlin iar ibm irix java jikes-file maven jikes-line clang-include gcc-include ruby-Test::Unit gmake gnu lcc makepp mips-1 mips-2 omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line))
  '(compilation-message-face 'default)
- '(completion-styles '(orderless) nil nil "Customized with use-package orderless")
  '(confirm-nonexistent-file-or-buffer nil)
  '(cquery-executable "~/.bin/cquery")
  '(cquery-project-root-matchers
@@ -358,6 +357,8 @@ SCHEDULED: %^{Delivery Date}t
       ("WAITING")
       ("CANCELLED")
       ("NEXT"))))
+ '(package-selected-packages
+   '(beacon all-the-icons browse-url-dwim which-key marginalia embark-consult embark consult-flycheck consult selectrum-prescient prescient orderless selectrum sudo-edit fzf alert pass auto-compile no-littering use-package))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)

@@ -60,9 +60,6 @@
   :config
   (beacon-mode 1))
 
-(straight-use-package
- '(blackout :host github :repo "raxod502/blackout"))
-
 (use-package
   volatile-highlights
   :init (volatile-highlights-mode 1))

@@ -1,34 +1,19 @@
 (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
 (load custom-file 'noerror)
 
-;;; init.el   -*- no-byte-compile: t -*-
-
-(defvar bootstrap-version)
-
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'use-package)
-
-(use-package straight
-  :custom
-  (straight-use-package-by-default t)
-  (straight-vc-git-default-protocol 'ssh))
-
-(use-package auto-package-update
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
+(eval-and-compile
+  (require 'package)
+  (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
+                           ("marmalade" . "https://marmalade-repo.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")))
+  (package-initialize)
+  ;; i always fetch the archive contents on startup and during compilation, which is slow
+  ;;(package-refresh-contents)
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package)
+  ;; i don't really know why this isn't the default...
+  (setf use-package-always-ensure t))
 
 (use-package no-littering
   :config
@@ -424,15 +409,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package orgit
   :after magit)
-
-(use-package ediff+
-  :custom
-  (ediff-window-setup-function 'ediff-setup-windows-plain)
-  (ediff-split-window-function 'split-window-horizontally)
-  :config
-  (when (fboundp 'winnder-undo)
-    (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
-  :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
 
 (use-package forge
   :after magit

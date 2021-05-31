@@ -55,20 +55,26 @@ invoke google translate on them. Stores history.
 
 * package management
 ** elpa package manager
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
 I have this disabled by default as I use [[id:0ae9fe79-ab41-42ed-82d4-859b21576392][straight.el package management]]
 #+begin_src emacs-lisp
+(eval-and-compile
   (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-  (eval-when-compile
-    (require 'use-package))
-  (setq use-package-always-ensure t)
+  (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
+                           ("marmalade" . "https://marmalade-repo.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")))
+  (package-initialize)
+  ;; i always fetch the archive contents on startup and during compilation, which is slow
+  ;;(package-refresh-contents)
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package)
+  ;; i don't really know why this isn't the default...
+  (setf use-package-always-ensure t))
 #+end_src
 ** straight.el package management
 :PROPERTIES:
 :ID:       0ae9fe79-ab41-42ed-82d4-859b21576392
+:header-args:emacs-lisp: :tangle no
 :END:
 [[https://github.com/raxod502/straight.el#features][straight.el]]: next-generation, purely functional package manager for the Emacs hacker.
 #+begin_src emacs-lisp
@@ -903,6 +909,9 @@ visual feedback as to cursor position
 
 #+end_src
 ***** blackout modeline                                            :blackout:
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
 #+begin_src emacs-lisp
   (straight-use-package
@@ -2892,6 +2901,7 @@ magit
 **** EDiff - comparing files in Emacs                            :diff:ediff:
 :PROPERTIES:
 :ID:       8e09b947-9859-4b89-8354-3c39b1649c33
+:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package ediff+
