@@ -80,9 +80,15 @@
      #+end_src
 **** makefile
      #+begin_src conf :tangle (expand-file-name "Makefile" user-emacs-directory )
-       BORG_SECONDARY_P = true
-       include $(shell find -L elpa -maxdepth 1 -regex '.*/borg-[.0-9]*' |\
-       sort | tail -n 1)/borg.mk
+       DRONES_DIR = $(shell git config "borg.drones-directory" || echo "lib")
+
+       -include $(DRONES_DIR)/borg/borg.mk
+
+       bootstrap-borg:
+               @git submodule--helper clone --name borg --path $(DRONES_DIR)/borg \
+               --url git@github.com:emacscollective/borg.git
+               @cd $(DRONES_DIR)/borg; git symbolic-ref HEAD refs/heads/master
+               @cd $(DRONES_DIR)/borg; git reset --hard HEAD
      #+end_src
 ** straight.el package management
    :PROPERTIES:
