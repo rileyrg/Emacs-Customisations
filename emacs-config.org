@@ -47,12 +47,17 @@ invoke google translate on them. Stores history.
 
 [[https://github.com/rileyrg/lazy-lang-learn]]
 
-* custom
+
+* early stuff
+** early-init.el
+#+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
+  (setq package-enabled-at-startup nil)
+#+end_src
+** custom.el
 #+begin_src emacs-lisp
   (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
   (load custom-file 'noerror)
 #+end_src
-
 * package management
 ** elpa package manager
 :PROPERTIES:
@@ -74,19 +79,6 @@ I have this disabled by default as I use [[id:0ae9fe79-ab41-42ed-82d4-859b215763
 #+begin_src emacs-lisp
   ;;; init.el   -*- no-byte-compile: t -*-
 #+end_src
-*** DONE error with straight in latest gcceamcs pull workaround
-CLOSED: [2021-05-18 Tue 18:21]
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "DONE"       from              [2021-05-18 Tue 18:21]
-:END:
-See github https://github.com/raxod502/straight.el/issues/757#issuecomment-839827576
-#+begin_src emacs-lisp
-  (setq comp-deferred-compilation-deny-list nil)
-#+end_src
-
 *** bootstrap
 
 #+begin_src emacs-lisp
