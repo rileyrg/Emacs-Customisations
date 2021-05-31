@@ -676,6 +676,7 @@ The [[https://github.com/minad/marginalia][marginalia]] pckage in emacs is very 
 **** [[https://github.com/minad/affe][affe]] Asynchronous Fuzzy Finder for Emacs
 :PROPERTIES:
 :ID:       c29a8a56-5c74-4625-9b06-3963e234bb0f
+:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package affe
@@ -761,6 +762,9 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     :bind ("C-<tab>" . company-complete))
 #+end_src
 **** Corfu completion                                                 :corfu:
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 :LOGBOOK:
 - State "STARTED"    from "WAITING"    [2021-04-18 So 00:33]
 - State "WAITING"    from              [2021-04-18 So 00:28] \\
@@ -804,6 +808,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 #+end_src
 ** Lazy Language Learning, lazy-lang-learn
 :PROPERTIES:
+:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package lazy-lang-learn
@@ -904,6 +909,9 @@ Blackout is a package which allows you to hide or customize the display of major
    '(blackout :host github :repo "raxod502/blackout"))
 #+end_src
 ***** boxquote                                                     :boxquote:
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 #+begin_src emacs-lisp
   (use-package boxquote
     :straight (:branch "main")
@@ -1693,6 +1701,9 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
     :bind* ("C-c z" . 'rgr/zeal))
 #+end_src
 ***** emacs-devdocs-browser
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 #+begin_src emacs-lisp
 
   (use-package devdocs-browser
@@ -2368,6 +2379,7 @@ The code in  [[file:etc/elisp/rgr-chat.el][rgr-chat]] :
 *** mu4e                                                         :email:mu4e:
 :PROPERTIES:
 :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
+:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package mu4e
@@ -2659,6 +2671,9 @@ CLOSED: [2021-05-13 Thu 21:53]
     (global-set-key (kbd "C-h C") #'helpful-command))
 #+end_src
 ***** elisp popup context help                                  :popup:elisp:
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 :LOGBOOK:
 - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
 - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
@@ -3288,6 +3303,7 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 *** Godot GDScript                                                    :godot:
 :PROPERTIES:
 :ID:       19daf0bd-1652-4638-9d72-50f0b8af1586
+:header-args:emacs-lisp: :tangle no
 :END:
 This [[https://github.com/GDQuest/emacs-gdscript-mode][package]] adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
 #+begin_src emacs-lisp

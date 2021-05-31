@@ -201,15 +201,4 @@
   (advice-add #'marginalia-cycle :after
               (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
 
-(use-package affe
-  :straight (affe :local-repo "~/development/projects/emacs/affe" :type git :host github :repo "minad/affe" )
-  :after orderless
-  :config
-  ;; Configure Orderless
-  (setq affe-regexp-function #'orderless-pattern-compiler
-        affe-highlight-function #'orderless-highlight-matches)
-
-  ;; Manual preview key for `affe-grep'
-  (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
-
 (provide 'rgr/minibuffer)

@@ -63,11 +63,6 @@
 (straight-use-package
  '(blackout :host github :repo "raxod502/blackout"))
 
-(use-package boxquote
-  :straight (:branch "main")
-  :bind
-  ("C-S-r" . boxquote-region))
-
 (use-package
   volatile-highlights
   :init (volatile-highlights-mode 1))
