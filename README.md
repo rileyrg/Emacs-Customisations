@@ -22,10 +22,37 @@ A small "game" like utility that displays snippets to glance at. You can then in
 <https://github.com/rileyrg/lazy-lang-learn>
 
 
-# custom
+# early stuff
+
+
+## early-init.el
 
 ```emacs-lisp
-(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+;; Maintained in emacs-config.org
+(setq package-enabled-at-startup nil)
+(setq load-prefer-newer t)
+(add-to-list 'load-path (expand-file-name "straight/repos/packed" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "straight/repos/auto-compile" user-emacs-directory))
+(require 'auto-compile)
+(auto-compile-on-load-mode)
+(auto-compile-on-save-mode)
+  ;;; early-init.el ends here
+```
+
+
+## init.el compiling
+
+```emacs-lisp
+;;; init.el   -*- no-byte-compile: t -*-
+;; Maintained in emacs-config.org
+```
+
+
+## custom.el
+
+```emacs-lisp
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
 (load custom-file 'noerror)
 ```
 
@@ -35,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org8f46360)
+I have this disabled by default as I use [straight.el package management](#orga9baaf7)
 
 ```emacs-lisp
 (require 'package)
@@ -46,24 +73,11 @@ I have this disabled by default as I use [straight.el package management](#org8f
 ```
 
 
-<a id="org8f46360"></a>
+<a id="orga9baaf7"></a>
 
 ## straight.el package management
 
 [straight.el](https://github.com/raxod502/straight.el#features): next-generation, purely functional package manager for the Emacs hacker.
-
-```emacs-lisp
-;;; init.el   -*- no-byte-compile: t -*-
-```
-
-
-### error with straight in latest gcceamcs pull workaround
-
-See github <https://github.com/raxod502/straight.el/issues/757#issuecomment-839827576>
-
-```emacs-lisp
-(setq comp-deferred-compilation-deny-list nil)
-```
 
 
 ### bootstrap
@@ -130,62 +144,31 @@ See github <https://github.com/raxod502/straight.el/issues/757#issuecomment-8398
 ```
 
 
-## rgr-early-init, auto-compile
+## Load early stuff / gpg
+
+Load all files in certain directories.
 
 ```emacs-lisp
-(require 'rgr/early-init "rgr-early-init")
+(defun load-el-gpg (load-dir)
+  (message "attempting mass load from %s." load-dir)
+  (when (file-exists-p load-dir)
+    (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
+      (condition-case nil
+          (progn
+            (message "load-el-gpg loading %s" f)
+            (load f 'no-error))
+        (error nil)))))
+(load-el-gpg (no-littering-expand-etc-file-name "early-load"))
 ```
 
 
-### rgr-early-init library
+## host specific
 
-1.  auto compile
+Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/custom.el).
 
-    ```emacs-lisp
-    ;;; rgr-early-init.el  -*- no-byte-compile: t -*-
-    (use-package
-      auto-compile
-      :init
-      (setq load-prefer-newer t)
-      (auto-compile-on-load-mode 1)
-      (auto-compile-on-save-mode 1))
-    ```
-
-2.  Load user customisations and gpg
-
-    Load all files in certain directories.
-
-    ```emacs-lisp
-    (defun load-el-gpg (load-dir)
-      (message "attempting mass load from %s." load-dir)
-      (when (file-exists-p load-dir)
-        (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
-          (condition-case nil
-              (progn
-                (message "load-el-gpg loading %s" f)
-                (load f 'no-error))
-            (error nil)))))
-    ```
-
-    1.  early load
-
-        ```emacs-lisp
-        (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
-        ```
-
-    2.  host specific
-
-        Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/custom.el).
-
-        ```emacs-lisp
-        (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
-        ```
-
-3.  provide
-
-    ```emacs-lisp
-    (provide 'rgr/early-init)
-    ```
+```emacs-lisp
+(load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
+```
 
 
 ## Security
@@ -1043,7 +1026,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb4ce512) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgc9118d0) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3264,6 +3247,7 @@ I like to exclude everything and then add in what is important. So the first lin
 !.ignore
 
 !emacs-config.org
+!early-init.el
 !init.el
 !README.md
 !custom.el

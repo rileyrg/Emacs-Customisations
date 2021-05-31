@@ -1,7 +1,5 @@
-(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
 (load custom-file 'noerror)
-
-;;; init.el   -*- no-byte-compile: t -*-
 
 (defvar bootstrap-version)
 

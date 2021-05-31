@@ -22,7 +22,7 @@
 #+PROPERTY: header-args    :results silent
 #+PROPERTY: header-args:bash :tangle-mode (identity #o555)
 #+PROPERTY: header-args:conf :tangle-mode (identity #o444)
-#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :tangle-mode (identity #o444)
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :tangle-mode (identity #o644)
 #+PROPERTY: header-args:gpg :cache no :tangle-mode (identity #o600)
 
 * Introduction
@@ -52,6 +52,7 @@ invoke google translate on them. Stores history.
 ** early-init.el
 #+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
   ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+  ;; Maintained in emacs-config.org
   (setq package-enabled-at-startup nil)
   (setq load-prefer-newer t)
   (add-to-list 'load-path (expand-file-name "straight/repos/packed" user-emacs-directory))
@@ -59,11 +60,20 @@ invoke google translate on them. Stores history.
   (require 'auto-compile)
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode)
-  ;;; early-init.el ends here
+    ;;; early-init.el ends here
 #+end_src
+** init.el compiling
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+#+begin_src emacs-lisp
+  ;;; init.el   -*- no-byte-compile: t -*-
+  ;; Maintained in emacs-config.org
+#+end_src
+
 ** custom.el
 #+begin_src emacs-lisp
-  (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+  (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
   (load custom-file 'noerror)
 #+end_src
 * package management
@@ -84,9 +94,6 @@ I have this disabled by default as I use [[id:0ae9fe79-ab41-42ed-82d4-859b215763
 :ID:       0ae9fe79-ab41-42ed-82d4-859b21576392
 :END:
 [[https://github.com/raxod502/straight.el#features][straight.el]]: next-generation, purely functional package manager for the Emacs hacker.
-#+begin_src emacs-lisp
-  ;;; init.el   -*- no-byte-compile: t -*-
-#+end_src
 *** bootstrap
 
 #+begin_src emacs-lisp
