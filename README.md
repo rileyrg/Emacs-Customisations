@@ -22,7 +22,33 @@ A small "game" like utility that displays snippets to glance at. You can then in
 <https://github.com/rileyrg/lazy-lang-learn>
 
 
-# straight.el package management
+# custom
+
+```emacs-lisp
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+(load custom-file 'noerror)
+```
+
+
+# package management
+
+
+## elpa package manager
+
+I have this disabled by default as I use [straight.el package management](#org8f46360)
+
+```emacs-lisp
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(eval-when-compile
+  (require 'use-package))
+(setq use-package-always-ensure t)
+```
+
+
+<a id="org8f46360"></a>
+
+## straight.el package management
 
 [straight.el](https://github.com/raxod502/straight.el#features): next-generation, purely functional package manager for the Emacs hacker.
 
@@ -31,7 +57,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 ```
 
 
-## error with straight in latest gcceamcs pull workaround
+### error with straight in latest gcceamcs pull workaround
 
 See github <https://github.com/raxod502/straight.el/issues/757#issuecomment-839827576>
 
@@ -40,14 +66,7 @@ See github <https://github.com/raxod502/straight.el/issues/757#issuecomment-8398
 ```
 
 
-## early-init.el
-
-```emacs-lisp
-(setq package-enable-at-startup nil)
-```
-
-
-## bootstrap
+### bootstrap
 
 ```emacs-lisp
 (defvar bootstrap-version)
@@ -74,7 +93,7 @@ See github <https://github.com/raxod502/straight.el/issues/757#issuecomment-8398
 ```
 
 
-## Updating packages
+### Updating packages
 
 ```emacs-lisp
 (use-package auto-package-update
@@ -120,57 +139,52 @@ See github <https://github.com/raxod502/straight.el/issues/757#issuecomment-8398
 
 ### rgr-early-init library
 
-```emacs-lisp
-;;; rgr-early-init.el  -*- no-byte-compile: t -*-
-(use-package
-  auto-compile
-  :init
-  (setq load-prefer-newer t)
-  (auto-compile-on-load-mode 1)
-  (auto-compile-on-save-mode 1))
-(provide 'rgr/early-init)
-```
-
-
-## Customization
-
-
-### Standard Emacs customisation
-
-```emacs-lisp
-(setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-(load custom-file 'noerror)
-```
-
-
-### Load user customisations and gpg
-
-Load all files in certain directories.
-
-```emacs-lisp
-(defun load-el-gpg (load-dir)
-  (message "attempting mass load from %s." load-dir)
-  (when (file-exists-p load-dir)
-    (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
-      (condition-case nil
-          (progn
-            (message "load-el-gpg loading %s" f)
-            (load f 'no-error))
-        (error nil)))))
-```
-
-1.  early load
+1.  auto compile
 
     ```emacs-lisp
-    (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
+    ;;; rgr-early-init.el  -*- no-byte-compile: t -*-
+    (use-package
+      auto-compile
+      :init
+      (setq load-prefer-newer t)
+      (auto-compile-on-load-mode 1)
+      (auto-compile-on-save-mode 1))
     ```
 
-2.  host specific
+2.  Load user customisations and gpg
 
-    Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/custom.el).
+    Load all files in certain directories.
 
     ```emacs-lisp
-    (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
+    (defun load-el-gpg (load-dir)
+      (message "attempting mass load from %s." load-dir)
+      (when (file-exists-p load-dir)
+        (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
+          (condition-case nil
+              (progn
+                (message "load-el-gpg loading %s" f)
+                (load f 'no-error))
+            (error nil)))))
+    ```
+
+    1.  early load
+
+        ```emacs-lisp
+        (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
+        ```
+
+    2.  host specific
+
+        Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/custom.el).
+
+        ```emacs-lisp
+        (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
+        ```
+
+3.  provide
+
+    ```emacs-lisp
+    (provide 'rgr/early-init)
     ```
 
 
@@ -1029,7 +1043,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orga317f21) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb4ce512) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1474,19 +1488,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :bind (("C-c g" . goldendict-dwim)))
         ```
 
-    5.  DevDocs
-
-        ```emacs-lisp
-        (use-package devdocs
-          :commands (rgr/devdocs)
-          :config
-          (defun rgr/devdocs (&optional w)
-            (interactive)
-            (devdocs-search)t)
-          :bind* ("C-c v" . 'rgr/devdocs))
-        ```
-
-    6.  Zeal - Linux Dash
+    5.  Zeal - Linux Dash
 
         ```emacs-lisp
         (use-package zeal-at-point
@@ -1497,6 +1499,23 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (interactive)
             (zeal-at-point)t)
           :bind* ("C-c z" . 'rgr/zeal))
+        ```
+
+    6.  emacs-devdocs-browser
+
+        ```emacs-lisp
+
+        (use-package devdocs-browser
+          :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
+          :custom
+          (devdocs-browser-cache-directory (no-littering-expand-var-file-name "devdocs-browser"))
+          :config
+          (defun rgr/devdocs()
+            (interactive)
+            (if current-prefix-arg
+                (call-interactively 'devdocs-browser-open-in)
+              (devdocs-browser-open)))
+          :bind ("C-c v" . rgr/devdocs))
         ```
 
     7.  DASH - API documentation for most languages
@@ -1808,13 +1827,13 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
     (use-package emacs
       :demand
       :config
-    (defun rgr/kill-current-buffer()
-                          (interactive)
-                          (if (member (buffer-name) '("*Messages*" "*scratch*"))
-                              (progn
-                                (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-                                (delete-window))
-                            (kill-current-buffer)))
+      (defun rgr/kill-current-buffer()
+        (interactive)
+        (if (member (buffer-name) '("*Messages*" "*scratch*"))
+            (progn
+              (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+              (delete-window))
+          (kill-current-buffer)))
       (add-hook 'before-save-hook 'delete-trailing-whitespace)
       :bind
       ("C-x k" . rgr/kill-current-buffer)
@@ -2263,8 +2282,7 @@ The code in [rgr-chat](etc/elisp/rgr-chat.el) :
 
 ```emacs-lisp
 (use-package mu4e
-
-  ;; :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
+  :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
   :commands (mu4e mu4e-update-index)
   :custom
   ( mail-user-agent 'mu4e-user-agent )
@@ -3246,9 +3264,9 @@ I like to exclude everything and then add in what is important. So the first lin
 !.ignore
 
 !emacs-config.org
-!earlyinit.el
 !init.el
 !README.md
+!custom.el
 
 !info
 !info/*
@@ -3256,7 +3274,6 @@ I like to exclude everything and then add in what is important. So the first lin
 !etc
 !var
 
-!etc/custom.el
 !etc/abbrev.el
 
 !etc/early-load
