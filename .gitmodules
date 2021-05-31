@@ -3,3 +3,11 @@
 	url = git@github.com:emacscollective/borg.git
 [submodule "emacsql"]
 	no-byte-compile = emacsql-pg.el
+	path = lib/emacsql
+	url = git@github.com:skeeto/emacsql.git
+[submodule "closql"]
+	path = lib/closql
+	url = git@github.com:emacscollective/closql.git
+[submodule "epkg"]
+	path = lib/epkg
+	url = git@github.com:emacscollective/epkg.git

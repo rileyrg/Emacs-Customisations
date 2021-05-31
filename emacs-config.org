@@ -55,6 +55,10 @@
 
 * package management
 ** elpa package manager
+   :PROPERTIES:
+   :header-args:emacs-lisp: :tangle no
+   :header-args:conf: :tangle no
+   :END:
    I have this disabled by default as I use [[id:0ae9fe79-ab41-42ed-82d4-859b21576392][straight.el package management]]
    #+begin_src emacs-lisp
      (eval-and-compile
@@ -80,16 +84,29 @@
      #+end_src
 **** makefile
      #+begin_src conf :tangle (expand-file-name "Makefile" user-emacs-directory )
-       DRONES_DIR = $(shell git config "borg.drones-directory" || echo "lib")
-
-       -include $(DRONES_DIR)/borg/borg.mk
-
-       bootstrap-borg:
-               @git submodule--helper clone --name borg --path $(DRONES_DIR)/borg \
-               --url git@github.com:emacscollective/borg.git
-               @cd $(DRONES_DIR)/borg; git symbolic-ref HEAD refs/heads/master
-               @cd $(DRONES_DIR)/borg; git reset --hard HEAD
+       BORG_SECONDARY_P = true
+       include $(shell find -L elpa -maxdepth 1 -regex '.*/borg-[.0-9]*' |\
+       sort | tail -n 1)/borg.mk
      #+end_src
+** borg pure
+*** init
+ #+begin_src emacs-lisp
+ (add-to-list 'load-path (expand-file-name "lib/borg" user-emacs-directory))
+ (require 'borg)
+ (borg-initialize)
+ #+end_src
+*** makefile
+    #+begin_src conf :tangle (expand-file-name "Makefile" user-emacs-directory )
+      DRONES_DIR = $(shell git config "borg.drones-directory" || echo "lib")
+
+      -include $(DRONES_DIR)/borg/borg.mk
+
+      bootstrap-borg:
+              @git submodule--helper clone --name borg --path $(DRONES_DIR)/borg \
+              --url git@github.com:emacscollective/borg.git
+              @cd $(DRONES_DIR)/borg; git symbolic-ref HEAD refs/heads/master
+              @cd $(DRONES_DIR)/borg; git reset --hard HEAD
+    #+end_src
 ** straight.el package management
    :PROPERTIES:
    :ID:       0ae9fe79-ab41-42ed-82d4-859b21576392
@@ -3633,10 +3650,10 @@
     #+end_src
 *** ~/bin/emacs-compile-dbg
     #+begin_src bash :tangle bin/emacs-compile-dbg
-      #!/usr/bin/bash
-      #Maintained in emacs-config.org
-      cd ~/development/projects/C/emacs/
-      mkdir -p emacs-build-dbg
-      ./configure --prefix=`pwd`/emacs-build-dbg --with-x-toolkit=lucid --enable-checking='yes,glyphs' --enable-check-lisp-object-type CFLAGS='-O0 -g3'
-      make && make install
-    #+end_src
+  #!/usr/bin/bash
+  #Maintained in emacs-config.org
+  cd ~/development/projects/C/emacs/
+  mkdir -p emacs-build-dbg
+  ./configure --prefix=`pwd`/emacs-build-dbg --with-x-toolkit=lucid --enable-checking='yes,glyphs' --enable-check-lisp-object-type CFLAGS='-O0 -g3'
+  make && make install
+#+end_src

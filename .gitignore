@@ -10,7 +10,7 @@
 !custom.el
 
 !lib
-!lib/borg
+!lib/*
 
 !info
 !info/*
@@ -82,4 +82,3 @@
 !build
 !build/scripts
 !build/scripts/*
-/epkgs/
