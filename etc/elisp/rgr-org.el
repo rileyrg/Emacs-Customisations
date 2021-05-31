@@ -6,6 +6,7 @@
   (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
   (org-fontify-done-headline t)
   (org-fontify-todo-headline t)
+  (org-src-preserve-indentation t)
   (org-babel-default-header-args:python
    '((:results  . "output")))
   :config

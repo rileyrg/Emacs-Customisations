@@ -149,17 +149,17 @@
 
   ;; Optionally configure a function which returns the project root directory.
   ;; There are multiple reasonable alternatives to chose from.
-       ;;;; 1. project.el (project-roots)
+              ;;;; 1. project.el (project-roots)
   (setq consult-project-root-function
         (lambda ()
           (when-let (project (project-current))
             (car (project-roots project)))))
-       ;;;; 2. projectile.el (projectile-project-root)
+              ;;;; 2. projectile.el (projectile-project-root)
   ;; (autoload 'projectile-project-root "projectile")
   ;; (setq consult-project-root-function #'projectile-project-root)
-       ;;;; 3. vc.el (vc-root-dir)
+              ;;;; 3. vc.el (vc-root-dir)
   ;; (setq consult-project-root-function #'vc-root-dir)
-       ;;;; 4. locate-dominating-file
+              ;;;; 4. locate-dominating-file
   ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
   ;; Optionally add the `consult-flycheck' command.
   )

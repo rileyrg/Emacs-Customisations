@@ -47,66 +47,62 @@
 
     [[https://github.com/rileyrg/lazy-lang-learn]]
 
-* custom
+* init.el
   #+begin_src emacs-lisp
-    (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-    (load custom-file 'noerror)
+  ;;; init.el --- init  -*- no-byte-compile: t -*-
   #+end_src
 
+* custom
+  #+begin_src emacs-lisp
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+(load custom-file 'noerror)
+  #+end_src
+
+* early-init
+  #+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
+;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+(setq load-prefer-newer t)
+(add-to-list 'load-path (expand-file-name "lib/packed" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "lib/auto-compile" user-emacs-directory))
+(require 'auto-compile)
+(auto-compile-on-load-mode)
+(auto-compile-on-save-mode)
+  #+end_src
 * package management
 ** elpa package manager
    :PROPERTIES:
    :header-args:emacs-lisp: :tangle no
-   :header-args:conf: :tangle no
+   :header-args:makefile: :tangle no
    :END:
    I have this disabled by default as I use [[id:0ae9fe79-ab41-42ed-82d4-859b21576392][straight.el package management]]
    #+begin_src emacs-lisp
-     (eval-and-compile
-       (require 'package)
-       (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
-                                ("marmalade" . "https://marmalade-repo.org/packages/")
-                                ("melpa" . "https://melpa.org/packages/")))
-       (package-initialize)
-       ;; i always fetch the archive contents on startup and during compilation, which is slow
-       ;;(package-refresh-contents)
-       (unless (package-installed-p 'use-package)
-         (package-install 'use-package))
-       (require 'use-package)
-       ;; i don't really know why this isn't the default...
-       (setf use-package-always-ensure t))
+(eval-and-compile
+  (require 'package)
+  (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
+                           ("marmalade" . "https://marmalade-repo.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")))
+  (package-initialize)
+  ;; i always fetch the archive contents on startup and during compilation, which is slow
+  ;;(package-refresh-contents)
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package)
+  ;; i don't really know why this isn't the default...
+  (setf use-package-always-ensure t))
    #+end_src
 *** borg
 **** run it alongside package
      #+begin_src emacs-lisp
-       (if (require 'borg-elpa nil t)
-           (borg-elpa-initialize)
-         (package-initialize))
+(if (require 'borg-elpa nil t)
+    (borg-elpa-initialize)
+  (package-initialize))
      #+end_src
 **** makefile
-     #+begin_src conf :tangle (expand-file-name "Makefile" user-emacs-directory )
-       BORG_SECONDARY_P = true
-       include $(shell find -L elpa -maxdepth 1 -regex '.*/borg-[.0-9]*' |\
-       sort | tail -n 1)/borg.mk
+     #+begin_src makefile :tangle no (expand-file-name "Makefile" user-emacs-directory )
+BORG_SECONDARY_P = true
+include $(shell find -L elpa -maxdepth 1 -regex '.*/borg-[.0-9]*' |\
+sort | tail -n 1)/borg.mk
      #+end_src
-** borg pure
-*** init
- #+begin_src emacs-lisp
- (add-to-list 'load-path (expand-file-name "lib/borg" user-emacs-directory))
- (require 'borg)
- (borg-initialize)
- #+end_src
-*** makefile
-    #+begin_src conf :tangle (expand-file-name "Makefile" user-emacs-directory )
-      DRONES_DIR = $(shell git config "borg.drones-directory" || echo "lib")
-
-      -include $(DRONES_DIR)/borg/borg.mk
-
-      bootstrap-borg:
-              @git submodule--helper clone --name borg --path $(DRONES_DIR)/borg \
-              --url git@github.com:emacscollective/borg.git
-              @cd $(DRONES_DIR)/borg; git symbolic-ref HEAD refs/heads/master
-              @cd $(DRONES_DIR)/borg; git reset --hard HEAD
-    #+end_src
 ** straight.el package management
    :PROPERTIES:
    :ID:       0ae9fe79-ab41-42ed-82d4-859b21576392
@@ -126,42 +122,66 @@
     :END:
     See github https://github.com/raxod502/straight.el/issues/757#issuecomment-839827576
     #+begin_src emacs-lisp
-      (setq comp-deferred-compilation-deny-list nil)
+(setq comp-deferred-compilation-deny-list nil)
     #+end_src
 
 *** bootstrap
 
     #+begin_src emacs-lisp
-      (defvar bootstrap-version)
+(defvar bootstrap-version)
 
-      (let ((bootstrap-file
-             (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-            (bootstrap-version 5))
-        (unless (file-exists-p bootstrap-file)
-          (with-current-buffer
-              (url-retrieve-synchronously
-               "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-               'silent 'inhibit-cookies)
-            (goto-char (point-max))
-            (eval-print-last-sexp)))
-        (load bootstrap-file nil 'nomessage))
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-      (straight-use-package 'use-package)
+(straight-use-package 'use-package)
 
-      (use-package straight
-        :custom
-        (straight-use-package-by-default t)
-        (straight-vc-git-default-protocol 'ssh))
+(use-package straight
+  :custom
+  (straight-use-package-by-default t)
+  (straight-vc-git-default-protocol 'ssh))
 
     #+end_src
 
 *** Updating packages
     #+begin_src emacs-lisp
-      (use-package auto-package-update
-        :config
-        (setq auto-package-update-delete-old-versions t)
-        (setq auto-package-update-hide-results t)
-        (auto-package-update-maybe))
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+    #+end_src
+** borg pure
+*** init
+    #+begin_src emacs-lisp
+(add-to-list 'load-path (expand-file-name "lib/borg" user-emacs-directory))
+(require 'borg)
+(borg-initialize)
+(with-eval-after-load 'magit
+  (magit-add-section-hook 'magit-status-sections-hook
+                          'magit-insert-modules
+                          'magit-insert-stashes
+                          'append))
+    #+end_src
+*** makefile
+    #+begin_src makefile :tangle (expand-file-name "Makefile" user-emacs-directory )
+DRONES_DIR = $(shell git config "borg.drones-directory" || echo "lib")
+
+-include $(DRONES_DIR)/borg/borg.mk
+
+bootstrap-borg:
+@git submodule--helper clone --name borg --path $(DRONES_DIR)/borg \
+--url git@github.com:emacscollective/borg.git
+@cd $(DRONES_DIR)/borg; git symbolic-ref HEAD refs/heads/master
+@cd $(DRONES_DIR)/borg; git reset --hard HEAD
     #+end_src
 * config
   :PROPERTIES:
@@ -179,80 +199,56 @@
     :CUSTOM_ID: no_littering
     :END:
     #+begin_src emacs-lisp
-      (use-package no-littering
-        :config
-        (setq auto-save-file-name-transforms
-              `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+(use-package no-littering
+  :config
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
     #+end_src
 *** Path to our own elisp
     :PROPERTIES:
     :ID:       64b907df-b368-455e-8568-c2449fc0440e
     :END:
     #+begin_src emacs-lisp
-      (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
-      (add-to-list 'load-path elisp-dir)
-      (let ((default-directory elisp-dir))
-        (normal-top-level-add-subdirs-to-load-path))
+(defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
+(add-to-list 'load-path elisp-dir)
+(let ((default-directory elisp-dir))
+  (normal-top-level-add-subdirs-to-load-path))
     #+end_src
-** rgr-early-init, auto-compile
+** Load user customisations and gpg
    :PROPERTIES:
-   :ID:       32e5b009-9695-4c8e-8208-4bfa9e6adfac
+   :ID:       4695d758-01da-4669-9941-d4d56e9aa2bf
    :END:
+   Load all files in certain directories.
    #+begin_src emacs-lisp
-     (require 'rgr/early-init "rgr-early-init")
+(defun load-el-gpg (load-dir)
+  (message "attempting mass load from %s." load-dir)
+  (when (file-exists-p load-dir)
+    (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
+      (condition-case nil
+          (progn
+            (message "load-el-gpg loading %s" f)
+            (load f 'no-error))
+        (error nil)))))
    #+end_src
-*** rgr-early-init library
+*** early load
     :PROPERTIES:
-    :header-args:emacs-lisp: :tangle (expand-file-name "rgr-early-init.el" elisp-dir)
+    :ID:       aace5754-aeeb-46bf-8ed4-e8eda3ed2e9e
     :END:
-**** auto compile
-     #+begin_src emacs-lisp
-       ;;; rgr-early-init.el  -*- no-byte-compile: t -*-
-       (use-package
-         auto-compile
-         :init
-         (setq load-prefer-newer t)
-         (auto-compile-on-load-mode 1)
-         (auto-compile-on-save-mode 1))
-     #+end_src
-**** Load user customisations and gpg
-     :PROPERTIES:
-     :ID:       4695d758-01da-4669-9941-d4d56e9aa2bf
-     :END:
-     Load all files in certain directories.
-     #+begin_src emacs-lisp
-       (defun load-el-gpg (load-dir)
-         (message "attempting mass load from %s." load-dir)
-         (when (file-exists-p load-dir)
-           (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
-             (condition-case nil
-                 (progn
-                   (message "load-el-gpg loading %s" f)
-                   (load f 'no-error))
-               (error nil)))))
-     #+end_src
-***** early load
-      :PROPERTIES:
-      :ID:       aace5754-aeeb-46bf-8ed4-e8eda3ed2e9e
-      :END:
-      #+begin_src emacs-lisp
-        (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
-      #+end_src
-***** host specific
-      :PROPERTIES:
-      :ID:       efe9afb5-3779-407d-a7a9-fd8968ea0f69
-      :END:
-      Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][custom file]].
-      #+begin_src emacs-lisp
-        (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
-      #+end_src
-**** provide
-     #+begin_src emacs-lisp
-       (provide 'rgr/early-init)
-     #+end_src
+    #+begin_src emacs-lisp
+(load-el-gpg (no-littering-expand-etc-file-name "early-load"))
+    #+end_src
+*** host specific
+    :PROPERTIES:
+    :ID:       efe9afb5-3779-407d-a7a9-fd8968ea0f69
+    :END:
+    Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][custom file]].
+    #+begin_src emacs-lisp
+(load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
+    #+end_src
+
 ** Security
    #+begin_src emacs-lisp
-     (require 'rgr/security "rgr-security" 'NOERROR)
+(require 'rgr/security "rgr-security" 'NOERROR)
    #+end_src
 *** rgr-security library
     :PROPERTIES:
@@ -265,35 +261,35 @@
      Let emacs take care of security things automagically.
      example:
      #+begin_src emacs-lisp :tangle no
-       (setq passw (get-auth-info "licenses" "my-auth-token"))
+(setq passw (get-auth-info "licenses" "my-auth-token"))
      #+end_src
      #+begin_src emacs-lisp
-       (require 'auth-source)
-       (defun get-auth-info (host user &optional port)
-         "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
-         (let* ((info (nth 0 (auth-source-search
-                              :host host
-                              :user user
-                              :port port
-                              :require '(:user :secret)
-                              :create nil)))
-                (secret (plist-get info :secret)))
-           (if (functionp secret)
-               (funcall secret)
-             secret)))
+(require 'auth-source)
+(defun get-auth-info (host user &optional port)
+  "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
+  (let* ((info (nth 0 (auth-source-search
+                       :host host
+                       :user user
+                       :port port
+                       :require '(:user :secret)
+                       :create nil)))
+         (secret (plist-get info :secret)))
+    (if (functionp secret)
+        (funcall secret)
+      secret)))
      #+end_src
 **** Pass
      Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
      #+begin_src emacs-lisp :tangle no
-       (car (process-lines "pass" "Chat/slack-api-token"))
+(car (process-lines "pass" "Chat/slack-api-token"))
      #+end_src
 
      #+begin_src emacs-lisp
-       (use-package pass)
+(use-package pass)
      #+end_src
 **** provide
      #+begin_src emacs-lisp
-       (provide 'rgr/security)
+(provide 'rgr/security)
      #+end_src
 ** Utilities
    :PROPERTIES:
@@ -301,7 +297,7 @@
    :END:
    Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
    #+begin_src emacs-lisp
-     (require 'rgr/utils "rgr-utils" 'NOERROR)
+(require 'rgr/utils "rgr-utils" 'NOERROR)
    #+end_src
 *** rgr-utils library
     :PROPERTIES:
@@ -309,18 +305,18 @@
     :END:
 **** thing at point or region or input
      #+begin_src emacs-lisp
-       (defun rgr/region-symbol-query()
-         "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
-         (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
-                       (if(use-region-p)
-                           (let ((sel-text
-                                  (buffer-substring-no-properties
-                                   (mark)
-                                   (point))))
-                             sel-text)
-                         (thing-at-point 'symbol)) nil))
-                (result (if w w (read-string "lookup:"))))
-           result))
+(defun rgr/region-symbol-query()
+  "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
+  (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
+                (if(use-region-p)
+                    (let ((sel-text
+                           (buffer-substring-no-properties
+                            (mark)
+                            (point))))
+                      sel-text)
+                  (thing-at-point 'symbol)) nil))
+         (result (if w w (read-string "lookup:"))))
+    result))
 
      #+end_src
 **** read and write elisp vars to file
@@ -329,15 +325,15 @@
      :END:
      #+begin_src emacs-lisp
 
-       (defun rgr/elisp-write-var (f v)
-         (with-temp-file f
-           (prin1 v (current-buffer))))
+(defun rgr/elisp-write-var (f v)
+  (with-temp-file f
+    (prin1 v (current-buffer))))
 
-       (defun rgr/elisp-read-var (f)
-         (with-temp-buffer
-           (insert-file-contents f)
-           (cl-assert (eq (point) (point-min)))
-           (read (current-buffer))))
+(defun rgr/elisp-read-var (f)
+  (with-temp-buffer
+    (insert-file-contents f)
+    (cl-assert (eq (point) (point-min)))
+    (read (current-buffer))))
      #+end_src
 
 **** provide
@@ -345,29 +341,29 @@
      :ID:       1a15ae4d-fd90-4a41-b8d5-1efbec77bf8d
      :END:
      #+begin_src emacs-lisp
-       (provide 'rgr/utils)
+(provide 'rgr/utils)
      #+end_src
 **** line
      :PROPERTIES:
      :ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
      :END:
      #+begin_src emacs-lisp
-       (defun c-complete-line()
-         (interactive)
-         (end-of-line)
-         (unless (eql ?\; (char-after (- (point-at-eol) 1)))
-           (progn (insert ";")))
-         (newline-and-indent))
-       (defun c-insert-previous-line()
-         (interactive)
-         (previous-line)
-         (end-of-line)
-         (newline-and-indent)
-         (insert (string-trim (current-kill 0))))
-       (defun c-newline-below()
-         (interactive)
-         (end-of-line)
-         (newline-and-indent))
+(defun c-complete-line()
+  (interactive)
+  (end-of-line)
+  (unless (eql ?\; (char-after (- (point-at-eol) 1)))
+    (progn (insert ";")))
+  (newline-and-indent))
+(defun c-insert-previous-line()
+  (interactive)
+  (previous-line)
+  (end-of-line)
+  (newline-and-indent)
+  (insert (string-trim (current-kill 0))))
+(defun c-newline-below()
+  (interactive)
+  (end-of-line)
+  (newline-and-indent))
      #+end_src
 ** Emacs daemon & startup                                    :daemon:startup:
    :PROPERTIES:
@@ -378,7 +374,7 @@
    Raw: [[file+sys:etc/elisp/rgr-daemon.el][rgr/daemon]]
 
    #+begin_src emacs-lisp
-     (require 'rgr/daemon "rgr-daemon" 'NOERROR)
+(require 'rgr/daemon "rgr-daemon" 'NOERROR)
    #+end_src
 *** rgr-daemon library                                               :daemon:
     :PROPERTIES:
@@ -387,41 +383,41 @@
     :END:
     #+begin_src emacs-lisp
 
-      ;; start emacs-server if not running
-      (unless(daemonp)
-        (add-hook 'after-init-hook (lambda ()
-                                     (require 'server)
-                                     (unless (server-running-p)
-                                       (message "Starting EmacsServer from init as not already running.")
-                                       (server-start))
-                                     )))
+;; start emacs-server if not running
+(unless(daemonp)
+  (add-hook 'after-init-hook (lambda ()
+                               (require 'server)
+                               (unless (server-running-p)
+                                 (message "Starting EmacsServer from init as not already running.")
+                                 (server-start))
+                               )))
 
-      (defun startHook()
-        )
+(defun startHook()
+  )
 
-      (add-hook 'emacs-startup-hook 'startHook)
+(add-hook 'emacs-startup-hook 'startHook)
 
-      (defun quit-or-close-emacs(&optional kill)
-        (interactive)
-        (if (or current-prefix-arg kill)
-            (server-shutdown)
-          (delete-frame)))
+(defun quit-or-close-emacs(&optional kill)
+  (interactive)
+  (if (or current-prefix-arg kill)
+      (server-shutdown)
+    (delete-frame)))
 
-      (defun server-shutdown ()
-        "Save buffers, Quit, and Shutdown (kill) server"
-        (interactive)
-        (save-some-buffers)
-        (kill-emacs))
+(defun server-shutdown ()
+  "Save buffers, Quit, and Shutdown (kill) server"
+  (interactive)
+  (save-some-buffers)
+  (kill-emacs))
 
-      (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
-      (global-set-key (kbd "C-x C-c") 'nil)
+(global-set-key (kbd "C-c x") 'quit-or-close-emacs)
+(global-set-key (kbd "C-x C-c") 'nil)
 
-      (use-package alert
-        :init
-        (let ((alert-fade-time 5))
-          (alert "Emacs is starting..." :title "Emacs")))
+(use-package alert
+  :init
+  (let ((alert-fade-time 5))
+    (alert "Emacs is starting..." :title "Emacs")))
 
-      (provide 'rgr/daemon)
+(provide 'rgr/daemon)
     #+end_src
 ** Minibuffer Enrichment (search, sudo edit...)                  :minibuffer:
    :PROPERTIES:
@@ -432,7 +428,7 @@
    Raw: [[file+sys:etc/elisp/rgr-minibuffer.el][rgr/minibuffer]]
 
    #+begin_src emacs-lisp
-     (require 'rgr/minibuffer "rgr-minibuffer" 'NOERROR)
+(require 'rgr/minibuffer "rgr-minibuffer" 'NOERROR)
    #+end_src
 
 *** library
@@ -446,19 +442,19 @@
      :END:
      is a package for editing remote files, similar to AngeFtp or efs. Whereas the others use FTP to connect to the remote host and to transfer the files, TRAMP uses a remote shell connection (rlogin, telnet, ssh). It can transfer the files using rcp or a similar program, or it can encode the file contents (using uuencode or base64) and transfer them right through the shell connection.
      #+begin_src emacs-lisp
-       ;;(require 'tramp)
-       (use-package tramp
-         :custom
-         (tramp-default-method "ssh")
-         )
+;;(require 'tramp)
+(use-package tramp
+  :custom
+  (tramp-default-method "ssh")
+  )
      #+end_src
 **** fzf
      :PROPERTIES:
      :ID:       5bc5ae65-7df4-476a-b93b-d501fffd8471
      :END:
      #+begin_src emacs-lisp
-       (use-package fzf
-         :bind (("M-s z" . fzf)))
+(use-package fzf
+  :bind (("M-s z" . fzf)))
      #+end_src
 **** file opening
      :PROPERTIES:
@@ -470,40 +466,40 @@
       :END:
       Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]] to edit it.
       #+begin_src emacs-lisp
-        (defun maybe-read-only-mode()
-          (when (cond ((eq major-mode 'org-mode) t))
-            (message "Setting readonly mode for %s buffer" major-mode)
-            (read-only-mode +1)))
-                                                ;(add-hook 'find-file-hook 'maybe-read-only-mode)
+(defun maybe-read-only-mode()
+  (when (cond ((eq major-mode 'org-mode) t))
+    (message "Setting readonly mode for %s buffer" major-mode)
+    (read-only-mode +1)))
+                                        ;(add-hook 'find-file-hook 'maybe-read-only-mode)
       #+end_src
 ***** Priviliged file editing
       :PROPERTIES:
       :ID:       cfdbc3a9-af09-4608-86bb-de6b3d2f2b3a
       :END:
       #+begin_src emacs-lisp
-        (use-package sudo-edit)
+(use-package sudo-edit)
       #+end_src
 ***** find file at point - documented in the [[https://github.com/raxod502/selectrum/wiki/Additional-Configuration#complete-file-names-at-point][selectrum wiki]]
       :PROPERTIES:
       :ID:       bd247b04-92dc-4db6-911e-df716bd8574a
       :END:
       #+begin_src emacs-lisp
-        (use-package ffap
-          :custom
-          (ffap-require-prefix nil)
-          :config
-          (add-hook 'completion-at-point-functions
-                    (defun complete-path-at-point+ ()
-                      (let ((fn (ffap-file-at-point))
-                            (fap (thing-at-point 'filename)))
-                        (when (and (or fn
-                                       (equal "/" fap))
-                                   (save-excursion
-                                     (search-backward fap (line-beginning-position) t)))
-                          (list (match-beginning 0)
-                                (match-end 0)
-                                #'completion-file-name-table)))) 'append)
-          (ffap-bindings))
+(use-package ffap
+  :custom
+  (ffap-require-prefix nil)
+  :config
+  (add-hook 'completion-at-point-functions
+            (defun complete-path-at-point+ ()
+              (let ((fn (ffap-file-at-point))
+                    (fap (thing-at-point 'filename)))
+                (when (and (or fn
+                               (equal "/" fap))
+                           (save-excursion
+                             (search-backward fap (line-beginning-position) t)))
+                  (list (match-beginning 0)
+                        (match-end 0)
+                        #'completion-file-name-table)))) 'append)
+  (ffap-bindings))
       #+end_src
 **** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list      :selectrum:
      :PROPERTIES:
@@ -514,188 +510,188 @@
        wait to see if need
      :END:
      #+begin_src emacs-lisp
-       (use-package selectrum
-         :config
-         (selectrum-mode +1)
-         :bind ("C-x C-z" . #'selectrum-repeat))
+(use-package selectrum
+  :config
+  (selectrum-mode +1)
+  :bind ("C-x C-z" . #'selectrum-repeat))
      #+end_src
 **** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
      #+begin_src emacs-lisp
-       (use-package orderless
-         :custom
-         (completion-styles '(orderless))
-         (selectrum-prescient-enable-filtering nil)
-         (selectrum-refine-candidates-function #'orderless-filter)
-         (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+(use-package orderless
+  :custom
+  (completion-styles '(orderless))
+  (selectrum-prescient-enable-filtering nil)
+  (selectrum-refine-candidates-function #'orderless-filter)
+  (selectrum-highlight-candidates-function #'orderless-highlight-matches))
      #+end_src
 **** [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.                    :prescient:
      :PROPERTIES:
      :ID:       9b550059-5fc0-4534-80a6-9cb5e1c207c2
      :END:
      #+begin_src emacs-lisp
-       (use-package prescient
-         :config
-         (prescient-persist-mode +1)
-         (if (featurep 'selectrum)
-             (use-package selectrum-prescient
-               :config
-               (selectrum-prescient-mode +1))))
+(use-package prescient
+  :config
+  (prescient-persist-mode +1)
+  (if (featurep 'selectrum)
+      (use-package selectrum-prescient
+        :config
+        (selectrum-prescient-mode +1))))
      #+end_src
 **** [[https://github.com/minad/consult][Consult]] provides various commands based on the Emacs completion function completing-read :consult:
      :PROPERTIES:
      :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
      :END:
      #+begin_src emacs-lisp
-       (use-package consult
-         ;; Replace bindings. Lazily loaded due by `use-package'.
-         :bind (;; C-c bindings (mode-specific-map)
-                ("C-c h" . consult-history)
-                ("C-c m" . consult-mode-command)
-                ("C-c b" . consult-bookmark)
-                ("C-c k" . consult-kmacro)
-                ;; C-x bindings (ctl-x-map)
-                ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complet-command
-                ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-                ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-                ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-                ;; Custom M-# bindings for fast register access
-                ("M-#" . consult-register-load)
-                ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-                ("C-M-#" . consult-register)
-                ;; Other custom bindings
-                ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-                ("<help> a" . consult-apropos)            ;; orig. apropos-command
-                ;; M-g bindings (goto-map)
-                ("M-g b" . consult-buffer)                ;; orig. switch-to-buffer
-                ("M-g e" . consult-compile-error)
-                ("M-g g" . consult-goto-line)             ;; orig. goto-line
-                ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-                ("M-g o" . consult-outline)
-                ("M-g m" . consult-mark)
-                ("M-g M" . consult-global-mark)
-                ("M-g i" . consult-imenu)
-                ("M-g I" . consult-project-imenu)
-                ;; M-s bindings (search-map)
-                ("M-s f" . affe-find)
-                ("M-s L" . consult-locate)
-                ("M-s g" . consult-grep)
-                ("M-s G" . consult-git-grep)
-                ("M-s r" . affe-grep)
-                ("M-s l" . consult-line)
-                ("M-s m" . consult-multi-occur)
-                ("M-s k" . consult-keep-lines)
-                ("M-s u" . consult-focus-lines)
-                ;; Isearch integration
-                ("M-s e" . consult-isearch)
-                :map isearch-mode-map
-                ("M-e" . consult-isearch)                 ;; orig. isearch-edit-string
-                ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
-                ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
+(use-package consult
+  ;; Replace bindings. Lazily loaded due by `use-package'.
+  :bind (;; C-c bindings (mode-specific-map)
+         ("C-c h" . consult-history)
+         ("C-c m" . consult-mode-command)
+         ("C-c b" . consult-bookmark)
+         ("C-c k" . consult-kmacro)
+         ;; C-x bindings (ctl-x-map)
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complet-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ("<help> a" . consult-apropos)            ;; orig. apropos-command
+         ;; M-g bindings (goto-map)
+         ("M-g b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("M-g e" . consult-compile-error)
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-outline)
+         ("M-g m" . consult-mark)
+         ("M-g M" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-project-imenu)
+         ;; M-s bindings (search-map)
+         ("M-s f" . affe-find)
+         ("M-s L" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . affe-grep)
+         ("M-s l" . consult-line)
+         ("M-s m" . consult-multi-occur)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch)                 ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
+         ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
 
 
-         ;; Enable automatic preview at point in the *Completions* buffer.
-         ;; This is relevant when you use the default completion UI,
-         ;; and not necessary for Selectrum, Vertico etc.
-         :hook (completion-list-mode . consult-preview-at-point-mode)
+  ;; Enable automatic preview at point in the *Completions* buffer.
+  ;; This is relevant when you use the default completion UI,
+  ;; and not necessary for Selectrum, Vertico etc.
+  :hook (completion-list-mode . consult-preview-at-point-mode)
 
-         ;; The :init configuration is always executed (Not lazy)
-         :init
+  ;; The :init configuration is always executed (Not lazy)
+  :init
 
-         ;; Optionally configure the register formatting. This improves the register
-         ;; preview for `consult-register', `consult-register-load',
-         ;; `consult-register-store' and the Emacs built-ins.
-         (setq register-preview-delay 0
-               register-preview-function #'consult-register-format)
+  ;; Optionally configure the register formatting. This improves the register
+  ;; preview for `consult-register', `consult-register-load',
+  ;; `consult-register-store' and the Emacs built-ins.
+  (setq register-preview-delay 0
+        register-preview-function #'consult-register-format)
 
-         ;; Optionally tweak the register preview window.
-         ;; This adds thin lines, sorting and hides the mode line of the window.
-         (advice-add #'register-preview :override #'consult-register-window)
+  ;; Optionally tweak the register preview window.
+  ;; This adds thin lines, sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
 
-         ;; Use Consult to select xref locations with preview
-         (setq xref-show-xrefs-function #'consult-xref
-               xref-show-definitions-function #'consult-xref)
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
 
-         ;; Configure other variables and modes in the :config section,
-         ;; after lazily loading the package.
-         :config
+  ;; Configure other variables and modes in the :config section,
+  ;; after lazily loading the package.
+  :config
 
-         ;; Optionally configure preview. The default value
-         ;; is 'any, such that any key triggers the preview.
-         ;; (setq consult-preview-key 'any)
-         ;; (setq consult-preview-key (kbd "M-."))
-         ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
-         ;; For some commands and buffer sources it is useful to configure the
-         ;; :preview-key on a per-command basis using the `consult-customize' macro.
-         (consult-customize
-          consult-line consult-ripgrep consult-git-grep consult-grep consult-search
-          :default nil
-          consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file
-          consult--source-file consult--source-project-file consult--source-bookmark
-          :preview-key (kbd "M-."))
+  ;; Optionally configure preview. The default value
+  ;; is 'any, such that any key triggers the preview.
+  ;; (setq consult-preview-key 'any)
+  ;; (setq consult-preview-key (kbd "M-."))
+  ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+  ;; For some commands and buffer sources it is useful to configure the
+  ;; :preview-key on a per-command basis using the `consult-customize' macro.
+  (consult-customize
+   consult-line consult-ripgrep consult-git-grep consult-grep consult-search
+   :default nil
+   consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file
+   consult--source-file consult--source-project-file consult--source-bookmark
+   :preview-key (kbd "M-."))
 
-         ;; Optionally configure the narrowing key.
-         ;; Both < and C-+ work reasonably well.
-         (setq consult-narrow-key "<") ;; (kbd "C-+")
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; (kbd "C-+")
 
-         ;; Optionally make narrowing help available in the minibuffer.
-         ;; You may want to use `embark-prefix-help-command' or which-key instead.
-         ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+  ;; Optionally make narrowing help available in the minibuffer.
+  ;; You may want to use `embark-prefix-help-command' or which-key instead.
+  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
 
-         ;; Optionally configure a function which returns the project root directory.
-         ;; There are multiple reasonable alternatives to chose from.
+  ;; Optionally configure a function which returns the project root directory.
+  ;; There are multiple reasonable alternatives to chose from.
               ;;;; 1. project.el (project-roots)
-         (setq consult-project-root-function
-               (lambda ()
-                 (when-let (project (project-current))
-                   (car (project-roots project)))))
+  (setq consult-project-root-function
+        (lambda ()
+          (when-let (project (project-current))
+            (car (project-roots project)))))
               ;;;; 2. projectile.el (projectile-project-root)
-         ;; (autoload 'projectile-project-root "projectile")
-         ;; (setq consult-project-root-function #'projectile-project-root)
+  ;; (autoload 'projectile-project-root "projectile")
+  ;; (setq consult-project-root-function #'projectile-project-root)
               ;;;; 3. vc.el (vc-root-dir)
-         ;; (setq consult-project-root-function #'vc-root-dir)
+  ;; (setq consult-project-root-function #'vc-root-dir)
               ;;;; 4. locate-dominating-file
-         ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
-         ;; Optionally add the `consult-flycheck' command.
-         )
+  ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
+  ;; Optionally add the `consult-flycheck' command.
+  )
 
-       (use-package consult-flycheck
-         :bind (:map flycheck-command-map
-                     ("!" . consult-flycheck)))
+(use-package consult-flycheck
+  :bind (:map flycheck-command-map
+              ("!" . consult-flycheck)))
      #+end_src
 **** [[https://github.com/oantolin/embark][Embark]] Emacs Mini-Buffer Actions Rooted in Keymaps
      :PROPERTIES:
      :ID:       39105473-5e9c-4bf6-91ac-0b9d21cac391
      :END:
      #+begin_src emacs-lisp
-       (use-package embark
-         :config
-         (setq embark-action-indicator
-               (lambda (map _target)
-                 (which-key--show-keymap "Embark" map nil nil 'no-paging)
-                 #'which-key--hide-popup-ignore-command)
-               embark-become-indicator embark-action-indicator)
-         ;; Optionally replace the key help with a completing-read interface
-         (setq prefix-help-command #'embark-prefix-help-command)
-         ;; Hide the mode line of the Embark live/completions buffers
-         (add-to-list 'display-buffer-alist
-                      '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                        nil
-                        (window-parameters (mode-line-format . none))))
-         :bind
-         ("M-e" . embark-act)       ;; pick some comfortable binding
-         ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+(use-package embark
+  :config
+  (setq embark-action-indicator
+        (lambda (map _target)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator)
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none))))
+  :bind
+  ("M-e" . embark-act)       ;; pick some comfortable binding
+  ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
      #+end_src
 ***** embark-consult
       :PROPERTIES:
       :ID:       3e03dd9a-fbb6-4766-892c-4529c343187a
       :END:
       #+begin_src emacs-lisp
-        (use-package embark-consult
-          :after (embark consult)
-          ;; if you want to have consult previews as you move around an
-          ;; auto-updating embark collect buffer
-          :hook
-          (embark-collect-mode . embark-consult-preview-minor-mode))
+(use-package embark-consult
+  :after (embark consult)
+  ;; if you want to have consult previews as you move around an
+  ;; auto-updating embark collect buffer
+  :hook
+  (embark-collect-mode . embark-consult-preview-minor-mode))
 
       #+end_src
 **** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] margin annotations for info on line
@@ -707,13 +703,13 @@
      The [[https://github.com/minad/marginalia][marginalia]] pckage in emacs is very helpful.
 
      #+begin_src emacs-lisp
-       (use-package marginalia
-         :custom
-         (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-         :init
-         (marginalia-mode)
-         (advice-add #'marginalia-cycle :after
-                     (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
+(use-package marginalia
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode)
+  (advice-add #'marginalia-cycle :after
+              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
      #+end_src
 **** [[https://github.com/minad/affe][affe]] Asynchronous Fuzzy Finder for Emacs
      :PROPERTIES:
@@ -721,22 +717,22 @@
      :header-args:emacs-lisp: :tangle no
      :END:
      #+begin_src emacs-lisp
-       (use-package affe
-         :straight (affe :local-repo "~/development/projects/emacs/affe" :type git :host github :repo "minad/affe" )
-         :after orderless
-         :config
-         ;; Configure Orderless
-         (setq affe-regexp-function #'orderless-pattern-compiler
-               affe-highlight-function #'orderless-highlight-matches)
+(use-package affe
+  :straight (affe :local-repo "~/development/projects/emacs/affe" :type git :host github :repo "minad/affe" )
+  :after orderless
+  :config
+  ;; Configure Orderless
+  (setq affe-regexp-function #'orderless-pattern-compiler
+        affe-highlight-function #'orderless-highlight-matches)
 
-         ;; Manual preview key for `affe-grep'
-         (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
+  ;; Manual preview key for `affe-grep'
+  (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
      #+end_src
 **** provide
      :PROPERTIES:
      :END:
      #+begin_src emacs-lisp
-       (provide 'rgr/minibuffer)
+(provide 'rgr/minibuffer)
      #+end_src
 
 ** Completion                                                    :completion:
@@ -747,7 +743,7 @@
    Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 
    #+begin_src emacs-lisp
-     (require 'rgr/completion "rgr-completion" 'NOERROR)
+(require 'rgr/completion "rgr-completion" 'NOERROR)
    #+end_src
 
 
@@ -760,17 +756,17 @@
      :END:
      [[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
      #+begin_src emacs-lisp
-       (use-package
-         which-key
-         :demand t
-         :config (which-key-mode))
+(use-package
+  which-key
+  :demand t
+  :config (which-key-mode))
      #+end_src
 **** Abbrev Mode
      :PROPERTIES:
      :END:
      [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
      #+begin_src emacs-lisp
-       (setq-default abbrev-mode 1)
+(setq-default abbrev-mode 1)
      #+end_src
 **** WAITING Company Mode                                   :company:WAITING:
      :PROPERTIES:
@@ -785,87 +781,83 @@
      #+CAPTION: company-box in action for php/lsp mode.
      [[./images/company-box.png]]
      #+begin_src emacs-lisp
-       (use-package
-         company
-         :init
-         (add-hook 'after-init-hook 'global-company-mode)
-         :custom
-         (company-backends
-          '((company-capf :with company-dabbrev company-yasnippet company-files company-ispell)))
-         :config
-         (use-package
-           company-box
-           :hook (company-mode . company-box-mode))
-         (require 'company-ispell)
-         (use-package company-prescient
-           :after company
-           :config
-           (company-prescient-mode +1))
-         :bind ("C-<tab>" . company-complete))
+(use-package
+  company
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :custom
+  (company-backends
+   '((company-capf :with company-dabbrev company-yasnippet company-files company-ispell)))
+  :config
+  (use-package
+    company-box
+    :hook (company-mode . company-box-mode))
+  (require 'company-ispell)
+  (use-package company-prescient
+    :after company
+    :config
+    (company-prescient-mode +1))
+  :bind ("C-<tab>" . company-complete))
      #+end_src
 **** Corfu completion                                                 :corfu:
-     :PROPERTIES:
-     :header-args:emacs-lisp: :tangle no
-     :END:
      :LOGBOOK:
      - State "STARTED"    from "WAITING"    [2021-04-18 So 00:33]
      - State "WAITING"    from              [2021-04-18 So 00:28] \\
        need to sort out a recipe
      :END:
      #+begin_src emacs-lisp
-       ;; Configure corfu
-       (use-package corfu
-         :straight (corfu :type git :host github :repo "minad/corfu")
-         ;; Optionally use TAB for cycling, default is `corfu-complete'.
-         ;; :bind (:map corfu-map
-         ;;        ("TAB" . corfu-next)
-         ;;        ("S-TAB" . corfu-previous))
+;; Configure corfu
+(use-package corfu
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  ;; :bind (:map corfu-map
+  ;;        ("TAB" . corfu-next)
+  ;;        ("S-TAB" . corfu-previous))
 
-         ;; Enable the overlay only for certain modes.
-         ;; For example it is not a useful UI for completions at point in the
-         ;; minibuffer.
-         :hook ((prog-mode . corfu-mode)
-                (eshell-mode . corfu-mode))
+  ;; Enable the overlay only for certain modes.
+  ;; For example it is not a useful UI for completions at point in the
+  ;; minibuffer.
+  :hook ((prog-mode . corfu-mode)
+         (eshell-mode . corfu-mode))
 
-         :config
+  :config
 
-         ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
-         ;; (setq corfu-cycle t)
-         )
-       ;; A few more useful configurations...
-       (use-package emacs
-         :init
-         ;; TAB cycle if there are only few candidates
-         (setq completion-cycle-threshold 3)
+  ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
+  ;; (setq corfu-cycle t)
+  )
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  ;; TAB cycle if there are only few candidates
+  (setq completion-cycle-threshold 3)
 
-         ;; Enable indentation+completion using the TAB key.
-         ;; Completion is often bound to M-TAB.
-         (setq tab-always-indent 'complete))
+  ;; Enable indentation+completion using the TAB key.
+  ;; Completion is often bound to M-TAB.
+  (setq tab-always-indent 'complete))
      #+end_src
 **** provide
      :PROPERTIES:
      :END:
      #+begin_src emacs-lisp
-       (provide 'rgr/completion)
+(provide 'rgr/completion)
      #+end_src
 ** Lazy Language Learning, lazy-lang-learn
    :PROPERTIES:
    :header-args:emacs-lisp: :tangle no
    :END:
    #+begin_src emacs-lisp
-     (use-package lazy-lang-learn
-       :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
-       :bind
-       ("C-c L" . lazy-lang-learn-mode)
-       ("<f12>" . lazy-lang-learn-translate)
-       ("S-<f12>" . lazy-lang-learn-translate-from-history))
+(use-package lazy-lang-learn
+  :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
+  :bind
+  ("C-c L" . lazy-lang-learn-mode)
+  ("<f12>" . lazy-lang-learn-translate)
+  ("S-<f12>" . lazy-lang-learn-translate-from-history))
    #+end_src
 ** General configuration
    :PROPERTIES:
    :END:
    Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
    #+begin_src emacs-lisp
-     (require  'rgr/general-config "rgr-general-config" 'NOERROR)
+(require  'rgr/general-config "rgr-general-config" 'NOERROR)
    #+end_src
 
 *** library
@@ -877,71 +869,71 @@
      :END:
 ***** a - unfiled
       #+begin_src emacs-lisp
-        (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
-                                                ; t60
-        (scroll-bar-mode -1)
-        (tool-bar-mode -1)
-        (menu-bar-mode -1)
-        (show-paren-mode 1)
-        (winner-mode 1)
+(require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
+                                        ; t60
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(show-paren-mode 1)
+(winner-mode 1)
 
-        (global-auto-revert-mode)
-        ;; Also auto refresh dired, but be quiet about it
-        (setq global-auto-revert-non-file-buffers t)
-        (setq auto-revert-verbose nil)
+(global-auto-revert-mode)
+;; Also auto refresh dired, but be quiet about it
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 
-        (global-visual-line-mode 1)
+(global-visual-line-mode 1)
 
-        (setq column-number-mode t)
+(setq column-number-mode t)
 
-        (delete-selection-mode 1)
+(delete-selection-mode 1)
 
-        (global-set-key (kbd "S-<f1>") 'describe-face)
-        (global-set-key (kbd "M-m") 'manual-entry)
+(global-set-key (kbd "S-<f1>") 'describe-face)
+(global-set-key (kbd "M-m") 'manual-entry)
 
-        (global-set-key (kbd "S-<f10>") #'menu-bar-open)
-                                                ;          (global-set-key (kbd "<f10>") #'imenu)
-
-
-        (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
-
-        (defalias 'yes-or-no-p 'y-or-n-p)
-
-        ;; ;; restore desktop
-        (setq desktop-dirname (expand-file-name "desktop" user-emacs-directory))
-        ;; (desktop-save-mode 1)
-
-        (setq disabled-command-function nil)
-
-        (global-hl-line-mode t)
-
-        (use-package
-          browse-url-dwim)
-
-        (use-package
-          all-the-icons)
-
-        ;; display dir name when core name clashes
-        (require 'uniquify)
-
-        (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+(global-set-key (kbd "S-<f10>") #'menu-bar-open)
+                                        ;          (global-set-key (kbd "<f10>") #'imenu)
 
 
-        (global-set-key (kbd "C-c r") 'query-replace-regexp)
+(setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; ;; restore desktop
+(setq desktop-dirname (expand-file-name "desktop" user-emacs-directory))
+;; (desktop-save-mode 1)
+
+(setq disabled-command-function nil)
+
+(global-hl-line-mode t)
+
+(use-package
+  browse-url-dwim)
+
+(use-package
+  all-the-icons)
+
+;; display dir name when core name clashes
+(require 'uniquify)
+
+(add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+
+
+(global-set-key (kbd "C-c r") 'query-replace-regexp)
 
       #+end_src
 ***** beacon                                                         :beacon:
       visual feedback as to cursor position
       #+begin_src emacs-lisp
-        (use-package beacon
-          :custom
-          (beacon-blink-delay 1)
-          (beacon-size 10)
-          (beacon-color "orange" nil nil "Customized with use-package beacon")
-          (beacon-blink-when-point-moves-horizontally 32)
-          (beacon-blink-when-point-moves-vertically 8)
-          :config
-          (beacon-mode 1))
+(use-package beacon
+  :custom
+  (beacon-blink-delay 1)
+  (beacon-size 10)
+  (beacon-color "orange" nil nil "Customized with use-package beacon")
+  (beacon-blink-when-point-moves-horizontally 32)
+  (beacon-blink-when-point-moves-vertically 8)
+  :config
+  (beacon-mode 1))
 
       #+end_src
 ***** blackout modeline                                            :blackout:
@@ -950,33 +942,33 @@
       :END:
       Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
       #+begin_src emacs-lisp
-        (straight-use-package
-         '(blackout :host github :repo "raxod502/blackout"))
+(straight-use-package
+ '(blackout :host github :repo "raxod502/blackout"))
       #+end_src
 ***** boxquote                                                     :boxquote:
       :PROPERTIES:
       :header-args:emacs-lisp: :tangle no
       :END:
       #+begin_src emacs-lisp
-        (use-package boxquote
-          :straight (:branch "main")
-          :bind
-          ("C-S-r" . boxquote-region))
+(use-package boxquote
+  :straight (:branch "main")
+  :bind
+  ("C-S-r" . boxquote-region))
 
       #+end_src
 ***** volatile-highlights                               :volatilehighlights:volatile:
       brings visual feedback to some operations by highlighting portions relating to the operations.
       #+begin_src emacs-lisp
-        (use-package
-          volatile-highlights
-          :init (volatile-highlights-mode 1))
+(use-package
+  volatile-highlights
+  :init (volatile-highlights-mode 1))
       #+end_src
 ***** webpaste                                                     :webpaste:
       #+begin_src emacs-lisp
-        (use-package
-          webpaste
-          :bind ("C-c y" . (lambda()(interactive)(call-interactively 'webpaste-paste-region)(deactivate-mark)))
-          ("C-c Y" . webpaste-paste-buffer))
+(use-package
+  webpaste
+  :bind ("C-c y" . (lambda()(interactive)(call-interactively 'webpaste-paste-region)(deactivate-mark)))
+  ("C-c Y" . webpaste-paste-buffer))
 
       #+end_src
 **** Accessibility
@@ -989,17 +981,17 @@
       :PROPERTIES:
       :END:
       #+begin_src emacs-lisp
-        (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
+(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
       #+end_src
 ***** Darkroom
       :PROPERTIES:
       :END:
       Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
       #+begin_src emacs-lisp
-        (use-package
-          darkroom
-          :bind
-          ( "<f7>" . 'darkroom-mode))
+(use-package
+  darkroom
+  :bind
+  ( "<f7>" . 'darkroom-mode))
       #+end_src
 
 **** WAITING Transparency                                           :WAITING:
@@ -1011,27 +1003,27 @@
        disable alpha for now - makes pop up help useless
      :END:
      #+begin_src emacs-lisp
-       (set-frame-parameter (selected-frame) 'alpha '(95 . 50))
-       (add-to-list 'default-frame-alist '(alpha . (95 . 50)))
+(set-frame-parameter (selected-frame) 'alpha '(95 . 50))
+(add-to-list 'default-frame-alist '(alpha . (95 . 50)))
      #+end_src
 **** Clipboard
      :PROPERTIES:
      :END:
      Allow terminal emacs to interact with the x clipboard.
      #+begin_src emacs-lisp
-       (use-package xclip
-         :demand t
-         :config
-         (xclip-mode))
+(use-package xclip
+  :demand t
+  :config
+  (xclip-mode))
      #+end_src
 **** Ansi colour
      :PROPERTIES:
      :END:
      [[https://www.emacswiki.org/emacs/AnsiColor][Ansi colour hooks]] to enable emacs buffers to handle ansi.
      #+begin_src emacs-lisp :tangle no
-       (require 'ansi-color)
-       (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-       (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+(require 'ansi-color)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
      #+end_src
 **** CANCELLED Tabs                                          :tabs:CANCELLED:
      CLOSED: [2021-05-24 Mo 19:54]
@@ -1050,23 +1042,23 @@
       - State "QUOTE"      from              [2021-04-06 Di 23:18]
       :END:
       #+begin_src emacs-lisp
-        (use-package centaur-tabs
-          :init
-          (centaur-tabs-mode +1)
-          :custom
-          (centaur-tabs-enable-ido-completion nil)
-          (centaur-tabs-set-bar 'under)
-          (x-underline-at-descent-line t)
-          :custom-face
-          (centaur-tabs-active-bar-face ((t (:background "orange"))))
-          :config
-          (centaur-tabs-enable-buffer-reordering)
-          :bind
-          ("C-<next>" . centaur-tabs-backward-group)
-          ("C-<prior>" . centaur-tabs-forward-group)
-          ("M-<next>" . centaur-tabs-backward)
-          ("M-<prior>" . centaur-tabs-forward)
-          ("C-x t s" . centaur-tabs-switch-group))
+(use-package centaur-tabs
+  :init
+  (centaur-tabs-mode +1)
+  :custom
+  (centaur-tabs-enable-ido-completion nil)
+  (centaur-tabs-set-bar 'under)
+  (x-underline-at-descent-line t)
+  :custom-face
+  (centaur-tabs-active-bar-face ((t (:background "orange"))))
+  :config
+  (centaur-tabs-enable-buffer-reordering)
+  :bind
+  ("C-<next>" . centaur-tabs-backward-group)
+  ("C-<prior>" . centaur-tabs-forward-group)
+  ("M-<next>" . centaur-tabs-backward)
+  ("M-<prior>" . centaur-tabs-forward)
+  ("C-x t s" . centaur-tabs-switch-group))
       #+end_src
 ***** CANCELLED Tab Bar Mode                               :tabbar:CANCELLED:
       CLOSED: [2021-05-24 Mo 19:54]
@@ -1081,32 +1073,32 @@
       :END:
       #+begin_src emacs-lisp
 
-        (defun consult-buffer-other-tab ()
-          "Variant of `consult-buffer' which opens in other tab."
-          (interactive)
-          (let ((consult--buffer-display #'switch-to-buffer-other-tab))
-            (consult-buffer)))
+(defun consult-buffer-other-tab ()
+  "Variant of `consult-buffer' which opens in other tab."
+  (interactive)
+  (let ((consult--buffer-display #'switch-to-buffer-other-tab))
+    (consult-buffer)))
 
-        (use-package tab-bar
-          :defer t
-          :custom
-          (tab-bar-show t)
-          (tab-bar-close-button-show nil)
-          (tab-bar-new-button-show nil)
-          (tab-bar-tab-hints t)
-          (tab-bar-new-tab-choice "*scratch*")
-          (tab-bar-select-tab-modifiers '(control))
-          :custom-face
-          (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
-          (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
-          (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
-          :bind (:map tab-prefix-map
-                      (("x" . tab-close)
-                       ("b" . consult-buffer-other-tab)
-                       ("p" . tab-previous)
-                       ("n" . tab-next)
-                       ("c" . tab-bar-new-tab)
-                       ("s" . tab-bar-switch-to-tab))))
+(use-package tab-bar
+  :defer t
+  :custom
+  (tab-bar-show t)
+  (tab-bar-close-button-show nil)
+  (tab-bar-new-button-show nil)
+  (tab-bar-tab-hints t)
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-select-tab-modifiers '(control))
+  :custom-face
+  (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
+  (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
+  (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+  :bind (:map tab-prefix-map
+              (("x" . tab-close)
+               ("b" . consult-buffer-other-tab)
+               ("p" . tab-previous)
+               ("n" . tab-next)
+               ("c" . tab-bar-new-tab)
+               ("s" . tab-bar-switch-to-tab))))
       #+end_src
 **** Memory
      :PROPERTIES:
@@ -1117,7 +1109,7 @@
       :ID:       a861685b-392a-4e64-abec-9ba3e3439864
       :END:
       #+begin_src emacs-lisp
-        (save-place-mode +1)
+(save-place-mode +1)
       #+end_src
 ***** DONE save-hist-mode, save history
       CLOSED: [2021-01-14 Thu 18:28] SCHEDULED: <2021-01-11 Mo>
@@ -1133,12 +1125,12 @@
           - State "TODO"       from              [2021-01-11 Mo 19:03]
       :END:
       #+begin_src emacs-lisp
-        (savehist-mode 1)
-        (add-to-list 'savehist-additional-variables 'kill-ring)
-        (add-to-list 'savehist-additional-variables 'global-mark-ring)
-        ;; (add-hook 'kill-emacs-hook 'rgr/unpropertize-kill-ring)
-        ;; (defun rgr/unpropertize-kill-ring ()
-        ;; (setq kill-ring (mapcar 'substring-no-properties kill-ring)))
+(savehist-mode 1)
+(add-to-list 'savehist-additional-variables 'kill-ring)
+(add-to-list 'savehist-additional-variables 'global-mark-ring)
+;; (add-hook 'kill-emacs-hook 'rgr/unpropertize-kill-ring)
+;; (defun rgr/unpropertize-kill-ring ()
+;; (setq kill-ring (mapcar 'substring-no-properties kill-ring)))
 
       #+end_src
 ***** recentf-mode, remember recent files
@@ -1146,22 +1138,22 @@
       :ID:       e51a49a8-3668-4378-8f3a-2ce065069bc9
       :END:
       #+begin_src emacs-lisp
-        (use-package recentf-ext
-          :config
-          (recentf-mode 1)
-          ;;(setq savehist-minibuffer-history-variables (remove 'file-name-history savehist-minibuffer-history-variables))
-          (if (featurep 'savehist)
-              (add-to-list 'savehist-ignored-variables 'file-name-history))
-          (if (featurep 'no-littering)
-              (add-to-list 'recentf-exclude no-littering-var-directory)
-            (add-to-list 'recentf-exclude no-littering-etc-directory)))
+(use-package recentf-ext
+  :config
+  (recentf-mode 1)
+  ;;(setq savehist-minibuffer-history-variables (remove 'file-name-history savehist-minibuffer-history-variables))
+  (if (featurep 'savehist)
+      (add-to-list 'savehist-ignored-variables 'file-name-history))
+  (if (featurep 'no-littering)
+      (add-to-list 'recentf-exclude no-littering-var-directory)
+    (add-to-list 'recentf-exclude no-littering-etc-directory)))
       #+end_src
 **** provide
      :PROPERTIES:
      :ID:       101d96b3-5d00-4d97-93c4-2c2f7aac8852
      :END:
      #+begin_src emacs-lisp
-       (provide 'rgr/general-config)
+(provide 'rgr/general-config)
      #+end_src
 ** Org functionality
    :PROPERTIES:
@@ -1172,7 +1164,7 @@
    Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 
    #+begin_src emacs-lisp
-     (require 'rgr/org "rgr-org" 'NOERROR)
+(require 'rgr/org "rgr-org" 'NOERROR)
    #+end_src
 
 *** org library
@@ -1189,33 +1181,34 @@
      :END:
      #+begin_src emacs-lisp
 
-       ;;(straight-use-package '(org-plus-contrib :includes (org)))
+;;(straight-use-package '(org-plus-contrib :includes (org)))
 
-       (use-package org
-         :demand t
-         :custom
-         (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
-         (org-fontify-done-headline t)
-         (org-fontify-todo-headline t)
-         (org-babel-default-header-args:python
-          '((:results  . "output")))
-         :config
-         (set-face-attribute 'org-headline-done nil :strike-through t)
-         (defun rgr/org-agenda (&optional arg)
-           (interactive "P")
-           (let ((org-agenda-tag-filter-preset '("-trash")))
-             (org-agenda arg "a")))
-         :bind
-         ("C-c a" . org-agenda)
-         ("C-c A" . rgr/org-agenda)
-         ("C-c c" . org-capture)
-         ("C-c l" . org-store-link)
-         ("C-c C-l" . org-insert-link)
-         ("C-c C-s" . org-schedule)
-         ("C-c C-t" . org-todo)
-         (:map org-mode-map  ("M-." . find-function-at-point)
-               ("<f11>" . org-edit-special))
-         (:map org-src-mode-map ("<f11>" . org-edit-src-exit)))
+(use-package org
+  :demand t
+  :custom
+  (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
+  (org-fontify-done-headline t)
+  (org-fontify-todo-headline t)
+  (org-src-preserve-indentation t)
+  (org-babel-default-header-args:python
+   '((:results  . "output")))
+  :config
+  (set-face-attribute 'org-headline-done nil :strike-through t)
+  (defun rgr/org-agenda (&optional arg)
+    (interactive "P")
+    (let ((org-agenda-tag-filter-preset '("-trash")))
+      (org-agenda arg "a")))
+  :bind
+  ("C-c a" . org-agenda)
+  ("C-c A" . rgr/org-agenda)
+  ("C-c c" . org-capture)
+  ("C-c l" . org-store-link)
+  ("C-c C-l" . org-insert-link)
+  ("C-c C-s" . org-schedule)
+  ("C-c C-t" . org-todo)
+  (:map org-mode-map  ("M-." . find-function-at-point)
+        ("<f11>" . org-edit-special))
+  (:map org-src-mode-map ("<f11>" . org-edit-src-exit)))
 
 
      #+end_src
@@ -1225,23 +1218,23 @@
       :END:
       create unique link IDs when sharing a link to an org section
       #+begin_src emacs-lisp
-        (require 'org-id)
+(require 'org-id)
       #+end_src
 ***** crypt
       #+begin_src emacs-lisp
-        (require 'org-crypt)
-        (org-crypt-use-before-save-magic)
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
       #+end_src
 ***** async babel blocks
       #+begin_src emacs-lisp
-        (use-package ob-async)
+(use-package ob-async)
       #+end_src
 
 ***** github compliant markup
       #+begin_src emacs-lisp
-        (use-package
-          ox-gfm
-          :demand)
+(use-package
+  ox-gfm
+  :demand)
       #+end_src
 
 **** provide
@@ -1249,7 +1242,7 @@
      :ID:       ddbaf9df-4c65-4b3f-b86f-88f174f349d1
      :END:
      #+begin_src emacs-lisp
-       (provide 'rgr/org)
+(provide 'rgr/org)
      #+end_src
 *** org agenda files
     :PROPERTIES:
@@ -1259,15 +1252,15 @@
     See ~org-agenda-files~ [[id:80d295c4-fe60-4bef-99e2-2f15bcb1e36a][org-agenda-files]]
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     #+begin_src conf
-      ~/.emacs.d/var/org/orgfiles
-      ~/.emacs.d/var/org/orgfiles/journals
-      ~/.emacs.d/var/org/orgfiles/projects
-      ~/development/education/lessons
-      ~/development/education/lessons/bash
-      ~/development/education/lessons/python
-      ~/development/education/lessons/python/coreyschafer
-      ~/development/education/lessons/python/python-lernen.de
-      ~/development/education/lessons/elisp
+~/.emacs.d/var/org/orgfiles
+~/.emacs.d/var/org/orgfiles/journals
+~/.emacs.d/var/org/orgfiles/projects
+~/development/education/lessons
+~/development/education/lessons/bash
+~/development/education/lessons/python
+~/development/education/lessons/python/coreyschafer
+~/development/education/lessons/python/python-lernen.de
+~/development/education/lessons/elisp
     #+end_src
 ** Text tools
    :PROPERTIES:
@@ -1282,21 +1275,21 @@
      :ID:       07ce72ec-d6b8-46ed-9c2e-790b6852386b
      :END:
      #+begin_src emacs-lisp
-       (defun centreCursorLineOn()
-         "set properties to keep current line approx at centre of screen height. Useful for debugging."
-         ;; a faster more concise alternative to MELPA's centered-cursor-mode
-         (interactive)
-         (setq  scroll-preserve-screen-position_t scroll-preserve-screen-position scroll-conservatively_t
-                scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
-                scroll-margin)
-         (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
-               scroll-margin 99999))
+(defun centreCursorLineOn()
+  "set properties to keep current line approx at centre of screen height. Useful for debugging."
+  ;; a faster more concise alternative to MELPA's centered-cursor-mode
+  (interactive)
+  (setq  scroll-preserve-screen-position_t scroll-preserve-screen-position scroll-conservatively_t
+         scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
+         scroll-margin)
+  (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
+        scroll-margin 99999))
 
-       (defun centreCursorLineOff()
-         (interactive)
-         (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
-                scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
-                scroll-margin_t))
+(defun centreCursorLineOff()
+  (interactive)
+  (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
+         scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
+         scroll-margin_t))
 
      #+end_src
 **** easy-kill
@@ -1305,9 +1298,9 @@
      :END:
      [[https://github.com/leoliu/easy-kill][easy-kill]] enables you to kill & Mark Things Easily in Emacs
      #+begin_src emacs-lisp
-       (use-package easy-kill
-         :config
-         (global-set-key [remap kill-ring-save] 'easy-kill))
+(use-package easy-kill
+  :config
+  (global-set-key [remap kill-ring-save] 'easy-kill))
      #+end_src
 *** Folding/Hide Show
     :PROPERTIES:
@@ -1315,25 +1308,25 @@
     :END:
     [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html][hs-minor-mode]] allows hiding and showing different blocks of text/code (folding).
     #+begin_src emacs-lisp
-      (use-package hideshow
-        :config
-        (defun toggle-selective-display (column)
-          (interactive "P")
-          (set-selective-display
-           (or column
-               (unless selective-display
-                 (1+ (current-column))))))
-        (defun toggle-hiding (column)
-          (interactive "P")
-          (if hs-minor-mode
-              (if (condition-case nil
-                      (hs-toggle-hiding)
-                    (error t))
-                  (hs-show-all))
-            (toggle-selective-display column)))
-        (add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
-        :bind ( "C-+" . toggle-hiding)
-        ("C-\\" . toggle-selective-display))
+(use-package hideshow
+  :config
+  (defun toggle-selective-display (column)
+    (interactive "P")
+    (set-selective-display
+     (or column
+         (unless selective-display
+           (1+ (current-column))))))
+  (defun toggle-hiding (column)
+    (interactive "P")
+    (if hs-minor-mode
+        (if (condition-case nil
+                (hs-toggle-hiding)
+              (error t))
+            (hs-show-all))
+      (toggle-selective-display column)))
+  (add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
+  :bind ( "C-+" . toggle-hiding)
+  ("C-\\" . toggle-selective-display))
 
     #+end_src
 
@@ -1343,20 +1336,20 @@
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     :END:
     #+begin_src emacs-lisp
-      (use-package flyspell
-        :config
-        (defun flyspell-check-next-highlighted-word ()
-          "Custom function to spell check next highlighted word"
-          (interactive)
-          (flyspell-goto-next-error)
-          (ispell-word)
-          )
+(use-package flyspell
+  :config
+  (defun flyspell-check-next-highlighted-word ()
+    "Custom function to spell check next highlighted word"
+    (interactive)
+    (flyspell-goto-next-error)
+    (ispell-word)
+    )
 
-        :bind (("C-<f8>" . flyspell-mode)
-               ("S-<f8>" . flyspell-check-previous-highlighted-word)
-               ("C-S-<f8>" . flyspell-buffer)
-               ("M-<f8>" . flyspell-word)
-               ))
+  :bind (("C-<f8>" . flyspell-mode)
+         ("S-<f8>" . flyspell-check-previous-highlighted-word)
+         ("C-S-<f8>" . flyspell-buffer)
+         ("M-<f8>" . flyspell-word)
+         ))
 
 
     #+end_src
@@ -1366,16 +1359,16 @@
     :END:
     rg is pretty quick
     #+begin_src emacs-lisp
-      (use-package
-        ripgrep)
+(use-package
+  ripgrep)
     #+end_src
 *** ag, silver searcher
     :PROPERTIES:
     :ID:       12989be9-e413-4839-9f03-578079955602
     :END:
     #+begin_src emacs-lisp
-      (use-package
-        ag)
+(use-package
+  ag)
     #+end_src
 *** Deft - text searching
     :PROPERTIES:
@@ -1383,11 +1376,11 @@
     :END:
     [[https://jblevins.org/projects/deft/][Deft]] is an Emacs mode for quickly browsing, filtering, and editing directories of plain text notes, inspired by Notational Velocity. It was designed for increased productivity when writing and taking notes by making it fast and simple to find the right file at the right time and by automating many of the usual tasks such as creating new files and saving files.
     #+begin_src emacs-lisp
-      (use-package deft
-        :config
-        (setq deft-directory (expand-file-name "orgfiles" user-emacs-directory))
-        (setq deft-recursive t)
-        :bind(("M-<f3>" . #'deft)))
+(use-package deft
+  :config
+  (setq deft-directory (expand-file-name "orgfiles" user-emacs-directory))
+  (setq deft-recursive t)
+  :bind(("M-<f3>" . #'deft)))
 
     #+end_src
 ** Reference/Lookup/Media
@@ -1399,7 +1392,7 @@
    Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 
    #+begin_src emacs-lisp
-     (require 'rgr/reference "rgr-reference" 'NOERROR)
+(require 'rgr/reference "rgr-reference" 'NOERROR)
    #+end_src
 
 *** reference library
@@ -1414,7 +1407,7 @@
      :END:
      Raw:[[file+sys:etc/elisp/rgr-google.el][rgr/google]]
      #+begin_src emacs-lisp
-       (require 'rgr/google "rgr-google")
+(require 'rgr/google "rgr-google")
      #+end_src
 ***** google utils code
       :PROPERTIES:
@@ -1427,76 +1420,76 @@
        :END:
        [[https://melpa.org/#/google-this][google-this]] includes an interface to [[https://translate.google.com/][google translate]].
        #+begin_src emacs-lisp
-         (use-package
-           google-this
-           :after org
-           :custom
-           (google-this-keybind "g")
-           :config
-           (google-this-mode 1))
+(use-package
+  google-this
+  :after org
+  :custom
+  (google-this-keybind "g")
+  :config
+  (google-this-mode 1))
        #+end_src
 ****** Google translate
        :PROPERTIES:
        :ID:       e410cd79-39c4-4724-b424-6082b20c70f1
        :END:
        #+begin_src emacs-lisp
-         (use-package google-translate
+(use-package google-translate
 
-           :init
-           (require 'google-translate)
+  :init
+  (require 'google-translate)
 
-           :custom
-           (google-translate-backend-method 'curl)
-           (google-translate-pop-up-buffer-set-focus t)
-           :config
+  :custom
+  (google-translate-backend-method 'curl)
+  (google-translate-pop-up-buffer-set-focus t)
+  :config
 
-           (defun google-translate--search-tkk () "Search TKK." (list 430675 2721866130))
+  (defun google-translate--search-tkk () "Search TKK." (list 430675 2721866130))
 
-           (defun google-translate-swap-default-languages()
-             "swap google-translate default languages"
-             (setq google-translate-default-source-language  (prog1 google-translate-default-target-language (setq google-translate-default-target-language  google-translate-default-source-language))))
+  (defun google-translate-swap-default-languages()
+    "swap google-translate default languages"
+    (setq google-translate-default-source-language  (prog1 google-translate-default-target-language (setq google-translate-default-target-language  google-translate-default-source-language))))
 
-           (defun rgr/google-translate-in-history-buffer(&optional phrase)
-             (interactive)
-             (when current-prefix-arg
-               ;;swap source and dest languages
-               (google-translate-swap-default-languages))
-             (let  ((phrase (if phrase phrase (rgr/region-symbol-query))))
-               (switch-to-buffer "*Google Translations*")
-               ;; need to make aminor mode and do this properly based on file - org-mode?
-               (local-set-key (kbd "<return>") (lambda() (interactive)
-                                                 (goto-char(point-max))
-                                                 (newline)))
-               (unless (= (current-column) 0)
-                 (end-of-line)
-                 (newline))
-               (insert  (format "<%s>: %s" (format-time-string "%Y-%m-%d %T") phrase))
-               (rgr/google-translate-at-point)))
+  (defun rgr/google-translate-in-history-buffer(&optional phrase)
+    (interactive)
+    (when current-prefix-arg
+      ;;swap source and dest languages
+      (google-translate-swap-default-languages))
+    (let  ((phrase (if phrase phrase (rgr/region-symbol-query))))
+      (switch-to-buffer "*Google Translations*")
+      ;; need to make aminor mode and do this properly based on file - org-mode?
+      (local-set-key (kbd "<return>") (lambda() (interactive)
+                                        (goto-char(point-max))
+                                        (newline)))
+      (unless (= (current-column) 0)
+        (end-of-line)
+        (newline))
+      (insert  (format "<%s>: %s" (format-time-string "%Y-%m-%d %T") phrase))
+      (rgr/google-translate-at-point)))
 
-           (defun rgr/google-translate-at-point()
-             "reverse translate word/region if prefix"
-             (interactive)
-             (when current-prefix-arg
-               ;;swap source and dest languages
-               (google-translate-swap-default-languages))
-             (google-translate-at-point)
-             (if google-translate-pop-up-buffer-set-focus
-                 (select-window (display-buffer "*Google Translate*"))))
+  (defun rgr/google-translate-at-point()
+    "reverse translate word/region if prefix"
+    (interactive)
+    (when current-prefix-arg
+      ;;swap source and dest languages
+      (google-translate-swap-default-languages))
+    (google-translate-at-point)
+    (if google-translate-pop-up-buffer-set-focus
+        (select-window (display-buffer "*Google Translate*"))))
 
-           (defun rgr/google-translate-query-translate()
-             "reverse translate input if prefix"
-             (interactive)
-             (when current-prefix-arg
-               ;;swap source and dest languages
-               (google-translate-swap-default-languages))
-             (google-translate-query-translate)
-             (if google-translate-pop-up-buffer-set-focus
-                 (select-window (display-buffer "*Google Translate*"))))
+  (defun rgr/google-translate-query-translate()
+    "reverse translate input if prefix"
+    (interactive)
+    (when current-prefix-arg
+      ;;swap source and dest languages
+      (google-translate-swap-default-languages))
+    (google-translate-query-translate)
+    (if google-translate-pop-up-buffer-set-focus
+        (select-window (display-buffer "*Google Translate*"))))
 
-           :bind
-           ("C-c T" . rgr/google-translate-at-point)
-           ("C-c t" . rgr/google-translate-query-translate)
-           ("C-c b" . rgr/google-translate-in-history-buffer))
+  :bind
+  ("C-c T" . rgr/google-translate-at-point)
+  ("C-c t" . rgr/google-translate-query-translate)
+  ("C-c b" . rgr/google-translate-in-history-buffer))
 
 
        #+end_src
@@ -1505,7 +1498,7 @@
        :ID:       1bdadb92-d493-4079-9587-92ba8328c89e
        :END:
        #+begin_src emacs-lisp
-         (provide 'rgr/google)
+(provide 'rgr/google)
        #+end_src
 **** Reference and dictionary
      :PROPERTIES:
@@ -1528,113 +1521,113 @@
       :END:
       #+begin_src emacs-lisp
 
-        (defgroup rgr/lookup-reference nil
-          "Define functions to be used for lookup"
-          :group 'rgr)
+(defgroup rgr/lookup-reference nil
+  "Define functions to be used for lookup"
+  :group 'rgr)
 
-        (defcustom mode-lookup-reference-functions-alist '(
-                                                           (nil (goldendict-dwim goldendict-dwim))
-                                                           (c++-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                           (gdscript-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                           ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/dash))
-                                                           (php-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                           (web-mode  (rgr/lsp-ui-doc-glance rgr/devdocs))
-                                                           (org-mode (rgr/elisp-lookup-reference-dwim))
-                                                           (Info-mode (rgr/elisp-lookup-reference-dwim))
-                                                           (js2-mode (rgr/dash rgr/devdocs))
-                                                           (js-mode (rgr/dash rgr/devdocs))
-                                                           (rjsx-mode (rgr/dash rgr/devdocs))
-                                                           (typescript-mode (rgr/dash rgr/devdocs))
-                                                           (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/dash))
-                                                           (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/dash)))
-          "mode lookup functions"
-          :group 'rgr/lookup-reference)
+(defcustom mode-lookup-reference-functions-alist '(
+                                                   (nil (goldendict-dwim goldendict-dwim))
+                                                   (c++-mode  (rgr/lsp-ui-doc-glance rgr/dash))
+                                                   (gdscript-mode  (rgr/lsp-ui-doc-glance rgr/dash))
+                                                   ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/dash))
+                                                   (php-mode  (rgr/lsp-ui-doc-glance rgr/dash))
+                                                   (web-mode  (rgr/lsp-ui-doc-glance rgr/devdocs))
+                                                   (org-mode (rgr/elisp-lookup-reference-dwim))
+                                                   (Info-mode (rgr/elisp-lookup-reference-dwim))
+                                                   (js2-mode (rgr/dash rgr/devdocs))
+                                                   (js-mode (rgr/dash rgr/devdocs))
+                                                   (rjsx-mode (rgr/dash rgr/devdocs))
+                                                   (typescript-mode (rgr/dash rgr/devdocs))
+                                                   (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/dash))
+                                                   (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/dash)))
+  "mode lookup functions"
+  :group 'rgr/lookup-reference)
 
-        (defun get-mode-lookup-reference-functions(&optional m)
-          (let* ((m (if m m major-mode))
-                 (default-funcs (copy-tree(cadr (assoc nil mode-lookup-reference-functions-alist))))
-                 (mode-funcs (cadr (assoc m mode-lookup-reference-functions-alist))))
-            (if mode-funcs (progn
-                             (setcar default-funcs (car mode-funcs))
-                             (if (cadr mode-funcs)
-                                 (setcdr default-funcs (cdr mode-funcs)))))
-            default-funcs)) ;; (get-mode-lookup-reference-functions 'org-mode)
+(defun get-mode-lookup-reference-functions(&optional m)
+  (let* ((m (if m m major-mode))
+         (default-funcs (copy-tree(cadr (assoc nil mode-lookup-reference-functions-alist))))
+         (mode-funcs (cadr (assoc m mode-lookup-reference-functions-alist))))
+    (if mode-funcs (progn
+                     (setcar default-funcs (car mode-funcs))
+                     (if (cadr mode-funcs)
+                         (setcdr default-funcs (cdr mode-funcs)))))
+    default-funcs)) ;; (get-mode-lookup-reference-functions 'org-mode)
 
-        (defcustom linguee-url-template "https://www.linguee.com/english-german/search?source=auto&query=%S%"
-          "linguee url search template"
-          :type 'string
-          :group 'rgr/lookup-reference)
+(defcustom linguee-url-template "https://www.linguee.com/english-german/search?source=auto&query=%S%"
+  "linguee url search template"
+  :type 'string
+  :group 'rgr/lookup-reference)
 
-        (defcustom php-api-url-template "https://www.google.com/search?q=php[%S%]"
-          "php api url search template"
-          :type 'string
-          :group 'rgr/lookup-reference)
+(defcustom php-api-url-template "https://www.google.com/search?q=php[%S%]"
+  "php api url search template"
+  :type 'string
+  :group 'rgr/lookup-reference)
 
-        (defcustom jquery-url-template "https://api.jquery.com/?s=%S%"
-          "jquery url search template"
-          :type 'string
-          :group 'rgr/lookup-reference)
+(defcustom jquery-url-template "https://api.jquery.com/?s=%S%"
+  "jquery url search template"
+  :type 'string
+  :group 'rgr/lookup-reference)
 
-        (defcustom  lookup-reference-functions '(rgr/describe-symbol goldendict-dwim rgr/linguee-lookup rgr/dictionary-search rgr/jquery-lookup google-this-search)
-          "list of functions to be called via C-n prefix call to lookup-reference-dwim"
-          :type 'hook
-          :group 'rgr/lookup-reference)
+(defcustom  lookup-reference-functions '(rgr/describe-symbol goldendict-dwim rgr/linguee-lookup rgr/dictionary-search rgr/jquery-lookup google-this-search)
+  "list of functions to be called via C-n prefix call to lookup-reference-dwim"
+  :type 'hook
+  :group 'rgr/lookup-reference)
 
-        (defun sys-browser-lookup(w template)
-          (interactive)
-          (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (rgr/region-symbol-query)) template)))
+(defun sys-browser-lookup(w template)
+  (interactive)
+  (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (rgr/region-symbol-query)) template)))
 
-        (defun rgr/describe-symbol(w)
-          (interactive (cons (rgr/region-symbol-query) nil))
-          (let ((s (if (symbolp w) w (intern-soft w))))
-            (if s (describe-symbol s)
-              (message "No such symbol: %s" w))))
+(defun rgr/describe-symbol(w)
+  (interactive (cons (rgr/region-symbol-query) nil))
+  (let ((s (if (symbolp w) w (intern-soft w))))
+    (if s (describe-symbol s)
+      (message "No such symbol: %s" w))))
 
-        (defun rgr/linguee-lookup(w)
-          (interactive (cons (rgr/region-symbol-query) nil))
-          (sys-browser-lookup w linguee-url-template))
+(defun rgr/linguee-lookup(w)
+  (interactive (cons (rgr/region-symbol-query) nil))
+  (sys-browser-lookup w linguee-url-template))
 
-        (defun rgr/php-api-lookup(w)
-          (interactive (cons (rgr/region-symbol-query) nil))
-          (let ((dash-docs-docsets '("PHP")))
-            (dash-docs-search w)))
-        ;; (sys-browser-lookup w php-api-url-template))
+(defun rgr/php-api-lookup(w)
+  (interactive (cons (rgr/region-symbol-query) nil))
+  (let ((dash-docs-docsets '("PHP")))
+    (dash-docs-search w)))
+;; (sys-browser-lookup w php-api-url-template))
 
-        (defun rgr/jquery-lookup(&optional w)
-          (interactive(cons (rgr/region-symbol-query) nil))
-          (let (;;(zeal-at-point-docset "jQuery")
-                (dash-docs-docsets '("jQuery")))
-            (dash-docs-search w)))
-        ;; (interactive (cons (rgr/region-symbol-query) nil))
-        ;; (sys-browser-lookup w jquery-url-template))
+(defun rgr/jquery-lookup(&optional w)
+  (interactive(cons (rgr/region-symbol-query) nil))
+  (let (;;(zeal-at-point-docset "jQuery")
+        (dash-docs-docsets '("jQuery")))
+    (dash-docs-search w)))
+;; (interactive (cons (rgr/region-symbol-query) nil))
+;; (sys-browser-lookup w jquery-url-template))
 
-        (defun rgr/gdscript-docs-browse-symbol-at-point(&optional w)
-          (gdscript-docs-browse-symbol-at-point))
+(defun rgr/gdscript-docs-browse-symbol-at-point(&optional w)
+  (gdscript-docs-browse-symbol-at-point))
 
-        (defun lookup-reference-dwim(&optional secondary)
-          "if we have a numeric prefix then index into lookup-reference functions"
-          (interactive)
-          (let((w (rgr/region-symbol-query))
-               ;; PREFIX integer including 4... eg C-2 lookup-reference-dwim
-               (idx (if (and  current-prefix-arg (not (listp current-prefix-arg)))
-                        (- current-prefix-arg 1)
-                      nil)))
-            (if idx (let((f (nth idx lookup-reference-functions)))
-                      (funcall (if f f (car lookup-reference-functions)) w))
-              (let* ((funcs (get-mode-lookup-reference-functions))
-                     (p (car funcs))
-                     (s (cadr funcs)))
-                (if (not secondary)
-                    (unless (funcall p w)
-                      (if s (funcall s w)))
-                  (if s (funcall s w)))))))
+(defun lookup-reference-dwim(&optional secondary)
+  "if we have a numeric prefix then index into lookup-reference functions"
+  (interactive)
+  (let((w (rgr/region-symbol-query))
+       ;; PREFIX integer including 4... eg C-2 lookup-reference-dwim
+       (idx (if (and  current-prefix-arg (not (listp current-prefix-arg)))
+                (- current-prefix-arg 1)
+              nil)))
+    (if idx (let((f (nth idx lookup-reference-functions)))
+              (funcall (if f f (car lookup-reference-functions)) w))
+      (let* ((funcs (get-mode-lookup-reference-functions))
+             (p (car funcs))
+             (s (cadr funcs)))
+        (if (not secondary)
+            (unless (funcall p w)
+              (if s (funcall s w)))
+          (if s (funcall s w)))))))
 
-        (defun lookup-reference-dwim-secondary()
-          (interactive)
-          (lookup-reference-dwim t))
+(defun lookup-reference-dwim-secondary()
+  (interactive)
+  (lookup-reference-dwim t))
 
-        (bind-key* "C-q" 'lookup-reference-dwim) ;; overrides major mode bindings
-        (bind-key* "C-S-q" 'lookup-reference-dwim-secondary)
+(bind-key* "C-q" 'lookup-reference-dwim) ;; overrides major mode bindings
+(bind-key* "C-S-q" 'lookup-reference-dwim-secondary)
 
       #+end_src
 ***** Dictionary
@@ -1643,25 +1636,25 @@
       :END:
       The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
       #+begin_src emacs-lisp
-        (use-package
-          dictionary
-          :commands (rgr/dictionary-search)
-          :config
-          (use-package mw-thesaurus)
-          (defun rgr/dictionary-search(&optional w)
-            (interactive)
-            (dictionary-search (if w w (rgr/region-symbol-query))))
-          :bind
-          ("<f6>" . rgr/dictionary-search)
-          ("S-<f6>" . mw-thesaurus-lookup-at-point))
+(use-package
+  dictionary
+  :commands (rgr/dictionary-search)
+  :config
+  (use-package mw-thesaurus)
+  (defun rgr/dictionary-search(&optional w)
+    (interactive)
+    (dictionary-search (if w w (rgr/region-symbol-query))))
+  :bind
+  ("<f6>" . rgr/dictionary-search)
+  ("S-<f6>" . mw-thesaurus-lookup-at-point))
       #+end_src
 ****** Requires dictd.
        :PROPERTIES:
        :ID:       b7022a82-6e34-481b-bdea-49dc5d82f051
        :END:
        #+begin_src bash
-         sudo apt install dictd
-         sudo apt install dict-de-en
+sudo apt install dictd
+sudo apt install dict-de-en
        #+end_src
 
 ***** Elisp reference
@@ -1684,27 +1677,27 @@
        [[./images/lookup-goldendict.png]]
 
        #+begin_src emacs-lisp
-         (defun rgr/elisp-lookup-reference-dwim (&optional sym)
-           "Checks to see if the 'thing' is known to elisp and, if so, use internal docs and return symbol else return nil to signal maybe fallback"
-           (interactive)
-           (let* ((sym (if sym sym (rgr/region-symbol-query)))
-                  (sym (if (symbolp sym) sym (intern-soft sym))))
-             (when sym
-               (if (fboundp sym)
-                   (if (featurep 'helpful)
-                       (helpful-function sym)
-                     (describe-function sym))
-                 (if (boundp sym)
-                     (if (featurep 'helpful)
-                         (helpful-variable sym)
-                       (describe-variable sym))
-                   (progn
-                     (let ((msg (format "No elisp help for '%s" sym)))
-                       (if (featurep 'alert)
-                           (alert msg)
-                         (message msg)))
-                     (setq sym nil)))))
-             sym))
+(defun rgr/elisp-lookup-reference-dwim (&optional sym)
+  "Checks to see if the 'thing' is known to elisp and, if so, use internal docs and return symbol else return nil to signal maybe fallback"
+  (interactive)
+  (let* ((sym (if sym sym (rgr/region-symbol-query)))
+         (sym (if (symbolp sym) sym (intern-soft sym))))
+    (when sym
+      (if (fboundp sym)
+          (if (featurep 'helpful)
+              (helpful-function sym)
+            (describe-function sym))
+        (if (boundp sym)
+            (if (featurep 'helpful)
+                (helpful-variable sym)
+              (describe-variable sym))
+          (progn
+            (let ((msg (format "No elisp help for '%s" sym)))
+              (if (featurep 'alert)
+                  (alert msg)
+                (message msg)))
+            (setq sym nil)))))
+    sym))
        #+end_src
 ***** GoldenDict - external lookup and reference
       :PROPERTIES:
@@ -1714,36 +1707,36 @@
       When using goldendict-dwim why not add your program to the wonderful [[http://goldendict.org/][GoldenDict]]? A call to [[https://github.com/soimort/translate-shell][trans-shell]] in the dictionary programs tab gives us google translate:-
 
       #+begin_src bash
-        trans -e google -s de -t en -show-original y -show-original-phonetics n -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary n -show-dictionary n -show-alternatives n "%GDWORD%"
+trans -e google -s de -t en -show-original y -show-original-phonetics n -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary n -show-dictionary n -show-alternatives n "%GDWORD%"
       #+end_src
 
       #+begin_src emacs-lisp
-        (use-package
-          goldendict
-          :commands (goldendict-dwim)
-          :config
-          (defun goldendict-dwim
-              (&optional
-               w)
-            "lookup word at region, thing at point or prompt for something, in goldendict. Use a prefix to force prompting."
-            (interactive)
-            (let ((w (if w w (rgr/region-symbol-query))))
-              (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
-          :bind (("C-c g" . goldendict-dwim)))
+(use-package
+  goldendict
+  :commands (goldendict-dwim)
+  :config
+  (defun goldendict-dwim
+      (&optional
+       w)
+    "lookup word at region, thing at point or prompt for something, in goldendict. Use a prefix to force prompting."
+    (interactive)
+    (let ((w (if w w (rgr/region-symbol-query))))
+      (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
+  :bind (("C-c g" . goldendict-dwim)))
       #+end_src
 ***** Zeal - Linux Dash
       :PROPERTIES:
       :ID:       7521fbd2-08e9-4323-9055-9e0b690474ed
       :END:
       #+begin_src emacs-lisp
-        (use-package zeal-at-point
-          :disabled t ;;way too buggy
-          :commands (rgr/zeal)
-          :config
-          (defun rgr/zeal (&optional w)
-            (interactive)
-            (zeal-at-point)t)
-          :bind* ("C-c z" . 'rgr/zeal))
+(use-package zeal-at-point
+  :disabled t ;;way too buggy
+  :commands (rgr/zeal)
+  :config
+  (defun rgr/zeal (&optional w)
+    (interactive)
+    (zeal-at-point)t)
+  :bind* ("C-c z" . 'rgr/zeal))
       #+end_src
 ***** emacs-devdocs-browser
       :PROPERTIES:
@@ -1751,17 +1744,17 @@
       :END:
       #+begin_src emacs-lisp
 
-        (use-package devdocs-browser
-          :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
-          :custom
-          (devdocs-browser-cache-directory (no-littering-expand-var-file-name "devdocs-browser"))
-          :config
-          (defun rgr/devdocs()
-            (interactive)
-            (if current-prefix-arg
-                (call-interactively 'devdocs-browser-open-in)
-              (devdocs-browser-open)))
-          :bind ("C-c v" . rgr/devdocs))
+(use-package devdocs-browser
+  :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
+  :custom
+  (devdocs-browser-cache-directory (no-littering-expand-var-file-name "devdocs-browser"))
+  :config
+  (defun rgr/devdocs()
+    (interactive)
+    (if current-prefix-arg
+        (call-interactively 'devdocs-browser-open-in)
+      (devdocs-browser-open)))
+  :bind ("C-c v" . rgr/devdocs))
       #+end_src
 
 ***** DASH - API documentation for most languages
@@ -1770,18 +1763,18 @@
       :END:
       Dash packages docs for many languages.
       #+begin_src emacs-lisp
-        (use-package
-          dash-docs
-          ;;:custom
-          ;;(dash-docs-browser-func 'eww-readable-url)
-          :config
-          (setq dash-docs-common-docsets '("C++" "Emacs Lisp" "Docker"))
-          (setq dash-docs-docsets '("C++" "Emacs Lisp" "Docker"))
-          (defun rgr/dash (w)
-            (interactive (cons (rgr/region-symbol-query) nil))
-            (message "docsets are: %s" dash-docs-docsets)
-            (message "%s" (dash-docs-search w)))
-          :bind ("C-c d" . 'rgr/dash))
+(use-package
+  dash-docs
+  ;;:custom
+  ;;(dash-docs-browser-func 'eww-readable-url)
+  :config
+  (setq dash-docs-common-docsets '("C++" "Emacs Lisp" "Docker"))
+  (setq dash-docs-docsets '("C++" "Emacs Lisp" "Docker"))
+  (defun rgr/dash (w)
+    (interactive (cons (rgr/region-symbol-query) nil))
+    (message "docsets are: %s" dash-docs-docsets)
+    (message "%s" (dash-docs-search w)))
+  :bind ("C-c d" . 'rgr/dash))
       #+end_src
 **** Man Pages
      :PROPERTIES:
@@ -1789,13 +1782,13 @@
      :END:
      Use emacsclient if it's running. Might consider an alias
      #+begin_src conf
-       alias man="eman"
+alias man="eman"
      #+end_src
      #+begin_src bash :tangle bin/eman
-       #!/usr/bin/bash
-       # Maintained in emacs-config.org
-       mp=${1:-"man"}
-       pgrep -x emacs > /dev/null && emacsclient -c -e "(manual-entry \"-a ${mp}\"))" &> /dev/null || man "$@"
+#!/usr/bin/bash
+# Maintained in emacs-config.org
+mp=${1:-"man"}
+pgrep -x emacs > /dev/null && emacsclient -c -e "(manual-entry \"-a ${mp}\"))" &> /dev/null || man "$@"
      #+end_src
 **** Elfeed
      :PROPERTIES:
@@ -1803,20 +1796,20 @@
      :END:
      [[https://github.com/skeeto/elfeed][Elfeed]] is an extensible web feed reader for Emacs, supporting both Atom and RSS.
      #+begin_src emacs-lisp
-       (use-package elfeed
-         :config
-         (use-package elfeed-org
-           :ensure t
-           :custom
-           (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
-           :config
-           (elfeed-org))
-         (use-package elfeed-goodies
-           :disabled
-           :config
-           (elfeed-goodies/setup))
-         (run-at-time nil (* 8 60 60) #'elfeed-update)
-         :bind ( "C-x w" . elfeed))
+(use-package elfeed
+  :config
+  (use-package elfeed-org
+    :ensure t
+    :custom
+    (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
+    :config
+    (elfeed-org))
+  (use-package elfeed-goodies
+    :disabled
+    :config
+    (elfeed-goodies/setup))
+  (run-at-time nil (* 8 60 60) #'elfeed-update)
+  :bind ( "C-x w" . elfeed))
 
      #+end_src
 ***** elfeed-org
@@ -1838,23 +1831,23 @@
      :END:
      [[https://github.com/politza/pdf-tools][pdf-tools]] is, among other things, a replacement of DocView for PDF files
      #+begin_src emacs-lisp
-       (use-package pdf-tools
-         :demand t
-         :config
-         (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
-         (use-package org-pdftools
-           :hook (org-mode . org-pdftools-setup-link)))
+(use-package pdf-tools
+  :demand t
+  :config
+  (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
+  (use-package org-pdftools
+    :hook (org-mode . org-pdftools-setup-link)))
      #+end_src
 ***** requirements
       #+begin_src bash
-        sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
+sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
       #+end_src
 **** impatient-showdow, markdown view live
      Preview markdown buffer live over HTTP using showdown.
      https://github.com/jcs-elpa/impatient-showdown
      #+begin_src emacs-lisp
-       (use-package impatient-showdown
-         :hook (markdown-mode . impatient-showdown-mode))
+(use-package impatient-showdown
+  :hook (markdown-mode . impatient-showdown-mode))
      #+end_src
 
 **** provide
@@ -1862,7 +1855,7 @@
      :ID:       05027204-7ce4-42a5-aebe-a4a495a9f2a3
      :END:
      #+begin_src emacs-lisp
-       (provide 'rgr/reference)
+(provide 'rgr/reference)
      #+end_src
 
 ** EMMS                                                :music:emms:CANCELLED:
@@ -1877,7 +1870,7 @@
    Raw:[[./etc/elisp/rgr-emms.el][rgr/emms]]
 
    #+begin_src emacs-lisp
-     (require 'rgr/emms "rgr-emms" 'NOERROR)
+(require 'rgr/emms "rgr-emms" 'NOERROR)
    #+end_src
 
 *** rgr/emms library
@@ -1887,44 +1880,44 @@
     :END:
 
     #+begin_src emacs-lisp
-      (use-package
-        emms
-        :custom
-        (emms-source-file-default-directory "~/Music" emms-info-asynchronously t emms-show-format "♪ %s")
-        (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
-        (emms-history-start-playing nil)
-        :config
-        (defun rgr/emms-play-url()
-          (interactive)
-          (let* ((url (thing-at-point-url-at-point))
-                 (url (if (and (not current-prefix-arg)
-                               url) url (read-string (format "URL to play %s: " (if url url "")) nil
-                               nil url))))
-            (message "Playing: %s" url)
-            (kill-new url)
-            (emms-play-url url)))
-        (defun rgr/emms-play-playlist()
-          (interactive)
-          (let(( emms-source-file-default-directory (expand-file-name "Playlists/" emms-source-file-default-directory)))
-            (call-interactively 'emms-play-playlist)))
-        (require 'emms-setup)
-        (emms-all)
-        (emms-default-players)
-        (require 'emms-history)
-        (emms-history-load)
-        :bind ("C-c e e" . #'emms-smart-browse)
-        ("C-c e j" . #'emms-seek-backward)
-        ("C-c e l" . #'emms-seek-forward)
-        ("C-c e p" . #'rgr/emms-play-playlist)
-        ;;        ("C-c e p" . #'emms-play-playlist)
-        ("C-c e <SPC>" . #'emms-pause)
-        ("C-c e o" . #'rgr/emms-play-url)
-        (:map emms-playlist-mode-map
-              ("<SPC>" . #'emms-pause)
-              ("j" . #'emms-seek-backward)
-              ("l" . #'emms-seek-forward)
-              ("k" . #'emms-pause)))
-      (provide 'rgr/emms)
+(use-package
+  emms
+  :custom
+  (emms-source-file-default-directory "~/Music" emms-info-asynchronously t emms-show-format "♪ %s")
+  (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+  (emms-history-start-playing nil)
+  :config
+  (defun rgr/emms-play-url()
+    (interactive)
+    (let* ((url (thing-at-point-url-at-point))
+           (url (if (and (not current-prefix-arg)
+                         url) url (read-string (format "URL to play %s: " (if url url "")) nil
+                         nil url))))
+      (message "Playing: %s" url)
+      (kill-new url)
+      (emms-play-url url)))
+  (defun rgr/emms-play-playlist()
+    (interactive)
+    (let(( emms-source-file-default-directory (expand-file-name "Playlists/" emms-source-file-default-directory)))
+      (call-interactively 'emms-play-playlist)))
+  (require 'emms-setup)
+  (emms-all)
+  (emms-default-players)
+  (require 'emms-history)
+  (emms-history-load)
+  :bind ("C-c e e" . #'emms-smart-browse)
+  ("C-c e j" . #'emms-seek-backward)
+  ("C-c e l" . #'emms-seek-forward)
+  ("C-c e p" . #'rgr/emms-play-playlist)
+  ;;        ("C-c e p" . #'emms-play-playlist)
+  ("C-c e <SPC>" . #'emms-pause)
+  ("C-c e o" . #'rgr/emms-play-url)
+  (:map emms-playlist-mode-map
+        ("<SPC>" . #'emms-pause)
+        ("j" . #'emms-seek-backward)
+        ("l" . #'emms-seek-forward)
+        ("k" . #'emms-pause)))
+(provide 'rgr/emms)
     #+end_src
 ** Shells and Terminals
    :PROPERTIES:
@@ -1944,12 +1937,12 @@
       :ID:       b873ee7b-3395-4b29-86ef-1468fea5f152
       :END:
       #+begin_src emacs-lisp
-        (defun eshell/emacs-clean (&rest args)
-          "run a clean emacs"
-          (interactive)
-          (message "args are %s" args)
-          (save-window-excursion
-            (shell-command "emacs -Q -l ~/.emacs.d/straight/repos/straight.el/bootstrap.el &")))
+(defun eshell/emacs-clean (&rest args)
+  "run a clean emacs"
+  (interactive)
+  (message "args are %s" args)
+  (save-window-excursion
+    (shell-command "emacs -Q -l ~/.emacs.d/straight/repos/straight.el/bootstrap.el &")))
       #+end_src
 ****** ftrace - debugging the kernel utility funtions
        :PROPERTIES:
@@ -1960,14 +1953,14 @@
         :ID:       d9e9214f-9a1f-420d-9e90-73b93849cc2d
         :END:
         #+begin_src emacs-lisp
-          (defun eshell/_ftrace_fn (&rest args)
-            "useage: _ftrace_fn &optional function-name(def:printf)  depth(def:1)
+(defun eshell/_ftrace_fn (&rest args)
+  "useage: _ftrace_fn &optional function-name(def:printf)  depth(def:1)
           creates a report in function-name.ftrace and opens it in a buffer"
-            (interactive)
-            (let ((fn (or (nth 2 args) "printf"))
-                  (depth (or (nth 3 args) 1)))
-              (shell-command (format "sudo trace-cmd record -p function_graph --max-graph-depth %s -e syscalls -F %s && trace-cmd report | tee %s.ftrace" depth fn fn))
-              (switch-to-buffer (find-file-noselect (format "%s.ftrace" fn) ))))
+  (interactive)
+  (let ((fn (or (nth 2 args) "printf"))
+        (depth (or (nth 3 args) 1)))
+    (shell-command (format "sudo trace-cmd record -p function_graph --max-graph-depth %s -e syscalls -F %s && trace-cmd report | tee %s.ftrace" depth fn fn))
+    (switch-to-buffer (find-file-noselect (format "%s.ftrace" fn) ))))
         #+end_src
 **** EShell Aliases
      :PROPERTIES:
@@ -1982,32 +1975,32 @@
      :ID:       1d2e5cfc-70c6-4e6f-bd45-f91f1ffaaf09
      :END:
      #+begin_src emacs-lisp
-       (use-package
-         eshell
-         :init
-         (require 'em-hist)
-         (require 'em-tramp)
-         (require 'em-smart)
-         :config
-         (defun eshell-mode-hook-func ()
-           ;; (setq eshell-path-env (concat "/home/rgr/bin:" eshell-path-env))
-           ;; (setenv "PATH" (concat "/home/rgr/bin:" (getenv "PATH")))
-           (setq pcomplete-cycle-completions nil))
-         (add-to-list 'eshell-modules-list 'eshell-tramp)
-         (add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
-         (setq eshell-review-quick-commands nil)
-         (setq eshell-smart-space-goes-to-end t)
+(use-package
+  eshell
+  :init
+  (require 'em-hist)
+  (require 'em-tramp)
+  (require 'em-smart)
+  :config
+  (defun eshell-mode-hook-func ()
+    ;; (setq eshell-path-env (concat "/home/rgr/bin:" eshell-path-env))
+    ;; (setenv "PATH" (concat "/home/rgr/bin:" (getenv "PATH")))
+    (setq pcomplete-cycle-completions nil))
+  (add-to-list 'eshell-modules-list 'eshell-tramp)
+  (add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
+  (setq eshell-review-quick-commands nil)
+  (setq eshell-smart-space-goes-to-end t)
 
-         (use-package
-           eshell-git-prompt
-           :config
-           (eshell-git-prompt-use-theme 'powerline)
-           (define-advice
-               eshell-git-prompt-powerline-dir
-               (:override ()
-                          short)
-             "Show only last directory."
-             (file-name-nondirectory (directory-file-name default-directory)))))
+  (use-package
+    eshell-git-prompt
+    :config
+    (eshell-git-prompt-use-theme 'powerline)
+    (define-advice
+        eshell-git-prompt-powerline-dir
+        (:override ()
+                   short)
+      "Show only last directory."
+      (file-name-nondirectory (directory-file-name default-directory)))))
      #+end_src
 *** vterm
     SCHEDULED: <2021-04-13 Tue>
@@ -2020,15 +2013,15 @@
     :END:
     https://github.com/akermu/emacs-libvterm
     #+begin_src emacs-lisp
-      (use-package vterm
-        :custom (vterm-shell "/usr/bin/zsh")
-        :bind
-        ("M-g v" . vterm))
+(use-package vterm
+  :custom (vterm-shell "/usr/bin/zsh")
+  :bind
+  ("M-g v" . vterm))
     #+end_src
 *** Docker
     A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b][docker]].
     #+begin_src emacs-lisp
-      (use-package docker)
+(use-package docker)
     #+end_src
 ** Buffers and Windows
    :PROPERTIES:
@@ -2039,13 +2032,13 @@
     :ID:       cf781280-b126-402f-9700-c061a385bf81
     :END:
     #+begin_src emacs-lisp
-      (defun rgr/toggle-buffer(n)
-        "jump to or from buffer named n else default to *Messages*"
-        (interactive "bbuffer:")
-        (let ((n (or n
-                     "*Messages*")))
-          (switch-to-buffer (if (string= (buffer-name) n)
-                                (other-buffer) n))))
+(defun rgr/toggle-buffer(n)
+  "jump to or from buffer named n else default to *Messages*"
+  (interactive "bbuffer:")
+  (let ((n (or n
+               "*Messages*")))
+    (switch-to-buffer (if (string= (buffer-name) n)
+                          (other-buffer) n))))
     #+end_src
 *** General
     :PROPERTIES:
@@ -2053,21 +2046,21 @@
     :END:
 **** buffer deletion - but keep scratch and messages!
      #+begin_src emacs-lisp
-       (use-package emacs
-         :demand
-         :config
-         (defun rgr/kill-current-buffer()
-           (interactive)
-           (if (member (buffer-name) '("*Messages*" "*scratch*"))
-               (progn
-                 (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-                 (delete-window))
-             (kill-current-buffer)))
-         (add-hook 'before-save-hook 'delete-trailing-whitespace)
-         :bind
-         ("C-x k" . rgr/kill-current-buffer)
-         ("M-0" . 'delete-window)
-         ("M-1" . 'delete-other-windows))
+(use-package emacs
+  :demand
+  :config
+  (defun rgr/kill-current-buffer()
+    (interactive)
+    (if (member (buffer-name) '("*Messages*" "*scratch*"))
+        (progn
+          (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+          (delete-window))
+      (kill-current-buffer)))
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  :bind
+  ("C-x k" . rgr/kill-current-buffer)
+  ("M-0" . 'delete-window)
+  ("M-1" . 'delete-other-windows))
      #+end_src
 *** Buffer selection
     :PROPERTIES:
@@ -2086,11 +2079,11 @@
      [[https://github.com/alphapapa/bufler.el][Bufler]]  is like a butler for your buffers, presenting them to you in an organized way based on your instructions.
 
      #+begin_src emacs-lisp
-       (use-package bufler
-         :config
-         (bufler-tabs-mode t)
-         :bind
-         ("C-x C-b" . 'bufler))
+(use-package bufler
+  :config
+  (bufler-tabs-mode t)
+  :bind
+  ("C-x C-b" . 'bufler))
      #+end_src
 
 *** dired - emacs file management                                     :dired:
@@ -2102,9 +2095,9 @@
      :ID:       c6fe4735-2499-4fc0-a8d4-250fa8ce7c4b
      :END:
      #+begin_src emacs-lisp
-       (use-package dired-git
-         :config
-         :hook (dired-mode . dired-git-mode))
+(use-package dired-git
+  :config
+  :hook (dired-mode . dired-git-mode))
      #+end_src
 **** dired hacks
      :PROPERTIES:
@@ -2117,12 +2110,12 @@
       :ID:       faf0adb5-f75d-46cd-acd0-6d3739e4b517
       :END:
       #+begin_src emacs-lisp
-        (use-package dired-subtree
-          :config
-          (use-package dash)
-          :bind (:map dired-mode-map
-                      ("i" . dired-subtree-insert)
-                      (";" . dired-subtree-remove)))
+(use-package dired-subtree
+  :config
+  (use-package dash)
+  :bind (:map dired-mode-map
+              ("i" . dired-subtree-insert)
+              (";" . dired-subtree-remove)))
       #+end_src
 ***** dired filter
       :PROPERTIES:
@@ -2130,10 +2123,10 @@
       :END:
       More dired based filtering see [[help:dired-filter-prefix][dired-filter-prefix]]
       #+begin_src emacs-lisp
-        (use-package dired-filter
-          :config
-          (use-package dash)
-          )
+(use-package dired-filter
+  :config
+  (use-package dash)
+  )
       #+end_src
 ***** dired quicksort
       :PROPERTIES:
@@ -2142,10 +2135,10 @@
       Dired sorting popup options from [[http://pragmaticemacs.com/emacs/speedy-sorting-in-dired-with-dired-quick-sort/][Pragmatic Emacs]].
       EDIT: cant clone from gitlab
       #+begin_src emacs-lisp
-        (use-package dired-quick-sort
-          :disabled t
-          :config
-          (dired-quick-sort-setup))
+(use-package dired-quick-sort
+  :disabled t
+  :config
+  (dired-quick-sort-setup))
       #+end_src
 
 *** PopUp Utilities
@@ -2159,7 +2152,7 @@
      [[https://github.com/tumashu/posframe][Posframe]]
      can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
      #+begin_src emacs-lisp
-       (use-package posframe)
+(use-package posframe)
      #+end_src
 **** popper                                                          :popper:
      :PROPERTIES:
@@ -2169,50 +2162,50 @@
      :PROPERTIES:
      :END:
      #+begin_src emacs-lisp
-       (use-package popper
-         :ensure t
-         :init
-         (use-package posframe)
-         ;;(setq popper-display-function 'rgr/popper-display-posframe)
-         (setq popper-reference-buffers
-               '(
-                 "\\*Messages\\*"
-                 magit-mode
-                 ;;      help-mode
-                 helpful-mode
-                 inferior-python-mode
-                 dictionary-mode
-                 compilation-mode))
-         (popper-mode +1)
-         :bind (("C-`"   . popper-toggle-latest)
-                ("M-`"   . popper-cycle)
-                ("C-M-`" . popper-toggle-type)))
+(use-package popper
+  :ensure t
+  :init
+  (use-package posframe)
+  ;;(setq popper-display-function 'rgr/popper-display-posframe)
+  (setq popper-reference-buffers
+        '(
+          "\\*Messages\\*"
+          magit-mode
+          ;;      help-mode
+          helpful-mode
+          inferior-python-mode
+          dictionary-mode
+          compilation-mode))
+  (popper-mode +1)
+  :bind (("C-`"   . popper-toggle-latest)
+         ("M-`"   . popper-cycle)
+         ("C-M-`" . popper-toggle-type)))
      #+end_src
 *** Transpose windows, transpose-frame
     :PROPERTIES:
     :ID:       85dea853-453d-4b75-b063-1def33156894
     :END:
     #+begin_src emacs-lisp
-      (use-package transpose-frame
-        :disabled t
-        :config
-        (defun window-split-toggle ()
-          "Toggle between horizontal and vertical split with two windows."
-          (interactive)
-          (if (> (length (window-list)) 2)
-              (error "Can't toggle with more than 2 windows!")
-            (let ((func (if (window-full-height-p)
-                            #'split-window-vertically
-                          #'split-window-horizontally)))
-              (delete-other-windows)
-              (funcall func)
-              (save-selected-window
-                (other-window 1)
-                (switch-to-buffer (other-buffer))))))
-        :bind
-        ("C-M-t" . transpose-frame)
-        ("C-c T" . window-split-toggle)
-        )
+(use-package transpose-frame
+  :disabled t
+  :config
+  (defun window-split-toggle ()
+    "Toggle between horizontal and vertical split with two windows."
+    (interactive)
+    (if (> (length (window-list)) 2)
+        (error "Can't toggle with more than 2 windows!")
+      (let ((func (if (window-full-height-p)
+                      #'split-window-vertically
+                    #'split-window-horizontally)))
+        (delete-other-windows)
+        (funcall func)
+        (save-selected-window
+          (other-window 1)
+          (switch-to-buffer (other-buffer))))))
+  :bind
+  ("C-M-t" . transpose-frame)
+  ("C-c T" . window-split-toggle)
+  )
     #+end_src
 *** Hyperbole
     :PROPERTIES:
@@ -2221,9 +2214,9 @@
     [[https://www.emacswiki.org/emacs/Hyperbole][Hyperbole]] is more a window management system from what I can see. Need to explore it.
 
     #+begin_src emacs-lisp
-      (use-package
-        hyperbole
-        :disabled t)
+(use-package
+  hyperbole
+  :disabled t)
     #+end_src
 
 *** Undo utilities
@@ -2236,10 +2229,10 @@
      :END:
      [[https://melpa.org/#/undohist][undo-hist]] provides persistent undo across sessions.
      #+begin_src emacs-lisp
-       (use-package undohist
-         :disabled t
-         :config
-         (undohist-initialize))
+(use-package undohist
+  :disabled t
+  :config
+  (undohist-initialize))
      #+end_src
 **** undo-tree
      :PROPERTIES:
@@ -2247,22 +2240,22 @@
      :END:
      [[https://github.com/apchamberlain/undo-tree.el][undo-tree]] visualises the sometimes complex undo ring and allow stepping along the timeline
      #+begin_src emacs-lisp
-       (use-package undo-tree
-         :disabled t
-         :config
-         (global-undo-tree-mode))
+(use-package undo-tree
+  :disabled t
+  :config
+  (global-undo-tree-mode))
      #+end_src
 **** undo-fu
      :PROPERTIES:
      :ID:       3404b76c-ab18-4ef8-9d64-ddf2e652c41f
      :END:
      #+begin_src emacs-lisp
-       (use-package undo-fu
-         :disabled t
-         :init
-         (global-unset-key (kbd "C-z"))
-         (global-set-key (kbd "C-z")   'undo-fu-only-undo)
-         (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
+(use-package undo-fu
+  :disabled t
+  :init
+  (global-unset-key (kbd "C-z"))
+  (global-set-key (kbd "C-z")   'undo-fu-only-undo)
+  (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
      #+end_src
 *** Navigation
     :PROPERTIES:
@@ -2274,13 +2267,13 @@
      :END:
      [[https://github.com/rolandwalker/back-button][Back-Button]] provides better navigation on the [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Mark-Ring.html][local and global mark rings]]. The jury is still out on this one.
      #+begin_src emacs-lisp
-       (use-package back-button
-         :disabled t
-         :config
-         (back-button-mode 1)
-         :bind
-         ("M-<left>" . previous-buffer)
-         ("M-<right>" . next-buffer))
+(use-package back-button
+  :disabled t
+  :config
+  (back-button-mode 1)
+  :bind
+  ("M-<left>" . previous-buffer)
+  ("M-<right>" . next-buffer))
      #+end_src
 **** Window hopping
      :PROPERTIES:
@@ -2288,12 +2281,12 @@
      :END:
 ***** [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
       #+begin_src emacs-lisp
-        (use-package ace-window
-          :init
-          (defalias 'other-window 'ace-window)
-          :bind*
-          ("M-o" . ace-window)
-          ("M-S o" . ace-delete-window))
+(use-package ace-window
+  :init
+  (defalias 'other-window 'ace-window)
+  :bind*
+  ("M-o" . ace-window)
+  ("M-S o" . ace-delete-window))
       #+end_src
 **** hopping around links
      :PROPERTIES:
@@ -2301,15 +2294,15 @@
      :END:
      Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
      #+begin_src emacs-lisp
-       (use-package ace-link
-         :demand t
-         :config
-         (ace-link-setup-default)
-         :bind*
-         (:map emacs-lisp-mode-map
-               ("C-c o" . ace-link-addr))
-         ("C-c o" . ace-link)
-         )
+(use-package ace-link
+  :demand t
+  :config
+  (ace-link-setup-default)
+  :bind*
+  (:map emacs-lisp-mode-map
+        ("C-c o" . ace-link-addr))
+  ("C-c o" . ace-link)
+  )
      #+end_src
 **** hopping around in the buffer
      :PROPERTIES:
@@ -2317,10 +2310,10 @@
      :END:
      Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-mode/wiki][wiki]] is a food source of info.
      #+begin_src emacs-lisp
-       (use-package ace-jump-mode
-         :bind
-         ("M-s c" . ace-jump-mode)
-         )
+(use-package ace-jump-mode
+  :bind
+  ("M-s c" . ace-jump-mode)
+  )
      #+end_src
 ** System
    :PROPERTIES:
@@ -2331,13 +2324,13 @@
     :ID:       4dfa8e7b-fb50-40a3-b0f6-6ffb949839c0
     :END:
     #+begin_src emacs-lisp
-      (defun htop-regexp()
-        (interactive)
-        (let ((s (completing-read (format "HTtop filter (%s): " (symbol-at-point)) minibuffer-history nil nil (symbol-at-point))))
-          (condition-case nil
-              (shell-command (format "htop-regexp %s" s))
-            (error nil))))
-      (global-set-key (kbd "C-S-p") 'htop-regexp)
+(defun htop-regexp()
+  (interactive)
+  (let ((s (completing-read (format "HTtop filter (%s): " (symbol-at-point)) minibuffer-history nil nil (symbol-at-point))))
+    (condition-case nil
+        (shell-command (format "htop-regexp %s" s))
+      (error nil))))
+(global-set-key (kbd "C-S-p") 'htop-regexp)
     #+end_src
 *** explain-pause-mode
     :PROPERTIES:
@@ -2345,31 +2338,31 @@
     :END:
     [[https://github.com/lastquestion/explain-pause-mode][explain-pause-mode]] is like an htop for emacs itself
     #+begin_src emacs-lisp
-      (use-package explain-pause-mode
-        :disabled
-        :config
-        (explain-pause-mode))
+(use-package explain-pause-mode
+  :disabled
+  :config
+  (explain-pause-mode))
     #+end_src
 ** Treemacs
    :PROPERTIES:
    :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
    :END:
    #+begin_src emacs-lisp
-     (use-package
-       treemacs
-       :custom
-       (treemacs-follow-after-init t)
-       :config
-       (treemacs-follow-mode +1)
-       (treemacs-fringe-indicator-mode)
-       (treemacs-git-mode 'deferred)
-       (use-package treemacs-icons-dired
-         :config (treemacs-icons-dired-mode))
-       (use-package treemacs-magit)
-       :bind
-       ("M-9"   . 'treemacs-select-window)
-       (:map treemacs-mode-map
-             ("<right>" . treemacs-peek)))
+(use-package
+  treemacs
+  :custom
+  (treemacs-follow-after-init t)
+  :config
+  (treemacs-follow-mode +1)
+  (treemacs-fringe-indicator-mode)
+  (treemacs-git-mode 'deferred)
+  (use-package treemacs-icons-dired
+    :config (treemacs-icons-dired-mode))
+  (use-package treemacs-magit)
+  :bind
+  ("M-9"   . 'treemacs-select-window)
+  (:map treemacs-mode-map
+        ("<right>" . treemacs-peek)))
 
    #+end_src
 
@@ -2382,36 +2375,36 @@
    You don't want to be hopping in and out of chat groups too.
 
    #+begin_src emacs-lisp
-     (defun rgr/load-chats(switch)
-       (require  'rgr-chat))
-     (add-to-list 'command-switch-alist '("chat" . rgr/load-chats))
+(defun rgr/load-chats(switch)
+  (require  'rgr-chat))
+(add-to-list 'command-switch-alist '("chat" . rgr/load-chats))
    #+end_src
 
    Small external script, [[./bin/oneemacs-chat][oneemacs-chat]], to create an erc instance if there isnt already one.
 
    #+begin_src bash :tangle "./bin/oneemacs-chat"
-     #!/bin/bash
-     WID=`xdotool search --name "Chat:"|head -1`
-     if [[ -z ${WID} ]]; then
-         notify-send "Starting Chats in Emacs..."
-         emacs -chat
-     else
-         notify-send "restoring Chat instance..."
-         xdotool windowactivate $WID
-     fi
+#!/bin/bash
+WID=`xdotool search --name "Chat:"|head -1`
+if [[ -z ${WID} ]]; then
+    notify-send "Starting Chats in Emacs..."
+    emacs -chat
+else
+    notify-send "restoring Chat instance..."
+    xdotool windowactivate $WID
+fi
    #+end_src
 
    and the eshell func to call it:
 
    #+begin_src emacs-lisp
-     (defun eshell/chat-client
-         (&rest
-          args)
-       "chat with emacs.."
-       (interactive)
-       (save-window-excursion (call-process "oneemacs-chat" nil 0)))
+(defun eshell/chat-client
+    (&rest
+     args)
+  "chat with emacs.."
+  (interactive)
+  (save-window-excursion (call-process "oneemacs-chat" nil 0)))
 
-     (global-set-key (kbd "C-c i") 'eshell/chat-client)
+(global-set-key (kbd "C-c i") 'eshell/chat-client)
    #+end_src
 
    The code in  [[file:etc/elisp/rgr-chat.el][rgr-chat]] :
@@ -2427,143 +2420,143 @@
     :header-args:emacs-lisp: :tangle no
     :END:
     #+begin_src emacs-lisp
-      (use-package mu4e
-        :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
-        :commands (mu4e mu4e-update-index)
-        :custom
-        ( mail-user-agent 'mu4e-user-agent )
-        ( mail-user-agent 'mu4e-user-agent )
-        ( message-send-mail-function 'smtpmail-send-it )
-        ( mu4e-attachment-dir "~/Downloads" )
-        ( mu4e-change-filenames-when-moving t )
-        ( mu4e-compose-context-policy 'ask )
-        ( mu4e-confirm-quit nil )
-        ( mu4e-context-policy 'pick-first )
-        ( mu4e-compose-reply-recipients 'sender )
-        ( mu4e-headers-include-related nil )
-        ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
-        ( mu4e-decryption-policy 'ask )
-        ( mu4e-hide-index-messages t )
-        ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
-        ( mu4e-update-interval nil )
-        ( mu4e-use-fancy-chars t )
-        ( mu4e-view-prefer-html nil )
-        ( mu4e-view-show-addresses t )
-        ( smtpmail-smtp-service 587 )
-        ( user-full-name "Richard G.Riley" )
-        :config
+(use-package mu4e
+  :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
+  :commands (mu4e mu4e-update-index)
+  :custom
+  ( mail-user-agent 'mu4e-user-agent )
+  ( mail-user-agent 'mu4e-user-agent )
+  ( message-send-mail-function 'smtpmail-send-it )
+  ( mu4e-attachment-dir "~/Downloads" )
+  ( mu4e-change-filenames-when-moving t )
+  ( mu4e-compose-context-policy 'ask )
+  ( mu4e-confirm-quit nil )
+  ( mu4e-context-policy 'pick-first )
+  ( mu4e-compose-reply-recipients 'sender )
+  ( mu4e-headers-include-related nil )
+  ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
+  ( mu4e-decryption-policy 'ask )
+  ( mu4e-hide-index-messages t )
+  ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
+  ( mu4e-update-interval nil )
+  ( mu4e-use-fancy-chars t )
+  ( mu4e-view-prefer-html nil )
+  ( mu4e-view-show-addresses t )
+  ( smtpmail-smtp-service 587 )
+  ( user-full-name "Richard G.Riley" )
+  :config
 
 
-        (use-package mu4e-maildirs-extension
-          :custom
-          (mu4e-maildirs-extension-hide-empty-maildirs t)
-          :config
-          (mu4e-maildirs-extension))
+  (use-package mu4e-maildirs-extension
+    :custom
+    (mu4e-maildirs-extension-hide-empty-maildirs t)
+    :config
+    (mu4e-maildirs-extension))
 
-        (setq mu4e-contexts
-              `( ,(make-mu4e-context
-                   :name "aGmx"
-                   :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
-                   :match-func (lambda (msg)
-                                 (when msg
-                                   (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
-                   :vars '( ( user-mail-address . "rileyrg@gmx.de" )
-                            ( user-full-name . "Richard G. Riley" )
-                            ( smtpmail-smtp-server . "mail.gmx.net")
-                            ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
-                            ( mu4e-refile-folder . "/gmx/Archive" )
-                            ( mu4e-sent-folder . "/gmx/Sent" )
-                            ( mu4e-sent-messages-behavior . sent)
-                            ( mu4e-trash-folder . "/gmx/Bin" )
-                            ( mu4e-drafts-folder . "/gmx/Drafts" )
-                            ;; (mu4e-maildir-shortcuts .
-                            ;;  (("/gmx/INBOX"             . ?i)
-                            ;;    ("/gmx/Sent" . ?s)
-                            ;;    ("/gmx/Bin"     . ?b)
-                            ;;    ("/gmx/Drafts"    . ?d)
-                            ;;    ("/gmx/Spam"    . ?p)
-                            ;;    ("/gmx/Archive"  . ?a)))
-                            ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmx/INBOX and flag:unread" :key ?i)
-                                                (:name "Learning" :query "maildir:/gmx/Learning* and flag:unread" :key ?l)
-                                                (:name "All Today's messages" :query "maildir:/gmx/*  AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent) AND date:today..now " :key ?t)
-                                                (:name "Last 7 days" :query "maildir:/gmx/* AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent)  AND date:7d..now" :hide-unread t :key ?w)
-                                                (:name "All" :query "maildir:/gmx/* and not (maildir:/gmx/Spam or maildir:/gmx/Bin)" :key ?a)
-                                                (:name "Bin" :query "maildir:/gmx/Bin" :key ?b)
-                                                ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
-                                                (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                            ( mu4e-compose-signature  .
-                              (concat
-                               "Richard G. Riley\n"
-                               "Ein bier, ein Helbing.\n"))))
-                 ,(make-mu4e-context
-                   :name "bGmail"
-                   :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
-                   ;; no leave-func
-                   ;; we match based on the maildir of the message
-                   ;; this matches maildir /Arkham and its sub-directories
-                   :match-func (lambda (msg)
-                                 (when msg
-                                   (string-match-p "^/gmail" (mu4e-message-field msg :maildir))))
-                   :vars '( ( user-mail-address . "rileyrg@gmail.com"  )
-                            ( user-full-name . "Richie" )
-                            ( smtpmail-smtp-server . "smtp.gmail.com")
-                            ( mu4e-get-mail-command . "getmails gmail")
-                            ( mu4e-refile-folder . "/gmail/Archive" )
-                            ( mu4e-sent-folder . "/gmail/Sent" )
-                            ( mu4e-sent-messages-behavior . delete)
-                            ( mu4e-trash-folder . "/gmail/Bin" )
-                            ( mu4e-drafts-folder . "/gmail/Drafts" )
-                            ;; (mu4e-maildir-shortcuts .
-                            ;;   (("/gmail/INBOX"             . ?i)
-                            ;;    ("/gmail/Sent" . ?s)
-                            ;;    ("/gmail/Bin"     . ?b)
-                            ;;    ("/gmail/Drafts"    . ?d)
-                            ;;    ("/gmail/Spam"    . ?p)
-                            ;;    ("/gmail/Archive"  . ?a)))
-                            ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmail/INBOX and flag:unread" :key ?i)
-                                                (:name "All Today's messages" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:today..now " :key ?t)
-                                                (:name "Last 7 days" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:7d..now" :hide-unread t :key ?w)
-                                                (:name "All" :query "maildir:/gmail/* and not (maildir:/gmail/Spam or maildir:/gmail/Bin)" :key ?a)
-                                                (:name "Bin" :query "maildir:/gmail/Bin" :key ?b)
-                                                ;;                    (:name "Messages with images" :query "maildir:/gmail/* AND  NOT maildir:/gmail/Spam  AND  NOT maildir:/gmail/Sent" :key ?m)
-                                                (:name "Spam" :query "maildir:/gmail/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                            ( mu4e-compose-signature . "Please change my email to 'rileyrg@gmx.de'.")))))
+  (setq mu4e-contexts
+        `( ,(make-mu4e-context
+             :name "aGmx"
+             :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
+             :vars '( ( user-mail-address . "rileyrg@gmx.de" )
+                      ( user-full-name . "Richard G. Riley" )
+                      ( smtpmail-smtp-server . "mail.gmx.net")
+                      ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
+                      ( mu4e-refile-folder . "/gmx/Archive" )
+                      ( mu4e-sent-folder . "/gmx/Sent" )
+                      ( mu4e-sent-messages-behavior . sent)
+                      ( mu4e-trash-folder . "/gmx/Bin" )
+                      ( mu4e-drafts-folder . "/gmx/Drafts" )
+                      ;; (mu4e-maildir-shortcuts .
+                      ;;  (("/gmx/INBOX"             . ?i)
+                      ;;    ("/gmx/Sent" . ?s)
+                      ;;    ("/gmx/Bin"     . ?b)
+                      ;;    ("/gmx/Drafts"    . ?d)
+                      ;;    ("/gmx/Spam"    . ?p)
+                      ;;    ("/gmx/Archive"  . ?a)))
+                      ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmx/INBOX and flag:unread" :key ?i)
+                                          (:name "Learning" :query "maildir:/gmx/Learning* and flag:unread" :key ?l)
+                                          (:name "All Today's messages" :query "maildir:/gmx/*  AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent) AND date:today..now " :key ?t)
+                                          (:name "Last 7 days" :query "maildir:/gmx/* AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent)  AND date:7d..now" :hide-unread t :key ?w)
+                                          (:name "All" :query "maildir:/gmx/* and not (maildir:/gmx/Spam or maildir:/gmx/Bin)" :key ?a)
+                                          (:name "Bin" :query "maildir:/gmx/Bin" :key ?b)
+                                          ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
+                                          (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
+                      ( mu4e-compose-signature  .
+                        (concat
+                         "Richard G. Riley\n"
+                         "Ein bier, ein Helbing.\n"))))
+           ,(make-mu4e-context
+             :name "bGmail"
+             :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
+             ;; no leave-func
+             ;; we match based on the maildir of the message
+             ;; this matches maildir /Arkham and its sub-directories
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/gmail" (mu4e-message-field msg :maildir))))
+             :vars '( ( user-mail-address . "rileyrg@gmail.com"  )
+                      ( user-full-name . "Richie" )
+                      ( smtpmail-smtp-server . "smtp.gmail.com")
+                      ( mu4e-get-mail-command . "getmails gmail")
+                      ( mu4e-refile-folder . "/gmail/Archive" )
+                      ( mu4e-sent-folder . "/gmail/Sent" )
+                      ( mu4e-sent-messages-behavior . delete)
+                      ( mu4e-trash-folder . "/gmail/Bin" )
+                      ( mu4e-drafts-folder . "/gmail/Drafts" )
+                      ;; (mu4e-maildir-shortcuts .
+                      ;;   (("/gmail/INBOX"             . ?i)
+                      ;;    ("/gmail/Sent" . ?s)
+                      ;;    ("/gmail/Bin"     . ?b)
+                      ;;    ("/gmail/Drafts"    . ?d)
+                      ;;    ("/gmail/Spam"    . ?p)
+                      ;;    ("/gmail/Archive"  . ?a)))
+                      ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmail/INBOX and flag:unread" :key ?i)
+                                          (:name "All Today's messages" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:today..now " :key ?t)
+                                          (:name "Last 7 days" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:7d..now" :hide-unread t :key ?w)
+                                          (:name "All" :query "maildir:/gmail/* and not (maildir:/gmail/Spam or maildir:/gmail/Bin)" :key ?a)
+                                          (:name "Bin" :query "maildir:/gmail/Bin" :key ?b)
+                                          ;;                    (:name "Messages with images" :query "maildir:/gmail/* AND  NOT maildir:/gmail/Spam  AND  NOT maildir:/gmail/Sent" :key ?m)
+                                          (:name "Spam" :query "maildir:/gmail/Spam AND date:7d..now" :hide-unread t :key ?p)))
+                      ( mu4e-compose-signature . "Please change my email to 'rileyrg@gmx.de'.")))))
 
-        (defun mu4e-smarter-compose ()
-          "My settings for message composition."
-          (set-fill-column 72)
-          (flyspell-mode))
+  (defun mu4e-smarter-compose ()
+    "My settings for message composition."
+    (set-fill-column 72)
+    (flyspell-mode))
 
-        (defun rgr/mu4e-refresh()
-          (interactive)
-          (when (featurep 'alert)
-            (alert "refreshing mu4e indexes"))
-          (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
+  (defun rgr/mu4e-refresh()
+    (interactive)
+    (when (featurep 'alert)
+      (alert "refreshing mu4e indexes"))
+    (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
 
-        (add-to-list 'mu4e-view-actions
-                     '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-        (add-to-list 'mu4e-view-actions
-                     '("XWidget View" . mu4e-action-view-with-xwidget) t)
-        (add-to-list 'mu4e-view-actions
-                     '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
-        (require 'mu4e-contrib)
-        :hook ((mu4e-view-mode . visual-line-mode)
-               (mu4e-compose-mode . mu4e-smarter-compose)
-               (mu4e-view-mode-hook .
-                                    (lambda()
-                                      ;; try to emulate some of the eww key-bindings
-                                      (local-set-key (kbd "<tab>") 'shr-next-link)
-                                      (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-        :bind	  (("C-c u".  'mu4e)
-                 (:map mu4e-main-mode-map
-                       ("m" . mu4e-compose-new))
-                 (:map mu4e-main-mode-map
-                       ("g" . rgr/mu4e-refresh))
-                 (:map mu4e-headers-mode-map
-                       ("C-c u" . mu4e-headers-mark-all-unread-read))))
-      ;;(
-      ;;:map mu4e-view-mode-map
-      ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
+  (add-to-list 'mu4e-view-actions
+               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  (add-to-list 'mu4e-view-actions
+               '("XWidget View" . mu4e-action-view-with-xwidget) t)
+  (add-to-list 'mu4e-view-actions
+               '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
+  (require 'mu4e-contrib)
+  :hook ((mu4e-view-mode . visual-line-mode)
+         (mu4e-compose-mode . mu4e-smarter-compose)
+         (mu4e-view-mode-hook .
+                              (lambda()
+                                ;; try to emulate some of the eww key-bindings
+                                (local-set-key (kbd "<tab>") 'shr-next-link)
+                                (local-set-key (kbd "<backtab>") 'shr-previous-link))))
+  :bind	  (("C-c u".  'mu4e)
+           (:map mu4e-main-mode-map
+                 ("m" . mu4e-compose-new))
+           (:map mu4e-main-mode-map
+                 ("g" . rgr/mu4e-refresh))
+           (:map mu4e-headers-mode-map
+                 ("C-c u" . mu4e-headers-mark-all-unread-read))))
+;;(
+;;:map mu4e-view-mode-map
+;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
     #+end_src
 ** Screen recording
    :PROPERTIES:
@@ -2584,9 +2577,9 @@
     :END:
     do screen recording directly from emacs
     #+begin_src emacs-lisp
-      (use-package camcorder
-        :custom
-        (camcorder-output-directory  "~/tmp"))
+(use-package camcorder
+  :custom
+  (camcorder-output-directory  "~/tmp"))
     #+end_src
 *** Emacs screencasts
     :PROPERTIES:
@@ -2594,8 +2587,8 @@
     :END:
     Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
     #+begin_src emacs-lisp
-      (use-package keycast
-        )
+(use-package keycast
+  )
 
     #+end_src
 
@@ -2612,7 +2605,7 @@
     Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 
     #+begin_src emacs-lisp
-      (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
+(require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
     #+end_src
 
 **** scratch,messages
@@ -2620,13 +2613,13 @@
      :ID:       563d21f1-803e-40b1-9689-fa95ca9f44c3
      :END:
      #+begin_src emacs-lisp
-       (use-package scratch
-         :bind ("<f2>" . (lambda()
-                           (interactive)
-                           (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
-         ("C-<f2>" . (lambda()
-                       (interactive)
-                       (switch-to-buffer(messages-buffer)))))
+(use-package scratch
+  :bind ("<f2>" . (lambda()
+                    (interactive)
+                    (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
+  ("C-<f2>" . (lambda()
+                (interactive)
+                (switch-to-buffer(messages-buffer)))))
      #+end_src
 **** rgr/elisp-utils library
      :PROPERTIES:
@@ -2643,9 +2636,9 @@
         too much hassle. not 1337 enough
       :END:
       #+begin_src emacs-lisp
-        (use-package smartparens
-          :hook
-          ((emacs-lisp-mode . smartparens-mode)))
+(use-package smartparens
+  :hook
+  ((emacs-lisp-mode . smartparens-mode)))
       #+end_src
 ***** CANCELLED electric-pair-mode                                :CANCELLED:
       CLOSED: [2021-05-13 Thu 21:53]
@@ -2657,18 +2650,18 @@
       :END:
       [[info:emacs#Matching][auto insert closing brackets]]
       #+begin_src emacs-lisp
-        (use-package emacs
-          :hook
-          ((emacs-lisp-mode . electric-pair-mode)))
+(use-package emacs
+  :hook
+  ((emacs-lisp-mode . electric-pair-mode)))
       #+end_src
 ***** elisp checks
       :PROPERTIES:
       :ID:       ca5b425c-df7f-47e9-a095-a5c59159ceb4
       :END:
       #+begin_src emacs-lisp
-        (defun rgr/elisp-edit-mode()
-          "return non nil if this buffer edits elisp"
-          (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
+(defun rgr/elisp-edit-mode()
+  "return non nil if this buffer edits elisp"
+  (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
       #+end_src
 ***** linting                                                          :lint:
       :PROPERTIES:
@@ -2676,44 +2669,44 @@
       :END:
       [[https://github.com/purcell/package-lint][package-lint]] provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
       #+begin_src emacs-lisp
-        (use-package package-lint)
+(use-package package-lint)
       #+end_src
 ***** helpful, enriched elisp help
       :PROPERTIES:
       :ID:       e5517321-9188-4c5f-abfe-6511580c6193
       :END:
       #+begin_src emacs-lisp
-        (use-package helpful
-          :config
-          ;; Note that the built-in `describe-function' includes both functions
-          ;; and macros. `helpful-function' is functions only, so we provide
-          ;; `helpful-callable' as a drop-in replacement.
-          (global-set-key (kbd "C-h e")
-                          (lambda()
-                            (interactive)
-                            (if(get-buffer "*info*")
-                                (switch-to-buffer "*info*")
-                              (info "elisp"))))
-          (global-set-key (kbd "C-h f") #'helpful-callable)
+(use-package helpful
+  :config
+  ;; Note that the built-in `describe-function' includes both functions
+  ;; and macros. `helpful-function' is functions only, so we provide
+  ;; `helpful-callable' as a drop-in replacement.
+  (global-set-key (kbd "C-h e")
+                  (lambda()
+                    (interactive)
+                    (if(get-buffer "*info*")
+                        (switch-to-buffer "*info*")
+                      (info "elisp"))))
+  (global-set-key (kbd "C-h f") #'helpful-callable)
 
-          (global-set-key (kbd "C-h v") #'helpful-variable)
-          (global-set-key (kbd "C-h k") #'helpful-key)
-          ;;I also recommend the following keybindings to get the most out of helpful:
-          ;; Lookup the current symbol at point. C-c C-d is a common keybinding
-          ;; for this in lisp modes.
-          (global-set-key (kbd "C-h SPC") #'helpful-at-point)
-          ;; Look up *F*unctions (excludes macros).
-          ;;
-          ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
-          ;; already links to the manual, if a function is referenced there.
-          (global-set-key (kbd "C-h F") #'helpful-function)
+  (global-set-key (kbd "C-h v") #'helpful-variable)
+  (global-set-key (kbd "C-h k") #'helpful-key)
+  ;;I also recommend the following keybindings to get the most out of helpful:
+  ;; Lookup the current symbol at point. C-c C-d is a common keybinding
+  ;; for this in lisp modes.
+  (global-set-key (kbd "C-h SPC") #'helpful-at-point)
+  ;; Look up *F*unctions (excludes macros).
+  ;;
+  ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+  ;; already links to the manual, if a function is referenced there.
+  (global-set-key (kbd "C-h F") #'helpful-function)
 
-          ;; Look up *C*ommands.
-          ;;
-          ;; By default, C-h C is bound to describe `describe-coding-system'. I
-          ;; don't find this very useful, but it's frequently useful to only
-          ;; look at interactive functions.
-          (global-set-key (kbd "C-h C") #'helpful-command))
+  ;; Look up *C*ommands.
+  ;;
+  ;; By default, C-h C is bound to describe `describe-coding-system'. I
+  ;; don't find this very useful, but it's frequently useful to only
+  ;; look at interactive functions.
+  (global-set-key (kbd "C-h C") #'helpful-command))
       #+end_src
 ***** elisp popup context help                                  :popup:elisp:
       :PROPERTIES:
@@ -2726,38 +2719,38 @@
       :END:
       Display a poup containing docstring at point
       #+begin_src emacs-lisp
-        (use-package el-docstring-sap-
-          :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
-          :hook
-          (emacs-lisp-mode . el-docstring-sap-mode)
-          :bind
-          ("M-<f2>" . el-docstring-sap-display)
-          ("M-<f1>" . el-docstring-sap-mode))
+(use-package el-docstring-sap-
+  :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+  :hook
+  (emacs-lisp-mode . el-docstring-sap-mode)
+  :bind
+  ("M-<f2>" . el-docstring-sap-display)
+  ("M-<f1>" . el-docstring-sap-mode))
 
       #+end_src
 ***** lispy
       #+begin_src emacs-lisp
-        (use-package lispy
-          :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
+(use-package lispy
+  :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
       #+end_src
 ***** Elisp debugging
       :PROPERTIES:
       :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
       :END:
       #+begin_src emacs-lisp
-        (use-package
-          edebug-x
-          :demand t
-          :init
-          (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
-          ;;(edebug-trace nil)
-          :config
-          (require 'edebug)
-          (defun instrumentForDebugging()
-            "use the universal prefix arg (C-u) to remove instrumentation"
-            (interactive)
-            (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
-          )
+(use-package
+  edebug-x
+  :demand t
+  :init
+  (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
+  ;;(edebug-trace nil)
+  :config
+  (require 'edebug)
+  (defun instrumentForDebugging()
+    "use the universal prefix arg (C-u) to remove instrumentation"
+    (interactive)
+    (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
+  )
       #+end_src
 
       #+RESULTS:
@@ -2767,42 +2760,42 @@
       :ID:       d360a0c5-e21a-445b-a9ae-d97d33dce966
       :END:
       #+begin_src emacs-lisp
-        (use-package
-          elisp-format
-          :bind
-          (:map emacs-lisp-mode-map
-                ("C-c f" . elisp-format-region)))
+(use-package
+  elisp-format
+  :bind
+  (:map emacs-lisp-mode-map
+        ("C-c f" . elisp-format-region)))
       #+end_src
 ***** popup query symbol
       :PROPERTIES:
       :ID:       4745e152-bad7-4a31-8f9b-79cb62cdb430
       :END:
       #+begin_src emacs-lisp
-        (use-package popup
-          :config
-          (defun rgr/show-symbol-details ()
-            (interactive)
-            (popup-tip (format "intern-soft thing-at-point: %s, symbolp: %s, symbol-name:%s"
-                               (setq-local sym (intern-soft (thing-at-point 'symbol)))
-                               (symbolp sym)
-                               (symbol-name sym))))
-          :bind
-          (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
+(use-package popup
+  :config
+  (defun rgr/show-symbol-details ()
+    (interactive)
+    (popup-tip (format "intern-soft thing-at-point: %s, symbolp: %s, symbol-name:%s"
+                       (setq-local sym (intern-soft (thing-at-point 'symbol)))
+                       (symbolp sym)
+                       (symbol-name sym))))
+  :bind
+  (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
       #+end_src
 ***** provide
       :PROPERTIES:
       :ID:       7dcc7be3-1449-44e8-aed9-c223334e150f
       :END:
       #+begin_src emacs-lisp
-        (provide 'rgr/elisp-utils)
+(provide 'rgr/elisp-utils)
       #+end_src
 *** prog-mode hack
     :PROPERTIES:
     :ID:       2e3c4e82-1056-47ea-ba0a-e4492fe56709
     :END:
     #+begin_src emacs-lisp
-      (unless (fboundp 'prog-mode)
-        (defalias 'prog-mode 'fundamental-mode))
+(unless (fboundp 'prog-mode)
+  (defalias 'prog-mode 'fundamental-mode))
     #+end_src
 *** linum-mode Show Line numbers
     :PROPERTIES:
@@ -2812,27 +2805,27 @@
     :PROPERTIES:
     :END:
     #+begin_src emacs-lisp
-      (global-set-key (kbd "S-<f2>") 'linum-mode)
-      (add-hook 'prog-mode-hook (lambda() (linum-mode t)))
+(global-set-key (kbd "S-<f2>") 'linum-mode)
+(add-hook 'prog-mode-hook (lambda() (linum-mode t)))
     #+end_src
 *** rainbow delimiters
     :PROPERTIES:
     :ID:       0551cfd4-3325-4b79-90e1-d0edd4c1304e
     :END:
     #+begin_src emacs-lisp
-      (use-package rainbow-delimiters
-        :config
-        (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+(use-package rainbow-delimiters
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-      (use-package rainbow-identifiers
-        :config
-        (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+(use-package rainbow-identifiers
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
     #+end_src
 *** Project Management
     Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project/
     #+begin_src emacs-lisp
-      (use-package project)
+(use-package project)
     #+end_src
 *** BASH                                                               :bash:
     :PROPERTIES:
@@ -2843,14 +2836,14 @@
      :ID:       043858ea-c607-49f5-bf6e-74622398d1e5
      :END:
      #+begin_src emacs-lisp
-       ;; try to work with next-error for bash's "set -x" output
-       (use-package compile
-         :config
-         (add-to-list 'compilation-error-regexp-alist
-                      'bash-set-x)
-         (add-to-list 'compilation-error-regexp-alist-alist
-                      '(pascal
-                        "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
+;; try to work with next-error for bash's "set -x" output
+(use-package compile
+  :config
+  (add-to-list 'compilation-error-regexp-alist
+               'bash-set-x)
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(pascal
+                 "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
      #+end_src
 *** JSON, YAML Configuration files                                     :json:
     :PROPERTIES:
@@ -2865,18 +2858,18 @@
      - State "TODO"       from              [2021-05-31 Mon 06:03]
      :END:
      #+begin_src emacs-lisp
-       (use-package json-navigator)
+(use-package json-navigator)
      #+end_src
 **** YAML
      :PROPERTIES:
      :ID:       26c28417-3965-452a-a180-61de98d44ef5
      :END:
      #+begin_src emacs-lisp
-       (use-package
-         yaml-mode
-         :config
-         (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
-         )
+(use-package
+  yaml-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
+  )
 
      #+end_src
 *** Flycheck                                                  :flycheck:lint:
@@ -2885,22 +2878,22 @@
     :END:
     On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Emacs
     #+begin_src emacs-lisp
-      (use-package
-        flycheck
-        :custom
-        (flycheck-global-modes '(not org-mode org-src-mode))
-        (flycheck-emacs-lisp-load-path 'inherit)
-        ;;(flycheck-check-syntax-automatically '(save))
-        :config (use-package
-                  flycheck-pos-tip
-                  :config
-                  (flycheck-pos-tip-mode))
-        (global-flycheck-mode +1)
-        :bind ("<f8>" . (lambda()
-                          (interactive)
-                          (flycheck-mode 'toggle)
-                          (let((s (if flycheck-mode "on" "off")))
-                            (message "flycheck %s" s)))))
+(use-package
+  flycheck
+  :custom
+  (flycheck-global-modes '(not org-mode org-src-mode))
+  (flycheck-emacs-lisp-load-path 'inherit)
+  ;;(flycheck-check-syntax-automatically '(save))
+  :config (use-package
+            flycheck-pos-tip
+            :config
+            (flycheck-pos-tip-mode))
+  (global-flycheck-mode +1)
+  :bind ("<f8>" . (lambda()
+                    (interactive)
+                    (flycheck-mode 'toggle)
+                    (let((s (if flycheck-mode "on" "off")))
+                      (message "flycheck %s" s)))))
     #+end_src
 *** Version Control                                                  :git:vc:
     :PROPERTIES:
@@ -2914,14 +2907,14 @@
      magit
      :END:
      #+begin_src emacs-lisp
-       (use-package
-         magit
-         :custom
-         (vc-handled-backends '(git))
-         :config
-         (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-         :bind
-         ("C-x g" . magit-status))
+(use-package
+  magit
+  :custom
+  (vc-handled-backends '(git))
+  :config
+  (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
+  :bind
+  ("C-x g" . magit-status))
      #+end_src
 ***** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
       :PROPERTIES:
@@ -2931,8 +2924,8 @@
       - State "CANCELLED"  from              [2021-04-23 Fr 23:10]
       :END:
       #+begin_src emacs-lisp
-        (use-package orgit
-          :after magit)
+(use-package orgit
+  :after magit)
       #+end_src
 **** EDiff - comparing files in Emacs                            :diff:ediff:
      :PROPERTIES:
@@ -2940,14 +2933,14 @@
      :header-args:emacs-lisp: :tangle no
      :END:
      #+begin_src emacs-lisp
-       (use-package ediff+
-         :custom
-         (ediff-window-setup-function 'ediff-setup-windows-plain)
-         (ediff-split-window-function 'split-window-horizontally)
-         :config
-         (when (fboundp 'winnder-undo)
-           (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
-         :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
+(use-package ediff+
+  :custom
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (ediff-split-window-function 'split-window-horizontally)
+  :config
+  (when (fboundp 'winnder-undo)
+    (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
+  :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
      #+end_src
 
 **** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests                        :forge:git:github:
@@ -2955,10 +2948,10 @@
      :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
      :END:
      #+begin_src emacs-lisp
-       (use-package forge
-         :after magit
-         :config
-         (use-package orgit-forge))
+(use-package forge
+  :after magit
+  :config
+  (use-package orgit-forge))
      #+end_src
 
 ***** token                                                     :crypt:token:
@@ -2990,11 +2983,11 @@
      :END:
      [[https://github.com/emacsorphanage/git-gutter][git-gutter.el]] is  an Emacs port of the Sublime Text plugin GitGutter.
      #+begin_src emacs-lisp
-       (use-package git-gutter
-         :config
-         (global-git-gutter-mode +1)
-         :bind
-         ("C-x v ="  . git-gutter:popup-hunk))
+(use-package git-gutter
+  :config
+  (global-git-gutter-mode +1)
+  :bind
+  ("C-x v ="  . git-gutter:popup-hunk))
      #+end_src
 *** Javascript                                                           :js:
     :PROPERTIES:
@@ -3002,39 +2995,39 @@
     :END:
     #+begin_src emacs-lisp
 
-      (use-package rjsx-mode
-        :config
-        (use-package npm-mode)
-        (defun rgr/js2-mode-hook ()
-          ;;         (setq-local zeal-at-point-docset '("JavaScript" "jQuery"))
-          (npm-mode t)
-          (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
-        (add-hook 'js2-mode-hook 'rgr/js2-mode-hook)
-        :init
-        ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . js2-mode))
-        ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
-        (add-to-list 'auto-mode-alist '("\\.js?\\'" . rjsx-mode))
-        (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
-        )
+(use-package rjsx-mode
+  :config
+  (use-package npm-mode)
+  (defun rgr/js2-mode-hook ()
+    ;;         (setq-local zeal-at-point-docset '("JavaScript" "jQuery"))
+    (npm-mode t)
+    (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
+  (add-hook 'js2-mode-hook 'rgr/js2-mode-hook)
+  :init
+  ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . js2-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
+  (add-to-list 'auto-mode-alist '("\\.js?\\'" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
+  )
 
-      (use-package prettier-js
-        :custom
-        (prettier-js-args '(
-                            "--trailing-comma" "all"
-                            "--bracket-spacing" "false"
-                            "--print-width" "80"
-                            )))
+(use-package prettier-js
+  :custom
+  (prettier-js-args '(
+                      "--trailing-comma" "all"
+                      "--bracket-spacing" "false"
+                      "--print-width" "80"
+                      )))
 
-      (defun rgr/js-mode-hook ()
-        (setq-local js-indent-level 2)
-        (prettier-js-mode t)
-        (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
+(defun rgr/js-mode-hook ()
+  (setq-local js-indent-level 2)
+  (prettier-js-mode t)
+  (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
 
-      (add-hook 'js-mode-hook 'rgr/js-mode-hook)
+(add-hook 'js-mode-hook 'rgr/js-mode-hook)
 
 
 
-      ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
+;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
     #+end_src
 *** RJSX
     :PROPERTIES:
@@ -3042,23 +3035,23 @@
     :END:
     [[https://github.com/felipeochoa/rjsx-mode][rjsx-mode]] extends js2-mode to include jsx parsing.
     #+begin_src emacs-lisp
-      (use-package rjsx-mode
-        :disabled t
-        :init
-        (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
-        (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
-        )
+(use-package rjsx-mode
+  :disabled t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
+  )
     #+end_src
 *** Typescript
     :PROPERTIES:
     :END:
     #+begin_src emacs-lisp
-      (use-package typescript-mode
-        :init
-        (add-to-list 'auto-mode-alist '("\\.ts?\\'" . typescript-mode))
-        (defun rgr/ts-mode-hook ()
-          (setq-local dash-docs-docsets '("React" "JavaScript")))
-        (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
+(use-package typescript-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.ts?\\'" . typescript-mode))
+  (defun rgr/ts-mode-hook ()
+    (setq-local dash-docs-docsets '("React" "JavaScript")))
+  (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     #+end_src
 *** Language Server Protocol (LSP)                                      :lsp:
     :PROPERTIES:
@@ -3068,7 +3061,7 @@
     Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 
     #+begin_src emacs-lisp
-      (require 'rgr/lsp "rgr-lsp" 'NOERROR)
+(require 'rgr/lsp "rgr-lsp" 'NOERROR)
     #+end_src
 
 **** library
@@ -3077,164 +3070,164 @@
      :END:
 
      #+begin_src emacs-lisp
-       ;; if you want to change prefix for lsp-mode keybindings.
-       (use-package lsp-mode
-         :custom
-         (lsp-diagnostic-package :none)
-         :config
-         (use-package
-           lsp-ui
-           :config
-           ;; (use-package lsp-treemacs
-           ;;   :config
-           ;;   (lsp-treemacs-sync-mode 1))
-           (define-key lsp-ui-mode-map [(meta ?.)]  #'lsp-ui-peek-find-definitions)
-           (define-key lsp-ui-mode-map [(meta ??)] #'lsp-ui-peek-find-references)
-           (defun toggle-lsp-ui-sideline ()
-             (interactive)
-             (if lsp-ui-sideline-mode (progn (message "Disable LSP UI Sideline Mode")
-                                             (lsp-ui-sideline-mode -1))
-               (progn (message "Enable LSP UI Sideline Mode")
-                      (lsp-ui-sideline-mode 1))))
-           (defun toggle-lsp-ui-doc ()
-             (interactive)
-             (if lsp-ui-doc-mode (progn (message "Disable LSP UI Doc Mode")
-                                        (lsp-ui-doc-mode -1)
-                                        (lsp-ui-doc--hide-frame))
-               (progn (lsp-ui-doc-mode 1)
-                      (message "Enable LSP UI Doc mode"))))
+;; if you want to change prefix for lsp-mode keybindings.
+(use-package lsp-mode
+  :custom
+  (lsp-diagnostic-package :none)
+  :config
+  (use-package
+    lsp-ui
+    :config
+    ;; (use-package lsp-treemacs
+    ;;   :config
+    ;;   (lsp-treemacs-sync-mode 1))
+    (define-key lsp-ui-mode-map [(meta ?.)]  #'lsp-ui-peek-find-definitions)
+    (define-key lsp-ui-mode-map [(meta ??)] #'lsp-ui-peek-find-references)
+    (defun toggle-lsp-ui-sideline ()
+      (interactive)
+      (if lsp-ui-sideline-mode (progn (message "Disable LSP UI Sideline Mode")
+                                      (lsp-ui-sideline-mode -1))
+        (progn (message "Enable LSP UI Sideline Mode")
+               (lsp-ui-sideline-mode 1))))
+    (defun toggle-lsp-ui-doc ()
+      (interactive)
+      (if lsp-ui-doc-mode (progn (message "Disable LSP UI Doc Mode")
+                                 (lsp-ui-doc-mode -1)
+                                 (lsp-ui-doc--hide-frame))
+        (progn (lsp-ui-doc-mode 1)
+               (message "Enable LSP UI Doc mode"))))
 
-           (defun rgr/lsp-ui-doc-glance (&optional w)
-             "Trigger display hover information popup and hide it on next typing."
-             (interactive)
-             (lsp-describe-thing-at-point)
-             ;; (message "lsp-ui-doc--displayed:%s" lsp-ui-doc--displayed)
-             )
-           (defun rgr/lsp-ui-mode-hook()
-             (lsp-ui-sideline-mode +1)
-             (lsp-ui-doc-mode +1)
-             )
+    (defun rgr/lsp-ui-doc-glance (&optional w)
+      "Trigger display hover information popup and hide it on next typing."
+      (interactive)
+      (lsp-describe-thing-at-point)
+      ;; (message "lsp-ui-doc--displayed:%s" lsp-ui-doc--displayed)
+      )
+    (defun rgr/lsp-ui-mode-hook()
+      (lsp-ui-sideline-mode +1)
+      (lsp-ui-doc-mode +1)
+      )
 
-           (defun rgr/lsp-ui-imenu-view()
-             (interactive)
-             (lsp-ui-imenu--view)
-             )
-
-
-           :bind ((:map lsp-ui-mode-map
-                        ;;("C-q"   . lsp-ui-doc-show)
-                        ("C-S-<f10>" . lsp-ui-imenu)
-                        ("C-<f8>" . rgr/dap-debug)
-                        ("C-c S"   . toggle-lsp-ui-sideline)
-                        ("C-c D"   . toggle-lsp-ui-doc))
-                  (:map lsp-ui-imenu-mode-map
-                        ("<RET>" . rgr/lsp-ui-imenu-view)
-                        ))
-
-           :hook ((lsp-ui-mode . rgr/lsp-ui-mode-hook)))
-
-         (use-package dap-mode
-           :demand t
-           :commands (rgr/dap-debug )
-           :config
-           (setq dap-ui-buffer-configurations
-                 `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
-                   (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
-                   (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
-                   (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
-                   (,"*debug-window*" . ((side . bottom) (slot . 3) (window-width . 0.20)))))
+    (defun rgr/lsp-ui-imenu-view()
+      (interactive)
+      (lsp-ui-imenu--view)
+      )
 
 
-           (setq dap-auto-configure-features '(locals  tooltip))
-           (require 'dap-gdb-lldb)
-           (dap-gdb-lldb-setup)
-           ;; (require 'dap-codelldb)
-           ;;      (dap-codelldb-setup)
-           (require 'dap-cpptools)
-           (dap-cpptools-setup)
-           ;; (add-hook 'dap-stopped-hook (lambda (arg)
-           ;;                               (call-interactively #'dap-hydra)))
+    :bind ((:map lsp-ui-mode-map
+                 ;;("C-q"   . lsp-ui-doc-show)
+                 ("C-S-<f10>" . lsp-ui-imenu)
+                 ("C-<f8>" . rgr/dap-debug)
+                 ("C-c S"   . toggle-lsp-ui-sideline)
+                 ("C-c D"   . toggle-lsp-ui-doc))
+           (:map lsp-ui-imenu-mode-map
+                 ("<RET>" . rgr/lsp-ui-imenu-view)
+                 ))
 
-           (require 'dap-chrome)
+    :hook ((lsp-ui-mode . rgr/lsp-ui-mode-hook)))
 
-           ;; (dap-register-debug-template "Chrome Browse rgr/project"
-           ;;   (list :type "chrome"
-           ;;         :cwd nil
-           ;;         :mode "url"
-           ;;         :request "launch"
-           ;;         :webRoot "/home/rgr/Dropbox/homefiles/development/projects/react/rgr/app/"
-           ;;         :url "http://localhost:3000"
-           ;;         :sourceMap "true"
-           ;;         :name "Chrome Browse rgr/project"))
+  (use-package dap-mode
+    :demand t
+    :commands (rgr/dap-debug )
+    :config
+    (setq dap-ui-buffer-configurations
+          `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
+            (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
+            (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
+            (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
+            (,"*debug-window*" . ((side . bottom) (slot . 3) (window-width . 0.20)))))
+
+
+    (setq dap-auto-configure-features '(locals  tooltip))
+    (require 'dap-gdb-lldb)
+    (dap-gdb-lldb-setup)
+    ;; (require 'dap-codelldb)
+    ;;      (dap-codelldb-setup)
+    (require 'dap-cpptools)
+    (dap-cpptools-setup)
+    ;; (add-hook 'dap-stopped-hook (lambda (arg)
+    ;;                               (call-interactively #'dap-hydra)))
+
+    (require 'dap-chrome)
+
+    ;; (dap-register-debug-template "Chrome Browse rgr/project"
+    ;;   (list :type "chrome"
+    ;;         :cwd nil
+    ;;         :mode "url"
+    ;;         :request "launch"
+    ;;         :webRoot "/home/rgr/Dropbox/homefiles/development/projects/react/rgr/app/"
+    ;;         :url "http://localhost:3000"
+    ;;         :sourceMap "true"
+    ;;         :name "Chrome Browse rgr/project"))
 
 
 
-           (defun rgr/dap-debug()
-             (interactive)
-             (if current-prefix-arg
-                 (call-interactively 'dap-debug)
-               (dap-debug-last)))
-           ;;    (dap-hydra))
+    (defun rgr/dap-debug()
+      (interactive)
+      (if current-prefix-arg
+          (call-interactively 'dap-debug)
+        (dap-debug-last)))
+    ;;    (dap-hydra))
 
-           (defun rgr/lsp-mode-hook()
-             (lsp-enable-which-key-integration))
+    (defun rgr/lsp-mode-hook()
+      (lsp-enable-which-key-integration))
 
-           :bind (:map dap-mode-map
-                       ("<f8>" . dap-continue)
-                       ("C-S-<f8>" . dap-delete-session)
-                       ("<f9>" . dap-hydra)
-                       ("<f10>" . dap-next)
-                       ("<f11>" . dap-step-in)
-                       ("S-<f11>" . dap-step-out)
-                       ))
-         :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-                ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp-deferred)
-                ;; if you want which-key integration
-                (lsp-mode . rgr/lsp-mode-hook)))
+    :bind (:map dap-mode-map
+                ("<f8>" . dap-continue)
+                ("C-S-<f8>" . dap-delete-session)
+                ("<f9>" . dap-hydra)
+                ("<f10>" . dap-next)
+                ("<f11>" . dap-step-in)
+                ("S-<f11>" . dap-step-out)
+                ))
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp-deferred)
+         ;; if you want which-key integration
+         (lsp-mode . rgr/lsp-mode-hook)))
 
-       (provide 'rgr/lsp)
+(provide 'rgr/lsp)
      #+end_src
 ***** [[file:~/development/thirdparty/godot/bin][.dir-local.el]] config for a debug template
       :PROPERTIES:
       :END:
       #+begin_src emacs-lisp  :tangle no
-        ((c++-mode . ((dap-debug-template-configurations . (("Godot LLDB"
-                                                             :type "lldb"
-                                                             :request "launch"
-                                                             :target "/home/rgr/bin/godot")
-                                                            ("Godot GDB"
-                                                             :type "gdb"
-                                                             :request "launch"
-                                                             :target "/home/rgr/bin/godot"))))))
+((c++-mode . ((dap-debug-template-configurations . (("Godot LLDB"
+                                                     :type "lldb"
+                                                     :request "launch"
+                                                     :target "/home/rgr/bin/godot")
+                                                    ("Godot GDB"
+                                                     :type "gdb"
+                                                     :request "launch"
+                                                     :target "/home/rgr/bin/godot"))))))
       #+end_src
 
 *** Serial Port
     :PROPERTIES:
     :END:
     #+begin_src emacs-lisp
-      (defgroup rgr/serial-ports nil
-        "serial port customization"
-        :group 'rgr)
+(defgroup rgr/serial-ports nil
+  "serial port customization"
+  :group 'rgr)
 
-      (defcustom rgr/serialIOPort "/dev/ttyACM0"
-        "Serial device for emacs to display"
-        :type 'string
-        :group 'rgr/serial-ports)
+(defcustom rgr/serialIOPort "/dev/ttyACM0"
+  "Serial device for emacs to display"
+  :type 'string
+  :group 'rgr/serial-ports)
 
-      (defcustom rgr/serialIOPortBaud 9600
-        "Default serial baud rate"
-        :type 'integer
-        :group 'rgr/serial-ports)
+(defcustom rgr/serialIOPortBaud 9600
+  "Default serial baud rate"
+  :type 'integer
+  :group 'rgr/serial-ports)
 
-      (defun selectSerialPortBuffer()
-        (setq ser (get-buffer rgr/serialIOPort))
-        (if ser (switch-to-buffer ser)
-          (serial-term rgr/serialIOPort rgr/serialIOPortBaud)))
+(defun selectSerialPortBuffer()
+  (setq ser (get-buffer rgr/serialIOPort))
+  (if ser (switch-to-buffer ser)
+    (serial-term rgr/serialIOPort rgr/serialIOPortBaud)))
 
-      (global-set-key (kbd "C-c s")
-                      (lambda()
-                        (interactive)
-                        (selectSerialPortBuffer)))
+(global-set-key (kbd "C-c s")
+                (lambda()
+                  (interactive)
+                  (selectSerialPortBuffer)))
     #+end_src
 *** PlatformIO
     :PROPERTIES:
@@ -3242,7 +3235,7 @@
     [[https://github.com/emacsmirror/platformio-mode][platformio-mode]] is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [[https://docs.platformio.org/en/latest/ide/emacs.html][here]].
     #+begin_src emacs-lisp
-      (use-package platformio-mode)
+(use-package platformio-mode)
     #+end_src
 *** Python                                                           :python:
     :PROPERTIES:
@@ -3253,50 +3246,50 @@
      :ID:       d14b8271-2894-4ef1-931e-173c9d4d8503
      :END:
      #+begin_src emacs-lisp
-       (use-package  python
-         :config
-         (defun rgr/python-shell-send-buffer(orig-func &rest args)
-           "create a python shell if there isnt one"
-           (interactive)
-           (save-selected-window
-             (save-excursion(run-python))
-             (apply orig-func current-prefix-arg)
-             (unless (get-buffer-window (python-shell-get-buffer))
-               (switch-to-buffer-other-window (python-shell-get-buffer)))))
-         (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer))
+(use-package  python
+  :config
+  (defun rgr/python-shell-send-buffer(orig-func &rest args)
+    "create a python shell if there isnt one"
+    (interactive)
+    (save-selected-window
+      (save-excursion(run-python))
+      (apply orig-func current-prefix-arg)
+      (unless (get-buffer-window (python-shell-get-buffer))
+        (switch-to-buffer-other-window (python-shell-get-buffer)))))
+  (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer))
      #+end_src
 **** ipython
      :LOGBOOK:
      - State "SOMEDAY"    from              [2021-04-03 Sa 09:41]
      :END:
      #+begin_src emacs-lisp
-       (setq python-shell-interpreter "ipython")
-       (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
+(setq python-shell-interpreter "ipython")
+(setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
      #+end_src
 **** lsp                                                                :lsp:
 ***** microsoft python language server                                  :lsp:
       #+begin_src emacs-lisp
-        (use-package lsp-python-ms
-          :custom
-          (lsp-python-ms-auto-install-server t)
-          (lsp-python-ms-parse-dot-env-enabled t)
-          :config
-          (require 'lsp-python-ms)
-          :hook (python-mode . (lambda ()
-                                 (lsp-deferred))))
+(use-package lsp-python-ms
+  :custom
+  (lsp-python-ms-auto-install-server t)
+  (lsp-python-ms-parse-dot-env-enabled t)
+  :config
+  (require 'lsp-python-ms)
+  :hook (python-mode . (lambda ()
+                         (lsp-deferred))))
       #+end_src
 **** virtualenv                                                  :virtualenv:
      #+begin_src emacs-lisp
-       (use-package auto-virtualenv
-         :config
-         (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
+(use-package auto-virtualenv
+  :config
+  (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
      #+end_src
 **** blacken reformatting                                           :blacken:
      #+begin_src emacs-lisp
-       (use-package blacken
-         :demand t
-         :config
-         (add-hook 'python-mode-hook  #'blacken-mode))
+(use-package blacken
+  :demand t
+  :config
+  (add-hook 'python-mode-hook  #'blacken-mode))
      #+end_src
 *** C                                                                     :c:
     :PROPERTIES:
@@ -3307,19 +3300,19 @@
      :ID:       42ededa2-d031-47ae-9489-1bd0eec621c6
      :END:
      #+begin_src emacs-lisp
-       (use-package clang-format)
-       (setq clang-format-style-option "llvm")
-       (fset 'c-indent-region 'clang-format-region)
-       (fset 'c-indent-buffer 'clang-format-buffer)
+(use-package clang-format)
+(setq clang-format-style-option "llvm")
+(fset 'c-indent-region 'clang-format-region)
+(fset 'c-indent-buffer 'clang-format-buffer)
      #+end_src
 *** C++                                                                 :cpp:
     :PROPERTIES:
     :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b
     :END:
     #+begin_src emacs-lisp
-      (defun rgr/c++-mode-hook ()
-        (setq-local dash-docs-docsets '("C++")))
-      (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
+(defun rgr/c++-mode-hook ()
+  (setq-local dash-docs-docsets '("C++")))
+(add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     #+end_src
 *** Linux tools
     :PROPERTIES:
@@ -3329,11 +3322,11 @@
      :ID:       bfd57f96-8cc4-41a1-81ab-e683345664e1
      :END:
      #+begin_src emacs-lisp
-       (use-package logview
-         :demand t
-         :init
-         (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
-         (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
+(use-package logview
+  :demand t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
+  (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
      #+end_src
 *** Assembler
     :PROPERTIES:
@@ -3344,7 +3337,7 @@
      :ID:       feb458b6-b2ab-4553-b2d9-95c121b29e7e
      :END:
      #+begin_src emacs-lisp
-       (use-package strace-mode)
+(use-package strace-mode)
      #+end_src
 *** Godot GDScript                                                    :godot:
     :PROPERTIES:
@@ -3353,25 +3346,25 @@
     :END:
     This [[https://github.com/GDQuest/emacs-gdscript-mode][package]] adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     #+begin_src emacs-lisp
-      (use-package gdscript-mode
-        ;;       :disabled t
-        :straight (gdscript-mode
-                   :type git
-                   :host github
-                   :repo "rileyrg/emacs-gdscript-mode")
-        :init
-        (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
-          "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
-          (if (string-equal major-mode "gdscript-mode")
-              (let ((json-data (nth 0 args)))
-                (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
-                         (not (gethash "id" json-data nil))
-                         (not (gethash "method" json-data nil)))
-                    nil ; (message "Method not found")
-                  (apply original-function args)))
+(use-package gdscript-mode
+  ;;       :disabled t
+  :straight (gdscript-mode
+             :type git
+             :host github
+             :repo "rileyrg/emacs-gdscript-mode")
+  :init
+  (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
+    "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
+    (if (string-equal major-mode "gdscript-mode")
+        (let ((json-data (nth 0 args)))
+          (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
+                   (not (gethash "id" json-data nil))
+                   (not (gethash "method" json-data nil)))
+              nil ; (message "Method not found")
             (apply original-function args)))
-        (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
-        )
+      (apply original-function args)))
+  (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
+  )
     #+end_src
 
 *** Web,Symfony and Twig
@@ -3402,14 +3395,14 @@
       :END:
 
       #+begin_src emacs-lisp
-        (defgroup rgr/symfony nil
-          "Symfony Development"
-          :group 'rgr)
+(defgroup rgr/symfony nil
+  "Symfony Development"
+  :group 'rgr)
 
-        (defcustom symfony-server-command "~/.symfony/bin/symfony server:start"
-          "Start the symfony web server"
-          :type 'string
-          :group 'rgr/symfony)
+(defcustom symfony-server-command "~/.symfony/bin/symfony server:start"
+  "Start the symfony web server"
+  :type 'string
+  :group 'rgr/symfony)
       #+end_src
 
 ***** Start a symfony web server when applicable
@@ -3417,28 +3410,28 @@
       :ID:       e985339e-df07-40f2-b0c6-0356749a21c4
       :END:
       #+begin_src emacs-lisp
-        (use-package php-mode
-          :custom
-          (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
-          :config
-          (add-to-list 'display-buffer-alist
-                       (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
-          (defun start-symfony-web-server()
-            (interactive)
-            (let ((default-directory (project-root (project-current t))))
-              (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
-                  (async-shell-command symfony-server-command "*Symfony Web Server*"))))
-          (defun php-mode-webserver-hook ()
-            (interactive)
-            (start-symfony-web-server)
-            ))
+(use-package php-mode
+  :custom
+  (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
+  :config
+  (add-to-list 'display-buffer-alist
+               (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
+  (defun start-symfony-web-server()
+    (interactive)
+    (let ((default-directory (project-root (project-current t))))
+      (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
+          (async-shell-command symfony-server-command "*Symfony Web Server*"))))
+  (defun php-mode-webserver-hook ()
+    (interactive)
+    (start-symfony-web-server)
+    ))
       #+end_src
 
       We can trigger it using a .dir-locals.el
 
       #+begin_src emacs-lisp :tangle no
-        ((php-mode
-          (eval php-mode-webserver-hook)))
+((php-mode
+  (eval php-mode-webserver-hook)))
       #+end_src
 
 
@@ -3448,25 +3441,25 @@
       :ID:       1f6b744d-f3f8-4d7b-abbe-e8d765ee3cc8
       :END:
       #+begin_src emacs-lisp
-        (use-package
-          web-mode
-          ;;:disabled t
-          :demand t
-          :config
-          (defun rgr/web-mode-hook()
-            (setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
-            )
-          (add-hook 'web-mode-hook 'rgr/web-mode-hook)
-          ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-          ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.twig\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
+(use-package
+  web-mode
+  ;;:disabled t
+  :demand t
+  :config
+  (defun rgr/web-mode-hook()
+    (setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
+    )
+  (add-hook 'web-mode-hook 'rgr/web-mode-hook)
+  ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.twig\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
       #+end_src
 
 *** elf-mode - view the symbol list in a binary
@@ -3476,10 +3469,10 @@
     [[https://oremacs.com/2016/08/28/elf-mode/][https://oremacs.com/2016/08/28/elf-mode/]]
 
     #+begin_src emacs-lisp
-      (use-package elf-mode
-        :demand t
-        :config
-        (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
+(use-package elf-mode
+  :demand t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     #+end_src
 ** Themes                                                            :themes:
    :PROPERTIES:
@@ -3491,16 +3484,16 @@
     :END:
     https://github.com/protesilaos/modus-themes
     #+begin_src emacs-lisp
-      (use-package modus-themes
-        :init
-        ;; Add all your customizations prior to loading the themes
-        (setq modus-themes-slanted-constructs t
-              modus-themes-bold-constructs nil)
+(use-package modus-themes
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-slanted-constructs t
+        modus-themes-bold-constructs nil)
 
-        ;; Load the theme files before enabling a theme
-        (modus-themes-load-themes)
-        :config
-        (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
+  ;; Load the theme files before enabling a theme
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
     #+end_src
 *** humanoid themes
     :PROPERTIES:
@@ -3509,10 +3502,10 @@
     :END:
     https://github.com/humanoid-colors/emacs-humanoid-themes
     #+begin_src emacs-lisp
-      (use-package humanoid-themes
-        :init
-        ;; Add all your customizations prior to loading the themes
-        (load-theme 'humanoid-dark t))
+(use-package humanoid-themes
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (load-theme 'humanoid-dark t))
     #+end_src
 
 ** Late load
@@ -3520,7 +3513,7 @@
    :ID:       574516c0-a821-47fb-b01f-97ec19789d65
    :END:
    #+begin_src emacs-lisp
-     (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
+(load-el-gpg (no-littering-expand-etc-file-name "late-load"))
    #+end_src
 * Associated emacs things
   :PROPERTIES:
@@ -3551,12 +3544,12 @@
     :ID:       f51974ce-8b80-496e-ac0b-32b0962669d9
     :END:
     #+begin_src bash :tangle .git/hooks/pre-commit
-      #!/bin/sh
-      branch="$(git rev-parse --abbrev-ref HEAD)"
-      if [ "$branch" = "master" ]; then
-          echo "You can't commit directly to master branch"
-          exit 1
-      fi
+#!/bin/sh
+branch="$(git rev-parse --abbrev-ref HEAD)"
+if [ "$branch" = "master" ]; then
+    echo "You can't commit directly to master branch"
+    exit 1
+fi
     #+end_src
 ** Setting up emacs as a default editor using a dot desktop file and associated protocol handler
    :PROPERTIES:
@@ -3568,11 +3561,11 @@
     :END:
     ~xdebug.file_link_format~ is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of  [[file+sys:editor-config/emacsclient.desktop][emacsclient.desktop]]  documented below.
     #+begin_src conf :tangle editor-config/php.ini"
-      xdebug.file_link_format = "emacsclient://%f@%l"
+xdebug.file_link_format = "emacsclient://%f@%l"
 
-      xdebug.remote_enable = 1
-      xdebug.remote_host = localhost
-      xdebug.remote_port = 9000
+xdebug.remote_enable = 1
+xdebug.remote_host = localhost
+xdebug.remote_port = 9000
     #+end_src
     #+include: "./editor-config/php.ini" src eshell
 *** [[file:bin/emacsclient-linenumber][emacsclient-linenumber]] script to correctly parse the protocol in order to start emacs frame at correct line
@@ -3580,20 +3573,20 @@
     :ID:       6e22d271-57bb-47a0-853e-acbc91f1cbd4
     :END:
     #+begin_src bash :tangle bin/emacsclient-linenumber
-      #!/usr/bin/bash
-      # Maintained in emacs-config.org
-      export GDK_NATIVE_WINDOWS=1
-      file=`echo "$@" | sed 's/.*://;s/@.*$//'`
-      line=`echo "$@" | sed 's/.*@//'`
-      echo $file
-      echo $line
+#!/usr/bin/bash
+# Maintained in emacs-config.org
+export GDK_NATIVE_WINDOWS=1
+file=`echo "$@" | sed 's/.*://;s/@.*$//'`
+line=`echo "$@" | sed 's/.*@//'`
+echo $file
+echo $line
 
-      re='^[0-9]+$'
-      if ! [[ $line =~ $re ]] ; then
-          exec emacsclient -c -a ""  $file
-      else
-          exec emacsclient -c -a "" +$line  $file
-      fi
+re='^[0-9]+$'
+if ! [[ $line =~ $re ]] ; then
+    exec emacsclient -c -a ""  $file
+else
+    exec emacsclient -c -a "" +$line  $file
+fi
     #+end_src
 *** Gnome protocol handler desktop file
     :PROPERTIES:
@@ -3606,7 +3599,7 @@
     Update the desktop database:
 
     #+begin_src bash
-      update-desktop-database ~/.local/share/applications
+update-desktop-database ~/.local/share/applications
     #+end_src
 
     now allows emacsclient to be called.
@@ -3614,7 +3607,7 @@
     note: symlink the deprecated [[https://wiki.archlinux.org/index.php/XDG_MIME_Applications][~/.local/share/applications/mimeapps.lst]] to the one in ~/.config
 
     #+begin_src bash
-      ln -sf  ~/config/mimeapps.lst ~/.local/share/applications/
+ln -sf  ~/config/mimeapps.lst ~/.local/share/applications/
     #+end_src
 *** Always using emacsclient
     :PROPERTIES:
@@ -3622,38 +3615,38 @@
     :END:
     Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc:
     #+begin_src shell
-      alias emacs='emacsclient --create-frame --alternate-editor=""'
+alias emacs='emacsclient --create-frame --alternate-editor=""'
     #+end_src
 ** [[file:bin/emacs-same-frame][bin/emacs-same-frame]] open emacs in the same frame
    :PROPERTIES:
    :ID:       b85efbb3-22c8-46cb-937c-d398165750ad
    :END:
    #+begin_src bash :tangle bin/emacs-same-frame
-     #!/bin/bash
-     emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
-     if [ "$?" = "1" ]; then
-         emacsclient -n -c -a "" "$@" #none found so create frame
-     else
-         emacsclient -n -a "" "$@"
-         pop-window "Emacs"
-     fi
+#!/bin/bash
+emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
+if [ "$?" = "1" ]; then
+    emacsclient -n -c -a "" "$@" #none found so create frame
+else
+    emacsclient -n -a "" "$@"
+    pop-window "Emacs"
+fi
    #+end_src
 ** compiling emacs
 *** ~/bin/emacs-compile-opt
     #+begin_src bash :tangle bin/emacs-compile-opt
-      #!/usr/bin/bash
-      #Maintained in emacs-config.org
-      cd ~/development/projects/C/emacs/
-      mkdir -p emacs-build
-      ./configure --prefix=`pwd`/emacs-build --with-x-toolkit=lucid
-      make && make install
+#!/usr/bin/bash
+#Maintained in emacs-config.org
+cd ~/development/projects/C/emacs/
+mkdir -p emacs-build
+./configure --prefix=`pwd`/emacs-build --with-x-toolkit=lucid
+make && make install
     #+end_src
 *** ~/bin/emacs-compile-dbg
     #+begin_src bash :tangle bin/emacs-compile-dbg
-  #!/usr/bin/bash
-  #Maintained in emacs-config.org
-  cd ~/development/projects/C/emacs/
-  mkdir -p emacs-build-dbg
-  ./configure --prefix=`pwd`/emacs-build-dbg --with-x-toolkit=lucid --enable-checking='yes,glyphs' --enable-check-lisp-object-type CFLAGS='-O0 -g3'
-  make && make install
-#+end_src
+#!/usr/bin/bash
+#Maintained in emacs-config.org
+cd ~/development/projects/C/emacs/
+mkdir -p emacs-build-dbg
+./configure --prefix=`pwd`/emacs-build-dbg --with-x-toolkit=lucid --enable-checking='yes,glyphs' --enable-check-lisp-object-type CFLAGS='-O0 -g3'
+make && make install
+    #+end_src

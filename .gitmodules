@@ -1,13 +1,22 @@
+[submodule "auto-compile"]
+	path = lib/auto-compile
+	url = git@github.com:emacscollective/auto-compile.git
 [submodule "borg"]
 	path = lib/borg
 	url = git@github.com:emacscollective/borg.git
+[submodule "closql"]
+	path = lib/closql
+	url = git@github.com:emacscollective/closql.git
 [submodule "emacsql"]
 	no-byte-compile = emacsql-pg.el
 	path = lib/emacsql
 	url = git@github.com:skeeto/emacsql.git
-[submodule "closql"]
-	path = lib/closql
-	url = git@github.com:emacscollective/closql.git
 [submodule "epkg"]
 	path = lib/epkg
 	url = git@github.com:emacscollective/epkg.git
+[submodule "packed"]
+	path = lib/packed
+	url = git@github.com:emacscollective/packed.git
+[submodule "use-package"]
+	path = lib/use-package
+	url = git@github.com:jwiegley/use-package.git

@@ -1,9 +1,16 @@
+  ;;; init.el --- init  -*- no-byte-compile: t -*-
+
 (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
 (load custom-file 'noerror)
 
 (add-to-list 'load-path (expand-file-name "lib/borg" user-emacs-directory))
 (require 'borg)
 (borg-initialize)
+(with-eval-after-load 'magit
+  (magit-add-section-hook 'magit-status-sections-hook
+                          'magit-insert-modules
+                          'magit-insert-stashes
+                          'append))
 
 (use-package no-littering
   :config
@@ -15,7 +22,19 @@
 (let ((default-directory elisp-dir))
   (normal-top-level-add-subdirs-to-load-path))
 
-(require 'rgr/early-init "rgr-early-init")
+(defun load-el-gpg (load-dir)
+  (message "attempting mass load from %s." load-dir)
+  (when (file-exists-p load-dir)
+    (dolist (f (directory-files-recursively load-dir "\.[el|gpg]$"))
+      (condition-case nil
+          (progn
+            (message "load-el-gpg loading %s" f)
+            (load f 'no-error))
+        (error nil)))))
+
+(load-el-gpg (no-littering-expand-etc-file-name "early-load"))
+
+(load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
 
 (require 'rgr/security "rgr-security" 'NOERROR)
 
@@ -111,7 +130,7 @@
 
 (defun eshell/_ftrace_fn (&rest args)
   "useage: _ftrace_fn &optional function-name(def:printf)  depth(def:1)
-creates a report in function-name.ftrace and opens it in a buffer"
+          creates a report in function-name.ftrace and opens it in a buffer"
   (interactive)
   (let ((fn (or (nth 2 args) "printf"))
         (depth (or (nth 3 args) 1)))

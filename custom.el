@@ -225,7 +225,12 @@ Would you like to play a game?
       nil)))
  '(org-agenda-skip-scheduled-if-deadline-is-shown t nil nil "Customized with use-package org")
  '(org-agenda-start-on-weekday 0 nil nil "Customized with use-package org")
- '(org-babel-load-languages '((emacs-lisp . t) (python . t) (shell . t) (css . t)))
+ '(org-babel-load-languages
+   '((emacs-lisp . t)
+     (makefile . t)
+     (python . t)
+     (shell . t)
+     (css . t)))
  '(org-capture-templates
    '(("t" "Todo" entry
       (file+headline "refile.org" "Tasks To Refile")
@@ -357,7 +362,7 @@ SCHEDULED: %^{Delivery Date}t
       ("WAITING")
       ("CANCELLED")
       ("NEXT"))))
- '(package-selected-packages '(borg))
+ '(package-selected-packages '(corfu borg))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)
@@ -520,6 +525,7 @@ stehen ganz weit oben.
  '(twittering-use-master-password t)
  '(uniquify-buffer-name-style 'forward nil (uniquify))
  '(url-standalone-mode nil)
+ '(use-package-always-ensure t)
  '(user-full-name "Richard G.Riley" nil nil "Customized with use-package mu4e")
  '(user-mail-address "rileyrg@gmx.de")
  '(vc-follow-symlinks t)
