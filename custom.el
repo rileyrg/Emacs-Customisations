@@ -357,8 +357,7 @@ SCHEDULED: %^{Delivery Date}t
       ("WAITING")
       ("CANCELLED")
       ("NEXT"))))
- '(package-selected-packages
-   '(beacon all-the-icons browse-url-dwim which-key marginalia embark-consult embark consult-flycheck consult selectrum-prescient prescient orderless selectrum sudo-edit fzf alert pass auto-compile no-littering use-package))
+ '(package-selected-packages '(borg))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)

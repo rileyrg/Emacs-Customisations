@@ -15,6 +15,10 @@
   ;; i don't really know why this isn't the default...
   (setf use-package-always-ensure t))
 
+(if (require 'borg-elpa nil t)
+    (borg-elpa-initialize)
+  (package-initialize))
+
 (use-package no-littering
   :config
   (setq auto-save-file-name-transforms

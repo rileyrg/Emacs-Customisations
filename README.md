@@ -35,18 +35,45 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org8f46360)
+I have this disabled by default as I use [straight.el package management](#orgd1f6445)
 
 ```emacs-lisp
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(eval-when-compile
-  (require 'use-package))
-(setq use-package-always-ensure t)
+(eval-and-compile
+  (require 'package)
+  (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
+                           ("marmalade" . "https://marmalade-repo.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")))
+  (package-initialize)
+  ;; i always fetch the archive contents on startup and during compilation, which is slow
+  ;;(package-refresh-contents)
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package)
+  ;; i don't really know why this isn't the default...
+  (setf use-package-always-ensure t))
 ```
 
 
-<a id="org8f46360"></a>
+### borg
+
+1.  run it alongside package
+
+    ```emacs-lisp
+    (if (require 'borg-elpa nil t)
+        (borg-elpa-initialize)
+      (package-initialize))
+    ```
+
+2.  makefile
+
+    ```conf
+    BORG_SECONDARY_P = true
+    include $(shell find -L elpa -maxdepth 1 -regex '.*/borg-[.0-9]*' |\
+    sort | tail -n 1)/borg.mk
+    ```
+
+
+<a id="orgd1f6445"></a>
 
 ## straight.el package management
 
@@ -1043,7 +1070,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb4ce512) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org7cfd92c) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
