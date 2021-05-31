@@ -9,6 +9,9 @@
 !README.md
 !custom.el
 
+!lib
+!lib/borg
+
 !info
 !info/*
 
@@ -79,3 +82,4 @@
 !build
 !build/scripts
 !build/scripts/*
+/epkgs/

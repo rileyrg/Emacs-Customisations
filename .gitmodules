@@ -1,0 +1,5 @@
+[submodule "borg"]
+	path = lib/borg
+	url = git@github.com:emacscollective/borg.git
+[submodule "emacsql"]
+	no-byte-compile = emacsql-pg.el
