@@ -51,7 +51,15 @@ invoke google translate on them. Stores history.
 * early stuff
 ** early-init.el
 #+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
+  ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
   (setq package-enabled-at-startup nil)
+  (setq load-prefer-newer t)
+  (add-to-list 'load-path (expand-file-name "straight/repos/packed" user-emacs-directory))
+  (add-to-list 'load-path (expand-file-name "straight/repos/auto-compile" user-emacs-directory))
+  (require 'auto-compile)
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode)
+  ;;; early-init.el ends here
 #+end_src
 ** custom.el
 #+begin_src emacs-lisp
@@ -144,28 +152,7 @@ CLOCK: [2021-02-24 Wed 22:42]
   (let ((default-directory elisp-dir))
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
-** rgr-early-init, auto-compile
-:PROPERTIES:
-:ID:       32e5b009-9695-4c8e-8208-4bfa9e6adfac
-:END:
-#+begin_src emacs-lisp
-  (require 'rgr/early-init "rgr-early-init")
-#+end_src
-*** rgr-early-init library
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-early-init.el" elisp-dir)
-:END:
-**** auto compile
-#+begin_src emacs-lisp
-  ;;; rgr-early-init.el  -*- no-byte-compile: t -*-
-  (use-package
-    auto-compile
-    :init
-    (setq load-prefer-newer t)
-    (auto-compile-on-load-mode 1)
-    (auto-compile-on-save-mode 1))
-#+end_src
-**** Load user customisations and gpg
+** Load early stuff / gpg
 :PROPERTIES:
 :ID:       4695d758-01da-4669-9941-d4d56e9aa2bf
 :END:
@@ -180,25 +167,15 @@ Load all files in certain directories.
               (message "load-el-gpg loading %s" f)
               (load f 'no-error))
           (error nil)))))
-#+end_src
-***** early load
-:PROPERTIES:
-:ID:       aace5754-aeeb-46bf-8ed4-e8eda3ed2e9e
-:END:
-#+begin_src emacs-lisp
   (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
 #+end_src
-***** host specific
+** host specific
 :PROPERTIES:
 :ID:       efe9afb5-3779-407d-a7a9-fd8968ea0f69
 :END:
 Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][custom file]].
 #+begin_src emacs-lisp
   (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
-#+end_src
-**** provide
-#+begin_src emacs-lisp
-  (provide 'rgr/early-init)
 #+end_src
 ** Security
 #+begin_src emacs-lisp
