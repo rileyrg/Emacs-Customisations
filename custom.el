@@ -96,7 +96,7 @@
      (scala-mode . "scala")
      (tcl-mode . "tcl")))
  '(devdocs-browser-cache-directory "/home/rgr/.emacs.d/var/devdocs-browser" nil nil "Customized with use-package devdocs-browser")
- '(diary-file "~/.diary" t)
+ '(diary-file "~/.diary")
  '(diary-list-include-blanks t)
  '(diary-mark-entries-hook '(diary-mark-included-diary-files))
  '(diary-number-of-entries 7)
@@ -225,7 +225,12 @@ Would you like to play a game?
       nil)))
  '(org-agenda-skip-scheduled-if-deadline-is-shown t nil nil "Customized with use-package org")
  '(org-agenda-start-on-weekday 0 nil nil "Customized with use-package org")
- '(org-babel-load-languages '((emacs-lisp . t) (python . t) (shell . t) (css . t)))
+ '(org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)
+     (shell . t)
+     (css . t)
+     (makefile . t)))
  '(org-capture-templates
    '(("t" "Todo" entry
       (file+headline "refile.org" "Tasks To Refile")
@@ -358,7 +363,7 @@ SCHEDULED: %^{Delivery Date}t
       ("CANCELLED")
       ("NEXT"))))
  '(package-selected-packages
-   '(tramp yaml-mode xclip which-key webpaste web-mode vterm volatile-highlights use-package typescript-mode treemacs-magit treemacs-icons-dired sudo-edit strace-mode selectrum-prescient scratch rjsx-mode ripgrep recentf-ext rainbow-identifiers rainbow-delimiters prettier-js popup popper platformio-mode php-mode pass package-lint ox-gfm orgit-forge orderless ob-async npm-mode no-littering modus-themes marginalia lsp-ui lsp-python-ms logview lispy keycast impatient-showdown helpful google-translate google-this goldendict git-gutter fzf flycheck-pos-tip eshell-git-prompt epkg emms embark-consult elisp-format elfeed-org elf-mode edebug-x easy-kill docker dired-subtree dired-git dired-filter deft dash-docs darkroom dap-mode corfu consult-flycheck clang-format browse-url-dwim blacken beacon auto-virtualenv auto-compile alert ag ace-link ace-jump-mode))
+   '(emacsql-sqlite3 borg tramp yaml-mode xclip which-key webpaste web-mode vterm volatile-highlights use-package typescript-mode treemacs-magit treemacs-icons-dired sudo-edit strace-mode selectrum-prescient scratch rjsx-mode ripgrep recentf-ext rainbow-identifiers rainbow-delimiters prettier-js popup popper platformio-mode php-mode pass package-lint ox-gfm orgit-forge orderless ob-async npm-mode no-littering modus-themes marginalia lsp-ui lsp-python-ms logview lispy keycast impatient-showdown helpful google-translate google-this goldendict git-gutter fzf flycheck-pos-tip eshell-git-prompt epkg emms embark-consult elisp-format elfeed-org elf-mode edebug-x easy-kill docker dired-subtree dired-git dired-filter deft dash-docs darkroom dap-mode corfu consult-flycheck clang-format browse-url-dwim blacken beacon auto-virtualenv auto-compile alert ag ace-link ace-jump-mode))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)
@@ -376,7 +381,7 @@ SCHEDULED: %^{Delivery Date}t
  '(read-quoted-char-radix 16)
  '(rebox-style-loop '(27 25 21) t)
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*") t)
+   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*"))
  '(red "#ffffff" t)
  '(rgr/alert-learn-history
    '("Warum überquerte das Huhn die Straße?

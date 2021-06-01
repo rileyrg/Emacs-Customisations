@@ -5,10 +5,16 @@
 (load custom-file 'noerror)
 
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (eval-when-compile
   (require 'use-package))
 (setq use-package-always-ensure t)
+
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+;; (custom-set-variables
+;; '(package-selected-packages '(borg)
+(if (require 'borg-elpa nil t)
+    (borg-elpa-initialize)
+  (package-initialize))
 
 (use-package no-littering
   :config
