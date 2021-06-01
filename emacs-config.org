@@ -53,7 +53,7 @@ invoke google translate on them. Stores history.
 #+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
   ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
   ;; Maintained in emacs-config.org
-  (setq package-enabled-at-startup nil)
+  ;;(setq package-enabled-at-startup nil)
   (setq load-prefer-newer t)
   (add-to-list 'load-path (expand-file-name "straight/repos/packed" user-emacs-directory))
   (add-to-list 'load-path (expand-file-name "straight/repos/auto-compile" user-emacs-directory))
@@ -75,9 +75,6 @@ invoke google translate on them. Stores history.
 #+end_src
 * package management
 ** elpa package manager
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
 I have this disabled by default as I use [[id:0ae9fe79-ab41-42ed-82d4-859b21576392][straight.el package management]]
 #+begin_src emacs-lisp
   (require 'package)
@@ -89,6 +86,7 @@ I have this disabled by default as I use [[id:0ae9fe79-ab41-42ed-82d4-859b215763
 ** straight.el package management
 :PROPERTIES:
 :ID:       0ae9fe79-ab41-42ed-82d4-859b21576392
+:header-args:emacs-lisp: :tangle no
 :END:
 [[https://github.com/raxod502/straight.el#features][straight.el]]: next-generation, purely functional package manager for the Emacs hacker.
 *** bootstrap
@@ -649,6 +647,7 @@ The [[https://github.com/minad/marginalia][marginalia]] pckage in emacs is very 
 **** [[https://github.com/minad/affe][affe]] Asynchronous Fuzzy Finder for Emacs
 :PROPERTIES:
 :ID:       c29a8a56-5c74-4625-9b06-3963e234bb0f
+:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package affe
@@ -734,6 +733,9 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     :bind ("C-<tab>" . company-complete))
 #+end_src
 **** Corfu completion                                                 :corfu:
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 :LOGBOOK:
 - State "STARTED"    from "WAITING"    [2021-04-18 So 00:33]
 - State "WAITING"    from              [2021-04-18 So 00:28] \\
@@ -777,6 +779,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 #+end_src
 ** Lazy Language Learning, lazy-lang-learn
 :PROPERTIES:
+:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package lazy-lang-learn
@@ -871,12 +874,18 @@ visual feedback as to cursor position
 
 #+end_src
 ***** blackout modeline                                            :blackout:
+      :PROPERTIES:
+      :header-args:emacs-lisp: :tangle no
+      :END:
 Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
 #+begin_src emacs-lisp
   (straight-use-package
    '(blackout :host github :repo "raxod502/blackout"))
 #+end_src
 ***** boxquote                                                     :boxquote:
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 #+begin_src emacs-lisp
   (use-package boxquote
     :straight (:branch "main")
@@ -1666,6 +1675,9 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
     :bind* ("C-c z" . 'rgr/zeal))
 #+end_src
 ***** emacs-devdocs-browser
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 #+begin_src emacs-lisp
 
   (use-package devdocs-browser
@@ -2340,6 +2352,7 @@ The code in  [[file:etc/elisp/rgr-chat.el][rgr-chat]] :
 *** mu4e                                                         :email:mu4e:
 :PROPERTIES:
 :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
+:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package mu4e
@@ -2631,6 +2644,9 @@ CLOSED: [2021-05-13 Thu 21:53]
     (global-set-key (kbd "C-h C") #'helpful-command))
 #+end_src
 ***** elisp popup context help                                  :popup:elisp:
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 :LOGBOOK:
 - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
 - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
@@ -2851,6 +2867,7 @@ magit
 **** EDiff - comparing files in Emacs                            :diff:ediff:
 :PROPERTIES:
 :ID:       8e09b947-9859-4b89-8354-3c39b1649c33
+:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package ediff+
@@ -3262,6 +3279,7 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 *** Godot GDScript                                                    :godot:
 :PROPERTIES:
 :ID:       19daf0bd-1652-4638-9d72-50f0b8af1586
+:header-args:emacs-lisp: :tangle no
 :END:
 This [[https://github.com/GDQuest/emacs-gdscript-mode][package]] adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
 #+begin_src emacs-lisp

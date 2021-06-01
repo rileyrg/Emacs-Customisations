@@ -4,32 +4,11 @@
 (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
 (load custom-file 'noerror)
 
-(defvar bootstrap-version)
-
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'use-package)
-
-(use-package straight
-  :custom
-  (straight-use-package-by-default t)
-  (straight-vc-git-default-protocol 'ssh))
-
-(use-package auto-package-update
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(eval-when-compile
+  (require 'use-package))
+(setq use-package-always-ensure t)
 
 (use-package no-littering
   :config
@@ -63,13 +42,6 @@
 (require 'rgr/minibuffer "rgr-minibuffer" 'NOERROR)
 
 (require 'rgr/completion "rgr-completion" 'NOERROR)
-
-(use-package lazy-lang-learn
-  :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
-  :bind
-  ("C-c L" . lazy-lang-learn-mode)
-  ("<f12>" . lazy-lang-learn-translate)
-  ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
 (require  'rgr/general-config "rgr-general-config" 'NOERROR)
 
@@ -371,144 +343,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (global-set-key (kbd "C-c i") 'eshell/chat-client)
 
-(use-package mu4e
-  :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
-  :commands (mu4e mu4e-update-index)
-  :custom
-  ( mail-user-agent 'mu4e-user-agent )
-  ( mail-user-agent 'mu4e-user-agent )
-  ( message-send-mail-function 'smtpmail-send-it )
-  ( mu4e-attachment-dir "~/Downloads" )
-  ( mu4e-change-filenames-when-moving t )
-  ( mu4e-compose-context-policy 'ask )
-  ( mu4e-confirm-quit nil )
-  ( mu4e-context-policy 'pick-first )
-  ( mu4e-compose-reply-recipients 'sender )
-  ( mu4e-headers-include-related nil )
-  ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
-  ( mu4e-decryption-policy 'ask )
-  ( mu4e-hide-index-messages t )
-  ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
-  ( mu4e-update-interval nil )
-  ( mu4e-use-fancy-chars t )
-  ( mu4e-view-prefer-html nil )
-  ( mu4e-view-show-addresses t )
-  ( smtpmail-smtp-service 587 )
-  ( user-full-name "Richard G.Riley" )
-  :config
-
-
-  (use-package mu4e-maildirs-extension
-    :custom
-    (mu4e-maildirs-extension-hide-empty-maildirs t)
-    :config
-    (mu4e-maildirs-extension))
-
-  (setq mu4e-contexts
-        `( ,(make-mu4e-context
-             :name "aGmx"
-             :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
-             :vars '( ( user-mail-address . "rileyrg@gmx.de" )
-                      ( user-full-name . "Richard G. Riley" )
-                      ( smtpmail-smtp-server . "mail.gmx.net")
-                      ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
-                      ( mu4e-refile-folder . "/gmx/Archive" )
-                      ( mu4e-sent-folder . "/gmx/Sent" )
-                      ( mu4e-sent-messages-behavior . sent)
-                      ( mu4e-trash-folder . "/gmx/Bin" )
-                      ( mu4e-drafts-folder . "/gmx/Drafts" )
-                      ;; (mu4e-maildir-shortcuts .
-                      ;;  (("/gmx/INBOX"             . ?i)
-                      ;;    ("/gmx/Sent" . ?s)
-                      ;;    ("/gmx/Bin"     . ?b)
-                      ;;    ("/gmx/Drafts"    . ?d)
-                      ;;    ("/gmx/Spam"    . ?p)
-                      ;;    ("/gmx/Archive"  . ?a)))
-                      ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmx/INBOX and flag:unread" :key ?i)
-                                          (:name "Learning" :query "maildir:/gmx/Learning* and flag:unread" :key ?l)
-                                          (:name "All Today's messages" :query "maildir:/gmx/*  AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent) AND date:today..now " :key ?t)
-                                          (:name "Last 7 days" :query "maildir:/gmx/* AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent)  AND date:7d..now" :hide-unread t :key ?w)
-                                          (:name "All" :query "maildir:/gmx/* and not (maildir:/gmx/Spam or maildir:/gmx/Bin)" :key ?a)
-                                          (:name "Bin" :query "maildir:/gmx/Bin" :key ?b)
-                                          ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
-                                          (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                      ( mu4e-compose-signature  .
-                        (concat
-                         "Richard G. Riley\n"
-                         "Ein bier, ein Helbing.\n"))))
-           ,(make-mu4e-context
-             :name "bGmail"
-             :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
-             ;; no leave-func
-             ;; we match based on the maildir of the message
-             ;; this matches maildir /Arkham and its sub-directories
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match-p "^/gmail" (mu4e-message-field msg :maildir))))
-             :vars '( ( user-mail-address . "rileyrg@gmail.com"  )
-                      ( user-full-name . "Richie" )
-                      ( smtpmail-smtp-server . "smtp.gmail.com")
-                      ( mu4e-get-mail-command . "getmails gmail")
-                      ( mu4e-refile-folder . "/gmail/Archive" )
-                      ( mu4e-sent-folder . "/gmail/Sent" )
-                      ( mu4e-sent-messages-behavior . delete)
-                      ( mu4e-trash-folder . "/gmail/Bin" )
-                      ( mu4e-drafts-folder . "/gmail/Drafts" )
-                      ;; (mu4e-maildir-shortcuts .
-                      ;;   (("/gmail/INBOX"             . ?i)
-                      ;;    ("/gmail/Sent" . ?s)
-                      ;;    ("/gmail/Bin"     . ?b)
-                      ;;    ("/gmail/Drafts"    . ?d)
-                      ;;    ("/gmail/Spam"    . ?p)
-                      ;;    ("/gmail/Archive"  . ?a)))
-                      ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmail/INBOX and flag:unread" :key ?i)
-                                          (:name "All Today's messages" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:today..now " :key ?t)
-                                          (:name "Last 7 days" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:7d..now" :hide-unread t :key ?w)
-                                          (:name "All" :query "maildir:/gmail/* and not (maildir:/gmail/Spam or maildir:/gmail/Bin)" :key ?a)
-                                          (:name "Bin" :query "maildir:/gmail/Bin" :key ?b)
-                                          ;;                    (:name "Messages with images" :query "maildir:/gmail/* AND  NOT maildir:/gmail/Spam  AND  NOT maildir:/gmail/Sent" :key ?m)
-                                          (:name "Spam" :query "maildir:/gmail/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                      ( mu4e-compose-signature . "Please change my email to 'rileyrg@gmx.de'.")))))
-
-  (defun mu4e-smarter-compose ()
-    "My settings for message composition."
-    (set-fill-column 72)
-    (flyspell-mode))
-
-  (defun rgr/mu4e-refresh()
-    (interactive)
-    (when (featurep 'alert)
-      (alert "refreshing mu4e indexes"))
-    (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
-
-  (add-to-list 'mu4e-view-actions
-               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-  (add-to-list 'mu4e-view-actions
-               '("XWidget View" . mu4e-action-view-with-xwidget) t)
-  (add-to-list 'mu4e-view-actions
-               '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
-  (require 'mu4e-contrib)
-  :hook ((mu4e-view-mode . visual-line-mode)
-         (mu4e-compose-mode . mu4e-smarter-compose)
-         (mu4e-view-mode-hook .
-                              (lambda()
-                                ;; try to emulate some of the eww key-bindings
-                                (local-set-key (kbd "<tab>") 'shr-next-link)
-                                (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-  :bind	  (("C-c u".  'mu4e)
-           (:map mu4e-main-mode-map
-                 ("m" . mu4e-compose-new))
-           (:map mu4e-main-mode-map
-                 ("g" . rgr/mu4e-refresh))
-           (:map mu4e-headers-mode-map
-                 ("C-c u" . mu4e-headers-mark-all-unread-read))))
-;;(
-;;:map mu4e-view-mode-map
-;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
-
 (use-package keycast
   )
 
@@ -581,15 +415,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package orgit
   :after magit)
-
-(use-package ediff+
-  :custom
-  (ediff-window-setup-function 'ediff-setup-windows-plain)
-  (ediff-split-window-function 'split-window-horizontally)
-  :config
-  (when (fboundp 'winnder-undo)
-    (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
-  :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
 
 (use-package forge
   :after magit
@@ -727,26 +552,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
 (use-package strace-mode)
-
-(use-package gdscript-mode
-  ;;       :disabled t
-  :straight (gdscript-mode
-             :type git
-             :host github
-             :repo "rileyrg/emacs-gdscript-mode")
-  :init
-  (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
-    "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
-    (if (string-equal major-mode "gdscript-mode")
-        (let ((json-data (nth 0 args)))
-          (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
-                   (not (gethash "id" json-data nil))
-                   (not (gethash "method" json-data nil)))
-              nil ; (message "Method not found")
-            (apply original-function args)))
-      (apply original-function args)))
-  (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
-  )
 
 (defgroup rgr/symfony nil
   "Symfony Development"

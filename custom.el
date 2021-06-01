@@ -49,7 +49,6 @@
  '(compilation-error-regexp-alist
    '(bash-xset-x dotnet-warning dotnet-error msbuild-warning msbuild-error xbuild-warning xbuild-error dotnet-testfail typescript-nglint-warning typescript-nglint-error typescript-tslint typescript-tsc-pretty typescript-tsc absoft ada aix ant bash borland python-tracebacks-and-caml cmake cmake-info comma cucumber msft edg-1 edg-2 epc ftnchek gradle-kotlin iar ibm irix java jikes-file maven jikes-line clang-include gcc-include ruby-Test::Unit gmake gnu lcc makepp mips-1 mips-2 omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line))
  '(compilation-message-face 'default)
- '(completion-styles '(orderless) nil nil "Customized with use-package orderless")
  '(confirm-nonexistent-file-or-buffer nil)
  '(cquery-executable "~/.bin/cquery")
  '(cquery-project-root-matchers
@@ -97,7 +96,7 @@
      (scala-mode . "scala")
      (tcl-mode . "tcl")))
  '(devdocs-browser-cache-directory "/home/rgr/.emacs.d/var/devdocs-browser" nil nil "Customized with use-package devdocs-browser")
- '(diary-file "~/.diary")
+ '(diary-file "~/.diary" t)
  '(diary-list-include-blanks t)
  '(diary-mark-entries-hook '(diary-mark-included-diary-files))
  '(diary-number-of-entries 7)
@@ -358,6 +357,8 @@ SCHEDULED: %^{Delivery Date}t
       ("WAITING")
       ("CANCELLED")
       ("NEXT"))))
+ '(package-selected-packages
+   '(tramp yaml-mode xclip which-key webpaste web-mode vterm volatile-highlights use-package typescript-mode treemacs-magit treemacs-icons-dired sudo-edit strace-mode selectrum-prescient scratch rjsx-mode ripgrep recentf-ext rainbow-identifiers rainbow-delimiters prettier-js popup popper platformio-mode php-mode pass package-lint ox-gfm orgit-forge orderless ob-async npm-mode no-littering modus-themes marginalia lsp-ui lsp-python-ms logview lispy keycast impatient-showdown helpful google-translate google-this goldendict git-gutter fzf flycheck-pos-tip eshell-git-prompt epkg emms embark-consult elisp-format elfeed-org elf-mode edebug-x easy-kill docker dired-subtree dired-git dired-filter deft dash-docs darkroom dap-mode corfu consult-flycheck clang-format browse-url-dwim blacken beacon auto-virtualenv auto-compile alert ag ace-link ace-jump-mode))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)
@@ -375,7 +376,7 @@ SCHEDULED: %^{Delivery Date}t
  '(read-quoted-char-radix 16)
  '(rebox-style-loop '(27 25 21) t)
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*"))
+   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*") t)
  '(red "#ffffff" t)
  '(rgr/alert-learn-history
    '("Warum überquerte das Huhn die Straße?
