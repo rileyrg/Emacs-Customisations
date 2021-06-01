@@ -1,0 +1,3 @@
+[submodule "dap-mode"]
+	path = borg/dap-mode
+	url = git@github.com:emacs-lsp/dap-mode.git
