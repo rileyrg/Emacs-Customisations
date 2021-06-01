@@ -1,3 +1,6 @@
 [submodule "dap-mode"]
 	path = borg/dap-mode
 	url = git@github.com:emacs-lsp/dap-mode.git
+[submodule "json-navigator"]
+	path = borg/json-navigator
+	url = git@github.com:DamienCassou/json-navigator.git
