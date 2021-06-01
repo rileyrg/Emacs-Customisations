@@ -206,6 +206,13 @@
 
 
 
+(use-package pdf-tools
+  :demand t
+  :config
+  (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
+  (use-package org-pdftools
+    :hook (org-mode . org-pdftools-setup-link)))
+
 (use-package impatient-showdown
   :hook (markdown-mode . impatient-showdown-mode))
 

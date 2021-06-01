@@ -63,9 +63,6 @@ invoke google translate on them. Stores history.
     ;;; early-init.el ends here
 #+end_src
 ** init.el compiling
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
 #+begin_src emacs-lisp
   ;;; init.el   -*- no-byte-compile: t -*-
   ;; Maintained in emacs-config.org
@@ -1749,7 +1746,6 @@ Use emacsclient if it's running. Might consider an alias
 SCHEDULED: <2021-06-02 Wed>
 :PROPERTIES:
 :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
-:header-args:emacs-lisp: :tangle no
 :END:
 :LOGBOOK:
 - Note taken on [2021-05-31 Mon 06:06] \\
@@ -2773,13 +2769,15 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
 :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
 :END:
 **** TODO JSONNavigator
-SCHEDULED: <2021-06-02 Wed>
+SCHEDULED: <2021-06-08 Tue>
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
 :LOGBOOK:
+- State "TODO"       from              [2021-06-01 Tue 07:27]
 - State "TODO"       from              [2021-05-31 Mon 06:03]
 :END:
+Need to see if can get this working at some point
 #+begin_src emacs-lisp
   (use-package json-navigator)
 #+end_src

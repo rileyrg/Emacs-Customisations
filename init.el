@@ -1,3 +1,6 @@
+;;; init.el   -*- no-byte-compile: t -*-
+;; Maintained in emacs-config.org
+
 (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
 (load custom-file 'noerror)
 
