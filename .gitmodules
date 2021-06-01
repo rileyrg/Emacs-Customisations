@@ -1,6 +1,0 @@
-[submodule "lsp-mode"]
-	path = borg/lsp-mode
-	url = git@github.com:emacs-lsp/lsp-mode.git
-[submodule "magit"]
-	path = borg/magit
-	url = git@github.com:magit/magit.git
