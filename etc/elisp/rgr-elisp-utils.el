@@ -36,6 +36,13 @@
   ;; look at interactive functions.
   (global-set-key (kbd "C-h C") #'helpful-command))
 
+(use-package el-docstring-sap
+  :hook
+  (emacs-lisp-mode . el-docstring-sap-mode)
+  :bind
+  ("M-<f2>" . el-docstring-sap-display)
+  ("M-<f1>" . el-docstring-sap-mode))
+
 (use-package lispy
   :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
 

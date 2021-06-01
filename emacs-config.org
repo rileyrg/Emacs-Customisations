@@ -2661,9 +2661,6 @@
           (global-set-key (kbd "C-h C") #'helpful-command))
       #+end_src
 ***** elisp popup context help                                  :popup:elisp:
-      :PROPERTIES:
-      :header-args:emacs-lisp: :tangle no
-      :END:
       :LOGBOOK:
       - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
       - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
@@ -2671,8 +2668,7 @@
       :END:
       Display a poup containing docstring at point
       #+begin_src emacs-lisp
-        (use-package el-docstring-sap-
-          :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+        (use-package el-docstring-sap
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
