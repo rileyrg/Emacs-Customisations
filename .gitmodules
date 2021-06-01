@@ -1,0 +1,3 @@
+[submodule "lsp-mode"]
+	path = borg/lsp-mode
+	url = git@github.com:emacs-lsp/lsp-mode.git
