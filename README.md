@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orga9baaf7)
+I have this disabled by default as I use [straight.el package management](#org91522a0)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orga9
 ```
 
 
-<a id="orga9baaf7"></a>
+<a id="org91522a0"></a>
 
 ## straight.el package management
 
@@ -1026,7 +1026,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgc9118d0) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgd3eae48) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1065,16 +1065,6 @@ See `org-agenda-files` [org-agenda-files](#orgc9118d0) maintain a file pointing 
              scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
              scroll-margin_t))
 
-    ```
-
-2.  easy-kill
-
-    [easy-kill](https://github.com/leoliu/easy-kill) enables you to kill & Mark Things Easily in Emacs
-
-    ```emacs-lisp
-    (use-package easy-kill
-      :config
-      (global-set-key [remap kill-ring-save] 'easy-kill))
     ```
 
 
@@ -2625,6 +2615,8 @@ Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/projec
 ### JSON, YAML Configuration files     :json:
 
 1.  JSONNavigator
+
+    Need to see if can get this working at some point
 
     ```emacs-lisp
     (use-package json-navigator)

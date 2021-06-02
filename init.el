@@ -91,10 +91,6 @@
          scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
          scroll-margin_t))
 
-(use-package easy-kill
-  :config
-  (global-set-key [remap kill-ring-save] 'easy-kill))
-
 (use-package hideshow
   :config
   (defun toggle-selective-display (column)

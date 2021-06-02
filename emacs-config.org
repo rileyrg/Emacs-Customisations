@@ -1219,16 +1219,6 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
            scroll-margin_t))
 
 #+end_src
-**** easy-kill
-:PROPERTIES:
-:ID:       8b629d70-a403-48f6-b6a1-b82470eae0dd
-:END:
-[[https://github.com/leoliu/easy-kill][easy-kill]] enables you to kill & Mark Things Easily in Emacs
-#+begin_src emacs-lisp
-  (use-package easy-kill
-    :config
-    (global-set-key [remap kill-ring-save] 'easy-kill))
-#+end_src
 *** Folding/Hide Show
 :PROPERTIES:
 :ID:       d7f8785f-3b79-4e7a-947b-008f7d985ae0
