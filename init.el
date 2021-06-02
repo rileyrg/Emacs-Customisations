@@ -354,18 +354,20 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (:map treemacs-mode-map
         ("<right>" . treemacs-peek)))
 
-(defun rgr/load-chats(switch)
-  (require  'rgr-chat))
-(add-to-list 'command-switch-alist '("chat" . rgr/load-chats))
+(defun rgr/erc-switch-to-channel(&optional channel)
+  (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
+    (switch-to-buffer (current-buffer))))
 
-(defun eshell/chat-client
-    (&rest
-     args)
-  "chat with emacs.."
+(defun rgr/erc-start()
   (interactive)
-  (save-window-excursion (call-process "oneemacs-chat" nil 0)))
+  (unless(get-buffer "irc.libera.chat:6697")
+    (progn
+      (erc-tls :server "irc.libera.chat" :port "6697")
+      ;;(erc-tls :server "irc.freenode.net" :port "6697")
+      (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
 
-(global-set-key (kbd "C-c i") 'eshell/chat-client)
+(require 'erc)
+(global-set-key (kbd  "C-c i") #'rgr/erc-start)
 
 (use-package mu4e
   :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )

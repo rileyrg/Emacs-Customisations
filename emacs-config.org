@@ -2283,46 +2283,26 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
 :PROPERTIES:
 :ID:       04bb339b-884b-4571-a740-81d210097aa8
 :END:
-Add a "-chat" [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Command_002dLine-Arguments.html][command line switch]] to load the [[https://www.gnu.org/software/emacs/manual/html_mono/erc.html][Emacs IRC client]] and other such of choice.
-I created this as I tend to hop in and out of Emacs because of severe "[[https://alhassy.github.io/init/][configuration fever]]".
-You don't want to be hopping in and out of chat groups too.
 
+*** rgr-chat
+DELETED
+*** erc manual
 #+begin_src emacs-lisp
-  (defun rgr/load-chats(switch)
-    (require  'rgr-chat))
-  (add-to-list 'command-switch-alist '("chat" . rgr/load-chats))
-#+end_src
+  (defun rgr/erc-switch-to-channel(&optional channel)
+    (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
+      (switch-to-buffer (current-buffer))))
 
-Small external script, [[./bin/oneemacs-chat][oneemacs-chat]], to create an erc instance if there isnt already one.
-
-#+begin_src bash :tangle "./bin/oneemacs-chat"
-  #!/bin/bash
-  WID=`xdotool search --name "Chat:"|head -1`
-  if [[ -z ${WID} ]]; then
-      notify-send "Starting Chats in Emacs..."
-      emacs -chat
-  else
-      notify-send "restoring Chat instance..."
-      xdotool windowactivate $WID
-  fi
-#+end_src
-
-and the eshell func to call it:
-
-#+begin_src emacs-lisp
-  (defun eshell/chat-client
-      (&rest
-       args)
-    "chat with emacs.."
+  (defun rgr/erc-start()
     (interactive)
-    (save-window-excursion (call-process "oneemacs-chat" nil 0)))
+    (unless(get-buffer "irc.libera.chat:6697")
+      (progn
+        (erc-tls :server "irc.libera.chat" :port "6697")
+        ;;(erc-tls :server "irc.freenode.net" :port "6697")
+        (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
 
-  (global-set-key (kbd "C-c i") 'eshell/chat-client)
+  (require 'erc)
+  (global-set-key (kbd  "C-c i") #'rgr/erc-start)
 #+end_src
-
-The code in  [[file:etc/elisp/rgr-chat.el][rgr-chat]] :
-#+include: "./etc/elisp/rgr-chat.el" src emacs-lisp
-
 ** Email
 :PROPERTIES:
 :ID:       1db35463-e9e1-4c38-b21f-437d475184e4
