@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org2f72078)
+I have this disabled by default as I use [straight.el package management](#org78fe67d)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org2f
 ```
 
 
-<a id="org2f72078"></a>
+<a id="org78fe67d"></a>
 
 ## straight.el package management
 
@@ -320,7 +320,9 @@ Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
                                )))
 
 (defun startHook()
-  )
+  (run-at-time "1" nil '(lambda()
+                          (desktop-read)
+                          (desktop-save-mode 1))))
 
 (add-hook 'emacs-startup-hook 'startHook)
 
@@ -1054,7 +1056,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org2029972) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb7fdaa6) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3206,7 +3208,7 @@ fi
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org27a3e28) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga39e5cd) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3245,7 +3247,7 @@ fi
 ```
 
 
-<a id="org27a3e28"></a>
+<a id="orga39e5cd"></a>
 
 ### Gnome protocol handler desktop file
 

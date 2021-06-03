@@ -8,7 +8,9 @@
                                )))
 
 (defun startHook()
-  )
+  (run-at-time "1" nil '(lambda()
+                          (desktop-read)
+                          (desktop-save-mode 1))))
 
 (add-hook 'emacs-startup-hook 'startHook)
 

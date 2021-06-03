@@ -65,6 +65,8 @@
  '(delete-active-region 'kill)
  '(delete-old-versions t)
  '(delete-selection-mode t)
+ '(desktop-path '("~/.emacs.d/var/desktop"))
+ '(desktop-save t)
  '(devdocs-alist
    '((c-mode . "c")
      (c++-mode . "c++")
@@ -587,6 +589,9 @@ stehen ganz weit oben.
  '(rainbow-delimiters-base-error-face ((t (:inherit rainbow-delimiters-base-face :background "gainsboro" :foreground "red"))))
  '(selectrum-current-candidate ((t (:inherit bold :extend t :background "#2e2e2e" :foreground "#ffffff" :underline "burlywood"))))
  '(show-paren-match ((t (:background "forest green" :foreground "#ffffff"))))
+ '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
+ '(tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+ '(tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
  '(tooltip ((t (:inherit variable-pitch :background "dim gray" :foreground "orange"))))
  '(treemacs-git-modified-face ((t (:inherit font-lock-variable-name-face :background "yellow" :foreground "red")))))
 
