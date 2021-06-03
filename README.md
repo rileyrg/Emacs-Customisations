@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgeb26363)
+I have this disabled by default as I use [straight.el package management](#org8300c5a)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orgeb
 ```
 
 
-<a id="orgeb26363"></a>
+<a id="org8300c5a"></a>
 
 ## straight.el package management
 
@@ -893,7 +893,41 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
     ```
 
-4.  Memory
+4.  Tabs
+
+    1.  Tab Bar Mode
+
+        ```emacs-lisp
+
+        (defun consult-buffer-other-tab ()
+          "Variant of `consult-buffer' which opens in other tab."
+          (interactive)
+          (let ((consult--buffer-display #'switch-to-buffer-other-tab))
+            (consult-buffer)))
+
+        (use-package tab-bar
+          :defer t
+          :custom
+          (tab-bar-show t)
+          (tab-bar-close-button-show nil)
+          (tab-bar-new-button-show nil)
+          (tab-bar-tab-hints t)
+          (tab-bar-new-tab-choice "*scratch*")
+          (tab-bar-select-tab-modifiers '(control))
+          :custom-face
+          (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
+          (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
+          (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+          :bind (:map tab-prefix-map
+                      (("x" . tab-close)
+                       ("b" . consult-buffer-other-tab)
+                       ("p" . tab-previous)
+                       ("n" . tab-next)
+                       ("c" . tab-bar-new-tab)
+                       ("s" . tab-bar-switch-to-tab))))
+        ```
+
+5.  Memory
 
     1.  save-place-mode, remember position in files
 
@@ -927,7 +961,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
             (add-to-list 'recentf-exclude no-littering-etc-directory)))
         ```
 
-5.  provide
+6.  provide
 
     ```emacs-lisp
     (provide 'rgr/general-config)
@@ -1020,7 +1054,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7dd9d45) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgaa3aed7) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3151,7 +3185,9 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 ```
 
 
-### master branch, no commit : .git/hooks/pre-commit
+### master branch
+
+`.git/hooks/pre-commit` No commits on the master branch
 
 ```bash
 #!/bin/sh
@@ -3170,7 +3206,7 @@ fi
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](editor-config/emacsclient.desktop) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org25496ba) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3209,11 +3245,13 @@ fi
 ```
 
 
+<a id="org25496ba"></a>
+
 ### Gnome protocol handler desktop file
 
 Copy [emacsclient.desktop](editor-config/emacsclient.desktop) to ~/.local/share/applications (Debian & Gnome - your mileage may vary&#x2026;)
 
-```shell
+```conf
 [Desktop Entry]
 Name=Emacs (Client)
 GenericName=Text Editor

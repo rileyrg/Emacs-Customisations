@@ -924,35 +924,6 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
     ( "<f7>" . 'darkroom-mode))
 #+end_src
 
-**** WAITING Transparency                                           :WAITING:
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "WAITING"    from              [2021-04-15 Do 23:06] \\
-  disable alpha for now - makes pop up help useless
-:END:
-#+begin_src emacs-lisp
-  (set-frame-parameter (selected-frame) 'alpha '(95 . 50))
-  (add-to-list 'default-frame-alist '(alpha . (95 . 50)))
-#+end_src
-**** WAITING Clipboard                                              :WAITING:
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "WAITING"    from "TODO"       [2021-06-02 Wed 15:42]
-- Note taken on [2021-06-02 Wed 15:42] \\
-  see if can delete
-- State "TODO"       from              [2021-06-02 Wed 15:42]
-:END:
-Allow terminal emacs to interact with the x clipboard.
-#+begin_src emacs-lisp
-  (use-package xclip
-    :demand t
-    :config
-    (xclip-mode))
-#+end_src
 **** Ansi colour
 :PROPERTIES:
 :END:
@@ -962,17 +933,12 @@ Allow terminal emacs to interact with the x clipboard.
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 #+end_src
-**** CANCELLED Tabs                                          :tabs:CANCELLED:
+**** Tabs
+***** CANCELLED Centaur Tabs                              :centaur:CANCELLED:
 CLOSED: [2021-05-24 Mo 19:54]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-05-24 Mo 19:54] \\
-  nope
-:END:
-***** CANCELLED Centaur Tabs                              :centaur:CANCELLED:
-CLOSED: [2021-05-24 Mo 19:54]
 :LOGBOOK:
 - State "CANCELLED"  from              [2021-05-24 Mo 19:54] \\
   nope
@@ -997,17 +963,7 @@ CLOSED: [2021-05-24 Mo 19:54]
     ("M-<prior>" . centaur-tabs-forward)
     ("C-x t s" . centaur-tabs-switch-group))
 #+end_src
-***** CANCELLED Tab Bar Mode                               :tabbar:CANCELLED:
-CLOSED: [2021-05-24 Mo 19:54]
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from "WAITING"    [2021-05-24 Mo 19:54] \\
-  nope
-- State "WAITING"    from              [2021-04-06 Di 20:45] \\
-  wait on appraisal of centaur tabs mode
-:END:
+***** Tab Bar Mode
 #+begin_src emacs-lisp
 
   (defun consult-buffer-other-tab ()
@@ -3427,10 +3383,9 @@ to add to version control.
 
 #+include: "./.gitignore" src config
 
-*** master branch, no commit : .git/hooks/pre-commit
-:PROPERTIES:
-:ID:       f51974ce-8b80-496e-ac0b-32b0962669d9
-:END:
+*** master branch
+~.git/hooks/pre-commit~
+No commits on the master branch
 #+begin_src bash :tangle (expand-file-name ".git/hooks/pre-commit" user-emacs-directory)
   #!/bin/sh
   branch="$(git rev-parse --abbrev-ref HEAD)"
@@ -3453,7 +3408,7 @@ SCHEDULED: <2021-06-03 Thu>
 :PROPERTIES:
 :ID:       32d189b9-f59e-49ef-bfde-d0184ff833f1
 :END:
-~xdebug.file_link_format~ is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of  [[file+sys:editor-config/emacsclient.desktop][emacsclient.desktop]]  documented below.
+~xdebug.file_link_format~ is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [[id:b8c2fbcf-9487-4220-b5fe-2d7d352655dd][emacsclient.desktop]] documented below.
 #+begin_src conf :tangle editor-config/php.ini"
   xdebug.file_link_format = "emacsclient://%f@%l"
 
@@ -3488,12 +3443,24 @@ SCHEDULED: <2021-06-03 Thu>
 :END:
 Copy [[file+sys:editor-config/emacsclient.desktop][emacsclient.desktop]] to  ~/.local/share/applications (Debian & Gnome - your mileage may vary...)
 
-#+include: "./editor-config/emacsclient.desktop" src shell
+#+begin_src conf :tangle "./editor-config/emacsclient.desktop"
+  [Desktop Entry]
+  Name=Emacs (Client)
+  GenericName=Text Editor
+  Comment=Edit text
+  MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
+  Exec=emacsclient -c -a "" %F
+  Icon=emacs
+  Type=Application
+  Terminal=false
+  Categories=Development;TextEditor;Utility;
+  StartupWMClass=Emacs
+#+end_src
 
 Update the desktop database:
 
 #+begin_src bash
-  update-desktop-database ~/.local/share/applications
+    update-desktop-database ~/.local/share/applications
 #+end_src
 
 now allows emacsclient to be called.

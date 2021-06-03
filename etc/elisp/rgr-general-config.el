@@ -84,6 +84,33 @@
   :bind
   ( "<f7>" . 'darkroom-mode))
 
+(defun consult-buffer-other-tab ()
+  "Variant of `consult-buffer' which opens in other tab."
+  (interactive)
+  (let ((consult--buffer-display #'switch-to-buffer-other-tab))
+    (consult-buffer)))
+
+(use-package tab-bar
+  :defer t
+  :custom
+  (tab-bar-show t)
+  (tab-bar-close-button-show nil)
+  (tab-bar-new-button-show nil)
+  (tab-bar-tab-hints t)
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-select-tab-modifiers '(control))
+  :custom-face
+  (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
+  (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
+  (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+  :bind (:map tab-prefix-map
+              (("x" . tab-close)
+               ("b" . consult-buffer-other-tab)
+               ("p" . tab-previous)
+               ("n" . tab-next)
+               ("c" . tab-bar-new-tab)
+               ("s" . tab-bar-switch-to-tab))))
+
 (save-place-mode +1)
 
 (savehist-mode 1)
