@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgd51629e)
+I have this disabled by default as I use [straight.el package management](#orgb294529)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orgd5
 ```
 
 
-<a id="orgd51629e"></a>
+<a id="orgb294529"></a>
 
 ## straight.el package management
 
@@ -1020,7 +1020,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org3b8ce1e) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org43a6a05) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1822,7 +1822,14 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
       :hook (dired-mode . dired-git-mode))
     ```
 
-2.  dired hacks
+2.  all-the-icons
+
+    ```emacs-lisp
+    (use-package treemacs-all-the-icons
+      :hook ((dired-mode . treemacs-icons-dired-mode)))
+    ```
+
+3.  dired hacks
 
     Collection of useful dired additions found on github [here](https://github.com/Fuco1/dired-hacks). Found out about it at the useful emacs resource [**Pragmatic Emacs**](http://pragmaticemacs.com/category/dired/).
 

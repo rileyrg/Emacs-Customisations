@@ -2021,6 +2021,11 @@ CLOSED: [2021-05-17 Mo 19:59]
     :config
     :hook (dired-mode . dired-git-mode))
 #+end_src
+**** all-the-icons
+#+begin_src emacs-lisp
+  (use-package treemacs-all-the-icons
+    :hook ((dired-mode . treemacs-icons-dired-mode)))
+#+end_src
 **** dired hacks
 :PROPERTIES:
 :ID:       209d1415-fe48-4df2-b6bd-e51c769a4ea7

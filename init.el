@@ -220,6 +220,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   :hook (dired-mode . dired-git-mode))
 
+(use-package treemacs-all-the-icons
+  :hook ((dired-mode . treemacs-icons-dired-mode)))
+
 (use-package dired-subtree
   :config
   (use-package dash)
