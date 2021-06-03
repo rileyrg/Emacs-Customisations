@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org8300c5a)
+I have this disabled by default as I use [straight.el package management](#org2f72078)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org83
 ```
 
 
-<a id="org8300c5a"></a>
+<a id="org2f72078"></a>
 
 ## straight.el package management
 
@@ -295,7 +295,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
     ```
 
 
-## Emacs daemon & startup     :daemon:startup:
+## Emacs daemon & startup
 
 Load up the daemon if not loaded, amongst other things.
 
@@ -306,7 +306,7 @@ Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
 ```
 
 
-### rgr-daemon library     :daemon:
+### rgr-daemon library
 
 ```emacs-lisp
 
@@ -348,7 +348,7 @@ Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
 ```
 
 
-## Minibuffer Enrichment (search, sudo edit&#x2026;)     :minibuffer:
+## Minibuffer Enrichment (search, sudo edit&#x2026;)
 
 Various plugins for minibuffer enrichment
 
@@ -421,7 +421,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           (ffap-bindings))
         ```
 
-4.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list     :selectrum:
+4.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list
 
     ```emacs-lisp
     (use-package selectrum
@@ -430,7 +430,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       :bind ("C-x C-z" . #'selectrum-repeat))
     ```
 
-5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components     :orderless:
+5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
     ```emacs-lisp
     (use-package orderless
@@ -441,7 +441,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (selectrum-highlight-candidates-function #'orderless-highlight-matches))
     ```
 
-6.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.     :prescient:
+6.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
 
     ```emacs-lisp
     (use-package prescient
@@ -453,7 +453,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (selectrum-prescient-mode +1))))
     ```
 
-7.  [Consult](https://github.com/minad/consult)     :consult:
+7.  [Consult](https://github.com/minad/consult)
 
     [Consult](https://github.com/minad/consult) Provides various commands based on the Emacs completion function completing-read
 
@@ -652,7 +652,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     ```
 
 
-## Completion     :completion:
+## Completion
 
 Let emacs suggest completions
 
@@ -665,7 +665,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 ### rgr-completion library
 
-1.  Which Key     :which:key:
+1.  Which Key
 
     [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
 
@@ -684,7 +684,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-3.  Corfu completion     :corfu:
+3.  Corfu completion
 
     ```emacs-lisp
     ;; Configure corfu
@@ -747,7 +747,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 ### library
 
-1.  General     :blackout:modeline:
+1.  General
 
     1.  a - unfiled
 
@@ -806,7 +806,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
         ```
 
-    2.  beacon     :beacon:
+    2.  beacon
 
         visual feedback as to cursor position
 
@@ -823,7 +823,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
         ```
 
-    3.  blackout modeline     :blackout:
+    3.  blackout modeline
 
         Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
 
@@ -832,7 +832,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
          '(blackout :host github :repo "raxod502/blackout"))
         ```
 
-    4.  boxquote     :boxquote:
+    4.  boxquote
 
         ```emacs-lisp
         (use-package boxquote
@@ -842,7 +842,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
         ```
 
-    5.  volatile-highlights     :volatilehighlights:volatile:
+    5.  volatile-highlights
 
         brings visual feedback to some operations by highlighting portions relating to the operations.
 
@@ -852,7 +852,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :init (volatile-highlights-mode 1))
         ```
 
-    6.  webpaste     :webpaste:
+    6.  webpaste
 
         ```emacs-lisp
         (use-package
@@ -981,7 +981,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org library
 
-1.  Org Mode, org-mode     :org:
+1.  Org Mode, org-mode
 
     ```emacs-lisp
 
@@ -1054,7 +1054,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgaa3aed7) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org2029972) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1126,7 +1126,7 @@ See `org-agenda-files` [org-agenda-files](#orgaa3aed7) maintain a file pointing 
 \#+end\_src
 
 
-### flyspell     :flyspell:spell:
+### flyspell
 
 ```emacs-lisp
 (use-package flyspell
@@ -1616,7 +1616,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     ```
 
 
-## EMMS     :music:emms:CANCELLED:
+## EMMS
 
 [Emms](https://github.com/skeeto/elfeed) is the Emacs Multimedia System. Emms displays and plays multimedia from within GNU/Emacs using a variety of external players and from different sources.
 
@@ -1846,7 +1846,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 ### Buffer selection
 
 
-### dired - emacs file management     :dired:
+### dired - emacs file management
 
 1.  Dired Git Info
 
@@ -1903,7 +1903,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ### PopUp Utilities
 
-1.  posframe     :posframe:
+1.  posframe
 
     [Posframe](https://github.com/tumashu/posframe) can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
 
@@ -1911,7 +1911,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
     (use-package posframe)
     ```
 
-2.  popper     :popper:
+2.  popper
 
     [Popper](https://github.com/karthink/popper) is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
 
@@ -2143,7 +2143,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 ## Email
 
 
-### mu4e     :email:mu4e:
+### mu4e
 
 ```emacs-lisp
 (use-package mu4e
@@ -2300,10 +2300,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 ```
 
 
-## Programming Language related     :programming:
+## Programming Language related
 
 
-### Emacs Lisp, ELisp Utils     :elisp:utils:
+### Emacs Lisp, ELisp Utils
 
 Load this relatively early in order to have utils available if there's a faied load Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
@@ -2333,7 +2333,7 @@ Load this relatively early in order to have utils available if there's a faied l
           (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
         ```
 
-    2.  linting     :lint:
+    2.  linting
 
         [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
 
@@ -2377,7 +2377,7 @@ Load this relatively early in order to have utils available if there's a faied l
           (global-set-key (kbd "C-h C") #'helpful-command))
         ```
 
-    4.  elisp popup context help     :popup:elisp:
+    4.  elisp popup context help
 
         Display a poup containing docstring at point
 
@@ -2488,7 +2488,7 @@ Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/projec
 ```
 
 
-### BASH     :bash:
+### BASH
 
 1.  Navigating Bash set -x output
 
@@ -2504,7 +2504,7 @@ Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/projec
     ```
 
 
-### JSON, YAML Configuration files     :json:
+### JSON, YAML Configuration files
 
 1.  JSONNavigator
 
@@ -2526,7 +2526,7 @@ Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/projec
     ```
 
 
-### Flycheck     :flycheck:lint:
+### Flycheck
 
 On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
@@ -2550,9 +2550,9 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-### Version Control     :git:vc:
+### Version Control
 
-1.  It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs     :magit:
+1.  It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs
 
     magit
 
@@ -2567,14 +2567,14 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
       ("C-x g" . magit-status))
     ```
 
-    1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents     :CANCELLED:
+    1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents
 
         ```emacs-lisp
         (use-package orgit
           :after magit)
         ```
 
-2.  EDiff - comparing files in Emacs     :diff:ediff:
+2.  EDiff - comparing files in Emacs
 
     ```emacs-lisp
     (use-package ediff+
@@ -2587,7 +2587,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
       :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
     ```
 
-3.  [Forge](https://github.com/magit/forge) ahead with Pull Requests     :forge:git:github:
+3.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
 
     ```emacs-lisp
     (use-package forge
@@ -2596,13 +2596,13 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
       (use-package orgit-forge))
     ```
 
-    1.  token     :crypt:token:
+    1.  token
 
         &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
 
         hQEMA7IjL5SkHG4iAQgAnyC1NPS3sWV9r7kriSvL4IF53g076qwmEHvmPjBaUp9R QeQyyp8ek1MOSQP4zPbn0s5gAALMdP/UbEjocudP0e3bY2BYLJstTC7av1LS5Vzq NpoecGRrlUCISRAMCRx/2MpE6o2E3RdAd0P2RQ4vGmaIEJ0vHkfP8RnYd8M+wacy y58rcuxmGBaLNGEOOywb2icYVrjKXxSdRDXL6/LTjkQHXuPjpD27WIA2ASExh64t 1XIA6Gs0vXc8CF+ppt9tb48TwCyONhH9PtE1CURhH6FRPSKkxXD/eq/BhoVzjT// 9lu269+Q2H6QHQAh0CeT9wuqpSHxXu/fKDNrG/DGmNLpAfSrO4bepZGOAWKnDQFP Dkr1FEpb43SRZgyP3KDEad5F7uZzYDf7FVLxfNlWzhuFErzLVTHlUxWBAcY22a8R 2AuS6D+0vpJUSXqXEYQJ+R/GqHe1h+6mBnAyloz9eSU7X9kYPUv3cEAkWYrkGLt0 Or7cfbtFL+GUQpVVNELOZftK1h4S3StfJJerc5YluQBqHUQkCIZMa6AS48uV958b JC9WHZIgGzkb/3GLV/rAEwgOhlmfWavmP/MXIEl5YBOpyOSkpVm4CKqNOx7+Sby+ 2Gh45i5qQhRfBW6880zrgnRSa6rlXHrzd4gL32sSKGON6YEhngJRzZzZhf+0IgpR QXRk7H0novz5DBUHAcecOGqNikTVvwBXI12sFjh6YMbVD0FhkokSjHqipJqXCwDc In6uBDyBjOjcJa0M7KzEN5MsN9RJK00vrBao+b8mpROUCpVAF/ZL5ofMTu72qJ2P Plpk2ab+ZpAxm+B7am9r2CojjDDz/D8aFFR+bLx/0c1AnCUDnvqjBmNKxCHD2jIR B4ghhzUfYFDgnm7u2vg3ycTxuP1ys74Z82Ufw3YZeiroG+uM/h90eyXJsEHv6pmj mXO4USgtApYLqNUfSptcjw1nDnUnSus2/DjIZZTg0GNMQi013kHkrodKmAs2V3/o NmmXwjbGwdqpZzbwiG2yrw5BwkdKPQQ4PRsyUVuyWfrYAFLLtfXuFGIIfoQ2DiSl EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY= =FmGT &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
 
-4.  Git Gutter Mode     :gutter:
+4.  Git Gutter Mode
 
     [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is an Emacs port of the Sublime Text plugin GitGutter.
 
@@ -2615,7 +2615,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
     ```
 
 
-### Javascript     :js:
+### Javascript
 
 ```emacs-lisp
 
@@ -2681,7 +2681,7 @@ On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 ```
 
 
-### Language Server Protocol (LSP)     :lsp:
+### Language Server Protocol (LSP)
 
 [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
 
@@ -2864,7 +2864,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 ```
 
 
-### Python     :python:
+### Python
 
 1.  python-mode
 
@@ -2889,9 +2889,9 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
     (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
     ```
 
-3.  lsp     :lsp:
+3.  lsp
 
-    1.  microsoft python language server     :lsp:
+    1.  microsoft python language server
 
         ```emacs-lisp
         (use-package lsp-python-ms
@@ -2904,7 +2904,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
                                  (lsp-deferred))))
         ```
 
-4.  virtualenv     :virtualenv:
+4.  virtualenv
 
     ```emacs-lisp
     (use-package auto-virtualenv
@@ -2912,7 +2912,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
       (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
     ```
 
-5.  blacken reformatting     :blacken:
+5.  blacken reformatting
 
     ```emacs-lisp
     (use-package blacken
@@ -2922,9 +2922,9 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
     ```
 
 
-### C     :c:
+### C
 
-1.  Clang provides us with some industry standard code prettiers     :clang:
+1.  Clang provides us with some industry standard code prettiers
 
     ```emacs-lisp
     (use-package clang-format)
@@ -2934,7 +2934,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
     ```
 
 
-### C++     :cpp:
+### C++
 
 ```emacs-lisp
 (defun rgr/c++-mode-hook ()
@@ -2965,7 +2965,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
     ```
 
 
-### Godot GDScript     :godot:
+### Godot GDScript
 
 This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
 
@@ -3073,7 +3073,7 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 ```
 
 
-## Themes     :themes:
+## Themes
 
 
 ### modus themes
@@ -3206,7 +3206,7 @@ fi
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org25496ba) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org27a3e28) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3245,7 +3245,7 @@ fi
 ```
 
 
-<a id="org25496ba"></a>
+<a id="org27a3e28"></a>
 
 ### Gnome protocol handler desktop file
 

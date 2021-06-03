@@ -15,7 +15,7 @@
 # do not export any sections marked as tasks unless TODO or DONE
 #+OPTIONS: tasks:("TODO" "DONE")
 # do not include task keywords in export
-#+OPTIONS: todo:nil
+#+OPTIONS: todo:nil tags:nil
 # auto generate custom_ids
 #+OPTIONS: auto-id:t
 
