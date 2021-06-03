@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgc804a00)
+I have this disabled by default as I use [straight.el package management](#orgd0b0bbc)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orgc8
 ```
 
 
-<a id="orgc804a00"></a>
+<a id="orgd0b0bbc"></a>
 
 ## straight.el package management
 
@@ -878,18 +878,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           ( "<f7>" . 'darkroom-mode))
         ```
 
-3.  Clipboard
-
-    Allow terminal emacs to interact with the x clipboard.
-
-    ```emacs-lisp
-    (use-package xclip
-      :demand t
-      :config
-      (xclip-mode))
-    ```
-
-4.  Ansi colour
+3.  Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
 
@@ -899,7 +888,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
     ```
 
-5.  Memory
+4.  Memory
 
     1.  save-place-mode, remember position in files
 
@@ -933,7 +922,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
             (add-to-list 'recentf-exclude no-littering-etc-directory)))
         ```
 
-6.  provide
+5.  provide
 
     ```emacs-lisp
     (provide 'rgr/general-config)
@@ -1026,7 +1015,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org50c4be1) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org8f6af44) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2085,12 +2074,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 ## Online Chats
 
 
-### rgr-chat
-
-DELETED
-
-
-### erc manual
+### irc/erc manual
 
 ```emacs-lisp
 (defun rgr/erc-switch-to-channel(&optional channel)
@@ -2102,7 +2086,7 @@ DELETED
   (unless(get-buffer "irc.libera.chat:6697")
     (progn
       (erc-tls :server "irc.libera.chat" :port "6697")
-      ;;(erc-tls :server "irc.freenode.net" :port "6697")
+      (erc-tls :server "irc.freenode.net" :port "6697")
       (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
 
 (require 'erc)

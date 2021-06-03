@@ -84,11 +84,6 @@
   :bind
   ( "<f7>" . 'darkroom-mode))
 
-(use-package xclip
-  :demand t
-  :config
-  (xclip-mode))
-
 (save-place-mode +1)
 
 (savehist-mode 1)

@@ -117,8 +117,8 @@
  '(enable-recursive-minibuffers t)
  '(epa-file-cache-passphrase-for-symmetric-encryption nil)
  '(erc-autojoin-channels-alist
-   '(("irc.freenode.net" "#debian" "##linux")
-     ("irc.libera.chat" "#sway" "#emacs")))
+   '(("irc.freenode.net" "#debian" )
+     ("irc.libera.chat" "#sway" "#emacs" "#linux")))
  '(erc-autojoin-delay 1)
  '(erc-autojoin-domain-only nil)
  '(erc-autojoin-mode t)

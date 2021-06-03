@@ -934,8 +934,15 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
   (set-frame-parameter (selected-frame) 'alpha '(95 . 50))
   (add-to-list 'default-frame-alist '(alpha . (95 . 50)))
 #+end_src
-**** Clipboard
+**** WAITING Clipboard                                              :WAITING:
 :PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "WAITING"    from "TODO"       [2021-06-02 Wed 15:42]
+- Note taken on [2021-06-02 Wed 15:42] \\
+  see if can delete
+- State "TODO"       from              [2021-06-02 Wed 15:42]
 :END:
 Allow terminal emacs to interact with the x clipboard.
 #+begin_src emacs-lisp
@@ -2283,10 +2290,7 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
 :PROPERTIES:
 :ID:       04bb339b-884b-4571-a740-81d210097aa8
 :END:
-
-*** rgr-chat
-DELETED
-*** erc manual
+*** irc/erc manual
 #+begin_src emacs-lisp
   (defun rgr/erc-switch-to-channel(&optional channel)
     (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
@@ -2297,7 +2301,7 @@ DELETED
     (unless(get-buffer "irc.libera.chat:6697")
       (progn
         (erc-tls :server "irc.libera.chat" :port "6697")
-        ;;(erc-tls :server "irc.freenode.net" :port "6697")
+        (erc-tls :server "irc.freenode.net" :port "6697")
         (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
 
   (require 'erc)
