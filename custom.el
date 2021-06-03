@@ -117,7 +117,7 @@
  '(enable-recursive-minibuffers t)
  '(epa-file-cache-passphrase-for-symmetric-encryption nil)
  '(erc-autojoin-channels-alist
-   '(("irc.freenode.net" "#debian" )
+   '(("irc.freenode.net" "#debian")
      ("irc.libera.chat" "#sway" "#emacs" "#linux")))
  '(erc-autojoin-delay 1)
  '(erc-autojoin-domain-only nil)
@@ -150,7 +150,7 @@
  '(erc-prompt-for-password nil)
  '(erc-query-display 'window-noselect)
  '(erc-scrolltobottom-mode nil)
- '(erc-server-auto-reconnect nil)
+ '(erc-server-auto-reconnect t)
  '(erc-server-reconnect-attempts t)
  '(erc-stamp-mode t)
  '(erc-startup-file-list nil)

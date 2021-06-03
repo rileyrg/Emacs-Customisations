@@ -472,7 +472,8 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
           :config
           (selectrum-prescient-mode +1))))
 #+end_src
-**** [[https://github.com/minad/consult][Consult]] provides various commands based on the Emacs completion function completing-read :consult:
+**** [[https://github.com/minad/consult][Consult]]                                                        :consult:
+[[https://github.com/minad/consult][Consult]] Provides various commands based on the Emacs completion function completing-read
 :PROPERTIES:
 :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
 :END:
@@ -487,6 +488,7 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
            ;; C-x bindings (ctl-x-map)
            ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complet-command
            ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+           ("M-b" . consult-buffer)
            ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
            ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
            ;; Custom M-# bindings for fast register access
@@ -2290,7 +2292,7 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
 :PROPERTIES:
 :ID:       04bb339b-884b-4571-a740-81d210097aa8
 :END:
-*** irc/erc manual
+*** irc/erc
 #+begin_src emacs-lisp
   (defun rgr/erc-switch-to-channel(&optional channel)
     (when (string= (or channel "#emacs") (buffer-name (current-buffer)))

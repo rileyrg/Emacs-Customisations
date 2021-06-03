@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgd0b0bbc)
+I have this disabled by default as I use [straight.el package management](#orgd51629e)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orgd0
 ```
 
 
-<a id="orgd0b0bbc"></a>
+<a id="orgd51629e"></a>
 
 ## straight.el package management
 
@@ -453,7 +453,11 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (selectrum-prescient-mode +1))))
     ```
 
-7.  [Consult](https://github.com/minad/consult) provides various commands based on the Emacs completion function completing-read     :consult:
+7.  [Consult](https://github.com/minad/consult)     :consult:
+
+    [Consult](https://github.com/minad/consult) Provides various commands based on the Emacs completion function completing-read
+
+    :ID: ec5375c7-4387-42a1-8938-5fad532be79b
 
     ```emacs-lisp
     (use-package consult
@@ -466,6 +470,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
              ;; C-x bindings (ctl-x-map)
              ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complet-command
              ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+             ("M-b" . consult-buffer)
              ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
              ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
              ;; Custom M-# bindings for fast register access
@@ -1015,7 +1020,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org8f6af44) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org3b8ce1e) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2074,7 +2079,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 ## Online Chats
 
 
-### irc/erc manual
+### irc/erc
 
 ```emacs-lisp
 (defun rgr/erc-switch-to-channel(&optional channel)
