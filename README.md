@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgb294529)
+I have this disabled by default as I use [straight.el package management](#orgeb26363)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orgb2
 ```
 
 
-<a id="orgb294529"></a>
+<a id="orgeb26363"></a>
 
 ## straight.el package management
 
@@ -1020,7 +1020,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org43a6a05) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org7dd9d45) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3082,14 +3082,14 @@ This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for 
 # Associated emacs things
 
 
-## Project version control, git, .gitignore
+## Project version control with  git
 
 
-### .gitignore, exclusive     :gitignore:
+### .gitignore
 
-I like to exclude everything and then add in what is important. So the first line of my [gitignore](.gitignore) is "\*".
+An exclusionary .gitignore. You need to specfically add in things you wish to add to version control.
 
-```git
+```config
 *
 *.*
 
@@ -3136,20 +3136,11 @@ I like to exclude everything and then add in what is important. So the first lin
 !etc/hosts/xmgneo
 !etc/hosts/xmgneo/custom.el
 
-!etc/straight
-!etc/straight/versions
-!etc/straight/versions/default.el
-
-
 !editor-config
 !editor-config/*
 
 !bin
 !bin/*
-
-!exwm
-!exwm/*
-
 
 !images
 !images/*
@@ -3157,25 +3148,10 @@ I like to exclude everything and then add in what is important. So the first lin
 !straight
 !straight/versions
 !straight/versions/*
-
-!linux-init
-!linux-init/*
-!linux-init/DotFiles/
-!linux-init/DotFiles/*
-
-!linux-init/test-files/
-!linux-init/test-files/*
-!linux-init/test-files/subdir
-!linux-init/test-files/subdir/*
-
-
-!build
-!build/scripts
-!build/scripts/*
 ```
 
 
-### master branch, no commit
+### master branch, no commit : .git/hooks/pre-commit
 
 ```bash
 #!/bin/sh
@@ -3185,6 +3161,8 @@ if [ "$branch" = "master" ]; then
     exit 1
 fi
 ```
+
+1.  how to export tangle destination?
 
 
 ## Setting up emacs as a default editor using a dot desktop file and associated protocol handler

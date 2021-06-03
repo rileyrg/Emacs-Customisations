@@ -3419,31 +3419,19 @@ https://github.com/humanoid-colors/emacs-humanoid-themes
 :PROPERTIES:
 :ID:       c77645d3-d03f-47ab-a30f-fc649c70ef31
 :END:
-** Project version control, git, .gitignore
-:PROPERTIES:
-:ID:       2e24eab4-5877-4f67-b769-033756e22988
-:END:
-:LOGBOOK:
-- State "DONE"       from              [2020-12-29 Tue 16:15]
-- State "DONE"       from              [2020-12-28 Mo 07:18]
-- State "TODO"       from "STARTED"    [2020-12-18 Fr 05:05]
-- State "STARTED"    from "DONE"       [2020-12-18 Fr 05:05]
-- State "DONE"       from "WAITING"    [2020-12-18 Fr 04:58]
-- State "WAITING"    from              [2020-12-18 Fr 04:53] \\
-  need to think about this
-  - State "TODO"       from              [2020-12-18 Fr 04:43]
-:END:
-*** .gitignore, exclusive                                         :gitignore:
-:PROPERTIES:
-:ID:       e306737b-487d-46f5-8e24-a09d972409aa
-:END:
-I like to exclude everything and then add in what is important. So the first line of my [[file:.gitignore][gitignore]] is "*".
-#+include: "./.gitignore" src git
-*** master branch, no commit
+** Project version control with  git
+
+*** .gitignore
+An exclusionary .gitignore. You need to specfically add in things you wish
+to add to version control.
+
+#+include: "./.gitignore" src config
+
+*** master branch, no commit : .git/hooks/pre-commit
 :PROPERTIES:
 :ID:       f51974ce-8b80-496e-ac0b-32b0962669d9
 :END:
-#+begin_src bash :tangle .git/hooks/pre-commit
+#+begin_src bash :tangle (expand-file-name ".git/hooks/pre-commit" user-emacs-directory)
   #!/bin/sh
   branch="$(git rev-parse --abbrev-ref HEAD)"
   if [ "$branch" = "master" ]; then
@@ -3451,6 +3439,12 @@ I like to exclude everything and then add in what is important. So the first lin
       exit 1
   fi
 #+end_src
+
+**** TODO how to export tangle destination?
+SCHEDULED: <2021-06-03 Thu>
+:LOGBOOK:
+- State "TODO"       from              [2021-06-03 Thu 16:07]
+:END:
 ** Setting up emacs as a default editor using a dot desktop file and associated protocol handler
 :PROPERTIES:
 :ID:       ac99a443-46fe-4878-a311-db5bce8568e5

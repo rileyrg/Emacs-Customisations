@@ -44,20 +44,11 @@
 !etc/hosts/xmgneo
 !etc/hosts/xmgneo/custom.el
 
-!etc/straight
-!etc/straight/versions
-!etc/straight/versions/default.el
-
-
 !editor-config
 !editor-config/*
 
 !bin
 !bin/*
-
-!exwm
-!exwm/*
-
 
 !images
 !images/*
@@ -65,18 +56,3 @@
 !straight
 !straight/versions
 !straight/versions/*
-
-!linux-init
-!linux-init/*
-!linux-init/DotFiles/
-!linux-init/DotFiles/*
-
-!linux-init/test-files/
-!linux-init/test-files/*
-!linux-init/test-files/subdir
-!linux-init/test-files/subdir/*
-
-
-!build
-!build/scripts
-!build/scripts/*
