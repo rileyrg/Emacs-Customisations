@@ -58,7 +58,7 @@
 
 (require 'rgr/utils "rgr-utils" 'NOERROR)
 
-(require 'rgr/daemon "rgr-daemon" 'NOERROR)
+(require 'rgr/startup "rgr-startup" 'NOERROR)
 
 (require 'rgr/minibuffer "rgr-minibuffer" 'NOERROR)
 

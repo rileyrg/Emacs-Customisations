@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org78fe67d)
+I have this disabled by default as I use [straight.el package management](#org1363383)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org78
 ```
 
 
-<a id="org78fe67d"></a>
+<a id="org1363383"></a>
 
 ## straight.el package management
 
@@ -299,55 +299,81 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
 Load up the daemon if not loaded, amongst other things.
 
-Raw: [rgr/daemon](etc/elisp/rgr-daemon.el)
+Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 ```emacs-lisp
-(require 'rgr/daemon "rgr-daemon" 'NOERROR)
+(require 'rgr/startup "rgr-startup" 'NOERROR)
 ```
 
 
-### rgr-daemon library
+### rgr-startup library
 
-```emacs-lisp
+1.  desktop-save
 
-;; start emacs-server if not running
-(unless(daemonp)
-  (add-hook 'after-init-hook (lambda ()
-                               (require 'server)
-                               (unless (server-running-p)
-                                 (message "Starting EmacsServer from init as not already running.")
-                                 (server-start))
-                               )))
+    This has frequently caused problems. The docs seems slightly off and the setting of variables a little confusing. Google seems to confirm this. Anyways, this is working.
 
-(defun startHook()
-  (run-at-time "1" nil '(lambda()
-                          (desktop-read)
-                          (desktop-save-mode 1))))
+    ```emacs-lisp
+    (use-package emacs
+      :custom
+      (desktop-path '("~/.emacs.d/var/desktop"))
+      (desktop-save t)
+      :init
+      (defun rgr/restore-desktop()
+        (when (fboundp 'alert)
+          (alert (message (format "loading desktop from %s" desktop-path))))
+        ;;I include the run-with-timer despite being able to get this to work without as it's a timing
+        ;;issue and a little delay does no one any harm
+        (run-at-time "1" nil (lambda()
+                               (desktop-read)
+                               (desktop-save-mode 1))))
+      (add-hook 'emacs-startup-hook
+                (lambda()
+                  (if (daemonp)
+                      (add-hook 'server-after-make-frame-hook 'rgr/restore-desktop)
+                    (rgr/restore-desktop)))))
+    ```
 
-(add-hook 'emacs-startup-hook 'startHook)
+2.  emacs server
 
-(defun quit-or-close-emacs(&optional kill)
-  (interactive)
-  (if (or current-prefix-arg kill)
-      (server-shutdown)
-    (delete-frame)))
+    If not already deamonised
 
-(defun server-shutdown ()
-  "Save buffers, Quit, and Shutdown (kill) server"
-  (interactive)
-  (save-some-buffers)
-  (kill-emacs))
+    ```emacs-lisp
+    ;; start emacs-server if not running
+    (unless(daemonp)
+      (add-hook 'after-init-hook
+                (lambda ()
+                  (require 'server)
+                  (unless (server-running-p)
+                    (message "Starting EmacsServer from init as not already running.")
+                    (server-start))
+                  )))
+    ```
 
-(global-set-key (kbd "C-c x") 'quit-or-close-emacs)
-(global-set-key (kbd "C-x C-c") 'nil)
+3.  rest of startup
 
-(use-package alert
-  :init
-  (let ((alert-fade-time 5))
-    (alert "Emacs is starting..." :title "Emacs")))
+    ```emacs-lisp
+    (defun quit-or-close-emacs(&optional kill)
+      (interactive)
+      (if (or current-prefix-arg kill)
+          (server-shutdown)
+        (delete-frame)))
 
-(provide 'rgr/daemon)
-```
+    (defun server-shutdown ()
+      "Save buffers, Quit, and Shutdown (kill) server"
+      (interactive)
+      (save-some-buffers)
+      (kill-emacs))
+
+    (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
+    (global-set-key (kbd "C-x C-c") 'nil)
+
+    (use-package alert
+      :init
+      (let ((alert-fade-time 5))
+        (alert "Emacs is starting..." :title "Emacs")))
+
+    (provide 'rgr/startup)
+    ```
 
 
 ## Minibuffer Enrichment (search, sudo edit&#x2026;)
@@ -1056,7 +1082,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb7fdaa6) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgbe81b46) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3208,7 +3234,7 @@ fi
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga39e5cd) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org700f12e) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3247,7 +3273,7 @@ fi
 ```
 
 
-<a id="orga39e5cd"></a>
+<a id="org700f12e"></a>
 
 ### Gnome protocol handler desktop file
 

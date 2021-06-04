@@ -65,8 +65,6 @@
  '(delete-active-region 'kill)
  '(delete-old-versions t)
  '(delete-selection-mode t)
- '(desktop-path '("~/.emacs.d/var/desktop"))
- '(desktop-save t)
  '(devdocs-alist
    '((c-mode . "c")
      (c++-mode . "c++")

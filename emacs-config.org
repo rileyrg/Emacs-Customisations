@@ -306,55 +306,79 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 :END:
 Load up the daemon if not loaded, amongst other things.
 
-Raw: [[file+sys:etc/elisp/rgr-daemon.el][rgr/daemon]]
+Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 
 #+begin_src emacs-lisp
-  (require 'rgr/daemon "rgr-daemon" 'NOERROR)
+  (require 'rgr/startup "rgr-startup" 'NOERROR)
 #+end_src
-*** rgr-daemon library                                               :daemon:
+*** rgr-startup library                                              :startup:daemon:
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-daemon.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-startup.el" elisp-dir)
 :ID:       ee7aaad4-5f12-4e5e-b7d7-91ed4296b129
 :END:
+
+**** desktop-save
+This has frequently caused problems. The docs seems slightly off
+and the setting of variables a little confusing. Google seems to confirm this. Anyways, this is
+working.
 #+begin_src emacs-lisp
+  (use-package emacs
+    :custom
+    (desktop-path '("~/.emacs.d/var/desktop"))
+    (desktop-save t)
+    :init
+    (defun rgr/restore-desktop()
+      (when (fboundp 'alert)
+        (alert (message (format "loading desktop from %s" desktop-path))))
+      ;;I include the run-with-timer despite being able to get this to work without as it's a timing
+      ;;issue and a little delay does no one any harm
+      (run-at-time "1" nil (lambda()
+                             (desktop-read)
+                             (desktop-save-mode 1))))
+    (add-hook 'emacs-startup-hook
+              (lambda()
+                (if (daemonp)
+                    (add-hook 'server-after-make-frame-hook 'rgr/restore-desktop)
+                  (rgr/restore-desktop)))))
+#+end_src
 
-      ;; start emacs-server if not running
-      (unless(daemonp)
-        (add-hook 'after-init-hook (lambda ()
-                                     (require 'server)
-                                     (unless (server-running-p)
-                                       (message "Starting EmacsServer from init as not already running.")
-                                       (server-start))
-                                     )))
+**** emacs server
+If not already deamonised
+#+begin_src emacs-lisp
+  ;; start emacs-server if not running
+  (unless(daemonp)
+    (add-hook 'after-init-hook
+              (lambda ()
+                (require 'server)
+                (unless (server-running-p)
+                  (message "Starting EmacsServer from init as not already running.")
+                  (server-start))
+                )))
+#+end_src
+**** rest of startup
 
-      (defun startHook()
-        (run-at-time "1" nil '(lambda()
-                                (desktop-read)
-                                (desktop-save-mode 1))))
+#+begin_src emacs-lisp
+  (defun quit-or-close-emacs(&optional kill)
+    (interactive)
+    (if (or current-prefix-arg kill)
+        (server-shutdown)
+      (delete-frame)))
 
-      (add-hook 'emacs-startup-hook 'startHook)
+  (defun server-shutdown ()
+    "Save buffers, Quit, and Shutdown (kill) server"
+    (interactive)
+    (save-some-buffers)
+    (kill-emacs))
 
-      (defun quit-or-close-emacs(&optional kill)
-        (interactive)
-        (if (or current-prefix-arg kill)
-            (server-shutdown)
-          (delete-frame)))
+  (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
+  (global-set-key (kbd "C-x C-c") 'nil)
 
-      (defun server-shutdown ()
-        "Save buffers, Quit, and Shutdown (kill) server"
-        (interactive)
-        (save-some-buffers)
-        (kill-emacs))
+  (use-package alert
+    :init
+    (let ((alert-fade-time 5))
+      (alert "Emacs is starting..." :title "Emacs")))
 
-      (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
-      (global-set-key (kbd "C-x C-c") 'nil)
-
-      (use-package alert
-        :init
-        (let ((alert-fade-time 5))
-          (alert "Emacs is starting..." :title "Emacs")))
-
-      (provide 'rgr/daemon)
+  (provide 'rgr/startup)
 #+end_src
 ** Minibuffer Enrichment (search, sudo edit...)                  :minibuffer:
 :PROPERTIES:
