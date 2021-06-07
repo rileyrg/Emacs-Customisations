@@ -220,25 +220,26 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   :hook (dired-mode . dired-git-mode))
 
-(use-package treemacs-all-the-icons
-  :hook ((dired-mode . treemacs-icons-dired-mode)))
+(use-package all-the-icons-dired
+  :demand
+  :hook ((dired-mode . all-the-icons-dired-mode)))
 
-(use-package dired-subtree
+(use-package dired-sidebar
+  :commands (dired-sidebar-toggle-sidebar)
+  :custom
+  (dired-sidebar-subtree-line-prefix "__")
+  (dired-sidebar-theme 'vscode)
+  (dired-sidebar-use-term-integration t)
+  (dired-sidebar-use-custom-font t)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
   :config
-  (use-package dash)
-  :bind (:map dired-mode-map
-              ("i" . dired-subtree-insert)
-              (";" . dired-subtree-remove)))
-
-(use-package dired-filter
-  :config
-  (use-package dash)
-  )
-
-(use-package dired-quick-sort
-  :disabled t
-  :config
-  (dired-quick-sort-setup))
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar)))
 
 (use-package posframe)
 
@@ -340,22 +341,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
         (shell-command (format "htop-regexp %s" s))
       (error nil))))
 (global-set-key (kbd "C-S-p") 'htop-regexp)
-
-(use-package
-  treemacs
-  :custom
-  (treemacs-follow-after-init t)
-  :config
-  (treemacs-follow-mode +1)
-  (treemacs-fringe-indicator-mode)
-  (treemacs-git-mode 'deferred)
-  (use-package treemacs-icons-dired
-    :config (treemacs-icons-dired-mode))
-  (use-package treemacs-magit)
-  :bind
-  ("M-9"   . 'treemacs-select-window)
-  (:map treemacs-mode-map
-        ("<right>" . treemacs-peek)))
 
 (defun rgr/erc-switch-to-channel(&optional channel)
   (when (string= (or channel "#emacs") (buffer-name (current-buffer)))

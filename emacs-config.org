@@ -2025,14 +2025,36 @@ CLOSED: [2021-05-17 Mo 19:59]
     :config
     :hook (dired-mode . dired-git-mode))
 #+end_src
-**** all-the-icons
+**** all-the-icons-dired
 #+begin_src emacs-lisp
-  (use-package treemacs-all-the-icons
-    :hook ((dired-mode . treemacs-icons-dired-mode)))
+  (use-package all-the-icons-dired
+    :demand
+    :hook ((dired-mode . all-the-icons-dired-mode)))
+#+end_src
+**** dured-sidebar
+#+begin_src emacs-lisp
+  (use-package dired-sidebar
+    :commands (dired-sidebar-toggle-sidebar)
+    :custom
+    (dired-sidebar-subtree-line-prefix "__")
+    (dired-sidebar-theme 'vscode)
+    (dired-sidebar-use-term-integration t)
+    (dired-sidebar-use-custom-font t)
+    :init
+    (add-hook 'dired-sidebar-mode-hook
+              (lambda ()
+                (unless (file-remote-p default-directory)
+                  (auto-revert-mode))))
+    :config
+    (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+    (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+    :bind (("C-x C-n" . dired-sidebar-toggle-sidebar)))
+
 #+end_src
 **** dired hacks
 :PROPERTIES:
 :ID:       209d1415-fe48-4df2-b6bd-e51c769a4ea7
+:header-args:emacs-lisp: :tangle no
 :END:
 Collection of useful dired additions found on github [[https://github.com/Fuco1/dired-hacks][here]]. Found out about
 it at the useful emacs resource [[http://pragmaticemacs.com/category/dired/][*Pragmatic Emacs*]].
@@ -2274,9 +2296,11 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
     :config
     (explain-pause-mode))
 #+end_src
-** Treemacs
+** CANCELLED Treemacs                                             :CANCELLED:
+CLOSED: [2021-06-07 Mon 10:12]
 :PROPERTIES:
 :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
+:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package

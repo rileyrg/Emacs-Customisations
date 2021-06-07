@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org1363383)
+I have this disabled by default as I use [straight.el package management](#org405c22d)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org13
 ```
 
 
-<a id="org1363383"></a>
+<a id="org405c22d"></a>
 
 ## straight.el package management
 
@@ -317,6 +317,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
       :custom
       (desktop-path '("~/.emacs.d/var/desktop"))
       (desktop-save t)
+      (desktop-load-locked-desktop t)
       :init
       (defun rgr/restore-desktop()
         (when (fboundp 'alert)
@@ -326,11 +327,12 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         (run-at-time "1" nil (lambda()
                                (desktop-read)
                                (desktop-save-mode 1))))
-      (add-hook 'emacs-startup-hook
-                (lambda()
-                  (if (daemonp)
-                      (add-hook 'server-after-make-frame-hook 'rgr/restore-desktop)
-                    (rgr/restore-desktop)))))
+      ;; (add-hook 'emacs-startup-hook
+      ;;           (lambda()
+      ;;             (if (daemonp)
+      ;;                 (add-hook 'server-after-make-frame-hook 'rgr/restore-desktop)
+      ;;               (rgr/restore-desktop))))
+      )
     ```
 
 2.  emacs server
@@ -717,23 +719,43 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     ```emacs-lisp
     ;; Configure corfu
     (use-package corfu
-      :straight (corfu :type git :host github :repo "minad/corfu")
+      :demand t
       ;; Optionally use TAB for cycling, default is `corfu-complete'.
-      ;; :bind (:map corfu-map
-      ;;        ("TAB" . corfu-next)
-      ;;        ("S-TAB" . corfu-previous))
+      :bind (:map corfu-map
+             ("TAB" . corfu-next)
+             ("S-TAB" . corfu-previous))
 
-      ;; Enable the overlay only for certain modes.
-      ;; For example it is not a useful UI for completions at point in the
-      ;; minibuffer.
-      :hook ((prog-mode . corfu-mode)
-             (eshell-mode . corfu-mode))
+      ;; You may want to enable Corfu only for certain modes.
+      ;; :hook ((prog-mode . corfu-mode)
+      ;;        (shell-mode . corfu-mode)
+      ;;        (eshell-mode . corfu-mode))
 
       :config
 
+      ;; Recommended: Enable Corfu globally.
+      ;; This is recommended since dabbrev can be used globally (M-/).
+      (corfu-global-mode)
+      (message "global corfu mode")
+
       ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
-      ;; (setq corfu-cycle t)
-      )
+      (setq corfu-cycle t)
+    )
+
+    ;; Optionally use the `orderless' completion style.
+    ;; Enable `partial-completion' for files to allow path expansion.
+    ;; You may prefer to use `initials' instead of `partial-completion'.
+    (use-package orderless
+      :init
+      (setq completion-styles '(orderless)
+            completion-category-defaults nil
+            completion-category-overrides '((file (styles . (partial-completion))))))
+
+    ;; Dabbrev works with Corfu
+    (use-package dabbrev
+      ;; Swap M-/ and C-M-/
+      :bind (("M-/" . dabbrev-completion)
+             ("C-M-/" . dabbrev-expand)))
+
     ;; A few more useful configurations...
     (use-package emacs
       :init
@@ -741,7 +763,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (setq completion-cycle-threshold 3)
 
       ;; Enable indentation+completion using the TAB key.
-      ;; Completion is often bound to M-TAB.
+      ;; `completion-at-point' is often bound to M-TAB.
       (setq tab-always-indent 'complete))
     ```
 
@@ -1082,7 +1104,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgbe81b46) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org6562747) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1884,14 +1906,37 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
       :hook (dired-mode . dired-git-mode))
     ```
 
-2.  all-the-icons
+2.  all-the-icons-dired
 
     ```emacs-lisp
-    (use-package treemacs-all-the-icons
-      :hook ((dired-mode . treemacs-icons-dired-mode)))
+    (use-package all-the-icons-dired
+      :demand
+      :hook ((dired-mode . all-the-icons-dired-mode)))
     ```
 
-3.  dired hacks
+3.  dured-sidebar
+
+    ```emacs-lisp
+    (use-package dired-sidebar
+      :commands (dired-sidebar-toggle-sidebar)
+      :custom
+      (dired-sidebar-subtree-line-prefix "__")
+      (dired-sidebar-theme 'vscode)
+      (dired-sidebar-use-term-integration t)
+      (dired-sidebar-use-custom-font t)
+      :init
+      (add-hook 'dired-sidebar-mode-hook
+                (lambda ()
+                  (unless (file-remote-p default-directory)
+                    (auto-revert-mode))))
+      :config
+      (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+      (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+      :bind (("C-x C-n" . dired-sidebar-toggle-sidebar)))
+
+    ```
+
+4.  dired hacks
 
     Collection of useful dired additions found on github [here](https://github.com/Fuco1/dired-hacks). Found out about it at the useful emacs resource [**Pragmatic Emacs**](http://pragmaticemacs.com/category/dired/).
 
@@ -2120,28 +2165,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
   :disabled
   :config
   (explain-pause-mode))
-```
-
-
-## Treemacs
-
-```emacs-lisp
-(use-package
-  treemacs
-  :custom
-  (treemacs-follow-after-init t)
-  :config
-  (treemacs-follow-mode +1)
-  (treemacs-fringe-indicator-mode)
-  (treemacs-git-mode 'deferred)
-  (use-package treemacs-icons-dired
-    :config (treemacs-icons-dired-mode))
-  (use-package treemacs-magit)
-  :bind
-  ("M-9"   . 'treemacs-select-window)
-  (:map treemacs-mode-map
-        ("<right>" . treemacs-peek)))
-
 ```
 
 
@@ -3234,7 +3257,7 @@ fi
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org700f12e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2a42a03) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3273,7 +3296,7 @@ fi
 ```
 
 
-<a id="org700f12e"></a>
+<a id="org2a42a03"></a>
 
 ### Gnome protocol handler desktop file
 
