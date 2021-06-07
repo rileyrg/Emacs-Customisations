@@ -256,7 +256,7 @@ Would you like to play a game?
         :DateCreated: %T
         :END:" :empty-lines 1)
      ("o" "Orders" entry
-      (file "~/.config/emacs/orgfiles/orders.org")
+      (file "~/.emacs.d/var/org/orgfiles/orders.org")
       "* WAITING %^{Order name} :order:
 SCHEDULED: %^{Delivery Date}t
 :PROPERTIES:
@@ -487,7 +487,6 @@ stehen ganz weit oben.
  '(scroll-conservatively 10000)
  '(scroll-step 1)
  '(send-mail-function 'smtpmail-send-it)
- '(session-save-file "~/.config/emacs/.session" t)
  '(set-mark-command-repeat-pop t)
  '(shell-switcher-ask-before-creating-new t)
  '(show-paren-delay 0.3)
