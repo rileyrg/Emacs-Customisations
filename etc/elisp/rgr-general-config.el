@@ -39,9 +39,6 @@
 (use-package
   browse-url-dwim)
 
-(use-package
-  all-the-icons)
-
 ;; display dir name when core name clashes
 (require 'uniquify)
 

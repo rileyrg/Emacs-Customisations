@@ -894,9 +894,6 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
   (use-package
     browse-url-dwim)
 
-  (use-package
-    all-the-icons)
-
   ;; display dir name when core name clashes
   (require 'uniquify)
 
@@ -2025,13 +2022,21 @@ CLOSED: [2021-05-17 Mo 19:59]
     :config
     :hook (dired-mode . dired-git-mode))
 #+end_src
-**** all-the-icons-dired
+**** CANCELLED all-the-icons-dired                                :CANCELLED:
+CLOSED: [2021-06-07 Mon 10:57]
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 #+begin_src emacs-lisp
   (use-package all-the-icons-dired
     :demand
     :hook ((dired-mode . all-the-icons-dired-mode)))
 #+end_src
-**** dured-sidebar
+**** CANCELLED dired-sidebar                                      :CANCELLED:
+CLOSED: [2021-06-07 Mon 10:56]
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 #+begin_src emacs-lisp
   (use-package dired-sidebar
     :commands (dired-sidebar-toggle-sidebar)
@@ -2296,11 +2301,9 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
     :config
     (explain-pause-mode))
 #+end_src
-** CANCELLED Treemacs                                             :CANCELLED:
-CLOSED: [2021-06-07 Mon 10:12]
+** Treemacs                                                       :CANCELLED:
 :PROPERTIES:
 :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
-:header-args:emacs-lisp: :tangle no
 :END:
 #+begin_src emacs-lisp
   (use-package
@@ -2753,7 +2756,19 @@ Display a poup containing docstring at point
 *** Project Management
 Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project/
 #+begin_src emacs-lisp
-  (use-package project)
+  (use-package project
+    ;; Cannot use :hook because 'project-find-functions does not end in -hook
+    ;; Cannot use :init (must use :config) because otherwise
+    ;; project-find-functions is not yet initialized.
+    :init
+    ;; Returns the parent directory containing a .project.el file, if any,
+    ;; to override the standard project.el detection logic when needed.
+    (defun zkj-project-override (dir)
+      (let ((override (locate-dominating-file dir ".project")))
+        (if override
+            (cons 'vc override)
+          nil)))
+    (add-hook 'project-find-functions #'zkj-project-override))
 #+end_src
 *** BASH                                                               :bash:
 :PROPERTIES:
@@ -3068,16 +3083,16 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 
 
       (setq dap-auto-configure-features '(locals  tooltip))
-      (require 'dap-gdb-lldb)
-      (dap-gdb-lldb-setup)
+      ;; (require 'dap-gdb-lldb)
+      ;; (dap-gdb-lldb-setup)
       ;; (require 'dap-codelldb)
       ;;      (dap-codelldb-setup)
       (require 'dap-cpptools)
-      (dap-cpptools-setup)
+      ;;(dap-cpptools-setup)
       ;; (add-hook 'dap-stopped-hook (lambda (arg)
       ;;                               (call-interactively #'dap-hydra)))
 
-      (require 'dap-chrome)
+      ;;(require 'dap-chrome)
 
       ;; (dap-register-debug-template "Chrome Browse rgr/project"
       ;;   (list :type "chrome"

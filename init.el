@@ -220,27 +220,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   :hook (dired-mode . dired-git-mode))
 
-(use-package all-the-icons-dired
-  :demand
-  :hook ((dired-mode . all-the-icons-dired-mode)))
-
-(use-package dired-sidebar
-  :commands (dired-sidebar-toggle-sidebar)
-  :custom
-  (dired-sidebar-subtree-line-prefix "__")
-  (dired-sidebar-theme 'vscode)
-  (dired-sidebar-use-term-integration t)
-  (dired-sidebar-use-custom-font t)
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
-  :config
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar)))
-
 (use-package posframe)
 
 (use-package popper
@@ -341,6 +320,22 @@ creates a report in function-name.ftrace and opens it in a buffer"
         (shell-command (format "htop-regexp %s" s))
       (error nil))))
 (global-set-key (kbd "C-S-p") 'htop-regexp)
+
+(use-package
+  treemacs
+  :custom
+  (treemacs-follow-after-init t)
+  :config
+  (treemacs-follow-mode +1)
+  (treemacs-fringe-indicator-mode)
+  (treemacs-git-mode 'deferred)
+  (use-package treemacs-icons-dired
+    :config (treemacs-icons-dired-mode))
+  (use-package treemacs-magit)
+  :bind
+  ("M-9"   . 'treemacs-select-window)
+  (:map treemacs-mode-map
+        ("<right>" . treemacs-peek)))
 
 (defun rgr/erc-switch-to-channel(&optional channel)
   (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
@@ -522,7 +517,19 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
-(use-package project)
+(use-package project
+  ;; Cannot use :hook because 'project-find-functions does not end in -hook
+  ;; Cannot use :init (must use :config) because otherwise
+  ;; project-find-functions is not yet initialized.
+  :init
+  ;; Returns the parent directory containing a .project.el file, if any,
+  ;; to override the standard project.el detection logic when needed.
+  (defun zkj-project-override (dir)
+    (let ((override (locate-dominating-file dir ".project")))
+      (if override
+          (cons 'vc override)
+        nil)))
+  (add-hook 'project-find-functions #'zkj-project-override))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile

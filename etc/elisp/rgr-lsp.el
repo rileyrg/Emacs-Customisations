@@ -67,16 +67,16 @@
 
 
     (setq dap-auto-configure-features '(locals  tooltip))
-    (require 'dap-gdb-lldb)
-    (dap-gdb-lldb-setup)
+    ;; (require 'dap-gdb-lldb)
+    ;; (dap-gdb-lldb-setup)
     ;; (require 'dap-codelldb)
     ;;      (dap-codelldb-setup)
     (require 'dap-cpptools)
-    (dap-cpptools-setup)
+    ;;(dap-cpptools-setup)
     ;; (add-hook 'dap-stopped-hook (lambda (arg)
     ;;                               (call-interactively #'dap-hydra)))
 
-    (require 'dap-chrome)
+    ;;(require 'dap-chrome)
 
     ;; (dap-register-debug-template "Chrome Browse rgr/project"
     ;;   (list :type "chrome"

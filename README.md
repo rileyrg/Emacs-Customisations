@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org405c22d)
+I have this disabled by default as I use [straight.el package management](#org2b07198)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org40
 ```
 
 
-<a id="org405c22d"></a>
+<a id="org2b07198"></a>
 
 ## straight.el package management
 
@@ -843,9 +843,6 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (use-package
           browse-url-dwim)
 
-        (use-package
-          all-the-icons)
-
         ;; display dir name when core name clashes
         (require 'uniquify)
 
@@ -1104,7 +1101,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org6562747) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgd972c4d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1906,37 +1903,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
       :hook (dired-mode . dired-git-mode))
     ```
 
-2.  all-the-icons-dired
-
-    ```emacs-lisp
-    (use-package all-the-icons-dired
-      :demand
-      :hook ((dired-mode . all-the-icons-dired-mode)))
-    ```
-
-3.  dured-sidebar
-
-    ```emacs-lisp
-    (use-package dired-sidebar
-      :commands (dired-sidebar-toggle-sidebar)
-      :custom
-      (dired-sidebar-subtree-line-prefix "__")
-      (dired-sidebar-theme 'vscode)
-      (dired-sidebar-use-term-integration t)
-      (dired-sidebar-use-custom-font t)
-      :init
-      (add-hook 'dired-sidebar-mode-hook
-                (lambda ()
-                  (unless (file-remote-p default-directory)
-                    (auto-revert-mode))))
-      :config
-      (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-      (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-      :bind (("C-x C-n" . dired-sidebar-toggle-sidebar)))
-
-    ```
-
-4.  dired hacks
+2.  dired hacks
 
     Collection of useful dired additions found on github [here](https://github.com/Fuco1/dired-hacks). Found out about it at the useful emacs resource [**Pragmatic Emacs**](http://pragmaticemacs.com/category/dired/).
 
@@ -2165,6 +2132,28 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
   :disabled
   :config
   (explain-pause-mode))
+```
+
+
+## Treemacs
+
+```emacs-lisp
+(use-package
+  treemacs
+  :custom
+  (treemacs-follow-after-init t)
+  :config
+  (treemacs-follow-mode +1)
+  (treemacs-fringe-indicator-mode)
+  (treemacs-git-mode 'deferred)
+  (use-package treemacs-icons-dired
+    :config (treemacs-icons-dired-mode))
+  (use-package treemacs-magit)
+  :bind
+  ("M-9"   . 'treemacs-select-window)
+  (:map treemacs-mode-map
+        ("<right>" . treemacs-peek)))
+
 ```
 
 
@@ -2535,7 +2524,19 @@ Load this relatively early in order to have utils available if there's a faied l
 Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/project/>
 
 ```emacs-lisp
-(use-package project)
+(use-package project
+  ;; Cannot use :hook because 'project-find-functions does not end in -hook
+  ;; Cannot use :init (must use :config) because otherwise
+  ;; project-find-functions is not yet initialized.
+  :init
+  ;; Returns the parent directory containing a .project.el file, if any,
+  ;; to override the standard project.el detection logic when needed.
+  (defun zkj-project-override (dir)
+    (let ((override (locate-dominating-file dir ".project")))
+      (if override
+          (cons 'vc override)
+        nil)))
+  (add-hook 'project-find-functions #'zkj-project-override))
 ```
 
 
@@ -2814,16 +2815,16 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
 
         (setq dap-auto-configure-features '(locals  tooltip))
-        (require 'dap-gdb-lldb)
-        (dap-gdb-lldb-setup)
+        ;; (require 'dap-gdb-lldb)
+        ;; (dap-gdb-lldb-setup)
         ;; (require 'dap-codelldb)
         ;;      (dap-codelldb-setup)
         (require 'dap-cpptools)
-        (dap-cpptools-setup)
+        ;;(dap-cpptools-setup)
         ;; (add-hook 'dap-stopped-hook (lambda (arg)
         ;;                               (call-interactively #'dap-hydra)))
 
-        (require 'dap-chrome)
+        ;;(require 'dap-chrome)
 
         ;; (dap-register-debug-template "Chrome Browse rgr/project"
         ;;   (list :type "chrome"
@@ -3257,7 +3258,7 @@ fi
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2a42a03) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org51b8242) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3296,7 +3297,7 @@ fi
 ```
 
 
-<a id="org2a42a03"></a>
+<a id="org51b8242"></a>
 
 ### Gnome protocol handler desktop file
 
