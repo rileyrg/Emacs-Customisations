@@ -2757,6 +2757,7 @@ Display a poup containing docstring at point
 Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project/
 #+begin_src emacs-lisp
   (use-package project
+    :demand
     ;; Cannot use :hook because 'project-find-functions does not end in -hook
     ;; Cannot use :init (must use :config) because otherwise
     ;; project-find-functions is not yet initialized.

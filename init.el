@@ -518,6 +518,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 (use-package project
+  :demand
   ;; Cannot use :hook because 'project-find-functions does not end in -hook
   ;; Cannot use :init (must use :config) because otherwise
   ;; project-find-functions is not yet initialized.
