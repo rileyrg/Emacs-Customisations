@@ -2,6 +2,7 @@
   :custom
   (desktop-path '("~/.emacs.d/var/desktop"))
   (desktop-save t)
+  (desktop-load-locked-desktop t)
   :init
   (defun rgr/restore-desktop()
     (when (fboundp 'alert)
@@ -11,11 +12,12 @@
     (run-at-time "1" nil (lambda()
                            (desktop-read)
                            (desktop-save-mode 1))))
-  (add-hook 'emacs-startup-hook
-            (lambda()
-              (if (daemonp)
-                  (add-hook 'server-after-make-frame-hook 'rgr/restore-desktop)
-                (rgr/restore-desktop)))))
+  ;; (add-hook 'emacs-startup-hook
+  ;;           (lambda()
+  ;;             (if (daemonp)
+  ;;                 (add-hook 'server-after-make-frame-hook 'rgr/restore-desktop)
+  ;;               (rgr/restore-desktop))))
+  )
 
 ;; start emacs-server if not running
 (unless(daemonp)
