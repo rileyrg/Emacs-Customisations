@@ -134,7 +134,7 @@
   ;; For some commands and buffer sources it is useful to configure the
   ;; :preview-key on a per-command basis using the `consult-customize' macro.
   (consult-customize
-   consult-line consult-ripgrep consult-git-grep consult-grep consult-search
+   consult-line consult-ripgrep consult-git-grep consult-grep
    :default nil
    consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file
    consult--source-file consult--source-project-file consult--source-bookmark

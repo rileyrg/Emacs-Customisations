@@ -72,9 +72,10 @@
     ;; (require 'dap-codelldb)
     ;;      (dap-codelldb-setup)
     (require 'dap-cpptools)
-    ;;(dap-cpptools-setup)
-    ;; (add-hook 'dap-stopped-hook (lambda (arg)
-    ;;                               (call-interactively #'dap-hydra)))
+    (dap-cpptools-setup)
+    (require 'dap-lldb)
+    (add-hook 'dap-stopped-hook (lambda (arg)
+                                  (call-interactively #'dap-hydra)))
 
     ;;(require 'dap-chrome)
 

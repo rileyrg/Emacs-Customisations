@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org2b07198)
+I have this disabled by default as I use [straight.el package management](#orge2d5dd7)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org2b
 ```
 
 
-<a id="org2b07198"></a>
+<a id="orge2d5dd7"></a>
 
 ## straight.el package management
 
@@ -572,7 +572,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ;; For some commands and buffer sources it is useful to configure the
       ;; :preview-key on a per-command basis using the `consult-customize' macro.
       (consult-customize
-       consult-line consult-ripgrep consult-git-grep consult-grep consult-search
+       consult-line consult-ripgrep consult-git-grep consult-grep
        :default nil
        consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file
        consult--source-file consult--source-project-file consult--source-bookmark
@@ -1101,7 +1101,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgd972c4d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org7d95656) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1556,7 +1556,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (use-package devdocs-browser
           :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
           :custom
-          (devdocs-browser-cache-directory (no-littering-expand-var-file-name "devdocs-browser"))
+          (devdocs-browser-cache-directory "~.emacs.d/var/devdocs-browser")
           :config
           (defun rgr/devdocs()
             (interactive)
@@ -2525,6 +2525,7 @@ Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/projec
 
 ```emacs-lisp
 (use-package project
+  :demand
   ;; Cannot use :hook because 'project-find-functions does not end in -hook
   ;; Cannot use :init (must use :config) because otherwise
   ;; project-find-functions is not yet initialized.
@@ -2820,9 +2821,10 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
         ;; (require 'dap-codelldb)
         ;;      (dap-codelldb-setup)
         (require 'dap-cpptools)
-        ;;(dap-cpptools-setup)
-        ;; (add-hook 'dap-stopped-hook (lambda (arg)
-        ;;                               (call-interactively #'dap-hydra)))
+        (dap-cpptools-setup)
+        (require 'dap-lldb)
+        (add-hook 'dap-stopped-hook (lambda (arg)
+                                      (call-interactively #'dap-hydra)))
 
         ;;(require 'dap-chrome)
 
@@ -3236,20 +3238,6 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 !straight/versions/*
 ```
 
-
-### master branch
-
-`.git/hooks/pre-commit` No commits on the master branch
-
-```bash
-#!/bin/sh
-branch="$(git rev-parse --abbrev-ref HEAD)"
-if [ "$branch" = "master" ]; then
-    echo "You can't commit directly to master branch"
-    exit 1
-fi
-```
-
 1.  how to export tangle destination?
 
 
@@ -3258,7 +3246,7 @@ fi
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org51b8242) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfbb16b6) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3297,7 +3285,7 @@ fi
 ```
 
 
-<a id="org51b8242"></a>
+<a id="orgfbb16b6"></a>
 
 ### Gnome protocol handler desktop file
 

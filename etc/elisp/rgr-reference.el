@@ -167,7 +167,7 @@
 (use-package devdocs-browser
   :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
   :custom
-  (devdocs-browser-cache-directory (no-littering-expand-var-file-name "devdocs-browser"))
+  (devdocs-browser-cache-directory "~.emacs.d/var/devdocs-browser")
   :config
   (defun rgr/devdocs()
     (interactive)

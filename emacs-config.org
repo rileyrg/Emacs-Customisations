@@ -588,7 +588,7 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
     ;; For some commands and buffer sources it is useful to configure the
     ;; :preview-key on a per-command basis using the `consult-customize' macro.
     (consult-customize
-     consult-line consult-ripgrep consult-git-grep consult-grep consult-search
+     consult-line consult-ripgrep consult-git-grep consult-grep
      :default nil
      consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file
      consult--source-file consult--source-project-file consult--source-bookmark
@@ -1671,7 +1671,7 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
   (use-package devdocs-browser
     :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
     :custom
-    (devdocs-browser-cache-directory (no-littering-expand-var-file-name "devdocs-browser"))
+    (devdocs-browser-cache-directory "~.emacs.d/var/devdocs-browser")
     :config
     (defun rgr/devdocs()
       (interactive)
@@ -3089,9 +3089,10 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
       ;; (require 'dap-codelldb)
       ;;      (dap-codelldb-setup)
       (require 'dap-cpptools)
-      ;;(dap-cpptools-setup)
-      ;; (add-hook 'dap-stopped-hook (lambda (arg)
-      ;;                               (call-interactively #'dap-hydra)))
+      (dap-cpptools-setup)
+      (require 'dap-lldb)
+      (add-hook 'dap-stopped-hook (lambda (arg)
+                                    (call-interactively #'dap-hydra)))
 
       ;;(require 'dap-chrome)
 
@@ -3471,17 +3472,6 @@ to add to version control.
 
 #+include: "./.gitignore" src config
 
-*** master branch
-~.git/hooks/pre-commit~
-No commits on the master branch
-#+begin_src bash :tangle (expand-file-name ".git/hooks/pre-commit" user-emacs-directory)
-  #!/bin/sh
-  branch="$(git rev-parse --abbrev-ref HEAD)"
-  if [ "$branch" = "master" ]; then
-      echo "You can't commit directly to master branch"
-      exit 1
-  fi
-#+end_src
 
 **** TODO how to export tangle destination?
 SCHEDULED: <2021-06-03 Thu>
