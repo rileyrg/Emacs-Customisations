@@ -11,6 +11,12 @@
          (result (if w w (read-string "lookup:"))))
     result))
 
+;; recorded using kbd macro
+(fset 'new-codeline
+ (kmacro-lambda-form [?\C-e return] 0 "%d"))
+
+(global-set-key (kbd "M-<return>") 'new-codeline)
+
 (defun rgr/elisp-write-var (f v)
   (with-temp-file f
     (prin1 v (current-buffer))))

@@ -706,7 +706,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-hook 'python-mode-hook  #'blacken-mode))
 
 (use-package clang-format)
-(setq clang-format-style-option "llvm")
+(setq clang-format-style-option "Gnu")
 (fset 'c-indent-region 'clang-format-region)
 (fset 'c-indent-buffer 'clang-format-buffer)
 

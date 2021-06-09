@@ -2,6 +2,7 @@
 (use-package lsp-mode
   :custom
   (lsp-diagnostic-package :none)
+  (lsp-completion-enable  t)
   :config
   (use-package
     lsp-ui
@@ -67,13 +68,13 @@
 
 
     (setq dap-auto-configure-features '(locals  tooltip))
-    ;; (require 'dap-gdb-lldb)
-    ;; (dap-gdb-lldb-setup)
-    ;; (require 'dap-codelldb)
-    ;;      (dap-codelldb-setup)
+    (require 'dap-gdb-lldb)
+    ;;(dap-gdb-lldb-setup)
+     (require 'dap-codelldb)
+     (dap-codelldb-setup)
     (require 'dap-cpptools)
     (dap-cpptools-setup)
-    (require 'dap-lldb)
+    ;; (require 'dap-lldb)
     (add-hook 'dap-stopped-hook (lambda (arg)
                                   (call-interactively #'dap-hydra)))
 

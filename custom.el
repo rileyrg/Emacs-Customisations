@@ -46,6 +46,7 @@
  '(company-quickhelp-color-background "#4F4F4F")
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(company-tooltip-limit 20)
+ '(compilation-ask-about-save nil)
  '(compilation-error-regexp-alist
    '(bash-xset-x dotnet-warning dotnet-error msbuild-warning msbuild-error xbuild-warning xbuild-error dotnet-testfail typescript-nglint-warning typescript-nglint-error typescript-tslint typescript-tsc-pretty typescript-tsc absoft ada aix ant bash borland python-tracebacks-and-caml cmake cmake-info comma cucumber msft edg-1 edg-2 epc ftnchek gradle-kotlin iar ibm irix java jikes-file maven jikes-line clang-include gcc-include ruby-Test::Unit gmake gnu lcc makepp mips-1 mips-2 omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line))
  '(compilation-message-face 'default)
@@ -58,14 +59,14 @@
  '(cursor-type 'box)
  '(custom-safe-themes
    '("8ca8fbaeaeff06ac803d7c42de1430b9765d22a439efc45b5ac572c2d9d09b16" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "972d69a06b8f6e5d43fb83ff59417511f09ba1a1783aab5e22c0e9cbd25ad458" "d234fa6da0282c254f00d534079374d1c6f3c3e600075bc65fe661fdd1947792" "7d6861c031212fca9b4a963ced6230be2aa3139570b85ea5e77619b1fd0351ad" "9b39b25c3a23b1be6e99a3648b91ebaf2a7efdde236e3472aa95f1708ec61d4f" "3f1dcd824a683e0ab194b3a1daac18a923eed4dba5269eecb050c718ab4d5a26" default))
- '(dap-debug-template-configurations
-   '(("LLDB::Run" :type "lldb-vscode" :request "launch" :program "${workspaceFolder}/mainDebug" :cwd "${workspaceFolder}" :name "LLDB::Run")
-     ("Udemy" :type "cppdbg" :request "launch" :name "Udemy" :MIMode "gdb" :externalConsole "true" :program "${workspaceFolder}/mainDebug" :cwd "${workspaceFolder}")
-     ("cpptools::Run Configuration" :type "cppdbg" :request "launch" :name "cpptools::Run Configuration" :MIMode "gdb" :program "${workspaceFolder}/ replace with your binary" :cwd "${workspaceFolder}")))
  '(dap-external-terminal
    '("alacritty" "-t" "{display}" "-e" "zsh" "-c" "exec {command}"))
- '(dap-lldb-debug-program
-   '("/home/rgr/.vscode/extensions/vadimcn.vscode-lldb-1.6.4/lldb/bin/lldb"))
+ '(dap-gdb-lldb-debug-program
+   '("node" "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/out/src/lldb.js"))
+ '(dap-gdb-lldb-path
+   "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/vscode/webfreak.debug")
+ '(dap-print-io t)
+ '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0")
  '(delete-active-region 'kill)
  '(delete-old-versions t)
  '(delete-selection-mode t)
@@ -100,7 +101,7 @@
      (sass-mode . "sass")
      (scala-mode . "scala")
      (tcl-mode . "tcl")))
- '(devdocs-browser-cache-directory "~/.emacs.d/var/devdocs-browser" t nil "Customized with use-package devdocs-browser")
+ '(devdocs-browser-cache-directory "~.emacs.d/var/devdocs-browser" t nil "Customized with use-package devdocs-browser")
  '(diary-file "~/.diary")
  '(diary-list-include-blanks t)
  '(diary-mark-entries-hook '(diary-mark-included-diary-files))
@@ -219,6 +220,7 @@ Would you like to play a game?
  '(large-file-warning-threshold nil)
  '(lookup-reference-functions
    '(rgr/describe-symbol goldendict-dwim rgr/dictionary-search rgr/linguee-lookup rgr/jquery-lookup google-this-search))
+ '(lsp-completion-enable t)
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")
  '(org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"

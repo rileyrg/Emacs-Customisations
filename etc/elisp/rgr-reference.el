@@ -153,7 +153,7 @@
     (interactive)
     (let ((w (if w w (rgr/region-symbol-query))))
       (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
-  :bind (("C-c g" . goldendict-dwim)))
+  :bind (("C-x G" . goldendict-dwim)))
 
 (use-package zeal-at-point
   :disabled t ;;way too buggy

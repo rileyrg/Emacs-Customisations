@@ -129,9 +129,6 @@ I have this disabled by default as I use [[id:0ae9fe79-ab41-42ed-82d4-859b215763
 :PROPERTIES:
 :CUSTOM_ID: b477a755
 :END:
-:LOGBOOK:
-CLOCK: [2021-02-24 Wed 22:42]
-:END:
 ** Paths, clutter
 :PROPERTIES:
 :CUSTOM_ID: Paths_and_clutter
@@ -253,6 +250,15 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
            (result (if w w (read-string "lookup:"))))
       result))
 
+#+end_src
+**** new code line
+sometimes when in a code line you want to create a new line below.
+#+begin_src emacs-lisp
+  ;; recorded using kbd macro
+  (fset 'new-codeline
+   (kmacro-lambda-form [?\C-e return] 0 "%d"))
+
+  (global-set-key (kbd "M-<return>") 'new-codeline)
 #+end_src
 **** read and write elisp vars to file
 :PROPERTIES:
@@ -1649,7 +1655,7 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
       (interactive)
       (let ((w (if w w (rgr/region-symbol-query))))
         (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
-    :bind (("C-c g" . goldendict-dwim)))
+    :bind (("C-x G" . goldendict-dwim)))
 #+end_src
 ***** Zeal - Linux Dash
 :PROPERTIES:
@@ -3019,6 +3025,7 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
   (use-package lsp-mode
     :custom
     (lsp-diagnostic-package :none)
+    (lsp-completion-enable  t)
     :config
     (use-package
       lsp-ui
@@ -3084,13 +3091,13 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 
 
       (setq dap-auto-configure-features '(locals  tooltip))
-      ;; (require 'dap-gdb-lldb)
-      ;; (dap-gdb-lldb-setup)
-      ;; (require 'dap-codelldb)
-      ;;      (dap-codelldb-setup)
+      (require 'dap-gdb-lldb)
+      ;;(dap-gdb-lldb-setup)
+       (require 'dap-codelldb)
+       (dap-codelldb-setup)
       (require 'dap-cpptools)
       (dap-cpptools-setup)
-      (require 'dap-lldb)
+      ;; (require 'dap-lldb)
       (add-hook 'dap-stopped-hook (lambda (arg)
                                     (call-interactively #'dap-hydra)))
 
@@ -3247,7 +3254,7 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 :END:
 #+begin_src emacs-lisp
   (use-package clang-format)
-  (setq clang-format-style-option "llvm")
+  (setq clang-format-style-option "Gnu")
   (fset 'c-indent-region 'clang-format-region)
   (fset 'c-indent-buffer 'clang-format-buffer)
 #+end_src
