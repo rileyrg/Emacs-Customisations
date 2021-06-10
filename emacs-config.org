@@ -769,8 +769,12 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
       (company-prescient-mode +1))
     :bind ("C-<tab>" . company-complete))
 #+end_src
-**** Corfu completion                                                 :corfu:
+**** TODO Corfu completion                                            :corfu:
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 :LOGBOOK:
+- State "TODO"       from              [2021-06-10 Thu 04:38]
 - State "STARTED"    from "WAITING"    [2021-04-18 So 00:33]
 - State "WAITING"    from              [2021-04-18 So 00:28] \\
   need to sort out a recipe

@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orge2d5dd7)
+I have this disabled by default as I use [straight.el package management](#org1b4037f)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orge2
 ```
 
 
-<a id="orge2d5dd7"></a>
+<a id="org1b4037f"></a>
 
 ## straight.el package management
 
@@ -252,7 +252,19 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
     ```
 
-2.  read and write elisp vars to file
+2.  new code line
+
+    sometimes when in a code line you want to create a new line below.
+
+    ```emacs-lisp
+    ;; recorded using kbd macro
+    (fset 'new-codeline
+     (kmacro-lambda-form [?\C-e return] 0 "%d"))
+
+    (global-set-key (kbd "M-<return>") 'new-codeline)
+    ```
+
+3.  read and write elisp vars to file
 
     ```emacs-lisp
 
@@ -267,13 +279,13 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
         (read (current-buffer))))
     ```
 
-3.  provide
+4.  provide
 
     ```emacs-lisp
     (provide 'rgr/utils)
     ```
 
-4.  line
+5.  line
 
     ```emacs-lisp
     (defun c-complete-line()
@@ -1101,7 +1113,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7d95656) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orga9e2e67) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1533,7 +1545,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (interactive)
             (let ((w (if w w (rgr/region-symbol-query))))
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
-          :bind (("C-c g" . goldendict-dwim)))
+          :bind (("C-x G" . goldendict-dwim)))
         ```
 
     5.  Zeal - Linux Dash
@@ -2751,6 +2763,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
     (use-package lsp-mode
       :custom
       (lsp-diagnostic-package :none)
+      (lsp-completion-enable  t)
       :config
       (use-package
         lsp-ui
@@ -2816,13 +2829,13 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
 
         (setq dap-auto-configure-features '(locals  tooltip))
-        ;; (require 'dap-gdb-lldb)
-        ;; (dap-gdb-lldb-setup)
-        ;; (require 'dap-codelldb)
-        ;;      (dap-codelldb-setup)
+        (require 'dap-gdb-lldb)
+        ;;(dap-gdb-lldb-setup)
+         (require 'dap-codelldb)
+         (dap-codelldb-setup)
         (require 'dap-cpptools)
         (dap-cpptools-setup)
-        (require 'dap-lldb)
+        ;; (require 'dap-lldb)
         (add-hook 'dap-stopped-hook (lambda (arg)
                                       (call-interactively #'dap-hydra)))
 
@@ -2982,7 +2995,7 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
     ```emacs-lisp
     (use-package clang-format)
-    (setq clang-format-style-option "llvm")
+    (setq clang-format-style-option "Gnu")
     (fset 'c-indent-region 'clang-format-region)
     (fset 'c-indent-buffer 'clang-format-buffer)
     ```
@@ -3246,7 +3259,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfbb16b6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd11fcdf) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3285,7 +3298,7 @@ fi
 ```
 
 
-<a id="orgfbb16b6"></a>
+<a id="orgd11fcdf"></a>
 
 ### Gnome protocol handler desktop file
 
