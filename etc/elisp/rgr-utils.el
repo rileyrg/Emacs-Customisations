@@ -11,12 +11,6 @@
          (result (if w w (read-string "lookup:"))))
     result))
 
-;; recorded using kbd macro
-(fset 'new-codeline
- (kmacro-lambda-form [?\C-e return] 0 "%d"))
-
-(global-set-key (kbd "M-<return>") 'new-codeline)
-
 (defun rgr/elisp-write-var (f v)
   (with-temp-file f
     (prin1 v (current-buffer))))
@@ -28,20 +22,3 @@
     (read (current-buffer))))
 
 (provide 'rgr/utils)
-
-(defun c-complete-line()
-  (interactive)
-  (end-of-line)
-  (unless (eql ?\; (char-after (- (point-at-eol) 1)))
-    (progn (insert ";")))
-  (newline-and-indent))
-(defun c-insert-previous-line()
-  (interactive)
-  (previous-line)
-  (end-of-line)
-  (newline-and-indent)
-  (insert (string-trim (current-kill 0))))
-(defun c-newline-below()
-  (interactive)
-  (end-of-line)
-  (newline-and-indent))

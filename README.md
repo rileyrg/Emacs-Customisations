@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org1b4037f)
+I have this disabled by default as I use [straight.el package management](#orga56c726)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org1b
 ```
 
 
-<a id="org1b4037f"></a>
+<a id="orga56c726"></a>
 
 ## straight.el package management
 
@@ -252,19 +252,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
     ```
 
-2.  new code line
-
-    sometimes when in a code line you want to create a new line below.
-
-    ```emacs-lisp
-    ;; recorded using kbd macro
-    (fset 'new-codeline
-     (kmacro-lambda-form [?\C-e return] 0 "%d"))
-
-    (global-set-key (kbd "M-<return>") 'new-codeline)
-    ```
-
-3.  read and write elisp vars to file
+2.  read and write elisp vars to file
 
     ```emacs-lisp
 
@@ -279,31 +267,10 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
         (read (current-buffer))))
     ```
 
-4.  provide
+3.  provide
 
     ```emacs-lisp
     (provide 'rgr/utils)
-    ```
-
-5.  line
-
-    ```emacs-lisp
-    (defun c-complete-line()
-      (interactive)
-      (end-of-line)
-      (unless (eql ?\; (char-after (- (point-at-eol) 1)))
-        (progn (insert ";")))
-      (newline-and-indent))
-    (defun c-insert-previous-line()
-      (interactive)
-      (previous-line)
-      (end-of-line)
-      (newline-and-indent)
-      (insert (string-trim (current-kill 0))))
-    (defun c-newline-below()
-      (interactive)
-      (end-of-line)
-      (newline-and-indent))
     ```
 
 
@@ -1113,7 +1080,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orga9e2e67) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org9c1de52) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1640,26 +1607,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
         ```
 
-5.  pdf-tools
-
-    [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
-
-    ```emacs-lisp
-    (use-package pdf-tools
-      :demand t
-      :config
-      (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
-      (use-package org-pdftools
-        :hook (org-mode . org-pdftools-setup-link)))
-    ```
-
-    1.  requirements
-
-        ```bash
-        sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
-        ```
-
-6.  impatient-showdow, markdown view live
+5.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown. <https://github.com/jcs-elpa/impatient-showdown>
 
@@ -1668,7 +1616,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
       :hook (markdown-mode . impatient-showdown-mode))
     ```
 
-7.  provide
+6.  provide
 
     ```emacs-lisp
     (provide 'rgr/reference)
@@ -2991,6 +2939,13 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
 
 ### C
 
+```emacs-lisp
+(defun rgr/c-mode-hook ()
+  (local-set-key (kbd "M-<return>") 'c-complete-line)
+  (setq-local dash-docs-docsets '("C")))
+(add-hook 'c-mode-hook 'rgr/c-mode-hook)
+```
+
 1.  Clang provides us with some industry standard code prettiers
 
     ```emacs-lisp
@@ -3000,11 +2955,35 @@ Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
     (fset 'c-indent-buffer 'clang-format-buffer)
     ```
 
+2.  line utilities
+
+    ```emacs-lisp
+    (defun c-complete-line()
+      (interactive)
+      (end-of-line)
+      (delete-trailing-whitespace)
+      (unless (eql ?\; (char-after (- (point-at-eol) 1)))
+        (progn (insert ";")))
+      (newline-and-indent))
+    (define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
+    (defun c-insert-previous-line()
+      (interactive)
+      (previous-line)
+      (end-of-line)
+      (newline-and-indent)
+      (insert (string-trim (current-kill 0))))
+    (defun c-newline-below()
+      (interactive)
+      (end-of-line)
+      (newline-and-indent))
+    ```
+
 
 ### C++
 
 ```emacs-lisp
 (defun rgr/c++-mode-hook ()
+  (local-set-key (kbd "M-<return>") 'c-complete-line)
   (setq-local dash-docs-docsets '("C++")))
 (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
 ```
@@ -3259,7 +3238,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd11fcdf) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org158603d) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3298,7 +3277,7 @@ fi
 ```
 
 
-<a id="orgd11fcdf"></a>
+<a id="org158603d"></a>
 
 ### Gnome protocol handler desktop file
 

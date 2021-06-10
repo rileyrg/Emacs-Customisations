@@ -251,15 +251,6 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
       result))
 
 #+end_src
-**** new code line
-sometimes when in a code line you want to create a new line below.
-#+begin_src emacs-lisp
-  ;; recorded using kbd macro
-  (fset 'new-codeline
-   (kmacro-lambda-form [?\C-e return] 0 "%d"))
-
-  (global-set-key (kbd "M-<return>") 'new-codeline)
-#+end_src
 **** read and write elisp vars to file
 :PROPERTIES:
 :ID:       82905a95-6e37-4114-ba77-4be0dd31a9ec
@@ -283,28 +274,6 @@ sometimes when in a code line you want to create a new line below.
 :END:
 #+begin_src emacs-lisp
   (provide 'rgr/utils)
-#+end_src
-**** line
-:PROPERTIES:
-:ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
-:END:
-#+begin_src emacs-lisp
-  (defun c-complete-line()
-    (interactive)
-    (end-of-line)
-    (unless (eql ?\; (char-after (- (point-at-eol) 1)))
-      (progn (insert ";")))
-    (newline-and-indent))
-  (defun c-insert-previous-line()
-    (interactive)
-    (previous-line)
-    (end-of-line)
-    (newline-and-indent)
-    (insert (string-trim (current-kill 0))))
-  (defun c-newline-below()
-    (interactive)
-    (end-of-line)
-    (newline-and-indent))
 #+end_src
 ** Emacs daemon & startup                                    :daemon:startup:
 :PROPERTIES:
@@ -1752,12 +1721,13 @@ Use emacsclient if it's running. Might consider an alias
 :END:
 #+begin_src emacs-lisp
 #+end_src
-**** TODO pdf-tools
-SCHEDULED: <2021-06-02 Wed>
+**** CANCELLED pdf-tools                                          :CANCELLED:
+CLOSED: [2021-06-10 Thu 06:15] SCHEDULED: <2021-06-02 Wed>
 :PROPERTIES:
 :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
 :END:
 :LOGBOOK:
+- State "CANCELLED"  from "TODO"       [2021-06-10 Thu 06:15]
 - Note taken on [2021-05-31 Mon 06:06] \\
   error with pdf exe
 - State "TODO"       from              [2021-05-31 Mon 06:06]
@@ -1935,9 +1905,10 @@ Be sure to check out [[http://www.howardism.org/Technical/Emacs/eshell.html][Ali
         "Show only last directory."
         (file-name-nondirectory (directory-file-name default-directory)))))
 #+end_src
-*** vterm
-SCHEDULED: <2021-04-13 Tue>
+*** DONE vterm
+CLOSED: [2021-06-10 Thu 06:15] SCHEDULED: <2021-04-13 Tue>
 :LOGBOOK:
+- State "DONE"       from              [2021-06-10 Thu 06:15]
 - State "CANCELLED"  from "WAITING"    [2021-05-08 Sat 16:11]
 - State "WAITING"    from "DONE"       [2021-04-18 So 23:04]
 - State "DONE"       from "WAITING"    [2021-04-18 So 23:04]
@@ -2803,12 +2774,13 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
 :PROPERTIES:
 :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
 :END:
-**** TODO JSONNavigator
-SCHEDULED: <2021-06-08 Tue>
+**** DONE JSONNavigator
+CLOSED: [2021-06-10 Thu 06:15] SCHEDULED: <2021-06-08 Tue>
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
 :LOGBOOK:
+- State "DONE"       from "TODO"       [2021-06-10 Thu 06:15]
 - State "TODO"       from              [2021-06-01 Tue 07:27]
 - State "TODO"       from              [2021-05-31 Mon 06:03]
 :END:
@@ -3252,6 +3224,14 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 :PROPERTIES:
 :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
 :END:
+
+#+begin_src emacs-lisp
+(defun rgr/c-mode-hook ()
+  (local-set-key (kbd "M-<return>") 'c-complete-line)
+  (setq-local dash-docs-docsets '("C")))
+(add-hook 'c-mode-hook 'rgr/c-mode-hook)
+#+end_src
+
 **** Clang provides us with some industry standard code prettiers     :clang:
 :PROPERTIES:
 :ID:       42ededa2-d031-47ae-9489-1bd0eec621c6
@@ -3262,12 +3242,38 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
   (fset 'c-indent-region 'clang-format-region)
   (fset 'c-indent-buffer 'clang-format-buffer)
 #+end_src
+**** line utilities
+:PROPERTIES:
+:ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
+:END:
+#+begin_src emacs-lisp
+  (defun c-complete-line()
+    (interactive)
+    (end-of-line)
+    (delete-trailing-whitespace)
+    (unless (eql ?\; (char-after (- (point-at-eol) 1)))
+      (progn (insert ";")))
+    (newline-and-indent))
+  (define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
+  (defun c-insert-previous-line()
+    (interactive)
+    (previous-line)
+    (end-of-line)
+    (newline-and-indent)
+    (insert (string-trim (current-kill 0))))
+  (defun c-newline-below()
+    (interactive)
+    (end-of-line)
+    (newline-and-indent))
+#+end_src
+
 *** C++                                                                 :cpp:
 :PROPERTIES:
 :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b
 :END:
 #+begin_src emacs-lisp
   (defun rgr/c++-mode-hook ()
+    (local-set-key (kbd "M-<return>") 'c-complete-line)
     (setq-local dash-docs-docsets '("C++")))
   (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
 #+end_src
@@ -3485,7 +3491,7 @@ to add to version control.
 
 
 **** TODO how to export tangle destination?
-SCHEDULED: <2021-06-03 Thu>
+SCHEDULED: <2021-06-12 Sat>
 :LOGBOOK:
 - State "TODO"       from              [2021-06-03 Thu 16:07]
 :END:

@@ -705,12 +705,37 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
 
+(defun rgr/c-mode-hook ()
+  (local-set-key (kbd "M-<return>") 'c-complete-line)
+  (setq-local dash-docs-docsets '("C")))
+(add-hook 'c-mode-hook 'rgr/c-mode-hook)
+
 (use-package clang-format)
 (setq clang-format-style-option "Gnu")
 (fset 'c-indent-region 'clang-format-region)
 (fset 'c-indent-buffer 'clang-format-buffer)
 
+(defun c-complete-line()
+  (interactive)
+  (end-of-line)
+  (delete-trailing-whitespace)
+  (unless (eql ?\; (char-after (- (point-at-eol) 1)))
+    (progn (insert ";")))
+  (newline-and-indent))
+(define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
+(defun c-insert-previous-line()
+  (interactive)
+  (previous-line)
+  (end-of-line)
+  (newline-and-indent)
+  (insert (string-trim (current-kill 0))))
+(defun c-newline-below()
+  (interactive)
+  (end-of-line)
+  (newline-and-indent))
+
 (defun rgr/c++-mode-hook ()
+  (local-set-key (kbd "M-<return>") 'c-complete-line)
   (setq-local dash-docs-docsets '("C++")))
 (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
 
