@@ -66,7 +66,7 @@
    '("node" "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/out/src/lldb.js"))
  '(dap-gdb-lldb-path
    "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/vscode/webfreak.debug")
- '(dap-internal-terminal 'dap-internal-terminal-vterm)
+ '(dap-internal-terminal 'dap-internal-terminal-auto)
  '(dap-print-io t)
  '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0")
  '(delete-active-region 'kill)

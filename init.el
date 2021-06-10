@@ -493,6 +493,18 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package keycast
   )
 
+(global-set-key (kbd "C-c C-r") 'recompile)
+
+(defun my/parrot-animate-when-compile-success (buffer result)
+  (if (string-match "^finished" result)
+      (parrot-start-animation)))
+
+(use-package parrot
+  :ensure t
+  :config
+  (parrot-mode)
+  (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
+
 (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 
 (use-package scratch

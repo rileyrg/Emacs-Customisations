@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orga56c726)
+I have this disabled by default as I use [straight.el package management](#org277da43)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orga5
 ```
 
 
-<a id="orga56c726"></a>
+<a id="org277da43"></a>
 
 ## straight.el package management
 
@@ -1080,7 +1080,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org9c1de52) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgef563ec) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2303,6 +2303,27 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 ## Programming Language related
 
 
+### compilation
+
+```emacs-lisp
+(global-set-key (kbd "C-c C-r") 'recompile)
+```
+
+1.  parrot
+
+    ```emacs-lisp
+    (defun my/parrot-animate-when-compile-success (buffer result)
+      (if (string-match "^finished" result)
+          (parrot-start-animation)))
+
+    (use-package parrot
+      :ensure t
+      :config
+      (parrot-mode)
+      (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
+    ```
+
+
 ### Emacs Lisp, ELisp Utils
 
 Load this relatively early in order to have utils available if there's a faied load Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
@@ -3238,7 +3259,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org158603d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdc13edd) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3277,7 +3298,7 @@ fi
 ```
 
 
-<a id="org158603d"></a>
+<a id="orgdc13edd"></a>
 
 ### Gnome protocol handler desktop file
 
