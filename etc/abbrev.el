@@ -1,7 +1,7 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'c++-mode-abbrev-table
   '(
-    ("endl" "std::endl" nil :count 1)
+    ("endl" "std::endl;" nil :count 0)
     ("newf" "#include <iostream>
 #include <ostream>
 
@@ -15,8 +15,8 @@ int main(void)
      return 0;
 }
 " nil :count 1)
-    ("sin" "std::cin >>" nil :count 3)
-    ("sout" "std::cout <<" nil :count 1)
+    ("sin" "std::cin >>" nil :count 4)
+    ("sout" "std::cout <<" nil :count 4)
    ))
 
 (define-abbrev-table 'org-mode-abbrev-table

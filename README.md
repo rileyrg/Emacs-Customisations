@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org169b308)
+I have this disabled by default as I use [straight.el package management](#orgdbd9530)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org16
 ```
 
 
-<a id="org169b308"></a>
+<a id="orgdbd9530"></a>
 
 ## straight.el package management
 
@@ -701,8 +701,8 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :demand t
       ;; Optionally use TAB for cycling, default is `corfu-complete'.
       :bind (:map corfu-map
-             ("TAB" . corfu-next)
-             ("S-TAB" . corfu-previous))
+                  ("TAB" . corfu-next)
+                  ("S-TAB" . corfu-previous))
 
       ;; You may want to enable Corfu only for certain modes.
       ;; :hook ((prog-mode . corfu-mode)
@@ -718,7 +718,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
       ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
       (setq corfu-cycle t)
-    )
+      )
 
     ;; Optionally use the `orderless' completion style.
     ;; Enable `partial-completion' for files to allow path expansion.
@@ -1080,7 +1080,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orge003618) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb3b0ae8) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2708,7 +2708,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
 
-14. Language Server Protocol (LSP)
+14. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
 
@@ -2724,119 +2724,83 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ;; if you want to change prefix for lsp-mode keybindings.
         (use-package lsp-mode
           :custom
-          (lsp-diagnostic-package :none)
+          (lsp-auto-guess-root nil)
           (lsp-completion-enable  t)
+          (lsp-completion-provider :none)
+          (lsp-completion-show-kind t)
+          (lsp-diagnostics-provider :none)
+          (lsp-eldoc-enable-hover nil)
+          (lsp-enable-on-type-formatting nil)
+          (lsp-enable-snippet nil)
+          (lsp-enable-symbol-highlighting t)
+          (lsp-headerline-breadcrumb-enable nil)
+          (lsp-lens-enable nil)
+          (lsp-modeline-code-actions-enable t)
+          (lsp-modeline-diagnostics-enable nil)
+          (lsp-signature-auto-activate t)
           :config
-          (use-package
-            lsp-ui
-            :config
-            ;; (use-package lsp-treemacs
-            ;;   :config
-            ;;   (lsp-treemacs-sync-mode 1))
-            (define-key lsp-ui-mode-map [(meta ?.)]  #'lsp-ui-peek-find-definitions)
-            (define-key lsp-ui-mode-map [(meta ??)] #'lsp-ui-peek-find-references)
-            (defun toggle-lsp-ui-sideline ()
-              (interactive)
-              (if lsp-ui-sideline-mode (progn (message "Disable LSP UI Sideline Mode")
-                                              (lsp-ui-sideline-mode -1))
-                (progn (message "Enable LSP UI Sideline Mode")
-                       (lsp-ui-sideline-mode 1))))
-            (defun toggle-lsp-ui-doc ()
-              (interactive)
-              (if lsp-ui-doc-mode (progn (message "Disable LSP UI Doc Mode")
-                                         (lsp-ui-doc-mode -1)
-                                         (lsp-ui-doc--hide-frame))
-                (progn (lsp-ui-doc-mode 1)
-                       (message "Enable LSP UI Doc mode"))))
+          (with-eval-after-load 'lsp-mode
+            (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
 
-            (defun rgr/lsp-ui-doc-glance (&optional w)
-              "Trigger display hover information popup and hide it on next typing."
-              (interactive)
-              (lsp-describe-thing-at-point)
-              ;; (message "lsp-ui-doc--displayed:%s" lsp-ui-doc--displayed)
-              )
-            (defun rgr/lsp-ui-mode-hook()
-              (lsp-ui-sideline-mode +1)
-              (lsp-ui-doc-mode +1)
-              )
+        (use-package lsp-treemacs
+          :config
+          (lsp-treemacs-sync-mode 1))
 
-            (defun rgr/lsp-ui-imenu-view()
-              (interactive)
-              (lsp-ui-imenu--view)
-              )
+        (use-package lsp-ui
+          :custom
+          (lsp-ui-doc-delay 1.5)
+          (lsp-ui-doc-enable t)
+          (lsp-ui-doc-show-with-cursor t)
+          (lsp-ui-doc-show-with-mouse t)
+          (lsp-ui-doc-show-with-cursor t)
+          (lsp-ui-peek-enable t)
+          (lsp-ui-peek-show-directory t)
+          (lsp-ui-sideline-enable t)
+          (lsp-ui-sideline-show-code-actions t)
+          (lsp-ui-sideline-show-diagnostics t)
+          :bind
+          (:map lsp-ui-mode-map
+                ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
+                ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
+        (use-package dap-mode
+          :commands rgr/dap-debug
+          :custom
+          (dap-auto-configure-features '(locals  tooltip))
+          :config
+          (setq dap-ui-buffer-configurations
+                `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
+                  (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
+                  (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
+                  (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
+                  (,"*debug-window*" . ((side . bottom) (slot . 3) (window-width . 0.20)))))
+          (defun rgr/dap-debug()
+            (interactive)
+            (if current-prefix-arg
+                (call-interactively 'dap-debug)
+              (dap-debug-last)))
+          ;;(require 'dap-gdb-lldb)
+          ;;(dap-gdb-lldb-setup)
+          ;;(require 'dap-codelldb)
+          ;;(dap-codelldb-setup)
+          (require 'dap-cpptools)
+          ;;(dap-cpptools-setup)
+          ;; (require 'dap-lldb)
+          (add-hook 'dap-stopped-hook
+                    (lambda (arg)
+                      (call-interactively #'dap-hydra)))
+          :bind
+          (:map lsp-mode-map
+                ("C-<f9>" . #'rgr/dap-debug))
+          (:map dap-mode-map
+                ("<f8>" . dap-continue)
+                ("C-S-<f8>" . dap-delete-session)
+                ("<f9>" . dap-hydra)
+                ("<f10>" . dap-next)
+                ("<f11>" . dap-step-in)
+                ("S-<f11>" . dap-step-out)
+                ))
 
-            :bind ((:map lsp-ui-mode-map
-                         ;;("C-q"   . lsp-ui-doc-show)
-                         ("C-S-<f10>" . lsp-ui-imenu)
-                         ("C-<f8>" . rgr/dap-debug)
-                         ("C-c S"   . toggle-lsp-ui-sideline)
-                         ("C-c D"   . toggle-lsp-ui-doc))
-                   (:map lsp-ui-imenu-mode-map
-                         ("<RET>" . rgr/lsp-ui-imenu-view)
-                         ))
-
-            :hook ((lsp-ui-mode . rgr/lsp-ui-mode-hook)))
-
-          (use-package dap-mode
-            :demand t
-            :commands (rgr/dap-debug )
-            :config
-            (setq dap-ui-buffer-configurations
-                  `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
-                    (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
-                    (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
-                    (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
-                    (,"*debug-window*" . ((side . bottom) (slot . 3) (window-width . 0.20)))))
-
-
-            (setq dap-auto-configure-features '(locals  tooltip))
-            (require 'dap-gdb-lldb)
-            ;;(dap-gdb-lldb-setup)
-             (require 'dap-codelldb)
-             (dap-codelldb-setup)
-            (require 'dap-cpptools)
-            (dap-cpptools-setup)
-            ;; (require 'dap-lldb)
-            (add-hook 'dap-stopped-hook (lambda (arg)
-                                          (call-interactively #'dap-hydra)))
-
-            ;;(require 'dap-chrome)
-
-            ;; (dap-register-debug-template "Chrome Browse rgr/project"
-            ;;   (list :type "chrome"
-            ;;         :cwd nil
-            ;;         :mode "url"
-            ;;         :request "launch"
-            ;;         :webRoot "/home/rgr/Dropbox/homefiles/development/projects/react/rgr/app/"
-            ;;         :url "http://localhost:3000"
-            ;;         :sourceMap "true"
-            ;;         :name "Chrome Browse rgr/project"))
-
-
-
-            (defun rgr/dap-debug()
-              (interactive)
-              (if current-prefix-arg
-                  (call-interactively 'dap-debug)
-                (dap-debug-last)))
-            ;;    (dap-hydra))
-
-            (defun rgr/lsp-mode-hook()
-              (lsp-enable-which-key-integration))
-
-            :bind (:map dap-mode-map
-                        ("<f8>" . dap-continue)
-                        ("C-S-<f8>" . dap-delete-session)
-                        ("<f9>" . dap-hydra)
-                        ("<f10>" . dap-next)
-                        ("<f11>" . dap-step-in)
-                        ("S-<f11>" . dap-step-out)
-                        ))
-          :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-                 ((c-mode c++-mode js-mode php-mode gdscript-mode). lsp-deferred)
-                 ;; if you want which-key integration
-                 (lsp-mode . rgr/lsp-mode-hook)))
 
         (provide 'rgr/lsp)
         ```
@@ -2955,7 +2919,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (local-set-key (kbd "M-<return>") 'c-complete-line)
       (setq-local dash-docs-docsets '("C"))
       (setq-local c-tab-always-indent 'complete)
-      (fset 'c-indent-region 'clang-format-region))
+      (fset 'c-indent-region 'clang-format-region)
+      (lsp-deferred))
 
     (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
     ```
@@ -3250,7 +3215,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org67f5f70) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5847fe4) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3289,7 +3254,7 @@ fi
 ```
 
 
-<a id="org67f5f70"></a>
+<a id="org5847fe4"></a>
 
 ### Gnome protocol handler desktop file
 

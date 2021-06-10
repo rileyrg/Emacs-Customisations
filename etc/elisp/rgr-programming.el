@@ -227,7 +227,8 @@
   (local-set-key (kbd "M-<return>") 'c-complete-line)
   (setq-local dash-docs-docsets '("C"))
   (setq-local c-tab-always-indent 'complete)
-  (fset 'c-indent-region 'clang-format-region))
+  (fset 'c-indent-region 'clang-format-region)
+  (lsp-deferred))
 
 (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
 
