@@ -3252,22 +3252,25 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 :END:
 
 #+begin_src emacs-lisp
-(defun rgr/c-mode-hook ()
-  (local-set-key (kbd "M-<return>") 'c-complete-line)
-  (setq-local dash-docs-docsets '("C")))
-(add-hook 'c-mode-hook 'rgr/c-mode-hook)
+  (defun rgr/c-mode-common-hook ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (local-set-key (kbd "M-<return>") 'c-complete-line)
+    (setq-local dash-docs-docsets '("C")))
+  (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
 #+end_src
 
-***** CANCELLED Clang provides us with some industry standard code prettiers :clang:CANCELLED:
-CLOSED: [2021-06-10 Thu 21:36]
+***** CANCELLED Clang provides us with some industry standard code prettiers :CANCELLED:
+CLOSED: [2021-06-10 Thu 22:29]
 :PROPERTIES:
 :ID:       42ededa2-d031-47ae-9489-1bd0eec621c6
 :header-args:emacs-lisp: :tangle no
 :END:
 :LOGBOOK:
+- State "CANCELLED"  from              [2021-06-10 Thu 22:29]
 - State "CANCELLED"  from              [2021-06-10 Thu 21:36] \\
   see what lsp does on its own
 :END:
+This is disabled because lsp should take care of it.
 #+begin_src emacs-lisp
   (use-package clang-format)
   (setq clang-format-style-option "Gnu")
@@ -3287,7 +3290,7 @@ CLOSED: [2021-06-10 Thu 21:36]
     (interactive)
     (end-of-line)
     (delete-trailing-whitespace)
-    (unless (eql ?\; (char-after (- (point-at-eol) 1)))
+    (unless (eql ?\; (char-before (point-at-eol)))
       (progn (insert ";")))
     (newline-and-indent))
   (define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
@@ -3309,7 +3312,6 @@ CLOSED: [2021-06-10 Thu 21:36]
 :END:
 #+begin_src emacs-lisp
   (defun rgr/c++-mode-hook ()
-    (local-set-key (kbd "M-<return>") 'c-complete-line)
     (setq-local dash-docs-docsets '("C++")))
   (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
 #+end_src

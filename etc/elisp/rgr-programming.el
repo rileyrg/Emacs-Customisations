@@ -222,16 +222,17 @@
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
 
-(defun rgr/c-mode-hook ()
+(defun rgr/c-mode-common-hook ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (local-set-key (kbd "M-<return>") 'c-complete-line)
   (setq-local dash-docs-docsets '("C")))
-(add-hook 'c-mode-hook 'rgr/c-mode-hook)
+(add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
 
 (defun c-complete-line()
   (interactive)
   (end-of-line)
   (delete-trailing-whitespace)
-  (unless (eql ?\; (char-after (- (point-at-eol) 1)))
+  (unless (eql ?\; (char-before (point-at-eol)))
     (progn (insert ";")))
   (newline-and-indent))
 (define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
@@ -247,7 +248,6 @@
   (newline-and-indent))
 
 (defun rgr/c++-mode-hook ()
-  (local-set-key (kbd "M-<return>") 'c-complete-line)
   (setq-local dash-docs-docsets '("C++")))
 (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
 
