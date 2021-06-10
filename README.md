@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org15c74c3)
+I have this disabled by default as I use [straight.el package management](#orga74f965)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org15
 ```
 
 
-<a id="org15c74c3"></a>
+<a id="orga74f965"></a>
 
 ## straight.el package management
 
@@ -736,7 +736,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
              ("C-M-/" . dabbrev-expand)))
 
     ;; A few more useful configurations...
-    (use-package emacs
+    (use-package emacsq
       :init
       ;; TAB cycle if there are only few candidates
       (setq completion-cycle-threshold 3)
@@ -1080,7 +1080,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgca2d82e) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org501d603) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2954,6 +2954,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'before-save-hook #'lsp-format-buffer t t)
       (local-set-key (kbd "M-<return>") 'c-complete-line)
       (setq-local dash-docs-docsets '("C")))
+      (setq-local c-tab-always-indent 'complete)
     (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
     ```
 
@@ -3239,7 +3240,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdca6526) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3ba19cb) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3278,7 +3279,7 @@ fi
 ```
 
 
-<a id="orgdca6526"></a>
+<a id="org3ba19cb"></a>
 
 ### Gnome protocol handler desktop file
 

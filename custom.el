@@ -29,6 +29,7 @@
      (java-mode . "java")
      (awk-mode . "awk")
      (other . "gnu")))
+ '(c-tab-always-indent 'other)
  '(calendar-mark-diary-entries-flag t)
  '(calendar-view-diary-initially-flag t)
  '(canlock-password "106923df36ef41eb263045249a447dac2d49649a")

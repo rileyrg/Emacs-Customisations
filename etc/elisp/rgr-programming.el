@@ -226,6 +226,7 @@
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (local-set-key (kbd "M-<return>") 'c-complete-line)
   (setq-local dash-docs-docsets '("C")))
+  (setq-local c-tab-always-indent 'complete)
 (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
 
 (defun c-complete-line()

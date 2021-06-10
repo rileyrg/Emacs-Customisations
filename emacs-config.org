@@ -789,7 +789,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
            ("C-M-/" . dabbrev-expand)))
 
   ;; A few more useful configurations...
-  (use-package emacs
+  (use-package emacsq
     :init
     ;; TAB cycle if there are only few candidates
     (setq completion-cycle-threshold 3)
@@ -3256,6 +3256,7 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (add-hook 'before-save-hook #'lsp-format-buffer t t)
     (local-set-key (kbd "M-<return>") 'c-complete-line)
     (setq-local dash-docs-docsets '("C")))
+    (setq-local c-tab-always-indent 'complete)
   (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
 #+end_src
 
