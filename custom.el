@@ -222,6 +222,8 @@ Would you like to play a game?
  '(large-file-warning-threshold nil)
  '(lookup-reference-functions
    '(rgr/describe-symbol goldendict-dwim rgr/dictionary-search rgr/linguee-lookup rgr/jquery-lookup google-this-search))
+ '(lsp-completion-provider :none)
+ '(lsp-enable-snippet nil)
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")
  '(org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"

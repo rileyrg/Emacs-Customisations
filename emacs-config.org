@@ -2512,12 +2512,20 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
 :ID:       7070b720-582e-451c-8eed-47ab61cdd130
 :END:
 
-*** compilation
+#+begin_src emacs-lisp
+  (require 'rgr/programming "rgr-programming" 'NOERROR)
+#+end_src
+
+*** programming library
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-programming.el" elisp-dir)
+:END:
+**** compilation
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-r") 'recompile)
 #+end_src
 
-**** parrot
+***** parrot
 #+begin_src emacs-lisp
   (defun my/parrot-animate-when-compile-success (buffer result)
     (if (string-match "^finished" result)
@@ -2530,7 +2538,7 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
     (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 #+end_src
 
-*** Emacs Lisp, ELisp Utils                                     :elisp:utils:
+**** Emacs Lisp, ELisp Utils                                    :elisp:utils:
 :PROPERTIES:
 :ID:       eb119ffb-f073-4fe0-a8f4-b031291d9e4d
 :END:
@@ -2541,7 +2549,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
   (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 #+end_src
 
-**** scratch,messages
+***** scratch,messages
 :PROPERTIES:
 :ID:       563d21f1-803e-40b1-9689-fa95ca9f44c3
 :END:
@@ -2554,12 +2562,12 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
                   (interactive)
                   (switch-to-buffer(messages-buffer)))))
 #+end_src
-**** rgr/elisp-utils library
+***** rgr/elisp-utils library
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp-utils.el" elisp-dir)
 :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
 :END:
-***** CANCELLED smartparens                                       :CANCELLED:
+****** CANCELLED smartparens                                      :CANCELLED:
 CLOSED: [2021-05-09 Sun 11:35]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
@@ -2573,7 +2581,7 @@ CLOSED: [2021-05-09 Sun 11:35]
     :hook
     ((emacs-lisp-mode . smartparens-mode)))
 #+end_src
-***** CANCELLED electric-pair-mode                                :CANCELLED:
+****** CANCELLED electric-pair-mode                               :CANCELLED:
 CLOSED: [2021-05-13 Thu 21:53]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
@@ -2587,7 +2595,7 @@ CLOSED: [2021-05-13 Thu 21:53]
     :hook
     ((emacs-lisp-mode . electric-pair-mode)))
 #+end_src
-***** elisp checks
+****** elisp checks
 :PROPERTIES:
 :ID:       ca5b425c-df7f-47e9-a095-a5c59159ceb4
 :END:
@@ -2596,7 +2604,7 @@ CLOSED: [2021-05-13 Thu 21:53]
     "return non nil if this buffer edits elisp"
     (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 #+end_src
-***** linting                                                          :lint:
+****** linting                                                         :lint:
 :PROPERTIES:
 :ID:       2f4d8bac-b94c-4bd8-bf58-b08cb86bc0a7
 :END:
@@ -2604,7 +2612,7 @@ CLOSED: [2021-05-13 Thu 21:53]
 #+begin_src emacs-lisp
   (use-package package-lint)
 #+end_src
-***** helpful, enriched elisp help
+****** helpful, enriched elisp help
 :PROPERTIES:
 :ID:       e5517321-9188-4c5f-abfe-6511580c6193
 :END:
@@ -2641,7 +2649,7 @@ CLOSED: [2021-05-13 Thu 21:53]
     ;; look at interactive functions.
     (global-set-key (kbd "C-h C") #'helpful-command))
 #+end_src
-***** elisp popup context help                                  :popup:elisp:
+****** elisp popup context help                                 :popup:elisp:
 :LOGBOOK:
 - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
 - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
@@ -2658,12 +2666,12 @@ Display a poup containing docstring at point
     ("M-<f1>" . el-docstring-sap-mode))
 
 #+end_src
-***** lispy
+****** lispy
 #+begin_src emacs-lisp
   (use-package lispy
     :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
 #+end_src
-***** Elisp debugging
+****** Elisp debugging
 :PROPERTIES:
 :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
 :END:
@@ -2685,7 +2693,7 @@ Display a poup containing docstring at point
 
 #+RESULTS:
 | myELisp | edebug-x-mode |
-***** Formatting
+****** Formatting
 :PROPERTIES:
 :ID:       d360a0c5-e21a-445b-a9ae-d97d33dce966
 :END:
@@ -2696,7 +2704,7 @@ Display a poup containing docstring at point
     (:map emacs-lisp-mode-map
           ("C-c f" . elisp-format-region)))
 #+end_src
-***** popup query symbol
+****** popup query symbol
 :PROPERTIES:
 :ID:       4745e152-bad7-4a31-8f9b-79cb62cdb430
 :END:
@@ -2712,14 +2720,14 @@ Display a poup containing docstring at point
     :bind
     (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 #+end_src
-***** provide
+****** provide
 :PROPERTIES:
 :ID:       7dcc7be3-1449-44e8-aed9-c223334e150f
 :END:
 #+begin_src emacs-lisp
   (provide 'rgr/elisp-utils)
 #+end_src
-*** prog-mode hack
+**** prog-mode hack
 :PROPERTIES:
 :ID:       2e3c4e82-1056-47ea-ba0a-e4492fe56709
 :END:
@@ -2727,7 +2735,7 @@ Display a poup containing docstring at point
   (unless (fboundp 'prog-mode)
     (defalias 'prog-mode 'fundamental-mode))
 #+end_src
-*** linum-mode Show Line numbers
+**** linum-mode Show Line numbers
 :PROPERTIES:
 :ID:       1c88f735-c6b7-41d1-b7ea-b09b1e70b539
 :END:
@@ -2738,7 +2746,7 @@ Display a poup containing docstring at point
   (global-set-key (kbd "S-<f2>") 'linum-mode)
   (add-hook 'prog-mode-hook (lambda() (linum-mode t)))
 #+end_src
-*** rainbow delimiters
+**** rainbow delimiters
 :PROPERTIES:
 :ID:       0551cfd4-3325-4b79-90e1-d0edd4c1304e
 :END:
@@ -2752,7 +2760,7 @@ Display a poup containing docstring at point
     (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 #+end_src
-*** Project Management
+**** Project Management
 Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project/
 #+begin_src emacs-lisp
   (use-package project
@@ -2770,11 +2778,11 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
           nil)))
     (add-hook 'project-find-functions #'zkj-project-override))
 #+end_src
-*** BASH                                                               :bash:
+**** BASH                                                              :bash:
 :PROPERTIES:
 :ID:       4dd2f546-25a2-498f-ad8c-25a29c09a303
 :END:
-**** Navigating Bash set -x output
+***** Navigating Bash set -x output
 :PROPERTIES:
 :ID:       043858ea-c607-49f5-bf6e-74622398d1e5
 :END:
@@ -2788,11 +2796,11 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
                  '(pascal
                    "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 #+end_src
-*** JSON, YAML Configuration files                                     :json:
+**** JSON, YAML Configuration files                                    :json:
 :PROPERTIES:
 :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
 :END:
-**** DONE JSONNavigator
+***** DONE JSONNavigator
 CLOSED: [2021-06-10 Thu 06:15] SCHEDULED: <2021-06-08 Tue>
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
@@ -2806,7 +2814,7 @@ Need to see if can get this working at some point
 #+begin_src emacs-lisp
   (use-package json-navigator)
 #+end_src
-**** YAML
+***** YAML
 :PROPERTIES:
 :ID:       26c28417-3965-452a-a180-61de98d44ef5
 :END:
@@ -2818,7 +2826,7 @@ Need to see if can get this working at some point
     )
 
 #+end_src
-*** Flycheck                                                  :flycheck:lint:
+**** Flycheck                                                 :flycheck:lint:
 :PROPERTIES:
 :ID:       3268489e-6d4d-4089-95f7-796e0e0da9db
 :END:
@@ -2841,11 +2849,11 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
                       (let((s (if flycheck-mode "on" "off")))
                         (message "flycheck %s" s)))))
 #+end_src
-*** Version Control                                                  :git:vc:
+**** Version Control                                                 :git:vc:
 :PROPERTIES:
 :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
 :END:
-**** It's [[https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs                         :magit:
+***** It's [[https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs :magit:
 :PROPERTIES:
 :ID:       af65c6af-be13-4c09-87ae-a128711ddc14
 :END:
@@ -2862,7 +2870,7 @@ magit
     :bind
     ("C-x g" . magit-status))
 #+end_src
-***** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
+****** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
 :PROPERTIES:
 :ID:       66507d88-e049-4c4b-b3a6-e8fb932417a9
 :END:
@@ -2873,7 +2881,7 @@ magit
   (use-package orgit
     :after magit)
 #+end_src
-**** EDiff - comparing files in Emacs                            :diff:ediff:
+***** EDiff - comparing files in Emacs                           :diff:ediff:
 :PROPERTIES:
 :ID:       8e09b947-9859-4b89-8354-3c39b1649c33
 :END:
@@ -2888,7 +2896,7 @@ magit
     :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
 #+end_src
 
-**** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests                        :forge:git:github:
+***** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests :forge:git:github:
 :PROPERTIES:
 :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
 :END:
@@ -2899,7 +2907,7 @@ magit
     (use-package orgit-forge))
 #+end_src
 
-***** token                                                     :crypt:token:
+****** token                                                    :crypt:token:
 -----BEGIN PGP MESSAGE-----
 
 hQEMA7IjL5SkHG4iAQgAnyC1NPS3sWV9r7kriSvL4IF53g076qwmEHvmPjBaUp9R
@@ -2922,7 +2930,7 @@ NmmXwjbGwdqpZzbwiG2yrw5BwkdKPQQ4PRsyUVuyWfrYAFLLtfXuFGIIfoQ2DiSl
 EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
 =FmGT
 -----END PGP MESSAGE-----
-**** Git Gutter Mode                                                 :gutter:
+***** Git Gutter Mode                                                :gutter:
 :PROPERTIES:
 :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
 :END:
@@ -2934,7 +2942,7 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
     :bind
     ("C-x v ="  . git-gutter:popup-hunk))
 #+end_src
-*** Javascript                                                           :js:
+**** Javascript                                                          :js:
 :PROPERTIES:
 :ID:       27571c84-2c40-487d-abd0-3013c53b731b
 :END:
@@ -2974,7 +2982,7 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
 
   ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
 #+end_src
-*** RJSX
+**** RJSX
 :PROPERTIES:
 :ID:       58d9b950-aebb-49e9-bb6d-e6fb66103615
 :END:
@@ -2987,7 +2995,7 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
     (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
     )
 #+end_src
-*** Typescript
+**** Typescript
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
@@ -2998,7 +3006,7 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
       (setq-local dash-docs-docsets '("React" "JavaScript")))
     (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 #+end_src
-*** Language Server Protocol (LSP)                                      :lsp:
+**** Language Server Protocol (LSP)                                     :lsp:
 :PROPERTIES:
 :END:
 [[https://github.com/emacs-lsp][Emacs-lsp]] : Language Server Protocol client for Emacs
@@ -3009,7 +3017,7 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
   (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 #+end_src
 
-**** library
+***** library
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-lsp.el" elisp-dir)
 :END:
@@ -3134,7 +3142,7 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 
   (provide 'rgr/lsp)
 #+end_src
-***** [[file:~/development/thirdparty/godot/bin][.dir-local.el]] config for a debug template
+****** [[file:~/development/thirdparty/godot/bin][.dir-local.el]] config for a debug template
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp  :tangle no
@@ -3148,7 +3156,7 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
                                                        :target "/home/rgr/bin/godot"))))))
 #+end_src
 
-*** Serial Port
+**** Serial Port
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
@@ -3176,7 +3184,7 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
                     (interactive)
                     (selectSerialPortBuffer)))
 #+end_src
-*** PlatformIO
+**** PlatformIO
 :PROPERTIES:
 :END:
 [[https://github.com/emacsmirror/platformio-mode][platformio-mode]] is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
@@ -3184,11 +3192,11 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 #+begin_src emacs-lisp
   (use-package platformio-mode)
 #+end_src
-*** Python                                                           :python:
+**** Python                                                          :python:
 :PROPERTIES:
 :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
 :END:
-**** python-mode
+***** python-mode
 :PROPERTIES:
 :ID:       d14b8271-2894-4ef1-931e-173c9d4d8503
 :END:
@@ -3205,7 +3213,7 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
           (switch-to-buffer-other-window (python-shell-get-buffer)))))
     (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer))
 #+end_src
-**** ipython
+***** ipython
 :LOGBOOK:
 - State "SOMEDAY"    from              [2021-04-03 Sa 09:41]
 :END:
@@ -3213,8 +3221,8 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
   (setq python-shell-interpreter "ipython")
   (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 #+end_src
-**** lsp                                                                :lsp:
-***** microsoft python language server                                  :lsp:
+***** lsp                                                               :lsp:
+****** microsoft python language server                                 :lsp:
 #+begin_src emacs-lisp
   (use-package lsp-python-ms
     :custom
@@ -3225,20 +3233,20 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     :hook (python-mode . (lambda ()
                            (lsp-deferred))))
 #+end_src
-**** virtualenv                                                  :virtualenv:
+***** virtualenv                                                 :virtualenv:
 #+begin_src emacs-lisp
   (use-package auto-virtualenv
     :config
     (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 #+end_src
-**** blacken reformatting                                           :blacken:
+***** blacken reformatting                                          :blacken:
 #+begin_src emacs-lisp
   (use-package blacken
     :demand t
     :config
     (add-hook 'python-mode-hook  #'blacken-mode))
 #+end_src
-*** C                                                                     :c:
+**** C                                                                    :c:
 :PROPERTIES:
 :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
 :END:
@@ -3250,17 +3258,27 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 (add-hook 'c-mode-hook 'rgr/c-mode-hook)
 #+end_src
 
-**** Clang provides us with some industry standard code prettiers     :clang:
+***** CANCELLED Clang provides us with some industry standard code prettiers :clang:CANCELLED:
+CLOSED: [2021-06-10 Thu 21:36]
 :PROPERTIES:
 :ID:       42ededa2-d031-47ae-9489-1bd0eec621c6
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-06-10 Thu 21:36] \\
+  see what lsp does on its own
 :END:
 #+begin_src emacs-lisp
   (use-package clang-format)
   (setq clang-format-style-option "Gnu")
-  (fset 'c-indent-region 'clang-format-region)
-  (fset 'c-indent-buffer 'clang-format-buffer)
+  ;; (fset 'c-indent-region 'clang-format-region)
+  ;; (fset 'c-indent-buffer 'clang-format-buffer)
+  (add-hook 'c-common-mode-hook
+    (lambda ()
+      (add-hook (make-local-variable 'before-save-hook)
+                'clang-format-buffer)))
 #+end_src
-**** line utilities
+***** line utilities
 :PROPERTIES:
 :ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
 :END:
@@ -3285,7 +3303,7 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (newline-and-indent))
 #+end_src
 
-*** C++                                                                 :cpp:
+**** C++                                                                :cpp:
 :PROPERTIES:
 :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b
 :END:
@@ -3295,10 +3313,10 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (setq-local dash-docs-docsets '("C++")))
   (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
 #+end_src
-*** Linux tools
+**** Linux tools
 :PROPERTIES:
 :END:
-**** [[https://github.com/doublep/logview][logview]] - view system logfiles
+***** [[https://github.com/doublep/logview][logview]] - view system logfiles
 :PROPERTIES:
 :ID:       bfd57f96-8cc4-41a1-81ab-e683345664e1
 :END:
@@ -3309,18 +3327,18 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
     (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 #+end_src
-*** Assembler
+**** Assembler
 :PROPERTIES:
 :ID:       2bc81dc1-4f5f-47b9-9446-464af96a2365
 :END:
-**** [[https://nullprogram.com/blog/2015/11/21/][x86Lookup]]
+***** [[https://nullprogram.com/blog/2015/11/21/][x86Lookup]]
 :PROPERTIES:
 :ID:       feb458b6-b2ab-4553-b2d9-95c121b29e7e
 :END:
 #+begin_src emacs-lisp
   (use-package strace-mode)
 #+end_src
-*** Godot GDScript                                                    :godot:
+**** Godot GDScript                                                   :godot:
 :PROPERTIES:
 :ID:       19daf0bd-1652-4638-9d72-50f0b8af1586
 :END:
@@ -3347,15 +3365,15 @@ This [[https://github.com/GDQuest/emacs-gdscript-mode][package]] adds support fo
     )
 #+end_src
 
-*** Web,Symfony and Twig
+**** Web,Symfony and Twig
 :PROPERTIES:
 :ID:       5c88e4a3-3af1-42e4-81ec-913b4fa88853
 :END:
-**** Tasks                                                         :tasklist:
+***** Tasks                                                        :tasklist:
 :PROPERTIES:
 :ID:       0d8f29bf-bbd2-4387-a8fa-e2907704dc82
 :END:
-***** DONE put dash docset in here!
+****** DONE put dash docset in here!
 CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 Fr>
 :PROPERTIES:
 :ID:       fc1fca41-5417-484d-ae16-5f6dcc2e4fa7
@@ -3365,11 +3383,11 @@ CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 F
 - State "TODO"       from              [2020-03-06 Fr 03:55]
 :END:
 
-**** Symfony
+***** Symfony
 :PROPERTIES:
 :ID:       02d41cb7-37c1-4e61-aec1-7014650f29bc
 :END:
-***** custom
+****** custom
 :PROPERTIES:
 :ID:       0af7ade2-dc61-4d8c-a98b-b39db18b8370
 :END:
@@ -3385,7 +3403,7 @@ CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 F
     :group 'rgr/symfony)
 #+end_src
 
-***** Start a symfony web server when applicable
+****** Start a symfony web server when applicable
 :PROPERTIES:
 :ID:       e985339e-df07-40f2-b0c6-0356749a21c4
 :END:
@@ -3416,7 +3434,7 @@ We can trigger it using a .dir-locals.el
 
 
 
-***** webmode
+****** webmode
 :PROPERTIES:
 :ID:       1f6b744d-f3f8-4d7b-abbe-e8d765ee3cc8
 :END:
@@ -3442,7 +3460,7 @@ We can trigger it using a .dir-locals.el
     (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 #+end_src
 
-*** elf-mode - view the symbol list in a binary
+**** elf-mode - view the symbol list in a binary
 :PROPERTIES:
 :ID:       41cf30f2-5a70-4aab-aa93-2bd9a249b72f
 :END:
@@ -3453,6 +3471,10 @@ We can trigger it using a .dir-locals.el
     :demand t
     :config
     (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'rgr/programming)
 #+end_src
 ** Themes                                                            :themes:
 :PROPERTIES:
