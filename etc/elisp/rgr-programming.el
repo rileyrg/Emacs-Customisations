@@ -225,9 +225,13 @@
 (defun rgr/c-mode-common-hook ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (local-set-key (kbd "M-<return>") 'c-complete-line)
-  (setq-local dash-docs-docsets '("C")))
+  (setq-local dash-docs-docsets '("C"))
   (setq-local c-tab-always-indent 'complete)
+  (fset 'c-indent-region 'clang-format-region))
+
 (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
+
+(use-package clang-format)
 
 (defun c-complete-line()
   (interactive)

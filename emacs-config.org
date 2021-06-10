@@ -3255,16 +3255,16 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
   (defun rgr/c-mode-common-hook ()
     (add-hook 'before-save-hook #'lsp-format-buffer t t)
     (local-set-key (kbd "M-<return>") 'c-complete-line)
-    (setq-local dash-docs-docsets '("C")))
+    (setq-local dash-docs-docsets '("C"))
     (setq-local c-tab-always-indent 'complete)
+    (fset 'c-indent-region 'clang-format-region))
+
   (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
 #+end_src
 
-***** CANCELLED Clang provides us with some industry standard code prettiers :CANCELLED:
-CLOSED: [2021-06-10 Thu 22:29]
+***** Clang provides us with some industry standard code prettiers    :trash:
 :PROPERTIES:
 :ID:       42ededa2-d031-47ae-9489-1bd0eec621c6
-:header-args:emacs-lisp: :tangle no
 :END:
 :LOGBOOK:
 - State "CANCELLED"  from              [2021-06-10 Thu 22:29]
@@ -3274,13 +3274,6 @@ CLOSED: [2021-06-10 Thu 22:29]
 This is disabled because lsp should take care of it.
 #+begin_src emacs-lisp
   (use-package clang-format)
-  (setq clang-format-style-option "Gnu")
-  ;; (fset 'c-indent-region 'clang-format-region)
-  ;; (fset 'c-indent-buffer 'clang-format-buffer)
-  (add-hook 'c-common-mode-hook
-    (lambda ()
-      (add-hook (make-local-variable 'before-save-hook)
-                'clang-format-buffer)))
 #+end_src
 ***** line utilities
 :PROPERTIES:
