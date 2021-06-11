@@ -2318,11 +2318,12 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
 
   (defun rgr/erc-start()
     (interactive)
-    (unless(get-buffer "irc.libera.chat:6697")
+    (if (not (get-buffer "irc.libera.chat:6697"))
       (progn
         (erc-tls :server "irc.libera.chat" :port "6697")
         ;;(erc-tls :server "irc.freenode.net" :port "6697")
-        (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
+        (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
+      (erc-switch-to-buffer)))
 
   (require 'erc)
   (global-set-key (kbd  "C-c i") #'rgr/erc-start)

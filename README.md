@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orge21e9f8)
+I have this disabled by default as I use [straight.el package management](#org00962b9)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orge2
 ```
 
 
-<a id="orge21e9f8"></a>
+<a id="org00962b9"></a>
 
 ## straight.el package management
 
@@ -1080,7 +1080,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb643910) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orga4f4f6b) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2130,11 +2130,12 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 (defun rgr/erc-start()
   (interactive)
-  (unless(get-buffer "irc.libera.chat:6697")
+  (if (not (get-buffer "irc.libera.chat:6697"))
     (progn
       (erc-tls :server "irc.libera.chat" :port "6697")
       ;;(erc-tls :server "irc.freenode.net" :port "6697")
-      (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
+      (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
+    (erc-switch-to-buffer)))
 
 (require 'erc)
 (global-set-key (kbd  "C-c i") #'rgr/erc-start)
@@ -3216,7 +3217,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7fa42be) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge160167) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3255,7 +3256,7 @@ fi
 ```
 
 
-<a id="org7fa42be"></a>
+<a id="orge160167"></a>
 
 ### Gnome protocol handler desktop file
 
