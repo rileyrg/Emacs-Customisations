@@ -2311,6 +2311,7 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
 :END:
 *** irc/erc
 #+begin_src emacs-lisp
+
   (defun rgr/erc-switch-to-channel(&optional channel)
     (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
       (switch-to-buffer (current-buffer))))
@@ -2320,7 +2321,7 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
     (unless(get-buffer "irc.libera.chat:6697")
       (progn
         (erc-tls :server "irc.libera.chat" :port "6697")
-        (erc-tls :server "irc.freenode.net" :port "6697")
+        ;;(erc-tls :server "irc.freenode.net" :port "6697")
         (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
 
   (require 'erc)

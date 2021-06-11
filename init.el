@@ -346,7 +346,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (unless(get-buffer "irc.libera.chat:6697")
     (progn
       (erc-tls :server "irc.libera.chat" :port "6697")
-      (erc-tls :server "irc.freenode.net" :port "6697")
+      ;;(erc-tls :server "irc.freenode.net" :port "6697")
       (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
 
 (require 'erc)
