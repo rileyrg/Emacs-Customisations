@@ -223,16 +223,24 @@
   (add-hook 'python-mode-hook  #'blacken-mode))
 
 (defun rgr/c-mode-common-hook ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (local-set-key (kbd "M-<return>") 'c-complete-line)
   (setq-local dash-docs-docsets '("C"))
-  (setq-local c-tab-always-indent 'complete)
-  (fset 'c-indent-region 'clang-format-region)
   (lsp-deferred))
 
 (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
 
-(use-package clang-format)
+(use-package clang-format
+  :init
+  (with-eval-after-load 'cc-mode
+    (add-hook 'c-mode-common-hook
+              (lambda()
+                (add-hook 'before-save-hook
+                          (lambda()
+                            (clang-format-buffer)) nil t)))
+    (fset 'c-indent-region 'clang-format-region)
+    (fset 'c-indent-line 'clang-format)
+    (fset 'c-indent-line-or-region 'clang-format)
+    (bind-keys :map c-mode-base-map
+               ("M-<return>" . c-complete-line))))
 
 (defun c-complete-line()
   (interactive)

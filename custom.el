@@ -38,6 +38,7 @@
  '(ccls-root-files '(".ccls-root" ".projectile"))
  '(ccls-sem-highlight-method 'overlay)
  '(centaur-tabs-cycle-scope 'tabs)
+ '(clang-format-style "LLVM")
  '(company-box-enable-icon nil)
  '(company-c-headers-path-user
    '("~/.platformio/packages/framework-arduinoavr/cores/arduino/Arduino.h"))
@@ -543,3 +544,12 @@ stehen ganz weit oben.
 
 
 (message "Custom loading completed.")
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:height 105))))
+ '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
+ '(tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+ '(tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff")))))

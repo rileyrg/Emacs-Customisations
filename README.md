@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org89b8671)
+I have this disabled by default as I use [straight.el package management](#org5fc10a3)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org89
 ```
 
 
-<a id="org89b8671"></a>
+<a id="org5fc10a3"></a>
 
 ## straight.el package management
 
@@ -1080,7 +1080,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org36d489a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org131cbd8) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2917,22 +2917,29 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```emacs-lisp
     (defun rgr/c-mode-common-hook ()
-      (add-hook 'before-save-hook #'lsp-format-buffer t t)
-      (local-set-key (kbd "M-<return>") 'c-complete-line)
       (setq-local dash-docs-docsets '("C"))
-      (setq-local c-tab-always-indent 'complete)
-      (fset 'c-indent-region 'clang-format-region)
       (lsp-deferred))
 
     (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
+
     ```
 
     1.  Clang provides us with some industry standard code prettiers
 
-        This is disabled because lsp should take care of it.
-
         ```emacs-lisp
-        (use-package clang-format)
+        (use-package clang-format
+          :init
+          (with-eval-after-load 'cc-mode
+            (add-hook 'c-mode-common-hook
+                      (lambda()
+                        (add-hook 'before-save-hook
+                                  (lambda()
+                                    (clang-format-buffer)) nil t)))
+            (fset 'c-indent-region 'clang-format-region)
+            (fset 'c-indent-line 'clang-format)
+            (fset 'c-indent-line-or-region 'clang-format)
+            (bind-keys :map c-mode-base-map
+                       ("M-<return>" . c-complete-line))))
         ```
 
     2.  line utilities
@@ -3217,7 +3224,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb9ed973) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgce9719d) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3256,7 +3263,7 @@ fi
 ```
 
 
-<a id="orgb9ed973"></a>
+<a id="orgce9719d"></a>
 
 ### Gnome protocol handler desktop file
 

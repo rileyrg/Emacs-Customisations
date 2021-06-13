@@ -2802,12 +2802,13 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
 :PROPERTIES:
 :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
 :END:
-***** DONE JSONNavigator
-CLOSED: [2021-06-10 Thu 06:15] SCHEDULED: <2021-06-08 Tue>
+***** TODO JSONNavigator
+SCHEDULED: <2021-06-08 Tue>
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
 :LOGBOOK:
+- State "TODO"       from "DONE"       [2021-06-13 Sun 08:29]
 - State "DONE"       from "TODO"       [2021-06-10 Thu 06:15]
 - State "TODO"       from              [2021-06-01 Tue 07:27]
 - State "TODO"       from              [2021-05-31 Mon 06:03]
@@ -3219,17 +3220,14 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 
 #+begin_src emacs-lisp
   (defun rgr/c-mode-common-hook ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (local-set-key (kbd "M-<return>") 'c-complete-line)
     (setq-local dash-docs-docsets '("C"))
-    (setq-local c-tab-always-indent 'complete)
-    (fset 'c-indent-region 'clang-format-region)
     (lsp-deferred))
 
   (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
+
 #+end_src
 
-***** Clang provides us with some industry standard code prettiers    :trash:
+***** Clang provides us with some industry standard code prettiers
 :PROPERTIES:
 :ID:       42ededa2-d031-47ae-9489-1bd0eec621c6
 :END:
@@ -3238,9 +3236,20 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 - State "CANCELLED"  from              [2021-06-10 Thu 21:36] \\
   see what lsp does on its own
 :END:
-This is disabled because lsp should take care of it.
 #+begin_src emacs-lisp
-  (use-package clang-format)
+  (use-package clang-format
+    :init
+    (with-eval-after-load 'cc-mode
+      (add-hook 'c-mode-common-hook
+                (lambda()
+                  (add-hook 'before-save-hook
+                            (lambda()
+                              (clang-format-buffer)) nil t)))
+      (fset 'c-indent-region 'clang-format-region)
+      (fset 'c-indent-line 'clang-format)
+      (fset 'c-indent-line-or-region 'clang-format)
+      (bind-keys :map c-mode-base-map
+                 ("M-<return>" . c-complete-line))))
 #+end_src
 ***** line utilities
 :PROPERTIES:
