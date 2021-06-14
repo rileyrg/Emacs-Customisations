@@ -247,19 +247,18 @@
   (end-of-line)
   (newline-and-indent))
 
-(use-package clang-format
-  :init
+(use-package lsp-mode
+  :custom
+  (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
+  :config
+  (defun rgr/c-save-hook()
+    (lsp-format-buffer))
   (with-eval-after-load 'cc-mode
     (add-hook 'c-mode-common-hook
               (lambda()
-                (add-hook 'before-save-hook
-                          (lambda()
-                            (clang-format-buffer)) nil t)))
-    ;; (fset 'c-indent-region 'clang-format-region)
-    ;; (fset 'c-indent-line 'clang-format)
-    ;; (fset 'c-indent-line-or-region 'clang-format)
-    (bind-keys :map c-mode-base-map
-               ("M-<return>" . c-complete-line))))
+                (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
+  :bind  ( :map c-mode-base-map
+               (("M-<return>" . c-complete-line))))
 
 (defun rgr/c++-mode-hook ()
   (setq-local dash-docs-docsets '("C++")))

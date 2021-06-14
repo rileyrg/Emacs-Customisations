@@ -7,7 +7,7 @@
   (lsp-completion-show-kind t)
   (lsp-diagnostics-provider :none)
   (lsp-eldoc-enable-hover nil)
-  (lsp-enable-on-type-formatting nil)
+  (lsp-enable-on-type-formatting t)
   (lsp-enable-snippet nil)
   (lsp-enable-symbol-highlighting t)
   (lsp-headerline-breadcrumb-enable nil)

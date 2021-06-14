@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org0552fdb)
+I have this disabled by default as I use [straight.el package management](#orgac19cc5)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org05
 ```
 
 
-<a id="org0552fdb"></a>
+<a id="orgac19cc5"></a>
 
 ## straight.el package management
 
@@ -1080,7 +1080,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org5abd2b3) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org81e48a0) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2713,7 +2713,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (lsp-completion-show-kind t)
           (lsp-diagnostics-provider :none)
           (lsp-eldoc-enable-hover nil)
-          (lsp-enable-on-type-formatting nil)
+          (lsp-enable-on-type-formatting t)
           (lsp-enable-snippet nil)
           (lsp-enable-symbol-highlighting t)
           (lsp-headerline-breadcrumb-enable nil)
@@ -2928,22 +2928,21 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (newline-and-indent))
         ```
 
-    2.  Clang provides us with some industry standard code prettiers
+    2.  lsp formatting
 
         ```emacs-lisp
-        (use-package clang-format
-          :init
+        (use-package lsp-mode
+          :custom
+          (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
+          :config
+          (defun rgr/c-save-hook()
+            (lsp-format-buffer))
           (with-eval-after-load 'cc-mode
             (add-hook 'c-mode-common-hook
                       (lambda()
-                        (add-hook 'before-save-hook
-                                  (lambda()
-                                    (clang-format-buffer)) nil t)))
-            ;; (fset 'c-indent-region 'clang-format-region)
-            ;; (fset 'c-indent-line 'clang-format)
-            ;; (fset 'c-indent-line-or-region 'clang-format)
-            (bind-keys :map c-mode-base-map
-                       ("M-<return>" . c-complete-line))))
+                        (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
+          :bind  ( :map c-mode-base-map
+                       (("M-<return>" . c-complete-line))))
         ```
 
 19. C++
@@ -3205,7 +3204,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga4b7993) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc28334d) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3244,7 +3243,7 @@ fi
 ```
 
 
-<a id="orga4b7993"></a>
+<a id="orgc28334d"></a>
 
 ### Gnome protocol handler desktop file
 
