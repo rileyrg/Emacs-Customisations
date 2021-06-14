@@ -228,20 +228,6 @@
 
 (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
 
-(use-package clang-format
-  :init
-  (with-eval-after-load 'cc-mode
-    (add-hook 'c-mode-common-hook
-              (lambda()
-                (add-hook 'before-save-hook
-                          (lambda()
-                            (clang-format-buffer)) nil t)))
-    (fset 'c-indent-region 'clang-format-region)
-    (fset 'c-indent-line 'clang-format)
-    (fset 'c-indent-line-or-region 'clang-format)
-    (bind-keys :map c-mode-base-map
-               ("M-<return>" . c-complete-line))))
-
 (defun c-complete-line()
   (interactive)
   (end-of-line)
@@ -260,6 +246,20 @@
   (interactive)
   (end-of-line)
   (newline-and-indent))
+
+(use-package clang-format
+  :init
+  (with-eval-after-load 'cc-mode
+    (add-hook 'c-mode-common-hook
+              (lambda()
+                (add-hook 'before-save-hook
+                          (lambda()
+                            (clang-format-buffer)) nil t)))
+    ;; (fset 'c-indent-region 'clang-format-region)
+    ;; (fset 'c-indent-line 'clang-format)
+    ;; (fset 'c-indent-line-or-region 'clang-format)
+    (bind-keys :map c-mode-base-map
+               ("M-<return>" . c-complete-line))))
 
 (defun rgr/c++-mode-hook ()
   (setq-local dash-docs-docsets '("C++")))

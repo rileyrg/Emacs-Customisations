@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org5fc10a3)
+I have this disabled by default as I use [straight.el package management](#org0552fdb)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org5f
 ```
 
 
-<a id="org5fc10a3"></a>
+<a id="org0552fdb"></a>
 
 ## straight.el package management
 
@@ -1080,7 +1080,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org131cbd8) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org5abd2b3) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1327,19 +1327,20 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
         (defcustom mode-lookup-reference-functions-alist '(
                                                            (nil (goldendict-dwim goldendict-dwim))
-                                                           (c++-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                           (gdscript-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                           ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/dash))
-                                                           (php-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                           (web-mode  (rgr/lsp-ui-doc-glance rgr/devdocs))
+                                                           (c-mode  (rgr/devdocs rgr/devdocs))
+                                                           (c++-mode  (rgr/devdocs rgr/devdocs))
+                                                           (gdscript-mode  (rgr/devdocs rgr/devdocs))
+                                                           ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/devdocs))
+                                                           (php-mode  (rgr/devdocs rgr/devdocs))
+                                                           (web-mode  (rgr/devdocs rgr/devdocs))
                                                            (org-mode (rgr/elisp-lookup-reference-dwim))
                                                            (Info-mode (rgr/elisp-lookup-reference-dwim))
-                                                           (js2-mode (rgr/dash rgr/devdocs))
-                                                           (js-mode (rgr/dash rgr/devdocs))
-                                                           (rjsx-mode (rgr/dash rgr/devdocs))
-                                                           (typescript-mode (rgr/dash rgr/devdocs))
-                                                           (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/dash))
-                                                           (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/dash)))
+                                                           (js2-mode (rgr/devdocs rgr/devdocs))
+                                                           (js-mode (rgr/devdocs rgr/devdocs))
+                                                           (rjsx-mode (rgr/devdocs rgr/devdocs))
+                                                           (typescript-mode (rgr/devdocs rgr/devdocs))
+                                                           (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs))
+                                                           (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs)))
           "mode lookup functions"
           :group 'rgr/lookup-reference)
 
@@ -1530,38 +1531,18 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
     6.  emacs-devdocs-browser
 
-        ```emacs-lisp
+        <https://github.com/blahgeek/emacs-devdocs-browser> : Browse devdocs.io documents inside Emacs!
 
+        ```emacs-lisp
         (use-package devdocs-browser
-          :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
           :custom
-          (devdocs-browser-cache-directory "~.emacs.d/var/devdocs-browser")
+          (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
           :config
-          (defun rgr/devdocs()
+          (defun rgr/devdocs(&optional i)
             (interactive)
             (if current-prefix-arg
                 (call-interactively 'devdocs-browser-open-in)
-              (devdocs-browser-open)))
-          :bind ("C-c v" . rgr/devdocs))
-        ```
-
-    7.  DASH - API documentation for most languages
-
-        Dash packages docs for many languages.
-
-        ```emacs-lisp
-        (use-package
-          dash-docs
-          ;;:custom
-          ;;(dash-docs-browser-func 'eww-readable-url)
-          :config
-          (setq dash-docs-common-docsets '("C++" "Emacs Lisp" "Docker"))
-          (setq dash-docs-docsets '("C++" "Emacs Lisp" "Docker"))
-          (defun rgr/dash (w)
-            (interactive (cons (rgr/region-symbol-query) nil))
-            (message "docsets are: %s" dash-docs-docsets)
-            (message "%s" (dash-docs-search w)))
-          :bind ("C-c d" . 'rgr/dash))
+              (devdocs-browser-open))))
         ```
 
 3.  Man Pages
@@ -2924,25 +2905,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```
 
-    1.  Clang provides us with some industry standard code prettiers
-
-        ```emacs-lisp
-        (use-package clang-format
-          :init
-          (with-eval-after-load 'cc-mode
-            (add-hook 'c-mode-common-hook
-                      (lambda()
-                        (add-hook 'before-save-hook
-                                  (lambda()
-                                    (clang-format-buffer)) nil t)))
-            (fset 'c-indent-region 'clang-format-region)
-            (fset 'c-indent-line 'clang-format)
-            (fset 'c-indent-line-or-region 'clang-format)
-            (bind-keys :map c-mode-base-map
-                       ("M-<return>" . c-complete-line))))
-        ```
-
-    2.  line utilities
+    1.  line utilities
 
         ```emacs-lisp
         (defun c-complete-line()
@@ -2963,6 +2926,24 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (interactive)
           (end-of-line)
           (newline-and-indent))
+        ```
+
+    2.  Clang provides us with some industry standard code prettiers
+
+        ```emacs-lisp
+        (use-package clang-format
+          :init
+          (with-eval-after-load 'cc-mode
+            (add-hook 'c-mode-common-hook
+                      (lambda()
+                        (add-hook 'before-save-hook
+                                  (lambda()
+                                    (clang-format-buffer)) nil t)))
+            ;; (fset 'c-indent-region 'clang-format-region)
+            ;; (fset 'c-indent-line 'clang-format)
+            ;; (fset 'c-indent-line-or-region 'clang-format)
+            (bind-keys :map c-mode-base-map
+                       ("M-<return>" . c-complete-line))))
         ```
 
 19. C++
@@ -3224,7 +3205,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgce9719d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga4b7993) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3263,7 +3244,7 @@ fi
 ```
 
 
-<a id="orgce9719d"></a>
+<a id="orga4b7993"></a>
 
 ### Gnome protocol handler desktop file
 

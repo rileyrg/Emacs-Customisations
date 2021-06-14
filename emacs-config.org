@@ -1433,19 +1433,20 @@ CLOSED: [2021-05-19 Wed 20:30] SCHEDULED: <2021-05-09 Sun>
 
   (defcustom mode-lookup-reference-functions-alist '(
                                                      (nil (goldendict-dwim goldendict-dwim))
-                                                     (c++-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                     (gdscript-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                     ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/dash))
-                                                     (php-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                     (web-mode  (rgr/lsp-ui-doc-glance rgr/devdocs))
+                                                     (c-mode  (rgr/devdocs rgr/devdocs))
+                                                     (c++-mode  (rgr/devdocs rgr/devdocs))
+                                                     (gdscript-mode  (rgr/devdocs rgr/devdocs))
+                                                     ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/devdocs))
+                                                     (php-mode  (rgr/devdocs rgr/devdocs))
+                                                     (web-mode  (rgr/devdocs rgr/devdocs))
                                                      (org-mode (rgr/elisp-lookup-reference-dwim))
                                                      (Info-mode (rgr/elisp-lookup-reference-dwim))
-                                                     (js2-mode (rgr/dash rgr/devdocs))
-                                                     (js-mode (rgr/dash rgr/devdocs))
-                                                     (rjsx-mode (rgr/dash rgr/devdocs))
-                                                     (typescript-mode (rgr/dash rgr/devdocs))
-                                                     (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/dash))
-                                                     (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/dash)))
+                                                     (js2-mode (rgr/devdocs rgr/devdocs))
+                                                     (js-mode (rgr/devdocs rgr/devdocs))
+                                                     (rjsx-mode (rgr/devdocs rgr/devdocs))
+                                                     (typescript-mode (rgr/devdocs rgr/devdocs))
+                                                     (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs))
+                                                     (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs)))
     "mode lookup functions"
     :group 'rgr/lookup-reference)
 
@@ -1645,40 +1646,20 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
     :bind* ("C-c z" . 'rgr/zeal))
 #+end_src
 ***** emacs-devdocs-browser
+https://github.com/blahgeek/emacs-devdocs-browser :
+Browse devdocs.io documents inside Emacs!
 #+begin_src emacs-lisp
-
   (use-package devdocs-browser
-    :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
     :custom
-    (devdocs-browser-cache-directory "~.emacs.d/var/devdocs-browser")
+    (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
     :config
-    (defun rgr/devdocs()
+    (defun rgr/devdocs(&optional i)
       (interactive)
       (if current-prefix-arg
           (call-interactively 'devdocs-browser-open-in)
-        (devdocs-browser-open)))
-    :bind ("C-c v" . rgr/devdocs))
+        (devdocs-browser-open))))
 #+end_src
 
-***** DASH - API documentation for most languages
-:PROPERTIES:
-:ID:       c05f8e5e-a34c-4e6c-89b9-f4586a6d1eea
-:END:
-Dash packages docs for many languages.
-#+begin_src emacs-lisp
-  (use-package
-    dash-docs
-    ;;:custom
-    ;;(dash-docs-browser-func 'eww-readable-url)
-    :config
-    (setq dash-docs-common-docsets '("C++" "Emacs Lisp" "Docker"))
-    (setq dash-docs-docsets '("C++" "Emacs Lisp" "Docker"))
-    (defun rgr/dash (w)
-      (interactive (cons (rgr/region-symbol-query) nil))
-      (message "docsets are: %s" dash-docs-docsets)
-      (message "%s" (dash-docs-search w)))
-    :bind ("C-c d" . 'rgr/dash))
-#+end_src
 **** Man Pages
 :PROPERTIES:
 :ID:       b432ab5d-12af-48db-989d-6392d88ac874
@@ -3226,31 +3207,6 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
   (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
 
 #+end_src
-
-***** Clang provides us with some industry standard code prettiers
-:PROPERTIES:
-:ID:       42ededa2-d031-47ae-9489-1bd0eec621c6
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-06-10 Thu 22:29]
-- State "CANCELLED"  from              [2021-06-10 Thu 21:36] \\
-  see what lsp does on its own
-:END:
-#+begin_src emacs-lisp
-  (use-package clang-format
-    :init
-    (with-eval-after-load 'cc-mode
-      (add-hook 'c-mode-common-hook
-                (lambda()
-                  (add-hook 'before-save-hook
-                            (lambda()
-                              (clang-format-buffer)) nil t)))
-      (fset 'c-indent-region 'clang-format-region)
-      (fset 'c-indent-line 'clang-format)
-      (fset 'c-indent-line-or-region 'clang-format)
-      (bind-keys :map c-mode-base-map
-                 ("M-<return>" . c-complete-line))))
-#+end_src
 ***** line utilities
 :PROPERTIES:
 :ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
@@ -3275,7 +3231,30 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (end-of-line)
     (newline-and-indent))
 #+end_src
-
+***** Clang provides us with some industry standard code prettiers
+:PROPERTIES:
+:ID:       42ededa2-d031-47ae-9489-1bd0eec621c6
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-06-10 Thu 22:29]
+- State "CANCELLED"  from              [2021-06-10 Thu 21:36] \\
+  see what lsp does on its own
+:END:
+#+begin_src emacs-lisp
+  (use-package clang-format
+    :init
+    (with-eval-after-load 'cc-mode
+      (add-hook 'c-mode-common-hook
+                (lambda()
+                  (add-hook 'before-save-hook
+                            (lambda()
+                              (clang-format-buffer)) nil t)))
+      ;; (fset 'c-indent-region 'clang-format-region)
+      ;; (fset 'c-indent-line 'clang-format)
+      ;; (fset 'c-indent-line-or-region 'clang-format)
+      (bind-keys :map c-mode-base-map
+                 ("M-<return>" . c-complete-line))))
+#+end_src
 **** C++                                                                :cpp:
 :PROPERTIES:
 :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b

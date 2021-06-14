@@ -6,19 +6,20 @@
 
 (defcustom mode-lookup-reference-functions-alist '(
                                                    (nil (goldendict-dwim goldendict-dwim))
-                                                   (c++-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                   (gdscript-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                   ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/dash))
-                                                   (php-mode  (rgr/lsp-ui-doc-glance rgr/dash))
-                                                   (web-mode  (rgr/lsp-ui-doc-glance rgr/devdocs))
+                                                   (c-mode  (rgr/devdocs rgr/devdocs))
+                                                   (c++-mode  (rgr/devdocs rgr/devdocs))
+                                                   (gdscript-mode  (rgr/devdocs rgr/devdocs))
+                                                   ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/devdocs))
+                                                   (php-mode  (rgr/devdocs rgr/devdocs))
+                                                   (web-mode  (rgr/devdocs rgr/devdocs))
                                                    (org-mode (rgr/elisp-lookup-reference-dwim))
                                                    (Info-mode (rgr/elisp-lookup-reference-dwim))
-                                                   (js2-mode (rgr/dash rgr/devdocs))
-                                                   (js-mode (rgr/dash rgr/devdocs))
-                                                   (rjsx-mode (rgr/dash rgr/devdocs))
-                                                   (typescript-mode (rgr/dash rgr/devdocs))
-                                                   (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/dash))
-                                                   (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/dash)))
+                                                   (js2-mode (rgr/devdocs rgr/devdocs))
+                                                   (js-mode (rgr/devdocs rgr/devdocs))
+                                                   (rjsx-mode (rgr/devdocs rgr/devdocs))
+                                                   (typescript-mode (rgr/devdocs rgr/devdocs))
+                                                   (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs))
+                                                   (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs)))
   "mode lookup functions"
   :group 'rgr/lookup-reference)
 
@@ -165,29 +166,14 @@
   :bind* ("C-c z" . 'rgr/zeal))
 
 (use-package devdocs-browser
-  :straight (devdocs-browser :local-repo "~/development/projects/emacs/emacs-devdocs-browser" :type git :host github :repo "blahgeek/emacs-devdocs-browser" )
   :custom
-  (devdocs-browser-cache-directory "~.emacs.d/var/devdocs-browser")
+  (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
   :config
-  (defun rgr/devdocs()
+  (defun rgr/devdocs(&optional i)
     (interactive)
     (if current-prefix-arg
         (call-interactively 'devdocs-browser-open-in)
-      (devdocs-browser-open)))
-  :bind ("C-c v" . rgr/devdocs))
-
-(use-package
-  dash-docs
-  ;;:custom
-  ;;(dash-docs-browser-func 'eww-readable-url)
-  :config
-  (setq dash-docs-common-docsets '("C++" "Emacs Lisp" "Docker"))
-  (setq dash-docs-docsets '("C++" "Emacs Lisp" "Docker"))
-  (defun rgr/dash (w)
-    (interactive (cons (rgr/region-symbol-query) nil))
-    (message "docsets are: %s" dash-docs-docsets)
-    (message "%s" (dash-docs-search w)))
-  :bind ("C-c d" . 'rgr/dash))
+      (devdocs-browser-open))))
 
 (use-package elfeed
   :config

@@ -29,7 +29,6 @@
      (java-mode . "java")
      (awk-mode . "awk")
      (other . "gnu")))
- '(c-tab-always-indent 'other)
  '(calendar-mark-diary-entries-flag t)
  '(calendar-view-diary-initially-flag t)
  '(canlock-password "106923df36ef41eb263045249a447dac2d49649a")
@@ -106,7 +105,6 @@
      (sass-mode . "sass")
      (scala-mode . "scala")
      (tcl-mode . "tcl")))
- '(devdocs-browser-cache-directory "~.emacs.d/var/devdocs-browser" t nil "Customized with use-package devdocs-browser")
  '(diary-file "~/.diary")
  '(diary-list-include-blanks t)
  '(diary-mark-entries-hook '(diary-mark-included-diary-files))
@@ -223,8 +221,6 @@ Would you like to play a game?
  '(ispell-silently-savep t)
  '(kept-new-versions 20)
  '(large-file-warning-threshold nil)
- '(lookup-reference-functions
-   '(rgr/describe-symbol goldendict-dwim rgr/dictionary-search rgr/linguee-lookup rgr/jquery-lookup google-this-search))
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")
  '(org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"
@@ -383,90 +379,6 @@ SCHEDULED: %^{Delivery Date}t
  '(rebox-style-loop '(27 25 21) t)
  '(recentf-exclude
    '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*"))
- '(red "#ffffff" t)
- '(rgr/alert-learn-history
-   '("Warum überquerte das Huhn die Straße?
-Richard M. Nixon:
-  Das Huhn hat die Straße nicht überquert. Ich wiederhole, das Huhn
-  hat die Straße NICHT überquert.
-" "Man tut oft bloß stolz, weil man vermutet, der andere denke stolz.
-		-- Jean Paul
-" "Die Geheimnisse der Lebenspfade darf und kann man nicht
-offenbaren; es gibt Steine des Anstoßes, über die ein jeder Wanderer
-stolpern muss. Der Poet aber deutet auf die Stelle hin.
-		-- Goethe, Maximen und Reflektionen, Nr. 96
-" "Mit Gateways wächst zusammen, was nicht zusammen gehört.
-		-- Heiko Schlichting
-" "Erfolgreich zu sein heißt, anders als die anderen zu sein.
-		-- Woody Allen (eigentlich: Woody Stewart)
-" "Wenn der Jüngling absurd ist,
-Fällt er darüber in lange Pein;
-Der Alte soll nicht absurd sein,
-Weil das Leben ihm kurz ist.
-		-- Johann Wolfgang von Goethe (Zahme Xenien)
-" "Die christliche Religion ist eine intentionierte politische
-Revolution, die, verfehlt, nachher moralisch geworden ist.
-		-- Goethe, Maximen und Reflektionen, Nr. 626
-" "Bei Gelegenheit der berlinischen Vorbilder für Fabrikanten kam
-zur Sprache, ob so großer Aufwand auf die höchste Ausführung der
-Blätter wäre nötig gewesen. Wobei sich ergab, dass gerade den
-talentvollen jungen Künstler und Handwerker die Ausführung am meisten
-reizt, und dass er durch Beachtung und Nachbildung derselben erst
-befähigt wird, das Ganze und den Wert der Formen zu begreifen.
-		-- Goethe, Maximen und Reflektionen, Nr. 1202
-" "Polizisten sind wie Schnittlauch: innen hohl, Augen grün, und sie treten
-meistens in Bündeln auf.
-" "Es ist der Zweck der Physik, Ingenieure erkennen zu lassen, daß sie
-nicht perfekt sind und den Rest der Menschheit erkennen zu lassen,
-daß sie keine Ingenieure sind.
-" "Staatsmänner schweben mit beiden Beinen fest über den Tatsachen.
-		-- Oliver Hassencamp
-" "Geselligkeit lag in meiner Natur; deswegen ich bei vielfachem
-Unternehmen mir Mitarbeiter gewann und mich ihnen zum Mitarbeiter
-bildete und so das Glück erreichte, mich in ihnen und sie in mir
-fortleben zu sehn.
-		-- Goethe, Maximen und Reflektionen, Nr. 464
-" "Der Mensch ist das einzige Tier, das arbeiten muß.
-		-- Immanuel Kant
-" "Wie kann auch die Alleinherrschaft etwas Gutes sein, die tun
-kann, was ihr beliebt, ohne Verantwortlichkeit?
-		-- Herodot
-" "Hinweis für U-Boot-Passagiere:
-Zählen Sie, wie oft Sie abtauchen,
-zählen Sie, wie oft Sie auftauchen,
-Addieren Sie die beiden Zahlen,
-teilen Sie die Summe durch 2,
-und wenn ein Rest bleibt, auf keinen Fall die Luke öffnen.
-" "DER NICHTBUS
-Der Nichtbus darf nicht mit dem Nachtbus verwechselt werden.  Der
-Nachtbus kommt nachts, während der Nichtbus, wie der Name schon sagt,
-NICHT kommt. Ein typischer Fahrplan eines Nichtbus sieht etwa so aus:
-werktags, samstags, sonntags KEIN BETRIEB
-Es gibt Nichtbusse, die alle 10 Minuten NICHT kommen, aber auch
-solche, die nur alle Stunde nicht kommen, oder solche, die alle Minute
-nicht kommen, wurden beobachtet.
-Erstaunlicherweise hat dies überhaupt keinen Effekt darauf, daß sie
-nicht kommen, ein ontologisches Problem, welches schon viele
-Philosophen dazu veranlaßte, lieber zu Fuß zu gehen, wie schon dieses
-Gedicht von Heinz Erhardt bezeugt:
-Jaja, der alte Archimedes ging nur zu Fuß, fuhr nie Mercedes.
-Kommen wir nun zu den Vorteilen des Nichtbus. Zu nennen wäre der
-äußerst einfach zu merkende Fahrplan und die Tatsache, daß man keine
-Angst davor haben muß, daß einem ein Nichtbus vor der Nase
-wegfährt. Auch ist die nicht zu überbietende Ökobilanz des Nichtbus
-bemerkenswert: Er verbraucht KEINEN Treibstoff und verursacht auch
-keine Staus. Pingelige Leute könnten einwenden, der Nichtbus habe den
-Nachteil, daß er völlig ungeeignet dazu ist, von A nach B zu
-kommen. Aber was will man schon in B?  Ohne Beschränkung der
-Gemeinheit hätte man in diesem Beispiel auch A B nennen können und
-umgekehrt, woraus logisch unwiderleglich folgt, daß alle Orte eh
-gleich sind und man auch zu Hause bleiben kann.
-Ich möchte schließen mit einem Auszug aus einem weiteren Gedicht:
-Denn wenn man wohin eilig muß, geht man besser gleich zu Fuß.
-" "Beamte sind oft wie die Bücher in einer Bibliothek: Die überflüssigsten
-stehen ganz weit oben.
-" "Windows 98 bringt die Leistung von gestern auf die Computer von heute.
-") t)
  '(rgr/alert-learn-period 300)
  '(rgr/chat-close-functions '(slack-ws-close rgr/erc-quit))
  '(rgr/chat-functions '(rgr/erc-start))
