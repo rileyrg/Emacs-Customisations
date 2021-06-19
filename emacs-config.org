@@ -386,7 +386,15 @@ is a package for editing remote files, similar to AngeFtp or efs. Whereas the ot
     (tramp-default-method "ssh")
     )
 #+end_src
-**** fzf
+**** [[https://github.com/raxod502/ctrlf][ctrlf searching]]
+#+begin_src emacs-lisp
+  (use-package ctrlf
+    :custom
+    (ctrlf-auto-recenter t)
+    :init
+    (ctrlf-mode +1))
+#+end_src
+**** [[https://github.com/junegunn/fzf][fzf]]
 :PROPERTIES:
 :ID:       5bc5ae65-7df4-476a-b93b-d501fffd8471
 :END:
@@ -410,7 +418,7 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
       (read-only-mode +1)))
                                           ;(add-hook 'find-file-hook 'maybe-read-only-mode)
 #+end_src
-***** Priviliged file editing
+***** [[https://github.com/nflath/sudo-edit][sudo-edit]] Priviliged file editing
 :PROPERTIES:
 :ID:       cfdbc3a9-af09-4608-86bb-de6b3d2f2b3a
 :END:

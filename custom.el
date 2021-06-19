@@ -462,6 +462,7 @@ SCHEDULED: %^{Delivery Date}t
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 105))))
+ '(hl-line ((t (:inherit modus-themes-hl-line :extend t :background "dim gray"))))
  '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
  '(tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
  '(tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff")))))

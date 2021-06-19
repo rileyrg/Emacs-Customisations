@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgac19cc5)
+I have this disabled by default as I use [straight.el package management](#orgf0cca9d)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orgac
 ```
 
 
-<a id="orgac19cc5"></a>
+<a id="orgf0cca9d"></a>
 
 ## straight.el package management
 
@@ -382,14 +382,24 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       )
     ```
 
-2.  fzf
+2.  [ctrlf searching](https://github.com/raxod502/ctrlf)
+
+    ```emacs-lisp
+    (use-package ctrlf
+      :custom
+      (ctrlf-auto-recenter t)
+      :init
+      (ctrlf-mode +1))
+    ```
+
+3.  [fzf](https://github.com/junegunn/fzf)
 
     ```emacs-lisp
     (use-package fzf
       :bind (("M-s z" . fzf)))
     ```
 
-3.  file opening
+4.  file opening
 
     1.  read only by default
 
@@ -403,7 +413,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                                                 ;(add-hook 'find-file-hook 'maybe-read-only-mode)
         ```
 
-    2.  Priviliged file editing
+    2.  [sudo-edit](https://github.com/nflath/sudo-edit) Priviliged file editing
 
         ```emacs-lisp
         (use-package sudo-edit)
@@ -430,7 +440,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           (ffap-bindings))
         ```
 
-4.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list
+5.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list
 
     ```emacs-lisp
     (use-package selectrum
@@ -439,7 +449,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       :bind ("C-x C-z" . #'selectrum-repeat))
     ```
 
-5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
     ```emacs-lisp
     (use-package orderless
@@ -450,7 +460,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (selectrum-highlight-candidates-function #'orderless-highlight-matches))
     ```
 
-6.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
+7.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
 
     ```emacs-lisp
     (use-package prescient
@@ -462,7 +472,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (selectrum-prescient-mode +1))))
     ```
 
-7.  [Consult](https://github.com/minad/consult)
+8.  [Consult](https://github.com/minad/consult)
 
     [Consult](https://github.com/minad/consult) Provides various commands based on the Emacs completion function completing-read
 
@@ -587,7 +597,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   ("!" . consult-flycheck)))
     ```
 
-8.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
+9.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
     ```emacs-lisp
     (use-package embark
@@ -621,7 +631,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
         ```
 
-9.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+10. [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
 
@@ -639,7 +649,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
     ```
 
-10. [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
+11. [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
 
     ```emacs-lisp
     (use-package affe
@@ -654,7 +664,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
     ```
 
-11. provide
+12. provide
 
     ```emacs-lisp
     (provide 'rgr/minibuffer)
@@ -1080,7 +1090,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org81e48a0) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgbdb05bd) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3204,7 +3214,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc28334d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5eee0db) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3243,7 +3253,7 @@ fi
 ```
 
 
-<a id="orgc28334d"></a>
+<a id="org5eee0db"></a>
 
 ### Gnome protocol handler desktop file
 

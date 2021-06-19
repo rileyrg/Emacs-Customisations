@@ -4,6 +4,12 @@
   (tramp-default-method "ssh")
   )
 
+(use-package ctrlf
+  :custom
+  (ctrlf-auto-recenter t)
+  :init
+  (ctrlf-mode +1))
+
 (use-package fzf
   :bind (("M-s z" . fzf)))
 
