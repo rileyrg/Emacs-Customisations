@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgf0cca9d)
+I have this disabled by default as I use [straight.el package management](#org1410275)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orgf0
 ```
 
 
-<a id="orgf0cca9d"></a>
+<a id="org1410275"></a>
 
 ## straight.el package management
 
@@ -794,8 +794,8 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
                                                 ; t60
         (scroll-bar-mode -1)
-        (tool-bar-mode -1)
-        (menu-bar-mode -1)
+        (tool-bar-mode 1)
+        (menu-bar-mode 1)
         (show-paren-mode 1)
         (winner-mode 1)
 
@@ -1090,7 +1090,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgbdb05bd) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgd7a9c7a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3214,7 +3214,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5eee0db) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb63ca18) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3253,7 +3253,7 @@ fi
 ```
 
 
-<a id="org5eee0db"></a>
+<a id="orgb63ca18"></a>
 
 ### Gnome protocol handler desktop file
 

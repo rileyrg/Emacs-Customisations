@@ -1,8 +1,8 @@
 (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
                                         ; t60
 (scroll-bar-mode -1)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
+(tool-bar-mode 1)
+(menu-bar-mode 1)
 (show-paren-mode 1)
 (winner-mode 1)
 
