@@ -191,6 +191,7 @@ Would you like to play a game?
  '(fci-rule-color "#14151E" t)
  '(fill-column 256)
  '(gc-cons-threshold 100000000)
+ '(gdb-display-io-nopopup t)
  '(gdb-show-main t)
  '(gdscript-docs-local-path
    "/home/rgr/Documents/Programming/Godot/www/docs.godotengine.org/en/stable")

@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org1410275)
+I have this disabled by default as I use [straight.el package management](#org7ef9c1e)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org14
 ```
 
 
-<a id="org1410275"></a>
+<a id="org7ef9c1e"></a>
 
 ## straight.el package management
 
@@ -1090,7 +1090,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgd7a9c7a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org7d11f83) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2308,7 +2308,15 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (global-set-key (kbd "C-c C-r") 'recompile)
     ```
 
-    1.  parrot
+    1.  rmsbolt
+
+        RMSbolt is a compiler output viewer in Emacs. <https://github.com/emacsmirror/rmsbolt>
+
+        ```emacs-lisp
+        (use-package rmsbolt)
+        ```
+
+    2.  parrot
 
         ```emacs-lisp
         (defun my/parrot-animate-when-compile-success (buffer result)
@@ -2904,7 +2912,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'python-mode-hook  #'blacken-mode))
         ```
 
-18. C
+18. lldb
+
+    ```emacs-lisp
+    (use-package realgud-lldb)
+    ```
+
+19. C
 
     ```emacs-lisp
     (defun rgr/c-mode-common-hook ()
@@ -2955,7 +2969,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                        (("M-<return>" . c-complete-line))))
         ```
 
-19. C++
+20. C++
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -2963,7 +2977,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-20. Linux tools
+21. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
 
@@ -2975,7 +2989,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-21. Assembler
+22. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
 
@@ -2983,7 +2997,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-22. Godot GDScript
+23. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
 
@@ -3009,7 +3023,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-23. Web,Symfony and Twig
+24. Web,Symfony and Twig
 
     1.  Symfony
 
@@ -3077,7 +3091,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-24. elf-mode - view the symbol list in a binary
+25. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
 
@@ -3088,7 +3102,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-25. provide
+26. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3214,7 +3228,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb63ca18) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6a2f99c) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3253,7 +3267,7 @@ fi
 ```
 
 
-<a id="orgb63ca18"></a>
+<a id="org6a2f99c"></a>
 
 ### Gnome protocol handler desktop file
 

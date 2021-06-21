@@ -1,5 +1,7 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
+(use-package rmsbolt)
+
 (defun my/parrot-animate-when-compile-success (buffer result)
   (if (string-match "^finished" result)
       (parrot-start-animation)))
@@ -221,6 +223,8 @@
   :demand t
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
+
+(use-package realgud-lldb)
 
 (defun rgr/c-mode-common-hook ()
   (setq-local dash-docs-docsets '("C"))

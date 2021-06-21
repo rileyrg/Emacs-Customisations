@@ -2516,6 +2516,13 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
   (global-set-key (kbd "C-c C-r") 'recompile)
 #+end_src
 
+***** rmsbolt
+RMSbolt is a compiler output viewer in Emacs.
+https://github.com/emacsmirror/rmsbolt
+#+begin_src emacs-lisp
+  (use-package rmsbolt)
+#+end_src
+
 ***** parrot
 #+begin_src emacs-lisp
   (defun my/parrot-animate-when-compile-success (buffer result)
@@ -3201,6 +3208,10 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     :demand t
     :config
     (add-hook 'python-mode-hook  #'blacken-mode))
+#+end_src
+**** lldb                                                              :lldb:
+#+begin_src emacs-lisp
+  (use-package realgud-lldb)
 #+end_src
 **** C                                                                    :c:
 :PROPERTIES:
