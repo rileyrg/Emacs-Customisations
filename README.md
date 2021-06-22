@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org7ef9c1e)
+I have this disabled by default as I use [straight.el package management](#org9b5fc57)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org7e
 ```
 
 
-<a id="org7ef9c1e"></a>
+<a id="org9b5fc57"></a>
 
 ## straight.el package management
 
@@ -1090,7 +1090,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7d11f83) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org63777a0) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2923,6 +2923,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     ```emacs-lisp
     (defun rgr/c-mode-common-hook ()
       (setq-local dash-docs-docsets '("C"))
+      (rmsbolt-mode +1)
       (lsp-deferred))
 
     (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
@@ -3228,7 +3229,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6a2f99c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3d9a4f5) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3267,7 +3268,7 @@ fi
 ```
 
 
-<a id="org6a2f99c"></a>
+<a id="org3d9a4f5"></a>
 
 ### Gnome protocol handler desktop file
 

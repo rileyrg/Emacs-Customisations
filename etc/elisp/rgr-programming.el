@@ -228,6 +228,7 @@
 
 (defun rgr/c-mode-common-hook ()
   (setq-local dash-docs-docsets '("C"))
+  (rmsbolt-mode +1)
   (lsp-deferred))
 
 (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
