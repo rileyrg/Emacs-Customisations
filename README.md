@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org4f4ed9a)
+I have this disabled by default as I use [straight.el package management](#orgdc5aaef)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org4f
 ```
 
 
-<a id="org4f4ed9a"></a>
+<a id="orgdc5aaef"></a>
 
 ## straight.el package management
 
@@ -1090,7 +1090,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org3c4c380) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgfc6c94c) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2582,7 +2582,16 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                           (message "flycheck %s" s)))))
     ```
 
-10. Version Control
+10. Flymake
+
+    ```emacs-lisp
+    (use-package flymake-diagnostic-at-point
+      :after flymake
+      :config
+      (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+    ```
+
+11. Version Control
 
     1.  It's [Magit](https://github.com/magit/magit)! A Git porcelain inside Emacs
 
@@ -2646,7 +2655,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ("C-x v ="  . git-gutter:popup-hunk))
         ```
 
-11. Javascript
+12. Javascript
 
     ```emacs-lisp
 
@@ -2685,7 +2694,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
     ```
 
-12. RJSX
+13. RJSX
 
     [rjsx-mode](https://github.com/felipeochoa/rjsx-mode) extends js2-mode to include jsx parsing.
 
@@ -2698,7 +2707,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-13. Typescript
+14. Typescript
 
     ```emacs-lisp
     (use-package typescript-mode
@@ -2709,7 +2718,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
 
-14. Language Server Protocol (LSP), lsp-mode
+15. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
 
@@ -2840,7 +2849,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/lsp)
             ```
 
-15. Serial Port
+16. Serial Port
 
     ```emacs-lisp
     (defgroup rgr/serial-ports nil
@@ -2868,7 +2877,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       (selectSerialPortBuffer)))
     ```
 
-16. PlatformIO
+17. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
 
@@ -2876,7 +2885,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package platformio-mode)
     ```
 
-17. Python
+18. Python
 
     1.  python-mode
 
@@ -2933,13 +2942,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'python-mode-hook  #'blacken-mode))
         ```
 
-18. lldb
+19. lldb
 
     ```emacs-lisp
     (use-package realgud-lldb)
     ```
 
-19. C, c-mode
+20. C, c-mode
 
     ```emacs-lisp
     (use-package emacs
@@ -2992,7 +3001,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                    (("M-<return>" . c-complete-line))))
         ```
 
-20. cc,cpp, C++, cc-mode
+21. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3000,7 +3009,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-21. Linux tools
+22. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
 
@@ -3012,7 +3021,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-22. Assembler
+23. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
 
@@ -3020,7 +3029,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-23. Godot GDScript
+24. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
 
@@ -3046,7 +3055,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-24. Web,Symfony and Twig
+25. Web,Symfony and Twig
 
     1.  Symfony
 
@@ -3114,7 +3123,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-25. elf-mode - view the symbol list in a binary
+26. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
 
@@ -3125,7 +3134,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-26. provide
+27. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3251,7 +3260,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org26e15e3) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf28f8d6) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3290,7 +3299,7 @@ fi
 ```
 
 
-<a id="org26e15e3"></a>
+<a id="orgf28f8d6"></a>
 
 ### Gnome protocol handler desktop file
 

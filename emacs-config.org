@@ -2849,6 +2849,13 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
                       (let((s (if flycheck-mode "on" "off")))
                         (message "flycheck %s" s)))))
 #+end_src
+**** Flymake
+#+begin_src emacs-lisp
+(use-package flymake-diagnostic-at-point
+  :after flymake
+  :config
+  (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+#+end_src
 **** Version Control                                                 :git:vc:
 :PROPERTIES:
 :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1

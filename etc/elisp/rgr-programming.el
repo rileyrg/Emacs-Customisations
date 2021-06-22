@@ -66,6 +66,11 @@
   (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
   )
 
+(use-package flymake-diagnostic-at-point
+  :after flymake
+  :config
+  (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+
 (use-package
   magit
   :custom
