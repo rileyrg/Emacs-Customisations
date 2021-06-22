@@ -2828,6 +2828,7 @@ Need to see if can get this working at some point
 **** Flycheck                                                 :flycheck:lint:
 :PROPERTIES:
 :ID:       3268489e-6d4d-4089-95f7-796e0e0da9db
+:header-args:emacs-lisp: :tangle no
 :END:
 On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Emacs
 #+begin_src emacs-lisp
@@ -3011,7 +3012,6 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
 [[https://github.com/emacs-lsp][Emacs-lsp]] : Language Server Protocol client for Emacs
 
 Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
-
 #+begin_src emacs-lisp
   (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 #+end_src
@@ -3021,11 +3021,25 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-lsp.el" elisp-dir)
 :END:
 
+****** eglot
+Emacs lsp client
+https://github.com/joaotavora/eglot
+#+begin_src emacs-lisp
+  (use-package eglot
+    :demand
+    :bind
+    (:map flymake-mode-map
+          ([remap next-error] . flymake-goto-next-error)
+          ([remap previous-error] . flymake-goto-prev-error)))
+#+end_src
+
+****** lsp
 #+begin_src emacs-lisp
   ;; if you want to change prefix for lsp-mode keybindings.
   (use-package lsp-mode
     :custom
     (lsp-auto-guess-root nil)
+    (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
     (lsp-completion-enable  t)
     (lsp-completion-provider :none)
     (lsp-completion-show-kind t)
@@ -3103,7 +3117,6 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
           ))
 
 
-  (provide 'rgr/lsp)
 #+end_src
 ****** [[file:~/development/thirdparty/godot/bin][.dir-local.el]] config for a debug template
 :PROPERTIES:
@@ -3118,7 +3131,10 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
                                                        :request "launch"
                                                        :target "/home/rgr/bin/godot"))))))
 #+end_src
-
+****** provide
+#+begin_src emacs-lisp
+  (provide 'rgr/lsp)
+#+end_src
 **** Serial Port
 :PROPERTIES:
 :END:
@@ -3213,18 +3229,20 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
 #+begin_src emacs-lisp
   (use-package realgud-lldb)
 #+end_src
-**** C                                                                    :c:
+**** C, c-mode                                                            :c:
 :PROPERTIES:
 :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
 :END:
 
 #+begin_src emacs-lisp
-  (defun rgr/c-mode-common-hook ()
-    (setq-local dash-docs-docsets '("C"))
-    (rmsbolt-mode +1)
-    (lsp-deferred))
-
-  (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
+  (use-package emacs
+    :config
+    (defun rgr/c-mode-common-hook ()
+      (setq-local dash-docs-docsets '("C"))
+      (rmsbolt-mode +1)
+      (eglot-ensure))
+    :hook
+    (c-mode-common . rgr/c-mode-common-hook))
 
 #+end_src
 ***** line utilities
@@ -3239,7 +3257,7 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (unless (eql ?\; (char-before (point-at-eol)))
       (progn (insert ";")))
     (newline-and-indent))
-  (define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
+  ;;(define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
   (defun c-insert-previous-line()
     (interactive)
     (previous-line)
@@ -3251,22 +3269,21 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (end-of-line)
     (newline-and-indent))
 #+end_src
-***** lsp formatting
+*****  formatting
 #+begin_src emacs-lisp
-  (use-package lsp-mode
-    :custom
-    (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
+  (use-package emacs
     :config
     (defun rgr/c-save-hook()
-      (lsp-format-buffer))
+      ;;    (lsp-format-buffer)
+      (eglot-format-buffer))
     (with-eval-after-load 'cc-mode
       (add-hook 'c-mode-common-hook
                 (lambda()
                   (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
     :bind  ( :map c-mode-base-map
-                 (("M-<return>" . c-complete-line))))
+             (("M-<return>" . c-complete-line))))
 #+end_src
-**** C++                                                                :cpp:
+**** cc,cpp, C++, cc-mode                                               :cpp:
 :PROPERTIES:
 :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b
 :END:

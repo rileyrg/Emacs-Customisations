@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org9b5fc57)
+I have this disabled by default as I use [straight.el package management](#org4f4ed9a)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#org9b
 ```
 
 
-<a id="org9b5fc57"></a>
+<a id="org4f4ed9a"></a>
 
 ## straight.el package management
 
@@ -1090,7 +1090,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org63777a0) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org3c4c380) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2721,92 +2721,107 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     1.  library
 
-        ```emacs-lisp
-        ;; if you want to change prefix for lsp-mode keybindings.
-        (use-package lsp-mode
-          :custom
-          (lsp-auto-guess-root nil)
-          (lsp-completion-enable  t)
-          (lsp-completion-provider :none)
-          (lsp-completion-show-kind t)
-          (lsp-diagnostics-provider :none)
-          (lsp-eldoc-enable-hover nil)
-          (lsp-enable-on-type-formatting t)
-          (lsp-enable-snippet nil)
-          (lsp-enable-symbol-highlighting t)
-          (lsp-headerline-breadcrumb-enable nil)
-          (lsp-lens-enable nil)
-          (lsp-modeline-code-actions-enable t)
-          (lsp-modeline-diagnostics-enable nil)
-          (lsp-signature-auto-activate t)
-          :config
-          (with-eval-after-load 'lsp-mode
-            (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
+        1.  eglot
 
-        (use-package lsp-treemacs
-          :config
-          (lsp-treemacs-sync-mode 1))
+            Emacs lsp client <https://github.com/joaotavora/eglot>
 
-        (use-package lsp-ui
-          :custom
-          (lsp-ui-doc-delay 1.5)
-          (lsp-ui-doc-enable t)
-          (lsp-ui-doc-show-with-cursor t)
-          (lsp-ui-doc-show-with-mouse t)
-          (lsp-ui-doc-show-with-cursor t)
-          (lsp-ui-peek-enable t)
-          (lsp-ui-peek-show-directory t)
-          (lsp-ui-sideline-enable t)
-          (lsp-ui-sideline-show-code-actions t)
-          (lsp-ui-sideline-show-diagnostics t)
-          :bind
-          (:map lsp-ui-mode-map
-                ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-                ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
+            ```emacs-lisp
+            (use-package eglot
+              :demand
+              :bind
+              (:map flymake-mode-map
+                    ([remap next-error] . flymake-goto-next-error)
+                    ([remap previous-error] . flymake-goto-prev-error)))
+            ```
 
-        (use-package dap-mode
-          :commands rgr/dap-debug
-          :custom
-          (dap-auto-configure-features '(locals  tooltip))
-          :config
-          (setq dap-ui-buffer-configurations
-                `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
-                  (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
-                  (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
-                  (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
-                  (,"*debug-window*" . ((side . bottom) (slot . 3) (window-width . 0.20)))))
-          (defun rgr/dap-debug()
-            (interactive)
-            (if current-prefix-arg
-                (call-interactively 'dap-debug)
-              (dap-debug-last)))
-          ;;(require 'dap-gdb-lldb)
-          ;;(dap-gdb-lldb-setup)
-          ;;(require 'dap-codelldb)
-          ;;(dap-codelldb-setup)
-          (require 'dap-cpptools)
-          ;;(dap-cpptools-setup)
-          ;; (require 'dap-lldb)
-          (add-hook 'dap-stopped-hook
-                    (lambda (arg)
-                      (call-interactively #'dap-hydra)))
-          :bind
-          (:map lsp-mode-map
-                ("C-<f9>" . #'rgr/dap-debug))
-          (:map dap-mode-map
-                ("<f8>" . dap-continue)
-                ("C-S-<f8>" . dap-delete-session)
-                ("<f9>" . dap-hydra)
-                ("<f10>" . dap-next)
-                ("<f11>" . dap-step-in)
-                ("S-<f11>" . dap-step-out)
-                ))
+        2.  lsp
+
+            ```emacs-lisp
+            ;; if you want to change prefix for lsp-mode keybindings.
+            (use-package lsp-mode
+              :custom
+              (lsp-auto-guess-root nil)
+              (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
+              (lsp-completion-enable  t)
+              (lsp-completion-provider :none)
+              (lsp-completion-show-kind t)
+              (lsp-diagnostics-provider :none)
+              (lsp-eldoc-enable-hover nil)
+              (lsp-enable-on-type-formatting t)
+              (lsp-enable-snippet nil)
+              (lsp-enable-symbol-highlighting t)
+              (lsp-headerline-breadcrumb-enable nil)
+              (lsp-lens-enable nil)
+              (lsp-modeline-code-actions-enable t)
+              (lsp-modeline-diagnostics-enable nil)
+              (lsp-signature-auto-activate t)
+              :config
+              (with-eval-after-load 'lsp-mode
+                (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
+
+            (use-package lsp-treemacs
+              :config
+              (lsp-treemacs-sync-mode 1))
+
+            (use-package lsp-ui
+              :custom
+              (lsp-ui-doc-delay 1.5)
+              (lsp-ui-doc-enable t)
+              (lsp-ui-doc-show-with-cursor t)
+              (lsp-ui-doc-show-with-mouse t)
+              (lsp-ui-doc-show-with-cursor t)
+              (lsp-ui-peek-enable t)
+              (lsp-ui-peek-show-directory t)
+              (lsp-ui-sideline-enable t)
+              (lsp-ui-sideline-show-code-actions t)
+              (lsp-ui-sideline-show-diagnostics t)
+              :bind
+              (:map lsp-ui-mode-map
+                    ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
+                    ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
+
+            (use-package dap-mode
+              :commands rgr/dap-debug
+              :custom
+              (dap-auto-configure-features '(locals  tooltip))
+              :config
+              (setq dap-ui-buffer-configurations
+                    `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
+                      (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
+                      (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
+                      (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
+                      (,"*debug-window*" . ((side . bottom) (slot . 3) (window-width . 0.20)))))
+              (defun rgr/dap-debug()
+                (interactive)
+                (if current-prefix-arg
+                    (call-interactively 'dap-debug)
+                  (dap-debug-last)))
+              ;;(require 'dap-gdb-lldb)
+              ;;(dap-gdb-lldb-setup)
+              ;;(require 'dap-codelldb)
+              ;;(dap-codelldb-setup)
+              (require 'dap-cpptools)
+              ;;(dap-cpptools-setup)
+              ;; (require 'dap-lldb)
+              (add-hook 'dap-stopped-hook
+                        (lambda (arg)
+                          (call-interactively #'dap-hydra)))
+              :bind
+              (:map lsp-mode-map
+                    ("C-<f9>" . #'rgr/dap-debug))
+              (:map dap-mode-map
+                    ("<f8>" . dap-continue)
+                    ("C-S-<f8>" . dap-delete-session)
+                    ("<f9>" . dap-hydra)
+                    ("<f10>" . dap-next)
+                    ("<f11>" . dap-step-in)
+                    ("S-<f11>" . dap-step-out)
+                    ))
 
 
-        (provide 'rgr/lsp)
-        ```
+            ```
 
-        1.  [.dir-local.el](file:///home/rgr/development/thirdparty/godot/bin) config for a debug template
+        3.  [.dir-local.el](file:///home/rgr/development/thirdparty/godot/bin) config for a debug template
 
             ```emacs-lisp
             ((c++-mode . ((dap-debug-template-configurations . (("Godot LLDB"
@@ -2817,6 +2832,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                                                                  :type "gdb"
                                                                  :request "launch"
                                                                  :target "/home/rgr/bin/godot"))))))
+            ```
+
+        4.  provide
+
+            ```emacs-lisp
+            (provide 'rgr/lsp)
             ```
 
 15. Serial Port
@@ -2918,15 +2939,17 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package realgud-lldb)
     ```
 
-19. C
+19. C, c-mode
 
     ```emacs-lisp
-    (defun rgr/c-mode-common-hook ()
-      (setq-local dash-docs-docsets '("C"))
-      (rmsbolt-mode +1)
-      (lsp-deferred))
-
-    (add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
+    (use-package emacs
+      :config
+      (defun rgr/c-mode-common-hook ()
+        (setq-local dash-docs-docsets '("C"))
+        (rmsbolt-mode +1)
+        (eglot-ensure))
+      :hook
+      (c-mode-common . rgr/c-mode-common-hook))
 
     ```
 
@@ -2940,7 +2963,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (unless (eql ?\; (char-before (point-at-eol)))
             (progn (insert ";")))
           (newline-and-indent))
-        (define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
+        ;;(define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
         (defun c-insert-previous-line()
           (interactive)
           (previous-line)
@@ -2953,24 +2976,23 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (newline-and-indent))
         ```
 
-    2.  lsp formatting
+    2.  formatting
 
         ```emacs-lisp
-        (use-package lsp-mode
-          :custom
-          (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
+        (use-package emacs
           :config
           (defun rgr/c-save-hook()
-            (lsp-format-buffer))
+            ;;    (lsp-format-buffer)
+            (eglot-format-buffer))
           (with-eval-after-load 'cc-mode
             (add-hook 'c-mode-common-hook
                       (lambda()
                         (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
           :bind  ( :map c-mode-base-map
-                       (("M-<return>" . c-complete-line))))
+                   (("M-<return>" . c-complete-line))))
         ```
 
-20. C++
+20. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3229,7 +3251,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3d9a4f5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org26e15e3) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3268,7 +3290,7 @@ fi
 ```
 
 
-<a id="org3d9a4f5"></a>
+<a id="org26e15e3"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -67,23 +67,6 @@
   )
 
 (use-package
-  flycheck
-  :custom
-  (flycheck-global-modes '(not org-mode org-src-mode))
-  (flycheck-emacs-lisp-load-path 'inherit)
-  ;;(flycheck-check-syntax-automatically '(save))
-  :config (use-package
-            flycheck-pos-tip
-            :config
-            (flycheck-pos-tip-mode))
-  (global-flycheck-mode +1)
-  :bind ("<f8>" . (lambda()
-                    (interactive)
-                    (flycheck-mode 'toggle)
-                    (let((s (if flycheck-mode "on" "off")))
-                      (message "flycheck %s" s)))))
-
-(use-package
   magit
   :custom
   (vc-handled-backends '(git))
@@ -226,12 +209,14 @@
 
 (use-package realgud-lldb)
 
-(defun rgr/c-mode-common-hook ()
-  (setq-local dash-docs-docsets '("C"))
-  (rmsbolt-mode +1)
-  (lsp-deferred))
-
-(add-hook 'c-mode-common-hook 'rgr/c-mode-common-hook)
+(use-package emacs
+  :config
+  (defun rgr/c-mode-common-hook ()
+    (setq-local dash-docs-docsets '("C"))
+    (rmsbolt-mode +1)
+    (eglot-ensure))
+  :hook
+  (c-mode-common . rgr/c-mode-common-hook))
 
 (defun c-complete-line()
   (interactive)
@@ -240,7 +225,7 @@
   (unless (eql ?\; (char-before (point-at-eol)))
     (progn (insert ";")))
   (newline-and-indent))
-(define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
+;;(define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
 (defun c-insert-previous-line()
   (interactive)
   (previous-line)
@@ -252,18 +237,17 @@
   (end-of-line)
   (newline-and-indent))
 
-(use-package lsp-mode
-  :custom
-  (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
+(use-package emacs
   :config
   (defun rgr/c-save-hook()
-    (lsp-format-buffer))
+    ;;    (lsp-format-buffer)
+    (eglot-format-buffer))
   (with-eval-after-load 'cc-mode
     (add-hook 'c-mode-common-hook
               (lambda()
                 (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
   :bind  ( :map c-mode-base-map
-               (("M-<return>" . c-complete-line))))
+           (("M-<return>" . c-complete-line))))
 
 (defun rgr/c++-mode-hook ()
   (setq-local dash-docs-docsets '("C++")))

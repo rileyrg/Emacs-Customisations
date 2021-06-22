@@ -1,7 +1,15 @@
+(use-package eglot
+  :demand
+  :bind
+  (:map flymake-mode-map
+        ([remap next-error] . flymake-goto-next-error)
+        ([remap previous-error] . flymake-goto-prev-error)))
+
 ;; if you want to change prefix for lsp-mode keybindings.
 (use-package lsp-mode
   :custom
   (lsp-auto-guess-root nil)
+  (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
   (lsp-completion-enable  t)
   (lsp-completion-provider :none)
   (lsp-completion-show-kind t)
@@ -77,6 +85,5 @@
         ("<f11>" . dap-step-in)
         ("S-<f11>" . dap-step-out)
         ))
-
 
 (provide 'rgr/lsp)
