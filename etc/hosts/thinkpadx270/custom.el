@@ -1,3 +1,3 @@
 (custom-set-faces
-'(default ((t (:height 100))))
+'(default ((t (:height 80))))
 )
