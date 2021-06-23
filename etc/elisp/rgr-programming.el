@@ -37,11 +37,10 @@
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 (use-package project
-  :demand
   ;; Cannot use :hook because 'project-find-functions does not end in -hook
   ;; Cannot use :init (must use :config) because otherwise
   ;; project-find-functions is not yet initialized.
-  :init
+  :config
   ;; Returns the parent directory containing a .project.el file, if any,
   ;; to override the standard project.el detection logic when needed.
   (defun zkj-project-override (dir)
@@ -49,7 +48,14 @@
       (if override
           (cons 'vc override)
         nil)))
-  (add-hook 'project-find-functions #'zkj-project-override))
+  (add-hook 'project-find-functions #'zkj-project-override)
+  (defun rgr/debugProject(dir)
+    (interactive "DDirectory:")
+    (call-process-shell-command (format "%s %s &" "lldb-run" dir)))
+    ;;(start-process  "lldb" nil  "lldb-run" dir))
+  :bind
+  (:map project-prefix-map
+        ("D" . rgr/debugProject)))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile

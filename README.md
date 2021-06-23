@@ -62,7 +62,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgdc5aaef)
+I have this disabled by default as I use [straight.el package management](#orge3820b2)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +73,7 @@ I have this disabled by default as I use [straight.el package management](#orgdc
 ```
 
 
-<a id="orgdc5aaef"></a>
+<a id="orge3820b2"></a>
 
 ## straight.el package management
 
@@ -1090,7 +1090,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgfc6c94c) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org12f3d3a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2502,17 +2502,16 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```
 
-6.  Project Management
+6.  Project Management, project.el
 
     Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/project/>
 
     ```emacs-lisp
     (use-package project
-      :demand
       ;; Cannot use :hook because 'project-find-functions does not end in -hook
       ;; Cannot use :init (must use :config) because otherwise
       ;; project-find-functions is not yet initialized.
-      :init
+      :config
       ;; Returns the parent directory containing a .project.el file, if any,
       ;; to override the standard project.el detection logic when needed.
       (defun zkj-project-override (dir)
@@ -2520,7 +2519,14 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (if override
               (cons 'vc override)
             nil)))
-      (add-hook 'project-find-functions #'zkj-project-override))
+      (add-hook 'project-find-functions #'zkj-project-override)
+      (defun rgr/debugProject(dir)
+        (interactive "DDirectory:")
+        (call-process-shell-command (format "%s %s &" "lldb-run" dir)))
+        ;;(start-process  "lldb" nil  "lldb-run" dir))
+      :bind
+      (:map project-prefix-map
+            ("D" . rgr/debugProject)))
     ```
 
 7.  BASH
@@ -3260,7 +3266,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf28f8d6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6afb289) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3299,7 +3305,7 @@ fi
 ```
 
 
-<a id="orgf28f8d6"></a>
+<a id="org6afb289"></a>
 
 ### Gnome protocol handler desktop file
 

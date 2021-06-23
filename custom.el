@@ -69,8 +69,8 @@
    "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/vscode/webfreak.debug")
  '(dap-internal-terminal 'dap-internal-terminal-auto)
  '(dap-print-io t)
- '(dap-ui-controls-mode t nil (dap-ui))
- '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0")
+ '(dap-ui-controls-mode t)
+ '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0" t)
  '(delete-active-region 'kill)
  '(delete-old-versions t)
  '(delete-selection-mode t)
@@ -463,6 +463,7 @@ SCHEDULED: %^{Delivery Date}t
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 105))))
  '(hl-line ((t (:inherit modus-themes-hl-line :extend t :background "dim gray"))))
+ '(modus-themes-hl-line ((t (:extend t :background "dim gray"))) t)
  '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
  '(tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
  '(tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff")))))
