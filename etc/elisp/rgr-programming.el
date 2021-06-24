@@ -55,12 +55,14 @@
         ("t" . vterm)))
 
 (defun projectLLDB(dir)
+  "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lld-run instance unless prefix arg."
   (interactive "DDirectory:")
   (let* ((lldb-run-command (format "%s %s &" "lldb-run" dir))
          (vterm-buffer-name (format "*lldb-%s*" (file-name-nondirectory
                                                  (directory-file-name
                                                   dir)))))
-    (call-process-shell-command lldb-run-command)
+    (unless current-prefix-arg
+      (call-process-shell-command lldb-run-command))
     (vterm)
     (process-send-string vterm-buffer-name "lldb\n")))
 
