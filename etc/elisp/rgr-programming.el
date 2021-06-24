@@ -55,16 +55,15 @@
         ("t" . vterm)))
 
 (defun projectLLDB(dir)
-  "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-run instance unless prefix arg."
+  "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
   (interactive "DDirectory:")
-  (let* ((lldb-run-command (format "%s %s &" "lldb-run" dir))
-         (vterm-buffer-name (format "*lldb-%s*" (file-name-nondirectory
-                                                 (directory-file-name
-                                                  dir)))))
+  (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
+         (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
+         (vterm-buffer-name (format "*lldb-%s*" dirbase)))
     (unless current-prefix-arg
-      (call-process-shell-command lldb-run-command))
+      (call-process-shell-command lldb-ui-command))
     (vterm)
-    (process-send-string vterm-buffer-name "lldb&&exit\n")))
+    (process-send-string vterm-buffer-name (format "lldb && tmux kill-session -t emacs\_%s && exit\n" dirbase))))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
