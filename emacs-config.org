@@ -2774,14 +2774,23 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
             (cons 'vc override)
           nil)))
     (add-hook 'project-find-functions #'zkj-project-override)
-    (defun rgr/debugProject(dir)
-      (interactive "DDirectory:")
-      (call-process-shell-command (format "%s %s &" "lldb-run" dir)))
-      ;;(start-process  "lldb" nil  "lldb-run" dir))
     :bind
     (:map project-prefix-map
-          ("D" . rgr/debugProject)))
+          ("D" . projectLLDB)
+          ("t" . vterm)))
 #+end_src
+***** projectLLDB
+#+begin_src emacs-lisp
+  (defun projectLLDB(dir)
+    (interactive "DDirectory:")
+    (let* ((lldb-run-command (format "%s %s &" "lldb-run" dir))
+           (vterm-buffer-name (format "*lldb-%s*" (file-name-nondirectory
+                                                   (directory-file-name
+                                                    dir)))))
+      (call-process-shell-command lldb-run-command)
+      (vterm)
+      (process-send-string vterm-buffer-name "lldb\n")))
+  #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:
 :ID:       4dd2f546-25a2-498f-ad8c-25a29c09a303

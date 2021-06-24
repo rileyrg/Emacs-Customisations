@@ -49,13 +49,20 @@
           (cons 'vc override)
         nil)))
   (add-hook 'project-find-functions #'zkj-project-override)
-  (defun rgr/debugProject(dir)
-    (interactive "DDirectory:")
-    (call-process-shell-command (format "%s %s &" "lldb-run" dir)))
-    ;;(start-process  "lldb" nil  "lldb-run" dir))
   :bind
   (:map project-prefix-map
-        ("D" . rgr/debugProject)))
+        ("D" . projectLLDB)
+        ("t" . vterm)))
+
+(defun projectLLDB(dir)
+  (interactive "DDirectory:")
+  (let* ((lldb-run-command (format "%s %s &" "lldb-run" dir))
+         (vterm-buffer-name (format "*lldb-%s*" (file-name-nondirectory
+                                                 (directory-file-name
+                                                  dir)))))
+    (call-process-shell-command lldb-run-command)
+    (vterm)
+    (process-send-string vterm-buffer-name "lldb\n")))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
