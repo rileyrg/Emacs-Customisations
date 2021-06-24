@@ -55,7 +55,7 @@
         ("t" . vterm)))
 
 (defun projectLLDB(dir)
-  "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lld-run instance unless prefix arg."
+  "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-run instance unless prefix arg."
   (interactive "DDirectory:")
   (let* ((lldb-run-command (format "%s %s &" "lldb-run" dir))
          (vterm-buffer-name (format "*lldb-%s*" (file-name-nondirectory
@@ -64,7 +64,7 @@
     (unless current-prefix-arg
       (call-process-shell-command lldb-run-command))
     (vterm)
-    (process-send-string vterm-buffer-name "lldb\n")))
+    (process-send-string vterm-buffer-name "lldb&&exit\n")))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile

@@ -3,6 +3,15 @@
 Emacs customisation generates [init.el](init.el) and other [emacs elisp utility files](etc/elisp/) using [org-babel-tangle](https://orgmode.org/manual/Extracting-Source-Code.html).
 
 
+## scratch
+
+```emacs-lisp
+(let ((foo "foo")
+      (bar "bar"))
+  (concat bar foo))
+```
+
+
 ## Own libraries
 
 These libraries are seperate stand alone github libraries.
@@ -62,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org2b60626)
+I have this disabled by default as I use [straight.el package management](#org1ba899b)
 
 ```emacs-lisp
 (require 'package)
@@ -73,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org2b
 ```
 
 
-<a id="org2b60626"></a>
+<a id="org1ba899b"></a>
 
 ## straight.el package management
 
@@ -1090,7 +1099,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orge6f97bf) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orga5f733a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2530,7 +2539,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```emacs-lisp
         (defun projectLLDB(dir)
-          "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lld-run instance unless prefix arg."
+          "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-run instance unless prefix arg."
           (interactive "DDirectory:")
           (let* ((lldb-run-command (format "%s %s &" "lldb-run" dir))
                  (vterm-buffer-name (format "*lldb-%s*" (file-name-nondirectory
@@ -2539,7 +2548,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (unless current-prefix-arg
               (call-process-shell-command lldb-run-command))
             (vterm)
-            (process-send-string vterm-buffer-name "lldb\n")))
+            (process-send-string vterm-buffer-name "lldb&&exit\n")))
         ```
 
 7.  BASH
@@ -3279,7 +3288,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org81a9ddd) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org020fffe) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3318,7 +3327,7 @@ fi
 ```
 
 
-<a id="org81a9ddd"></a>
+<a id="org020fffe"></a>
 
 ### Gnome protocol handler desktop file
 

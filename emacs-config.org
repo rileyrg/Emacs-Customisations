@@ -2801,7 +2801,7 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
       (unless current-prefix-arg
         (call-process-shell-command lldb-run-command))
       (vterm)
-      (process-send-string vterm-buffer-name "lldb\n")))
+      (process-send-string vterm-buffer-name "lldb&&exit\n")))
   #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:
