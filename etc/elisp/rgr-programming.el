@@ -70,17 +70,6 @@
         ("D" . projectLLDB)
         ("t" . vterm)))
 
-(defun projectLLDB(dir)
-  "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
-  (interactive "DDirectory:")
-  (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-         (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
-         (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-    (unless current-prefix-arg
-      (call-process-shell-command lldb-ui-command))
-    (vterm)
-    (process-send-string vterm-buffer-name (format "lldb && tmux kill-session -t emacs\_%s && exit\n" dirbase))))
-
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
   :config
@@ -242,15 +231,14 @@
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
 
-(use-package realgud-lldb)
+(defgroup rgr/llvm  nil
+  "llvm options"
+  :group 'rgr)
 
-(use-package emacs
-  :config
-  (defun rgr/c-mode-common-hook ()
-    (setq-local dash-docs-docsets '("C"))
-    (eglot-ensure))
-  :hook
-  (c-mode-common . rgr/c-mode-common-hook))
+(defcustom rgr/lldb-command "lldb-12"
+  "the llvm debugger command"
+  :type 'string
+  :group 'rgr/llvm)
 
 (defun c-complete-line()
   (interactive)

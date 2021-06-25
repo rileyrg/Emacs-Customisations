@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgcd7d2a7)
+I have this disabled by default as I use [straight.el package management](#org2294f5c)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#orgcd
 ```
 
 
-<a id="orgcd7d2a7"></a>
+<a id="org2294f5c"></a>
 
 ## straight.el package management
 
@@ -1099,7 +1099,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org0751362) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org11903fb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2553,21 +2553,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             ("t" . vterm)))
     ```
 
-    1.  projectLLDB
-
-        ```emacs-lisp
-        (defun projectLLDB(dir)
-          "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
-          (interactive "DDirectory:")
-          (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-                 (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
-                 (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-            (unless current-prefix-arg
-              (call-process-shell-command lldb-ui-command))
-            (vterm)
-            (process-send-string vterm-buffer-name (format "lldb && tmux kill-session -t emacs\_%s && exit\n" dirbase))))
-        ```
-
 7.  BASH
 
     1.  Navigating Bash set -x output
@@ -2987,23 +2972,37 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'python-mode-hook  #'blacken-mode))
         ```
 
-19. lldb
+19. llvm/lldb
 
     ```emacs-lisp
-    (use-package realgud-lldb)
+    (defgroup rgr/llvm  nil
+      "llvm options"
+      :group 'rgr)
+
+    (defcustom rgr/lldb-command "lldb-12"
+      "the llvm debugger command"
+      :type 'string
+      :group 'rgr/llvm)
     ```
+
+    1.  lldb integration to project
+
+        ```elisp
+        (defun projectLLDB(dir)
+          "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
+          (interactive "DDirectory:")
+          (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
+                 (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
+                 (vterm-buffer-name (format "*lldb-%s*" dirbase)))
+            (unless current-prefix-arg
+              (call-process-shell-command lldb-ui-command))
+            (vterm)
+            (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))))
+        ```
 
 20. C, c-mode
 
-    ```emacs-lisp
-    (use-package emacs
-      :config
-      (defun rgr/c-mode-common-hook ()
-        (setq-local dash-docs-docsets '("C"))
-        (eglot-ensure))
-      :hook
-      (c-mode-common . rgr/c-mode-common-hook))
-    ```
+    ,#+begin\_src emacs-lisp (use-package emacs :config (defun rgr/c-mode-common-hook () (setq-local dash-docs-docsets '("C")) (eglot-ensure)) :hook (c-mode-common . rgr/c-mode-common-hook)) \#+end\_src
 
     1.  line utilities
 
@@ -3303,7 +3302,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org267d49e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgda55a28) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3342,7 +3341,7 @@ fi
 ```
 
 
-<a id="org267d49e"></a>
+<a id="orgda55a28"></a>
 
 ### Gnome protocol handler desktop file
 

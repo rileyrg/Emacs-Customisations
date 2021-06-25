@@ -2807,19 +2807,6 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
           ("D" . projectLLDB)
           ("t" . vterm)))
 #+end_src
-***** projectLLDB
-#+begin_src emacs-lisp
-  (defun projectLLDB(dir)
-    "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
-    (interactive "DDirectory:")
-    (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-           (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
-           (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-      (unless current-prefix-arg
-        (call-process-shell-command lldb-ui-command))
-      (vterm)
-      (process-send-string vterm-buffer-name (format "lldb && tmux kill-session -t emacs\_%s && exit\n" dirbase))))
-  #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:
 :ID:       4dd2f546-25a2-498f-ad8c-25a29c09a303
@@ -3276,23 +3263,43 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     :config
     (add-hook 'python-mode-hook  #'blacken-mode))
 #+end_src
-**** lldb                                                              :lldb:
+**** llvm/lldb                                                    :llvm:lldb:
 #+begin_src emacs-lisp
-  (use-package realgud-lldb)
-#+end_src
-**** C, c-mode                                                            :c:
-:PROPERTIES:
-:ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
-:END:
+    (defgroup rgr/llvm  nil
+      "llvm options"
+      :group 'rgr)
 
-#+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    (defun rgr/c-mode-common-hook ()
-      (setq-local dash-docs-docsets '("C"))
-      (eglot-ensure))
-    :hook
-    (c-mode-common . rgr/c-mode-common-hook))
+    (defcustom rgr/lldb-command "lldb-12"
+      "the llvm debugger command"
+      :type 'string
+      :group 'rgr/llvm)
+  #+end_src
+***** lldb integration to project                                   :project:
+  #+begin_src elisp
+    (defun projectLLDB(dir)
+      "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
+      (interactive "DDirectory:")
+      (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
+             (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
+             (vterm-buffer-name (format "*lldb-%s*" dirbase)))
+        (unless current-prefix-arg
+          (call-process-shell-command lldb-ui-command))
+        (vterm)
+        (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))))
+  #+end_src
+**** C, c-mode                                                            :c:
+  :PROPERTIES:
+  :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
+  :END:
+
+  ,#+begin_src emacs-lisp
+    (use-package emacs
+      :config
+      (defun rgr/c-mode-common-hook ()
+        (setq-local dash-docs-docsets '("C"))
+        (eglot-ensure))
+      :hook
+      (c-mode-common . rgr/c-mode-common-hook))
   #+end_src
 ***** line utilities
 :PROPERTIES:
