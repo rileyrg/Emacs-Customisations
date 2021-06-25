@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org4b46bc8)
+I have this disabled by default as I use [straight.el package management](#orgcd7d2a7)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org4b
 ```
 
 
-<a id="org4b46bc8"></a>
+<a id="orgcd7d2a7"></a>
 
 ## straight.el package management
 
@@ -1099,7 +1099,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org686e653) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org0751362) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2133,7 +2133,8 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
   (if (not (get-buffer "irc.libera.chat:6697"))
     (progn
       (erc-tls :server "irc.libera.chat" :port "6697")
-      ;;(erc-tls :server "irc.freenode.net" :port "6697")
+      (erc-tls :server "irc.freenode.net" :port "6697")
+      (erc-tls :server "irc.oftc.net" :port "6697")
       (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
     (erc-switch-to-buffer)))
 
@@ -2322,7 +2323,24 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         RMSbolt is a compiler output viewer in Emacs. <https://github.com/emacsmirror/rmsbolt>
 
         ```emacs-lisp
-        (use-package rmsbolt)
+        (use-package rmsbolt
+          :config
+          (defun rgr/rmsbolt-toggle()
+            (interactive)
+            (if rmsbolt-mode
+                (progn
+                  (when (get-buffer
+                         rmsbolt-output-buffer)
+                    (with-current-buffer rmsbolt-output-buffer
+                      (kill-buffer-and-window)))
+                  (rmsbolt-mode -1))
+              (progn
+                (rmsbolt-mode +1)
+                (rmsbolt-compile))))
+          :bind
+          (:map prog-mode-map
+                ("C-c d" . rgr/rmsbolt-toggle)))
+
         ```
 
     2.  parrot
@@ -2982,11 +3000,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :config
       (defun rgr/c-mode-common-hook ()
         (setq-local dash-docs-docsets '("C"))
-        (rmsbolt-mode +1)
         (eglot-ensure))
       :hook
       (c-mode-common . rgr/c-mode-common-hook))
-
     ```
 
     1.  line utilities
@@ -3287,7 +3303,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org68bfac3) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org267d49e) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3326,7 +3342,7 @@ fi
 ```
 
 
-<a id="org68bfac3"></a>
+<a id="org267d49e"></a>
 
 ### Gnome protocol handler desktop file
 

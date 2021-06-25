@@ -1,6 +1,22 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
-(use-package rmsbolt)
+(use-package rmsbolt
+  :config
+  (defun rgr/rmsbolt-toggle()
+    (interactive)
+    (if rmsbolt-mode
+        (progn
+          (when (get-buffer
+                 rmsbolt-output-buffer)
+            (with-current-buffer rmsbolt-output-buffer
+              (kill-buffer-and-window)))
+          (rmsbolt-mode -1))
+      (progn
+        (rmsbolt-mode +1)
+        (rmsbolt-compile))))
+  :bind
+  (:map prog-mode-map
+        ("C-c d" . rgr/rmsbolt-toggle)))
 
 (defun my/parrot-animate-when-compile-success (buffer result)
   (if (string-match "^finished" result)
@@ -232,7 +248,6 @@
   :config
   (defun rgr/c-mode-common-hook ()
     (setq-local dash-docs-docsets '("C"))
-    (rmsbolt-mode +1)
     (eglot-ensure))
   :hook
   (c-mode-common . rgr/c-mode-common-hook))
