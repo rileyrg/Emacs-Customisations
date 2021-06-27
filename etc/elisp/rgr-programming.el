@@ -52,6 +52,38 @@
   :config
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
+(defgroup rgr/llvm  nil
+  "llvm options"
+  :group 'rgr)
+
+(defcustom rgr/lldb-command "lldb-12"
+  "the llvm debugger command"
+  :type 'string
+  :group 'rgr/llvm)
+
+(define-minor-mode my-lldb-mode "my lldb mode" :lighter "lldb"
+  :keymap `(
+  ( ,(kbd "<f10>")   . (lambda()(interactive)(process-send-string   (current-buffer)  "thread step-over\n")))
+  ( ,(kbd "<f11>" )  . (lambda()(interactive)(process-send-string   (current-buffer) "thread step-in\n")))
+  ( ,(kbd "<S-f11>") . (lambda()(interactive)(process-send-string (current-buffer) "thread step-out\n")))
+  ( ,(kbd "<f12>")   . (lambda()(interactive)(process-send-string   (current-buffer) "thread step-inst\n"))))
+  )
+
+(defun rgr/projectLLDB(dir)
+  "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
+  (interactive "DDirectory:")
+  (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
+         (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
+         (vterm-buffer-name (format "*lldb-%s*" dirbase)))
+    (unless current-prefix-arg
+      (call-process-shell-command lldb-ui-command))
+    (vterm)
+    (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
+    (with-current-buffer vterm-buffer-name
+      (my-lldb-mode))))
+
+(use-package realgud-lldb)
+
 (use-package project
   ;; Cannot use :hook because 'project-find-functions does not end in -hook
   ;; Cannot use :init (must use :config) because otherwise
@@ -67,7 +99,7 @@
   (add-hook 'project-find-functions #'zkj-project-override)
   :bind
   (:map project-prefix-map
-        ("D" . projectLLDB)
+        ("D" . rgr/projectLLDB)
         ("t" . vterm)))
 
 ;; try to work with next-error for bash's "set -x" output
@@ -230,15 +262,6 @@
   :demand t
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
-
-(defgroup rgr/llvm  nil
-  "llvm options"
-  :group 'rgr)
-
-(defcustom rgr/lldb-command "lldb-12"
-  "the llvm debugger command"
-  :type 'string
-  :group 'rgr/llvm)
 
 (defun c-complete-line()
   (interactive)

@@ -377,6 +377,7 @@ SCHEDULED: %^{Delivery Date}t
  '(rainbow-ansi-colors-major-mode-list '(sh-mode c-mode c++-mode php-mode emacs-lisp-mode))
  '(read-process-output-max 1048576 t)
  '(read-quoted-char-radix 16)
+ '(realgud--lldb-command-name "lldb-12")
  '(rebox-style-loop '(27 25 21) t)
  '(recentf-exclude
    '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*"))

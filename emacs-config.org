@@ -2320,7 +2320,7 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
     (if (not (get-buffer "irc.libera.chat:6697"))
       (progn
         (erc-tls :server "irc.libera.chat" :port "6697")
-        (erc-tls :server "irc.freenode.net" :port "6697")
+        ;;(erc-tls :server "irc.freenode.net" :port "6697")
         (erc-tls :server "irc.oftc.net" :port "6697")
         (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
       (erc-switch-to-buffer)))
@@ -2786,6 +2786,45 @@ Display a poup containing docstring at point
     (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 #+end_src
+**** llvm/lldb                                                    :llvm:lldb:
+#+begin_src emacs-lisp
+    (defgroup rgr/llvm  nil
+      "llvm options"
+      :group 'rgr)
+
+    (defcustom rgr/lldb-command "lldb-12"
+      "the llvm debugger command"
+      :type 'string
+      :group 'rgr/llvm)
+  #+end_src
+***** lldb voltron integration to project                           :project:
+  #+begin_src emacs-lisp
+        (define-minor-mode my-lldb-mode "my lldb mode" :lighter "lldb"
+          :keymap `(
+          ( ,(kbd "<f10>")   . (lambda()(interactive)(process-send-string   (current-buffer)  "thread step-over\n")))
+          ( ,(kbd "<f11>" )  . (lambda()(interactive)(process-send-string   (current-buffer) "thread step-in\n")))
+          ( ,(kbd "<S-f11>") . (lambda()(interactive)(process-send-string (current-buffer) "thread step-out\n")))
+          ( ,(kbd "<f12>")   . (lambda()(interactive)(process-send-string   (current-buffer) "thread step-inst\n"))))
+          )
+
+        (defun rgr/projectLLDB(dir)
+          "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
+          (interactive "DDirectory:")
+          (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
+                 (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
+                 (vterm-buffer-name (format "*lldb-%s*" dirbase)))
+            (unless current-prefix-arg
+              (call-process-shell-command lldb-ui-command))
+            (vterm)
+            (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
+            (with-current-buffer vterm-buffer-name
+              (my-lldb-mode))))
+
+  #+end_src
+***** gud-lldb                                                          :gud:
+#+begin_src emacs-lisp
+  (use-package realgud-lldb)
+#+end_src
 **** Project Management, project.el
 Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project/
 #+begin_src emacs-lisp
@@ -2804,7 +2843,7 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
     (add-hook 'project-find-functions #'zkj-project-override)
     :bind
     (:map project-prefix-map
-          ("D" . projectLLDB)
+          ("D" . rgr/projectLLDB)
           ("t" . vterm)))
 #+end_src
 **** BASH                                                              :bash:
@@ -3263,30 +3302,6 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     :config
     (add-hook 'python-mode-hook  #'blacken-mode))
 #+end_src
-**** llvm/lldb                                                    :llvm:lldb:
-#+begin_src emacs-lisp
-    (defgroup rgr/llvm  nil
-      "llvm options"
-      :group 'rgr)
-
-    (defcustom rgr/lldb-command "lldb-12"
-      "the llvm debugger command"
-      :type 'string
-      :group 'rgr/llvm)
-  #+end_src
-***** lldb integration to project                                   :project:
-  #+begin_src elisp
-    (defun projectLLDB(dir)
-      "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
-      (interactive "DDirectory:")
-      (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-             (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
-             (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-        (unless current-prefix-arg
-          (call-process-shell-command lldb-ui-command))
-        (vterm)
-        (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))))
-  #+end_src
 **** C, c-mode                                                            :c:
   :PROPERTIES:
   :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
