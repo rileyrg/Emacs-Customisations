@@ -62,11 +62,11 @@
   :group 'rgr/llvm)
 
 (define-minor-mode my-lldb-mode "my lldb mode" :lighter "lldb"
-  :keymap `(
-            ( ,(kbd "<f10>")   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-over\n")))
-            ( ,(kbd "<f11>" )  . (lambda()(interactive)(process-send-string (current-buffer) "thread step-in\n")))
-            ( ,(kbd "<S-f11>") . (lambda()(interactive)(process-send-string (current-buffer) "thread step-out\n")))
-            ( ,(kbd "<f12>")   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-inst\n")))))
+  :keymap '(
+            ( [f10]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-over\n")))
+            ( [f11]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-in\n")))
+            ( [S-f11] . (lambda()(interactive)(process-send-string (current-buffer) "thread step-out\n")))
+            ( [f12>]  . (lambda()(interactive)(process-send-string (current-buffer) "thread step-inst\n")))))
 
 (defun rgr/projectLLDB(dir)
   "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."

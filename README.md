@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org28f15ae)
+I have this disabled by default as I use [straight.el package management](#orgb7c2e8c)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org28
 ```
 
 
-<a id="org28f15ae"></a>
+<a id="orgb7c2e8c"></a>
 
 ## straight.el package management
 
@@ -1099,7 +1099,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgf003988) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org0b08274) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2546,11 +2546,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```emacs-lisp
         (define-minor-mode my-lldb-mode "my lldb mode" :lighter "lldb"
-          :keymap `(
-                    ( ,(kbd "<f10>")   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-over\n")))
-                    ( ,(kbd "<f11>" )  . (lambda()(interactive)(process-send-string (current-buffer) "thread step-in\n")))
-                    ( ,(kbd "<S-f11>") . (lambda()(interactive)(process-send-string (current-buffer) "thread step-out\n")))
-                    ( ,(kbd "<f12>")   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-inst\n")))))
+          :keymap '(
+                    ( [f10]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-over\n")))
+                    ( [f11]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-in\n")))
+                    ( [S-f11] . (lambda()(interactive)(process-send-string (current-buffer) "thread step-out\n")))
+                    ( [f12>]  . (lambda()(interactive)(process-send-string (current-buffer) "thread step-inst\n")))))
 
         (defun rgr/projectLLDB(dir)
           "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
@@ -3319,7 +3319,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org51c843e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5290b65) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3358,7 +3358,7 @@ fi
 ```
 
 
-<a id="org51c843e"></a>
+<a id="org5290b65"></a>
 
 ### Gnome protocol handler desktop file
 
