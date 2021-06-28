@@ -3306,8 +3306,7 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
   :PROPERTIES:
   :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
   :END:
-
-  ,#+begin_src emacs-lisp
+  #+begin_src emacs-lisp
     (use-package emacs
       :config
       (defun rgr/c-mode-common-hook ()

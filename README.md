@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgb7c2e8c)
+I have this disabled by default as I use [straight.el package management](#orge97b1b0)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#orgb7
 ```
 
 
-<a id="orgb7c2e8c"></a>
+<a id="orge97b1b0"></a>
 
 ## straight.el package management
 
@@ -1099,7 +1099,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org0b08274) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org31e2ebc) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3019,7 +3019,15 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
 20. C, c-mode
 
-    ,#+begin\_src emacs-lisp (use-package emacs :config (defun rgr/c-mode-common-hook () (setq-local dash-docs-docsets '("C")) (eglot-ensure)) :hook (c-mode-common . rgr/c-mode-common-hook)) \#+end\_src
+    ```emacs-lisp
+    (use-package emacs
+      :config
+      (defun rgr/c-mode-common-hook ()
+        (setq-local dash-docs-docsets '("C"))
+        (eglot-ensure))
+      :hook
+      (c-mode-common . rgr/c-mode-common-hook))
+    ```
 
     1.  line utilities
 
@@ -3319,7 +3327,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5290b65) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org83d78a0) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3358,7 +3366,7 @@ fi
 ```
 
 
-<a id="org5290b65"></a>
+<a id="org83d78a0"></a>
 
 ### Gnome protocol handler desktop file
 

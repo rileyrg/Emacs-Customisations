@@ -263,6 +263,14 @@
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
 
+(use-package emacs
+  :config
+  (defun rgr/c-mode-common-hook ()
+    (setq-local dash-docs-docsets '("C"))
+    (eglot-ensure))
+  :hook
+  (c-mode-common . rgr/c-mode-common-hook))
+
 (defun c-complete-line()
   (interactive)
   (end-of-line)
