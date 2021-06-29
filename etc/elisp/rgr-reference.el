@@ -15,6 +15,7 @@
                                                    (org-mode (rgr/elisp-lookup-reference-dwim))
                                                    (Info-mode (rgr/elisp-lookup-reference-dwim))
                                                    (js2-mode (rgr/devdocs rgr/devdocs))
+                                                   (python-mode (rgr/devdocs rgr/devdocs))
                                                    (js-mode (rgr/devdocs rgr/devdocs))
                                                    (rjsx-mode (rgr/devdocs rgr/devdocs))
                                                    (typescript-mode (rgr/devdocs rgr/devdocs))
@@ -48,7 +49,7 @@
   :type 'string
   :group 'rgr/lookup-reference)
 
-(defcustom  lookup-reference-functions '(rgr/describe-symbol goldendict-dwim rgr/linguee-lookup rgr/dictionary-search rgr/jquery-lookup google-this-search)
+(defcustom  lookup-reference-functions '(rgr/describe-symbol goldendict-dwim rgr/linguee-lookup rgr/dictionary-search google-this-search)
   "list of functions to be called via C-n prefix call to lookup-reference-dwim"
   :type 'hook
   :group 'rgr/lookup-reference)
@@ -66,20 +67,6 @@
 (defun rgr/linguee-lookup(w)
   (interactive (cons (rgr/region-symbol-query) nil))
   (sys-browser-lookup w linguee-url-template))
-
-(defun rgr/php-api-lookup(w)
-  (interactive (cons (rgr/region-symbol-query) nil))
-  (let ((dash-docs-docsets '("PHP")))
-    (dash-docs-search w)))
-;; (sys-browser-lookup w php-api-url-template))
-
-(defun rgr/jquery-lookup(&optional w)
-  (interactive(cons (rgr/region-symbol-query) nil))
-  (let (;;(zeal-at-point-docset "jQuery")
-        (dash-docs-docsets '("jQuery")))
-    (dash-docs-search w)))
-;; (interactive (cons (rgr/region-symbol-query) nil))
-;; (sys-browser-lookup w jquery-url-template))
 
 (defun rgr/gdscript-docs-browse-symbol-at-point(&optional w)
   (gdscript-docs-browse-symbol-at-point))
@@ -155,15 +142,6 @@
     (let ((w (if w w (rgr/region-symbol-query))))
       (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
   :bind (("C-x G" . goldendict-dwim)))
-
-(use-package zeal-at-point
-  :disabled t ;;way too buggy
-  :commands (rgr/zeal)
-  :config
-  (defun rgr/zeal (&optional w)
-    (interactive)
-    (zeal-at-point)t)
-  :bind* ("C-c z" . 'rgr/zeal))
 
 (use-package devdocs-browser
   :custom

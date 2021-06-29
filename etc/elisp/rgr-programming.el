@@ -56,7 +56,7 @@
   "llvm options"
   :group 'rgr)
 
-(defcustom rgr/lldb-command "lldb-12"
+(defcustom rgr/lldb-command "lldb"
   "the llvm debugger command"
   :type 'string
   :group 'rgr/llvm)
@@ -82,7 +82,8 @@
     (with-current-buffer vterm-buffer-name
       (my-lldb-mode))))
 
-(use-package realgud-lldb)
+(use-package realgud-lldb
+  :demand t)
 
 (use-package project
   ;; Cannot use :hook because 'project-find-functions does not end in -hook
@@ -245,14 +246,9 @@
 (setq python-shell-interpreter "ipython")
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
-(use-package lsp-python-ms
-  :custom
-  (lsp-python-ms-auto-install-server t)
-  (lsp-python-ms-parse-dot-env-enabled t)
-  :config
-  (require 'lsp-python-ms)
+(use-package eglot
   :hook (python-mode . (lambda ()
-                         (lsp-deferred))))
+                         (eglot-ensure))))
 
 (use-package auto-virtualenv
   :config

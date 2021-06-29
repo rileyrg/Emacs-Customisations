@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orge97b1b0)
+I have this disabled by default as I use [straight.el package management](#orgb085444)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#orge9
 ```
 
 
-<a id="orge97b1b0"></a>
+<a id="orgb085444"></a>
 
 ## straight.el package management
 
@@ -1099,7 +1099,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org31e2ebc) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org7249651) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1355,6 +1355,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                                                            (org-mode (rgr/elisp-lookup-reference-dwim))
                                                            (Info-mode (rgr/elisp-lookup-reference-dwim))
                                                            (js2-mode (rgr/devdocs rgr/devdocs))
+                                                           (python-mode (rgr/devdocs rgr/devdocs))
                                                            (js-mode (rgr/devdocs rgr/devdocs))
                                                            (rjsx-mode (rgr/devdocs rgr/devdocs))
                                                            (typescript-mode (rgr/devdocs rgr/devdocs))
@@ -1388,7 +1389,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :type 'string
           :group 'rgr/lookup-reference)
 
-        (defcustom  lookup-reference-functions '(rgr/describe-symbol goldendict-dwim rgr/linguee-lookup rgr/dictionary-search rgr/jquery-lookup google-this-search)
+        (defcustom  lookup-reference-functions '(rgr/describe-symbol goldendict-dwim rgr/linguee-lookup rgr/dictionary-search google-this-search)
           "list of functions to be called via C-n prefix call to lookup-reference-dwim"
           :type 'hook
           :group 'rgr/lookup-reference)
@@ -1406,20 +1407,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (defun rgr/linguee-lookup(w)
           (interactive (cons (rgr/region-symbol-query) nil))
           (sys-browser-lookup w linguee-url-template))
-
-        (defun rgr/php-api-lookup(w)
-          (interactive (cons (rgr/region-symbol-query) nil))
-          (let ((dash-docs-docsets '("PHP")))
-            (dash-docs-search w)))
-        ;; (sys-browser-lookup w php-api-url-template))
-
-        (defun rgr/jquery-lookup(&optional w)
-          (interactive(cons (rgr/region-symbol-query) nil))
-          (let (;;(zeal-at-point-docset "jQuery")
-                (dash-docs-docsets '("jQuery")))
-            (dash-docs-search w)))
-        ;; (interactive (cons (rgr/region-symbol-query) nil))
-        ;; (sys-browser-lookup w jquery-url-template))
 
         (defun rgr/gdscript-docs-browse-symbol-at-point(&optional w)
           (gdscript-docs-browse-symbol-at-point))
@@ -1535,20 +1522,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :bind (("C-x G" . goldendict-dwim)))
         ```
 
-    5.  Zeal - Linux Dash
-
-        ```emacs-lisp
-        (use-package zeal-at-point
-          :disabled t ;;way too buggy
-          :commands (rgr/zeal)
-          :config
-          (defun rgr/zeal (&optional w)
-            (interactive)
-            (zeal-at-point)t)
-          :bind* ("C-c z" . 'rgr/zeal))
-        ```
-
-    6.  emacs-devdocs-browser
+    5.  emacs-devdocs-browser
 
         <https://github.com/blahgeek/emacs-devdocs-browser> : Browse devdocs.io documents inside Emacs!
 
@@ -2536,7 +2510,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       "llvm options"
       :group 'rgr)
 
-    (defcustom rgr/lldb-command "lldb-12"
+    (defcustom rgr/lldb-command "lldb"
       "the llvm debugger command"
       :type 'string
       :group 'rgr/llvm)
@@ -2571,7 +2545,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     2.  gud-lldb
 
         ```emacs-lisp
-        (use-package realgud-lldb)
+        (use-package realgud-lldb
+          :demand t)
         ```
 
 7.  Project Management, project.el
@@ -2987,17 +2962,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     3.  lsp
 
-        1.  microsoft python language server
+        1.  eglot
 
             ```emacs-lisp
-            (use-package lsp-python-ms
-              :custom
-              (lsp-python-ms-auto-install-server t)
-              (lsp-python-ms-parse-dot-env-enabled t)
-              :config
-              (require 'lsp-python-ms)
+            (use-package eglot
               :hook (python-mode . (lambda ()
-                                     (lsp-deferred))))
+                                     (eglot-ensure))))
             ```
 
     4.  virtualenv
@@ -3327,7 +3297,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org83d78a0) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga7e7ba3) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3366,7 +3336,7 @@ fi
 ```
 
 
-<a id="org83d78a0"></a>
+<a id="orga7e7ba3"></a>
 
 ### Gnome protocol handler desktop file
 
