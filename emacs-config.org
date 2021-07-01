@@ -822,6 +822,16 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 #+begin_src emacs-lisp
   (provide 'rgr/completion)
 #+end_src
+** bookmarks
+*** bookmarks+
+I've included this primarily for eww bookmarks in consult-buffer but it's way too big
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-06-30 Wed 19:02]
+- State "CANCELLED"  from              [2021-06-30 Wed 08:05]
+:END:
+#+begin_src emacs-lisp
+  (use-package bookmark+)
+#+end_src
 ** Lazy Language Learning, lazy-lang-learn
 :PROPERTIES:
 :END:
@@ -1890,7 +1900,9 @@ CLOSED: [2021-06-10 Thu 06:15] SCHEDULED: <2021-04-13 Tue>
 https://github.com/akermu/emacs-libvterm
 #+begin_src emacs-lisp
   (use-package vterm
-    :custom (vterm-shell "/usr/bin/zsh")
+    :custom
+    (vterm-shell "/usr/bin/zsh")
+    (vterm-max-scrollback 100000)
     :bind
     ("M-g v" . vterm))
 #+end_src
@@ -2770,30 +2782,42 @@ Display a poup containing docstring at point
       :type 'string
       :group 'rgr/llvm)
   #+end_src
-***** lldb voltron integration to project                           :project:
+***** rgr/lldb-mode
   #+begin_src emacs-lisp
-    (define-minor-mode my-lldb-mode "my lldb mode" :lighter "lldb"
+    (define-minor-mode rgr/lldb-mode "my lldb mode" :lighter "lldb"
       :keymap '(
                 ( [f10]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-over\n")))
                 ( [f11]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-in\n")))
                 ( [S-f11] . (lambda()(interactive)(process-send-string (current-buffer) "thread step-out\n")))
                 ( [f12>]  . (lambda()(interactive)(process-send-string (current-buffer) "thread step-inst\n")))))
 
+  #+end_src
+***** rgr/projectLLDB                                               :project:
+lldb/voltron integration to project
+  #+begin_src emacs-lisp
     (defun rgr/projectLLDB(dir)
       "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
       (interactive "DDirectory:")
       (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-             (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
+             (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
              (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-        (vterm)
-        (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
-        (unless current-prefix-arg
-          (call-process-shell-command lldb-ui-command)
-          (process-send-string vterm-buffer-name "lv\n"))
-        (with-current-buffer vterm-buffer-name
-          (my-lldb-mode))))
+        (if (get-buffer vterm-buffer-name)
+            (switch-to-buffer vterm-buffer-name)
+          (progn
+            (vterm)
+            (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
+            (unless current-prefix-arg
+              (call-process-shell-command lldb-ui-command)
+              (process-send-string vterm-buffer-name "lv\n"))
+            (with-current-buffer vterm-buffer-name
+              (rgr/lldb-mode))))))
 
   #+end_src
+****** TODO really need to look into project root stuff
+SCHEDULED: <2021-07-01 Thu>
+:PROPERTIES:
+:DateCreated: <2021-07-01 Thu 10:32>
+:END:
 ***** gud-lldb                                                          :gud:
 #+begin_src emacs-lisp
     (use-package realgud-lldb

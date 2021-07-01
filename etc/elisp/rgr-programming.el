@@ -61,7 +61,7 @@
   :type 'string
   :group 'rgr/llvm)
 
-(define-minor-mode my-lldb-mode "my lldb mode" :lighter "lldb"
+(define-minor-mode rgr/lldb-mode "my lldb mode" :lighter "lldb"
   :keymap '(
             ( [f10]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-over\n")))
             ( [f11]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-in\n")))
@@ -72,15 +72,18 @@
   "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
   (interactive "DDirectory:")
   (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-         (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
+         (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
          (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-    (vterm)
-    (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
-    (unless current-prefix-arg
-      (call-process-shell-command lldb-ui-command)
-      (process-send-string vterm-buffer-name "lv\n"))
-    (with-current-buffer vterm-buffer-name
-      (my-lldb-mode))))
+    (if (get-buffer vterm-buffer-name)
+        (switch-to-buffer vterm-buffer-name)
+      (progn
+        (vterm)
+        (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
+        (unless current-prefix-arg
+          (call-process-shell-command lldb-ui-command)
+          (process-send-string vterm-buffer-name "lv\n"))
+        (with-current-buffer vterm-buffer-name
+          (rgr/lldb-mode))))))
 
 (use-package realgud-lldb
   :demand t)

@@ -22,6 +22,7 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el")
  '(browse-url-browser-function 'browse-url-chrome)
  '(c-default-style
    '((c-mode . "k&r")

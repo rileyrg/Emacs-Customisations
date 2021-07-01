@@ -64,6 +64,8 @@
 
 (require 'rgr/completion "rgr-completion" 'NOERROR)
 
+(use-package bookmark+)
+
 (use-package lazy-lang-learn
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
   :bind
@@ -186,7 +188,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
       (file-name-nondirectory (directory-file-name default-directory)))))
 
 (use-package vterm
-  :custom (vterm-shell "/usr/bin/zsh")
+  :custom
+  (vterm-shell "/usr/bin/zsh")
+  (vterm-max-scrollback 100000)
   :bind
   ("M-g v" . vterm))
 

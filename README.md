@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgb085444)
+I have this disabled by default as I use [straight.el package management](#orgb367fe6)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#orgb0
 ```
 
 
-<a id="orgb085444"></a>
+<a id="orgb367fe6"></a>
 
 ## straight.el package management
 
@@ -772,6 +772,18 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     ```
 
 
+## bookmarks
+
+
+### bookmarks+
+
+I've included this primarily for eww bookmarks in consult-buffer but it's way too big
+
+```emacs-lisp
+(use-package bookmark+)
+```
+
+
 ## Lazy Language Learning, lazy-lang-learn
 
 ```emacs-lisp
@@ -1099,7 +1111,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7249651) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org85a0937) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1770,7 +1782,9 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 
 ```emacs-lisp
 (use-package vterm
-  :custom (vterm-shell "/usr/bin/zsh")
+  :custom
+  (vterm-shell "/usr/bin/zsh")
+  (vterm-max-scrollback 100000)
   :bind
   ("M-g v" . vterm))
 ```
@@ -2516,33 +2530,45 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :group 'rgr/llvm)
     ```
 
-    1.  lldb voltron integration to project
+    1.  rgr/lldb-mode
 
         ```emacs-lisp
-        (define-minor-mode my-lldb-mode "my lldb mode" :lighter "lldb"
+        (define-minor-mode rgr/lldb-mode "my lldb mode" :lighter "lldb"
           :keymap '(
                     ( [f10]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-over\n")))
                     ( [f11]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-in\n")))
                     ( [S-f11] . (lambda()(interactive)(process-send-string (current-buffer) "thread step-out\n")))
                     ( [f12>]  . (lambda()(interactive)(process-send-string (current-buffer) "thread step-inst\n")))))
 
+        ```
+
+    2.  rgr/projectLLDB
+
+        lldb/voltron integration to project
+
+        ```emacs-lisp
         (defun rgr/projectLLDB(dir)
           "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
           (interactive "DDirectory:")
           (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-                 (lldb-ui-command (format "%s %s emacs_%s &" "lldb-ui" dir dirbase))
+                 (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
                  (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-            (vterm)
-            (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
-            (unless current-prefix-arg
-              (call-process-shell-command lldb-ui-command)
-              (process-send-string vterm-buffer-name "lv\n"))
-            (with-current-buffer vterm-buffer-name
-              (my-lldb-mode))))
+            (if (get-buffer vterm-buffer-name)
+                (switch-to-buffer vterm-buffer-name)
+              (progn
+                (vterm)
+                (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
+                (unless current-prefix-arg
+                  (call-process-shell-command lldb-ui-command)
+                  (process-send-string vterm-buffer-name "lv\n"))
+                (with-current-buffer vterm-buffer-name
+                  (rgr/lldb-mode))))))
 
         ```
 
-    2.  gud-lldb
+        1.  really need to look into project root stuff
+
+    3.  gud-lldb
 
         ```emacs-lisp
         (use-package realgud-lldb
@@ -3297,7 +3323,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga7e7ba3) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5c6ff66) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3336,7 +3362,7 @@ fi
 ```
 
 
-<a id="orga7e7ba3"></a>
+<a id="org5c6ff66"></a>
 
 ### Gnome protocol handler desktop file
 
