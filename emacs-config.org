@@ -2782,16 +2782,28 @@ Display a poup containing docstring at point
       :type 'string
       :group 'rgr/llvm)
   #+end_src
-***** rgr/lldb-mode
+***** TODO rgr/lldb-mode
+:LOGBOOK:
+- State "TODO"       from              [2021-07-01 Thu 12:52]
+:END:
   #+begin_src emacs-lisp
     (define-minor-mode rgr/lldb-mode "my lldb mode" :lighter "lldb"
       :keymap '(
-                ( [f10]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-over\n")))
-                ( [f11]   . (lambda()(interactive)(process-send-string (current-buffer) "thread step-in\n")))
-                ( [S-f11] . (lambda()(interactive)(process-send-string (current-buffer) "thread step-out\n")))
-                ( [f12>]  . (lambda()(interactive)(process-send-string (current-buffer) "thread step-inst\n")))))
+                ( [f10]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-over\n")))
+                ( [f11]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-in\n")))
+                ( [S-f11] . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-out\n")))
+                ( [f12>]  . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-inst\n")))))
 
   #+end_src
+****** TODO look at using lldb mode in c buffer linking back to lldb instance
+SCHEDULED: <2021-07-03 Sat>
+:PROPERTIES:
+:DateCreated: <2021-07-01 Thu 12:52>
+:END:
+:LOGBOOK:
+- Note taken on [2021-07-01 Thu 12:53] \\
+  thinking that show c source in emacs pane rather than tmux. can then do symbol at point value
+:END:
 ***** rgr/projectLLDB                                               :project:
 lldb/voltron integration to project
   #+begin_src emacs-lisp
@@ -2801,15 +2813,16 @@ lldb/voltron integration to project
       (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
              (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
              (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-        (if (get-buffer vterm-buffer-name)
-            (switch-to-buffer vterm-buffer-name)
+        (setq rgr/lldb-buffer-name vterm-buffer-name)
+        (if (get-buffer rgr/lldb-buffer-name)
+            (switch-to-buffer rgr/lldb-buffer-name)
           (progn
             (vterm)
-            (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
+            (process-send-string rgr/lldb-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
             (unless current-prefix-arg
               (call-process-shell-command lldb-ui-command)
-              (process-send-string vterm-buffer-name "lv\n"))
-            (with-current-buffer vterm-buffer-name
+              (process-send-string rgr/lldb-buffer-name "lv\n"))
+            (with-current-buffer rgr/lldb-buffer-name
               (rgr/lldb-mode))))))
 
   #+end_src
