@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgb18524c)
+I have this disabled by default as I use [straight.el package management](#org0eb6496)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#orgb1
 ```
 
 
-<a id="orgb18524c"></a>
+<a id="org0eb6496"></a>
 
 ## straight.el package management
 
@@ -1111,7 +1111,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4219191) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgc9d74d0) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2538,7 +2538,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                     ( [f10]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-over\n")))
                     ( [f11]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-in\n")))
                     ( [S-f11] . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-out\n")))
-                    ( [f12>]  . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-inst\n")))))
+                    ( [f12>]  . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-inst\n"))))
+          (message "rgr/lldb-mode: %s" (if rgr/lldb-mode "on" "off")))
 
         ```
 
@@ -2555,16 +2556,16 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
                  (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
                  (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-            (setq rgr/lldb-buffer-name vterm-buffer-name)
-            (if (get-buffer rgr/lldb-buffer-name)
-                (switch-to-buffer rgr/lldb-buffer-name)
+            (if (get-buffer vterm-buffer-name)
+                (switch-to-buffer vterm-buffer-name)
               (progn
                 (vterm)
-                (process-send-string rgr/lldb-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
+                (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t %s && exit\n" rgr/lldb-command dirbase))
                 (unless current-prefix-arg
                   (call-process-shell-command lldb-ui-command)
-                  (process-send-string rgr/lldb-buffer-name "lv\n"))
-                (with-current-buffer rgr/lldb-buffer-name
+                  (process-send-string vterm-buffer-name "lv\n"))
+                (with-current-buffer vterm-buffer-name
+                  (setq rgr/lldb-buffer-name vterm-buffer-name)
                   (rgr/lldb-mode))))))
 
         ```
@@ -3326,7 +3327,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org165f0fa) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4c4e1b9) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3365,7 +3366,7 @@ fi
 ```
 
 
-<a id="org165f0fa"></a>
+<a id="org4c4e1b9"></a>
 
 ### Gnome protocol handler desktop file
 

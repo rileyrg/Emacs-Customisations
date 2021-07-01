@@ -2792,7 +2792,8 @@ Display a poup containing docstring at point
                 ( [f10]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-over\n")))
                 ( [f11]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-in\n")))
                 ( [S-f11] . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-out\n")))
-                ( [f12>]  . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-inst\n")))))
+                ( [f12>]  . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-inst\n"))))
+      (message "rgr/lldb-mode: %s" (if rgr/lldb-mode "on" "off")))
 
   #+end_src
 ****** TODO look at using lldb mode in c buffer linking back to lldb instance
@@ -2813,16 +2814,16 @@ lldb/voltron integration to project
       (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
              (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
              (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-        (setq rgr/lldb-buffer-name vterm-buffer-name)
-        (if (get-buffer rgr/lldb-buffer-name)
-            (switch-to-buffer rgr/lldb-buffer-name)
+        (if (get-buffer vterm-buffer-name)
+            (switch-to-buffer vterm-buffer-name)
           (progn
             (vterm)
-            (process-send-string rgr/lldb-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
+            (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t %s && exit\n" rgr/lldb-command dirbase))
             (unless current-prefix-arg
               (call-process-shell-command lldb-ui-command)
-              (process-send-string rgr/lldb-buffer-name "lv\n"))
-            (with-current-buffer rgr/lldb-buffer-name
+              (process-send-string vterm-buffer-name "lv\n"))
+            (with-current-buffer vterm-buffer-name
+              (setq rgr/lldb-buffer-name vterm-buffer-name)
               (rgr/lldb-mode))))))
 
   #+end_src
