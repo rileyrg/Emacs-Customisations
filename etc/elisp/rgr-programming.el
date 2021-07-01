@@ -63,10 +63,11 @@
 
 (define-minor-mode rgr/lldb-mode "my lldb mode" :lighter "lldb"
   :keymap '(
-            ( [f10]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-over\n")))
-            ( [f11]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-in\n")))
-            ( [S-f11] . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-out\n")))
-            ( [f12>]  . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-inst\n")))))
+            ( [f10]   . (lambda()(interactive)(process-send-string lldb-console "thread step-over\n")))
+            ( [f11]   . (lambda()(interactive)(process-send-string lldb-console "thread step-in\n")))
+            ( [S-f11] . (lambda()(interactive)(process-send-string lldb-console "thread step-out\n")))
+            ( [f12>]  . (lambda()(interactive)(process-send-string lldb-console "thread step-inst\n"))))
+  (setq-local lldb-console rgr/lldb-buffer-name))
 
 (defun rgr/projectLLDB(dir)
   "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
@@ -74,16 +75,16 @@
   (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
          (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
          (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-    (setq rgr/lldb-buffer-name vterm-buffer-name)
-    (if (get-buffer rgr/lldb-buffer-name)
-        (switch-to-buffer rgr/lldb-buffer-name)
+    (if (get-buffer vterm-buffer-name)
+        (switch-to-buffer vterm-buffer-name)
       (progn
         (vterm)
-        (process-send-string rgr/lldb-buffer-name (format "%s && tmux kill-session -t emacs\_%s && exit\n" rgr/lldb-command dirbase))
+        (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t %s && exit\n" rgr/lldb-command dirbase))
         (unless current-prefix-arg
           (call-process-shell-command lldb-ui-command)
-          (process-send-string rgr/lldb-buffer-name "lv\n"))
-        (with-current-buffer rgr/lldb-buffer-name
+          (process-send-string vterm-buffer-name "lv\n"))
+        (with-current-buffer vterm-buffer-name
+          (setq rgr/lldb-buffer-name vterm-buffer-name)
           (rgr/lldb-mode))))))
 
 (use-package realgud-lldb

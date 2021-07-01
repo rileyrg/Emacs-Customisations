@@ -2789,11 +2789,11 @@ Display a poup containing docstring at point
   #+begin_src emacs-lisp
     (define-minor-mode rgr/lldb-mode "my lldb mode" :lighter "lldb"
       :keymap '(
-                ( [f10]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-over\n")))
-                ( [f11]   . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-in\n")))
-                ( [S-f11] . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-out\n")))
-                ( [f12>]  . (lambda()(interactive)(process-send-string rgr/lldb-buffer-name "thread step-inst\n"))))
-      (message "rgr/lldb-mode: %s" (if rgr/lldb-mode "on" "off")))
+                ( [f10]   . (lambda()(interactive)(process-send-string lldb-console "thread step-over\n")))
+                ( [f11]   . (lambda()(interactive)(process-send-string lldb-console "thread step-in\n")))
+                ( [S-f11] . (lambda()(interactive)(process-send-string lldb-console "thread step-out\n")))
+                ( [f12>]  . (lambda()(interactive)(process-send-string lldb-console "thread step-inst\n"))))
+      (setq-local lldb-console rgr/lldb-buffer-name))
 
   #+end_src
 ****** TODO look at using lldb mode in c buffer linking back to lldb instance
