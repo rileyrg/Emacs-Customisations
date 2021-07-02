@@ -830,7 +830,12 @@ I've included this primarily for eww bookmarks in consult-buffer but it's way to
 - State "CANCELLED"  from              [2021-06-30 Wed 08:05]
 :END:
 #+begin_src emacs-lisp
-  (use-package bookmark+)
+  (use-package bookmark+
+    :demand t
+    :after bookmark
+    :bind
+          ("C-x x n" . bmkp-next-bookmark)
+          ("C-x x p" . bmkp-prev-bookmark))
 #+end_src
 ** Lazy Language Learning, lazy-lang-learn
 :PROPERTIES:

@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org1450d00)
+I have this disabled by default as I use [straight.el package management](#org13e83f7)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org14
 ```
 
 
-<a id="org1450d00"></a>
+<a id="org13e83f7"></a>
 
 ## straight.el package management
 
@@ -780,7 +780,12 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 I've included this primarily for eww bookmarks in consult-buffer but it's way too big
 
 ```emacs-lisp
-(use-package bookmark+)
+(use-package bookmark+
+  :demand t
+  :after bookmark
+  :bind
+        ("C-x x n" . bmkp-next-bookmark)
+        ("C-x x p" . bmkp-prev-bookmark))
 ```
 
 
@@ -1111,7 +1116,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org430702a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org3276a49) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3327,7 +3332,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org39eab8a) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4b7f692) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3366,7 +3371,7 @@ fi
 ```
 
 
-<a id="org39eab8a"></a>
+<a id="org4b7f692"></a>
 
 ### Gnome protocol handler desktop file
 

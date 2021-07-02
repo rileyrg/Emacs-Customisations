@@ -64,7 +64,12 @@
 
 (require 'rgr/completion "rgr-completion" 'NOERROR)
 
-(use-package bookmark+)
+(use-package bookmark+
+  :demand t
+  :after bookmark
+  :bind
+        ("C-x x n" . bmkp-next-bookmark)
+        ("C-x x p" . bmkp-prev-bookmark))
 
 (use-package lazy-lang-learn
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
