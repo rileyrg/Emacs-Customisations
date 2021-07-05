@@ -515,6 +515,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ;; Load the theme files before enabling a theme
   (modus-themes-load-themes)
   :config
-  (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
+  (modus-themes-load-operandi))
+;; (modus-themes-load-vivendi))
 
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))

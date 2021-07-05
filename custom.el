@@ -60,7 +60,7 @@
  '(cua-keep-region-after-copy nil)
  '(cursor-type 'box)
  '(custom-safe-themes
-   '("8ca8fbaeaeff06ac803d7c42de1430b9765d22a439efc45b5ac572c2d9d09b16" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "972d69a06b8f6e5d43fb83ff59417511f09ba1a1783aab5e22c0e9cbd25ad458" "d234fa6da0282c254f00d534079374d1c6f3c3e600075bc65fe661fdd1947792" "7d6861c031212fca9b4a963ced6230be2aa3139570b85ea5e77619b1fd0351ad" "9b39b25c3a23b1be6e99a3648b91ebaf2a7efdde236e3472aa95f1708ec61d4f" "3f1dcd824a683e0ab194b3a1daac18a923eed4dba5269eecb050c718ab4d5a26" default))
+   '("2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" "076ee9f2c64746aac7994b697eb7dbde23ac22988d41ef31b714fc6478fee224" "8ca8fbaeaeff06ac803d7c42de1430b9765d22a439efc45b5ac572c2d9d09b16" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "972d69a06b8f6e5d43fb83ff59417511f09ba1a1783aab5e22c0e9cbd25ad458" "d234fa6da0282c254f00d534079374d1c6f3c3e600075bc65fe661fdd1947792" "7d6861c031212fca9b4a963ced6230be2aa3139570b85ea5e77619b1fd0351ad" "9b39b25c3a23b1be6e99a3648b91ebaf2a7efdde236e3472aa95f1708ec61d4f" "3f1dcd824a683e0ab194b3a1daac18a923eed4dba5269eecb050c718ab4d5a26" default))
  '(dap-default-terminal-kind "external")
  '(dap-external-terminal
    '("alacritty" "-t" "{display}" "-e" "zsh" "-c" "exec {command}"))
@@ -464,8 +464,7 @@ SCHEDULED: %^{Delivery Date}t
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 105))))
- '(hl-line ((t (:inherit modus-themes-hl-line :extend t :background "gray11"))))
- '(modus-themes-hl-line ((t (:extend t :background "dim gray"))) t)
+ '(modus-themes-hl-line ((t (:extend t :background "white smoke"))) t)
  '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
  '(tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
  '(tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff")))))

@@ -3575,7 +3575,8 @@ https://github.com/protesilaos/modus-themes
     ;; Load the theme files before enabling a theme
     (modus-themes-load-themes)
     :config
-    (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
+    (modus-themes-load-operandi))
+  ;; (modus-themes-load-vivendi))
 #+end_src
 *** humanoid themes
 :PROPERTIES:
