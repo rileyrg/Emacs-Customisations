@@ -22,8 +22,9 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "/home/rgr/.emacs.d/var/bmkp/current-bookmark.el")
- '(browse-url-browser-function 'browse-url-chrome)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el")
+ '(browse-url-browser-function 'eww-browse-url)
+ '(browse-url-secondary-browser-function 'browse-url-chrome)
  '(c-default-style
    '((c-mode . "k&r")
      (c++-mode . "k&r")
@@ -52,7 +53,6 @@
  '(compilation-error-regexp-alist
    '(bash-xset-x dotnet-warning dotnet-error msbuild-warning msbuild-error xbuild-warning xbuild-error dotnet-testfail typescript-nglint-warning typescript-nglint-error typescript-tslint typescript-tsc-pretty typescript-tsc absoft ada aix ant bash borland python-tracebacks-and-caml cmake cmake-info comma cucumber msft edg-1 edg-2 epc ftnchek gradle-kotlin iar ibm irix java jikes-file maven jikes-line clang-include gcc-include ruby-Test::Unit gmake gnu lcc makepp mips-1 mips-2 omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line))
  '(compilation-message-face 'default)
- '(completion-styles '(orderless) nil nil "Customized with use-package orderless")
  '(confirm-nonexistent-file-or-buffer nil)
  '(create-lockfiles nil)
  '(ctrlf--restore-final-window-start-flag t)

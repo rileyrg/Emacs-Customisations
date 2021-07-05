@@ -25,38 +25,21 @@
   :custom
   (ffap-require-prefix nil)
   :config
-  (add-hook 'completion-at-point-functions
-            (defun complete-path-at-point+ ()
-              (let ((fn (ffap-file-at-point))
-                    (fap (thing-at-point 'filename)))
-                (when (and (or fn
-                               (equal "/" fap))
-                           (save-excursion
-                             (search-backward fap (line-beginning-position) t)))
-                  (list (match-beginning 0)
-                        (match-end 0)
-                        #'completion-file-name-table)))) 'append)
   (ffap-bindings))
-
-(use-package selectrum
-  :config
-  (selectrum-mode +1)
-  :bind ("C-x C-z" . #'selectrum-repeat))
 
 (use-package orderless
   :custom
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion))))
   (completion-styles '(orderless))
-  (selectrum-prescient-enable-filtering nil)
-  (selectrum-refine-candidates-function #'orderless-filter)
-  (selectrum-highlight-candidates-function #'orderless-highlight-matches))
-
-(use-package prescient
-  :config
-  (prescient-persist-mode +1)
-  (if (featurep 'selectrum)
-      (use-package selectrum-prescient
-        :config
-        (selectrum-prescient-mode +1))))
+  ;; (selectrum-prescient-enable-filtering nil)
+  ;; (selectrum-refine-candidates-function #'orderless-filter)
+  ;; (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  ;; :config
+  ;; (define-key vertico-map "?" #'minibuffer-completion-help)
+  ;; (define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
+  ;; (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
+  )
 
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.

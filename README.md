@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org13e83f7)
+I have this disabled by default as I use [straight.el package management](#orgd844621)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org13
 ```
 
 
-<a id="org13e83f7"></a>
+<a id="orgd844621"></a>
 
 ## straight.el package management
 
@@ -428,60 +428,35 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
         (use-package sudo-edit)
         ```
 
-    3.  find file at point - documented in the [selectrum wiki](https://github.com/raxod502/selectrum/wiki/Additional-Configuration#complete-file-names-at-point)
+    3.  find file at point
 
         ```emacs-lisp
         (use-package ffap
           :custom
           (ffap-require-prefix nil)
           :config
-          (add-hook 'completion-at-point-functions
-                    (defun complete-path-at-point+ ()
-                      (let ((fn (ffap-file-at-point))
-                            (fap (thing-at-point 'filename)))
-                        (when (and (or fn
-                                       (equal "/" fap))
-                                   (save-excursion
-                                     (search-backward fap (line-beginning-position) t)))
-                          (list (match-beginning 0)
-                                (match-end 0)
-                                #'completion-file-name-table)))) 'append)
           (ffap-bindings))
         ```
 
-5.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list
-
-    ```emacs-lisp
-    (use-package selectrum
-      :config
-      (selectrum-mode +1)
-      :bind ("C-x C-z" . #'selectrum-repeat))
-    ```
-
-6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
     ```emacs-lisp
     (use-package orderless
       :custom
+      (completion-category-defaults nil)
+      (completion-category-overrides '((file (styles partial-completion))))
       (completion-styles '(orderless))
-      (selectrum-prescient-enable-filtering nil)
-      (selectrum-refine-candidates-function #'orderless-filter)
-      (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+      ;; (selectrum-prescient-enable-filtering nil)
+      ;; (selectrum-refine-candidates-function #'orderless-filter)
+      ;; (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+      ;; :config
+      ;; (define-key vertico-map "?" #'minibuffer-completion-help)
+      ;; (define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
+      ;; (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
+      )
     ```
 
-7.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
-
-    ```emacs-lisp
-    (use-package prescient
-      :config
-      (prescient-persist-mode +1)
-      (if (featurep 'selectrum)
-          (use-package selectrum-prescient
-            :config
-            (selectrum-prescient-mode +1))))
-    ```
-
-8.  [Consult](https://github.com/minad/consult)
+6.  [Consult](https://github.com/minad/consult)
 
     [Consult](https://github.com/minad/consult) Provides various commands based on the Emacs completion function completing-read
 
@@ -606,7 +581,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   ("!" . consult-flycheck)))
     ```
 
-9.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
+7.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
     ```emacs-lisp
     (use-package embark
@@ -640,7 +615,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
         ```
 
-10. [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+8.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
 
@@ -658,7 +633,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
     ```
 
-11. [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
+9.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
 
     ```emacs-lisp
     (use-package affe
@@ -673,7 +648,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
     ```
 
-12. provide
+10. provide
 
     ```emacs-lisp
     (provide 'rgr/minibuffer)
@@ -712,7 +687,24 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-3.  Corfu completion
+3.  vertico , vertical interactive completion
+
+    ```emacs-lisp
+    ;; Enable vertico
+    (use-package vertico
+      :custom
+      (vertico-cycle t)
+      :init
+      ;; Use `consult-completion-in-region' if Vertico is enabled.
+      (add-hook 'vertico-mode-hook (lambda ()
+                                     (setq completion-in-region-function
+                                           (if vertico-mode
+                                               #'consult-completion-in-region
+                                             #'completion--in-region))))
+      (vertico-mode))
+    ```
+
+4.  Corfu completion
 
     ```emacs-lisp
     ;; Configure corfu
@@ -765,7 +757,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (setq tab-always-indent 'complete))
     ```
 
-4.  provide
+5.  provide
 
     ```emacs-lisp
     (provide 'rgr/completion)
@@ -1116,7 +1108,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org3276a49) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org7f131a7) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3230,7 +3222,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
   ;; Load the theme files before enabling a theme
   (modus-themes-load-themes)
   :config
-  (modus-themes-load-vivendi))  ;; (modus-themes-load-operandi))
+  (modus-themes-load-operandi))
+;; (modus-themes-load-vivendi))
 ```
 
 
@@ -3332,7 +3325,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4b7f692) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1ef938c) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3371,7 +3364,7 @@ fi
 ```
 
 
-<a id="org4b7f692"></a>
+<a id="org1ef938c"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -435,7 +435,7 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
 #+begin_src emacs-lisp
   (use-package sudo-edit)
 #+end_src
-***** find file at point - documented in the [[https://github.com/raxod502/selectrum/wiki/Additional-Configuration#complete-file-names-at-point][selectrum wiki]]
+***** find file at point
 :PROPERTIES:
 :ID:       bd247b04-92dc-4db6-911e-df716bd8574a
 :END:
@@ -444,24 +444,16 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
     :custom
     (ffap-require-prefix nil)
     :config
-    (add-hook 'completion-at-point-functions
-              (defun complete-path-at-point+ ()
-                (let ((fn (ffap-file-at-point))
-                      (fap (thing-at-point 'filename)))
-                  (when (and (or fn
-                                 (equal "/" fap))
-                             (save-excursion
-                               (search-backward fap (line-beginning-position) t)))
-                    (list (match-beginning 0)
-                          (match-end 0)
-                          #'completion-file-name-table)))) 'append)
     (ffap-bindings))
 #+end_src
-**** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list      :selectrum:
+**** WAITING [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list :selectrum:WAITING:
 :PROPERTIES:
 :ID:       f7f2ea39-77f2-45bd-9402-0eb09ef74b39
+:header-args:emacs-lisp: :tangle no
 :END:
 :LOGBOOK:
+- State "WAITING"    from              [2021-07-06 Tue 00:04] \\
+  looking at vertico
 - State "WAITING"    from              [2021-05-15 Sat 16:21] \\
   wait to see if need
 :END:
@@ -475,14 +467,26 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
 #+begin_src emacs-lisp
   (use-package orderless
     :custom
+    (completion-category-defaults nil)
+    (completion-category-overrides '((file (styles partial-completion))))
     (completion-styles '(orderless))
-    (selectrum-prescient-enable-filtering nil)
-    (selectrum-refine-candidates-function #'orderless-filter)
-    (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+    ;; (selectrum-prescient-enable-filtering nil)
+    ;; (selectrum-refine-candidates-function #'orderless-filter)
+    ;; (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+    ;; :config
+    ;; (define-key vertico-map "?" #'minibuffer-completion-help)
+    ;; (define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
+    ;; (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
+    )
 #+end_src
-**** [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.                    :prescient:
+**** WAITING [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.    :prescient:WAITING:
 :PROPERTIES:
 :ID:       9b550059-5fc0-4534-80a6-9cb5e1c207c2
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "WAITING"    from              [2021-07-06 Tue 00:43] \\
+  vertico uses savehist
 :END:
 #+begin_src emacs-lisp
   (use-package prescient
@@ -724,6 +728,21 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
 #+begin_src emacs-lisp
   (setq-default abbrev-mode 1)
+#+end_src
+**** vertico , vertical interactive completion
+#+begin_src emacs-lisp
+  ;; Enable vertico
+  (use-package vertico
+    :custom
+    (vertico-cycle t)
+    :init
+    ;; Use `consult-completion-in-region' if Vertico is enabled.
+    (add-hook 'vertico-mode-hook (lambda ()
+                                   (setq completion-in-region-function
+                                         (if vertico-mode
+                                             #'consult-completion-in-region
+                                           #'completion--in-region))))
+    (vertico-mode))
 #+end_src
 **** WAITING Company Mode                                   :company:WAITING:
 :PROPERTIES:
