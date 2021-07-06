@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org53ca26c)
+I have this disabled by default as I use [straight.el package management](#orgdf54aad)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org53
 ```
 
 
-<a id="org53ca26c"></a>
+<a id="orgdf54aad"></a>
 
 ## straight.el package management
 
@@ -650,17 +650,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 ### rgr-completion library
 
-1.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
-
-    ```emacs-lisp
-    (use-package orderless
-      :config
-      (setq completion-styles '(orderless)
-            completion-category-defaults nil
-            completion-category-overrides '((file (styles . (partial-completion))))))
-    ```
-
-2.  Which Key
+1.  Which Key
 
     [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
 
@@ -671,12 +661,22 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :config (which-key-mode))
     ```
 
-3.  Abbrev Mode
+2.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
 
     ```emacs-lisp
     (setq-default abbrev-mode 1)
+    ```
+
+3.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+
+    ```emacs-lisp
+    (use-package orderless
+      :init
+      (setq completion-styles '(orderless)
+            completion-category-defaults nil
+            completion-category-overrides '((file (styles . (partial-completion))))))
     ```
 
 4.  vertico , vertical interactive completion
@@ -697,7 +697,44 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (vertico-mode))
     ```
 
-5.  provide
+5.  Which Key
+
+    [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
+
+    ```emacs-lisp
+    (use-package
+      which-key
+      :demand t
+      :config (which-key-mode))
+    ```
+
+6.  Abbrev Mode
+
+    [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
+
+    ```emacs-lisp
+    (setq-default abbrev-mode 1)
+    ```
+
+7.  vertico , vertical interactive completion
+
+    ```emacs-lisp
+    ;; Enable vertico
+    (use-package vertico
+      :custom
+      (vertico-cycle t)
+      :init
+      ;; Use `consult-completion-in-region' if Vertico is enabled
+      (when (not (featurep 'corfu))
+                 (add-hook 'vertico-mode-hook (lambda ()
+                                     (setq completion-in-region-function
+                                           (if vertico-mode
+                                               #'consult-completion-in-region
+                                             #'completion--in-region)))))
+      (vertico-mode))
+    ```
+
+8.  provide
 
     ```emacs-lisp
     (provide 'rgr/completion)
@@ -1048,7 +1085,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgd14b65f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org7b4b8cb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2958,8 +2995,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```emacs-lisp
     (use-package emacs
-      :init
-      (setq c-tab-always-indent 'complete)
       :config
       (defun rgr/c-mode-common-hook ()
         (setq-local dash-docs-docsets '("C"))
@@ -3270,7 +3305,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8e6ee2f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org659ca7b) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3309,7 +3344,7 @@ fi
 ```
 
 
-<a id="org8e6ee2f"></a>
+<a id="org659ca7b"></a>
 
 ### Gnome protocol handler desktop file
 

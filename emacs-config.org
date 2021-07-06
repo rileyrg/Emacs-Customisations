@@ -696,13 +696,46 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" elisp-dir)
 :END:
+**** Which Key                                                    :which:key:
+:PROPERTIES:
+:END:
+[[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
+#+begin_src emacs-lisp
+  (use-package
+    which-key
+    :demand t
+    :config (which-key-mode))
+#+end_src
+**** Abbrev Mode
+:PROPERTIES:
+:END:
+[[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
+#+begin_src emacs-lisp
+  (setq-default abbrev-mode 1)
+#+end_src
 **** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
 #+begin_src emacs-lisp
   (use-package orderless
-    :config
+    :init
     (setq completion-styles '(orderless)
           completion-category-defaults nil
           completion-category-overrides '((file (styles . (partial-completion))))))
+#+end_src
+**** vertico , vertical interactive completion
+#+begin_src emacs-lisp
+  ;; Enable vertico
+  (use-package vertico
+    :custom
+    (vertico-cycle t)
+    :init
+    ;; Use `consult-completion-in-region' if Vertico is enabled
+    (when (not (featurep 'corfu))
+               (add-hook 'vertico-mode-hook (lambda ()
+                                   (setq completion-in-region-function
+                                         (if vertico-mode
+                                             #'consult-completion-in-region
+                                           #'completion--in-region)))))
+    (vertico-mode))
 #+end_src
 **** WAITING Corfu completion                                       :WAITING:
 :PROPERTIES:
