@@ -31,6 +31,7 @@
      (java-mode . "java")
      (awk-mode . "awk")
      (other . "gnu")))
+ '(c-tab-always-indent t)
  '(calendar-mark-diary-entries-flag t)
  '(calendar-view-diary-initially-flag t)
  '(canlock-password "106923df36ef41eb263045249a447dac2d49649a")
@@ -386,8 +387,6 @@ SCHEDULED: %^{Delivery Date}t
  '(rgr/chat-functions '(rgr/erc-start))
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
- '(rtags-completions-enabled t)
- '(rtags-periodic-reparse-timeout 5.0)
  '(safe-local-variable-values
    '((enable-local-variables: . all)
      (eval add-hook 'after-save-hook 'org-md-export-to-markdown nil t)

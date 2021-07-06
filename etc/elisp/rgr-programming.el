@@ -268,7 +268,9 @@
   :config
   (defun rgr/c-mode-common-hook ()
     (setq-local dash-docs-docsets '("C"))
-    (eglot-ensure))
+    (eglot-ensure)
+    (if(featurep 'corfu)
+        (setq completion-category-defaults nil)))
   :hook
   (c-mode-common . rgr/c-mode-common-hook))
 
@@ -295,7 +297,8 @@
   :config
   (defun rgr/c-save-hook()
     ;;    (lsp-format-buffer)
-    (eglot-format-buffer))
+    ;;(eglot-format-buffer)
+    )
   (with-eval-after-load 'cc-mode
     (add-hook 'c-mode-common-hook
               (lambda()

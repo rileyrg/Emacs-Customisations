@@ -27,20 +27,6 @@
   :config
   (ffap-bindings))
 
-(use-package orderless
-  :custom
-  (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles partial-completion))))
-  (completion-styles '(orderless))
-  ;; (selectrum-prescient-enable-filtering nil)
-  ;; (selectrum-refine-candidates-function #'orderless-filter)
-  ;; (selectrum-highlight-candidates-function #'orderless-highlight-matches)
-  ;; :config
-  ;; (define-key vertico-map "?" #'minibuffer-completion-help)
-  ;; (define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
-  ;; (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
-  )
-
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings (mode-specific-map)

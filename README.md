@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgd844621)
+I have this disabled by default as I use [straight.el package management](#org53ca26c)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#orgd8
 ```
 
 
-<a id="orgd844621"></a>
+<a id="org53ca26c"></a>
 
 ## straight.el package management
 
@@ -438,25 +438,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           (ffap-bindings))
         ```
 
-5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
-
-    ```emacs-lisp
-    (use-package orderless
-      :custom
-      (completion-category-defaults nil)
-      (completion-category-overrides '((file (styles partial-completion))))
-      (completion-styles '(orderless))
-      ;; (selectrum-prescient-enable-filtering nil)
-      ;; (selectrum-refine-candidates-function #'orderless-filter)
-      ;; (selectrum-highlight-candidates-function #'orderless-highlight-matches)
-      ;; :config
-      ;; (define-key vertico-map "?" #'minibuffer-completion-help)
-      ;; (define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
-      ;; (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
-      )
-    ```
-
-6.  [Consult](https://github.com/minad/consult)
+5.  [Consult](https://github.com/minad/consult)
 
     [Consult](https://github.com/minad/consult) Provides various commands based on the Emacs completion function completing-read
 
@@ -581,7 +563,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   ("!" . consult-flycheck)))
     ```
 
-7.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
+6.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
     ```emacs-lisp
     (use-package embark
@@ -615,7 +597,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
         ```
 
-8.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+7.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
 
@@ -633,7 +615,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
     ```
 
-9.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
+8.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
 
     ```emacs-lisp
     (use-package affe
@@ -648,7 +630,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (setf (alist-get #'affe-grep consult-config) `(:preview-key ,(kbd "M-."))))
     ```
 
-10. provide
+9.  provide
 
     ```emacs-lisp
     (provide 'rgr/minibuffer)
@@ -668,7 +650,17 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 ### rgr-completion library
 
-1.  Which Key
+1.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+
+    ```emacs-lisp
+    (use-package orderless
+      :config
+      (setq completion-styles '(orderless)
+            completion-category-defaults nil
+            completion-category-overrides '((file (styles . (partial-completion))))))
+    ```
+
+2.  Which Key
 
     [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
 
@@ -679,7 +671,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :config (which-key-mode))
     ```
 
-2.  Abbrev Mode
+3.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
 
@@ -687,7 +679,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-3.  vertico , vertical interactive completion
+4.  vertico , vertical interactive completion
 
     ```emacs-lisp
     ;; Enable vertico
@@ -695,66 +687,14 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :custom
       (vertico-cycle t)
       :init
-      ;; Use `consult-completion-in-region' if Vertico is enabled.
-      (add-hook 'vertico-mode-hook (lambda ()
+      ;; Use `consult-completion-in-region' if Vertico is enabled
+      (when (not (featurep 'corfu))
+                 (add-hook 'vertico-mode-hook (lambda ()
                                      (setq completion-in-region-function
                                            (if vertico-mode
                                                #'consult-completion-in-region
-                                             #'completion--in-region))))
+                                             #'completion--in-region)))))
       (vertico-mode))
-    ```
-
-4.  Corfu completion
-
-    ```emacs-lisp
-    ;; Configure corfu
-    (use-package corfu
-      :demand t
-      ;; Optionally use TAB for cycling, default is `corfu-complete'.
-      :bind (:map corfu-map
-                  ("TAB" . corfu-next)
-                  ("S-TAB" . corfu-previous))
-
-      ;; You may want to enable Corfu only for certain modes.
-      ;; :hook ((prog-mode . corfu-mode)
-      ;;        (shell-mode . corfu-mode)
-      ;;        (eshell-mode . corfu-mode))
-
-      :config
-
-      ;; Recommended: Enable Corfu globally.
-      ;; This is recommended since dabbrev can be used globally (M-/).
-      (corfu-global-mode)
-      (message "global corfu mode")
-
-      ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
-      (setq corfu-cycle t)
-      )
-
-    ;; Optionally use the `orderless' completion style.
-    ;; Enable `partial-completion' for files to allow path expansion.
-    ;; You may prefer to use `initials' instead of `partial-completion'.
-    (use-package orderless
-      :init
-      (setq completion-styles '(orderless)
-            completion-category-defaults nil
-            completion-category-overrides '((file (styles . (partial-completion))))))
-
-    ;; Dabbrev works with Corfu
-    (use-package dabbrev
-      ;; Swap M-/ and C-M-/
-      :bind (("M-/" . dabbrev-completion)
-             ("C-M-/" . dabbrev-expand)))
-
-    ;; A few more useful configurations...
-    (use-package emacsq
-      :init
-      ;; TAB cycle if there are only few candidates
-      (setq completion-cycle-threshold 3)
-
-      ;; Enable indentation+completion using the TAB key.
-      ;; `completion-at-point' is often bound to M-TAB.
-      (setq tab-always-indent 'complete))
     ```
 
 5.  provide
@@ -1108,7 +1048,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7f131a7) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgd14b65f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3018,10 +2958,14 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```emacs-lisp
     (use-package emacs
+      :init
+      (setq c-tab-always-indent 'complete)
       :config
       (defun rgr/c-mode-common-hook ()
         (setq-local dash-docs-docsets '("C"))
-        (eglot-ensure))
+        (eglot-ensure)
+        (if(featurep 'corfu)
+            (setq completion-category-defaults nil)))
       :hook
       (c-mode-common . rgr/c-mode-common-hook))
     ```
@@ -3056,7 +3000,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :config
           (defun rgr/c-save-hook()
             ;;    (lsp-format-buffer)
-            (eglot-format-buffer))
+            ;;(eglot-format-buffer)
+            )
           (with-eval-after-load 'cc-mode
             (add-hook 'c-mode-common-hook
                       (lambda()
@@ -3325,7 +3270,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1ef938c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8e6ee2f) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3364,7 +3309,7 @@ fi
 ```
 
 
-<a id="org1ef938c"></a>
+<a id="org8e6ee2f"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -463,22 +463,6 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
     (selectrum-mode +1)
     :bind ("C-x C-z" . #'selectrum-repeat))
 #+end_src
-**** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
-#+begin_src emacs-lisp
-  (use-package orderless
-    :custom
-    (completion-category-defaults nil)
-    (completion-category-overrides '((file (styles partial-completion))))
-    (completion-styles '(orderless))
-    ;; (selectrum-prescient-enable-filtering nil)
-    ;; (selectrum-refine-candidates-function #'orderless-filter)
-    ;; (selectrum-highlight-candidates-function #'orderless-highlight-matches)
-    ;; :config
-    ;; (define-key vertico-map "?" #'minibuffer-completion-help)
-    ;; (define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
-    ;; (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
-    )
-#+end_src
 **** WAITING [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.    :prescient:WAITING:
 :PROPERTIES:
 :ID:       9b550059-5fc0-4534-80a6-9cb5e1c207c2
@@ -712,6 +696,61 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" elisp-dir)
 :END:
+**** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
+#+begin_src emacs-lisp
+  (use-package orderless
+    :config
+    (setq completion-styles '(orderless)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles . (partial-completion))))))
+#+end_src
+**** WAITING Corfu completion                                       :WAITING:
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "WAITING"    from              [2021-07-06 Tue 10:36] \\
+  not working in c-mode
+:END:
+#+begin_src emacs-lisp
+  ;; Configure corfu
+  (use-package corfu
+    :demand t
+    ;; Optionally use TAB for cycling, default is `corfu-complete'.
+    :bind (:map corfu-map
+                ("TAB" . corfu-next)
+                ("S-TAB" . corfu-previous))
+
+    ;; You may want to enable Corfu only for certain modes.
+    ;; :hook ((prog-mode . corfu-mode)
+    ;;        (shell-mode . corfu-mode)
+    ;;        (eshell-mode . corfu-mode))
+
+    :config
+
+    ;; Recommended: Enable Corfu globally.
+    ;; This is recommended since dabbrev can be used globally (M-/).
+    (corfu-global-mode)
+
+    ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
+    (setq corfu-cycle t)
+    )
+
+  ;; Dabbrev works with Corfu
+  (use-package dabbrev
+    ;; Swap M-/ and C-M-/
+    :bind (("M-/" . dabbrev-completion)
+           ("C-M-/" . dabbrev-expand)))
+
+  ;; A few more useful configurations...
+  (use-package emacs
+    :init
+    ;; TAB cycle if there are only few candidates
+    (setq completion-cycle-threshold 3)
+    ;; Enable indentation+completion using the TAB key.
+    ;; `completion-at-point' is often bound to M-TAB.
+    (setq tab-always-indent 'complete))
+#+end_src
 **** Which Key                                                    :which:key:
 :PROPERTIES:
 :END:
@@ -736,104 +775,14 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     :custom
     (vertico-cycle t)
     :init
-    ;; Use `consult-completion-in-region' if Vertico is enabled.
-    (add-hook 'vertico-mode-hook (lambda ()
+    ;; Use `consult-completion-in-region' if Vertico is enabled
+    (when (not (featurep 'corfu))
+               (add-hook 'vertico-mode-hook (lambda ()
                                    (setq completion-in-region-function
                                          (if vertico-mode
                                              #'consult-completion-in-region
-                                           #'completion--in-region))))
+                                           #'completion--in-region)))))
     (vertico-mode))
-#+end_src
-**** WAITING Company Mode                                   :company:WAITING:
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "WAITING"    from              [2021-04-18 So 00:33] \\
-  see if corfu is any good
-:END:
-[[https://github.com/sebastiencs/company-box][company-box]] provides nice linked help on the highlighted completions when available.
-
-#+CAPTION: company-box in action for php/lsp mode.
-[[./images/company-box.png]]
-#+begin_src emacs-lisp
-  (use-package
-    company
-    :init
-    (add-hook 'after-init-hook 'global-company-mode)
-    :custom
-    (company-backends
-     '((company-capf :with company-dabbrev company-yasnippet company-files company-ispell)))
-    :config
-    (use-package
-      company-box
-      :hook (company-mode . company-box-mode))
-    (require 'company-ispell)
-    (use-package company-prescient
-      :after company
-      :config
-      (company-prescient-mode +1))
-    :bind ("C-<tab>" . company-complete))
-#+end_src
-**** TODO Corfu completion                                            :corfu:
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "TODO"       from              [2021-06-10 Thu 04:38]
-- State "STARTED"    from "WAITING"    [2021-04-18 So 00:33]
-- State "WAITING"    from              [2021-04-18 So 00:28] \\
-  need to sort out a recipe
-:END:
-#+begin_src emacs-lisp
-  ;; Configure corfu
-  (use-package corfu
-    :demand t
-    ;; Optionally use TAB for cycling, default is `corfu-complete'.
-    :bind (:map corfu-map
-                ("TAB" . corfu-next)
-                ("S-TAB" . corfu-previous))
-
-    ;; You may want to enable Corfu only for certain modes.
-    ;; :hook ((prog-mode . corfu-mode)
-    ;;        (shell-mode . corfu-mode)
-    ;;        (eshell-mode . corfu-mode))
-
-    :config
-
-    ;; Recommended: Enable Corfu globally.
-    ;; This is recommended since dabbrev can be used globally (M-/).
-    (corfu-global-mode)
-    (message "global corfu mode")
-
-    ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
-    (setq corfu-cycle t)
-    )
-
-  ;; Optionally use the `orderless' completion style.
-  ;; Enable `partial-completion' for files to allow path expansion.
-  ;; You may prefer to use `initials' instead of `partial-completion'.
-  (use-package orderless
-    :init
-    (setq completion-styles '(orderless)
-          completion-category-defaults nil
-          completion-category-overrides '((file (styles . (partial-completion))))))
-
-  ;; Dabbrev works with Corfu
-  (use-package dabbrev
-    ;; Swap M-/ and C-M-/
-    :bind (("M-/" . dabbrev-completion)
-           ("C-M-/" . dabbrev-expand)))
-
-  ;; A few more useful configurations...
-  (use-package emacsq
-    :init
-    ;; TAB cycle if there are only few candidates
-    (setq completion-cycle-threshold 3)
-
-    ;; Enable indentation+completion using the TAB key.
-    ;; `completion-at-point' is often bound to M-TAB.
-    (setq tab-always-indent 'complete))
 #+end_src
 **** provide
 :PROPERTIES:
@@ -3361,7 +3310,9 @@ CLOSED: [2021-06-28 Mon 21:28]
       :config
       (defun rgr/c-mode-common-hook ()
         (setq-local dash-docs-docsets '("C"))
-        (eglot-ensure))
+        (eglot-ensure)
+        (if(featurep 'corfu)
+            (setq completion-category-defaults nil)))
       :hook
       (c-mode-common . rgr/c-mode-common-hook))
   #+end_src
@@ -3391,17 +3342,18 @@ CLOSED: [2021-06-28 Mon 21:28]
 #+end_src
 *****  formatting
 #+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    (defun rgr/c-save-hook()
-      ;;    (lsp-format-buffer)
-      (eglot-format-buffer))
-    (with-eval-after-load 'cc-mode
-      (add-hook 'c-mode-common-hook
-                (lambda()
-                  (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
-    :bind  ( :map c-mode-base-map
-             (("M-<return>" . c-complete-line))))
+    (use-package emacs
+      :config
+      (defun rgr/c-save-hook()
+        ;;    (lsp-format-buffer)
+        ;;(eglot-format-buffer)
+        )
+      (with-eval-after-load 'cc-mode
+        (add-hook 'c-mode-common-hook
+                  (lambda()
+                    (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
+      :bind  ( :map c-mode-base-map
+               (("M-<return>" . c-complete-line))))
 #+end_src
 **** cc,cpp, C++, cc-mode                                               :cpp:
 :PROPERTIES:
