@@ -90,23 +90,13 @@
 (use-package realgud-lldb
   :demand t)
 
-(use-package project
-  ;; Cannot use :hook because 'project-find-functions does not end in -hook
-  ;; Cannot use :init (must use :config) because otherwise
-  ;; project-find-functions is not yet initialized.
-  :config
-  ;; Returns the parent directory containing a .project.el file, if any,
-  ;; to override the standard project.el detection logic when needed.
-  (defun zkj-project-override (dir)
-    (let ((override (locate-dominating-file dir ".project")))
-      (if override
-          (cons 'vc override)
-        nil)))
-  (add-hook 'project-find-functions #'zkj-project-override)
+(use-package projectile
+  :init
+  (projectile-mode +1)
+  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   :bind
-  (:map project-prefix-map
-        ("D" . rgr/projectLLDB)
-        ("t" . vterm)))
+  (:map projectile-command-map ("D" . rgr/projectLLDB))
+  )
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile

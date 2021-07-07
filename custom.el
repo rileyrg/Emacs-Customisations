@@ -387,22 +387,6 @@ SCHEDULED: %^{Delivery Date}t
  '(rgr/chat-functions '(rgr/erc-start))
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
- '(safe-local-variable-values
-   '((enable-local-variables: . all)
-     (eval add-hook 'after-save-hook 'org-md-export-to-markdown nil t)
-     (progn
-       (make-local-variable 'process-environment)
-       (setq process-environment
-             (copy-sequence process-environment))
-       (setenv "ARDUINO_SDK_PATH" "~/development/arduino/arduinoSDK"))
-     (projectile-project-compilation-cmd . "cmake .. && make Blink_flash")
-     (progn
-       (make-local-variable 'process-environment)
-       (setq process-environment
-             (copy-sequence process-environment))
-       (setenv "ARDUINO_SDK_PATH " "~/development/thirdparty/arduinoSDK"))
-     (projectile-project-compilation-cmd . "cmake .. && make DigitalInputs_flash")
-     (projectile-project-compilation-dir . "build")))
  '(save-interprogram-paste-before-kill t)
  '(savehist-additional-variables '(global-mark-ring kill-ring))
  '(scroll-bar-mode nil)

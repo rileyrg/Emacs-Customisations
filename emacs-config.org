@@ -522,7 +522,8 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
            ("M-s L" . consult-locate)
            ("M-s g" . consult-grep)
            ("M-s G" . consult-git-grep)
-           ("M-s r" . affe-grep)
+           ("M-s R" . affe-grep)
+           ("M-s r" . consult-ripgrep)
            ("M-s l" . consult-line)
            ("M-s m" . consult-multi-occur)
            ("M-s k" . consult-keep-lines)
@@ -590,14 +591,6 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
           (lambda ()
             (when-let (project (project-current))
               (car (project-roots project)))))
-         ;;;; 2. projectile.el (projectile-project-root)
-    ;; (autoload 'projectile-project-root "projectile")
-    ;; (setq consult-project-root-function #'projectile-project-root)
-         ;;;; 3. vc.el (vc-root-dir)
-    ;; (setq consult-project-root-function #'vc-root-dir)
-         ;;;; 4. locate-dominating-file
-    ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
-    ;; Optionally add the `consult-flycheck' command.
     )
 
   (use-package consult-flycheck
@@ -2729,15 +2722,6 @@ Display a poup containing docstring at point
       (setq-local lldb-console rgr/lldb-buffer-name))
 
   #+end_src
-****** TODO look at using lldb mode in c buffer linking back to lldb instance
-SCHEDULED: <2021-07-03 Sat>
-:PROPERTIES:
-:DateCreated: <2021-07-01 Thu 12:52>
-:END:
-:LOGBOOK:
-- Note taken on [2021-07-01 Thu 12:53] \\
-  thinking that show c source in emacs pane rather than tmux. can then do symbol at point value
-:END:
 ***** rgr/projectLLDB                                               :project:
 lldb/voltron integration to project
   #+begin_src emacs-lisp
@@ -2770,7 +2754,16 @@ SCHEDULED: <2021-07-01 Thu>
     (use-package realgud-lldb
       :demand t)
 #+end_src
-**** Project Management, project.el
+**** Project Management                                             :project:
+***** CANCELLED project.el                                        :CANCELLED:
+CLOSED: [2021-07-07 Wed 22:34]
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-07-07 Wed 22:34] \\
+  back to pojectile
+:END:
 Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project/
 #+begin_src emacs-lisp
   (use-package project
@@ -2790,6 +2783,16 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
     (:map project-prefix-map
           ("D" . rgr/projectLLDB)
           ("t" . vterm)))
+#+end_src
+***** projectile
+#+begin_src emacs-lisp
+  (use-package projectile
+    :init
+    (projectile-mode +1)
+    (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+    :bind
+    (:map projectile-command-map ("D" . rgr/projectLLDB))
+    )
 #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:
@@ -2813,21 +2816,6 @@ Replaced projectile for me. https://www.manueluberti.eu/emacs/2020/09/18/project
 :PROPERTIES:
 :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
 :END:
-***** TODO JSONNavigator
-SCHEDULED: <2021-06-08 Tue>
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "TODO"       from "DONE"       [2021-06-13 Sun 08:29]
-- State "DONE"       from "TODO"       [2021-06-10 Thu 06:15]
-- State "TODO"       from              [2021-06-01 Tue 07:27]
-- State "TODO"       from              [2021-05-31 Mon 06:03]
-:END:
-Need to see if can get this working at some point
-#+begin_src emacs-lisp
-  (use-package json-navigator)
-#+end_src
 ***** YAML
 :PROPERTIES:
 :ID:       26c28417-3965-452a-a180-61de98d44ef5
@@ -3290,6 +3278,9 @@ CLOSED: [2021-06-28 Mon 21:28]
     (newline-and-indent))
 #+end_src
 *****  formatting
+:PROPERTIES:
+:ID:       6d52acda-609a-4ca0-844e-3bab04de12cb
+:END:
 #+begin_src emacs-lisp
 
   (defun rgr/c-indent-complete()
@@ -3549,7 +3540,7 @@ to add to version control.
 
 
 **** TODO how to export tangle destination?
-SCHEDULED: <2021-06-12 Sat>
+SCHEDULED: <2021-07-14 Wed>
 :LOGBOOK:
 - State "TODO"       from              [2021-06-03 Thu 16:07]
 :END:

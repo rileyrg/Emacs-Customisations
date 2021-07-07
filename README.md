@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org4c65b20)
+I have this disabled by default as I use [straight.el package management](#org949b387)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org4c
 ```
 
 
-<a id="org4c65b20"></a>
+<a id="org949b387"></a>
 
 ## straight.el package management
 
@@ -480,7 +480,8 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
              ("M-s L" . consult-locate)
              ("M-s g" . consult-grep)
              ("M-s G" . consult-git-grep)
-             ("M-s r" . affe-grep)
+             ("M-s R" . affe-grep)
+             ("M-s r" . consult-ripgrep)
              ("M-s l" . consult-line)
              ("M-s m" . consult-multi-occur)
              ("M-s k" . consult-keep-lines)
@@ -548,14 +549,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (lambda ()
               (when-let (project (project-current))
                 (car (project-roots project)))))
-           ;;;; 2. projectile.el (projectile-project-root)
-      ;; (autoload 'projectile-project-root "projectile")
-      ;; (setq consult-project-root-function #'projectile-project-root)
-           ;;;; 3. vc.el (vc-root-dir)
-      ;; (setq consult-project-root-function #'vc-root-dir)
-           ;;;; 4. locate-dominating-file
-      ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
-      ;; Optionally add the `consult-flycheck' command.
       )
 
     (use-package consult-flycheck
@@ -1056,7 +1049,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgeda8dc9) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orga4ffe90) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1657,7 +1650,6 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
     alias clconf find ~/Dropbox/ -path "*(*s conflicted copy [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -exec rm -f {} \;
     alias twigs grep -i "twig.*"$1 *
     alias rgr rg --color=never $* > #<*ripgrep*>; switch-to-buffer "*ripgrep*"
-    alias resemacshub resgithub.sh "Emacs customisation centered around lsp,helm,dap and projectile."
     alias to httplug.client.app.http_methods
     alias grep grep --color=always --exclude="*.lock" --exclude-dir=log --exclude-dir=cache -iR $*
     alias gg *grep -C 2 -iR $*
@@ -1666,19 +1658,14 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
     alias dcon co debug:container  $*
     alias dc co debug:config $*
     alias cc co cache:clear
-    alias hg helm-projectile-grep
     alias ll ls -l $*
     alias aw co debug:autowiring
     alias cdu co config:dump $1
-    alias pg projectile-grep
     alias co bin/console --no-ansi $*
-    alias pff helm-projectile-find-file $*
-    alias ff helm-projectile-find-file
     alias em cd ~/.emacs.d
     alias dcg dc $1 |*grep -C 5 -i $2
     alias coenv co about
     alias R/W multiple sector transfer: Max = 1 Current = 1
-    alias sp projectile-switch-open-project
     alias mlg ag -o -i --no-color -U --smart-case "(?=(?:.|\n)*?$1)(?:.|\n)*?$2" . > #<*mlg*> && switch-to-buffer "*mlg*"
     alias csr console server:run
     alias dr co debug:router
@@ -2488,8 +2475,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```
 
-        1.  look at using lldb mode in c buffer linking back to lldb instance
-
     2.  rgr/projectLLDB
 
         lldb/voltron integration to project
@@ -2524,29 +2509,19 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :demand t)
         ```
 
-7.  Project Management, project.el
+7.  Project Management
 
-    Replaced projectile for me. <https://www.manueluberti.eu/emacs/2020/09/18/project/>
+    1.  projectile
 
-    ```emacs-lisp
-    (use-package project
-      ;; Cannot use :hook because 'project-find-functions does not end in -hook
-      ;; Cannot use :init (must use :config) because otherwise
-      ;; project-find-functions is not yet initialized.
-      :config
-      ;; Returns the parent directory containing a .project.el file, if any,
-      ;; to override the standard project.el detection logic when needed.
-      (defun zkj-project-override (dir)
-        (let ((override (locate-dominating-file dir ".project")))
-          (if override
-              (cons 'vc override)
-            nil)))
-      (add-hook 'project-find-functions #'zkj-project-override)
-      :bind
-      (:map project-prefix-map
-            ("D" . rgr/projectLLDB)
-            ("t" . vterm)))
-    ```
+        ```emacs-lisp
+        (use-package projectile
+          :init
+          (projectile-mode +1)
+          (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+          :bind
+          (:map projectile-command-map ("D" . rgr/projectLLDB))
+          )
+        ```
 
 8.  BASH
 
@@ -2565,15 +2540,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
 9.  JSON, YAML Configuration files
 
-    1.  JSONNavigator
-
-        Need to see if can get this working at some point
-
-        ```emacs-lisp
-        (use-package json-navigator)
-        ```
-
-    2.  YAML
+    1.  YAML
 
         ```emacs-lisp
         (use-package
@@ -3283,7 +3250,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org02b9d17) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbff53fc) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3322,7 +3289,7 @@ fi
 ```
 
 
-<a id="org02b9d17"></a>
+<a id="orgbff53fc"></a>
 
 ### Gnome protocol handler desktop file
 
