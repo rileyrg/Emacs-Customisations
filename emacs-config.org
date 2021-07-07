@@ -737,85 +737,12 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
                                            #'completion--in-region)))))
     (vertico-mode))
 #+end_src
-**** WAITING Corfu completion                                       :WAITING:
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "WAITING"    from              [2021-07-06 Tue 10:36] \\
-  not working in c-mode
-:END:
-#+begin_src emacs-lisp
-  ;; Configure corfu
-  (use-package corfu
-    :demand t
-    ;; Optionally use TAB for cycling, default is `corfu-complete'.
-    :bind (:map corfu-map
-                ("TAB" . corfu-next)
-                ("S-TAB" . corfu-previous))
-
-    ;; You may want to enable Corfu only for certain modes.
-    ;; :hook ((prog-mode . corfu-mode)
-    ;;        (shell-mode . corfu-mode)
-    ;;        (eshell-mode . corfu-mode))
-
-    :config
-
-    ;; Recommended: Enable Corfu globally.
-    ;; This is recommended since dabbrev can be used globally (M-/).
-    (corfu-global-mode)
-
-    ;; Optionally enable cycling for `corfu-next' and `corfu-previous'.
-    (setq corfu-cycle t)
-    )
-
-  ;; Dabbrev works with Corfu
-  (use-package dabbrev
-    ;; Swap M-/ and C-M-/
-    :bind (("M-/" . dabbrev-completion)
-           ("C-M-/" . dabbrev-expand)))
-
-  ;; A few more useful configurations...
-  (use-package emacs
-    :init
-    ;; TAB cycle if there are only few candidates
-    (setq completion-cycle-threshold 3)
-    ;; Enable indentation+completion using the TAB key.
-    ;; `completion-at-point' is often bound to M-TAB.
-    (setq tab-always-indent 'complete))
-#+end_src
-**** Which Key                                                    :which:key:
-:PROPERTIES:
-:END:
-[[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
-#+begin_src emacs-lisp
-  (use-package
-    which-key
-    :demand t
-    :config (which-key-mode))
-#+end_src
 **** Abbrev Mode
 :PROPERTIES:
 :END:
 [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
 #+begin_src emacs-lisp
   (setq-default abbrev-mode 1)
-#+end_src
-**** vertico , vertical interactive completion
-#+begin_src emacs-lisp
-  ;; Enable vertico
-  (use-package vertico
-    :custom
-    (vertico-cycle t)
-    :init
-    ;; Use `consult-completion-in-region' if Vertico is enabled
-    (when (not (featurep 'corfu))
-               (add-hook 'vertico-mode-hook (lambda ()
-                                   (setq completion-in-region-function
-                                         (if vertico-mode
-                                             #'consult-completion-in-region
-                                           #'completion--in-region)))))
-    (vertico-mode))
 #+end_src
 **** provide
 :PROPERTIES:
@@ -3338,56 +3265,62 @@ CLOSED: [2021-06-28 Mon 21:28]
   :PROPERTIES:
   :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
   :END:
-  #+begin_src emacs-lisp
-    (use-package emacs
-      :config
-      (defun rgr/c-mode-common-hook ()
-        (setq-local dash-docs-docsets '("C"))
-        (eglot-ensure)
-        (if(featurep 'corfu)
-            (setq completion-category-defaults nil)))
-      :hook
-      (c-mode-common . rgr/c-mode-common-hook))
-  #+end_src
 ***** line utilities
 :PROPERTIES:
 :ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
 :END:
 #+begin_src emacs-lisp
-  (defun c-complete-line()
+  (defun rgr/c-complete-line()
     (interactive)
     (end-of-line)
     (delete-trailing-whitespace)
     (unless (eql ?\; (char-before (point-at-eol)))
       (progn (insert ";")))
     (newline-and-indent))
-  ;;(define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
-  (defun c-insert-previous-line()
+  ;;(define-key c-mode-map (kbd "M-<return>") 'rgr/c-complete-line)
+  (defun rgr/c-insert-previous-line()
     (interactive)
     (previous-line)
     (end-of-line)
     (newline-and-indent)
     (insert (string-trim (current-kill 0))))
-  (defun c-newline-below()
+  (defun rgr/c-newline-below()
     (interactive)
     (end-of-line)
     (newline-and-indent))
 #+end_src
 *****  formatting
 #+begin_src emacs-lisp
-    (use-package emacs
-      :config
-      (defun rgr/c-save-hook()
-        ;;    (lsp-format-buffer)
-        ;;(eglot-format-buffer)
-        )
-      (with-eval-after-load 'cc-mode
-        (add-hook 'c-mode-common-hook
-                  (lambda()
-                    (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
-      :bind  ( :map c-mode-base-map
-               (("M-<return>" . c-complete-line))))
+
+  (defun rgr/c-indent-complete()
+    (interactive)
+    (let (( p (point)))
+      (c-indent-line-or-region)
+      (when (= p (point))
+        (call-interactively 'complete-symbol))))
+
 #+end_src
+***** c-mode-common-hook
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (defun rgr/c-save-hook()
+      ;;    (lsp-format-buffer)
+      ;;(eglot-format-buffer)
+      )
+    (defun rgr/c-mode-common-hook ()
+      (add-hook 'before-save-hook #'rgr/c-save-hook nil t)
+      (setq-local dash-docs-docsets '("C"))
+      (if(featurep 'corfu)
+          (setq completion-category-defaults nil))
+      (if(featurep 'eglot)
+          (eglot-ensure)))
+    :hook
+    (c-mode-common . rgr/c-mode-common-hook)
+    :bind  ( :map c-mode-base-map
+             (("M-<return>" . rgr/c-complete-line)
+              ("TAB" . rgr/c-indent-complete))))
+  #+end_src
 **** cc,cpp, C++, cc-mode                                               :cpp:
 :PROPERTIES:
 :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b

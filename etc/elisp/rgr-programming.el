@@ -264,34 +264,31 @@
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
 
-(use-package emacs
-  :config
-  (defun rgr/c-mode-common-hook ()
-    (setq-local dash-docs-docsets '("C"))
-    (eglot-ensure)
-    (if(featurep 'corfu)
-        (setq completion-category-defaults nil)))
-  :hook
-  (c-mode-common . rgr/c-mode-common-hook))
-
-(defun c-complete-line()
+(defun rgr/c-complete-line()
   (interactive)
   (end-of-line)
   (delete-trailing-whitespace)
   (unless (eql ?\; (char-before (point-at-eol)))
     (progn (insert ";")))
   (newline-and-indent))
-;;(define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
-(defun c-insert-previous-line()
+;;(define-key c-mode-map (kbd "M-<return>") 'rgr/c-complete-line)
+(defun rgr/c-insert-previous-line()
   (interactive)
   (previous-line)
   (end-of-line)
   (newline-and-indent)
   (insert (string-trim (current-kill 0))))
-(defun c-newline-below()
+(defun rgr/c-newline-below()
   (interactive)
   (end-of-line)
   (newline-and-indent))
+
+(defun rgr/c-indent-complete()
+  (interactive)
+  (let (( p (point)))
+    (c-indent-line-or-region)
+    (when (= p (point))
+      (call-interactively 'complete-symbol))))
 
 (use-package emacs
   :config
@@ -299,12 +296,18 @@
     ;;    (lsp-format-buffer)
     ;;(eglot-format-buffer)
     )
-  (with-eval-after-load 'cc-mode
-    (add-hook 'c-mode-common-hook
-              (lambda()
-                (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
+  (defun rgr/c-mode-common-hook ()
+    (add-hook 'before-save-hook #'rgr/c-save-hook nil t)
+    (setq-local dash-docs-docsets '("C"))
+    (if(featurep 'corfu)
+        (setq completion-category-defaults nil))
+    (if(featurep 'eglot)
+        (eglot-ensure)))
+  :hook
+  (c-mode-common . rgr/c-mode-common-hook)
   :bind  ( :map c-mode-base-map
-           (("M-<return>" . c-complete-line))))
+           (("M-<return>" . rgr/c-complete-line)
+            ("TAB" . rgr/c-indent-complete))))
 
 (defun rgr/c++-mode-hook ()
   (setq-local dash-docs-docsets '("C++")))

@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgdf54aad)
+I have this disabled by default as I use [straight.el package management](#org4c65b20)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#orgdf
 ```
 
 
-<a id="orgdf54aad"></a>
+<a id="org4c65b20"></a>
 
 ## straight.el package management
 
@@ -697,18 +697,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (vertico-mode))
     ```
 
-5.  Which Key
-
-    [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
-
-    ```emacs-lisp
-    (use-package
-      which-key
-      :demand t
-      :config (which-key-mode))
-    ```
-
-6.  Abbrev Mode
+5.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
 
@@ -716,25 +705,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-7.  vertico , vertical interactive completion
-
-    ```emacs-lisp
-    ;; Enable vertico
-    (use-package vertico
-      :custom
-      (vertico-cycle t)
-      :init
-      ;; Use `consult-completion-in-region' if Vertico is enabled
-      (when (not (featurep 'corfu))
-                 (add-hook 'vertico-mode-hook (lambda ()
-                                     (setq completion-in-region-function
-                                           (if vertico-mode
-                                               #'consult-completion-in-region
-                                             #'completion--in-region)))))
-      (vertico-mode))
-    ```
-
-8.  provide
+6.  provide
 
     ```emacs-lisp
     (provide 'rgr/completion)
@@ -1085,7 +1056,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7b4b8cb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgeda8dc9) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2993,36 +2964,24 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
 20. C, c-mode
 
-    ```emacs-lisp
-    (use-package emacs
-      :config
-      (defun rgr/c-mode-common-hook ()
-        (setq-local dash-docs-docsets '("C"))
-        (eglot-ensure)
-        (if(featurep 'corfu)
-            (setq completion-category-defaults nil)))
-      :hook
-      (c-mode-common . rgr/c-mode-common-hook))
-    ```
-
     1.  line utilities
 
         ```emacs-lisp
-        (defun c-complete-line()
+        (defun rgr/c-complete-line()
           (interactive)
           (end-of-line)
           (delete-trailing-whitespace)
           (unless (eql ?\; (char-before (point-at-eol)))
             (progn (insert ";")))
           (newline-and-indent))
-        ;;(define-key c-mode-map (kbd "M-<return>") 'c-complete-line)
-        (defun c-insert-previous-line()
+        ;;(define-key c-mode-map (kbd "M-<return>") 'rgr/c-complete-line)
+        (defun rgr/c-insert-previous-line()
           (interactive)
           (previous-line)
           (end-of-line)
           (newline-and-indent)
           (insert (string-trim (current-kill 0))))
-        (defun c-newline-below()
+        (defun rgr/c-newline-below()
           (interactive)
           (end-of-line)
           (newline-and-indent))
@@ -3031,18 +2990,37 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     2.  formatting
 
         ```emacs-lisp
+
+        (defun rgr/c-indent-complete()
+          (interactive)
+          (let (( p (point)))
+            (c-indent-line-or-region)
+            (when (= p (point))
+              (call-interactively 'complete-symbol))))
+
+        ```
+
+    3.  c-mode-common-hook
+
+        ```emacs-lisp
         (use-package emacs
           :config
           (defun rgr/c-save-hook()
             ;;    (lsp-format-buffer)
             ;;(eglot-format-buffer)
             )
-          (with-eval-after-load 'cc-mode
-            (add-hook 'c-mode-common-hook
-                      (lambda()
-                        (add-hook 'before-save-hook #'rgr/c-save-hook nil t))))
+          (defun rgr/c-mode-common-hook ()
+            (add-hook 'before-save-hook #'rgr/c-save-hook nil t)
+            (setq-local dash-docs-docsets '("C"))
+            (if(featurep 'corfu)
+                (setq completion-category-defaults nil))
+            (if(featurep 'eglot)
+                (eglot-ensure)))
+          :hook
+          (c-mode-common . rgr/c-mode-common-hook)
           :bind  ( :map c-mode-base-map
-                   (("M-<return>" . c-complete-line))))
+                   (("M-<return>" . rgr/c-complete-line)
+                    ("TAB" . rgr/c-indent-complete))))
         ```
 
 21. cc,cpp, C++, cc-mode
@@ -3305,7 +3283,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org659ca7b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org02b9d17) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3344,7 +3322,7 @@ fi
 ```
 
 
-<a id="org659ca7b"></a>
+<a id="org02b9d17"></a>
 
 ### Gnome protocol handler desktop file
 
