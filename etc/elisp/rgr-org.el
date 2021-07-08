@@ -8,6 +8,8 @@
   (org-fontify-todo-headline t)
   (org-babel-default-header-args:python
    '((:results  . "output")))
+  (org-refile-use-outline-path 'file)
+  (org-outline-path-complete-in-steps nil)
   :config
   (set-face-attribute 'org-headline-done nil :strike-through t)
   (defun rgr/org-agenda (&optional arg)

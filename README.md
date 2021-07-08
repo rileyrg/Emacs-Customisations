@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#orgac0f32c)
+I have this disabled by default as I use [straight.el package management](#org9f9916e)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#orgac
 ```
 
 
-<a id="orgac0f32c"></a>
+<a id="org9f9916e"></a>
 
 ## straight.el package management
 
@@ -682,16 +682,22 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :init
       ;; Use `consult-completion-in-region' if Vertico is enabled
       (when (not (featurep 'corfu))
-                 (add-hook 'vertico-mode-hook (lambda ()
-                                     (setq completion-in-region-function
-                                           (if vertico-mode
-                                               #'consult-completion-in-region
-                                             #'completion--in-region)))))
+        (add-hook 'vertico-mode-hook (lambda ()
+                                       (setq completion-in-region-function
+                                             (if vertico-mode
+                                                 #'consult-completion-in-region
+                                               #'completion--in-region)))))
       (vertico-mode)
-      :bind
-      (:map vertico-map
-            ( "TAB" . vertico-next)
-            ( "S-TAB" . vertico-prev)))
+      :config
+      (advice-add #'completing-read-multiple
+                  :override #'consult-completing-read-multiple)
+      (defun disable-selection ()
+        (when (eq minibuffer-completion-table #'org-tags-completion-function)
+          (setq-local vertico-map minibuffer-local-completion-map
+                      completion-cycle-threshold nil
+                      completion-styles '(basic))))
+      (advice-add #'vertico--setup :before #'disable-selection))
+
     ```
 
 5.  Abbrev Mode
@@ -994,6 +1000,8 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
       (org-fontify-todo-headline t)
       (org-babel-default-header-args:python
        '((:results  . "output")))
+      (org-refile-use-outline-path 'file)
+      (org-outline-path-complete-in-steps nil)
       :config
       (set-face-attribute 'org-headline-done nil :strike-through t)
       (defun rgr/org-agenda (&optional arg)
@@ -1053,7 +1061,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org114222d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgfd348c4) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3254,7 +3262,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1064836) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org74511c8) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3293,7 +3301,7 @@ fi
 ```
 
 
-<a id="org1064836"></a>
+<a id="org74511c8"></a>
 
 ### Gnome protocol handler desktop file
 

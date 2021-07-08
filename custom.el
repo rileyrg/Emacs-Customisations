@@ -288,12 +288,10 @@ SCHEDULED: %^{Delivery Date}t
  '(org-log-into-drawer t nil nil "Customized with use-package org")
  '(org-modules
    '(org-crypt ol-docview ol-eww ol-info ol-irc ol-mhe ol-rmail ol-w3m ol-eshell ol-bookmark ol-elisp-symbol ol-man))
- '(org-outline-path-complete-in-steps nil)
  '(org-refile-allow-creating-parent-nodes 'confirm nil nil "Customized with use-package org")
  '(org-refile-targets
    '((org-agenda-files :tag . "refile")
      (org-agenda-files :maxlevel . 16)) nil nil "Customized with use-package org")
- '(org-refile-use-outline-path 'file nil nil "Customized with use-package org")
  '(org-reverse-note-order t nil nil "Customized with use-package org")
  '(org-src-window-setup 'current-window)
  '(org-structure-template-alist
