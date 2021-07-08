@@ -728,7 +728,12 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
                                          (if vertico-mode
                                              #'consult-completion-in-region
                                            #'completion--in-region)))))
-    (vertico-mode))
+    (vertico-mode)
+    :bind
+    (:map vertico-map
+          ( "<tab>" . vertico-next)
+          ( "<backtab>" . vertico-previous)))
+
 #+end_src
 **** Abbrev Mode
 :PROPERTIES:

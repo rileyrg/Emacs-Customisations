@@ -382,6 +382,7 @@ SCHEDULED: %^{Delivery Date}t
  '(rebox-style-loop '(27 25 21) t)
  '(recentf-exclude
    '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*"))
+ '(recentf-max-saved-items 50)
  '(rgr/alert-learn-period 300)
  '(rgr/chat-close-functions '(slack-ws-close rgr/erc-quit))
  '(rgr/chat-functions '(rgr/erc-start))

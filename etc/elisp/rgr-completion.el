@@ -23,7 +23,11 @@
                                        (if vertico-mode
                                            #'consult-completion-in-region
                                          #'completion--in-region)))))
-  (vertico-mode))
+  (vertico-mode)
+  :bind
+  (:map vertico-map
+        ( "<tab>" . vertico-next)
+        ( "<backtab>" . vertico-previous)))
 
 (setq-default abbrev-mode 1)
 
