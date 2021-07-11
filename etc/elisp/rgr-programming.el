@@ -87,9 +87,6 @@
           (setq rgr/lldb-buffer-name vterm-buffer-name)
           (rgr/lldb-mode))))))
 
-(use-package realgud-lldb
-  :demand t)
-
 (use-package projectile
   :init
   (projectile-mode +1)

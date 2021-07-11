@@ -82,6 +82,10 @@
 
 (require 'rgr/org "rgr-org" 'NOERROR)
 
+(use-package emojify
+  :init
+  (global-emojify-mode))
+
 (defun centreCursorLineOn()
   "set properties to keep current line approx at centre of screen height. Useful for debugging."
   ;; a faster more concise alternative to MELPA's centered-cursor-mode

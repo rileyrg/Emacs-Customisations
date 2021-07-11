@@ -443,8 +443,16 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
   (use-package ffap
     :custom
     (ffap-require-prefix nil)
-    :config
-    (ffap-bindings))
+    :init
+    (ffap-bindings)
+    (defun rgr/ffap()
+      (interactive)
+      (let ((url (ffap-url-at-point)))
+        (if (and url current-prefix-arg)
+            (browse-url-generic url)
+          (call-interactively 'find-file-at-point))))
+    :bind
+    ( "C-x C-f" . rgr/ffap))
 #+end_src
 **** WAITING [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list :selectrum:WAITING:
 :PROPERTIES:
@@ -1112,6 +1120,13 @@ create unique link IDs when sharing a link to an org section
   (use-package ob-async)
 #+end_src
 
+***** org-super-agenda
+#+begin_src emacs-lisp
+  (use-package org-super-agenda
+    :init
+    (org-super-agenda-mode))
+#+end_src
+
 ***** github compliant markup
 #+begin_src emacs-lisp
   (use-package
@@ -1148,6 +1163,13 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 :PROPERTIES:
 :ID:       6c385a8b-078e-4905-9f27-29bdb4e63b0b
 :END:
+*** emjois
+https://github.com/iqbalansari/emacs-emojify
+#+begin_src emacs-lisp
+  (use-package emojify
+    :init
+    (global-emojify-mode))
+#+end_src
 *** Cursor/Region related
 :PROPERTIES:
 :ID:       63f2b25a-b0fc-4fdf-b893-fc2bd90ad454
@@ -2761,11 +2783,6 @@ SCHEDULED: <2021-07-01 Thu>
 :PROPERTIES:
 :DateCreated: <2021-07-01 Thu 10:32>
 :END:
-***** gud-lldb                                                          :gud:
-#+begin_src emacs-lisp
-    (use-package realgud-lldb
-      :demand t)
-#+end_src
 **** Project Management                                             :project:
 ***** CANCELLED project.el                                        :CANCELLED:
 CLOSED: [2021-07-07 Wed 22:34]

@@ -24,8 +24,16 @@
 (use-package ffap
   :custom
   (ffap-require-prefix nil)
-  :config
-  (ffap-bindings))
+  :init
+  (ffap-bindings)
+  (defun rgr/ffap()
+    (interactive)
+    (let ((url (ffap-url-at-point)))
+      (if (and url current-prefix-arg)
+          (browse-url-generic url)
+        (call-interactively 'find-file-at-point))))
+  :bind
+  ( "C-x C-f" . rgr/ffap))
 
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.

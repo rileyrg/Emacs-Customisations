@@ -35,6 +35,10 @@
 
 (use-package ob-async)
 
+(use-package org-super-agenda
+  :init
+  (org-super-agenda-mode))
+
 (use-package
   ox-gfm
   :demand)

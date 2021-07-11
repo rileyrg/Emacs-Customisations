@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org9f9916e)
+I have this disabled by default as I use [straight.el package management](#org8b196df)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org9f
 ```
 
 
-<a id="org9f9916e"></a>
+<a id="org8b196df"></a>
 
 ## straight.el package management
 
@@ -434,8 +434,16 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
         (use-package ffap
           :custom
           (ffap-require-prefix nil)
-          :config
-          (ffap-bindings))
+          :init
+          (ffap-bindings)
+          (defun rgr/ffap()
+            (interactive)
+            (let ((url (ffap-url-at-point)))
+              (if (and url current-prefix-arg)
+                  (browse-url-generic url)
+                (call-interactively 'find-file-at-point))))
+          :bind
+          ( "C-x C-f" . rgr/ffap))
         ```
 
 5.  [Consult](https://github.com/minad/consult)
@@ -1044,7 +1052,15 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
         (use-package ob-async)
         ```
 
-    4.  github compliant markup
+    4.  org-super-agenda
+
+        ```emacs-lisp
+        (use-package org-super-agenda
+          :init
+          (org-super-agenda-mode))
+        ```
+
+    5.  github compliant markup
 
         ```emacs-lisp
         (use-package
@@ -1061,7 +1077,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgfd348c4) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org1902082) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1077,6 +1093,17 @@ See `org-agenda-files` [org-agenda-files](#orgfd348c4) maintain a file pointing 
 
 
 ## Text tools
+
+
+### emjois
+
+<https://github.com/iqbalansari/emacs-emojify>
+
+```emacs-lisp
+(use-package emojify
+  :init
+  (global-emojify-mode))
+```
 
 
 ### Cursor/Region related
@@ -2514,13 +2541,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         1.  really need to look into project root stuff
 
-    3.  gud-lldb
-
-        ```emacs-lisp
-        (use-package realgud-lldb
-          :demand t)
-        ```
-
 7.  Project Management
 
     1.  projectile
@@ -3262,7 +3282,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org74511c8) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgba68b8a) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3301,7 +3321,7 @@ fi
 ```
 
 
-<a id="org74511c8"></a>
+<a id="orgba68b8a"></a>
 
 ### Gnome protocol handler desktop file
 
