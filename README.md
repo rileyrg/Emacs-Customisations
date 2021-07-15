@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org8b196df)
+I have this disabled by default as I use [straight.el package management](#org93706d0)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org8b
 ```
 
 
-<a id="org8b196df"></a>
+<a id="org93706d0"></a>
 
 ## straight.el package management
 
@@ -1056,6 +1056,52 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
         ```emacs-lisp
         (use-package org-super-agenda
+          :custom
+          (org-super-agenda-groups
+               '(;; Each group has an implicit boolean OR operator between its selectors.
+                 (:name "Today"  ; Optionally specify section name
+                        :time-grid t  ; Items that appear on the time grid
+                        :todo "TODAY")  ; Items that have this TODO keyword
+                 (:name "Important"
+                        ;; Single arguments given alone
+                        :tag "bills"
+                        :priority "A")
+                 ;; Set order of multiple groups at once
+                 (:order-multi (2 (:name "Shopping for home"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :and (:tag "shopping" :tag "@home"))
+                                  (:name "Shopping for caravan"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :and (:tag "shopping" :tag "@caravan"))
+                                  (:name "Emacs related"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :tag ("emacs"))
+                                  (:name "Programming related"
+                                         :and (:tag ("programming") :not (:tag "emacs")))
+                                  (:name "Food-related"
+                                         ;; Multiple args given in list with implicit OR
+                                         :tag ("food" "dinner" "lunch" "breakfast"))
+                                  (:name "Personal"
+                                         :habit t
+                                         :tag "personal")
+                                  ))
+                 ;; Groups supply their own section names when none are given
+                 (:todo "WAITING" :order 8)  ; Set order of this section
+                 (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
+                        ;; Show this group at the end of the agenda (since it has the
+                        ;; highest number). If you specified this group last, items
+                        ;; with these todo keywords that e.g. have priority A would be
+                        ;; displayed in that group instead, because items are grouped
+                        ;; out in the order the groups are listed.
+                        :order 9)
+                 (:priority<= "B"
+                              ;; Show this section after "Today" and "Important", because
+                              ;; their order is unspecified, defaulting to 0. Sections
+                              ;; are displayed lowest-number-first.
+                              :order 1)
+                 ;; After the last group, the agenda will display items that didn't
+                 ;; match any of these groups, with the default order position of 99
+                 ))
           :init
           (org-super-agenda-mode))
         ```
@@ -1077,7 +1123,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org1902082) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgefb2627) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2539,8 +2585,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```
 
-        1.  really need to look into project root stuff
-
 7.  Project Management
 
     1.  projectile
@@ -3282,7 +3326,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgba68b8a) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org571087b) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3321,7 +3365,7 @@ fi
 ```
 
 
-<a id="orgba68b8a"></a>
+<a id="org571087b"></a>
 
 ### Gnome protocol handler desktop file
 

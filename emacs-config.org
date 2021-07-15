@@ -1123,6 +1123,52 @@ create unique link IDs when sharing a link to an org section
 ***** org-super-agenda
 #+begin_src emacs-lisp
   (use-package org-super-agenda
+    :custom
+    (org-super-agenda-groups
+         '(;; Each group has an implicit boolean OR operator between its selectors.
+           (:name "Today"  ; Optionally specify section name
+                  :time-grid t  ; Items that appear on the time grid
+                  :todo "TODAY")  ; Items that have this TODO keyword
+           (:name "Important"
+                  ;; Single arguments given alone
+                  :tag "bills"
+                  :priority "A")
+           ;; Set order of multiple groups at once
+           (:order-multi (2 (:name "Shopping for home"
+                                   ;; Boolean AND group matches items that match all subgroups
+                                   :and (:tag "shopping" :tag "@home"))
+                            (:name "Shopping for caravan"
+                                   ;; Boolean AND group matches items that match all subgroups
+                                   :and (:tag "shopping" :tag "@caravan"))
+                            (:name "Emacs related"
+                                   ;; Boolean AND group matches items that match all subgroups
+                                   :tag ("emacs"))
+                            (:name "Programming related"
+                                   :and (:tag ("programming") :not (:tag "emacs")))
+                            (:name "Food-related"
+                                   ;; Multiple args given in list with implicit OR
+                                   :tag ("food" "dinner" "lunch" "breakfast"))
+                            (:name "Personal"
+                                   :habit t
+                                   :tag "personal")
+                            ))
+           ;; Groups supply their own section names when none are given
+           (:todo "WAITING" :order 8)  ; Set order of this section
+           (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
+                  ;; Show this group at the end of the agenda (since it has the
+                  ;; highest number). If you specified this group last, items
+                  ;; with these todo keywords that e.g. have priority A would be
+                  ;; displayed in that group instead, because items are grouped
+                  ;; out in the order the groups are listed.
+                  :order 9)
+           (:priority<= "B"
+                        ;; Show this section after "Today" and "Important", because
+                        ;; their order is unspecified, defaulting to 0. Sections
+                        ;; are displayed lowest-number-first.
+                        :order 1)
+           ;; After the last group, the agenda will display items that didn't
+           ;; match any of these groups, with the default order position of 99
+           ))
     :init
     (org-super-agenda-mode))
 #+end_src
@@ -2778,10 +2824,14 @@ lldb/voltron integration to project
               (rgr/lldb-mode))))))
 
   #+end_src
-****** TODO really need to look into project root stuff
-SCHEDULED: <2021-07-01 Thu>
+****** CANCELLED really need to look into project root stuff      :CANCELLED:
+CLOSED: [2021-07-13 Tue 00:49] SCHEDULED: <2021-07-01 Thu>
 :PROPERTIES:
 :DateCreated: <2021-07-01 Thu 10:32>
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from "TODO"       [2021-07-13 Tue 00:49] \\
+  back to projectile
 :END:
 **** Project Management                                             :project:
 ***** CANCELLED project.el                                        :CANCELLED:
@@ -3568,8 +3618,7 @@ to add to version control.
 #+include: "./.gitignore" src config
 
 
-**** TODO how to export tangle destination?
-SCHEDULED: <2021-07-14 Wed>
+**** TODO [#B] how to export tangle destination?
 :LOGBOOK:
 - State "TODO"       from              [2021-06-03 Thu 16:07]
 :END:
