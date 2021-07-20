@@ -119,7 +119,6 @@
      (popwin:display-buffer-condition popwin:display-buffer-action)))
  '(display-time-mode t)
  '(el-docstring-sap--display-func 'el-docstring-sap--quick-peek)
- '(el-docstring-sap--posframe-poshandler nil)
  '(eldoc-box-only-multi-line t)
  '(elfeed-feeds
    '("https://stackoverflow.com/feeds/tag/clang" "https://stackoverflow.com/feeds/tag/llvm" "https://stackoverflow.com/feeds/tag/lldb" "https://stackoverflow.com/feeds/tag/python" "https://stackoverflow.com/feeds/tag/bash"
@@ -326,7 +325,9 @@ SCHEDULED: %^{Delivery Date}t
      ("v" . "verse")))
  '(org-tag-alist
    '((:startgroup)
-     ("@caravan" . 99)
+     (#("@caravan" 0 8
+        (face nil))
+      . 99)
      ("@shamrock" . 32)
      ("@home" . 104)
      ("@dublin" . 100)
@@ -345,7 +346,9 @@ SCHEDULED: %^{Delivery Date}t
      ("toread" . 114)
      ("idea" . 97)
      ("programming" . 80)
-     ("shopping" . 115)
+     (#("shopping" 0 8
+        (face nil))
+      . 115)
      ("bill" . 98)))
  '(org-tag-persistent-alist '(("noexport" . 110) ("trash" . 116) ("refile" . 114)) nil nil "Customized with use-package org")
  '(org-tags-exclude-from-inheritance '("PROJECT" "DEFAULTCLOCKTASK" "crypt") nil nil "Customized with use-package org")

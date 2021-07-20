@@ -38,6 +38,8 @@
 
 (use-package el-docstring-sap-
   :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+  :init
+  (use-package quick-peek)
   :hook
   (emacs-lisp-mode . el-docstring-sap-mode)
   :bind

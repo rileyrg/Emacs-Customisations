@@ -1134,12 +1134,18 @@ create unique link IDs when sharing a link to an org section
                   :tag "bills"
                   :priority "A")
            ;; Set order of multiple groups at once
-           (:order-multi (2 (:name "Shopping for home"
+           (:order-multi (2 (:name "home"
                                    ;; Boolean AND group matches items that match all subgroups
-                                   :and (:tag "shopping" :tag "@home"))
-                            (:name "Shopping for caravan"
+                                   :and (:tag "@home"))
+                            (:name "caravan"
                                    ;; Boolean AND group matches items that match all subgroups
-                                   :and (:tag "shopping" :tag "@caravan"))
+                                   :and (:tag "@caravan"))
+                            (:name "shopping all"
+                                   ;; Boolean AND group matches items that match all subgroups
+                                   :and (:tag "shopping" :not (:tag "@home @caravan")))
+                            (:name "shopping"
+                                   ;; Boolean AND group matches items that match all subgroups
+                                   :and (:tag "shopping" :not (:tag "@home @caravan")))
                             (:name "Emacs related"
                                    ;; Boolean AND group matches items that match all subgroups
                                    :tag ("emacs"))
@@ -1154,6 +1160,7 @@ create unique link IDs when sharing a link to an org section
                             ))
            ;; Groups supply their own section names when none are given
            (:todo "WAITING" :order 8)  ; Set order of this section
+           (:todo "STARTED" :order 8)
            (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
                   ;; Show this group at the end of the agenda (since it has the
                   ;; highest number). If you specified this group last, items
@@ -1956,30 +1963,6 @@ A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b1702145
     ("M-0" . 'delete-window)
     ("M-1" . 'delete-other-windows))
 #+end_src
-*** Buffer selection
-:PROPERTIES:
-:ID:       31a7e1db-04ca-410d-9c24-dfdd393df074
-:END:
-**** CANCELLED Bufler                                             :CANCELLED:
-CLOSED: [2021-05-17 Mo 19:59]
-:PROPERTIES:
-:ID:       b44d5a75-8846-4215-9b4f-a4f085aed0c8
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-05-17 Mo 19:59] \\
-  nah
-:END:
-[[https://github.com/alphapapa/bufler.el][Bufler]]  is like a butler for your buffers, presenting them to you in an organized way based on your instructions.
-
-#+begin_src emacs-lisp
-  (use-package bufler
-    :config
-    (bufler-tabs-mode t)
-    :bind
-    ("C-x C-b" . 'bufler))
-#+end_src
-
 *** dired - emacs file management                                     :dired:
 :PROPERTIES:
 :ID:       0d37638b-55cd-4036-a0e0-6e6ab42a5046
@@ -1993,44 +1976,9 @@ CLOSED: [2021-05-17 Mo 19:59]
     :config
     :hook (dired-mode . dired-git-mode))
 #+end_src
-**** CANCELLED all-the-icons-dired                                :CANCELLED:
-CLOSED: [2021-06-07 Mon 10:57]
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-#+begin_src emacs-lisp
-  (use-package all-the-icons-dired
-    :demand
-    :hook ((dired-mode . all-the-icons-dired-mode)))
-#+end_src
-**** CANCELLED dired-sidebar                                      :CANCELLED:
-CLOSED: [2021-06-07 Mon 10:56]
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-#+begin_src emacs-lisp
-  (use-package dired-sidebar
-    :commands (dired-sidebar-toggle-sidebar)
-    :custom
-    (dired-sidebar-subtree-line-prefix "__")
-    (dired-sidebar-theme 'vscode)
-    (dired-sidebar-use-term-integration t)
-    (dired-sidebar-use-custom-font t)
-    :init
-    (add-hook 'dired-sidebar-mode-hook
-              (lambda ()
-                (unless (file-remote-p default-directory)
-                  (auto-revert-mode))))
-    :config
-    (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-    (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-    :bind (("C-x C-n" . dired-sidebar-toggle-sidebar)))
-
-#+end_src
 **** dired hacks
 :PROPERTIES:
 :ID:       209d1415-fe48-4df2-b6bd-e51c769a4ea7
-:header-args:emacs-lisp: :tangle no
 :END:
 Collection of useful dired additions found on github [[https://github.com/Fuco1/dired-hacks][here]]. Found out about
 it at the useful emacs resource [[http://pragmaticemacs.com/category/dired/][*Pragmatic Emacs*]].
@@ -2040,7 +1988,7 @@ it at the useful emacs resource [[http://pragmaticemacs.com/category/dired/][*Pr
 :END:
 #+begin_src emacs-lisp
   (use-package dired-subtree
-    :config
+    :init
     (use-package dash)
     :bind (:map dired-mode-map
                 ("i" . dired-subtree-insert)
@@ -2053,23 +2001,11 @@ it at the useful emacs resource [[http://pragmaticemacs.com/category/dired/][*Pr
 More dired based filtering see [[help:dired-filter-prefix][dired-filter-prefix]]
 #+begin_src emacs-lisp
   (use-package dired-filter
-    :config
+    :init
     (use-package dash)
-    )
-#+end_src
-***** dired quicksort
-:PROPERTIES:
-:ID:       4f3efcf1-67e8-47c8-809b-4ab958852723
-:END:
-Dired sorting popup options from [[http://pragmaticemacs.com/emacs/speedy-sorting-in-dired-with-dired-quick-sort/][Pragmatic Emacs]].
-EDIT: cant clone from gitlab
-#+begin_src emacs-lisp
-  (use-package dired-quick-sort
-    :disabled t
-    :config
-    (dired-quick-sort-setup))
-#+end_src
+    (define-key dired-mode-map (kbd "/") dired-filter-map))
 
+#+end_src
 *** PopUp Utilities
 :PROPERTIES:
 :ID:       31d692c1-44b5-442f-876a-c0520ded03c5
@@ -2676,6 +2612,8 @@ Display a poup containing docstring at point
 #+begin_src emacs-lisp
   (use-package el-docstring-sap-
     :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+    :init
+    (use-package quick-peek)
     :hook
     (emacs-lisp-mode . el-docstring-sap-mode)
     :bind

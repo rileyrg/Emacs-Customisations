@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org93706d0)
+I have this disabled by default as I use [straight.el package management](#org0a9fd26)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org93
 ```
 
 
-<a id="org93706d0"></a>
+<a id="org0a9fd26"></a>
 
 ## straight.el package management
 
@@ -1067,12 +1067,18 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
                         :tag "bills"
                         :priority "A")
                  ;; Set order of multiple groups at once
-                 (:order-multi (2 (:name "Shopping for home"
+                 (:order-multi (2 (:name "home"
                                          ;; Boolean AND group matches items that match all subgroups
-                                         :and (:tag "shopping" :tag "@home"))
-                                  (:name "Shopping for caravan"
+                                         :and (:tag "@home"))
+                                  (:name "caravan"
                                          ;; Boolean AND group matches items that match all subgroups
-                                         :and (:tag "shopping" :tag "@caravan"))
+                                         :and (:tag "@caravan"))
+                                  (:name "shopping all"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :and (:tag "shopping" :not (:tag "@home @caravan")))
+                                  (:name "shopping"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :and (:tag "shopping" :not (:tag "@home @caravan")))
                                   (:name "Emacs related"
                                          ;; Boolean AND group matches items that match all subgroups
                                          :tag ("emacs"))
@@ -1087,6 +1093,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
                                   ))
                  ;; Groups supply their own section names when none are given
                  (:todo "WAITING" :order 8)  ; Set order of this section
+                 (:todo "STARTED" :order 8)
                  (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
                         ;; Show this group at the end of the agenda (since it has the
                         ;; highest number). If you specified this group last, items
@@ -1123,7 +1130,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgefb2627) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org9ac5e20) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1855,9 +1862,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
     ```
 
 
-### Buffer selection
-
-
 ### dired - emacs file management
 
 1.  Dired Git Info
@@ -1876,7 +1880,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
         ```emacs-lisp
         (use-package dired-subtree
-          :config
+          :init
           (use-package dash)
           :bind (:map dired-mode-map
                       ("i" . dired-subtree-insert)
@@ -1889,20 +1893,10 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
         ```emacs-lisp
         (use-package dired-filter
-          :config
+          :init
           (use-package dash)
-          )
-        ```
+          (define-key dired-mode-map (kbd "/") dired-filter-map))
 
-    3.  dired quicksort
-
-        Dired sorting popup options from [Pragmatic Emacs](http://pragmaticemacs.com/emacs/speedy-sorting-in-dired-with-dired-quick-sort/). EDIT: cant clone from gitlab
-
-        ```emacs-lisp
-        (use-package dired-quick-sort
-          :disabled t
-          :config
-          (dired-quick-sort-setup))
         ```
 
 
@@ -2443,6 +2437,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             ```emacs-lisp
             (use-package el-docstring-sap-
               :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+              :init
+              (use-package quick-peek)
               :hook
               (emacs-lisp-mode . el-docstring-sap-mode)
               :bind
@@ -3326,7 +3322,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org571087b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org11aca4c) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3365,7 +3361,7 @@ fi
 ```
 
 
-<a id="org571087b"></a>
+<a id="org11aca4c"></a>
 
 ### Gnome protocol handler desktop file
 
