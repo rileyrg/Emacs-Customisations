@@ -115,6 +115,14 @@
   :config
   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
 
+(use-package flymake-shellcheck
+  :commands flymake-shellcheck-load
+  :init
+  (defun rgr/sh-mode-hook()
+      (flymake-shellcheck-load)
+      (flymake-mode +1))
+  :hook (sh-mode . rgr/sh-mode-hook))
+
 (use-package
   magit
   :custom

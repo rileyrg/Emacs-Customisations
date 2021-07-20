@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org0a9fd26)
+I have this disabled by default as I use [straight.el package management](#org72d48c2)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org0a
 ```
 
 
-<a id="org0a9fd26"></a>
+<a id="org72d48c2"></a>
 
 ## straight.el package management
 
@@ -1130,7 +1130,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org9ac5e20) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb490ccf) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1880,8 +1880,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
         ```emacs-lisp
         (use-package dired-subtree
-          :init
-          (use-package dash)
           :bind (:map dired-mode-map
                       ("i" . dired-subtree-insert)
                       (";" . dired-subtree-remove)))
@@ -1894,7 +1892,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
         ```emacs-lisp
         (use-package dired-filter
           :init
-          (use-package dash)
           (define-key dired-mode-map (kbd "/") dired-filter-map))
 
         ```
@@ -2648,12 +2645,26 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
 11. Flymake
 
-    ```emacs-lisp
-    (use-package flymake-diagnostic-at-point
-      :after flymake
-      :config
-      (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
-    ```
+    1.  diagnostic-at-point
+
+        ```emacs-lisp
+        (use-package flymake-diagnostic-at-point
+          :after flymake
+          :config
+          (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+        ```
+
+    2.  shellcheck
+
+        ```emacs-lisp
+        (use-package flymake-shellcheck
+          :commands flymake-shellcheck-load
+          :init
+          (defun rgr/sh-mode-hook()
+              (flymake-shellcheck-load)
+              (flymake-mode +1))
+          :hook (sh-mode . rgr/sh-mode-hook))
+        ```
 
 12. Version Control
 
@@ -3322,7 +3333,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org11aca4c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf035ec9) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3361,7 +3372,7 @@ fi
 ```
 
 
-<a id="org11aca4c"></a>
+<a id="orgf035ec9"></a>
 
 ### Gnome protocol handler desktop file
 

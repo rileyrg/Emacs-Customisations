@@ -1988,8 +1988,6 @@ it at the useful emacs resource [[http://pragmaticemacs.com/category/dired/][*Pr
 :END:
 #+begin_src emacs-lisp
   (use-package dired-subtree
-    :init
-    (use-package dash)
     :bind (:map dired-mode-map
                 ("i" . dired-subtree-insert)
                 (";" . dired-subtree-remove)))
@@ -2002,7 +2000,6 @@ More dired based filtering see [[help:dired-filter-prefix][dired-filter-prefix]]
 #+begin_src emacs-lisp
   (use-package dired-filter
     :init
-    (use-package dash)
     (define-key dired-mode-map (kbd "/") dired-filter-map))
 
 #+end_src
@@ -2870,11 +2867,22 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
                         (message "flycheck %s" s)))))
 #+end_src
 **** Flymake
+***** diagnostic-at-point
 #+begin_src emacs-lisp
 (use-package flymake-diagnostic-at-point
   :after flymake
   :config
   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+#+end_src
+***** shellcheck
+#+begin_src emacs-lisp
+  (use-package flymake-shellcheck
+    :commands flymake-shellcheck-load
+    :init
+    (defun rgr/sh-mode-hook()
+        (flymake-shellcheck-load)
+        (flymake-mode +1))
+    :hook (sh-mode . rgr/sh-mode-hook))
 #+end_src
 **** Version Control                                                 :git:vc:
 :PROPERTIES:

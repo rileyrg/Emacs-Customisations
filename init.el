@@ -234,15 +234,12 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :hook (dired-mode . dired-git-mode))
 
 (use-package dired-subtree
-  :init
-  (use-package dash)
   :bind (:map dired-mode-map
               ("i" . dired-subtree-insert)
               (";" . dired-subtree-remove)))
 
 (use-package dired-filter
   :init
-  (use-package dash)
   (define-key dired-mode-map (kbd "/") dired-filter-map))
 
 (use-package posframe)
