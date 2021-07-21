@@ -763,7 +763,6 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 #+end_src
 ** bookmarks
 *** bookmarks+
-I've included this primarily for eww bookmarks in consult-buffer but it's way too big
 :LOGBOOK:
 - State "CANCELLED"  from              [2021-06-30 Wed 19:02]
 - State "CANCELLED"  from              [2021-06-30 Wed 08:05]
@@ -771,10 +770,11 @@ I've included this primarily for eww bookmarks in consult-buffer but it's way to
 #+begin_src emacs-lisp
   (use-package bookmark+
     :demand t
-    :after bookmark
-    :bind
-          ("C-x x n" . bmkp-next-bookmark)
-          ("C-x x p" . bmkp-prev-bookmark))
+    :after bookmark)
+
+    ;; :bind
+    ;;       ("C-x x n" . bmkp-next-bookmark)
+    ;;       ("C-x x p" . bmkp-prev-bookmark))
 #+end_src
 ** Lazy Language Learning, lazy-lang-learn
 :PROPERTIES:
@@ -1945,6 +1945,19 @@ A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b1702145
 :PROPERTIES:
 :ID:       d8dd73d0-9574-42a4-a23a-b211c17de532
 :END:
+**** perspective                                                :perspective:
+project aware buffer handling
+https://www.youtube.com/watch?v=uyMdDzjQFMU&ab_channel=SystemCrafters
+#+begin_src emacs-lisp
+  (use-package perspective
+    :custom
+    (persp-state-default-file (no-littering-expand-var-file-name "perspective/perspectile.el"))
+    :config
+    (persp-mode)
+    (add-hook 'kill-emacs-hook  #'persp-state-save)
+    :bind
+    ("C-x C-b" . persp-list-buffers))
+#+end_src
 **** buffer deletion - but keep scratch and messages!
 #+begin_src emacs-lisp
   (use-package emacs

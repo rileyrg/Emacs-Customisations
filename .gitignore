@@ -16,6 +16,9 @@
 !etc
 !var
 
+!var/bmkp
+!var/bmkp/current-bookmark.el
+
 !etc/abbrev.el
 
 !etc/early-load
