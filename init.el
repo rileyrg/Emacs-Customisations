@@ -66,10 +66,11 @@
 
 (use-package bookmark+
   :demand t
-  :after bookmark
-  :bind
-        ("C-x x n" . bmkp-next-bookmark)
-        ("C-x x p" . bmkp-prev-bookmark))
+  :after bookmark)
+
+  ;; :bind
+  ;;       ("C-x x n" . bmkp-next-bookmark)
+  ;;       ("C-x x p" . bmkp-prev-bookmark))
 
 (use-package lazy-lang-learn
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
@@ -212,6 +213,15 @@ creates a report in function-name.ftrace and opens it in a buffer"
                "*Messages*")))
     (switch-to-buffer (if (string= (buffer-name) n)
                           (other-buffer) n))))
+
+(use-package perspective
+  :custom
+  (persp-state-default-file (no-littering-expand-var-file-name "perspective/perspectile.el"))
+  :config
+  (persp-mode)
+  (add-hook 'kill-emacs-hook  #'persp-state-save)
+  :bind
+  ("C-x C-b" . persp-list-buffers))
 
 (use-package emacs
   :demand
