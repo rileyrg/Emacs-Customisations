@@ -784,7 +784,7 @@ CLOSED: [2021-07-21 Wed 11:39]
   (provide 'rgr/completion)
 #+end_src
 ** bookmarks
-*** bookmarks+
+*** bookmarks+                                                         :bmkp:
 :PROPERTIES:
 :ID:       02489c8b-1ce3-407e-a800-2b92f94827b9
 :END:
@@ -801,6 +801,14 @@ CLOSED: [2021-07-21 Wed 11:39]
     (delete-old-versions t)
     :after bookmark)
 #+end_src
+**** TODO waiting on replies to reddit post about bmkp vesioning
+SCHEDULED: <2021-07-24 Sat>
+        :PROPERTIES:
+        :DateCreated: <2021-07-22 Thu 16:17>
+        :END:
+:LOGBOOK:
+- State "TODO"       from              [2021-07-22 Thu 16:18]
+:END:
 **** TODO look into why bmkp store org link doesnt work
 :PROPERTIES:
 :DateCreated: <2021-07-22 Thu 02:27>
