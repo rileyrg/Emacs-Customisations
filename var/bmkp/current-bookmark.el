@@ -50,8 +50,10 @@
     (handler . bmkp-jump-eww))
 #1=(#("Ardour, working with regions" 0 28
       (bmkp-full-record #1#))
-    (annotation)
+    (annotation . "annotaton mentioning \"regions\" in order to test auto save")
     (tags
+     #("recording" 0 9
+       (face nil))
      #("regions" 0 7
        (face nil))
      #("ardour" 0 6
@@ -62,8 +64,8 @@
     (rear-context-string . "evious \n* ↑ Up \n")
     (front-context-region-string)
     (rear-context-region-string)
-    (visits . 1)
-    (time 24824 45984 1432 146000)
+    (visits . 3)
+    (time 24825 15551 675083 583000)
     (created 24824 45941 390531 199000)
     (position . 2340)
     (location . "https://manual.ardour.org/working-with-regions/")
@@ -71,8 +73,8 @@
 #1=(#("ardour" 0 6
       (bmkp-full-record #1#))
     (buffer-name . "*Bookmark List*")
-    (visits . 3)
-    (time 24824 47754 102081 35000)
+    (visits . 5)
+    (time 24825 15523 304399 163000)
     (created 24824 45473 166169 646000)
     (position . 155)
     (filename . "   - no file -")
@@ -92,6 +94,9 @@
       (bmkp-full-record #1#))
     (annotation . "I wonder if I can auto \"open externally\" for certain bookmarks?")
     (tags
+     #("recording" 0 9
+       (face nil))
+     "video" "youtube"
      #("ardour" 0 6
        (face nil)))
     (buffer-name . "*eww*")
@@ -100,9 +105,9 @@
     (rear-context-string)
     (front-context-region-string)
     (rear-context-region-string)
-    (visits . 0)
-    (time . #2=(24824 45369 23427 398000))
-    (created . #2#)
+    (visits . 4)
+    (time 24825 15571 267588 577000)
+    (created 24824 45369 23427 398000)
     (position . 1)
     (location . "https://www.youtube.com/watch?v=bfTAKv4htDE&t=541s&ab_channel=unfa")
     (handler . bmkp-jump-eww))
@@ -110,6 +115,8 @@
       (bmkp-full-record #1#))
     (annotation . "test")
     (tags
+     #("recording" 0 9
+       (face nil))
      #("ardour" 0 6
        (face nil)))
     (buffer-name . "*eww*")
@@ -118,8 +125,8 @@
     (rear-context-string)
     (front-context-region-string)
     (rear-context-region-string)
-    (visits . 1)
-    (time 24824 45862 240464 94000)
+    (visits . 2)
+    (time 24825 15546 936781 744000)
     (created 24824 45195 511921 159000)
     (position . 1)
     (location . "https://manual.ardour.org/toc/")
@@ -213,8 +220,8 @@
 #1=(#("emacs-config.org" 0 16
       (bmkp-full-record #1#))
     (end-position . 1)
-    (time 24823 52508 184044 452000)
-    (visits . 8)
+    (time 24824 48828 827128 835000)
+    (visits . 9)
     (tags
      #("config" 0 6
        (face nil))
@@ -302,12 +309,12 @@
     (tags)
     (filename . "~/.emacs.d/var/org/orgfiles/refile.org")
     (buffer-name . "refile.org")
-    (front-context-string . "** TODO look int")
+    (front-context-string . "** TODO look at ")
     (rear-context-string . "Tasks To Refile\n")
     (front-context-region-string)
     (rear-context-region-string)
     (visits . 0)
-    (time . #2=(24824 48021 784992 720000))
+    (time . #2=(24825 5490 491173 278000))
     (created . #2#)
     (position . 92))
 #1=(#("1_CppGrundlagen" 0 15

@@ -1378,26 +1378,27 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 :END:
 
 **** web browsing
+Set up default emacs browsing - I like eww but palming off some URLs to external browser.
 #+begin_src emacs-lisp
-  (use-package emacs
-    :custom
-    (browse-url-browser-function 'eww-browse-url)
-    (browse-url-generic-program "google-chrome")
-    (browse-url-secondary-browser-function 'browse-url-default-browser))
+  (custom-set-variables
+   '(eww-search-prefix "https://google.com/search?q=")
+   '(browse-url-browser-function 'eww-browse-url)
+   '(browse-url-generic-program "google-chrome")
+   '(browse-url-secondary-browser-function 'browse-url-default-browser))
 #+end_src
-***** TODO eww
-:LOGBOOK:
-- Note taken on [2021-07-22 Thu 03:03] \\
-  need to make a regexp list in custom for this
-- State "TODO"       from              [2021-07-22 Thu 03:03]
-:END:
+***** eww
+Advice EWW to launch certain URLs using the generic launcher rather than EWW.
 #+begin_src emacs-lisp
+  (defcustom rgr/eww-external-launch-url-chunks '("youtube")
+    "If any component of this list is contained in an EWW url then it will use `browse-url-generic to launch that url instead of `eww"
+    :type '(repeat string))
+
   (defadvice eww (around rgr/eww-extern-advise activate)
-    (if (string-match-p (regexp-quote "youtube.com") url)
-        (browse-url-default-browser url)
+    "Use `browse-url-generic if any part of URL is contained in `rgr/eww-external-launch-url-chunks"
+    (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
+        (browse-url-generic url)
     ad-do-it))
 #+end_src
-
 
 **** Google related
 :PROPERTIES:

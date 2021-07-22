@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org2ba361b)
+I have this disabled by default as I use [straight.el package management](#org3a30458)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org2b
 ```
 
 
-<a id="org2ba361b"></a>
+<a id="org3a30458"></a>
 
 ## straight.el package management
 
@@ -1131,7 +1131,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgba26a42) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org059ae19) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1283,20 +1283,29 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 1.  web browsing
 
+    Set up default emacs browsing - I like eww but palming off some URLs to external browser.
+
     ```emacs-lisp
-    (use-package emacs
-      :custom
-      (browse-url-browser-function 'eww-browse-url)
-      (browse-url-generic-program "google-chrome")
-      (browse-url-secondary-browser-function 'browse-url-default-browser))
+    (custom-set-variables
+     '(eww-search-prefix "https://google.com/search?q=")
+     '(browse-url-browser-function 'eww-browse-url)
+     '(browse-url-generic-program "google-chrome")
+     '(browse-url-secondary-browser-function 'browse-url-default-browser))
     ```
 
     1.  eww
 
+        Advice EWW to launch certain URLs using the generic launcher rather than EWW.
+
         ```emacs-lisp
+        (defcustom rgr/eww-external-launch-url-chunks '("youtube")
+          "If any component of this list is contained in an EWW url then it will use `browse-url-generic to launch that url instead of `eww"
+          :type '(repeat string))
+
         (defadvice eww (around rgr/eww-extern-advise activate)
-          (if (string-match-p (regexp-quote "youtube.com") url)
-              (browse-url-default-browser url)
+          "Use `browse-url-generic if any part of URL is contained in `rgr/eww-external-launch-url-chunks"
+          (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
+              (browse-url-generic url)
           ad-do-it))
         ```
 
@@ -3364,7 +3373,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbdb4556) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org206e370) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3403,7 +3412,7 @@ fi
 ```
 
 
-<a id="orgbdb4556"></a>
+<a id="org206e370"></a>
 
 ### Gnome protocol handler desktop file
 
