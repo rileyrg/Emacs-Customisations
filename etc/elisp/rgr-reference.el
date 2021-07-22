@@ -1,12 +1,17 @@
-(use-package emacs
-  :custom
-  (browse-url-browser-function 'eww-browse-url)
-  (browse-url-generic-program "google-chrome")
-  (browse-url-secondary-browser-function 'browse-url-default-browser))
+(custom-set-variables
+ '(eww-search-prefix "https://google.com/search?q=")
+ '(browse-url-browser-function 'eww-browse-url)
+ '(browse-url-generic-program "google-chrome")
+ '(browse-url-secondary-browser-function 'browse-url-default-browser))
+
+(defcustom rgr/eww-external-launch-url-chunks '("youtube")
+  "If any component of this list is contained in an EWW url then it will use `browse-url-generic to launch that url instead of `eww"
+  :type '(repeat string))
 
 (defadvice eww (around rgr/eww-extern-advise activate)
-  (if (string-match-p (regexp-quote "youtube.com") url)
-      (browse-url-default-browser url)
+  "Use `browse-url-generic if any part of URL is contained in `rgr/eww-external-launch-url-chunks"
+  (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
+      (browse-url-generic url)
   ad-do-it))
 
 (require 'rgr/google "rgr-google")
