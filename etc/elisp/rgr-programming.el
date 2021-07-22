@@ -124,16 +124,15 @@
       (flymake-mode +1))
   :hook (sh-mode . rgr/sh-mode-hook))
 
-;; (use-package
-;;   magit
-;;   :custom
-;;   (vc-handled-backends '(git))
-;;   :config
-;;   (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-;;   :bind
-;;   ("C-x g" . magit-status))
-(straight-use-package 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package
+  magit
+  :custom
+  (vc-handled-backends '(git))
+  :config
+  (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
+  (require 'magit-extras)
+  :bind
+  ("C-x g" . magit-status))
 
 (use-package orgit
   :after magit)

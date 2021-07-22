@@ -2926,7 +2926,7 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
 :PROPERTIES:
 :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
 :END:
-***** It's [[https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs :magit:
+***** It's [[Https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs :magit:
 :PROPERTIES:
 :ID:       af65c6af-be13-4c09-87ae-a128711ddc14
 :END:
@@ -2934,16 +2934,15 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
 magit
 :END:
 #+begin_src emacs-lisp
-  ;; (use-package
-  ;;   magit
-  ;;   :custom
-  ;;   (vc-handled-backends '(git))
-  ;;   :config
-  ;;   (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-  ;;   :bind
-  ;;   ("C-x g" . magit-status))
-  (straight-use-package 'magit)
-  (global-set-key (kbd "C-x g") 'magit-status)
+  (use-package
+    magit
+    :custom
+    (vc-handled-backends '(git))
+    :config
+    (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
+    (require 'magit-extras)
+    :bind
+    ("C-x g" . magit-status))
 #+end_src
 ****** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
 :PROPERTIES:
