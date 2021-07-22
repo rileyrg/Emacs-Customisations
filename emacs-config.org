@@ -697,6 +697,28 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" elisp-dir)
 :END:
+**** CANCELLED fancy-dabbrev                                      :CANCELLED:
+CLOSED: [2021-07-21 Wed 11:39]
+:PROPERTIES:
+:ID:       63e64233-79d8-4e94-bd22-5c458416d3f1
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-07-21 Wed 11:39] \\
+  hmm, how to plug dabbrev into completing read!?
+:END:
+[[https://github.com/jrosdahl/fancy-dabbrev][fancy-dabbrev]] works ok with vertico and alt tab emacs completion
+#+begin_src emacs-lisp
+  ;; Load fancy-dabbrev.el:
+  (use-package fancy-dabbrev
+    :init
+    ;; Enable fancy-dabbrev previews everywhere:
+    (global-fancy-dabbrev-mode)
+    :bind
+    ("C-1" . #'fancy-dabbrev-forward)
+    ("C-2" . #'fancy-dabbrev-backward))
+#+end_src
+
 **** Which Key                                                    :which:key:
 :PROPERTIES:
 :END:
@@ -763,19 +785,26 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 #+end_src
 ** bookmarks
 *** bookmarks+
+:PROPERTIES:
+:ID:       02489c8b-1ce3-407e-a800-2b92f94827b9
+:END:
 :LOGBOOK:
 - State "CANCELLED"  from              [2021-06-30 Wed 19:02]
 - State "CANCELLED"  from              [2021-06-30 Wed 08:05]
 :END:
 #+begin_src emacs-lisp
   (use-package bookmark+
-    :demand t
+    :demand
+    :custom
+    (bookmark-version-control t)
+    (bookmark-save-flag 1)
+    (delete-old-versions t)
     :after bookmark)
-
-    ;; :bind
-    ;;       ("C-x x n" . bmkp-next-bookmark)
-    ;;       ("C-x x p" . bmkp-prev-bookmark))
 #+end_src
+**** TODO look into why bmkp store org link doesnt work
+:PROPERTIES:
+:DateCreated: <2021-07-22 Thu 02:27>
+:END:
 ** Lazy Language Learning, lazy-lang-learn
 :PROPERTIES:
 :END:
@@ -1347,6 +1376,28 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-reference.el" elisp-dir)
 :ID:       e74c6135-2abc-46db-844e-a2c638b00bae
 :END:
+
+**** web browsing
+#+begin_src emacs-lisp
+  (use-package emacs
+    :custom
+    (browse-url-browser-function 'eww-browse-url)
+    (browse-url-generic-program "google-chrome")
+    (browse-url-secondary-browser-function 'browse-url-default-browser))
+#+end_src
+***** TODO eww
+:LOGBOOK:
+- Note taken on [2021-07-22 Thu 03:03] \\
+  need to make a regexp list in custom for this
+- State "TODO"       from              [2021-07-22 Thu 03:03]
+:END:
+#+begin_src emacs-lisp
+  (defadvice eww (around rgr/eww-extern-advise activate)
+    (if (string-match-p (regexp-quote "youtube.com") url)
+        (browse-url-default-browser url)
+    ad-do-it))
+#+end_src
+
 
 **** Google related
 :PROPERTIES:
@@ -2631,7 +2682,15 @@ Display a poup containing docstring at point
     ("M-<f1>" . el-docstring-sap-mode))
 
 #+end_src
-****** lispy
+****** CANCELLED lispy                                            :CANCELLED:
+CLOSED: [2021-07-21 Wed 11:28]
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-07-21 Wed 11:28] \\
+  maybe another day
+:END:
 #+begin_src emacs-lisp
   (use-package lispy
     :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))

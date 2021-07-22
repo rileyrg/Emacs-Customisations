@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org72d48c2)
+I have this disabled by default as I use [straight.el package management](#org2ba361b)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org72
 ```
 
 
-<a id="org72d48c2"></a>
+<a id="org2ba361b"></a>
 
 ## straight.el package management
 
@@ -728,16 +728,17 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 ### bookmarks+
 
-I've included this primarily for eww bookmarks in consult-buffer but it's way too big
-
 ```emacs-lisp
 (use-package bookmark+
-  :demand t
-  :after bookmark
-  :bind
-        ("C-x x n" . bmkp-next-bookmark)
-        ("C-x x p" . bmkp-prev-bookmark))
+  :demand
+  :custom
+  (bookmark-version-control t)
+  (bookmark-save-flag 1)
+  (delete-old-versions t)
+  :after bookmark)
 ```
+
+1.  look into why bmkp store org link doesnt work
 
 
 ## Lazy Language Learning, lazy-lang-learn
@@ -1130,7 +1131,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb490ccf) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgba26a42) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1280,7 +1281,26 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 ### reference library
 
-1.  Google related
+1.  web browsing
+
+    ```emacs-lisp
+    (use-package emacs
+      :custom
+      (browse-url-browser-function 'eww-browse-url)
+      (browse-url-generic-program "google-chrome")
+      (browse-url-secondary-browser-function 'browse-url-default-browser))
+    ```
+
+    1.  eww
+
+        ```emacs-lisp
+        (defadvice eww (around rgr/eww-extern-advise activate)
+          (if (string-match-p (regexp-quote "youtube.com") url)
+              (browse-url-default-browser url)
+          ad-do-it))
+        ```
+
+2.  Google related
 
     Raw:[rgr/google](etc/elisp/rgr-google.el)
 
@@ -1374,7 +1394,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (provide 'rgr/google)
             ```
 
-2.  Reference and dictionary
+3.  Reference and dictionary
 
     The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
 
@@ -1580,7 +1600,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (devdocs-browser-open))))
         ```
 
-3.  Man Pages
+4.  Man Pages
 
     Use emacsclient if it's running. Might consider an alias
 
@@ -1595,7 +1615,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     pgrep -x emacs > /dev/null && emacsclient -c -e "(manual-entry \"-a ${mp}\"))" &> /dev/null || man "$@"
     ```
 
-4.  Elfeed
+5.  Elfeed
 
     [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
 
@@ -1623,7 +1643,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
         ```
 
-5.  impatient-showdow, markdown view live
+6.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown. <https://github.com/jcs-elpa/impatient-showdown>
 
@@ -1632,7 +1652,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
       :hook (markdown-mode . impatient-showdown-mode))
     ```
 
-6.  provide
+7.  provide
 
     ```emacs-lisp
     (provide 'rgr/reference)
@@ -1841,7 +1861,22 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ### General
 
-1.  buffer deletion - but keep scratch and messages!
+1.  perspective
+
+    project aware buffer handling <https://www.youtube.com/watch?v=uyMdDzjQFMU&ab_channel=SystemCrafters>
+
+    ```emacs-lisp
+    (use-package perspective
+      :custom
+      (persp-state-default-file (no-littering-expand-var-file-name "perspective/perspectile.el"))
+      :config
+      (persp-mode)
+      (add-hook 'kill-emacs-hook  #'persp-state-save)
+      :bind
+      ("C-x C-b" . persp-list-buffers))
+    ```
+
+2.  buffer deletion - but keep scratch and messages!
 
     ```emacs-lisp
     (use-package emacs
@@ -2444,14 +2479,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
             ```
 
-        5.  lispy
-
-            ```emacs-lisp
-            (use-package lispy
-              :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
-            ```
-
-        6.  Elisp debugging
+        5.  Elisp debugging
 
             ```emacs-lisp
             (use-package
@@ -2469,7 +2497,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               )
             ```
 
-        7.  Formatting
+        6.  Formatting
 
             ```emacs-lisp
             (use-package
@@ -2479,7 +2507,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                     ("C-c f" . elisp-format-region)))
             ```
 
-        8.  popup query symbol
+        7.  popup query symbol
 
             ```emacs-lisp
             (use-package popup
@@ -2494,7 +2522,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
             ```
 
-        9.  provide
+        8.  provide
 
             ```emacs-lisp
             (provide 'rgr/elisp-utils)
@@ -3283,6 +3311,9 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 !etc
 !var
 
+!var/bmkp
+!var/bmkp/current-bookmark.el
+
 !etc/abbrev.el
 
 !etc/early-load
@@ -3333,7 +3364,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf035ec9) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbdb4556) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3372,7 +3403,7 @@ fi
 ```
 
 
-<a id="orgf035ec9"></a>
+<a id="orgbdb4556"></a>
 
 ### Gnome protocol handler desktop file
 

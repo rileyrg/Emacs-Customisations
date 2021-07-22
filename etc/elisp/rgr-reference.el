@@ -1,3 +1,14 @@
+(use-package emacs
+  :custom
+  (browse-url-browser-function 'eww-browse-url)
+  (browse-url-generic-program "google-chrome")
+  (browse-url-secondary-browser-function 'browse-url-default-browser))
+
+(defadvice eww (around rgr/eww-extern-advise activate)
+  (if (string-match-p (regexp-quote "youtube.com") url)
+      (browse-url-default-browser url)
+  ad-do-it))
+
 (require 'rgr/google "rgr-google")
 
 (defgroup rgr/lookup-reference nil
