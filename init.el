@@ -141,15 +141,6 @@
 (use-package
   ripgrep)
 
-(use-package
-  ag)
-
-(use-package deft
-  :config
-  (setq deft-directory (expand-file-name "orgfiles" user-emacs-directory))
-  (setq deft-recursive t)
-  :bind(("M-<f3>" . #'deft)))
-
 (require 'rgr/reference "rgr-reference" 'NOERROR)
 
 (require 'rgr/emms "rgr-emms" 'NOERROR)

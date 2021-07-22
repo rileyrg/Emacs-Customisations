@@ -1,5 +1,3 @@
-;;(straight-use-package '(org-plus-contrib :includes (org)))
-
 (use-package org
   :demand t
   :custom
@@ -11,6 +9,7 @@
   (org-refile-use-outline-path 'file)
   (org-outline-path-complete-in-steps nil)
   :config
+  (use-package org-contrib)
   (set-face-attribute 'org-headline-done nil :strike-through t)
   (defun rgr/org-agenda (&optional arg)
     (interactive "P")
