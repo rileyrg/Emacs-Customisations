@@ -1,8 +1,26 @@
-;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8; mode: lisp-data -*-
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8 -*-
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(#1=(#("emacs.org" 0 9
+(#1=(#("bmkp" 0 4
+      (bmkp-full-record #1#))
+    (buffer-name . "bmkp")
+    (front-context-string . "..\n  -rw-r--r-- ")
+    (rear-context-string . " Jul 23 01:41   ")
+    (front-context-region-string)
+    (rear-context-region-string)
+    (visits . 0)
+    (time . #2=(24826 1186 748524 629000))
+    (created . #2#)
+    (position . 173)
+    (filename . "/home/rgr/.emacs.d/var/bmkp/")
+    (dired-directory . "~/.emacs.d/var/bmkp/")
+    (dired-marked)
+    (dired-switches . "-al")
+    (dired-subdirs)
+    (dired-hidden-dirs)
+    (handler . bmkp-jump-dired))
+#1=(#("emacs.org" 0 9
       (bmkp-full-record #1#))
     (tags
      #("emacs" 0 5
@@ -14,12 +32,14 @@
       (bmkp-full-record #1#))
     (annotation)
     (tags
+     #("elisp" 0 5
+       (face nil))
      #("emacs" 0 5
        (face nil)))
     (buffer-name . "*Bookmark List*")
-    (visits . 0)
-    (time . #2=(24825 38708 46430 849000))
-    (created . #2#)
+    (visits . 2)
+    (time 24826 1166 790974 153000)
+    (created 24825 38708 46430 849000)
     (position . 153)
     (filename . "   - no file -")
     (bookmark-list
@@ -1115,8 +1135,8 @@
 #1=(#("emacs-var" 0 9
       (bmkp-full-record #1#))
     (end-position . 421)
-    (time 24824 48080 695737 246000)
-    (visits . 0)
+    (time 24826 1182 78241 653000)
+    (visits . 1)
     (filename . "~/.emacs.d/var/")
     (front-context-string . "auto-save\n  drwx")
     (rear-context-string . "6 11. Jan 00:42 ")
