@@ -2,8 +2,8 @@
 ;; Maintained in emacs-config.org
 (setq package-enabled-at-startup nil)
 (setq load-prefer-newer t)
-(add-to-list 'load-path (expand-file-name "straight/repos/packed" user-emacs-directory))
-(add-to-list 'load-path (expand-file-name "straight/repos/auto-compile" user-emacs-directory))
+;; (add-to-list 'load-path (expand-file-name "straight/repos/packed" user-emacs-directory))
+;; (add-to-list 'load-path (expand-file-name "straight/repos/auto-compile" user-emacs-directory))
 (require 'auto-compile)
 (auto-compile-on-load-mode)
 (auto-compile-on-save-mode)
