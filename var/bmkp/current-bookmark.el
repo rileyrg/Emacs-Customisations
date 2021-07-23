@@ -187,7 +187,7 @@
     (handler . bmkp-jump-eww))
 #1=(#("EmacsWiki: Bookmark Plus" 0 24
       (bmkp-full-record #1#))
-    (tags "debug" "reference"
+    (tags "newtag3" "debug" "reference"
           #("bookmarks" 0 9
             (face nil))
           #("emacs" 0 5
@@ -199,8 +199,8 @@
     (rear-context-string)
     (front-context-region-string)
     (rear-context-region-string)
-    (visits . 7)
-    (time 24826 33397 889112 165000)
+    (visits . 9)
+    (time 24826 35130 395512 375000)
     (created 24823 53932 431995 765000)
     (position . 1)
     (location . "https://www.emacswiki.org/emacs/BookmarkPlus")
@@ -363,14 +363,14 @@
     (tags)
     (filename . "~/.emacs.d/var/org/orgfiles/journal.org")
     (buffer-name . "journal.org")
-    (front-context-string . "**** TODO waitin")
-    (rear-context-string . "07-22 Thursday\n\n")
+    (front-context-string . "**** debugging b")
+    (rear-context-string . "1-07-23 Friday\n\n")
     (front-context-region-string)
     (rear-context-region-string)
     (visits . 0)
-    (time . #2=(24825 32309 438903 260000))
+    (time . #2=(24826 34091 225783 707000))
     (created . #2#)
-    (position . 21097))
+    (position . 21120))
 #1=(#("1_CppGrundlagen" 0 15
       (bmkp-full-record #1#))
     (end-position . 1)

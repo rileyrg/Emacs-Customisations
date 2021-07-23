@@ -29,6 +29,8 @@
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
  '(bmkp-last-as-first-bookmark-file "/home/rgr/.emacs.d/var/bmkp/current-bookmark.el")
+ '(bookmark-save-flag 1)
+ '(bookmark-version-control t)
  '(browse-url-browser-function 'eww-browse-url)
  '(browse-url-generic-program "google-chrome")
  '(browse-url-secondary-browser-function 'browse-url-default-browser)
