@@ -230,6 +230,10 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ("M-0" . 'delete-window)
   ("M-1" . 'delete-other-windows))
 
+(use-package all-the-icons-dired
+  :init
+  (add-hook 'dired-mode-hook  #'all-the-icons-dired-mode))
+
 (use-package dired-git
   :config
   :hook (dired-mode . dired-git-mode))
@@ -352,8 +356,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (treemacs-follow-mode +1)
   (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
-  (use-package treemacs-icons-dired
-    :config (treemacs-icons-dired-mode))
   (use-package treemacs-magit)
   :bind
   ("M-9"   . 'treemacs-select-window)

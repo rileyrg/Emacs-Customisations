@@ -2026,6 +2026,13 @@ https://www.youtube.com/watch?v=uyMdDzjQFMU&ab_channel=SystemCrafters
 :PROPERTIES:
 :ID:       0d37638b-55cd-4036-a0e0-6e6ab42a5046
 :END:
+**** dired icons
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired
+    :init
+    (add-hook 'dired-mode-hook  #'all-the-icons-dired-mode))
+#+end_src
+
 **** Dired Git Info
 :PROPERTIES:
 :ID:       c6fe4735-2499-4fc0-a8d4-250fa8ce7c4b
@@ -2277,8 +2284,6 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
     (treemacs-follow-mode +1)
     (treemacs-fringe-indicator-mode)
     (treemacs-git-mode 'deferred)
-    (use-package treemacs-icons-dired
-      :config (treemacs-icons-dired-mode))
     (use-package treemacs-magit)
     :bind
     ("M-9"   . 'treemacs-select-window)
