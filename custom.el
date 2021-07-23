@@ -81,7 +81,6 @@
  '(dap-ui-controls-mode t)
  '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0" t)
  '(delete-active-region 'kill)
- '(delete-old-versions t nil nil "Customized with use-package bookmark+")
  '(delete-selection-mode t)
  '(devdocs-alist
    '((c-mode . "c")
@@ -429,7 +428,7 @@ SCHEDULED: %^{Delivery Date}t
  '(read-quoted-char-radix 16)
  '(rebox-style-loop '(27 25 21) t)
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*"))
+   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*") t)
  '(recentf-max-saved-items 50)
  '(rgr/alert-learn-period 300)
  '(rgr/chat-close-functions '(slack-ws-close rgr/erc-quit))

@@ -37,8 +37,8 @@
      #("emacs" 0 5
        (face nil)))
     (buffer-name . "*Bookmark List*")
-    (visits . 2)
-    (time 24826 1166 790974 153000)
+    (visits . 3)
+    (time 24826 31206 613081 634000)
     (created 24825 38708 46430 849000)
     (position . 153)
     (filename . "   - no file -")
@@ -187,7 +187,7 @@
     (handler . bmkp-jump-eww))
 #1=(#("EmacsWiki: Bookmark Plus" 0 24
       (bmkp-full-record #1#))
-    (tags "reference"
+    (tags "debug" "reference"
           #("bookmarks" 0 9
             (face nil))
           #("emacs" 0 5
@@ -199,8 +199,8 @@
     (rear-context-string)
     (front-context-region-string)
     (rear-context-region-string)
-    (visits . 5)
-    (time 24823 56134 100619 56000)
+    (visits . 7)
+    (time 24826 33397 889112 165000)
     (created 24823 53932 431995 765000)
     (position . 1)
     (location . "https://www.emacswiki.org/emacs/BookmarkPlus")
@@ -1221,8 +1221,8 @@
       (bmkp-full-record #1#))
     (tags "project")
     (end-position . 800)
-    (time 24823 55058 435937 773000)
-    (visits . 5)
+    (time 24826 31108 380448 855000)
+    (visits . 6)
     (filename . "~/.emacs.d/")
     (front-context-string . "etc\n  drwxr-xr-x")
     (rear-context-string . "6 29. Apr 11:56 ")

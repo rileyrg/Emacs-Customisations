@@ -1,8 +1,21 @@
-;;; init.el   -*- no-byte-compile: t -*-
-;; Maintained in emacs-config.org
+;; look for a debug init file and load, trigger the debugger
+(defun debug-init (&optional fname)
+  (let* ((fname (if fname fname "debug-init.el"))
+        (debug-init (expand-file-name fname user-emacs-directory)))
+  (if (file-exists-p debug-init)
+      (progn
+        (message "A debug-init, %s, was found, so loading and entering the debugger." debug-init)
+        (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
+          (load-file debug-init)
+          (if rgr/debug-init-debugger
+              (debug)
+            (message "rgr/debug-init-debugger was set to nil so not debugging after loading %s" debug-init))))
+    (message "No debug initfile, %s, found so ignoring" debug-init))))
 
 (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
 (load custom-file 'noerror)
+
+(debug-init)
 
 (defvar bootstrap-version)
 
@@ -30,6 +43,9 @@
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
+
+;; look for a debug init file and load, trigger the debugger
+(debug-init "debug-init-straight.el")
 
 (use-package no-littering
   :config
@@ -65,12 +81,7 @@
 (require 'rgr/completion "rgr-completion" 'NOERROR)
 
 (use-package bookmark+
-  :demand
-  :custom
-  (bookmark-version-control t)
-  (bookmark-save-flag 1)
-  (delete-old-versions t)
-  :after bookmark)
+  :demand)
 
 (use-package lazy-lang-learn
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
