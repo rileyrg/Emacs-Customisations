@@ -71,7 +71,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 
 ## elpa package manager
 
-I have this disabled by default as I use [straight.el package management](#org579dcb8)
+I have this disabled by default as I use [straight.el package management](#orgb6c9bfa)
 
 ```emacs-lisp
 (require 'package)
@@ -82,7 +82,7 @@ I have this disabled by default as I use [straight.el package management](#org57
 ```
 
 
-<a id="org579dcb8"></a>
+<a id="orgb6c9bfa"></a>
 
 ## straight.el package management
 
@@ -1139,7 +1139,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4865ce9) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org5d87199) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1638,7 +1638,27 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
         ```
 
-6.  impatient-showdow, markdown view live
+6.  pdf-tools
+
+    [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
+
+    ```emacs-lisp
+    (use-package pdf-tools
+      :demand t
+      :config
+      (pdf-tools-install)
+      (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
+      (use-package org-pdftools
+        :hook (org-mode . org-pdftools-setup-link)))
+    ```
+
+    1.  requirements
+
+        ```bash
+        sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
+        ```
+
+7.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown. <https://github.com/jcs-elpa/impatient-showdown>
 
@@ -1647,7 +1667,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
       :hook (markdown-mode . impatient-showdown-mode))
     ```
 
-7.  provide
+8.  provide
 
     ```emacs-lisp
     (provide 'rgr/reference)
@@ -1894,7 +1914,15 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ### dired - emacs file management
 
-1.  Dired Git Info
+1.  dired icons
+
+    ```emacs-lisp
+    (use-package all-the-icons-dired
+      :init
+      (add-hook 'dired-mode-hook  #'all-the-icons-dired-mode))
+    ```
+
+2.  Dired Git Info
 
     ```emacs-lisp
     (use-package dired-git
@@ -1902,7 +1930,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
       :hook (dired-mode . dired-git-mode))
     ```
 
-2.  dired hacks
+3.  dired hacks
 
     Collection of useful dired additions found on github [here](https://github.com/Fuco1/dired-hacks). Found out about it at the useful emacs resource [**Pragmatic Emacs**](http://pragmaticemacs.com/category/dired/).
 
@@ -2132,8 +2160,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
   (treemacs-follow-mode +1)
   (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
-  (use-package treemacs-icons-dired
-    :config (treemacs-icons-dired-mode))
   (use-package treemacs-magit)
   :bind
   ("M-9"   . 'treemacs-select-window)
@@ -3361,7 +3387,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8f02fc9) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge936fbd) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3400,7 +3426,7 @@ fi
 ```
 
 
-<a id="org8f02fc9"></a>
+<a id="orge936fbd"></a>
 
 ### Gnome protocol handler desktop file
 
