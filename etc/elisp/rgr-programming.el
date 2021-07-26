@@ -52,49 +52,11 @@
   :config
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
-(defgroup rgr/llvm  nil
-  "llvm options"
-  :group 'rgr)
-
-(defcustom rgr/lldb-command "lldb"
-  "the llvm debugger command"
-  :type 'string
-  :group 'rgr/llvm)
-
-(define-minor-mode rgr/lldb-mode "my lldb mode" :lighter "lldb"
-  :keymap '(
-            ( [f10]   . (lambda()(interactive)(process-send-string lldb-console "thread step-over\n")))
-            ( [f11]   . (lambda()(interactive)(process-send-string lldb-console "thread step-in\n")))
-            ( [S-f11] . (lambda()(interactive)(process-send-string lldb-console "thread step-out\n")))
-            ( [f12>]  . (lambda()(interactive)(process-send-string lldb-console "thread step-inst\n"))))
-  (setq-local lldb-console rgr/lldb-buffer-name))
-
-(defun rgr/projectLLDB(dir)
-  "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
-  (interactive "DDirectory:")
-  (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-         (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
-         (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-    (if (get-buffer vterm-buffer-name)
-        (switch-to-buffer vterm-buffer-name)
-      (progn
-        (vterm)
-        (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t %s && exit\n" rgr/lldb-command dirbase))
-        (unless current-prefix-arg
-          (call-process-shell-command lldb-ui-command)
-          (process-send-string vterm-buffer-name "lv\n"))
-        (with-current-buffer vterm-buffer-name
-          (setq rgr/lldb-buffer-name vterm-buffer-name)
-          (rgr/lldb-mode))))))
-
 (use-package projectile
   :demand
   :init
   (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-  :bind
-  (:map projectile-command-map ("D" . rgr/projectLLDB))
-  )
+  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
@@ -260,6 +222,9 @@
   :demand t
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
+
+(use-package lldb-voltron
+  :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
 
 (defun rgr/c-complete-line()
   (interactive)

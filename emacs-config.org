@@ -2792,62 +2792,6 @@ CLOSED: [2021-07-21 Wed 11:28]
     (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 #+end_src
-**** llvm/lldb                                                    :llvm:lldb:
-#+begin_src emacs-lisp
-    (defgroup rgr/llvm  nil
-      "llvm options"
-      :group 'rgr)
-
-    (defcustom rgr/lldb-command "lldb"
-      "the llvm debugger command"
-      :type 'string
-      :group 'rgr/llvm)
-  #+end_src
-***** TODO rgr/lldb-mode
-:LOGBOOK:
-- State "TODO"       from              [2021-07-01 Thu 12:52]
-:END:
-  #+begin_src emacs-lisp
-    (define-minor-mode rgr/lldb-mode "my lldb mode" :lighter "lldb"
-      :keymap '(
-                ( [f10]   . (lambda()(interactive)(process-send-string lldb-console "thread step-over\n")))
-                ( [f11]   . (lambda()(interactive)(process-send-string lldb-console "thread step-in\n")))
-                ( [S-f11] . (lambda()(interactive)(process-send-string lldb-console "thread step-out\n")))
-                ( [f12>]  . (lambda()(interactive)(process-send-string lldb-console "thread step-inst\n"))))
-      (setq-local lldb-console rgr/lldb-buffer-name))
-
-  #+end_src
-***** rgr/projectLLDB                                               :project:
-lldb/voltron integration to project
-  #+begin_src emacs-lisp
-    (defun rgr/projectLLDB(dir)
-      "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
-      (interactive "DDirectory:")
-      (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-             (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
-             (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-        (if (get-buffer vterm-buffer-name)
-            (switch-to-buffer vterm-buffer-name)
-          (progn
-            (vterm)
-            (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t %s && exit\n" rgr/lldb-command dirbase))
-            (unless current-prefix-arg
-              (call-process-shell-command lldb-ui-command)
-              (process-send-string vterm-buffer-name "lv\n"))
-            (with-current-buffer vterm-buffer-name
-              (setq rgr/lldb-buffer-name vterm-buffer-name)
-              (rgr/lldb-mode))))))
-
-  #+end_src
-****** CANCELLED really need to look into project root stuff      :CANCELLED:
-CLOSED: [2021-07-13 Tue 00:49] SCHEDULED: <2021-07-01 Thu>
-:PROPERTIES:
-:DateCreated: <2021-07-01 Thu 10:32>
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from "TODO"       [2021-07-13 Tue 00:49] \\
-  back to projectile
-:END:
 **** Project Management                                             :project:
 ***** projectile
 #+begin_src emacs-lisp
@@ -2855,10 +2799,7 @@ CLOSED: [2021-07-13 Tue 00:49] SCHEDULED: <2021-07-01 Thu>
     :demand
     :init
     (projectile-mode +1)
-    (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-    :bind
-    (:map projectile-command-map ("D" . rgr/projectLLDB))
-    )
+    (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
 #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:
@@ -3115,6 +3056,10 @@ https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
     :demand
+    :config
+    (require 'project)
+    (defun project-root (project)
+    (car (project-roots project)))
     :bind
     (:map flymake-mode-map
           ([remap next-error] . flymake-goto-next-error)
@@ -3326,6 +3271,11 @@ CLOSED: [2021-06-28 Mon 21:28]
     :demand t
     :config
     (add-hook 'python-mode-hook  #'blacken-mode))
+#+end_src
+**** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
+#+begin_src emacs-lisp
+  (use-package lldb-voltron
+    :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
 #+end_src
 **** C, c-mode                                                            :c:
   :PROPERTIES:
