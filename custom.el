@@ -30,7 +30,7 @@
  '(blink-cursor-interval 0.2)
  '(bmkp-last-as-first-bookmark-file "/home/rgr/.emacs.d/var/bmkp/current-bookmark.el")
  '(bookmark-save-flag 1)
- '(bookmark-version-control t)
+ '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
  '(browse-url-generic-program "google-chrome")
  '(browse-url-secondary-browser-function 'browse-url-default-browser)
@@ -83,6 +83,7 @@
  '(dap-ui-controls-mode t)
  '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0" t)
  '(delete-active-region 'kill)
+ '(delete-old-versions t)
  '(delete-selection-mode t)
  '(devdocs-alist
    '((c-mode . "c")
@@ -430,7 +431,7 @@ SCHEDULED: %^{Delivery Date}t
  '(read-quoted-char-radix 16)
  '(rebox-style-loop '(27 25 21) t)
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*") t)
+   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "orgfiles/.*" "\\.md$" "recentf$" "config\\.el$" "bookmarks$" "history" "var/.*"))
  '(recentf-max-saved-items 50)
  '(rgr/alert-learn-period 300)
  '(rgr/chat-close-functions '(slack-ws-close rgr/erc-quit))
@@ -499,6 +500,7 @@ SCHEDULED: %^{Delivery Date}t
      (360 . "#b6a0ff")))
  '(vc-annotate-very-old-color nil)
  '(vc-follow-symlinks t)
+ '(version-control t)
  '(visible-bell t)
  '(vterm-always-compile-module t)
  '(warning-minimum-level :error)

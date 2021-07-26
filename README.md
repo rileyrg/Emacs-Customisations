@@ -34,6 +34,25 @@ A small "game" like utility that displays snippets to glance at. You can then in
 # early stuff
 
 
+## debug init utility function
+
+```emacs-lisp
+;; look for a debug init file and load, trigger the debugger
+(defun debug-init (&optional fname)
+  (let* ((fname (if fname fname "debug-init.el"))
+        (debug-init (expand-file-name fname user-emacs-directory)))
+  (if (file-exists-p debug-init)
+      (progn
+        (message "A debug-init, %s, was found, so loading and entering the debugger." debug-init)
+        (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
+          (load-file debug-init)
+          (if rgr/debug-init-debugger
+              (debug)
+            (message "rgr/debug-init-debugger was set to nil so not debugging after loading %s" debug-init))))
+    (message "No debug initfile, %s, found so ignoring" debug-init))))
+```
+
+
 ## early-init.el
 
 ```emacs-lisp
@@ -41,8 +60,8 @@ A small "game" like utility that displays snippets to glance at. You can then in
 ;; Maintained in emacs-config.org
 (setq package-enabled-at-startup nil)
 (setq load-prefer-newer t)
-(add-to-list 'load-path (expand-file-name "straight/repos/packed" user-emacs-directory))
-(add-to-list 'load-path (expand-file-name "straight/repos/auto-compile" user-emacs-directory))
+;; (add-to-list 'load-path (expand-file-name "straight/repos/packed" user-emacs-directory))
+;; (add-to-list 'load-path (expand-file-name "straight/repos/auto-compile" user-emacs-directory))
 (require 'auto-compile)
 (auto-compile-on-load-mode)
 (auto-compile-on-save-mode)
@@ -50,12 +69,7 @@ A small "game" like utility that displays snippets to glance at. You can then in
 ```
 
 
-## init.el compiling
-
-```emacs-lisp
-;;; init.el   -*- no-byte-compile: t -*-
-;; Maintained in emacs-config.org
-```
+### look into removing those repos paths added in early-init. cant remember why they are there.
 
 
 ## custom.el
@@ -66,23 +80,15 @@ A small "game" like utility that displays snippets to glance at. You can then in
 ```
 
 
-# package management
-
-
-## elpa package manager
-
-I have this disabled by default as I use [straight.el package management](#orgb6c9bfa)
+## debug init before straight
 
 ```emacs-lisp
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(eval-when-compile
-  (require 'use-package))
-(setq use-package-always-ensure t)
+(debug-init)
 ```
 
 
-<a id="orgb6c9bfa"></a>
+# package management
+
 
 ## straight.el package management
 
@@ -128,6 +134,16 @@ I have this disabled by default as I use [straight.el package management](#orgb6
 
 
 # config
+
+
+## post straight debug init
+
+Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to abort.
+
+```emacs-lisp
+;; look for a debug init file and load, trigger the debugger
+(debug-init "debug-init-straight.el")
+```
 
 
 ## Paths, clutter
@@ -733,16 +749,11 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 ## bookmarks
 
 
-### bookmarks+
+### bookmark+
 
 ```emacs-lisp
 (use-package bookmark+
-  :demand
-  :custom
-  (bookmark-version-control t)
-  (bookmark-save-flag 1)
-  (delete-old-versions t)
-  :after bookmark)
+  :demand)
 ```
 
 1.  waiting on replies to reddit post about bmkp vesioning
@@ -1139,7 +1150,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org5d87199) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org35eec32) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2576,58 +2587,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```
 
-6.  llvm/lldb
-
-    ```emacs-lisp
-    (defgroup rgr/llvm  nil
-      "llvm options"
-      :group 'rgr)
-
-    (defcustom rgr/lldb-command "lldb"
-      "the llvm debugger command"
-      :type 'string
-      :group 'rgr/llvm)
-    ```
-
-    1.  rgr/lldb-mode
-
-        ```emacs-lisp
-        (define-minor-mode rgr/lldb-mode "my lldb mode" :lighter "lldb"
-          :keymap '(
-                    ( [f10]   . (lambda()(interactive)(process-send-string lldb-console "thread step-over\n")))
-                    ( [f11]   . (lambda()(interactive)(process-send-string lldb-console "thread step-in\n")))
-                    ( [S-f11] . (lambda()(interactive)(process-send-string lldb-console "thread step-out\n")))
-                    ( [f12>]  . (lambda()(interactive)(process-send-string lldb-console "thread step-inst\n"))))
-          (setq-local lldb-console rgr/lldb-buffer-name))
-
-        ```
-
-    2.  rgr/projectLLDB
-
-        lldb/voltron integration to project
-
-        ```emacs-lisp
-        (defun rgr/projectLLDB(dir)
-          "Run a vterm with lldb for the current buffer's directory, default DIR. Launch a lldb-ui instance unless prefix arg."
-          (interactive "DDirectory:")
-          (let* ((dirbase (file-name-nondirectory(directory-file-name dir)))
-                 (lldb-ui-command (format "%s %s %s &" "lldb-ui" dir dirbase))
-                 (vterm-buffer-name (format "*lldb-%s*" dirbase)))
-            (if (get-buffer vterm-buffer-name)
-                (switch-to-buffer vterm-buffer-name)
-              (progn
-                (vterm)
-                (process-send-string vterm-buffer-name (format "%s && tmux kill-session -t %s && exit\n" rgr/lldb-command dirbase))
-                (unless current-prefix-arg
-                  (call-process-shell-command lldb-ui-command)
-                  (process-send-string vterm-buffer-name "lv\n"))
-                (with-current-buffer vterm-buffer-name
-                  (setq rgr/lldb-buffer-name vterm-buffer-name)
-                  (rgr/lldb-mode))))))
-
-        ```
-
-7.  Project Management
+6.  Project Management
 
     1.  projectile
 
@@ -2636,13 +2596,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :demand
           :init
           (projectile-mode +1)
-          (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-          :bind
-          (:map projectile-command-map ("D" . rgr/projectLLDB))
-          )
+          (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
         ```
 
-8.  BASH
+7.  BASH
 
     1.  Navigating Bash set -x output
 
@@ -2657,7 +2614,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                          "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
         ```
 
-9.  JSON, YAML Configuration files
+8.  JSON, YAML Configuration files
 
     1.  YAML
 
@@ -2670,7 +2627,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```
 
-10. Flycheck
+9.  Flycheck
 
     On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
@@ -2693,7 +2650,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                           (message "flycheck %s" s)))))
     ```
 
-11. Flymake
+10. Flymake
 
     1.  diagnostic-at-point
 
@@ -2716,7 +2673,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :hook (sh-mode . rgr/sh-mode-hook))
         ```
 
-12. Version Control
+11. Version Control
 
     1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
 
@@ -2781,7 +2738,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ("C-x v ="  . git-gutter:popup-hunk))
         ```
 
-13. Javascript
+12. Javascript
 
     ```emacs-lisp
 
@@ -2820,7 +2777,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
     ```
 
-14. RJSX
+13. RJSX
 
     [rjsx-mode](https://github.com/felipeochoa/rjsx-mode) extends js2-mode to include jsx parsing.
 
@@ -2833,7 +2790,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-15. Typescript
+14. Typescript
 
     ```emacs-lisp
     (use-package typescript-mode
@@ -2844,7 +2801,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
 
-16. Language Server Protocol (LSP), lsp-mode
+15. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
 
@@ -2863,6 +2820,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             ```emacs-lisp
             (use-package eglot
               :demand
+              :config
+              (require 'project)
+              (defun project-root (project)
+              (car (project-roots project)))
               :bind
               (:map flymake-mode-map
                     ([remap next-error] . flymake-goto-next-error)
@@ -2975,7 +2936,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/lsp)
             ```
 
-17. Serial Port
+16. Serial Port
 
     ```emacs-lisp
     (defgroup rgr/serial-ports nil
@@ -3003,7 +2964,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       (selectSerialPortBuffer)))
     ```
 
-18. PlatformIO
+17. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
 
@@ -3011,7 +2972,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package platformio-mode)
     ```
 
-19. Python
+18. Python
 
     1.  python-mode
 
@@ -3062,6 +3023,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :config
           (add-hook 'python-mode-hook  #'blacken-mode))
         ```
+
+19. lldb debugging in emacs
+
+    ```emacs-lisp
+    (use-package lldb-voltron
+      :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
+    ```
 
 20. C, c-mode
 
@@ -3387,7 +3355,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge936fbd) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcc36ee4) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3426,7 +3394,7 @@ fi
 ```
 
 
-<a id="orge936fbd"></a>
+<a id="orgcc36ee4"></a>
 
 ### Gnome protocol handler desktop file
 
