@@ -91,6 +91,23 @@
   :init
   (org-super-agenda-mode))
 
+(use-package org-roam
+  :demand
+  :custom
+  (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n a" . org-roam-alias-add)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-setup)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
+
 (use-package
   ox-gfm
   :demand)

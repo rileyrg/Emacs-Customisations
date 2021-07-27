@@ -1133,7 +1133,30 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
           (org-super-agenda-mode))
         ```
 
-    5.  github compliant markup
+    5.  org-roam
+
+        Inspired by another System Crafters [video](https://systemcrafters.cc/build-a-second-brain-in-emacs/getting-started-with-org-roam/).
+
+        ```emacs-lisp
+        (use-package org-roam
+          :demand
+          :custom
+          (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
+          :bind (("C-c n l" . org-roam-buffer-toggle)
+                 ("C-c n f" . org-roam-node-find)
+                 ("C-c n a" . org-roam-alias-add)
+                 ("C-c n g" . org-roam-graph)
+                 ("C-c n i" . org-roam-node-insert)
+                 ("C-c n c" . org-roam-capture)
+                 ;; Dailies
+                 ("C-c n j" . org-roam-dailies-capture-today))
+          :config
+          (org-roam-setup)
+          ;; If using org-roam-protocol
+          (require 'org-roam-protocol))
+        ```
+
+    6.  github compliant markup
 
         ```emacs-lisp
         (use-package
@@ -1150,7 +1173,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org35eec32) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb604741) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3355,7 +3378,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcc36ee4) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org240e20d) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3394,7 +3417,7 @@ fi
 ```
 
 
-<a id="orgcc36ee4"></a>
+<a id="org240e20d"></a>
 
 ### Gnome protocol handler desktop file
 
