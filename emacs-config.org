@@ -1231,6 +1231,30 @@ create unique link IDs when sharing a link to an org section
     (org-super-agenda-mode))
 #+end_src
 
+***** org-roam
+:PROPERTIES:
+:ID:       0686341f-6d4d-4aef-b1bc-d34e16615674
+:END:
+Inspired by another System Crafters [[https://systemcrafters.cc/build-a-second-brain-in-emacs/getting-started-with-org-roam/][video]].
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :demand
+    :custom
+    (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n a" . org-roam-alias-add)
+           ("C-c n g" . org-roam-graph)
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n c" . org-roam-capture)
+           ;; Dailies
+           ("C-c n j" . org-roam-dailies-capture-today))
+    :config
+    (org-roam-setup)
+    ;; If using org-roam-protocol
+    (require 'org-roam-protocol))
+#+end_src
+
 ***** github compliant markup
 #+begin_src emacs-lisp
   (use-package
