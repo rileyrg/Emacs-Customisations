@@ -341,6 +341,7 @@ SCHEDULED: %^{Delivery Date}t
  '(org-refile-targets
    '((org-agenda-files :tag . "refile")
      (org-agenda-files :maxlevel . 16)) nil nil "Customized with use-package org")
+ '(org-return-follows-link nil)
  '(org-reverse-note-order t nil nil "Customized with use-package org")
  '(org-src-block-faces 'nil)
  '(org-src-window-setup 'current-window)

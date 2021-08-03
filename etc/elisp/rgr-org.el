@@ -94,13 +94,24 @@
 (use-package org-roam
   :demand
   :custom
+  (org-roam-dailies-directory "daily/")
+  (org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         "* %?"
+         :if-new (file+head "%<%Y-%m-%d>.org"
+                            "#+title: %<%Y-%m-%d>\n"))))
   (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n a" . org-roam-alias-add)
+         ("C-c n r" . org-roam-add-ref)
          ("C-c n g" . org-roam-graph)
+         ("C-c n t" . org-roam-dailies-goto-today)
+         ("C-c n y" . org-roam-dailies-goto-yesterday)
+         ("C-c n d" . org-roam-dailies-goto-date)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
+         ("C-c n C" . org-roam-capture-tomorrow)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
