@@ -2,7 +2,19 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(#1=(#("org-roam-files" 0 14
+(#1=(#("cur" 0 3
+      (bmkp-full-record #1#))
+    (filename . "   - no file -")
+    (buffer-name . "*Warnings*")
+    (front-context-string . "File is missing:")
+    (rear-context-string . "arly-init.el’:\n\n")
+    (front-context-region-string)
+    (rear-context-region-string)
+    (visits . 1)
+    (time 24844 63301 567941 520000)
+    (created 24844 63289 206897 541000)
+    (position . 96))
+#1=(#("org-roam-files" 0 14
       (bmkp-full-record #1#))
     (tags "org-roam")
     (buffer-name . "org-roam")
@@ -784,16 +796,16 @@
       (bmkp-full-record #1#))
     (annotation)
     (tags)
-    (filename . "~/.emacs.d/var/org/org-roam/20210806011556-delme7.org.gpg")
-    (buffer-name . "20210806011556-delme7.org.gpg")
-    (front-context-string)
-    (rear-context-string . "#+title: delme7\n")
+    (filename . "~/.emacs.d/var/org/orgfiles/refile.org")
+    (buffer-name . "refile.org")
+    (front-context-string . "** TODO [#A] ini")
+    (rear-context-string . "ri 09:02]\n:END:\n")
     (front-context-region-string)
     (rear-context-region-string)
     (visits . 0)
-    (time . #2=(24844 28976 243646 846000))
+    (time . #2=(24844 63360 295380 363000))
     (created . #2#)
-    (position . 84))
+    (position . 2802))
 #1=(#("1_CppGrundlagen" 0 15
       (bmkp-full-record #1#))
     (end-position . 1)
