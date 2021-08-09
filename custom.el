@@ -81,7 +81,7 @@
  '(dap-internal-terminal 'dap-internal-terminal-auto)
  '(dap-print-io t)
  '(dap-ui-controls-mode t)
- '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0" t)
+ '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0")
  '(delete-active-region 'kill)
  '(delete-old-versions t)
  '(delete-selection-mode t)
@@ -273,6 +273,7 @@ Would you like to play a game?
  '(ispell-silently-savep t)
  '(kept-new-versions 20)
  '(large-file-warning-threshold nil)
+ '(max-lisp-eval-depth 16000)
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")
  '(org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"

@@ -124,7 +124,6 @@
  ("ppp.el" . "86dad69c3a7dae770f6b99285647dff2aad81930")
  ("prescient.el" . "4a0f5405798cfcb98ea005078ef2e2d490e922c4")
  ("prettier-emacs" . "e9b73e81d3e1642aec682195f127a42dfb0b5774")
- ("project" . "4072f35d85bf0a1c669329d66633e4819f497c1c")
  ("projectile" . "1fbe06316f2c13ed0a4eae595d792f7d53e3af20")
  ("pyvenv" . "045ff9476dac26086a04538d9b7ba186aa8f0fd1")
  ("rainbow-delimiters" . "d576e6694ad3a3e88b2bb1363305b38fa364c149")

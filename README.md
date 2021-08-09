@@ -43,12 +43,12 @@ A small "game" like utility that displays snippets to glance at. You can then in
         (debug-init (expand-file-name fname user-emacs-directory)))
   (if (file-exists-p debug-init)
       (progn
-        (message "A debug-init, %s, was found, so loading and entering the debugger." debug-init)
+        (message "A debug-init, %s, was found, so loading." debug-init)
         (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
           (load-file debug-init)
           (if rgr/debug-init-debugger
               (debug)
-            (message "rgr/debug-init-debugger was set to nil so not debugging after loading %s" debug-init))))
+            (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
     (message "No debug initfile, %s, found so ignoring" debug-init))))
 ```
 
@@ -59,14 +59,8 @@ A small "game" like utility that displays snippets to glance at. You can then in
 ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
 ;; Maintained in emacs-config.org
 (setq package-enabled-at-startup nil)
-;; (setq load-prefer-newer t)
-;; ;; (add-to-list 'load-path (expand-file-name "straight/repos/packed" user-emacs-directory))
-;; ;; (add-to-list 'load-path (expand-file-name "straight/repos/auto-compile" user-emacs-directory))
-;; (use-package auto-compile
-;;   :init
-;; (auto-compile-on-load-mode)
-;; (auto-compile-on-save-mode))
-  ;;; early-init.el ends here
+(setq max-specpdl-size 13000)
+;;; early-init.el ends here
 ```
 
 
@@ -749,9 +743,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
   :demand)
 ```
 
-1.  waiting on replies to reddit post about bmkp vesioning
-
-2.  look into why bmkp store org link doesnt work
+1.  look into why bmkp store org link doesnt work
 
 
 ## Lazy Language Learning, lazy-lang-learn
@@ -1184,7 +1176,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org1fd73a3) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org37b6d96) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1683,27 +1675,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
         ```
 
-6.  pdf-tools
-
-    [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
-
-    ```emacs-lisp
-    (use-package pdf-tools
-      :demand t
-      :config
-      (pdf-tools-install)
-      (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
-      (use-package org-pdftools
-        :hook (org-mode . org-pdftools-setup-link)))
-    ```
-
-    1.  requirements
-
-        ```bash
-        sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
-        ```
-
-7.  impatient-showdow, markdown view live
+6.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown. <https://github.com/jcs-elpa/impatient-showdown>
 
@@ -1712,7 +1684,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
       :hook (markdown-mode . impatient-showdown-mode))
     ```
 
-8.  provide
+7.  provide
 
     ```emacs-lisp
     (provide 'rgr/reference)
@@ -2623,7 +2595,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
 6.  Project Management
 
-    1.  projectile
+    1.  project
+
+        ```emacs-lisp
+        (require 'project)
+        ```
+
+    2.  projectile
 
         ```emacs-lisp
         (use-package projectile
@@ -2854,10 +2832,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             ```emacs-lisp
             (use-package eglot
               :demand
-              :config
-              (require 'project)
-              (defun project-root (project)
-              (car (project-roots project)))
               :bind
               (:map flymake-mode-map
                     ([remap next-error] . flymake-goto-next-error)
@@ -3389,7 +3363,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org22527a1) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd39f32f) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3428,7 +3402,7 @@ fi
 ```
 
 
-<a id="org22527a1"></a>
+<a id="orgd39f32f"></a>
 
 ### Gnome protocol handler desktop file
 
