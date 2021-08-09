@@ -1,9 +1,5 @@
 (use-package eglot
   :demand
-  :config
-  (require 'project)
-  (defun project-root (project)
-  (car (project-roots project)))
   :bind
   (:map flymake-mode-map
         ([remap next-error] . flymake-goto-next-error)

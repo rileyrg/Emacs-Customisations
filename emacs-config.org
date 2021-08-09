@@ -67,12 +67,12 @@ invoke google translate on them. Stores history.
              (debug-init (expand-file-name fname user-emacs-directory)))
        (if (file-exists-p debug-init)
            (progn
-             (message "A debug-init, %s, was found, so loading and entering the debugger." debug-init)
+             (message "A debug-init, %s, was found, so loading." debug-init)
              (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
                (load-file debug-init)
                (if rgr/debug-init-debugger
                    (debug)
-                 (message "rgr/debug-init-debugger was set to nil so not debugging after loading %s" debug-init))))
+                 (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
          (message "No debug initfile, %s, found so ignoring" debug-init))))
    #+end_src
 ** early-init.el
@@ -80,6 +80,7 @@ invoke google translate on them. Stores history.
   ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
   ;; Maintained in emacs-config.org
   (setq package-enabled-at-startup nil)
+  (setq max-specpdl-size 13000)
   ;;; early-init.el ends here
 #+end_src
 *** DONE [#B] look into removing those repos paths added in early-init. cant remember why they are there.
@@ -816,12 +817,13 @@ CLOSED: [2021-07-21 Wed 11:39]
   (use-package bookmark+
     :demand)
 #+end_src
-**** TODO waiting on replies to reddit post about bmkp vesioning
-SCHEDULED: <2021-07-24 Sat>
+**** CANCELLED waiting on replies to reddit post about bmkp vesioning :CANCELLED:
+CLOSED: [2021-08-08 Sun 23:15] SCHEDULED: <2021-07-24 Sat>
         :PROPERTIES:
         :DateCreated: <2021-07-22 Thu 16:17>
         :END:
 :LOGBOOK:
+- State "CANCELLED"  from "TODO"       [2021-08-08 Sun 23:15]
 - State "TODO"       from              [2021-07-22 Thu 16:18]
 :END:
 **** TODO look into why bmkp store org link doesnt work
@@ -1811,12 +1813,13 @@ Use emacsclient if it's running. Might consider an alias
 :END:
 #+begin_src emacs-lisp
 #+end_src
-**** pdf-tools
-SCHEDULED: <2021-06-02 Wed>
+**** CANCELLED pdf-tools                                          :CANCELLED:
+CLOSED: [2021-08-08 Sun 23:15] SCHEDULED: <2021-06-02 Wed>
 :PROPERTIES:
 :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
 :END:
 :LOGBOOK:
+- State "CANCELLED"  from              [2021-08-08 Sun 23:15]
 - State "CANCELLED"  from "TODO"       [2021-06-10 Thu 06:15]
 - Note taken on [2021-05-31 Mon 06:06] \\
   error with pdf exe
@@ -2835,7 +2838,11 @@ CLOSED: [2021-07-21 Wed 11:28]
 
 #+end_src
 **** Project Management                                             :project:
-***** projectile
+***** project
+#+begin_src emacs-lisp
+  (require 'project)
+#+end_src
+***** projectile                                                 :projectile:
 #+begin_src emacs-lisp
   (use-package projectile
     :demand
@@ -3098,10 +3105,6 @@ https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
     :demand
-    :config
-    (require 'project)
-    (defun project-root (project)
-    (car (project-roots project)))
     :bind
     (:map flymake-mode-map
           ([remap next-error] . flymake-goto-next-error)

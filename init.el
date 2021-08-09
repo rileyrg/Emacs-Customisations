@@ -4,12 +4,12 @@
         (debug-init (expand-file-name fname user-emacs-directory)))
   (if (file-exists-p debug-init)
       (progn
-        (message "A debug-init, %s, was found, so loading and entering the debugger." debug-init)
+        (message "A debug-init, %s, was found, so loading." debug-init)
         (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
           (load-file debug-init)
           (if rgr/debug-init-debugger
               (debug)
-            (message "rgr/debug-init-debugger was set to nil so not debugging after loading %s" debug-init))))
+            (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
     (message "No debug initfile, %s, found so ignoring" debug-init))))
 
 (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;

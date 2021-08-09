@@ -52,6 +52,8 @@
   :config
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
+(require 'project)
+
 (use-package projectile
   :demand
   :init
