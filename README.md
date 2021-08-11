@@ -672,7 +672,18 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :config (which-key-mode))
     ```
 
-2.  Abbrev Mode
+2.  Yasnippet
+
+    [YASnippet](https://github.com/joaotavora/yasnippet) is a template system for Emacs.
+
+    ```emacs-lisp
+    (use-package yasnippet
+      :config
+      (use-package yasnippet-snippets)
+      (yas-global-mode))
+    ```
+
+3.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
 
@@ -680,7 +691,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-3.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+4.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
     ```emacs-lisp
     (use-package orderless
@@ -690,7 +701,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
             completion-category-overrides '((file (styles . (partial-completion))))))
     ```
 
-4.  vertico , vertical interactive completion
+5.  vertico , vertical interactive completion
 
     ```emacs-lisp
     ;; Enable vertico
@@ -718,7 +729,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     ```
 
-5.  Abbrev Mode
+6.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
 
@@ -726,7 +737,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-6.  provide
+7.  provide
 
     ```emacs-lisp
     (provide 'rgr/completion)
@@ -1176,7 +1187,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org37b6d96) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgaf5453a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2251,6 +2262,10 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
     :config
     (mu4e-maildirs-extension))
 
+  (use-package mu4e-column-faces
+    :after mu4e
+    :config (mu4e-column-faces-mode))
+
   (setq mu4e-contexts
         `( ,(make-mu4e-context
              :name "aGmx"
@@ -2606,6 +2621,28 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ```emacs-lisp
         (use-package projectile
           :demand
+          :config
+          ;; https://github.com/joaotavora/eglot/issues/697
+          (defun m/projectile-project-find-function (dir)
+            (let ((root (projectile-project-root dir)))
+              (and root (cons 'my/projectile root))))
+
+          (cl-defmethod project-root ((pr (head my/projectile)))
+            (cdr pr))
+
+          (cl-defmethod project-files ((pr (head my/projectile)) &optional _dirs)
+            (let ((root (cdr pr)))
+              (mapcar
+               (lambda (file)
+                 (concat root file))
+               (projectile-project-files root))))
+
+          (cl-defmethod project-ignores ((pr (head my/projectile)) _dir)
+            (let ((default-directory (cdr pr)))
+              (projectile-patterns-to-ignore)))
+
+          (with-eval-after-load 'project
+            (add-to-list 'project-find-functions 'm/projectile-project-find-function))
           :init
           (projectile-mode +1)
           (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
@@ -3012,7 +3049,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             ```emacs-lisp
             (use-package eglot
               :hook (python-mode . (lambda ()
-                                     (eglot-ensure))))
+                                     (eglot-ensure)))
+              :bind
+              (:map eglot-mode-map
+                    (("C-<return>" . eglot-code-action-quickfix))))
             ```
 
     4.  virtualenv
@@ -3039,7 +3079,37 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
     ```
 
-20. C, c-mode
+20. c-mode-common-hook
+
+    ```emacs-lisp
+    (use-package emacs
+      :config
+      (defun rgr/c-mode-common-save-hook()
+        ;;    (lsp-format-buffer)
+        ;;(eglot-format-buffer)
+        )
+      (defun rgr/c-mode-common-hook ()
+        (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
+        (if(featurep 'corfu)
+            (setq completion-category-defaults nil))
+        (if(featurep 'eglot)
+            (eglot-ensure)))
+      (if (featurep 'yasnippet)
+          (yas-minor-mode))
+      :hook
+      (c-mode-common . rgr/c-mode-common-hook)
+      :bind  ( :map c-mode-base-map
+               (("M-<return>" . rgr/c-complete-line)
+                ("TAB" . rgr/c-indent-complete))))
+    ```
+
+21. C, c-mode
+
+    ```emacs-lisp
+    (defun rgr/c-mode-hook ()
+      (setq-local dash-docs-docsets '("C")))
+    (add-hook 'c-mode-hook 'rgr/c-mode-hook)
+    ```
 
     1.  line utilities
 
@@ -3077,30 +3147,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```
 
-    3.  c-mode-common-hook
-
-        ```emacs-lisp
-        (use-package emacs
-          :config
-          (defun rgr/c-save-hook()
-            ;;    (lsp-format-buffer)
-            ;;(eglot-format-buffer)
-            )
-          (defun rgr/c-mode-common-hook ()
-            (add-hook 'before-save-hook #'rgr/c-save-hook nil t)
-            (setq-local dash-docs-docsets '("C"))
-            (if(featurep 'corfu)
-                (setq completion-category-defaults nil))
-            (if(featurep 'eglot)
-                (eglot-ensure)))
-          :hook
-          (c-mode-common . rgr/c-mode-common-hook)
-          :bind  ( :map c-mode-base-map
-                   (("M-<return>" . rgr/c-complete-line)
-                    ("TAB" . rgr/c-indent-complete))))
-        ```
-
-21. cc,cpp, C++, cc-mode
+22. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3108,7 +3155,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-22. Linux tools
+23. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
 
@@ -3120,7 +3167,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-23. Assembler
+24. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
 
@@ -3128,7 +3175,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-24. Godot GDScript
+25. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
 
@@ -3154,7 +3201,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-25. Web,Symfony and Twig
+26. Web,Symfony and Twig
 
     1.  Symfony
 
@@ -3222,7 +3269,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-26. elf-mode - view the symbol list in a binary
+27. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
 
@@ -3233,7 +3280,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-27. provide
+28. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3363,7 +3410,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd39f32f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdd1648f) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3402,7 +3449,7 @@ fi
 ```
 
 
-<a id="orgd39f32f"></a>
+<a id="orgdd1648f"></a>
 
 ### Gnome protocol handler desktop file
 

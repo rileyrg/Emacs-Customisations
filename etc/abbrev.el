@@ -1,7 +1,8 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'c++-mode-abbrev-table
   '(
-    ("endl" "std::endl;" nil :count 0)
+    ("cl" "class {
+}" nil :count 1)
     ("newf" "#include <iostream>
 #include <ostream>
 
@@ -15,8 +16,16 @@ int main(void)
      return 0;
 }
 " nil :count 1)
-    ("sin" "std::cin >>" nil :count 4)
-    ("sout" "std::cout <<" nil :count 4)
+    ("pr" "private:" nil :count 0)
+    ("pu" "public:" nil :count 0)
+    ("scin" "std::cin >> " nil :count 6)
+    ("scout" "std::cout << " nil :count 7)
+    ("sendl" "<< std::endl " nil :count 7)
+   ))
+
+(define-abbrev-table 'global-abbrev-table
+  '(
+    (">>i" "cin >> " nil :count 0)
    ))
 
 (define-abbrev-table 'org-mode-abbrev-table

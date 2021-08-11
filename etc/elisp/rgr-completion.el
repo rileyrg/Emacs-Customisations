@@ -3,6 +3,11 @@
   :demand t
   :config (which-key-mode))
 
+(use-package yasnippet
+  :config
+  (use-package yasnippet-snippets)
+  (yas-global-mode))
+
 (setq-default abbrev-mode 1)
 
 (use-package orderless
