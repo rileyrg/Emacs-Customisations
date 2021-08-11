@@ -2,9 +2,42 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(#1=(#("ATourOfCpp.pdf" 0 14
+(#1=(#("enumerations.cpp" 0 16
       (bmkp-full-record #1#))
-    (tags "stroustrup" "cpp")
+    (tags "cpp")
+    (filename . "~/Dropbox/homefiles/directories/development/projects/Cpp/TourOfCppV2/2-5-enumerations/enumerations.cpp")
+    (buffer-name . "enumerations.cpp")
+    (front-context-string . "\n\n}\n\nstatic Traf")
+    (rear-context-string . "  }\n\n  return t;")
+    (front-context-region-string)
+    (rear-context-region-string)
+    (visits . 2)
+    (time 24851 52055 391864 121000)
+    (created 24851 51879 972656 75000)
+    (position . 353))
+#1=(#("2-5-enumerations" 0 16
+      (bmkp-full-record #1#))
+    (buffer-name . "2-5-enumerations")
+    (front-context-string . "Makefile\n  -rw-r")
+    (rear-context-string . "58 Aug 11 14:44 ")
+    (front-context-region-string)
+    (rear-context-region-string)
+    (visits . 0)
+    (time . #2=(24851 51849 305914 218000))
+    (created . #2#)
+    (position . 398)
+    (filename . "/home/rgr/Dropbox/homefiles/directories/development/projects/Cpp/TourOfCppV2/2-5-enumerations/")
+    (dired-directory . "~/Dropbox/homefiles/directories/development/projects/Cpp/TourOfCppV2/2-5-enumerations/")
+    (dired-marked)
+    (dired-switches . "-al")
+    (dired-subdirs)
+    (dired-hidden-dirs)
+    (handler . bmkp-jump-dired))
+#1=(#("ATourOfCpp.pdf" 0 14
+      (bmkp-full-record #1#))
+    (tags "stroustrup"
+          #("cpp" 0 3
+            (face nil)))
     (filename . "~/Documents/Programming/Cpp/ATourofCpp.pdf")
     (buffer-name . "~/Documents/Programming/Cpp/ATourofCpp.pdf")
     (visits . 7)
@@ -18,9 +51,10 @@
     (handler . pdf-view-bookmark-jump-handler))
 #1=(#("cpp" 0 3
       (bmkp-full-record #1#))
+    (tags)
     (buffer-name . "*Bookmark List*")
-    (visits . 2)
-    (time 24851 9962 624344 860000)
+    (visits . 7)
+    (time 24851 52088 449877 400000)
     (created 24851 6617 250001 598000)
     (position . 149)
     (filename . "   - no file -")
