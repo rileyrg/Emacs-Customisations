@@ -1187,7 +1187,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgaf5453a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org485dd1e) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2621,28 +2621,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ```emacs-lisp
         (use-package projectile
           :demand
-          :config
-          ;; https://github.com/joaotavora/eglot/issues/697
-          (defun m/projectile-project-find-function (dir)
-            (let ((root (projectile-project-root dir)))
-              (and root (cons 'my/projectile root))))
-
-          (cl-defmethod project-root ((pr (head my/projectile)))
-            (cdr pr))
-
-          (cl-defmethod project-files ((pr (head my/projectile)) &optional _dirs)
-            (let ((root (cdr pr)))
-              (mapcar
-               (lambda (file)
-                 (concat root file))
-               (projectile-project-files root))))
-
-          (cl-defmethod project-ignores ((pr (head my/projectile)) _dir)
-            (let ((default-directory (cdr pr)))
-              (projectile-patterns-to-ignore)))
-
-          (with-eval-after-load 'project
-            (add-to-list 'project-find-functions 'm/projectile-project-find-function))
           :init
           (projectile-mode +1)
           (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
@@ -3410,7 +3388,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdd1648f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfd167da) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3449,7 +3427,7 @@ fi
 ```
 
 
-<a id="orgdd1648f"></a>
+<a id="orgfd167da"></a>
 
 ### Gnome protocol handler desktop file
 

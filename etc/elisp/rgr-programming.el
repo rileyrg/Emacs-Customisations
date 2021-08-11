@@ -56,28 +56,6 @@
 
 (use-package projectile
   :demand
-  :config
-  ;; https://github.com/joaotavora/eglot/issues/697
-  (defun m/projectile-project-find-function (dir)
-    (let ((root (projectile-project-root dir)))
-      (and root (cons 'my/projectile root))))
-
-  (cl-defmethod project-root ((pr (head my/projectile)))
-    (cdr pr))
-
-  (cl-defmethod project-files ((pr (head my/projectile)) &optional _dirs)
-    (let ((root (cdr pr)))
-      (mapcar
-       (lambda (file)
-         (concat root file))
-       (projectile-project-files root))))
-
-  (cl-defmethod project-ignores ((pr (head my/projectile)) _dir)
-    (let ((default-directory (cdr pr)))
-      (projectile-patterns-to-ignore)))
-
-  (with-eval-after-load 'project
-    (add-to-list 'project-find-functions 'm/projectile-project-find-function))
   :init
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
