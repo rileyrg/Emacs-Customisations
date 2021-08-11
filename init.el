@@ -423,6 +423,10 @@ creates a report in function-name.ftrace and opens it in a buffer"
     :config
     (mu4e-maildirs-extension))
 
+  (use-package mu4e-column-faces
+    :after mu4e
+    :config (mu4e-column-faces-mode))
+
   (setq mu4e-contexts
         `( ,(make-mu4e-context
              :name "aGmx"

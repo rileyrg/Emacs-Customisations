@@ -56,6 +56,28 @@
 
 (use-package projectile
   :demand
+  :config
+  ;; https://github.com/joaotavora/eglot/issues/697
+  (defun m/projectile-project-find-function (dir)
+    (let ((root (projectile-project-root dir)))
+      (and root (cons 'my/projectile root))))
+
+  (cl-defmethod project-root ((pr (head my/projectile)))
+    (cdr pr))
+
+  (cl-defmethod project-files ((pr (head my/projectile)) &optional _dirs)
+    (let ((root (cdr pr)))
+      (mapcar
+       (lambda (file)
+         (concat root file))
+       (projectile-project-files root))))
+
+  (cl-defmethod project-ignores ((pr (head my/projectile)) _dir)
+    (let ((default-directory (cdr pr)))
+      (projectile-patterns-to-ignore)))
+
+  (with-eval-after-load 'project
+    (add-to-list 'project-find-functions 'm/projectile-project-find-function))
   :init
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
@@ -214,7 +236,10 @@
 
 (use-package eglot
   :hook (python-mode . (lambda ()
-                         (eglot-ensure))))
+                         (eglot-ensure)))
+  :bind
+  (:map eglot-mode-map
+        (("C-<return>" . eglot-code-action-quickfix))))
 
 (use-package auto-virtualenv
   :config
@@ -227,6 +252,30 @@
 
 (use-package lldb-voltron
   :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
+
+(use-package emacs
+  :config
+  (defun rgr/c-mode-common-save-hook()
+    ;;    (lsp-format-buffer)
+    ;;(eglot-format-buffer)
+    )
+  (defun rgr/c-mode-common-hook ()
+    (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
+    (if(featurep 'corfu)
+        (setq completion-category-defaults nil))
+    (if(featurep 'eglot)
+        (eglot-ensure)))
+  (if (featurep 'yasnippet)
+      (yas-minor-mode))
+  :hook
+  (c-mode-common . rgr/c-mode-common-hook)
+  :bind  ( :map c-mode-base-map
+           (("M-<return>" . rgr/c-complete-line)
+            ("TAB" . rgr/c-indent-complete))))
+
+(defun rgr/c-mode-hook ()
+  (setq-local dash-docs-docsets '("C")))
+(add-hook 'c-mode-hook 'rgr/c-mode-hook)
 
 (defun rgr/c-complete-line()
   (interactive)
@@ -253,25 +302,6 @@
     (c-indent-line-or-region)
     (when (= p (point))
       (call-interactively 'complete-symbol))))
-
-(use-package emacs
-  :config
-  (defun rgr/c-save-hook()
-    ;;    (lsp-format-buffer)
-    ;;(eglot-format-buffer)
-    )
-  (defun rgr/c-mode-common-hook ()
-    (add-hook 'before-save-hook #'rgr/c-save-hook nil t)
-    (setq-local dash-docs-docsets '("C"))
-    (if(featurep 'corfu)
-        (setq completion-category-defaults nil))
-    (if(featurep 'eglot)
-        (eglot-ensure)))
-  :hook
-  (c-mode-common . rgr/c-mode-common-hook)
-  :bind  ( :map c-mode-base-map
-           (("M-<return>" . rgr/c-complete-line)
-            ("TAB" . rgr/c-indent-complete))))
 
 (defun rgr/c++-mode-hook ()
   (setq-local dash-docs-docsets '("C++")))
