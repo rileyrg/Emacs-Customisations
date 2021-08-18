@@ -823,6 +823,8 @@ CLOSED: [2021-07-21 Wed 11:39]
 :END:
 #+begin_src emacs-lisp
   (use-package bookmark+
+    :custom
+    (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
     :demand)
 #+end_src
 **** CANCELLED waiting on replies to reddit post about bmkp vesioning :CANCELLED:
@@ -2617,6 +2619,12 @@ https://github.com/emacsmirror/rmsbolt
     (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 #+end_src
 
+**** debugging                                         debugging:dbg:
+***** realgud                                                       :realgud:
+****** lldb                                                            :lldb:
+#+begin_src emacs-lisp
+  (use-package realgud-lldb)
+#+end_src
 **** Emacs Lisp, ELisp Utils                                    :elisp:utils:
 :PROPERTIES:
 :ID:       eb119ffb-f073-4fe0-a8f4-b031291d9e4d
@@ -3333,6 +3341,7 @@ CLOSED: [2021-06-28 Mon 21:28]
     (add-hook 'python-mode-hook  #'blacken-mode))
 #+end_src
 **** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
+***** voltron
 #+begin_src emacs-lisp
   (use-package lldb-voltron
     :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))

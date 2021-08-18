@@ -81,6 +81,8 @@
 (require 'rgr/completion "rgr-completion" 'NOERROR)
 
 (use-package bookmark+
+  :custom
+  (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
   :demand)
 
 (use-package lazy-lang-learn

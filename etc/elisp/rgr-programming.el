@@ -28,6 +28,8 @@
   (parrot-mode)
   (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
+(use-package realgud-lldb)
+
 (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 
 (use-package scratch
