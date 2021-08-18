@@ -18,6 +18,7 @@
 
 !var/bmkp
 !var/bmkp/current-bookmark.el
+!var/bmkp/current-bookmark.el.gpg
 
 !etc/abbrev.el
 

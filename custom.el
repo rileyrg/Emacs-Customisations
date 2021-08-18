@@ -28,7 +28,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "/home/rgr/.emacs.d/var/bmkp/current-bookmark.el")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -150,8 +149,8 @@
  '(epa-file-cache-passphrase-for-symmetric-encryption nil)
  '(erc-autojoin-channels-alist
    '(("irc.freenode.net" "#debian")
-     ("irc.libera.chat" "#ardour" "#debian" "#sway" "#emacs" "#linux")
-     ("irc.oftc.net" "#llvm")))
+     ("irc.libera.chat" "#c++-basic" "#ardour" "#debian" "#sway" "#emacs" "#linux")
+     ("irc.oftc.net" "#llvm" "#c++")))
  '(erc-autojoin-delay 1)
  '(erc-autojoin-domain-only nil)
  '(erc-autojoin-mode t)
@@ -282,7 +281,12 @@ Would you like to play a game?
       nil)))
  '(org-agenda-skip-scheduled-if-deadline-is-shown t nil nil "Customized with use-package org")
  '(org-agenda-start-on-weekday 0 nil nil "Customized with use-package org")
- '(org-babel-load-languages '((emacs-lisp . t) (python . t) (shell . t) (css . t)))
+ '(org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)
+     (shell . t)
+     (css . t)
+     (makefile . t)))
  '(org-capture-templates
    '(("t" "Todo" entry
       (file+headline "refile.org" "Tasks To Refile")

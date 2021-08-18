@@ -18,9 +18,10 @@ int main(void)
 " nil :count 1)
     ("pr" "private:" nil :count 0)
     ("pu" "public:" nil :count 0)
+    ("scerr" "std::cerr << " nil :count 2)
     ("scin" "std::cin >> " nil :count 6)
     ("scout" "std::cout << " nil :count 7)
-    ("sendl" "<< std::endl " nil :count 7)
+    ("sendl" "<< std::endl " nil :count 8)
    ))
 
 (define-abbrev-table 'global-abbrev-table
