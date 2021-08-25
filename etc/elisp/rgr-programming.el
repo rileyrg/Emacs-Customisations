@@ -363,6 +363,7 @@
 (use-package elf-mode
   :demand t
   :config
+  (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
   (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
 (provide 'rgr/programming)

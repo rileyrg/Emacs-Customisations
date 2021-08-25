@@ -28,6 +28,7 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -149,7 +150,7 @@
  '(epa-file-cache-passphrase-for-symmetric-encryption nil)
  '(erc-autojoin-channels-alist
    '(("irc.freenode.net" "#debian")
-     ("irc.libera.chat" "#c++-basic" "#ardour" "#debian" "#sway" "#emacs" "#linux")
+     ("irc.libera.chat" "#C++" "#c++-basic" "#ardour" "#debian" "#sway" "#emacs" "#linux")
      ("irc.oftc.net" "#llvm" "#c++")))
  '(erc-autojoin-delay 1)
  '(erc-autojoin-domain-only nil)
