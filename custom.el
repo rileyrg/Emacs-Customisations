@@ -28,7 +28,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -129,16 +128,9 @@
  '(el-docstring-sap--display-func 'el-docstring-sap--quick-peek)
  '(eldoc-box-only-multi-line t)
  '(elfeed-feeds
-   '("https://stackoverflow.com/feeds/tag/clang" "https://stackoverflow.com/feeds/tag/llvm" "https://stackoverflow.com/feeds/tag/lldb" "https://stackoverflow.com/feeds/tag/python" "https://stackoverflow.com/feeds/tag/bash"
-     ("https://emacs.stackexchange.com/feeds" dev emacs mustread stack exchange)
-     ("http://www.masteringemacs.org/feed" dev emacs mustread)
-     ("http://planet.emacsen.org/atom.xml" dev emacs mustread)
-     ("https://blog.tecosaur.com/tmio/rss.xml" dev emacs mustread)
-     ("http://nullprogram.com/feed" dev emacs mustread)
-     ("http://www.terminally-incoherent.com/blog/feed" dev emacs mustread)
-     ("http://orgmode.org")
-     ("http://feeds.feedburner.com/InformationIsBeautiful")
-     ("http://git-annex.branchable.com/design/assistant/blog/index.rss" mustread)
+   '("https://stackoverflow.com/feeds/tag/c%2b%2b"
+     ("http://stackoverflow.com/feeds/tag/c%2b%2b" dev)
+     ("https://emacs.stackexchange.com/feeds" dev emacs mustread)
      ("https://www.theguitarlesson.com/guitar-lesson-blog/feed")
      ("http://angelikasgerman.co.uk/blog/feed" german)
      ("https://feeds.megaphone.fm/somethingrhymeswithpurple" literature words)))
