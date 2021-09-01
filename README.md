@@ -1189,7 +1189,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgfd5c45c) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org4bd013d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1678,8 +1678,12 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         :config
         (elfeed-goodies/setup))
       (run-at-time nil (* 8 60 60) #'elfeed-update)
-      :bind ( "C-x w" . elfeed))
-
+      :bind
+      ( "C-c w" . elfeed)
+      (:map elfeed-show-mode-map
+            ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
+      (:map elfeed-search-mode-map
+            ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
     ```
 
     1.  elfeed-org
@@ -3404,7 +3408,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org386e7fb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4051b3d) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3443,7 +3447,7 @@ fi
 ```
 
 
-<a id="org386e7fb"></a>
+<a id="org4051b3d"></a>
 
 ### Gnome protocol handler desktop file
 

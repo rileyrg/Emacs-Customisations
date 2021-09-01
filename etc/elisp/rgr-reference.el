@@ -182,7 +182,12 @@
     :config
     (elfeed-goodies/setup))
   (run-at-time nil (* 8 60 60) #'elfeed-update)
-  :bind ( "C-x w" . elfeed))
+  :bind
+  ( "C-c w" . elfeed)
+  (:map elfeed-show-mode-map
+        ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
+  (:map elfeed-search-mode-map
+        ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
 
 
 
