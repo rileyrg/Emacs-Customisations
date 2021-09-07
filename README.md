@@ -1189,7 +1189,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4bd013d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org9d45901) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2219,7 +2219,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
   (if (not (get-buffer "irc.libera.chat:6697"))
     (progn
       (erc-tls :server "irc.libera.chat" :port "6697")
-      ;;(erc-tls :server "irc.freenode.net" :port "6697")
+      ;;(erc-tls :server "irc.freenode.net" :port "6667")
       (erc-tls :server "irc.oftc.net" :port "6697")
       (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
     (erc-switch-to-buffer)))
@@ -3408,7 +3408,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4051b3d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1872c1a) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3447,7 +3447,7 @@ fi
 ```
 
 
-<a id="org4051b3d"></a>
+<a id="org1872c1a"></a>
 
 ### Gnome protocol handler desktop file
 
