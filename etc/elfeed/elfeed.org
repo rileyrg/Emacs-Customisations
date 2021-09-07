@@ -6,8 +6,10 @@
 *** http://angelikasgerman.co.uk/blog/feed
 ** Guitar
 *** https://www.theguitarlesson.com/guitar-lesson-blog/feed
-** Software Development                                                 :dev:
-*** Emacs                                                    :emacs:mustread:
+** Software Development
+*** Emacs                                                    :emacs:elisp:
 **** https://emacs.stackexchange.com/feeds
 *** CPP
 **** http://stackoverflow.com/feeds/tag/c%2b%2b
+*** Python                                            :python:
+**** http://stackoverflow.com/feeds/tag/
