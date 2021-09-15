@@ -1,10 +1,3 @@
-(use-package eglot
-  :demand
-  :bind
-  (:map flymake-mode-map
-        ([remap next-error] . flymake-goto-next-error)
-        ([remap previous-error] . flymake-goto-prev-error)))
-
 ;; if you want to change prefix for lsp-mode keybindings.
 (use-package lsp-mode
   :custom
@@ -54,7 +47,7 @@
   (dap-auto-configure-features '(locals  tooltip))
   :config
   (setq dap-ui-buffer-configurations
-        `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
+        `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
           (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
           (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
           (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
