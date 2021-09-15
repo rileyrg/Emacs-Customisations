@@ -28,8 +28,6 @@
   (parrot-mode)
   (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
-(use-package realgud-lldb)
-
 (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 
 (use-package scratch
@@ -243,8 +241,11 @@
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
     (if(featurep 'corfu)
         (setq completion-category-defaults nil))
-    (if(featurep 'eglot)
-        (eglot-ensure)))
+    ;; (if(featurep 'eglot)
+    ;;     (eglot-ensure))
+    (if(featurep 'lsp-mode)
+        (lsp))
+    )
   (if (featurep 'yasnippet)
       (yas-minor-mode))
   :hook

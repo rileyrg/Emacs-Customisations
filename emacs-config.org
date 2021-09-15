@@ -2622,13 +2622,6 @@ https://github.com/emacsmirror/rmsbolt
     (parrot-mode)
     (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 #+end_src
-
-**** debugging                                         debugging:dbg:
-***** realgud                                                       :realgud:
-****** lldb                                                            :lldb:
-#+begin_src emacs-lisp
-  (use-package realgud-lldb)
-#+end_src
 **** Emacs Lisp, ELisp Utils                                    :elisp:utils:
 :PROPERTIES:
 :ID:       eb119ffb-f073-4fe0-a8f4-b031291d9e4d
@@ -3124,6 +3117,9 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 :END:
 
 ****** eglot
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
 Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
@@ -3186,7 +3182,7 @@ https://github.com/joaotavora/eglot
     (dap-auto-configure-features '(locals  tooltip))
     :config
     (setq dap-ui-buffer-configurations
-          `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
+          `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
             (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
             (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
             (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
@@ -3323,6 +3319,9 @@ CLOSED: [2021-06-28 Mon 21:28]
                            (lsp-deferred))))
 #+end_src
 ****** eglot
+:PROPERTIES:
+:header-args:emacs-lisp :tangle no
+:END:
   #+begin_src emacs-lisp
     (use-package eglot
       :hook (python-mode . (lambda ()
@@ -3362,8 +3361,11 @@ CLOSED: [2021-06-28 Mon 21:28]
       (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
       (if(featurep 'corfu)
           (setq completion-category-defaults nil))
-      (if(featurep 'eglot)
-          (eglot-ensure)))
+      ;; (if(featurep 'eglot)
+      ;;     (eglot-ensure))
+      (if(featurep 'lsp-mode)
+          (lsp))
+      )
     (if (featurep 'yasnippet)
         (yas-minor-mode))
     :hook
