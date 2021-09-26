@@ -43,6 +43,7 @@
 
 (use-package dap-mode
   :commands rgr/dap-debug
+  :disabled t
   :custom
   (dap-auto-configure-features '(locals  tooltip))
   :config

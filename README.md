@@ -1189,7 +1189,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgfcd9d22) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org73a864a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2447,17 +2447,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
         ```
 
-2.  debugging                                         debugging:dbg:
-
-    1.  realgud
-
-        1.  lldb
-
-            ```emacs-lisp
-            (use-package realgud-lldb)
-            ```
-
-3.  Emacs Lisp, ELisp Utils
+2.  Emacs Lisp, ELisp Utils
 
     Load this relatively early in order to have utils available if there's a faied load Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
@@ -2597,21 +2587,21 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/elisp-utils)
             ```
 
-4.  prog-mode hack
+3.  prog-mode hack
 
     ```emacs-lisp
     (unless (fboundp 'prog-mode)
       (defalias 'prog-mode 'fundamental-mode))
     ```
 
-5.  linum-mode Show Line numbers
+4.  linum-mode Show Line numbers
 
     ```emacs-lisp
     (global-set-key (kbd "S-<f2>") 'linum-mode)
     (add-hook 'prog-mode-hook (lambda() (linum-mode t)))
     ```
 
-6.  rainbow delimiters
+5.  rainbow delimiters
 
     ```emacs-lisp
     (use-package rainbow-delimiters
@@ -2624,7 +2614,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```
 
-7.  Project Management
+6.  Project Management
 
     1.  project
 
@@ -2642,7 +2632,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
         ```
 
-8.  BASH
+7.  BASH
 
     1.  Navigating Bash set -x output
 
@@ -2657,7 +2647,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                          "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
         ```
 
-9.  JSON, YAML Configuration files
+8.  JSON, YAML Configuration files
 
     1.  YAML
 
@@ -2670,7 +2660,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```
 
-10. Flycheck
+9.  Flycheck
 
     On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
 
@@ -2693,7 +2683,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                           (message "flycheck %s" s)))))
     ```
 
-11. Flymake
+10. Flymake
 
     1.  diagnostic-at-point
 
@@ -2716,7 +2706,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :hook (sh-mode . rgr/sh-mode-hook))
         ```
 
-12. Version Control
+11. Version Control
 
     1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
 
@@ -2781,7 +2771,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ("C-x v ="  . git-gutter:popup-hunk))
         ```
 
-13. Javascript
+12. Javascript
 
     ```emacs-lisp
 
@@ -2820,7 +2810,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
     ```
 
-14. RJSX
+13. RJSX
 
     [rjsx-mode](https://github.com/felipeochoa/rjsx-mode) extends js2-mode to include jsx parsing.
 
@@ -2833,7 +2823,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-15. Typescript
+14. Typescript
 
     ```emacs-lisp
     (use-package typescript-mode
@@ -2844,7 +2834,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
 
-16. Language Server Protocol (LSP), lsp-mode
+15. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
 
@@ -2917,11 +2907,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
             (use-package dap-mode
               :commands rgr/dap-debug
+              :disabled t
               :custom
               (dap-auto-configure-features '(locals  tooltip))
               :config
               (setq dap-ui-buffer-configurations
-                    `((,"*dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
+                    `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
                       (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
                       (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
                       (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
@@ -2975,7 +2966,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/lsp)
             ```
 
-17. Serial Port
+16. Serial Port
 
     ```emacs-lisp
     (defgroup rgr/serial-ports nil
@@ -3003,7 +2994,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       (selectSerialPortBuffer)))
     ```
 
-18. PlatformIO
+17. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
 
@@ -3011,7 +3002,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package platformio-mode)
     ```
 
-19. Python
+    1.  does this platformio-mode work?
+
+18. Python
 
     1.  python-mode
 
@@ -3040,6 +3033,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         1.  eglot
 
+            :header-args:emacs-lisp :tangle no
+
             ```emacs-lisp
             (use-package eglot
               :hook (python-mode . (lambda ()
@@ -3066,7 +3061,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'python-mode-hook  #'blacken-mode))
         ```
 
-20. lldb debugging in emacs
+19. lldb debugging in emacs
 
     1.  voltron
 
@@ -3075,7 +3070,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
         ```
 
-21. c-mode-common-hook
+20. c-mode-common-hook
 
     ```emacs-lisp
     (use-package emacs
@@ -3088,10 +3083,14 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
         (if(featurep 'corfu)
             (setq completion-category-defaults nil))
-        (if(featurep 'eglot)
-            (eglot-ensure)))
-      (if (featurep 'yasnippet)
-          (yas-minor-mode))
+        ;; (if(featurep 'eglot)
+        ;;     (eglot-ensure))
+        (if(featurep 'lsp-mode)
+            (lsp-deferred))
+        (if(featurep 'platformio-mode)
+            (platformio-conditionally-enable))
+        (if (featurep 'yasnippet)
+            (yas-minor-mode)))
       :hook
       (c-mode-common . rgr/c-mode-common-hook)
       :bind  ( :map c-mode-base-map
@@ -3099,7 +3098,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 ("TAB" . rgr/c-indent-complete))))
     ```
 
-22. C, c-mode
+21. C, c-mode
 
     ```emacs-lisp
     (defun rgr/c-mode-hook ()
@@ -3143,7 +3142,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```
 
-23. cc,cpp, C++, cc-mode
+22. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3151,7 +3150,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-24. Linux tools
+23. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
 
@@ -3163,7 +3162,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-25. Assembler
+24. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
 
@@ -3171,7 +3170,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-26. Godot GDScript
+25. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
 
@@ -3197,7 +3196,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-27. Web,Symfony and Twig
+26. Web,Symfony and Twig
 
     1.  Symfony
 
@@ -3265,7 +3264,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-28. elf-mode - view the symbol list in a binary
+27. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
 
@@ -3277,7 +3276,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-29. provide
+28. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3408,7 +3407,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbf3f52b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd65078e) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3447,7 +3446,7 @@ fi
 ```
 
 
-<a id="orgbf3f52b"></a>
+<a id="orgd65078e"></a>
 
 ### Gnome protocol handler desktop file
 
