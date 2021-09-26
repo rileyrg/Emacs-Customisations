@@ -1189,7 +1189,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org73a864a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org2e6791f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2999,10 +2999,24 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
 
     ```emacs-lisp
-    (use-package platformio-mode)
+    (use-package platformio-mode
+      :demand t
+      :custom
+      (platformio-mode-silent nil)
+      :init
+        (require 'ansi-color)
+        (defun rgr/platformio-compilation-mode-filter (buf _)
+          (interactive)
+          (with-current-buffer buf
+            (when (derived-mode-p 'platformio-compilation-mode)
+              (let ((inhibit-read-only t))
+                (ansi-color-apply-on-region (point-min) (point-max))))))
+
+        (add-hook 'compilation-finish-functions
+                'rgr/platformio-compilation-mode-filter))
     ```
 
-    1.  does this platformio-mode work?
+    1.  get compilation errors to work and submit ansi color fix?
 
 18. Python
 
@@ -3407,7 +3421,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd65078e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge3fa37b) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3446,7 +3460,7 @@ fi
 ```
 
 
-<a id="orgd65078e"></a>
+<a id="orge3fa37b"></a>
 
 ### Gnome protocol handler desktop file
 
