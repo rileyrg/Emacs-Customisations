@@ -143,7 +143,7 @@
  '(epa-file-cache-passphrase-for-symmetric-encryption nil)
  '(erc-autojoin-channels-alist
    '(("irc.freenode.net" "#debian")
-     ("irc.libera.chat" "#c++" "#c++-basic" "#ardour" "#debian" "#sway" "#emacs" "#linux")
+     ("irc.libera.chat" "#C++" "#c++" "#c++-basic" "#ardour" "#debian" "#sway" "#emacs" "#linux")
      ("irc.oftc.net" "#llvm" "#c++")))
  '(erc-autojoin-delay 1)
  '(erc-autojoin-domain-only nil)

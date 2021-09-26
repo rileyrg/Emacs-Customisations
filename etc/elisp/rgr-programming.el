@@ -244,10 +244,11 @@
     ;; (if(featurep 'eglot)
     ;;     (eglot-ensure))
     (if(featurep 'lsp-mode)
-        (lsp))
-    )
-  (if (featurep 'yasnippet)
-      (yas-minor-mode))
+        (lsp-deferred))
+    (if(featurep 'platformio-mode)
+        (platformio-conditionally-enable))
+    (if (featurep 'yasnippet)
+        (yas-minor-mode)))
   :hook
   (c-mode-common . rgr/c-mode-common-hook)
   :bind  ( :map c-mode-base-map
