@@ -195,7 +195,21 @@
                   (interactive)
                   (selectSerialPortBuffer)))
 
-(use-package platformio-mode)
+(use-package platformio-mode
+  :demand t
+  :custom
+  (platformio-mode-silent nil)
+  :init
+    (require 'ansi-color)
+    (defun rgr/platformio-compilation-mode-filter (buf _)
+      (interactive)
+      (with-current-buffer buf
+        (when (derived-mode-p 'platformio-compilation-mode)
+          (let ((inhibit-read-only t))
+            (ansi-color-apply-on-region (point-min) (point-max))))))
+
+    (add-hook 'compilation-finish-functions
+            'rgr/platformio-compilation-mode-filter))
 
 (use-package  python
   :config
