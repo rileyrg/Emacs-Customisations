@@ -28,7 +28,7 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
+ '(bmkp-last-as-first-bookmark-file "/home/rgr/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -266,7 +266,9 @@ Would you like to play a game?
  '(ispell-silently-savep t)
  '(kept-new-versions 20)
  '(large-file-warning-threshold nil)
+ '(lsp-keep-workspace-alive nil)
  '(max-lisp-eval-depth 16000)
+ '(mu4e-search-threads nil t nil "Customized with use-package mu4e")
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")
  '(org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"
@@ -422,7 +424,7 @@ SCHEDULED: %^{Delivery Date}t
  '(pos-tip-background-color "#FFFACE")
  '(pos-tip-foreground-color "#272822")
  '(projectile-project-root-files
-   '(".project" "dune-project" "pubspec.yaml" "info.rkt" "Cargo.toml" "stack.yaml" "DESCRIPTION" "Eldev" "Cask" "shard.yml" "Gemfile" ".bloop" "deps.edn" "build.boot" "project.clj" "build.sc" "build.sbt" "application.properties" "gradlew" "build.gradle" "pom.xml" "poetry.lock" "Pipfile" "tox.ini" "setup.py" "requirements.txt" "manage.py" "angular.json" "package.json" "gulpfile.js" "Gruntfile.js" "mix.exs" "rebar.config" "composer.json" "CMakeLists.txt" "Makefile" "debian/control" "WORKSPACE" "default.nix" "meson.build" "SConstruct" "GTAGS" "TAGS" "configure.ac" "configure.in" "cscope.out"))
+   '(".projectile" ".project" "dune-project" "pubspec.yaml" "info.rkt" "Cargo.toml" "stack.yaml" "DESCRIPTION" "Eldev" "Cask" "shard.yml" "Gemfile" ".bloop" "deps.edn" "build.boot" "project.clj" "build.sc" "build.sbt" "application.properties" "gradlew" "build.gradle" "pom.xml" "poetry.lock" "Pipfile" "tox.ini" "setup.py" "requirements.txt" "manage.py" "angular.json" "package.json" "gulpfile.js" "Gruntfile.js" "mix.exs" "rebar.config" "composer.json" "CMakeLists.txt" "Makefile" "debian/control" "WORKSPACE" "default.nix" "meson.build" "SConstruct" "GTAGS" "TAGS" "configure.ac" "configure.in" "cscope.out"))
  '(ps-font-size '(12 . 12))
  '(ps-lpr-switches '("-o Duplex=DuplexNoTumble"))
  '(ps-paper-type 'a4)

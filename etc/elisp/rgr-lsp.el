@@ -26,9 +26,9 @@
 
 (use-package lsp-ui
   :custom
-  (lsp-ui-doc-delay 1.5)
+  (lsp-ui-doc-delay 2.5)
   (lsp-ui-doc-enable t)
-  (lsp-ui-doc-show-with-cursor t)
+  (lsp-ui-doc-position 'at-point)
   (lsp-ui-doc-show-with-mouse t)
   (lsp-ui-doc-show-with-cursor t)
   (lsp-ui-peek-enable t)
