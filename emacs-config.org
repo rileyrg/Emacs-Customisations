@@ -1893,6 +1893,7 @@ Raw:[[./etc/elisp/rgr-emms.el][rgr/emms]]
 #+begin_src emacs-lisp
   (use-package
     emms
+    :disabled t
     :custom
     (emms-source-file-default-directory "~/Music" emms-info-asynchronously t emms-show-format "♪ %s")
     (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
@@ -2381,7 +2382,7 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
       (erc-switch-to-buffer)))
 
   (require 'erc)
-  (global-set-key (kbd  "C-c i") #'rgr/erc-start)
+  (global-set-key (kbd  "C-c e") #'rgr/erc-start)
 #+end_src
 ** Email
 :PROPERTIES:
@@ -3161,9 +3162,9 @@ https://github.com/joaotavora/eglot
 
   (use-package lsp-ui
     :custom
-    (lsp-ui-doc-delay 1.5)
+    (lsp-ui-doc-delay 2.5)
     (lsp-ui-doc-enable t)
-    (lsp-ui-doc-show-with-cursor t)
+    (lsp-ui-doc-position 'at-point)
     (lsp-ui-doc-show-with-mouse t)
     (lsp-ui-doc-show-with-cursor t)
     (lsp-ui-peek-enable t)

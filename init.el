@@ -390,7 +390,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
     (erc-switch-to-buffer)))
 
 (require 'erc)
-(global-set-key (kbd  "C-c i") #'rgr/erc-start)
+(global-set-key (kbd  "C-c e") #'rgr/erc-start)
 
 (use-package mu4e
   :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )

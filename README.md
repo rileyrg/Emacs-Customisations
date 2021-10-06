@@ -1189,7 +1189,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org2e6791f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org7b76c36) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1724,6 +1724,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 ```emacs-lisp
 (use-package
   emms
+  :disabled t
   :custom
   (emms-source-file-default-directory "~/Music" emms-info-asynchronously t emms-show-format "♪ %s")
   (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
@@ -2225,7 +2226,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
     (erc-switch-to-buffer)))
 
 (require 'erc)
-(global-set-key (kbd  "C-c i") #'rgr/erc-start)
+(global-set-key (kbd  "C-c e") #'rgr/erc-start)
 ```
 
 
@@ -2890,9 +2891,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
             (use-package lsp-ui
               :custom
-              (lsp-ui-doc-delay 1.5)
+              (lsp-ui-doc-delay 2.5)
               (lsp-ui-doc-enable t)
-              (lsp-ui-doc-show-with-cursor t)
+              (lsp-ui-doc-position 'at-point)
               (lsp-ui-doc-show-with-mouse t)
               (lsp-ui-doc-show-with-cursor t)
               (lsp-ui-peek-enable t)
@@ -3421,7 +3422,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge3fa37b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3767c1e) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3460,7 +3461,7 @@ fi
 ```
 
 
-<a id="orge3fa37b"></a>
+<a id="org3767c1e"></a>
 
 ### Gnome protocol handler desktop file
 
