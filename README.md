@@ -901,7 +901,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         JetBrains fonts are nice. See [nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
 
         ```emacs-lisp
-        (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
+        ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
         ```
 
     2.  Darkroom
@@ -1136,40 +1136,41 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
         Inspired by another System Crafters [video](https://systemcrafters.cc/build-a-second-brain-in-emacs/getting-started-with-org-roam/).
 
         ```emacs-lisp
-          (use-package org-roam
-            :demand
-            :custom
-            (epa-file-encrypt-to "rileyrg")
-            (epa-file-select-keys "auto")
-            (org-roam-dailies-directory "daily/")
-            (org-roam-capture-templates
-             '(("d" "default" plain "%?" :if-new
-                (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}
+        (use-package org-roam
+          :demand
+          :custom
+          (epa-file-encrypt-to "rileyrg")
+          (epa-file-select-keys "auto")
+          (org-roam-dailies-directory "daily/")
+          (org-roam-capture-templates
+           '(("d" "default" plain "%?" :if-new
+              (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}
         ")
-                :unnarrowed t)))
-            (org-roam-dailies-capture-templates
-                '(("d" "default" entry
-                   "* %?"
-                   :if-new (file+head "%<%Y-%m-%d>.org.gpg"
-                                      "#+title: %<%Y-%m-%d>\n"))))
-            (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
-            :bind (("C-c n l" . org-roam-buffer-toggle)
-                   ("C-c n f" . org-roam-node-find)
-                   ("C-c n a" . org-roam-alias-add)
-                   ("C-c n r" . org-roam-add-ref)
-                   ("C-c n g" . org-roam-graph)
-                   ("C-c n t" . org-roam-dailies-goto-today)
-                   ("C-c n y" . org-roam-dailies-goto-yesterday)
-                   ("C-c n d" . org-roam-dailies-goto-date)
-                   ("C-c n i" . org-roam-node-insert)
-                   ("C-c n c" . org-roam-capture)
-                   ("C-c n C" . org-roam-capture-tomorrow)
-                   ;; Dailies
-                   ("C-c n j" . org-roam-dailies-capture-today))
-            :config
-            (org-roam-setup)
-            ;; If using org-roam-protocol
-            (require 'org-roam-protocol))
+              :unnarrowed t)))
+          (org-roam-dailies-capture-templates
+           '(("d" "default" entry
+              "* %?"
+              :if-new (file+head "%<%Y-%m-%d>.org.gpg"
+                                 "#+title: %<%Y-%m-%d>\n"))))
+          (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
+          :bind (("C-c n l" . org-roam-buffer-toggle)
+                 ("C-c n f" . org-roam-node-find)
+                 ("C-c n a" . org-roam-alias-add)
+                 ("C-c n r" . org-roam-add-ref)
+                 ("C-c n g" . org-roam-graph)
+                 ;; ("C-c n t" . org-roam-dailies-goto-today)
+                 ;; ("C-c n y" . org-roam-dailies-goto-yesterday)
+                 ;; ("C-c n d" . org-roam-dailies-goto-date)
+                 ("C-c n i" . org-roam-node-insert)
+                 ("C-c n c" . org-roam-capture)
+                 ("C-c n C" . org-roam-capture-tomorrow))
+          :bind-keymap
+          ("C-c n d" . org-roam-dailies-map)
+          :config
+          (org-roam-setup)
+          (require 'org-roam-dailies)
+          ;; If using org-roam-protocol
+          (require 'org-roam-protocol))
         ```
 
     6.  github compliant markup
@@ -1189,7 +1190,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org286b254) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orga41186f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3422,7 +3423,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org09a7f55) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org59f4263) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3461,7 +3462,7 @@ fi
 ```
 
 
-<a id="org09a7f55"></a>
+<a id="org59f4263"></a>
 
 ### Gnome protocol handler desktop file
 
