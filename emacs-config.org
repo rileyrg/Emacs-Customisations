@@ -971,7 +971,7 @@ JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fo
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
+  ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
 #+end_src
 ***** Darkroom
 :PROPERTIES:
@@ -1249,40 +1249,41 @@ create unique link IDs when sharing a link to an org section
 :END:
 Inspired by another System Crafters [[https://systemcrafters.cc/build-a-second-brain-in-emacs/getting-started-with-org-roam/][video]].
 #+begin_src emacs-lisp
-    (use-package org-roam
-      :demand
-      :custom
-      (epa-file-encrypt-to "rileyrg")
-      (epa-file-select-keys "auto")
-      (org-roam-dailies-directory "daily/")
-      (org-roam-capture-templates
-       '(("d" "default" plain "%?" :if-new
-          (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}
+  (use-package org-roam
+    :demand
+    :custom
+    (epa-file-encrypt-to "rileyrg")
+    (epa-file-select-keys "auto")
+    (org-roam-dailies-directory "daily/")
+    (org-roam-capture-templates
+     '(("d" "default" plain "%?" :if-new
+        (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}
   ")
-          :unnarrowed t)))
-      (org-roam-dailies-capture-templates
-          '(("d" "default" entry
-             "* %?"
-             :if-new (file+head "%<%Y-%m-%d>.org.gpg"
-                                "#+title: %<%Y-%m-%d>\n"))))
-      (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
-      :bind (("C-c n l" . org-roam-buffer-toggle)
-             ("C-c n f" . org-roam-node-find)
-             ("C-c n a" . org-roam-alias-add)
-             ("C-c n r" . org-roam-add-ref)
-             ("C-c n g" . org-roam-graph)
-             ("C-c n t" . org-roam-dailies-goto-today)
-             ("C-c n y" . org-roam-dailies-goto-yesterday)
-             ("C-c n d" . org-roam-dailies-goto-date)
-             ("C-c n i" . org-roam-node-insert)
-             ("C-c n c" . org-roam-capture)
-             ("C-c n C" . org-roam-capture-tomorrow)
-             ;; Dailies
-             ("C-c n j" . org-roam-dailies-capture-today))
-      :config
-      (org-roam-setup)
-      ;; If using org-roam-protocol
-      (require 'org-roam-protocol))
+        :unnarrowed t)))
+    (org-roam-dailies-capture-templates
+     '(("d" "default" entry
+        "* %?"
+        :if-new (file+head "%<%Y-%m-%d>.org.gpg"
+                           "#+title: %<%Y-%m-%d>\n"))))
+    (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n a" . org-roam-alias-add)
+           ("C-c n r" . org-roam-add-ref)
+           ("C-c n g" . org-roam-graph)
+           ;; ("C-c n t" . org-roam-dailies-goto-today)
+           ;; ("C-c n y" . org-roam-dailies-goto-yesterday)
+           ;; ("C-c n d" . org-roam-dailies-goto-date)
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n c" . org-roam-capture)
+           ("C-c n C" . org-roam-capture-tomorrow))
+    :bind-keymap
+    ("C-c n d" . org-roam-dailies-map)
+    :config
+    (org-roam-setup)
+    (require 'org-roam-dailies)
+    ;; If using org-roam-protocol
+    (require 'org-roam-protocol))
 #+end_src
 
 ***** github compliant markup
