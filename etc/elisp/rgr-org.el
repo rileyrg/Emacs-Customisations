@@ -113,12 +113,14 @@
          ("C-c n a" . org-roam-alias-add)
          ("C-c n r" . org-roam-add-ref)
          ("C-c n g" . org-roam-graph)
-         ;; ("C-c n t" . org-roam-dailies-goto-today)
-         ;; ("C-c n y" . org-roam-dailies-goto-yesterday)
-         ;; ("C-c n d" . org-roam-dailies-goto-date)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
-         ("C-c n C" . org-roam-capture-tomorrow))
+         ("C-c n C" . org-roam-capture-tomorrow)
+         :map org-mode-map
+         ("C_M-i" . completion-at-point)
+         :map org-roam-dailies-map
+         ("Y" . org-roam-dailies-capture-yesterday)
+         ("T" . org-roam-dailies-capture-tomorrow))
   :bind-keymap
   ("C-c n d" . org-roam-dailies-map)
   :config
