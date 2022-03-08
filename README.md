@@ -1158,12 +1158,14 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
                  ("C-c n a" . org-roam-alias-add)
                  ("C-c n r" . org-roam-add-ref)
                  ("C-c n g" . org-roam-graph)
-                 ;; ("C-c n t" . org-roam-dailies-goto-today)
-                 ;; ("C-c n y" . org-roam-dailies-goto-yesterday)
-                 ;; ("C-c n d" . org-roam-dailies-goto-date)
                  ("C-c n i" . org-roam-node-insert)
                  ("C-c n c" . org-roam-capture)
-                 ("C-c n C" . org-roam-capture-tomorrow))
+                 ("C-c n C" . org-roam-capture-tomorrow)
+                 :map org-mode-map
+                 ("C_M-i" . completion-at-point)
+                 :map org-roam-dailies-map
+                 ("Y" . org-roam-dailies-capture-yesterday)
+                 ("T" . org-roam-dailies-capture-tomorrow))
           :bind-keymap
           ("C-c n d" . org-roam-dailies-map)
           :config
@@ -1190,7 +1192,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orga41186f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org3ffb79d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2238,6 +2240,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ```emacs-lisp
 (use-package mu4e
+  :disabled
   :straight ( :host github :files ("mu4e/*") :repo "djcb/mu" :branch "master" :pre-build (("./autogen.sh") ("make")) )
   :commands (mu4e mu4e-update-index)
   :custom
@@ -3423,7 +3426,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org59f4263) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org469aea5) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3462,7 +3465,7 @@ fi
 ```
 
 
-<a id="org59f4263"></a>
+<a id="org469aea5"></a>
 
 ### Gnome protocol handler desktop file
 
