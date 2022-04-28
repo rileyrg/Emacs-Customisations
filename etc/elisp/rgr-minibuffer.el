@@ -118,7 +118,7 @@
    consult-line consult-ripgrep consult-git-grep consult-grep
    :default nil
    consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file
-   consult--source-file consult--source-project-file consult--source-bookmark
+   ;;consult--source-file consult--source-project-file consult--source-bookmark
    :preview-key (kbd "M-."))
 
   ;; Optionally configure the narrowing key.
