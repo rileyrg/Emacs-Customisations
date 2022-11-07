@@ -41,8 +41,8 @@
 (unless (fboundp 'prog-mode)
   (defalias 'prog-mode 'fundamental-mode))
 
-;; (global-set-key (kbd "S-<f2>") 'linum-mode)
-;; (add-hook 'prog-mode-hook (lambda() (linum-mode t)))
+(global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode)))
 
 (use-package rainbow-delimiters
   :config
