@@ -41,8 +41,8 @@
 (unless (fboundp 'prog-mode)
   (defalias 'prog-mode 'fundamental-mode))
 
-(global-set-key (kbd "S-<f2>") 'linum-mode)
-(add-hook 'prog-mode-hook (lambda() (linum-mode t)))
+;; (global-set-key (kbd "S-<f2>") 'linum-mode)
+;; (add-hook 'prog-mode-hook (lambda() (linum-mode t)))
 
 (use-package rainbow-delimiters
   :config
@@ -252,6 +252,7 @@
     ;;(eglot-format-buffer)
     )
   (defun rgr/c-mode-common-hook ()
+    (message "in c mode common hook")
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
     (if(featurep 'corfu)
         (setq completion-category-defaults nil))
