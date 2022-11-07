@@ -3129,6 +3129,7 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
+    :disabled t
     :demand
     :bind
     (:map flymake-mode-map
@@ -3329,38 +3330,6 @@ SCHEDULED: <2021-09-26 Sun>
   (setq python-shell-interpreter "ipython")
   (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 #+end_src
-***** lsp                                                               :lsp:
-****** CANCELLED microsoft python language server             :lsp:CANCELLED:
-CLOSED: [2021-06-28 Mon 21:28]
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-06-28 Mon 21:28] \\
-  using eglot
-:END:
-#+begin_src emacs-lisp
-  (use-package lsp-python-ms
-    :custom
-    (lsp-python-ms-auto-install-server t)
-    (lsp-python-ms-parse-dot-env-enabled t)
-    :config
-    (require 'lsp-python-ms)
-    :hook (python-mode . (lambda ()
-                           (lsp-deferred))))
-#+end_src
-****** eglot
-:PROPERTIES:
-:header-args:emacs-lisp :tangle no
-:END:
-  #+begin_src emacs-lisp
-    (use-package eglot
-      :hook (python-mode . (lambda ()
-                             (eglot-ensure)))
-      :bind
-      (:map eglot-mode-map
-            (("C-<return>" . eglot-code-action-quickfix))))
-  #+end_src
 ***** virtualenv                                                 :virtualenv:
 #+begin_src emacs-lisp
   (use-package auto-virtualenv
@@ -3370,6 +3339,7 @@ CLOSED: [2021-06-28 Mon 21:28]
 ***** blacken reformatting                                          :blacken:
 #+begin_src emacs-lisp
   (use-package blacken
+    :disabled t
     :demand t
     :config
     (add-hook 'python-mode-hook  #'blacken-mode))

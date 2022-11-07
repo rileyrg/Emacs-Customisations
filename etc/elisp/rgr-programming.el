@@ -232,18 +232,12 @@
 (setq python-shell-interpreter "ipython")
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
-(use-package eglot
-  :hook (python-mode . (lambda ()
-                         (eglot-ensure)))
-  :bind
-  (:map eglot-mode-map
-        (("C-<return>" . eglot-code-action-quickfix))))
-
 (use-package auto-virtualenv
   :config
   (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
 (use-package blacken
+  :disabled t
   :demand t
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
