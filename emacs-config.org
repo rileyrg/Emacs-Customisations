@@ -105,6 +105,9 @@ CLOSED: [2021-08-06 Fri 11:01] SCHEDULED: <2021-07-24 Sat>
 :END:
 [[https://github.com/raxod502/straight.el#features][straight.el]]: next-generation, purely functional package manager for the Emacs hacker.
 *** bootstrap
+:PROPERTIES:
+:ID:       146cfdf7-9177-4142-b4f7-1ea0ae3645b9
+:END:
 
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
@@ -2838,12 +2841,9 @@ CLOSED: [2021-07-21 Wed 11:28]
 :PROPERTIES:
 :ID:       1c88f735-c6b7-41d1-b7ea-b09b1e70b539
 :END:
-
-:PROPERTIES:
-:END:
 #+begin_src emacs-lisp
-  (global-set-key (kbd "S-<f2>") 'linum-mode)
-  (add-hook 'prog-mode-hook (lambda() (linum-mode t)))
+  (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
 #+end_src
 **** rainbow delimiters
 :PROPERTIES:
@@ -3303,7 +3303,13 @@ SCHEDULED: <2021-09-26 Sun>
 :ID:       d14b8271-2894-4ef1-931e-173c9d4d8503
 :END:
 #+begin_src emacs-lisp
+  (use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
   (use-package  python
+    :disabled t
     :config
     (defun rgr/python-shell-send-buffer(orig-func &rest args)
       "create a python shell if there isnt one"
