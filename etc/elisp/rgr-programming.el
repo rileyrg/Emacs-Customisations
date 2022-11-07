@@ -42,7 +42,7 @@
   (defalias 'prog-mode 'fundamental-mode))
 
 (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
-(add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode)))
+(add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
 
 (use-package rainbow-delimiters
   :config
@@ -211,7 +211,13 @@
     (add-hook 'compilation-finish-functions
             'rgr/platformio-compilation-mode-filter))
 
+(use-package lsp-pyright
+:ensure t
+:hook (python-mode . (lambda ()
+                        (require 'lsp-pyright)
+                        (lsp))))  ; or lsp-deferred
 (use-package  python
+  :disabled t
   :config
   (defun rgr/python-shell-send-buffer(orig-func &rest args)
     "create a python shell if there isnt one"
@@ -252,7 +258,6 @@
     ;;(eglot-format-buffer)
     )
   (defun rgr/c-mode-common-hook ()
-    (message "in c mode common hook")
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
     (if(featurep 'corfu)
         (setq completion-category-defaults nil))
