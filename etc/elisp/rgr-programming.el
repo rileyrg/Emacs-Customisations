@@ -215,7 +215,7 @@
 :ensure t
 :hook (python-mode . (lambda ()
                         (require 'lsp-pyright)
-                        (lsp))))  ; or lsp-deferred
+                        (lsp-deferred))))  ; or lsp
 (use-package  python
   :disabled t
   :config

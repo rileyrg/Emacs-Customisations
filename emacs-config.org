@@ -3308,7 +3308,7 @@ SCHEDULED: <2021-09-26 Sun>
   :ensure t
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
+                          (lsp-deferred))))  ; or lsp
   (use-package  python
     :disabled t
     :config
