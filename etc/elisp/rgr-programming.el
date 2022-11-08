@@ -242,6 +242,20 @@
   :config
   (add-hook 'python-mode-hook  #'blacken-mode))
 
+;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
+(use-package haskell-mode
+  :config
+  (use-package  lsp-haskell)
+  (add-hook 'haskell-mode-hook #'lsp-deferred)
+  (add-hook 'haskell-literate-mode-hook #'lsp-deferred)
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode
+            (eval-after-load "haskell-mode"
+              '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
+
+            (eval-after-load "haskell-cabal"
+              '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
+            ))
+
 (use-package lldb-voltron
   :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
 
