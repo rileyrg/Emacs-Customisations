@@ -22,7 +22,7 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "/home/rgr/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -187,14 +187,7 @@
  '(erc-user-mode nil)
  '(erc-whowas-on-nosuchnick t)
  '(eshell-banner-message
-   "
-W.O.P.R Online...
-Syncing. Please Wait.
-
-Greetings Professor Falken.
-Would you like to play a game?
-
-")
+   "\12W.O.P.R Online...\12Syncing. Please Wait.\12\12Greetings Professor Falken.\12Would you like to play a game?\12\12")
  '(eshell-hist-ignoredups t)
  '(eshell-history-size nil)
  '(eval-expression-print-length nil)
@@ -252,40 +245,19 @@ Would you like to play a game?
  '(org-capture-templates
    '(("t" "Todo" entry
       (file+headline "refile.org" "Tasks To Refile")
-      "* TODO %?
-:PROPERTIES:
-:DateCreated: %T
-:END:
-")
+      "* TODO %?\12:PROPERTIES:\12:DateCreated: %T\12:END:\12")
      ("n" "Quick note to refile later" entry
       (file+headline "refile.org" "Notes To Refile")
-      "* %?
-        :PROPERTIES:
-        :DateCreated: %T
-        :END:
-%i
-%a")
+      "* %?\12        :PROPERTIES:\12        :DateCreated: %T\12        :END:\12%i\12%a")
      ("k" "keep" entry
       (file "keep.org")
-      "* %? :crypt:
-        :PROPERTIES:
-        :DateCreated: %T
-        :END:
-%i
-%a")
+      "* %? :crypt:\12        :PROPERTIES:\12        :DateCreated: %T\12        :END:\12%i\12%a")
      ("j" "journal" entry
       (file+olp+datetree "journal.org")
-      "* %^{Title}
-        :PROPERTIES:
-        :DateCreated: %T
-        :END:" :empty-lines 1)
+      "* %^{Title}\12        :PROPERTIES:\12        :DateCreated: %T\12        :END:" :empty-lines 1)
      ("o" "Orders" entry
       (file "~/.emacs.d/var/org/orgfiles/orders.org")
-      "* WAITING %^{Order name} :order:
-SCHEDULED: %^{Delivery Date}t
-:PROPERTIES:
-:DateCreated: %T
-:END:")))
+      "* WAITING %^{Order name} :order:\12SCHEDULED: %^{Delivery Date}t\12:PROPERTIES:\12:DateCreated: %T\12:END:")))
  '(org-catch-invisible-edits 'error nil nil "Customized with use-package org")
  '(org-clock-into-drawer t nil nil "Customized with use-package org")
  '(org-clock-persist 'history nil nil "Customized with use-package org")
@@ -381,7 +353,7 @@ SCHEDULED: %^{Delivery Date}t
       ("WAITING")
       ("CANCELLED")
       ("NEXT"))))
- '(persp-mode-prefix-key "P")
+ '(persp-mode-prefix-key "\30P")
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)
  '(php-search-url "http://www.php.net/manual-lookup.php?pattern=")
@@ -434,13 +406,7 @@ SCHEDULED: %^{Delivery Date}t
  '(twittering-connection-type-order '(wget curl urllib-http native urllib-https))
  '(twittering-mode-hook nil)
  '(twittering-status-format
-   "%RT{%FACE[bold]{RT}}%i %S(%s),  %@:
-%FOLD[  ]{%T // from %f%L%r%R%QT{
-+----
-%FOLD[|]{%i %s,  %@:
-%FOLD[  ]{%T // from %f%L%r%R}}
-+----}}
- ")
+   "%RT{%FACE[bold]{RT}}%i %S(%s),  %@:\12%FOLD[  ]{%T // from %f%L%r%R%QT{\12+----\12%FOLD[|]{%i %s,  %@:\12%FOLD[  ]{%T // from %f%L%r%R}}\12+----}}\12 ")
  '(twittering-use-master-password t)
  '(uniquify-buffer-name-style 'forward nil (uniquify))
  '(url-standalone-mode nil)
