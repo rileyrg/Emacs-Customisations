@@ -3344,6 +3344,23 @@ SCHEDULED: <2021-09-26 Sun>
     :config
     (add-hook 'python-mode-hook  #'blacken-mode))
 #+end_src
+**** Haskell                                                         :python:
+***** haskell-mode
+#+begin_src emacs-lisp
+  ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
+  (use-package haskell-mode
+    :config
+    (use-package  lsp-haskell)
+    (add-hook 'haskell-mode-hook #'lsp-deferred)
+    (add-hook 'haskell-literate-mode-hook #'lsp-deferred)
+    (add-hook 'haskell-mode-hook 'interactive-haskell-mode
+              (eval-after-load "haskell-mode"
+                '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
+
+              (eval-after-load "haskell-cabal"
+                '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
+              ))
+#+end_src
 **** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
 ***** voltron
 #+begin_src emacs-lisp
