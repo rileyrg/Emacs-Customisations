@@ -42,11 +42,12 @@
         ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
 (use-package dap-mode
-  :commands rgr/dap-debug
   :disabled t
+  :commands rgr/dap-debug
   :custom
   (dap-auto-configure-features '(locals  tooltip))
   :config
+  (require 'dap-chrome)
   (setq dap-ui-buffer-configurations
         `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
           (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
