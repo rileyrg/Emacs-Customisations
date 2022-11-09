@@ -95,6 +95,24 @@
   (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
   )
 
+(use-package
+  flycheck
+  :demand
+  :custom
+  (flycheck-global-modes '(not org-mode org-src-mode))
+  (flycheck-emacs-lisp-load-path 'inherit)
+  ;;(flycheck-check-syntax-automatically '(save))
+  :config (use-package
+            flycheck-pos-tip
+            :config
+            (flycheck-pos-tip-mode))
+  (global-flycheck-mode +1)
+  :bind ("<f8>" . (lambda()
+                    (interactive)
+                    (flycheck-mode 'toggle)
+                    (let((s (if flycheck-mode "on" "off")))
+                      (message "flycheck %s" s)))))
+
 (use-package flymake-diagnostic-at-point
   :after flymake
   :config
@@ -142,6 +160,7 @@
   ("C-x v ="  . git-gutter:popup-hunk))
 
 (use-package rjsx-mode
+  :disabled t
   :config
   (use-package npm-mode)
   (defun rgr/js2-mode-hook ()
@@ -157,8 +176,8 @@
   )
 
 (defun rgr/js-mode-hook ()
-  (setq-local js-indent-level 2)
-  (prettier-js-mode t)
+  (when (featurep 'lsp-mode)
+    (lsp))
   (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
 
 (add-hook 'js-mode-hook 'rgr/js-mode-hook)

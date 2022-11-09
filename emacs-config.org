@@ -2934,12 +2934,12 @@ https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-
 **** Flycheck                                                 :flycheck:lint:
 :PROPERTIES:
 :ID:       3268489e-6d4d-4089-95f7-796e0e0da9db
-:header-args:emacs-lisp: :tangle no
 :END:
 On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Emacs
 #+begin_src emacs-lisp
   (use-package
     flycheck
+    :demand
     :custom
     (flycheck-global-modes '(not org-mode org-src-mode))
     (flycheck-emacs-lisp-load-path 'inherit)
@@ -3074,6 +3074,7 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
 #+begin_src emacs-lisp
 
   (use-package rjsx-mode
+    :disabled t
     :config
     (use-package npm-mode)
     (defun rgr/js2-mode-hook ()
@@ -3089,8 +3090,8 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
     )
 
   (defun rgr/js-mode-hook ()
-    (setq-local js-indent-level 2)
-    (prettier-js-mode t)
+    (when (featurep 'lsp-mode)
+      (lsp))
     (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
 
   (add-hook 'js-mode-hook 'rgr/js-mode-hook)
