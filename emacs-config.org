@@ -879,7 +879,7 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
   (show-paren-mode 1)
   (winner-mode 1)
 
-  (global-auto-revert-mode)
+  (global-auto-revert-mode t)
   ;; Also auto refresh dired, but be quiet about it
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
@@ -3215,11 +3215,12 @@ https://github.com/joaotavora/eglot
           ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
   (use-package dap-mode
-    :commands rgr/dap-debug
     :disabled t
+    :commands rgr/dap-debug
     :custom
     (dap-auto-configure-features '(locals  tooltip))
     :config
+    (require 'dap-chrome)
     (setq dap-ui-buffer-configurations
           `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
             (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
@@ -3252,8 +3253,6 @@ https://github.com/joaotavora/eglot
           ("<f11>" . dap-step-in)
           ("S-<f11>" . dap-step-out)
           ))
-
-
 #+end_src
 ****** [[file:~/development/thirdparty/godot/bin][.dir-local.el]] config for a debug template
 :PROPERTIES:

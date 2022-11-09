@@ -795,7 +795,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (show-paren-mode 1)
         (winner-mode 1)
 
-        (global-auto-revert-mode)
+        (global-auto-revert-mode t)
         ;; Also auto refresh dired, but be quiet about it
         (setq global-auto-revert-non-file-buffers t)
         (setq auto-revert-verbose nil)
@@ -1192,7 +1192,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgd56798d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org80c0328) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2950,11 +2950,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                     ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
             (use-package dap-mode
-              :commands rgr/dap-debug
               :disabled t
+              :commands rgr/dap-debug
               :custom
               (dap-auto-configure-features '(locals  tooltip))
               :config
+              (require 'dap-chrome)
               (setq dap-ui-buffer-configurations
                     `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
                       (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
@@ -2987,8 +2988,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                     ("<f11>" . dap-step-in)
                     ("S-<f11>" . dap-step-out)
                     ))
-
-
             ```
 
         3.  [.dir-local.el](file:///home/rgr/development/thirdparty/godot/bin) config for a debug template
@@ -3475,7 +3474,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfa970ad) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8331a68) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3514,7 +3513,7 @@ fi
 ```
 
 
-<a id="orgfa970ad"></a>
+<a id="org8331a68"></a>
 
 ### Gnome protocol handler desktop file
 
