@@ -2837,7 +2837,7 @@ CLOSED: [2021-07-21 Wed 11:28]
   (unless (fboundp 'prog-mode)
     (defalias 'prog-mode 'fundamental-mode))
 #+end_src
-**** linum-mode Show Line numbers
+****  Show Line numbers
 :PROPERTIES:
 :ID:       1c88f735-c6b7-41d1-b7ea-b09b1e70b539
 :END:
@@ -2845,18 +2845,43 @@ CLOSED: [2021-07-21 Wed 11:28]
   (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
   (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
 #+end_src
+**** tree-sitter
+https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+    :ensure t
+    :config
+    ;; activate tree-sitter on any buffer containing code for which it has a parser available
+    (global-tree-sitter-mode)
+    ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
+    ;; by switching on and off
+    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+  (use-package tree-sitter-langs
+    :ensure t
+    :after tree-sitter)
+#+end_src
+**** code format
+#+begin_src emacs-lisp
+  ;; auto-format different source code files extremely intelligently
+;; https://github.com/radian-software/apheleia
+(use-package apheleia
+  :ensure t
+  :config
+  (apheleia-global-mode +1))
+#+end_src
 **** rainbow delimiters
 :PROPERTIES:
 :ID:       0551cfd4-3325-4b79-90e1-d0edd4c1304e
 :END:
 #+begin_src emacs-lisp
-  (use-package rainbow-delimiters
-    :config
-    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+(use-package rainbow-delimiters
+      :config
+      (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-  (use-package rainbow-identifiers
-    :config
-    (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+    (use-package rainbow-identifiers
+      :config
+      (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 #+end_src
 **** Project Management                                             :project:
@@ -3062,14 +3087,6 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
     (add-to-list 'auto-mode-alist '("\\.js?\\'" . rjsx-mode))
     (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
     )
-
-  (use-package prettier-js
-    :custom
-    (prettier-js-args '(
-                        "--trailing-comma" "all"
-                        "--bracket-spacing" "false"
-                        "--print-width" "80"
-                        )))
 
   (defun rgr/js-mode-hook ()
     (setq-local js-indent-level 2)
@@ -3353,13 +3370,11 @@ SCHEDULED: <2021-09-26 Sun>
     (use-package  lsp-haskell)
     (add-hook 'haskell-mode-hook #'lsp-deferred)
     (add-hook 'haskell-literate-mode-hook #'lsp-deferred)
-    (add-hook 'haskell-mode-hook 'interactive-haskell-mode
-              (eval-after-load "haskell-mode"
-                '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
-
-              (eval-after-load "haskell-cabal"
+    (eval-after-load "haskell-mode"
+      '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
+    (eval-after-load "haskell-cabal"
                 '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
-              ))
+    (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 #+end_src
 **** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
 ***** voltron

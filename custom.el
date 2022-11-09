@@ -22,7 +22,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -204,6 +203,7 @@
  '(gdscript-docs-use-eww nil)
  '(geben-dbgp-default-port 8000)
  '(git-gutter:update-interval 2)
+ '(global-mark-ring-max 64)
  '(google-translate-default-source-language "de")
  '(google-translate-default-target-language "en")
  '(grep-find-ignored-directories
@@ -212,6 +212,7 @@
    '(gud-mode c-mode c++-mode fortran-mode python-mode emacs-lisp-mode))
  '(haskell-process-auto-import-loaded-modules t)
  '(haskell-process-log t)
+ '(haskell-process-path-cabal "~/.ghcup/bin/cabal")
  '(haskell-process-suggest-remove-import-lines t)
  '(helpful-max-buffers nil)
  '(history-delete-duplicates t)
