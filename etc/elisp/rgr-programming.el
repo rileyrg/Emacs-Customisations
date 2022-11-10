@@ -159,6 +159,20 @@
   :bind
   ("C-x v ="  . git-gutter:popup-hunk))
 
+;; use lsp nav in js files
+(use-package js
+  ;; :bind
+  ;; (:map js-mode-map
+  ;;       ("M-." . #'lsp-ui-peek-find-definitions)))
+  :config
+  (defun rgr/js-mode-hook ()
+    (when (featurep 'lsp-mode)
+      (lsp))
+    (local-unset-key (kbd "M-."))
+    (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
+
+  (add-hook 'js-mode-hook 'rgr/js-mode-hook))
+
 (use-package rjsx-mode
   :disabled t
   :config
@@ -175,12 +189,6 @@
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
   )
 
-(defun rgr/js-mode-hook ()
-  (when (featurep 'lsp-mode)
-    (lsp))
-  (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
-
-(add-hook 'js-mode-hook 'rgr/js-mode-hook)
 
 
 
@@ -213,7 +221,7 @@
     (setq-local dash-docs-docsets '("React" "JavaScript")))
   (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 
-(require 'rgr/lsp "rgr-lsp" 'NOERROR)
+
 
 (defgroup rgr/serial-ports nil
   "serial port customization"

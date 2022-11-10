@@ -25,6 +25,7 @@
   (lsp-treemacs-sync-mode 1))
 
 (use-package lsp-ui
+  :ensure t
   :custom
   (lsp-ui-doc-delay 2.5)
   (lsp-ui-doc-enable t)

@@ -227,6 +227,7 @@
  '(kept-new-versions 20)
  '(large-file-warning-threshold nil)
  '(lsp-keep-workspace-alive nil)
+ '(lsp-keymap-prefix "M-p")
  '(max-lisp-eval-depth 16000)
  '(mu4e-search-threads nil t nil "Customized with use-package mu4e")
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")
