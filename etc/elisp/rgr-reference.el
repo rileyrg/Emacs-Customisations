@@ -4,15 +4,24 @@
  '(browse-url-generic-program "google-chrome")
  '(browse-url-secondary-browser-function 'browse-url-default-browser))
 
-(defcustom rgr/eww-external-launch-url-chunks '("youtube")
-  "If any component of this list is contained in an EWW url then it will use `browse-url-generic to launch that url instead of `eww"
-  :type '(repeat string))
+(use-package eww
+  :config
+  ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
+  (defcustom rgr/eww-external-launch-url-chunks '("youtube")
+    "If any component of this list is contained in an EWW url then it will use `browse-url-generic to launch that url instead of `eww"
+    :type '(repeat string))
+  (defadvice eww (around rgr/eww-extern-advise activate)
+    "Use `browse-url-generic if any part of URL is contained in `rgr/eww-external-launch-url-chunks"
+    (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
+        (browse-url-generic url)
+      ad-do-it))
 
-(defadvice eww (around rgr/eww-extern-advise activate)
-  "Use `browse-url-generic if any part of URL is contained in `rgr/eww-external-launch-url-chunks"
-  (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
-      (browse-url-generic url)
-  ad-do-it))
+  :bind
+  (:map eww-mode-map
+        ( "&" . (lambda()
+                  (interactive)
+                  (alert "Launching external browser")
+                  (eww-browse-with-external-browser)))))
 
 (require 'rgr/google "rgr-google")
 
