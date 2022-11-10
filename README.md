@@ -1192,7 +1192,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4e5b783) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org4e2f352) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1334,18 +1334,29 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
     1.  eww
 
-        Advice EWW to launch certain URLs using the generic launcher rather than EWW.
-
         ```emacs-lisp
-        (defcustom rgr/eww-external-launch-url-chunks '("youtube")
-          "If any component of this list is contained in an EWW url then it will use `browse-url-generic to launch that url instead of `eww"
-          :type '(repeat string))
 
-        (defadvice eww (around rgr/eww-extern-advise activate)
-          "Use `browse-url-generic if any part of URL is contained in `rgr/eww-external-launch-url-chunks"
-          (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
-              (browse-url-generic url)
-          ad-do-it))
+        (use-package eww
+          :config
+          ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
+          (defcustom rgr/eww-external-launch-url-chunks '("youtube")
+            "If any component of this list is contained in an EWW url then it will use `browse-url-generic to launch that url instead of `eww"
+            :type '(repeat string))
+          (defadvice eww (around rgr/eww-extern-advise activate)
+            "Use `browse-url-generic if any part of URL is contained in `rgr/eww-external-launch-url-chunks"
+            (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
+                (browse-url-generic url)
+              ad-do-it))
+
+          :bind
+          (:map eww-mode-map
+                ( "&" . (lambda()
+                          (interactive)
+                          (alert "Launching external browser")
+                          (eww-browse-with-external-browser)))))
+
+
+
         ```
 
 2.  Google related
@@ -2811,6 +2822,20 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```emacs-lisp
 
+    ;; use lsp nav in js files
+    (use-package js
+      ;; :bind
+      ;; (:map js-mode-map
+      ;;       ("M-." . #'lsp-ui-peek-find-definitions)))
+      :config
+      (defun rgr/js-mode-hook ()
+        (when (featurep 'lsp-mode)
+          (lsp))
+        (local-unset-key (kbd "M-."))
+        (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
+
+      (add-hook 'js-mode-hook 'rgr/js-mode-hook))
+
     (use-package rjsx-mode
       :disabled t
       :config
@@ -2827,12 +2852,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
       )
 
-    (defun rgr/js-mode-hook ()
-      (when (featurep 'lsp-mode)
-        (lsp))
-      (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
-
-    (add-hook 'js-mode-hook 'rgr/js-mode-hook)
 
 
 
@@ -2874,18 +2893,19 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (lsp))
         (setq-local dash-docs-docsets '("React" "JavaScript")))
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
+    ```
+
+17. Javascript
+
+    ```emacs-lisp
 
     ```
 
-17. Language Server Protocol (LSP), lsp-mode
+18. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
 
-    Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
-
-    ```emacs-lisp
-    (require 'rgr/lsp "rgr-lsp" 'NOERROR)
-    ```
+    Raw: [rgr/lsp](etc/elisp/rgr-lsp.el) ,#+begin\_src emacs-lisp (require 'rgr/lsp "rgr-lsp" 'NOERROR) \#+end\_src
 
     1.  library
 
@@ -2933,6 +2953,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (lsp-treemacs-sync-mode 1))
 
             (use-package lsp-ui
+              :ensure t
               :custom
               (lsp-ui-doc-delay 2.5)
               (lsp-ui-doc-enable t)
@@ -2947,9 +2968,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :bind
               (:map lsp-ui-mode-map
                     ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-                    ([remap xref-find-references] . #'lsp-ui-peek-find-references))
-              (:map js-mode-map
-                    ([remap js-find-symbol] . #'lsp-ui-peek-find-definitions)
                     ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
             (use-package dap-mode
@@ -3012,7 +3030,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/lsp)
             ```
 
-18. Serial Port
+19. Serial Port
 
     ```emacs-lisp
     (defgroup rgr/serial-ports nil
@@ -3040,7 +3058,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       (selectSerialPortBuffer)))
     ```
 
-19. PlatformIO
+20. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
 
@@ -3064,7 +3082,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     1.  get compilation errors to work and submit ansi color fix?
 
-20. Python
+21. Python
 
     1.  python-mode
 
@@ -3113,7 +3131,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'python-mode-hook  #'blacken-mode))
         ```
 
-21. Haskell
+22. Haskell
 
     1.  haskell-mode
 
@@ -3131,7 +3149,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
         ```
 
-22. lldb debugging in emacs
+23. lldb debugging in emacs
 
     1.  voltron
 
@@ -3140,7 +3158,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
         ```
 
-23. c-mode-common-hook
+24. c-mode-common-hook
 
     ```emacs-lisp
     (use-package emacs
@@ -3168,7 +3186,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 ("TAB" . rgr/c-indent-complete))))
     ```
 
-24. C, c-mode
+25. C, c-mode
 
     ```emacs-lisp
     (defun rgr/c-mode-hook ()
@@ -3212,7 +3230,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```
 
-25. cc,cpp, C++, cc-mode
+26. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3220,7 +3238,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-26. Linux tools
+27. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
 
@@ -3232,7 +3250,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-27. Assembler
+28. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
 
@@ -3240,7 +3258,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-28. Godot GDScript
+29. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
 
@@ -3266,7 +3284,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-29. Web,Symfony and Twig
+30. Web,Symfony and Twig
 
     1.  Symfony
 
@@ -3334,7 +3352,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-30. elf-mode - view the symbol list in a binary
+31. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
 
@@ -3346,7 +3364,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-31. provide
+32. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3477,7 +3495,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3c071b5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org42e71b3) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3516,7 +3534,7 @@ fi
 ```
 
 
-<a id="org3c071b5"></a>
+<a id="org42e71b3"></a>
 
 ### Gnome protocol handler desktop file
 
