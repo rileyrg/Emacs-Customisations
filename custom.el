@@ -64,6 +64,8 @@
  '(cursor-type 'box)
  '(custom-safe-themes
    '("d6da24347c813d1635a217d396cf1e3be26484fd4d05be153f3bd2b293d2a0b5" "0568a5426239e65aab5e7c48fa1abde81130a87ddf7f942613bf5e13bf79686b" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" "076ee9f2c64746aac7994b697eb7dbde23ac22988d41ef31b714fc6478fee224" "8ca8fbaeaeff06ac803d7c42de1430b9765d22a439efc45b5ac572c2d9d09b16" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "972d69a06b8f6e5d43fb83ff59417511f09ba1a1783aab5e22c0e9cbd25ad458" "d234fa6da0282c254f00d534079374d1c6f3c3e600075bc65fe661fdd1947792" "7d6861c031212fca9b4a963ced6230be2aa3139570b85ea5e77619b1fd0351ad" "9b39b25c3a23b1be6e99a3648b91ebaf2a7efdde236e3472aa95f1708ec61d4f" "3f1dcd824a683e0ab194b3a1daac18a923eed4dba5269eecb050c718ab4d5a26" default))
+ '(dap-chrome-debug-program
+   '("node" "/home/rgr/.emacs.d/var/dap/extensions/vscode/msjsdiag.debugger-for-chrome/out/src/chromeDebug.js"))
  '(dap-default-terminal-kind "external")
  '(dap-external-terminal
    '("alacritty" "-t" "{display}" "-e" "zsh" "-c" "exec {command}"))
@@ -226,9 +228,6 @@
  '(ispell-silently-savep t)
  '(kept-new-versions 20)
  '(large-file-warning-threshold nil)
- '(lsp-diagnostics-flycheck-default-level 'warning)
- '(lsp-keep-workspace-alive nil)
- '(lsp-keymap-prefix "M-p")
  '(max-lisp-eval-depth 32000)
  '(mu4e-search-threads nil t nil "Customized with use-package mu4e")
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")

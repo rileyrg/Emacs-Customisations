@@ -1,4 +1,6 @@
 ;; if you want to change prefix for lsp-mode keybindings.
+(setq lsp-keymap-prefix "s-l")
+
 (use-package lsp-mode
   :custom
   (lsp-auto-configure t)
@@ -7,12 +9,14 @@
   (lsp-completion-enable  t)
   (lsp-completion-provider :none)
   (lsp-completion-show-kind t)
+  (lsp-diagnostics-flycheck-default-level 'warning)
   (lsp-diagnostics-provider :auto)
   (lsp-eldoc-enable-hover nil)
   (lsp-enable-on-type-formatting t)
   (lsp-enable-snippet nil)
   (lsp-enable-symbol-highlighting t)
   (lsp-headerline-breadcrumb-enable t)
+  (lsp-keep-workspace-alive nil)
   (lsp-lens-enable t)
   (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable nil)
@@ -30,6 +34,8 @@
   (lsp-ui-doc-delay 2.5)
   (lsp-ui-doc-enable t)
   (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-max-height 32)
+  (lsp-ui-doc-position 'top)
   (lsp-ui-doc-show-with-mouse t)
   (lsp-ui-doc-show-with-cursor t)
   (lsp-ui-peek-enable t)
@@ -40,7 +46,7 @@
   :bind
   (:map lsp-ui-mode-map
         ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-         ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
+        ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
 (use-package dap-mode
   :commands rgr/dap-debug
@@ -75,11 +81,11 @@
         ("C-<f9>" . 'rgr/dap-debug))
   (:map dap-mode-map
         ("<f8>" . dap-continue)
-         ("C-S-<f8>" . dap-delete-session)
-         ("<f9>" . dap-hydra)
-         ("<f10>" . dap-next)
-         ("<f11>" . dap-step-in)
-         ("S-<f11>" . dap-step-out)
-         ))
+        ("C-S-<f8>" . dap-delete-session)
+        ("<f9>" . dap-hydra)
+        ("<f10>" . dap-next)
+        ("<f11>" . dap-step-in)
+        ("S-<f11>" . dap-step-out)
+        ))
 
 (provide 'rgr/lsp)
