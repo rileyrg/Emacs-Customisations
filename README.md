@@ -683,7 +683,51 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (yas-global-mode))
     ```
 
-3.  Abbrev Mode
+3.  corfu
+
+    ```emacs-lisp
+      (use-package corfu
+      ;; Optional customizations
+      :custom
+      ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+      (corfu-auto t)                 ;; Enable auto completion
+      ;; (corfu-separator ?\s)          ;; Orderless field separator
+      ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+      ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+      ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+      ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
+      ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+      ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
+      ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+
+      ;; Enable Corfu only for certain modes.
+      ;; :hook ((prog-mode . corfu-mode)
+      ;;        (shell-mode . corfu-mode)
+      ;;        (eshell-mode . corfu-mode))
+
+      ;; Recommended: Enable Corfu globally.
+      ;; This is recommended since Dabbrev can be used globally (M-/).
+      ;; See also `corfu-excluded-modes'.
+      :init
+      (global-corfu-mode))
+
+    ;; A few more useful configurations...
+    (use-package emacs
+      :init
+      ;; TAB cycle if there are only few candidates
+      (setq completion-cycle-threshold 3)
+
+      ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+      ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+      ;; (setq read-extended-command-predicate
+      ;;       #'command-completion-default-include-p)
+
+      ;; Enable indentation+completion using the TAB key.
+      ;; `completion-at-point' is often bound to M-TAB.
+      (setq tab-always-indent 'complete))
+    ```
+
+4.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
 
@@ -691,7 +735,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-4.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
     ```emacs-lisp
     (use-package orderless
@@ -701,7 +745,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
             completion-category-overrides '((file (styles . (partial-completion))))))
     ```
 
-5.  vertico , vertical interactive completion
+6.  vertico , vertical interactive completion
 
     ```emacs-lisp
     ;; Enable vertico
@@ -729,7 +773,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     ```
 
-6.  Abbrev Mode
+7.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
 
@@ -737,7 +781,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-7.  provide
+8.  provide
 
     ```emacs-lisp
     (provide 'rgr/completion)
@@ -1192,7 +1236,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4e2f352) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org6acdab6) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2946,6 +2990,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (lsp-signature-auto-activate t)
               :config
               (with-eval-after-load 'lsp-mode
+                (require 'dap-chrome)
                 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
 
             (use-package lsp-treemacs
@@ -2971,7 +3016,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                     ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
             (use-package dap-mode
-              :disabled t
               :commands rgr/dap-debug
               :custom
               (dap-auto-configure-features '(locals  tooltip))
@@ -3495,7 +3539,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org42e71b3) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3d921a3) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3534,7 +3578,7 @@ fi
 ```
 
 
-<a id="org42e71b3"></a>
+<a id="org3d921a3"></a>
 
 ### Gnome protocol handler desktop file
 

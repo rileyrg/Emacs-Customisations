@@ -18,6 +18,7 @@
   (lsp-signature-auto-activate t)
   :config
   (with-eval-after-load 'lsp-mode
+    (require 'dap-chrome)
     (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
 
 (use-package lsp-treemacs
@@ -43,7 +44,6 @@
         ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
 (use-package dap-mode
-  :disabled t
   :commands rgr/dap-debug
   :custom
   (dap-auto-configure-features '(locals  tooltip))
