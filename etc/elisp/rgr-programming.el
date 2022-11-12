@@ -65,12 +65,12 @@
   (apheleia-global-mode +1))
 
 (use-package rainbow-delimiters
-      :config
-      (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-    (use-package rainbow-identifiers
-      :config
-      (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+(use-package rainbow-identifiers
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 (require 'project)
 
@@ -122,8 +122,8 @@
   :commands flymake-shellcheck-load
   :init
   (defun rgr/sh-mode-hook()
-      (flymake-shellcheck-load)
-      (flymake-mode +1))
+    (flymake-shellcheck-load)
+    (flymake-mode +1))
   :hook (sh-mode . rgr/sh-mode-hook))
 
 (use-package
@@ -223,6 +223,8 @@
 
 
 
+(require 'rgr/lsp "rgr-lsp" 'NOERROR)
+
 (defgroup rgr/serial-ports nil
   "serial port customization"
   :group 'rgr)
@@ -252,22 +254,22 @@
   :custom
   (platformio-mode-silent nil)
   :init
-    (require 'ansi-color)
-    (defun rgr/platformio-compilation-mode-filter (buf _)
-      (interactive)
-      (with-current-buffer buf
-        (when (derived-mode-p 'platformio-compilation-mode)
-          (let ((inhibit-read-only t))
-            (ansi-color-apply-on-region (point-min) (point-max))))))
+  (require 'ansi-color)
+  (defun rgr/platformio-compilation-mode-filter (buf _)
+    (interactive)
+    (with-current-buffer buf
+      (when (derived-mode-p 'platformio-compilation-mode)
+        (let ((inhibit-read-only t))
+          (ansi-color-apply-on-region (point-min) (point-max))))))
 
-    (add-hook 'compilation-finish-functions
+  (add-hook 'compilation-finish-functions
             'rgr/platformio-compilation-mode-filter))
 
 (use-package lsp-pyright
-:ensure t
-:hook (python-mode . (lambda ()
-                        (require 'lsp-pyright)
-                        (lsp-deferred))))  ; or lsp
+  :ensure t
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp-deferred))))  ; or lsp
 (use-package  python
   :disabled t
   :config

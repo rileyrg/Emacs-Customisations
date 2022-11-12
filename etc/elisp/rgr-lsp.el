@@ -1,6 +1,7 @@
 ;; if you want to change prefix for lsp-mode keybindings.
 (use-package lsp-mode
   :custom
+  (lsp-auto-configure t)
   (lsp-auto-guess-root nil)
   (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
   (lsp-completion-enable  t)
@@ -16,17 +17,15 @@
   (lsp-modeline-code-actions-enable t)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-signature-auto-activate t)
-  :config
-  (with-eval-after-load 'lsp-mode
-    (require 'dap-chrome)
-    (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration))
 
 (use-package lsp-treemacs
   :config
   (lsp-treemacs-sync-mode 1))
 
 (use-package lsp-ui
-  :ensure t
+  :commands lsp-ui-mode
   :custom
   (lsp-ui-doc-delay 2.5)
   (lsp-ui-doc-enable t)
@@ -41,14 +40,14 @@
   :bind
   (:map lsp-ui-mode-map
         ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-        ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
+         ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
 (use-package dap-mode
+  :demand t
   :commands rgr/dap-debug
   :custom
   (dap-auto-configure-features '(locals  tooltip))
   :config
-  (require 'dap-chrome)
   (setq dap-ui-buffer-configurations
         `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
           (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
@@ -70,16 +69,18 @@
   (add-hook 'dap-stopped-hook
             (lambda (arg)
               (call-interactively #'dap-hydra)))
+  :config
+  (require 'dap-chrome)
   :bind
   (:map lsp-mode-map
-        ("C-<f9>" . #'rgr/dap-debug))
+        ("C-<f9>" . 'rgr/dap-debug))
   (:map dap-mode-map
         ("<f8>" . dap-continue)
-        ("C-S-<f8>" . dap-delete-session)
-        ("<f9>" . dap-hydra)
-        ("<f10>" . dap-next)
-        ("<f11>" . dap-step-in)
-        ("S-<f11>" . dap-step-out)
-        ))
+         ("C-S-<f8>" . dap-delete-session)
+         ("<f9>" . dap-hydra)
+         ("<f10>" . dap-next)
+         ("<f11>" . dap-step-in)
+         ("S-<f11>" . dap-step-out)
+         ))
 
 (provide 'rgr/lsp)
