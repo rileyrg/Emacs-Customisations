@@ -60,21 +60,21 @@ invoke google translate on them. Stores history.
 
 * early stuff
 ** debug init utility function
-   #+begin_src emacs-lisp
-     ;; look for a debug init file and load, trigger the debugger
-     (defun debug-init (&optional fname)
-       (let* ((fname (if fname fname "debug-init.el"))
-             (debug-init (expand-file-name fname user-emacs-directory)))
-       (if (file-exists-p debug-init)
-           (progn
-             (message "A debug-init, %s, was found, so loading." debug-init)
-             (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
-               (load-file debug-init)
-               (if rgr/debug-init-debugger
-                   (debug)
-                 (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
-         (message "No debug initfile, %s, found so ignoring" debug-init))))
-   #+end_src
+#+begin_src emacs-lisp
+  ;; look for a debug init file and load, trigger the debugger
+  (defun debug-init (&optional fname)
+    (let* ((fname (if fname fname "debug-init.el"))
+           (debug-init (expand-file-name fname user-emacs-directory)))
+      (if (file-exists-p debug-init)
+          (progn
+            (message "A debug-init, %s, was found, so loading." debug-init)
+            (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
+              (load-file debug-init)
+              (if rgr/debug-init-debugger
+                  (debug)
+                (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
+        (message "No debug initfile, %s, found so ignoring" debug-init))))
+#+end_src
 ** early-init.el
 #+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
   ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
@@ -96,7 +96,7 @@ CLOSED: [2021-08-06 Fri 11:01] SCHEDULED: <2021-07-24 Sat>
 #+end_src
 **  debug init before straight
 #+begin_src emacs-lisp
-(debug-init)
+  (debug-init)
 #+end_src
 * package management
 ** straight.el package management
@@ -764,44 +764,44 @@ CLOSED: [2021-07-21 Wed 11:39]
 **** corfu
 #+begin_src emacs-lisp
   (use-package corfu
-  ;; Optional customizations
-  :custom
-  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)                 ;; Enable auto completion
-  ;; (corfu-separator ?\s)          ;; Orderless field separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
-  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+    ;; Optional customizations
+    :custom
+    ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+    (corfu-auto t)                 ;; Enable auto completion
+    ;; (corfu-separator ?\s)          ;; Orderless field separator
+    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+    ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+    ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
+    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+    ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
+    ;; (corfu-scroll-margin 5)        ;; Use scroll margin
 
-  ;; Enable Corfu only for certain modes.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
+    ;; Enable Corfu only for certain modes.
+    ;; :hook ((prog-mode . corfu-mode)
+    ;;        (shell-mode . corfu-mode)
+    ;;        (eshell-mode . corfu-mode))
 
-  ;; Recommended: Enable Corfu globally.
-  ;; This is recommended since Dabbrev can be used globally (M-/).
-  ;; See also `corfu-excluded-modes'.
-  :init
-  (global-corfu-mode))
+    ;; Recommended: Enable Corfu globally.
+    ;; This is recommended since Dabbrev can be used globally (M-/).
+    ;; See also `corfu-excluded-modes'.
+    :init
+    (global-corfu-mode))
 
-;; A few more useful configurations...
-(use-package emacs
-  :init
-  ;; TAB cycle if there are only few candidates
-  (setq completion-cycle-threshold 3)
+  ;; A few more useful configurations...
+  (use-package emacs
+    :init
+    ;; TAB cycle if there are only few candidates
+    (setq completion-cycle-threshold 3)
 
-  ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-  ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-  ;; (setq read-extended-command-predicate
-  ;;       #'command-completion-default-include-p)
+    ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+    ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+    ;; (setq read-extended-command-predicate
+    ;;       #'command-completion-default-include-p)
 
-  ;; Enable indentation+completion using the TAB key.
-  ;; `completion-at-point' is often bound to M-TAB.
-  (setq tab-always-indent 'complete))
+    ;; Enable indentation+completion using the TAB key.
+    ;; `completion-at-point' is often bound to M-TAB.
+    (setq tab-always-indent 'complete))
 #+end_src
 **** Abbrev Mode
 :PROPERTIES:
@@ -874,9 +874,9 @@ CLOSED: [2021-07-21 Wed 11:39]
 #+end_src
 **** CANCELLED waiting on replies to reddit post about bmkp vesioning :CANCELLED:
 CLOSED: [2021-08-08 Sun 23:15] SCHEDULED: <2021-07-24 Sat>
-        :PROPERTIES:
-        :DateCreated: <2021-07-22 Thu 16:17>
-        :END:
+:PROPERTIES:
+:DateCreated: <2021-07-22 Thu 16:17>
+:END:
 :LOGBOOK:
 - State "CANCELLED"  from "TODO"       [2021-08-08 Sun 23:15]
 - State "TODO"       from              [2021-07-22 Thu 16:18]
@@ -1233,57 +1233,57 @@ create unique link IDs when sharing a link to an org section
   (use-package org-super-agenda
     :custom
     (org-super-agenda-groups
-         '(;; Each group has an implicit boolean OR operator between its selectors.
-           (:name "Today"  ; Optionally specify section name
-                  :time-grid t  ; Items that appear on the time grid
-                  :todo "TODAY")  ; Items that have this TODO keyword
-           (:name "Important"
-                  ;; Single arguments given alone
-                  :tag "bills"
-                  :priority "A")
-           ;; Set order of multiple groups at once
-           (:order-multi (2 (:name "home"
-                                   ;; Boolean AND group matches items that match all subgroups
-                                   :and (:tag "@home"))
-                            (:name "caravan"
-                                   ;; Boolean AND group matches items that match all subgroups
-                                   :and (:tag "@caravan"))
-                            (:name "shopping all"
-                                   ;; Boolean AND group matches items that match all subgroups
-                                   :and (:tag "shopping" :not (:tag "@home @caravan")))
-                            (:name "shopping"
-                                   ;; Boolean AND group matches items that match all subgroups
-                                   :and (:tag "shopping" :not (:tag "@home @caravan")))
-                            (:name "Emacs related"
-                                   ;; Boolean AND group matches items that match all subgroups
-                                   :tag ("emacs"))
-                            (:name "Programming related"
-                                   :and (:tag ("programming") :not (:tag "emacs")))
-                            (:name "Food-related"
-                                   ;; Multiple args given in list with implicit OR
-                                   :tag ("food" "dinner" "lunch" "breakfast"))
-                            (:name "Personal"
-                                   :habit t
-                                   :tag "personal")
-                            ))
-           ;; Groups supply their own section names when none are given
-           (:todo "WAITING" :order 8)  ; Set order of this section
-           (:todo "STARTED" :order 8)
-           (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
-                  ;; Show this group at the end of the agenda (since it has the
-                  ;; highest number). If you specified this group last, items
-                  ;; with these todo keywords that e.g. have priority A would be
-                  ;; displayed in that group instead, because items are grouped
-                  ;; out in the order the groups are listed.
-                  :order 9)
-           (:priority<= "B"
-                        ;; Show this section after "Today" and "Important", because
-                        ;; their order is unspecified, defaulting to 0. Sections
-                        ;; are displayed lowest-number-first.
-                        :order 1)
-           ;; After the last group, the agenda will display items that didn't
-           ;; match any of these groups, with the default order position of 99
-           ))
+     '(;; Each group has an implicit boolean OR operator between its selectors.
+       (:name "Today"  ; Optionally specify section name
+              :time-grid t  ; Items that appear on the time grid
+              :todo "TODAY")  ; Items that have this TODO keyword
+       (:name "Important"
+              ;; Single arguments given alone
+              :tag "bills"
+              :priority "A")
+       ;; Set order of multiple groups at once
+       (:order-multi (2 (:name "home"
+                               ;; Boolean AND group matches items that match all subgroups
+                               :and (:tag "@home"))
+                        (:name "caravan"
+                               ;; Boolean AND group matches items that match all subgroups
+                               :and (:tag "@caravan"))
+                        (:name "shopping all"
+                               ;; Boolean AND group matches items that match all subgroups
+                               :and (:tag "shopping" :not (:tag "@home @caravan")))
+                        (:name "shopping"
+                               ;; Boolean AND group matches items that match all subgroups
+                               :and (:tag "shopping" :not (:tag "@home @caravan")))
+                        (:name "Emacs related"
+                               ;; Boolean AND group matches items that match all subgroups
+                               :tag ("emacs"))
+                        (:name "Programming related"
+                               :and (:tag ("programming") :not (:tag "emacs")))
+                        (:name "Food-related"
+                               ;; Multiple args given in list with implicit OR
+                               :tag ("food" "dinner" "lunch" "breakfast"))
+                        (:name "Personal"
+                               :habit t
+                               :tag "personal")
+                        ))
+       ;; Groups supply their own section names when none are given
+       (:todo "WAITING" :order 8)  ; Set order of this section
+       (:todo "STARTED" :order 8)
+       (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
+              ;; Show this group at the end of the agenda (since it has the
+              ;; highest number). If you specified this group last, items
+              ;; with these todo keywords that e.g. have priority A would be
+              ;; displayed in that group instead, because items are grouped
+              ;; out in the order the groups are listed.
+              :order 9)
+       (:priority<= "B"
+                    ;; Show this section after "Today" and "Important", because
+                    ;; their order is unspecified, defaulting to 0. Sections
+                    ;; are displayed lowest-number-first.
+                    :order 1)
+       ;; After the last group, the agenda will display items that didn't
+       ;; match any of these groups, with the default order position of 99
+       ))
     :init
     (org-super-agenda-mode))
 #+end_src
@@ -2434,11 +2434,11 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
   (defun rgr/erc-start()
     (interactive)
     (if (not (get-buffer "irc.libera.chat:6697"))
-      (progn
-        (erc-tls :server "irc.libera.chat" :port "6697")
-        ;;(erc-tls :server "irc.freenode.net" :port "6667")
-        (erc-tls :server "irc.oftc.net" :port "6697")
-        (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
+        (progn
+          (erc-tls :server "irc.libera.chat" :port "6697")
+          ;;(erc-tls :server "irc.freenode.net" :port "6667")
+          (erc-tls :server "irc.oftc.net" :port "6697")
+          (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
       (erc-switch-to-buffer)))
 
   (require 'erc)
@@ -2652,23 +2652,23 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
 RMSbolt is a compiler output viewer in Emacs.
 https://github.com/emacsmirror/rmsbolt
 #+begin_src emacs-lisp
-    (use-package rmsbolt
-      :config
-      (defun rgr/rmsbolt-toggle()
-        (interactive)
-        (if rmsbolt-mode
-            (progn
-              (when (get-buffer
-                     rmsbolt-output-buffer)
-                (with-current-buffer rmsbolt-output-buffer
-                  (kill-buffer-and-window)))
-              (rmsbolt-mode -1))
+  (use-package rmsbolt
+    :config
+    (defun rgr/rmsbolt-toggle()
+      (interactive)
+      (if rmsbolt-mode
           (progn
-            (rmsbolt-mode +1)
-            (rmsbolt-compile))))
-      :bind
-      (:map prog-mode-map
-            ("C-c d" . rgr/rmsbolt-toggle)))
+            (when (get-buffer
+                   rmsbolt-output-buffer)
+              (with-current-buffer rmsbolt-output-buffer
+                (kill-buffer-and-window)))
+            (rmsbolt-mode -1))
+        (progn
+          (rmsbolt-mode +1)
+          (rmsbolt-compile))))
+    :bind
+    (:map prog-mode-map
+          ("C-c d" . rgr/rmsbolt-toggle)))
 
 #+end_src
 
@@ -2918,24 +2918,24 @@ https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-
 **** code format
 #+begin_src emacs-lisp
   ;; auto-format different source code files extremely intelligently
-;; https://github.com/radian-software/apheleia
-(use-package apheleia
-  :ensure t
-  :config
-  (apheleia-global-mode +1))
+  ;; https://github.com/radian-software/apheleia
+  (use-package apheleia
+    :ensure t
+    :config
+    (apheleia-global-mode +1))
 #+end_src
 **** rainbow delimiters
 :PROPERTIES:
 :ID:       0551cfd4-3325-4b79-90e1-d0edd4c1304e
 :END:
 #+begin_src emacs-lisp
-(use-package rainbow-delimiters
-      :config
-      (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-    (use-package rainbow-identifiers
-      :config
-      (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+  (use-package rainbow-identifiers
+    :config
+    (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 #+end_src
 **** Project Management                                             :project:
@@ -3012,10 +3012,10 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
 **** Flymake
 ***** diagnostic-at-point
 #+begin_src emacs-lisp
-(use-package flymake-diagnostic-at-point
-  :after flymake
-  :config
-  (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+  (use-package flymake-diagnostic-at-point
+    :after flymake
+    :config
+    (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
 #+end_src
 ***** shellcheck
 #+begin_src emacs-lisp
@@ -3023,8 +3023,8 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
     :commands flymake-shellcheck-load
     :init
     (defun rgr/sh-mode-hook()
-        (flymake-shellcheck-load)
-        (flymake-mode +1))
+      (flymake-shellcheck-load)
+      (flymake-mode +1))
     :hook (sh-mode . rgr/sh-mode-hook))
 #+end_src
 **** Version Control                                                 :git:vc:
@@ -3205,13 +3205,13 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
 #+end_src
 
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
-  :PROPERTIES:
-  :END:
-  [[https://github.com/emacs-lsp][Emacs-lsp]] : Language Server Protocol client for Emacs
+:PROPERTIES:
+:END:
+[[https://github.com/emacs-lsp][Emacs-lsp]] : Language Server Protocol client for Emacs
 
-  Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
-  ,#+begin_src emacs-lisp
-    (require 'rgr/lsp "rgr-lsp" 'NOERROR)
+Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
+#+begin_src emacs-lisp
+(require 'rgr/lsp "rgr-lsp" 'NOERROR)
 #+end_src
 
 ***** library
@@ -3240,6 +3240,7 @@ https://github.com/joaotavora/eglot
   ;; if you want to change prefix for lsp-mode keybindings.
   (use-package lsp-mode
     :custom
+    (lsp-auto-configure t)
     (lsp-auto-guess-root nil)
     (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
     (lsp-completion-enable  t)
@@ -3255,17 +3256,15 @@ https://github.com/joaotavora/eglot
     (lsp-modeline-code-actions-enable t)
     (lsp-modeline-diagnostics-enable nil)
     (lsp-signature-auto-activate t)
-    :config
-    (with-eval-after-load 'lsp-mode
-      (require 'dap-chrome)
-      (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
+    :hook
+    (lsp-mode . lsp-enable-which-key-integration))
 
   (use-package lsp-treemacs
     :config
     (lsp-treemacs-sync-mode 1))
 
   (use-package lsp-ui
-    :ensure t
+    :commands lsp-ui-mode
     :custom
     (lsp-ui-doc-delay 2.5)
     (lsp-ui-doc-enable t)
@@ -3280,14 +3279,14 @@ https://github.com/joaotavora/eglot
     :bind
     (:map lsp-ui-mode-map
           ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-          ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
+           ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
   (use-package dap-mode
+    :demand t
     :commands rgr/dap-debug
     :custom
     (dap-auto-configure-features '(locals  tooltip))
     :config
-    (require 'dap-chrome)
     (setq dap-ui-buffer-configurations
           `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
             (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
@@ -3309,17 +3308,19 @@ https://github.com/joaotavora/eglot
     (add-hook 'dap-stopped-hook
               (lambda (arg)
                 (call-interactively #'dap-hydra)))
+    :config
+    (require 'dap-chrome)
     :bind
     (:map lsp-mode-map
-          ("C-<f9>" . #'rgr/dap-debug))
+          ("C-<f9>" . 'rgr/dap-debug))
     (:map dap-mode-map
           ("<f8>" . dap-continue)
-          ("C-S-<f8>" . dap-delete-session)
-          ("<f9>" . dap-hydra)
-          ("<f10>" . dap-next)
-          ("<f11>" . dap-step-in)
-          ("S-<f11>" . dap-step-out)
-          ))
+           ("C-S-<f8>" . dap-delete-session)
+           ("<f9>" . dap-hydra)
+           ("<f10>" . dap-next)
+           ("<f11>" . dap-step-in)
+           ("S-<f11>" . dap-step-out)
+           ))
 #+end_src
 ****** [[file:~/development/thirdparty/godot/bin][.dir-local.el]] config for a debug template
 :PROPERTIES:
@@ -3377,15 +3378,15 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     :custom
     (platformio-mode-silent nil)
     :init
-      (require 'ansi-color)
-      (defun rgr/platformio-compilation-mode-filter (buf _)
-        (interactive)
-        (with-current-buffer buf
-          (when (derived-mode-p 'platformio-compilation-mode)
-            (let ((inhibit-read-only t))
-              (ansi-color-apply-on-region (point-min) (point-max))))))
+    (require 'ansi-color)
+    (defun rgr/platformio-compilation-mode-filter (buf _)
+      (interactive)
+      (with-current-buffer buf
+        (when (derived-mode-p 'platformio-compilation-mode)
+          (let ((inhibit-read-only t))
+            (ansi-color-apply-on-region (point-min) (point-max))))))
 
-      (add-hook 'compilation-finish-functions
+    (add-hook 'compilation-finish-functions
               'rgr/platformio-compilation-mode-filter))
 #+end_src
 ***** TODO [#A] get compilation errors to work and submit ansi color fix?
@@ -3403,10 +3404,10 @@ SCHEDULED: <2021-09-26 Sun>
 :END:
 #+begin_src emacs-lisp
   (use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp-deferred))))  ; or lsp
+    :ensure t
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-pyright)
+                           (lsp-deferred))))  ; or lsp
   (use-package  python
     :disabled t
     :config
