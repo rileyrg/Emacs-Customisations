@@ -7,15 +7,15 @@
   (lsp-completion-enable  t)
   (lsp-completion-provider :none)
   (lsp-completion-show-kind t)
-  (lsp-diagnostics-provider :none)
+  (lsp-diagnostics-provider :auto)
   (lsp-eldoc-enable-hover nil)
   (lsp-enable-on-type-formatting t)
   (lsp-enable-snippet nil)
   (lsp-enable-symbol-highlighting t)
   (lsp-headerline-breadcrumb-enable t)
-  (lsp-lens-enable nil)
-  (lsp-modeline-code-actions-enable t)
-  (lsp-modeline-diagnostics-enable t)
+  (lsp-lens-enable t)
+  (lsp-modeline-code-actions-enable nil)
+  (lsp-modeline-diagnostics-enable nil)
   (lsp-signature-auto-activate t)
   :hook
   (lsp-mode . lsp-enable-which-key-integration))
@@ -36,7 +36,7 @@
   (lsp-ui-peek-show-directory t)
   (lsp-ui-sideline-enable t)
   (lsp-ui-sideline-show-code-actions t)
-  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-diagnostics nil)
   :bind
   (:map lsp-ui-mode-map
         ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
