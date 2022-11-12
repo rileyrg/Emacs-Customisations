@@ -12,10 +12,10 @@
   (lsp-enable-on-type-formatting t)
   (lsp-enable-snippet nil)
   (lsp-enable-symbol-highlighting t)
-  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-headerline-breadcrumb-enable t)
   (lsp-lens-enable nil)
   (lsp-modeline-code-actions-enable t)
-  (lsp-modeline-diagnostics-enable nil)
+  (lsp-modeline-diagnostics-enable t)
   (lsp-signature-auto-activate t)
   :hook
   (lsp-mode . lsp-enable-which-key-integration))
@@ -43,7 +43,6 @@
          ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
 (use-package dap-mode
-  :demand t
   :commands rgr/dap-debug
   :custom
   (dap-auto-configure-features '(locals  tooltip))

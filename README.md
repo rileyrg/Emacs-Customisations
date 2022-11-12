@@ -40,16 +40,16 @@ A small "game" like utility that displays snippets to glance at. You can then in
 ;; look for a debug init file and load, trigger the debugger
 (defun debug-init (&optional fname)
   (let* ((fname (if fname fname "debug-init.el"))
-        (debug-init (expand-file-name fname user-emacs-directory)))
-  (if (file-exists-p debug-init)
-      (progn
-        (message "A debug-init, %s, was found, so loading." debug-init)
-        (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
-          (load-file debug-init)
-          (if rgr/debug-init-debugger
-              (debug)
-            (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
-    (message "No debug initfile, %s, found so ignoring" debug-init))))
+         (debug-init (expand-file-name fname user-emacs-directory)))
+    (if (file-exists-p debug-init)
+        (progn
+          (message "A debug-init, %s, was found, so loading." debug-init)
+          (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
+            (load-file debug-init)
+            (if rgr/debug-init-debugger
+                (debug)
+              (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
+      (message "No debug initfile, %s, found so ignoring" debug-init))))
 ```
 
 
@@ -686,7 +686,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 3.  corfu
 
     ```emacs-lisp
-      (use-package corfu
+    (use-package corfu
       ;; Optional customizations
       :custom
       ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -1120,57 +1120,57 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
         (use-package org-super-agenda
           :custom
           (org-super-agenda-groups
-               '(;; Each group has an implicit boolean OR operator between its selectors.
-                 (:name "Today"  ; Optionally specify section name
-                        :time-grid t  ; Items that appear on the time grid
-                        :todo "TODAY")  ; Items that have this TODO keyword
-                 (:name "Important"
-                        ;; Single arguments given alone
-                        :tag "bills"
-                        :priority "A")
-                 ;; Set order of multiple groups at once
-                 (:order-multi (2 (:name "home"
-                                         ;; Boolean AND group matches items that match all subgroups
-                                         :and (:tag "@home"))
-                                  (:name "caravan"
-                                         ;; Boolean AND group matches items that match all subgroups
-                                         :and (:tag "@caravan"))
-                                  (:name "shopping all"
-                                         ;; Boolean AND group matches items that match all subgroups
-                                         :and (:tag "shopping" :not (:tag "@home @caravan")))
-                                  (:name "shopping"
-                                         ;; Boolean AND group matches items that match all subgroups
-                                         :and (:tag "shopping" :not (:tag "@home @caravan")))
-                                  (:name "Emacs related"
-                                         ;; Boolean AND group matches items that match all subgroups
-                                         :tag ("emacs"))
-                                  (:name "Programming related"
-                                         :and (:tag ("programming") :not (:tag "emacs")))
-                                  (:name "Food-related"
-                                         ;; Multiple args given in list with implicit OR
-                                         :tag ("food" "dinner" "lunch" "breakfast"))
-                                  (:name "Personal"
-                                         :habit t
-                                         :tag "personal")
-                                  ))
-                 ;; Groups supply their own section names when none are given
-                 (:todo "WAITING" :order 8)  ; Set order of this section
-                 (:todo "STARTED" :order 8)
-                 (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
-                        ;; Show this group at the end of the agenda (since it has the
-                        ;; highest number). If you specified this group last, items
-                        ;; with these todo keywords that e.g. have priority A would be
-                        ;; displayed in that group instead, because items are grouped
-                        ;; out in the order the groups are listed.
-                        :order 9)
-                 (:priority<= "B"
-                              ;; Show this section after "Today" and "Important", because
-                              ;; their order is unspecified, defaulting to 0. Sections
-                              ;; are displayed lowest-number-first.
-                              :order 1)
-                 ;; After the last group, the agenda will display items that didn't
-                 ;; match any of these groups, with the default order position of 99
-                 ))
+           '(;; Each group has an implicit boolean OR operator between its selectors.
+             (:name "Today"  ; Optionally specify section name
+                    :time-grid t  ; Items that appear on the time grid
+                    :todo "TODAY")  ; Items that have this TODO keyword
+             (:name "Important"
+                    ;; Single arguments given alone
+                    :tag "bills"
+                    :priority "A")
+             ;; Set order of multiple groups at once
+             (:order-multi (2 (:name "home"
+                                     ;; Boolean AND group matches items that match all subgroups
+                                     :and (:tag "@home"))
+                              (:name "caravan"
+                                     ;; Boolean AND group matches items that match all subgroups
+                                     :and (:tag "@caravan"))
+                              (:name "shopping all"
+                                     ;; Boolean AND group matches items that match all subgroups
+                                     :and (:tag "shopping" :not (:tag "@home @caravan")))
+                              (:name "shopping"
+                                     ;; Boolean AND group matches items that match all subgroups
+                                     :and (:tag "shopping" :not (:tag "@home @caravan")))
+                              (:name "Emacs related"
+                                     ;; Boolean AND group matches items that match all subgroups
+                                     :tag ("emacs"))
+                              (:name "Programming related"
+                                     :and (:tag ("programming") :not (:tag "emacs")))
+                              (:name "Food-related"
+                                     ;; Multiple args given in list with implicit OR
+                                     :tag ("food" "dinner" "lunch" "breakfast"))
+                              (:name "Personal"
+                                     :habit t
+                                     :tag "personal")
+                              ))
+             ;; Groups supply their own section names when none are given
+             (:todo "WAITING" :order 8)  ; Set order of this section
+             (:todo "STARTED" :order 8)
+             (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
+                    ;; Show this group at the end of the agenda (since it has the
+                    ;; highest number). If you specified this group last, items
+                    ;; with these todo keywords that e.g. have priority A would be
+                    ;; displayed in that group instead, because items are grouped
+                    ;; out in the order the groups are listed.
+                    :order 9)
+             (:priority<= "B"
+                          ;; Show this section after "Today" and "Important", because
+                          ;; their order is unspecified, defaulting to 0. Sections
+                          ;; are displayed lowest-number-first.
+                          :order 1)
+             ;; After the last group, the agenda will display items that didn't
+             ;; match any of these groups, with the default order position of 99
+             ))
           :init
           (org-super-agenda-mode))
         ```
@@ -1236,7 +1236,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org6acdab6) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orga92c07c) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2276,11 +2276,11 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 (defun rgr/erc-start()
   (interactive)
   (if (not (get-buffer "irc.libera.chat:6697"))
-    (progn
-      (erc-tls :server "irc.libera.chat" :port "6697")
-      ;;(erc-tls :server "irc.freenode.net" :port "6667")
-      (erc-tls :server "irc.oftc.net" :port "6697")
-      (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
+      (progn
+        (erc-tls :server "irc.libera.chat" :port "6697")
+        ;;(erc-tls :server "irc.freenode.net" :port "6667")
+        (erc-tls :server "irc.oftc.net" :port "6697")
+        (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
     (erc-switch-to-buffer)))
 
 (require 'erc)
@@ -2683,7 +2683,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 6.  code format
 
     ```emacs-lisp
-      ;; auto-format different source code files extremely intelligently
+    ;; auto-format different source code files extremely intelligently
     ;; https://github.com/radian-software/apheleia
     (use-package apheleia
       :ensure t
@@ -2695,12 +2695,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```emacs-lisp
     (use-package rainbow-delimiters
-          :config
-          (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+      :config
+      (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-        (use-package rainbow-identifiers
-          :config
-          (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+    (use-package rainbow-identifiers
+      :config
+      (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
     ```
 
@@ -2792,8 +2792,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :commands flymake-shellcheck-load
           :init
           (defun rgr/sh-mode-hook()
-              (flymake-shellcheck-load)
-              (flymake-mode +1))
+            (flymake-shellcheck-load)
+            (flymake-mode +1))
           :hook (sh-mode . rgr/sh-mode-hook))
         ```
 
@@ -2862,23 +2862,30 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ("C-x v ="  . git-gutter:popup-hunk))
         ```
 
+    5.  Java
+
+        ```emacs-lisp
+        (use-package lsp-java
+          :hook java-mode-hook . 'lsp)
+        ```
+
 14. Javascript
 
     ```emacs-lisp
 
     ;; use lsp nav in js files
     (use-package js
-      ;; :bind
-      ;; (:map js-mode-map
-      ;;       ("M-." . #'lsp-ui-peek-find-definitions)))
       :config
       (defun rgr/js-mode-hook ()
-        (when (featurep 'lsp-mode)
-          (lsp))
+        (lsp)
         (local-unset-key (kbd "M-."))
         (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
+      :hook
+      (js-mode . rgr/js-mode-hook)
+      :bind
+      (:map js-mode-map
+            ("M-." . #'lsp-ui-peek-find-definitions)))
 
-      (add-hook 'js-mode-hook 'rgr/js-mode-hook))
 
     (use-package rjsx-mode
       :disabled t
@@ -2949,7 +2956,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
 
-    Raw: [rgr/lsp](etc/elisp/rgr-lsp.el) ,#+begin\_src emacs-lisp (require 'rgr/lsp "rgr-lsp" 'NOERROR) \#+end\_src
+    Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
+
+    ```emacs-lisp
+    (require 'rgr/lsp "rgr-lsp" 'NOERROR)
+    ```
 
     1.  library
 
@@ -2973,6 +2984,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             ;; if you want to change prefix for lsp-mode keybindings.
             (use-package lsp-mode
               :custom
+              (lsp-auto-configure t)
               (lsp-auto-guess-root nil)
               (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
               (lsp-completion-enable  t)
@@ -2983,22 +2995,20 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (lsp-enable-on-type-formatting t)
               (lsp-enable-snippet nil)
               (lsp-enable-symbol-highlighting t)
-              (lsp-headerline-breadcrumb-enable nil)
+              (lsp-headerline-breadcrumb-enable t)
               (lsp-lens-enable nil)
               (lsp-modeline-code-actions-enable t)
-              (lsp-modeline-diagnostics-enable nil)
+              (lsp-modeline-diagnostics-enable t)
               (lsp-signature-auto-activate t)
-              :config
-              (with-eval-after-load 'lsp-mode
-                (require 'dap-chrome)
-                (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
+              :hook
+              (lsp-mode . lsp-enable-which-key-integration))
 
             (use-package lsp-treemacs
               :config
               (lsp-treemacs-sync-mode 1))
 
             (use-package lsp-ui
-              :ensure t
+              :commands lsp-ui-mode
               :custom
               (lsp-ui-doc-delay 2.5)
               (lsp-ui-doc-enable t)
@@ -3013,14 +3023,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :bind
               (:map lsp-ui-mode-map
                     ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-                    ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
+                     ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
             (use-package dap-mode
               :commands rgr/dap-debug
               :custom
               (dap-auto-configure-features '(locals  tooltip))
               :config
-              (require 'dap-chrome)
               (setq dap-ui-buffer-configurations
                     `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
                       (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
@@ -3042,17 +3051,19 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-hook 'dap-stopped-hook
                         (lambda (arg)
                           (call-interactively #'dap-hydra)))
+              :config
+              (require 'dap-chrome)
               :bind
               (:map lsp-mode-map
-                    ("C-<f9>" . #'rgr/dap-debug))
+                    ("C-<f9>" . 'rgr/dap-debug))
               (:map dap-mode-map
                     ("<f8>" . dap-continue)
-                    ("C-S-<f8>" . dap-delete-session)
-                    ("<f9>" . dap-hydra)
-                    ("<f10>" . dap-next)
-                    ("<f11>" . dap-step-in)
-                    ("S-<f11>" . dap-step-out)
-                    ))
+                     ("C-S-<f8>" . dap-delete-session)
+                     ("<f9>" . dap-hydra)
+                     ("<f10>" . dap-next)
+                     ("<f11>" . dap-step-in)
+                     ("S-<f11>" . dap-step-out)
+                     ))
             ```
 
         3.  [.dir-local.el](file:///home/rgr/development/thirdparty/godot/bin) config for a debug template
@@ -3112,15 +3123,15 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :custom
       (platformio-mode-silent nil)
       :init
-        (require 'ansi-color)
-        (defun rgr/platformio-compilation-mode-filter (buf _)
-          (interactive)
-          (with-current-buffer buf
-            (when (derived-mode-p 'platformio-compilation-mode)
-              (let ((inhibit-read-only t))
-                (ansi-color-apply-on-region (point-min) (point-max))))))
+      (require 'ansi-color)
+      (defun rgr/platformio-compilation-mode-filter (buf _)
+        (interactive)
+        (with-current-buffer buf
+          (when (derived-mode-p 'platformio-compilation-mode)
+            (let ((inhibit-read-only t))
+              (ansi-color-apply-on-region (point-min) (point-max))))))
 
-        (add-hook 'compilation-finish-functions
+      (add-hook 'compilation-finish-functions
                 'rgr/platformio-compilation-mode-filter))
     ```
 
@@ -3132,10 +3143,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
         ```emacs-lisp
         (use-package lsp-pyright
-        :ensure t
-        :hook (python-mode . (lambda ()
-                                (require 'lsp-pyright)
-                                (lsp-deferred))))  ; or lsp
+          :ensure t
+          :hook (python-mode . (lambda ()
+                                 (require 'lsp-pyright)
+                                 (lsp-deferred))))  ; or lsp
         (use-package  python
           :disabled t
           :config
@@ -3539,7 +3550,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3d921a3) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb84fa9e) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3578,7 +3589,7 @@ fi
 ```
 
 
-<a id="org3d921a3"></a>
+<a id="orgb84fa9e"></a>
 
 ### Gnome protocol handler desktop file
 
