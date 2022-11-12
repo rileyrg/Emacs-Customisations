@@ -2993,7 +2993,6 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
 #+begin_src emacs-lisp
   (use-package
     flycheck
-    :demand
     :custom
     (flycheck-global-modes '(not org-mode org-src-mode))
     (flycheck-emacs-lisp-load-path 'inherit)
@@ -3003,7 +3002,7 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
               :config
               (flycheck-pos-tip-mode))
     (global-flycheck-mode +1)
-    :bind ("<f8>" . (lambda()
+    :bind ("<C-f8>" . (lambda()
                       (interactive)
                       (flycheck-mode 'toggle)
                       (let((s (if flycheck-mode "on" "off")))
@@ -3121,10 +3120,15 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
     :bind
     ("C-x v ="  . git-gutter:popup-hunk))
 #+end_src
+***** Dart/Flutter                                             :dart:flutter:
+#+begin_src emacs-lisp
+  (use-package lsp-dart
+    :hook (dart-mode . lsp))
+#+end_src
 ***** Java                                                             :java:
 #+begin_src emacs-lisp
   (use-package lsp-java
-    :hook java-mode-hook . 'lsp)
+    :hook (java-mode . lsp))
 #+end_src
 **** Javascript                                                          :js:
 :PROPERTIES:
@@ -3251,15 +3255,15 @@ https://github.com/joaotavora/eglot
     (lsp-completion-enable  t)
     (lsp-completion-provider :none)
     (lsp-completion-show-kind t)
-    (lsp-diagnostics-provider :none)
+    (lsp-diagnostics-provider :auto)
     (lsp-eldoc-enable-hover nil)
     (lsp-enable-on-type-formatting t)
     (lsp-enable-snippet nil)
     (lsp-enable-symbol-highlighting t)
     (lsp-headerline-breadcrumb-enable t)
-    (lsp-lens-enable nil)
-    (lsp-modeline-code-actions-enable t)
-    (lsp-modeline-diagnostics-enable t)
+    (lsp-lens-enable t)
+    (lsp-modeline-code-actions-enable nil)
+    (lsp-modeline-diagnostics-enable nil)
     (lsp-signature-auto-activate t)
     :hook
     (lsp-mode . lsp-enable-which-key-integration))
@@ -3280,7 +3284,7 @@ https://github.com/joaotavora/eglot
     (lsp-ui-peek-show-directory t)
     (lsp-ui-sideline-enable t)
     (lsp-ui-sideline-show-code-actions t)
-    (lsp-ui-sideline-show-diagnostics t)
+    (lsp-ui-sideline-show-diagnostics nil)
     :bind
     (:map lsp-ui-mode-map
           ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)

@@ -97,7 +97,6 @@
 
 (use-package
   flycheck
-  :demand
   :custom
   (flycheck-global-modes '(not org-mode org-src-mode))
   (flycheck-emacs-lisp-load-path 'inherit)
@@ -107,7 +106,7 @@
             :config
             (flycheck-pos-tip-mode))
   (global-flycheck-mode +1)
-  :bind ("<f8>" . (lambda()
+  :bind ("<C-f8>" . (lambda()
                     (interactive)
                     (flycheck-mode 'toggle)
                     (let((s (if flycheck-mode "on" "off")))
@@ -159,8 +158,11 @@
   :bind
   ("C-x v ="  . git-gutter:popup-hunk))
 
+(use-package lsp-dart
+  :hook (dart-mode . lsp))
+
 (use-package lsp-java
-  :hook java-mode-hook . 'lsp)
+  :hook (java-mode . lsp))
 
 ;; use lsp nav in js files
 (use-package js

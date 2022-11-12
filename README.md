@@ -1236,7 +1236,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orga92c07c) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgdd63caf) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2757,7 +2757,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     ```emacs-lisp
     (use-package
       flycheck
-      :demand
       :custom
       (flycheck-global-modes '(not org-mode org-src-mode))
       (flycheck-emacs-lisp-load-path 'inherit)
@@ -2767,7 +2766,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 :config
                 (flycheck-pos-tip-mode))
       (global-flycheck-mode +1)
-      :bind ("<f8>" . (lambda()
+      :bind ("<C-f8>" . (lambda()
                         (interactive)
                         (flycheck-mode 'toggle)
                         (let((s (if flycheck-mode "on" "off")))
@@ -2862,11 +2861,18 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ("C-x v ="  . git-gutter:popup-hunk))
         ```
 
-    5.  Java
+    5.  Dart/Flutter
+
+        ```emacs-lisp
+        (use-package lsp-dart
+          :hook (dart-mode . lsp))
+        ```
+
+    6.  Java
 
         ```emacs-lisp
         (use-package lsp-java
-          :hook java-mode-hook . 'lsp)
+          :hook (java-mode . lsp))
         ```
 
 14. Javascript
@@ -2990,15 +2996,15 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (lsp-completion-enable  t)
               (lsp-completion-provider :none)
               (lsp-completion-show-kind t)
-              (lsp-diagnostics-provider :none)
+              (lsp-diagnostics-provider :auto)
               (lsp-eldoc-enable-hover nil)
               (lsp-enable-on-type-formatting t)
               (lsp-enable-snippet nil)
               (lsp-enable-symbol-highlighting t)
               (lsp-headerline-breadcrumb-enable t)
-              (lsp-lens-enable nil)
-              (lsp-modeline-code-actions-enable t)
-              (lsp-modeline-diagnostics-enable t)
+              (lsp-lens-enable t)
+              (lsp-modeline-code-actions-enable nil)
+              (lsp-modeline-diagnostics-enable nil)
               (lsp-signature-auto-activate t)
               :hook
               (lsp-mode . lsp-enable-which-key-integration))
@@ -3019,7 +3025,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (lsp-ui-peek-show-directory t)
               (lsp-ui-sideline-enable t)
               (lsp-ui-sideline-show-code-actions t)
-              (lsp-ui-sideline-show-diagnostics t)
+              (lsp-ui-sideline-show-diagnostics nil)
               :bind
               (:map lsp-ui-mode-map
                     ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
@@ -3550,7 +3556,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb84fa9e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga6992ba) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3589,7 +3595,7 @@ fi
 ```
 
 
-<a id="orgb84fa9e"></a>
+<a id="orga6992ba"></a>
 
 ### Gnome protocol handler desktop file
 
