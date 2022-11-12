@@ -159,19 +159,22 @@
   :bind
   ("C-x v ="  . git-gutter:popup-hunk))
 
+(use-package lsp-java
+  :hook java-mode-hook . 'lsp)
+
 ;; use lsp nav in js files
 (use-package js
-  ;; :bind
-  ;; (:map js-mode-map
-  ;;       ("M-." . #'lsp-ui-peek-find-definitions)))
   :config
   (defun rgr/js-mode-hook ()
-    (when (featurep 'lsp-mode)
-      (lsp))
+    (lsp)
     (local-unset-key (kbd "M-."))
     (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
+  :hook
+  (js-mode . rgr/js-mode-hook)
+  :bind
+  (:map js-mode-map
+        ("M-." . #'lsp-ui-peek-find-definitions)))
 
-  (add-hook 'js-mode-hook 'rgr/js-mode-hook))
 
 (use-package rjsx-mode
   :disabled t

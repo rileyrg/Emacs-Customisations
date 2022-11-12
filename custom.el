@@ -22,7 +22,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -229,7 +228,7 @@
  '(large-file-warning-threshold nil)
  '(lsp-keep-workspace-alive nil)
  '(lsp-keymap-prefix "M-p")
- '(max-lisp-eval-depth 16000)
+ '(max-lisp-eval-depth 32000)
  '(mu4e-search-threads nil t nil "Customized with use-package mu4e")
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")
  '(org-agenda-custom-commands

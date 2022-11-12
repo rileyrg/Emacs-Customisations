@@ -3121,6 +3121,11 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
     :bind
     ("C-x v ="  . git-gutter:popup-hunk))
 #+end_src
+***** Java                                                             :java:
+#+begin_src emacs-lisp
+  (use-package lsp-java
+    :hook java-mode-hook . 'lsp)
+#+end_src
 **** Javascript                                                          :js:
 :PROPERTIES:
 :ID:       27571c84-2c40-487d-abd0-3013c53b731b
@@ -3129,17 +3134,17 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
 
   ;; use lsp nav in js files
   (use-package js
-    ;; :bind
-    ;; (:map js-mode-map
-    ;;       ("M-." . #'lsp-ui-peek-find-definitions)))
     :config
     (defun rgr/js-mode-hook ()
-      (when (featurep 'lsp-mode)
-        (lsp))
+      (lsp)
       (local-unset-key (kbd "M-."))
       (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
+    :hook
+    (js-mode . rgr/js-mode-hook)
+    :bind
+    (:map js-mode-map
+          ("M-." . #'lsp-ui-peek-find-definitions)))
 
-    (add-hook 'js-mode-hook 'rgr/js-mode-hook))
 
   (use-package rjsx-mode
     :disabled t
@@ -3251,10 +3256,10 @@ https://github.com/joaotavora/eglot
     (lsp-enable-on-type-formatting t)
     (lsp-enable-snippet nil)
     (lsp-enable-symbol-highlighting t)
-    (lsp-headerline-breadcrumb-enable nil)
+    (lsp-headerline-breadcrumb-enable t)
     (lsp-lens-enable nil)
     (lsp-modeline-code-actions-enable t)
-    (lsp-modeline-diagnostics-enable nil)
+    (lsp-modeline-diagnostics-enable t)
     (lsp-signature-auto-activate t)
     :hook
     (lsp-mode . lsp-enable-which-key-integration))
@@ -3282,7 +3287,6 @@ https://github.com/joaotavora/eglot
            ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
 
   (use-package dap-mode
-    :demand t
     :commands rgr/dap-debug
     :custom
     (dap-auto-configure-features '(locals  tooltip))
