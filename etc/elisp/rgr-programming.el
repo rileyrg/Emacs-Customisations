@@ -159,7 +159,11 @@
   ("C-x v ="  . git-gutter:popup-hunk))
 
 (use-package lsp-dart
-  :hook (dart-mode . lsp))
+  :custom
+  (lsp-dart-closing-labels nil)
+  (lsp-dart-flutter-widget-guides nil)
+  :hook
+  (dart-mode . lsp))
 
 (use-package lsp-java
   :hook (java-mode . lsp))
