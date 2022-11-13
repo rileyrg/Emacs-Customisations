@@ -93,6 +93,8 @@
   ;; The :init configuration is always executed (Not lazy)
   :init
 
+  (use-package consult-dir)
+  (use-package consult-flycheck)
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
