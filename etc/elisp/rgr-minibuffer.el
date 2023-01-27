@@ -1,8 +1,8 @@
 ;;(require 'tramp)
-(use-package tramp
-  :custom
-  (tramp-default-method "ssh")
-  )
+;; (use-package tramp
+;;   :custom
+;;   (tramp-default-method "ssh")
+;;   )
 
 (use-package ctrlf
   :custom

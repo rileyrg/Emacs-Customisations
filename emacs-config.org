@@ -403,10 +403,10 @@ Raw: [[file+sys:etc/elisp/rgr-minibuffer.el][rgr/minibuffer]]
 is a package for editing remote files, similar to AngeFtp or efs. Whereas the others use FTP to connect to the remote host and to transfer the files, TRAMP uses a remote shell connection (rlogin, telnet, ssh). It can transfer the files using rcp or a similar program, or it can encode the file contents (using uuencode or base64) and transfer them right through the shell connection.
 #+begin_src emacs-lisp
   ;;(require 'tramp)
-  (use-package tramp
-    :custom
-    (tramp-default-method "ssh")
-    )
+  ;; (use-package tramp
+  ;;   :custom
+  ;;   (tramp-default-method "ssh")
+  ;;   )
 #+end_src
 **** [[https://github.com/raxod502/ctrlf][ctrlf searching]]
 #+begin_src emacs-lisp
