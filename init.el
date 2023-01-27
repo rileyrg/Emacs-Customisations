@@ -547,9 +547,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
         modus-themes-bold-constructs nil)
 
   ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes)
+  ;; (modus-themes-load-themes)
   :config
-  (modus-themes-load-operandi))
+  (load-theme 'modus-operandi :no-confirm))
 ;; (modus-themes-load-vivendi))
 
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))

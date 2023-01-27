@@ -92,6 +92,7 @@
   (org-super-agenda-mode))
 
 (use-package org-roam
+  :disabled t
   :demand
   :custom
   (epa-file-encrypt-to "rileyrg")
