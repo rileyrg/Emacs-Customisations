@@ -1297,6 +1297,7 @@ create unique link IDs when sharing a link to an org section
 Inspired by another System Crafters [[https://systemcrafters.cc/build-a-second-brain-in-emacs/getting-started-with-org-roam/][video]].
 #+begin_src emacs-lisp
   (use-package org-roam
+    :disabled t
     :demand
     :custom
     (epa-file-encrypt-to "rileyrg")
@@ -3748,9 +3749,9 @@ https://github.com/protesilaos/modus-themes
           modus-themes-bold-constructs nil)
 
     ;; Load the theme files before enabling a theme
-    (modus-themes-load-themes)
+    ;; (modus-themes-load-themes)
     :config
-    (modus-themes-load-operandi))
+    (load-theme 'modus-operandi :no-confirm))
   ;; (modus-themes-load-vivendi))
 #+end_src
 *** humanoid themes
