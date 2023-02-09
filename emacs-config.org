@@ -2412,10 +2412,13 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
     :custom
     (treemacs-follow-after-init t)
     :config
+    (defun myTMResize()
+            (treemacs-resize-icons 15))
     (treemacs-follow-mode +1)
     (treemacs-fringe-indicator-mode)
     (treemacs-git-mode 'deferred)
     (use-package treemacs-magit)
+    :after myTMResize
     :bind
     ("M-9"   . 'treemacs-select-window)
     (:map treemacs-mode-map
@@ -3125,6 +3128,7 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
 #+end_src
 ***** Dart/Flutter                                             :dart:flutter:
 #+begin_src emacs-lisp
+  (straight-use-package 'flutter)
   (use-package lsp-dart
     :custom
     (lsp-dart-closing-labels nil)

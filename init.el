@@ -366,10 +366,13 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :custom
   (treemacs-follow-after-init t)
   :config
+  (defun myTMResize()
+          (treemacs-resize-icons 15))
   (treemacs-follow-mode +1)
   (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
   (use-package treemacs-magit)
+  :after myTMResize
   :bind
   ("M-9"   . 'treemacs-select-window)
   (:map treemacs-mode-map

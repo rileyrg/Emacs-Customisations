@@ -203,11 +203,11 @@ Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/cu
 1.  Auth-Sources, get-auth-info
 
     Let emacs take care of security things automagically. example:
-
+    
     ```emacs-lisp
     (setq passw (get-auth-info "licenses" "my-auth-token"))
     ```
-
+    
     ```emacs-lisp
     (require 'auth-source)
     (defun get-auth-info (host user &optional port)
@@ -227,11 +227,11 @@ Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/cu
 2.  Pass
 
     Uses the unix command line `pass` utility. Can be used via `process-lines` e.g
-
+    
     ```emacs-lisp
     (car (process-lines "pass" "Chat/slack-api-token"))
     ```
-
+    
     ```emacs-lisp
     (use-package pass)
     ```
@@ -269,17 +269,17 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
                       (thing-at-point 'symbol)) nil))
              (result (if w w (read-string "lookup:"))))
         result))
-
+    
     ```
 
 2.  read and write elisp vars to file
 
     ```emacs-lisp
-
+    
     (defun rgr/elisp-write-var (f v)
       (with-temp-file f
         (prin1 v (current-buffer))))
-
+    
     (defun rgr/elisp-read-var (f)
       (with-temp-buffer
         (insert-file-contents f)
@@ -310,7 +310,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 1.  desktop-save
 
     This has frequently caused problems. The docs seems slightly off and the setting of variables a little confusing. Google seems to confirm this. Anyways, this is working.
-
+    
     ```emacs-lisp
     (use-package emacs
       :custom
@@ -337,7 +337,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 2.  emacs server
 
     If not already deamonised
-
+    
     ```emacs-lisp
     ;; start emacs-server if not running
     (unless(daemonp)
@@ -358,21 +358,21 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
       (if (or current-prefix-arg kill)
           (server-shutdown)
         (delete-frame)))
-
+    
     (defun server-shutdown ()
       "Save buffers, Quit, and Shutdown (kill) server"
       (interactive)
       (save-some-buffers)
       (kill-emacs))
-
+    
     (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
     (global-set-key (kbd "C-x C-c") 'nil)
-
+    
     (use-package alert
       :init
       (let ((alert-fade-time 5))
         (alert "Emacs is starting..." :title "Emacs")))
-
+    
     (provide 'rgr/startup)
     ```
 
@@ -393,13 +393,13 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 1.  [TRAMP](https://www.emacswiki.org/emacs/TrampMode) (Transparent Remote Access, Multiple Protocols)
 
     is a package for editing remote files, similar to AngeFtp or efs. Whereas the others use FTP to connect to the remote host and to transfer the files, TRAMP uses a remote shell connection (rlogin, telnet, ssh). It can transfer the files using rcp or a similar program, or it can encode the file contents (using uuencode or base64) and transfer them right through the shell connection.
-
+    
     ```emacs-lisp
     ;;(require 'tramp)
-    (use-package tramp
-      :custom
-      (tramp-default-method "ssh")
-      )
+    ;; (use-package tramp
+    ;;   :custom
+    ;;   (tramp-default-method "ssh")
+    ;;   )
     ```
 
 2.  [ctrlf searching](https://github.com/raxod502/ctrlf)
@@ -415,9 +415,9 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 3.  file opening
 
     1.  read only by default
-
+    
         Increasingly editing by mistake. Can use [read-only-mode](read-only-mode) to edit it.
-
+        
         ```emacs-lisp
         (defun maybe-read-only-mode()
           (when (cond ((eq major-mode 'org-mode) t))
@@ -425,15 +425,15 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (read-only-mode +1)))
                                                 ;(add-hook 'find-file-hook 'maybe-read-only-mode)
         ```
-
+    
     2.  [sudo-edit](https://github.com/nflath/sudo-edit) Priviliged file editing
-
+    
         ```emacs-lisp
         (use-package sudo-edit)
         ```
-
+    
     3.  find file at point
-
+    
         ```emacs-lisp
         (use-package ffap
           :custom
@@ -453,9 +453,9 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 4.  [Consult](https://github.com/minad/consult)
 
     [Consult](https://github.com/minad/consult) Provides various commands based on the Emacs completion function completing-read
-
+    
     :ID: ec5375c7-4387-42a1-8938-5fad532be79b
-
+    
     ```emacs-lisp
     ;; Example configuration for Consult
     (use-package consult
@@ -510,14 +510,14 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
              :map minibuffer-local-map
              ("M-s" . consult-history)                 ;; orig. next-matching-history-element
              ("M-r" . consult-history))                ;; orig. previous-matching-history-element
-
+    
       ;; Enable automatic preview at point in the *Completions* buffer. This is
       ;; relevant when you use the default completion UI.
       :hook (completion-list-mode . consult-preview-at-point-mode)
-
+    
       ;; The :init configuration is always executed (Not lazy)
       :init
-
+    
       (use-package consult-dir)
       (use-package consult-flycheck)
       ;; Optionally configure the register formatting. This improves the register
@@ -525,19 +525,19 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ;; `consult-register-store' and the Emacs built-ins.
       (setq register-preview-delay 0.5
             register-preview-function #'consult-register-format)
-
+    
       ;; Optionally tweak the register preview window.
       ;; This adds thin lines, sorting and hides the mode line of the window.
       (advice-add #'register-preview :override #'consult-register-window)
-
+    
       ;; Use Consult to select xref locations with preview
       (setq xref-show-xrefs-function #'consult-xref
             xref-show-definitions-function #'consult-xref)
-
+    
       ;; Configure other variables and modes in the :config section,
       ;; after lazily loading the package.
       :config
-
+    
       ;; Optionally configure preview. The default value
       ;; is 'any, such that any key triggers the preview.
       ;; (setq consult-preview-key 'any)
@@ -553,15 +553,15 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
        consult--source-recent-file consult--source-project-recent-file
        ;; :preview-key (kbd "M-.")
        :preview-key '(:debounce 0.4 any))
-
+    
       ;; Optionally configure the narrowing key.
       ;; Both < and C-+ work reasonably well.
       (setq consult-narrow-key "<") ;; (kbd "C-+")
-
+    
       ;; Optionally make narrowing help available in the minibuffer.
       ;; You may want to use `embark-prefix-help-command' or which-key instead.
       ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-
+    
       ;; By default `consult-project-function' uses `project-root' from project.el.
       ;; Optionally configure a different project root function.
       ;; There are multiple reasonable alternatives to chose from.
@@ -598,9 +598,9 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ("M-e" . embark-act)       ;; pick some comfortable binding
       ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
     ```
-
+    
     1.  embark-consult
-
+    
         ```emacs-lisp
         (use-package embark-consult
           :after (embark consult)
@@ -608,17 +608,17 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; auto-updating embark collect buffer
           :hook
           (embark-collect-mode . embark-consult-preview-minor-mode))
-
+        
         ```
 
 6.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
-
+    
     :ID: f3802197-c745-40b2-ac0d-72d7da291aaf
-
+    
     The [marginalia](https://github.com/minad/marginalia) pckage in emacs is very helpful.
-
+    
     ```emacs-lisp
     (use-package marginalia
       :custom
@@ -638,7 +638,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ;; Configure Orderless
       (setq affe-regexp-function #'orderless-pattern-compiler
             affe-highlight-function #'orderless--highlight)
-
+    
       ;; Manual preview key for `affe-grep'
       (consult-customize affe-grep :preview-key (kbd "M-.")))
     ```
@@ -666,7 +666,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 1.  Which Key
 
     [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
-
+    
     ```emacs-lisp
     (use-package
       which-key
@@ -677,7 +677,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 2.  Yasnippet
 
     [YASnippet](https://github.com/joaotavora/yasnippet) is a template system for Emacs.
-
+    
     ```emacs-lisp
     (use-package yasnippet
       :config
@@ -701,29 +701,29 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
       ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
       ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-
+    
       ;; Enable Corfu only for certain modes.
       ;; :hook ((prog-mode . corfu-mode)
       ;;        (shell-mode . corfu-mode)
       ;;        (eshell-mode . corfu-mode))
-
+    
       ;; Recommended: Enable Corfu globally.
       ;; This is recommended since Dabbrev can be used globally (M-/).
       ;; See also `corfu-excluded-modes'.
       :init
       (global-corfu-mode))
-
+    
     ;; A few more useful configurations...
     (use-package emacs
       :init
       ;; TAB cycle if there are only few candidates
       (setq completion-cycle-threshold 3)
-
+    
       ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
       ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
       ;; (setq read-extended-command-predicate
       ;;       #'command-completion-default-include-p)
-
+    
       ;; Enable indentation+completion using the TAB key.
       ;; `completion-at-point' is often bound to M-TAB.
       (setq tab-always-indent 'complete))
@@ -732,7 +732,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 4.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
-
+    
     ```emacs-lisp
     (setq-default abbrev-mode 1)
     ```
@@ -772,13 +772,13 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
                       completion-cycle-threshold nil
                       completion-styles '(basic))))
       (advice-add #'vertico--setup :before #'disable-selection))
-
+    
     ```
 
 7.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
-
+    
     ```emacs-lisp
     (setq-default abbrev-mode 1)
     ```
@@ -831,7 +831,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 1.  General
 
     1.  a - unfiled
-
+    
         ```emacs-lisp
         (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
                                                 ; t60
@@ -840,54 +840,54 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (menu-bar-mode -1)
         (show-paren-mode 1)
         (winner-mode 1)
-
+        
         (global-auto-revert-mode t)
         ;; Also auto refresh dired, but be quiet about it
         (setq global-auto-revert-non-file-buffers t)
         (setq auto-revert-verbose nil)
-
+        
         (global-visual-line-mode 1)
-
+        
         (setq column-number-mode t)
-
+        
         (delete-selection-mode 1)
-
+        
         (global-set-key (kbd "S-<f1>") 'describe-face)
         (global-set-key (kbd "M-m") 'manual-entry)
-
+        
         (global-set-key (kbd "S-<f10>") #'menu-bar-open)
                                                 ;          (global-set-key (kbd "<f10>") #'imenu)
-
-
+        
+        
         (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
-
+        
         (defalias 'yes-or-no-p 'y-or-n-p)
-
+        
         ;; ;; restore desktop
         (setq desktop-dirname (expand-file-name "desktop" user-emacs-directory))
         ;; (desktop-save-mode 1)
-
+        
         (setq disabled-command-function nil)
-
+        
         (global-hl-line-mode t)
-
+        
         (use-package
           browse-url-dwim)
-
+        
         ;; display dir name when core name clashes
         (require 'uniquify)
-
+        
         (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
-
-
+        
+        
         (global-set-key (kbd "C-c r") 'query-replace-regexp)
-
+        
         ```
-
+    
     2.  beacon
-
+    
         visual feedback as to cursor position
-
+        
         ```emacs-lisp
         (use-package beacon
           :custom
@@ -898,62 +898,62 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (beacon-blink-when-point-moves-vertically 8)
           :config
           (beacon-mode 1))
-
+        
         ```
-
+    
     3.  blackout modeline
-
+    
         Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
-
+        
         ```emacs-lisp
         (straight-use-package
          '(blackout :host github :repo "raxod502/blackout"))
         ```
-
+    
     4.  boxquote
-
+    
         ```emacs-lisp
         (use-package boxquote
           :straight (:branch "main")
           :bind
           ("C-S-r" . boxquote-region))
-
+        
         ```
-
+    
     5.  volatile-highlights
-
+    
         brings visual feedback to some operations by highlighting portions relating to the operations.
-
+        
         ```emacs-lisp
         (use-package
           volatile-highlights
           :init (volatile-highlights-mode 1))
         ```
-
+    
     6.  webpaste
-
+    
         ```emacs-lisp
         (use-package
           webpaste
           :bind ("C-c y" . (lambda()(interactive)(call-interactively 'webpaste-paste-region)(deactivate-mark)))
           ("C-c Y" . webpaste-paste-buffer))
-
+        
         ```
 
 2.  Accessibility
 
     1.  fonts
-
+    
         JetBrains fonts are nice. See [nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
-
+        
         ```emacs-lisp
         ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
         ```
-
+    
     2.  Darkroom
-
+    
         Zoom in and center using [darkroom](https://github.com/joaotavora/darkroom).
-
+        
         ```emacs-lisp
         (use-package
           darkroom
@@ -964,7 +964,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 3.  Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
-
+    
     ```emacs-lisp
     (require 'ansi-color)
     (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
@@ -974,15 +974,15 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 4.  Tabs
 
     1.  Tab Bar Mode
-
+    
         ```emacs-lisp
-
+        
         (defun consult-buffer-other-tab ()
           "Variant of `consult-buffer' which opens in other tab."
           (interactive)
           (let ((consult--buffer-display #'switch-to-buffer-other-tab))
             (consult-buffer)))
-
+        
         (use-package tab-bar
           :defer t
           :custom
@@ -1008,13 +1008,13 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 5.  Memory
 
     1.  save-place-mode, remember position in files
-
+    
         ```emacs-lisp
         (save-place-mode +1)
         ```
-
+    
     2.  save-hist-mode, save history
-
+    
         ```emacs-lisp
         (savehist-mode 1)
         (add-to-list 'savehist-additional-variables 'kill-ring)
@@ -1022,11 +1022,11 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         ;; (add-hook 'kill-emacs-hook 'rgr/unpropertize-kill-ring)
         ;; (defun rgr/unpropertize-kill-ring ()
         ;; (setq kill-ring (mapcar 'substring-no-properties kill-ring)))
-
+        
         ```
-
+    
     3.  recentf-mode, remember recent files
-
+    
         ```emacs-lisp
         (use-package recentf-ext
           :config
@@ -1062,7 +1062,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 1.  Org Mode, org-mode
 
     ```emacs-lisp
-
+    
     (use-package org
       :demand t
       :custom
@@ -1091,33 +1091,33 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
       (:map org-mode-map  ("M-." . find-function-at-point)
             ("<f11>" . org-edit-special))
       (:map org-src-mode-map ("<f11>" . org-edit-src-exit)))
-
-
+    
+    
     ```
-
+    
     1.  org-id
-
+    
         create unique link IDs when sharing a link to an org section
-
+        
         ```emacs-lisp
         (require 'org-id)
         ```
-
+    
     2.  crypt
-
+    
         ```emacs-lisp
         (require 'org-crypt)
         (org-crypt-use-before-save-magic)
         ```
-
+    
     3.  async babel blocks
-
+    
         ```emacs-lisp
         (use-package ob-async)
         ```
-
+    
     4.  org-super-agenda
-
+    
         ```emacs-lisp
         (use-package org-super-agenda
           :custom
@@ -1176,13 +1176,14 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
           :init
           (org-super-agenda-mode))
         ```
-
+    
     5.  org-roam
-
+    
         Inspired by another System Crafters [video](https://systemcrafters.cc/build-a-second-brain-in-emacs/getting-started-with-org-roam/).
-
+        
         ```emacs-lisp
         (use-package org-roam
+          :disabled t
           :demand
           :custom
           (epa-file-encrypt-to "rileyrg")
@@ -1220,9 +1221,9 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
           ;; If using org-roam-protocol
           (require 'org-roam-protocol))
         ```
-
+    
     6.  github compliant markup
-
+    
         ```emacs-lisp
         (use-package
           ox-gfm
@@ -1238,7 +1239,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orga14fd10) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgbac0ee8) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1281,13 +1282,13 @@ See `org-agenda-files` [org-agenda-files](#orga14fd10) maintain a file pointing 
              scroll-margin)
       (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
             scroll-margin 99999))
-
+    
     (defun centreCursorLineOff()
       (interactive)
       (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
              scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
              scroll-margin_t))
-
+    
     ```
 
 
@@ -1369,7 +1370,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 1.  web browsing
 
     Set up default emacs browsing - I like eww but palming off some URLs to external browser.
-
+    
     ```emacs-lisp
     (custom-set-variables
      '(eww-search-prefix "https://google.com/search?q=")
@@ -1377,11 +1378,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
      '(browse-url-generic-program "google-chrome")
      '(browse-url-secondary-browser-function 'browse-url-default-browser))
     ```
-
+    
     1.  eww
-
+    
         ```emacs-lisp
-
+        
         (use-package eww
           :config
           ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
@@ -1393,32 +1394,32 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
                 (browse-url-generic url)
               ad-do-it))
-
+        
           :bind
           (:map eww-mode-map
                 ( "&" . (lambda()
                           (interactive)
                           (alert "Launching external browser")
                           (eww-browse-with-external-browser)))))
-
-
-
+        
+        
+        
         ```
 
 2.  Google related
 
     Raw:[rgr/google](etc/elisp/rgr-google.el)
-
+    
     ```emacs-lisp
     (require 'rgr/google "rgr-google")
     ```
-
+    
     1.  google utils code
-
+    
         1.  Google This
-
+        
             [google-this](https://melpa.org/#/google-this) includes an interface to [google translate](https://translate.google.com/).
-
+            
             ```emacs-lisp
             (use-package
               google-this
@@ -1428,26 +1429,26 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               :config
               (google-this-mode 1))
             ```
-
+        
         2.  Google translate
-
+        
             ```emacs-lisp
             (use-package google-translate
-
+            
               :init
               (require 'google-translate)
-
+            
               :custom
               (google-translate-backend-method 'curl)
               (google-translate-pop-up-buffer-set-focus t)
               :config
-
+            
               (defun google-translate--search-tkk () "Search TKK." (list 430675 2721866130))
-
+            
               (defun google-translate-swap-default-languages()
                 "swap google-translate default languages"
                 (setq google-translate-default-source-language  (prog1 google-translate-default-target-language (setq google-translate-default-target-language  google-translate-default-source-language))))
-
+            
               (defun rgr/google-translate-in-history-buffer(&optional phrase)
                 (interactive)
                 (when current-prefix-arg
@@ -1464,7 +1465,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                     (newline))
                   (insert  (format "<%s>: %s" (format-time-string "%Y-%m-%d %T") phrase))
                   (rgr/google-translate-at-point)))
-
+            
               (defun rgr/google-translate-at-point()
                 "reverse translate word/region if prefix"
                 (interactive)
@@ -1474,7 +1475,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (google-translate-at-point)
                 (if google-translate-pop-up-buffer-set-focus
                     (select-window (display-buffer "*Google Translate*"))))
-
+            
               (defun rgr/google-translate-query-translate()
                 "reverse translate input if prefix"
                 (interactive)
@@ -1484,17 +1485,17 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (google-translate-query-translate)
                 (if google-translate-pop-up-buffer-set-focus
                     (select-window (display-buffer "*Google Translate*"))))
-
+            
               :bind
               ("C-c T" . rgr/google-translate-at-point)
               ("C-c t" . rgr/google-translate-query-translate)
               ("C-c b" . rgr/google-translate-in-history-buffer))
-
-
+            
+            
             ```
-
+        
         3.  provide
-
+        
             ```emacs-lisp
             (provide 'rgr/google)
             ```
@@ -1502,15 +1503,15 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 3.  Reference and dictionary
 
     The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
-
+    
     1.  utility funcs
-
+    
         ```emacs-lisp
-
+        
         (defgroup rgr/lookup-reference nil
           "Define functions to be used for lookup"
           :group 'rgr)
-
+        
         (defcustom mode-lookup-reference-functions-alist '(
                                                            (nil (goldendict-dwim goldendict-dwim))
                                                            (c-mode  (rgr/devdocs rgr/devdocs))
@@ -1530,7 +1531,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                                                            (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs)))
           "mode lookup functions"
           :group 'rgr/lookup-reference)
-
+        
         (defun get-mode-lookup-reference-functions(&optional m)
           (let* ((m (if m m major-mode))
                  (default-funcs (copy-tree(cadr (assoc nil mode-lookup-reference-functions-alist))))
@@ -1540,44 +1541,44 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                              (if (cadr mode-funcs)
                                  (setcdr default-funcs (cdr mode-funcs)))))
             default-funcs)) ;; (get-mode-lookup-reference-functions 'org-mode)
-
+        
         (defcustom linguee-url-template "https://www.linguee.com/english-german/search?source=auto&query=%S%"
           "linguee url search template"
           :type 'string
           :group 'rgr/lookup-reference)
-
+        
         (defcustom php-api-url-template "https://www.google.com/search?q=php[%S%]"
           "php api url search template"
           :type 'string
           :group 'rgr/lookup-reference)
-
+        
         (defcustom jquery-url-template "https://api.jquery.com/?s=%S%"
           "jquery url search template"
           :type 'string
           :group 'rgr/lookup-reference)
-
+        
         (defcustom  lookup-reference-functions '(rgr/describe-symbol goldendict-dwim rgr/linguee-lookup rgr/dictionary-search google-this-search)
           "list of functions to be called via C-n prefix call to lookup-reference-dwim"
           :type 'hook
           :group 'rgr/lookup-reference)
-
+        
         (defun sys-browser-lookup(w template)
           (interactive)
           (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (rgr/region-symbol-query)) template)))
-
+        
         (defun rgr/describe-symbol(w)
           (interactive (cons (rgr/region-symbol-query) nil))
           (let ((s (if (symbolp w) w (intern-soft w))))
             (if s (describe-symbol s)
               (message "No such symbol: %s" w))))
-
+        
         (defun rgr/linguee-lookup(w)
           (interactive (cons (rgr/region-symbol-query) nil))
           (sys-browser-lookup w linguee-url-template))
-
+        
         (defun rgr/gdscript-docs-browse-symbol-at-point(&optional w)
           (gdscript-docs-browse-symbol-at-point))
-
+        
         (defun lookup-reference-dwim(&optional secondary)
           "if we have a numeric prefix then index into lookup-reference functions"
           (interactive)
@@ -1595,20 +1596,20 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                     (unless (funcall p w)
                       (if s (funcall s w)))
                   (if s (funcall s w)))))))
-
+        
         (defun lookup-reference-dwim-secondary()
           (interactive)
           (lookup-reference-dwim t))
-
+        
         (bind-key* "C-q" 'lookup-reference-dwim) ;; overrides major mode bindings
         (bind-key* "C-S-q" 'lookup-reference-dwim-secondary)
-
+        
         ```
-
+    
     2.  Dictionary
-
+    
         The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
-
+        
         ```emacs-lisp
         (use-package
           dictionary
@@ -1622,26 +1623,26 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           ("<f6>" . rgr/dictionary-search)
           ("S-<f6>" . mw-thesaurus-lookup-at-point))
         ```
-
+        
         1.  Requires dictd.
-
+        
             ```bash
             sudo apt install dictd
             sudo apt install dict-de-en
             ```
-
+    
     3.  Elisp reference
-
+    
         1.  quick help for function etc at point
-
+        
             If an elisp object is there it brings up the internal docs:
-
+            
             ![img](./images/lookup-internal-doc.png "lookup using internal docs")
-
+            
             else it palms it off to goldendict.
-
+            
             ![img](./images/lookup-goldendict.png "lookup using goldendict")
-
+            
             ```emacs-lisp
             (defun rgr/elisp-lookup-reference-dwim (&optional sym)
               "Checks to see if the 'thing' is known to elisp and, if so, use internal docs and return symbol else return nil to signal maybe fallback"
@@ -1665,15 +1666,15 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                         (setq sym nil)))))
                 sym))
             ```
-
+    
     4.  GoldenDict - external lookup and reference
-
+    
         When using goldendict-dwim why not add your program to the wonderful [GoldenDict](http://goldendict.org/)? A call to [trans-shell](https://github.com/soimort/translate-shell) in the dictionary programs tab gives us google translate:-
-
+        
         ```bash
         trans -e google -s de -t en -show-original y -show-original-phonetics n -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary n -show-dictionary n -show-alternatives n "%GDWORD%"
         ```
-
+        
         ```emacs-lisp
         (use-package
           goldendict
@@ -1688,11 +1689,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-x G" . goldendict-dwim)))
         ```
-
+    
     5.  emacs-devdocs-browser
-
+    
         <https://github.com/blahgeek/emacs-devdocs-browser> : Browse devdocs.io documents inside Emacs!
-
+        
         ```emacs-lisp
         (use-package devdocs-browser
           :custom
@@ -1708,11 +1709,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 4.  Man Pages
 
     Use emacsclient if it's running. Might consider an alias
-
+    
     ```conf
     alias man="eman"
     ```
-
+    
     ```bash
     #!/usr/bin/bash
     # Maintained in emacs-config.org
@@ -1723,7 +1724,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 5.  Elfeed
 
     [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
-
+    
     ```emacs-lisp
     (use-package elfeed
       :config
@@ -1745,17 +1746,17 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
       (:map elfeed-search-mode-map
             ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
     ```
-
+    
     1.  elfeed-org
-
+    
         ```emacs-lisp
-
+        
         ```
 
 6.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown. <https://github.com/jcs-elpa/impatient-showdown>
-
+    
     ```emacs-lisp
     (use-package impatient-showdown
       :hook (markdown-mode . impatient-showdown-mode))
@@ -1834,7 +1835,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 1.  Eshell functions
 
     1.  Bootstrap  clean emacs
-
+    
         ```emacs-lisp
         (defun eshell/emacs-clean (&rest args)
           "run a clean emacs"
@@ -1843,11 +1844,11 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
           (save-window-excursion
             (shell-command "emacs -Q -l ~/.emacs.d/straight/repos/straight.el/bootstrap.el &")))
         ```
-
+        
         1.  ftrace - debugging the kernel utility funtions
-
+        
             1.  run a function trace
-
+            
                 ```emacs-lisp
                 (defun eshell/_ftrace_fn (&rest args)
                   "useage: _ftrace_fn &optional function-name(def:printf)  depth(def:1)
@@ -1862,7 +1863,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 2.  EShell Aliases
 
     Be sure to check out [Aliases](http://www.howardism.org/Technical/Emacs/eshell.html). Aliases are very powerful allowing you to mix up shell script, elisp raw and elisp library function. My current [alias file](eshell/alias) (subject to change&#x2026;) is currently, at this time of discovery:-
-
+    
     ```bash
     alias HOME $*
     alias god cd ~/bin/thirdparty/godot
@@ -1916,7 +1917,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
       (add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
       (setq eshell-review-quick-commands nil)
       (setq eshell-smart-space-goes-to-end t)
-
+    
       (use-package
         eshell-git-prompt
         :config
@@ -1974,7 +1975,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 1.  perspective
 
     project aware buffer handling <https://www.youtube.com/watch?v=uyMdDzjQFMU&ab_channel=SystemCrafters>
-
+    
     ```emacs-lisp
     (use-package perspective
       :custom
@@ -2028,25 +2029,25 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 3.  dired hacks
 
     Collection of useful dired additions found on github [here](https://github.com/Fuco1/dired-hacks). Found out about it at the useful emacs resource [**Pragmatic Emacs**](http://pragmaticemacs.com/category/dired/).
-
+    
     1.  dired subtree
-
+    
         ```emacs-lisp
         (use-package dired-subtree
           :bind (:map dired-mode-map
                       ("i" . dired-subtree-insert)
                       (";" . dired-subtree-remove)))
         ```
-
+    
     2.  dired filter
-
+    
         More dired based filtering see [dired-filter-prefix](dired-filter-prefix)
-
+        
         ```emacs-lisp
         (use-package dired-filter
           :init
           (define-key dired-mode-map (kbd "/") dired-filter-map))
-
+        
         ```
 
 
@@ -2055,7 +2056,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 1.  posframe
 
     [Posframe](https://github.com/tumashu/posframe) can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
-
+    
     ```emacs-lisp
     (use-package posframe)
     ```
@@ -2063,7 +2064,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 2.  popper
 
     [Popper](https://github.com/karthink/popper) is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
-
+    
     ```emacs-lisp
     (use-package popper
       :ensure t
@@ -2128,7 +2129,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 1.  undohist
 
     [undo-hist](https://melpa.org/#/undohist) provides persistent undo across sessions.
-
+    
     ```emacs-lisp
     (use-package undohist
       :disabled t
@@ -2139,7 +2140,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 2.  undo-tree
 
     [undo-tree](https://github.com/apchamberlain/undo-tree.el) visualises the sometimes complex undo ring and allow stepping along the timeline
-
+    
     ```emacs-lisp
     (use-package undo-tree
       :disabled t
@@ -2164,7 +2165,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 1.  Back Button
 
     [Back-Button](https://github.com/rolandwalker/back-button) provides better navigation on the [local and global mark rings](https://www.gnu.org/software/emacs/manual/html_node/emacs/Mark-Ring.html). The jury is still out on this one.
-
+    
     ```emacs-lisp
     (use-package back-button
       :disabled t
@@ -2178,7 +2179,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 2.  Window hopping
 
     1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
-
+    
         ```emacs-lisp
         (use-package ace-window
           :init
@@ -2191,7 +2192,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 3.  hopping around links
 
     Quickly follow [links](https://github.com/abo-abo/ace-link) in Emacs.
-
+    
     ```emacs-lisp
     (use-package ace-link
       :demand t
@@ -2207,7 +2208,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 4.  hopping around in the buffer
 
     Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-jump-mode/wiki) is a food source of info.
-
+    
     ```emacs-lisp
     (use-package ace-jump-mode
       :bind
@@ -2252,10 +2253,13 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
   :custom
   (treemacs-follow-after-init t)
   :config
+  (defun myTMResize()
+          (treemacs-resize-icons 15))
   (treemacs-follow-mode +1)
   (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
   (use-package treemacs-magit)
+  :after myTMResize
   :bind
   ("M-9"   . 'treemacs-select-window)
   (:map treemacs-mode-map
@@ -2469,11 +2473,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     ```emacs-lisp
     (global-set-key (kbd "C-c C-r") 'recompile)
     ```
-
+    
     1.  rmsbolt
-
+    
         RMSbolt is a compiler output viewer in Emacs. <https://github.com/emacsmirror/rmsbolt>
-
+        
         ```emacs-lisp
         (use-package rmsbolt
           :config
@@ -2492,16 +2496,16 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :bind
           (:map prog-mode-map
                 ("C-c d" . rgr/rmsbolt-toggle)))
-
+        
         ```
-
+    
     2.  parrot
-
+    
         ```emacs-lisp
         (defun my/parrot-animate-when-compile-success (buffer result)
           (if (string-match "^finished" result)
               (parrot-start-animation)))
-
+        
         (use-package parrot
           :ensure t
           :config
@@ -2512,13 +2516,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 2.  Emacs Lisp, ELisp Utils
 
     Load this relatively early in order to have utils available if there's a faied load Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
-
+    
     ```emacs-lisp
     (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
     ```
-
+    
     1.  scratch,messages
-
+    
         ```emacs-lisp
         (use-package scratch
           :bind ("<f2>" . (lambda()
@@ -2528,27 +2532,27 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                         (interactive)
                         (switch-to-buffer(messages-buffer)))))
         ```
-
+    
     2.  rgr/elisp-utils library
-
+    
         1.  elisp checks
-
+        
             ```emacs-lisp
             (defun rgr/elisp-edit-mode()
               "return non nil if this buffer edits elisp"
               (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
             ```
-
+        
         2.  linting
-
+        
             [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
-
+            
             ```emacs-lisp
             (use-package package-lint)
             ```
-
+        
         3.  helpful, enriched elisp help
-
+        
             ```emacs-lisp
             (use-package helpful
               :config
@@ -2562,7 +2566,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                                     (switch-to-buffer "*info*")
                                   (info "elisp"))))
               (global-set-key (kbd "C-h f") #'helpful-callable)
-
+            
               (global-set-key (kbd "C-h v") #'helpful-variable)
               (global-set-key (kbd "C-h k") #'helpful-key)
               ;;I also recommend the following keybindings to get the most out of helpful:
@@ -2574,7 +2578,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
               ;; already links to the manual, if a function is referenced there.
               (global-set-key (kbd "C-h F") #'helpful-function)
-
+            
               ;; Look up *C*ommands.
               ;;
               ;; By default, C-h C is bound to describe `describe-coding-system'. I
@@ -2582,11 +2586,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               ;; look at interactive functions.
               (global-set-key (kbd "C-h C") #'helpful-command))
             ```
-
+        
         4.  elisp popup context help
-
+        
             Display a poup containing docstring at point
-
+            
             ```emacs-lisp
             (use-package el-docstring-sap-
               :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
@@ -2597,11 +2601,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :bind
               ("M-<f2>" . el-docstring-sap-display)
               ("M-<f1>" . el-docstring-sap-mode))
-
+            
             ```
-
+        
         5.  Elisp debugging
-
+        
             ```emacs-lisp
             (use-package
               edebug-x
@@ -2617,9 +2621,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
               )
             ```
-
+        
         6.  Formatting
-
+        
             ```emacs-lisp
             (use-package
               elisp-format
@@ -2627,9 +2631,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (:map emacs-lisp-mode-map
                     ("C-c f" . elisp-format-region)))
             ```
-
+        
         7.  popup query symbol
-
+        
             ```emacs-lisp
             (use-package popup
               :config
@@ -2642,9 +2646,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :bind
               (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
             ```
-
+        
         8.  provide
-
+        
             ```emacs-lisp
             (provide 'rgr/elisp-utils)
             ```
@@ -2666,7 +2670,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 5.  tree-sitter
 
     <https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/>
-
+    
     ```emacs-lisp
     (use-package tree-sitter
       :ensure t
@@ -2676,7 +2680,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
       ;; by switching on and off
       (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-
+    
     (use-package tree-sitter-langs
       :ensure t
       :after tree-sitter)
@@ -2699,23 +2703,23 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package rainbow-delimiters
       :config
       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-
+    
     (use-package rainbow-identifiers
       :config
       (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
-
+    
     ```
 
 8.  Project Management
 
     1.  project
-
+    
         ```emacs-lisp
         (require 'project)
         ```
-
+    
     2.  projectile
-
+    
         ```emacs-lisp
         (use-package projectile
           :demand
@@ -2727,7 +2731,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 9.  BASH
 
     1.  Navigating Bash set -x output
-
+    
         ```emacs-lisp
         ;; try to work with next-error for bash's "set -x" output
         (use-package compile
@@ -2742,20 +2746,20 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 10. JSON, YAML Configuration files
 
     1.  YAML
-
+    
         ```emacs-lisp
         (use-package
           yaml-mode
           :config
           (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
           )
-
+        
         ```
 
 11. Flycheck
 
     On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
-
+    
     ```emacs-lisp
     (use-package
       flycheck
@@ -2778,16 +2782,16 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 12. Flymake
 
     1.  diagnostic-at-point
-
+    
         ```emacs-lisp
         (use-package flymake-diagnostic-at-point
           :after flymake
           :config
           (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
         ```
-
+    
     2.  shellcheck
-
+    
         ```emacs-lisp
         (use-package flymake-shellcheck
           :commands flymake-shellcheck-load
@@ -2801,9 +2805,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 13. Version Control
 
     1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
-
+    
         magit
-
+        
         ```emacs-lisp
         (use-package
           magit
@@ -2815,16 +2819,16 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :bind
           ("C-x g" . magit-status))
         ```
-
+        
         1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents
-
+        
             ```emacs-lisp
             (use-package orgit
               :after magit)
             ```
-
+    
     2.  EDiff - comparing files in Emacs
-
+    
         ```emacs-lisp
         (use-package ediff+
           :custom
@@ -2835,26 +2839,26 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
           :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
         ```
-
+    
     3.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
-
+    
         ```emacs-lisp
         (use-package forge
           :after magit
           :config
           (use-package orgit-forge))
         ```
-
+        
         1.  token
-
+        
             &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
-
+            
             hQEMA7IjL5SkHG4iAQgAnyC1NPS3sWV9r7kriSvL4IF53g076qwmEHvmPjBaUp9R QeQyyp8ek1MOSQP4zPbn0s5gAALMdP/UbEjocudP0e3bY2BYLJstTC7av1LS5Vzq NpoecGRrlUCISRAMCRx/2MpE6o2E3RdAd0P2RQ4vGmaIEJ0vHkfP8RnYd8M+wacy y58rcuxmGBaLNGEOOywb2icYVrjKXxSdRDXL6/LTjkQHXuPjpD27WIA2ASExh64t 1XIA6Gs0vXc8CF+ppt9tb48TwCyONhH9PtE1CURhH6FRPSKkxXD/eq/BhoVzjT// 9lu269+Q2H6QHQAh0CeT9wuqpSHxXu/fKDNrG/DGmNLpAfSrO4bepZGOAWKnDQFP Dkr1FEpb43SRZgyP3KDEad5F7uZzYDf7FVLxfNlWzhuFErzLVTHlUxWBAcY22a8R 2AuS6D+0vpJUSXqXEYQJ+R/GqHe1h+6mBnAyloz9eSU7X9kYPUv3cEAkWYrkGLt0 Or7cfbtFL+GUQpVVNELOZftK1h4S3StfJJerc5YluQBqHUQkCIZMa6AS48uV958b JC9WHZIgGzkb/3GLV/rAEwgOhlmfWavmP/MXIEl5YBOpyOSkpVm4CKqNOx7+Sby+ 2Gh45i5qQhRfBW6880zrgnRSa6rlXHrzd4gL32sSKGON6YEhngJRzZzZhf+0IgpR QXRk7H0novz5DBUHAcecOGqNikTVvwBXI12sFjh6YMbVD0FhkokSjHqipJqXCwDc In6uBDyBjOjcJa0M7KzEN5MsN9RJK00vrBao+b8mpROUCpVAF/ZL5ofMTu72qJ2P Plpk2ab+ZpAxm+B7am9r2CojjDDz/D8aFFR+bLx/0c1AnCUDnvqjBmNKxCHD2jIR B4ghhzUfYFDgnm7u2vg3ycTxuP1ys74Z82Ufw3YZeiroG+uM/h90eyXJsEHv6pmj mXO4USgtApYLqNUfSptcjw1nDnUnSus2/DjIZZTg0GNMQi013kHkrodKmAs2V3/o NmmXwjbGwdqpZzbwiG2yrw5BwkdKPQQ4PRsyUVuyWfrYAFLLtfXuFGIIfoQ2DiSl EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY= =FmGT &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
-
+    
     4.  Git Gutter Mode
-
+    
         [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is an Emacs port of the Sublime Text plugin GitGutter.
-
+        
         ```emacs-lisp
         (use-package git-gutter
           :config
@@ -2862,10 +2866,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :bind
           ("C-x v ="  . git-gutter:popup-hunk))
         ```
-
+    
     5.  Dart/Flutter
-
+    
         ```emacs-lisp
+        (straight-use-package 'flutter)
         (use-package lsp-dart
           :custom
           (lsp-dart-closing-labels nil)
@@ -2873,9 +2878,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :hook
           (dart-mode . lsp))
         ```
-
+    
     6.  Java
-
+    
         ```emacs-lisp
         (use-package lsp-java
           :hook (java-mode . lsp))
@@ -2884,7 +2889,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 14. Javascript
 
     ```emacs-lisp
-
+    
     ;; use lsp nav in js files
     (use-package js
       :config
@@ -2897,8 +2902,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :bind
       (:map js-mode-map
             ("M-." . #'lsp-ui-peek-find-definitions)))
-
-
+    
+    
     (use-package rjsx-mode
       :disabled t
       :config
@@ -2914,17 +2919,17 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.js?\\'" . rjsx-mode))
       (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
       )
-
-
-
-
+    
+    
+    
+    
     ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
     ```
 
 15. RJSX
 
     [rjsx-mode](https://github.com/felipeochoa/rjsx-mode) extends js2-mode to include jsx parsing.
-
+    
     ```emacs-lisp
     (use-package rjsx-mode
       :disabled t
@@ -2945,7 +2950,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
       (define-derived-mode typescriptreact-mode typescript-mode
         "TypeScript TSX")
-
+    
       ;; use our derived mode for tsx files
       (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
       ;; by default, typescript-mode is mapped to the treesitter typescript parser
@@ -2961,25 +2966,25 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 17. Javascript
 
     ```emacs-lisp
-
+    
     ```
 
 18. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
-
+    
     Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
-
+    
     ```emacs-lisp
     (require 'rgr/lsp "rgr-lsp" 'NOERROR)
     ```
-
+    
     1.  library
-
+    
         1.  eglot
-
+        
             Emacs lsp client <https://github.com/joaotavora/eglot>
-
+            
             ```emacs-lisp
             (use-package eglot
               :disabled t
@@ -2989,13 +2994,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                     ([remap next-error] . flymake-goto-next-error)
                     ([remap previous-error] . flymake-goto-prev-error)))
             ```
-
+        
         2.  lsp
-
+        
             ```emacs-lisp
               ;; if you want to change prefix for lsp-mode keybindings.
               (setq lsp-keymap-prefix "s-l")
-
+            
               (use-package lsp-mode
                 :custom
                 (lsp-auto-configure t)
@@ -3019,11 +3024,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 (lsp-signature-auto-activate t)
                 :hook
                 (lsp-mode . (lambda()(lsp-enable-which-key-integration))))
-
+            
               (use-package lsp-treemacs
                 :config
                 (lsp-treemacs-sync-mode 1))
-
+            
               (use-package lsp-ui
                 :commands lsp-ui-mode
                 :custom
@@ -3043,7 +3048,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 (:map lsp-ui-mode-map
                       ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
                       ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
-
+            
               (use-package dap-mode
                 :commands rgr/dap-debug
                 :custom
@@ -3084,9 +3089,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       ("S-<f11>" . dap-step-out)
                       ))
             ```
-
+        
         3.  [.dir-local.el](file:///home/rgr/development/thirdparty/godot/bin) config for a debug template
-
+        
             ```emacs-lisp
             ((c++-mode . ((dap-debug-template-configurations . (("Godot LLDB"
                                                                  :type "lldb"
@@ -3097,9 +3102,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                                                                  :request "launch"
                                                                  :target "/home/rgr/bin/godot"))))))
             ```
-
+        
         4.  provide
-
+        
             ```emacs-lisp
             (provide 'rgr/lsp)
             ```
@@ -3110,22 +3115,22 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (defgroup rgr/serial-ports nil
       "serial port customization"
       :group 'rgr)
-
+    
     (defcustom rgr/serialIOPort "/dev/ttyACM0"
       "Serial device for emacs to display"
       :type 'string
       :group 'rgr/serial-ports)
-
+    
     (defcustom rgr/serialIOPortBaud 9600
       "Default serial baud rate"
       :type 'integer
       :group 'rgr/serial-ports)
-
+    
     (defun selectSerialPortBuffer()
       (setq ser (get-buffer rgr/serialIOPort))
       (if ser (switch-to-buffer ser)
         (serial-term rgr/serialIOPort rgr/serialIOPortBaud)))
-
+    
     (global-set-key (kbd "C-c s")
                     (lambda()
                       (interactive)
@@ -3135,7 +3140,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 20. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
-
+    
     ```emacs-lisp
     (use-package platformio-mode
       :demand t
@@ -3149,17 +3154,17 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (when (derived-mode-p 'platformio-compilation-mode)
             (let ((inhibit-read-only t))
               (ansi-color-apply-on-region (point-min) (point-max))))))
-
+    
       (add-hook 'compilation-finish-functions
                 'rgr/platformio-compilation-mode-filter))
     ```
-
+    
     1.  get compilation errors to work and submit ansi color fix?
 
 21. Python
 
     1.  python-mode
-
+    
         ```emacs-lisp
         (use-package lsp-pyright
           :ensure t
@@ -3179,24 +3184,24 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 (switch-to-buffer-other-window (python-shell-get-buffer)))))
           (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer))
         ```
-
+    
     2.  ipython
-
+    
         ```emacs-lisp
         (setq python-shell-interpreter "ipython")
         (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
         ```
-
+    
     3.  virtualenv
-
+    
         ```emacs-lisp
         (use-package auto-virtualenv
           :config
           (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
         ```
-
+    
     4.  blacken reformatting
-
+    
         ```emacs-lisp
         (use-package blacken
           :disabled t
@@ -3208,7 +3213,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 22. Haskell
 
     1.  haskell-mode
-
+    
         ```emacs-lisp
         ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
         (use-package haskell-mode
@@ -3226,7 +3231,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 23. lldb debugging in emacs
 
     1.  voltron
-
+    
         ```emacs-lisp
         (use-package lldb-voltron
           :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
@@ -3267,9 +3272,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (setq-local dash-docs-docsets '("C")))
     (add-hook 'c-mode-hook 'rgr/c-mode-hook)
     ```
-
+    
     1.  line utilities
-
+    
         ```emacs-lisp
         (defun rgr/c-complete-line()
           (interactive)
@@ -3290,18 +3295,18 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (end-of-line)
           (newline-and-indent))
         ```
-
+    
     2.  formatting
-
+    
         ```emacs-lisp
-
+        
         (defun rgr/c-indent-complete()
           (interactive)
           (let (( p (point)))
             (c-indent-line-or-region)
             (when (= p (point))
               (call-interactively 'complete-symbol))))
-
+        
         ```
 
 26. cc,cpp, C++, cc-mode
@@ -3315,7 +3320,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 27. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
-
+    
         ```emacs-lisp
         (use-package logview
           :demand t
@@ -3327,7 +3332,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 28. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
-
+    
         ```emacs-lisp
         (use-package strace-mode)
         ```
@@ -3335,7 +3340,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 29. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
-
+    
     ```emacs-lisp
     (use-package gdscript-mode
       ;;       :disabled t
@@ -3361,22 +3366,22 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 30. Web,Symfony and Twig
 
     1.  Symfony
-
+    
         1.  custom
-
+        
             ```emacs-lisp
             (defgroup rgr/symfony nil
               "Symfony Development"
               :group 'rgr)
-
+            
             (defcustom symfony-server-command "~/.symfony/bin/symfony server:start"
               "Start the symfony web server"
               :type 'string
               :group 'rgr/symfony)
             ```
-
+        
         2.  Start a symfony web server when applicable
-
+        
             ```emacs-lisp
             (use-package php-mode
               :custom
@@ -3394,16 +3399,16 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 (start-symfony-web-server)
                 ))
             ```
-
+            
             We can trigger it using a .dir-locals.el
-
+            
             ```emacs-lisp
             ((php-mode
               (eval php-mode-webserver-hook)))
             ```
-
+        
         3.  webmode
-
+        
             ```emacs-lisp
             (use-package
               web-mode
@@ -3429,7 +3434,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 31. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
-
+    
     ```emacs-lisp
     (use-package elf-mode
       :demand t
@@ -3460,9 +3465,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         modus-themes-bold-constructs nil)
 
   ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes)
+  ;; (modus-themes-load-themes)
   :config
-  (modus-themes-load-operandi))
+  (load-theme 'modus-operandi :no-confirm))
 ;; (modus-themes-load-vivendi))
 ```
 
@@ -3569,7 +3574,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcea2d83) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6b1bfe1) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3608,7 +3613,7 @@ fi
 ```
 
 
-<a id="orgcea2d83"></a>
+<a id="org6b1bfe1"></a>
 
 ### Gnome protocol handler desktop file
 

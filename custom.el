@@ -58,8 +58,6 @@
  '(compilation-message-face 'default)
  '(confirm-nonexistent-file-or-buffer nil)
  '(create-lockfiles nil)
- '(ctrlf--restore-final-window-start-flag t)
- '(ctrlf-default-search-style 'fuzzy-regexp)
  '(cua-keep-region-after-copy nil)
  '(cursor-type 'box)
  '(custom-safe-themes
