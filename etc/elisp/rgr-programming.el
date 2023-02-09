@@ -158,6 +158,7 @@
   :bind
   ("C-x v ="  . git-gutter:popup-hunk))
 
+(straight-use-package 'flutter)
 (use-package lsp-dart
   :custom
   (lsp-dart-closing-labels nil)
