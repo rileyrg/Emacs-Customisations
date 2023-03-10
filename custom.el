@@ -73,7 +73,7 @@
    "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/vscode/webfreak.debug")
  '(dap-internal-terminal 'dap-internal-terminal-auto)
  '(dap-print-io t)
- '(dap-ui-controls-mode t)
+ '(dap-ui-controls-mode t nil (dap-ui))
  '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0")
  '(delete-active-region 'kill)
  '(delete-old-versions t)
@@ -404,6 +404,7 @@
  '(tags-revert-without-query t)
  '(tags-table-list '("/home/rgr/Dropbox/homefiles/dot-config/emacs"))
  '(thesaurus-bhl-api-key "140ced1a60f9c434bb1dbc6831d2f6e9" t)
+ '(treemacs-select-when-already-in-treemacs 'close)
  '(twittering-connection-type-order '(wget curl urllib-http native urllib-https))
  '(twittering-mode-hook nil)
  '(twittering-status-format
