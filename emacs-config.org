@@ -3131,7 +3131,13 @@ EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY=
 #+end_src
 ***** Dart/Flutter                                             :dart:flutter:
 #+begin_src emacs-lisp
-  (straight-use-package 'flutter)
+  (use-package flutter
+    :after dart-mode
+    :config
+    (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
+    :bind (:map dart-mode-map
+                ("C-M-x" . #'flutter-run-or-hot-reload)))
+
   (use-package lsp-dart
     :custom
     (lsp-dart-closing-labels nil)

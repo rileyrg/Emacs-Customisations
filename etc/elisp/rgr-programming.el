@@ -158,7 +158,13 @@
   :bind
   ("C-x v ="  . git-gutter:popup-hunk))
 
-(straight-use-package 'flutter)
+(use-package flutter
+  :after dart-mode
+  :config
+  (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
+  :bind (:map dart-mode-map
+              ("C-M-x" . #'flutter-run-or-hot-reload)))
+
 (use-package lsp-dart
   :custom
   (lsp-dart-closing-labels nil)
