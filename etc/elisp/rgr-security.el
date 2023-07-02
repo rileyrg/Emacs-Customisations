@@ -1,3 +1,4 @@
+(require 'transient)
 (require 'auth-source)
 (defun get-auth-info (host user &optional port)
   "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
