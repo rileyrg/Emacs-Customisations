@@ -209,6 +209,7 @@ Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/cu
     ```
     
     ```emacs-lisp
+    (require 'transient)
     (require 'auth-source)
     (defun get-auth-info (host user &optional port)
       "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
@@ -408,6 +409,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     (use-package ctrlf
       :custom
       (ctrlf-auto-recenter t)
+      (ctrlf-alternate-search-style 'fuzzy-regexp)
       :init
       (ctrlf-mode +1))
     ```
@@ -461,9 +463,12 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     (use-package consult
       ;; Replace bindings. Lazily loaded due by `use-package'.
       :bind (;; C-c bindings (mode-specific-map)
+             ("C-c M-x" . consult-mode-command)
              ("C-c h" . consult-history)
-             ("C-c m" . consult-mode-command)
              ("C-c k" . consult-kmacro)
+             ("C-c m" . consult-man)
+             ("C-c i" . consult-info)
+             ([remap Info-search] . consult-info)
              ;; C-x bindings (ctl-x-map)
              ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
              ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
@@ -477,10 +482,9 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
              ("C-M-#" . consult-register)
              ;; Other custom bindings
              ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-             ("<help> a" . consult-apropos)            ;; orig. apropos-command
              ;; M-g bindings (goto-map)
              ("M-g e" . consult-compile-error)
-             ("M-g f" . consult-flycheck)               ;; Alternative: consult-flymake
+             ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
              ("M-g g" . consult-goto-line)             ;; orig. goto-line
              ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
              ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -496,7 +500,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
              ("M-s r" . consult-ripgrep)
              ("M-s l" . consult-line)
              ("M-s L" . consult-line-multi)
-             ("M-s m" . consult-multi-occur)
              ("M-s k" . consult-keep-lines)
              ("M-s u" . consult-focus-lines)
              ;; Isearch integration
@@ -518,8 +521,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ;; The :init configuration is always executed (Not lazy)
       :init
     
-      (use-package consult-dir)
-      (use-package consult-flycheck)
       ;; Optionally configure the register formatting. This improves the register
       ;; preview for `consult-register', `consult-register-load',
       ;; `consult-register-store' and the Emacs built-ins.
@@ -541,8 +542,8 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ;; Optionally configure preview. The default value
       ;; is 'any, such that any key triggers the preview.
       ;; (setq consult-preview-key 'any)
-      ;; (setq consult-preview-key (kbd "M-."))
-      ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+      ;; (setq consult-preview-key "M-.")
+      ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
       ;; For some commands and buffer sources it is useful to configure the
       ;; :preview-key on a per-command basis using the `consult-customize' macro.
       (consult-customize
@@ -551,12 +552,12 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
        consult-bookmark consult-recent-file consult-xref
        consult--source-bookmark consult--source-file-register
        consult--source-recent-file consult--source-project-recent-file
-       ;; :preview-key (kbd "M-.")
+       ;; :preview-key "M-."
        :preview-key '(:debounce 0.4 any))
     
       ;; Optionally configure the narrowing key.
       ;; Both < and C-+ work reasonably well.
-      (setq consult-narrow-key "<") ;; (kbd "C-+")
+      (setq consult-narrow-key "<") ;; "C-+"
     
       ;; Optionally make narrowing help available in the minibuffer.
       ;; You may want to use `embark-prefix-help-command' or which-key instead.
@@ -564,16 +565,17 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     
       ;; By default `consult-project-function' uses `project-root' from project.el.
       ;; Optionally configure a different project root function.
-      ;; There are multiple reasonable alternatives to chose from.
       ;;;; 1. project.el (the default)
       ;; (setq consult-project-function #'consult--default-project--function)
-      ;;;; 2. projectile.el (projectile-project-root)
-      (autoload 'projectile-project-root "projectile")
-      (setq consult-project-function (lambda (_) (projectile-project-root)))
-      ;;;; 3. vc.el (vc-root-dir)
+      ;;;; 2. vc.el (vc-root-dir)
       ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
-      ;;;; 4. locate-dominating-file
+      ;;;; 3. locate-dominating-file
       ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
+      ;;;; 4. projectile.el (projectile-project-root)
+      ;; (autoload 'projectile-project-root "projectile")
+      ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
+      ;;;; 5. No project support
+      ;; (setq consult-project-function nil)
       )
     ```
 
@@ -764,8 +766,8 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
                                                #'completion--in-region)))))
       (vertico-mode)
       :config
-      (advice-add #'completing-read-multiple
-                  :override #'consult-completing-read-multiple)
+      ;; (advice-add #'completing-read-multiple
+      ;;             :override #'consult-completing-read-multiple)
       (defun disable-selection ()
         (when (eq minibuffer-completion-table #'org-tags-completion-function)
           (setq-local vertico-map minibuffer-local-completion-map
@@ -1239,7 +1241,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7e36542) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orge40804a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2250,6 +2252,8 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 ```emacs-lisp
 (use-package
   treemacs
+  :init
+  (add-to-list 'image-types 'svg)
   :custom
   (treemacs-follow-after-init t)
   :config
@@ -2816,9 +2820,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           magit
           :custom
           (vc-handled-backends '(git))
-          :config
-          (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-          (require 'magit-extras)
+          ;; :config
+          ;; (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
+          ;; (require 'magit-extras)
           :bind
           ("C-x g" . magit-status))
         ```
@@ -2847,16 +2851,21 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
         ```emacs-lisp
         (use-package forge
+          :disabled
           :after magit
+          ;; :init
+          ;; (use-package emacsql-sqlite-builtin)
+          ;; (setq forge-database-connector 'sqlite-builtin)
           :config
-          (use-package orgit-forge))
+           (use-package orgit-forge)
+          )
         ```
         
         1.  token
         
             &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
             
-            hQEMA7IjL5SkHG4iAQgAnyC1NPS3sWV9r7kriSvL4IF53g076qwmEHvmPjBaUp9R QeQyyp8ek1MOSQP4zPbn0s5gAALMdP/UbEjocudP0e3bY2BYLJstTC7av1LS5Vzq NpoecGRrlUCISRAMCRx/2MpE6o2E3RdAd0P2RQ4vGmaIEJ0vHkfP8RnYd8M+wacy y58rcuxmGBaLNGEOOywb2icYVrjKXxSdRDXL6/LTjkQHXuPjpD27WIA2ASExh64t 1XIA6Gs0vXc8CF+ppt9tb48TwCyONhH9PtE1CURhH6FRPSKkxXD/eq/BhoVzjT// 9lu269+Q2H6QHQAh0CeT9wuqpSHxXu/fKDNrG/DGmNLpAfSrO4bepZGOAWKnDQFP Dkr1FEpb43SRZgyP3KDEad5F7uZzYDf7FVLxfNlWzhuFErzLVTHlUxWBAcY22a8R 2AuS6D+0vpJUSXqXEYQJ+R/GqHe1h+6mBnAyloz9eSU7X9kYPUv3cEAkWYrkGLt0 Or7cfbtFL+GUQpVVNELOZftK1h4S3StfJJerc5YluQBqHUQkCIZMa6AS48uV958b JC9WHZIgGzkb/3GLV/rAEwgOhlmfWavmP/MXIEl5YBOpyOSkpVm4CKqNOx7+Sby+ 2Gh45i5qQhRfBW6880zrgnRSa6rlXHrzd4gL32sSKGON6YEhngJRzZzZhf+0IgpR QXRk7H0novz5DBUHAcecOGqNikTVvwBXI12sFjh6YMbVD0FhkokSjHqipJqXCwDc In6uBDyBjOjcJa0M7KzEN5MsN9RJK00vrBao+b8mpROUCpVAF/ZL5ofMTu72qJ2P Plpk2ab+ZpAxm+B7am9r2CojjDDz/D8aFFR+bLx/0c1AnCUDnvqjBmNKxCHD2jIR B4ghhzUfYFDgnm7u2vg3ycTxuP1ys74Z82Ufw3YZeiroG+uM/h90eyXJsEHv6pmj mXO4USgtApYLqNUfSptcjw1nDnUnSus2/DjIZZTg0GNMQi013kHkrodKmAs2V3/o NmmXwjbGwdqpZzbwiG2yrw5BwkdKPQQ4PRsyUVuyWfrYAFLLtfXuFGIIfoQ2DiSl EplOgD7H7V1KIc888MR51uk6/tPDhpROmupKMr8+Hh/WooY= =FmGT &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
+            hQEMA7IjL5SkHG4iAQgAhMUIMTYGMMJOxJT9Cpd4yXSe7D3nYO1JLdyFFADgiHDq 1D68ig/iJdH5aPZNmKOOqSeI3zObJjDOnQ95+PK+DBDaDHlwJ/LWYdR/A4eWAh5G WcRqCn+diQ/amAXuaISDLBCpEa/GKS3kHObVf41VwL43INMAwssDI2rOFnhOEUWF jAWKyhzcS/D+1BqxV5XcloY8tn8qCZbLHOi1+YKr+ZeefFtJtmaqQtyjt6P1Z+H/ eCvdX0P4JdMm9Lp/fbzDQOPo8QVuWLKAWphMSfgCqetR5gfz9W/3+fcqzOP3amnt qTM3K7LywQOeiJhLgyhw5bemiEXIKuNygb7Wmmv5xNKEAc5/QrR0YnZIuEnDN4Gb aPjOOiu73X7xh76DX+5CxBXhQZzYtnqD8ctuenIMgvbD9AY1+H4fU0Wv6qGi9uNh Y0lSPvXH7dBCTWu2rSWhIvgCQfv6Nihs3Jc455oZgajN7G/rgZNb0ER8YTYncZjY gtVhIJfSArVFXuCGLnZMoMHSC4rV =MsQY &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
     
     4.  Git Gutter Mode
     
@@ -2996,7 +3005,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             
             ```emacs-lisp
             (use-package eglot
-              :disabled t
               :demand
               :bind
               (:map flymake-mode-map
@@ -3004,102 +3012,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                     ([remap previous-error] . flymake-goto-prev-error)))
             ```
         
-        2.  lsp
-        
-            ```emacs-lisp
-              ;; if you want to change prefix for lsp-mode keybindings.
-              (setq lsp-keymap-prefix "s-l")
-            
-              (use-package lsp-mode
-                :custom
-                (lsp-auto-configure t)
-                (lsp-auto-guess-root nil)
-                (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
-                (lsp-completion-enable  t)
-                (lsp-completion-provider :none)
-                (lsp-completion-show-kind t)
-                (lsp-diagnostics-flycheck-default-level 'warning)
-                (lsp-diagnostics-provider :auto)
-                (lsp-eldoc-enable-hover nil)
-                (lsp-enable-folding nil)
-                (lsp-enable-on-type-formatting t)
-                (lsp-enable-snippet nil)
-                (lsp-enable-symbol-highlighting t)
-                (lsp-headerline-breadcrumb-enable t)
-                (lsp-keep-workspace-alive nil)
-                (lsp-lens-enable t)
-                (lsp-modeline-code-actions-enable nil)
-                (lsp-modeline-diagnostics-enable nil)
-                (lsp-signature-auto-activate t)
-                :hook
-                (lsp-mode . (lambda()(lsp-enable-which-key-integration))))
-            
-              (use-package lsp-treemacs
-                :config
-                (lsp-treemacs-sync-mode 1))
-            
-              (use-package lsp-ui
-                :commands lsp-ui-mode
-                :custom
-                (lsp-ui-doc-delay 1.5)
-                (lsp-ui-doc-enable t)
-                (lsp-ui-doc-position 'top)
-                (lsp-ui-doc-max-height 32)
-                (lsp-ui-doc-position 'top)
-                (lsp-ui-doc-show-with-mouse t)
-                (lsp-ui-doc-show-with-cursor t)
-                (lsp-ui-peek-enable t)
-                (lsp-ui-peek-show-directory t)
-                (lsp-ui-sideline-enable t)
-                (lsp-ui-sideline-show-code-actions t)
-            ;;    (lsp-ui-sideline-show-diagnostics nil)
-                :bind
-                (:map lsp-ui-mode-map
-                      ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-                      ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
-            
-              (use-package dap-mode
-                :commands rgr/dap-debug
-                :custom
-                (dap-auto-configure-features '(locals  tooltip))
-                :config
-                (setq dap-ui-buffer-configurations
-                      `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
-                        (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
-                        (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
-                        (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
-                        (,"*debug-window*" . ((side . bottom) (slot . 3) (window-width . 0.20)))))
-                (defun rgr/dap-debug()
-                  (interactive)
-                  (if current-prefix-arg
-                      (call-interactively 'dap-debug)
-                    (dap-debug-last)))
-                ;;(require 'dap-gdb-lldb)
-                ;;(dap-gdb-lldb-setup)
-                ;;(require 'dap-codelldb)
-                ;;(dap-codelldb-setup)
-                (require 'dap-cpptools)
-                ;;(dap-cpptools-setup)
-                ;; (require 'dap-lldb)
-                (add-hook 'dap-stopped-hook
-                          (lambda (arg)
-                            (call-interactively #'dap-hydra)))
-                :config
-                (require 'dap-chrome)
-                :bind
-                (:map lsp-mode-map
-                      ("C-<f9>" . 'rgr/dap-debug))
-                (:map dap-mode-map
-                      ("<f8>" . dap-continue)
-                      ("C-S-<f8>" . dap-delete-session)
-                      ("<f9>" . dap-hydra)
-                      ("<f10>" . dap-next)
-                      ("<f11>" . dap-step-in)
-                      ("S-<f11>" . dap-step-out)
-                      ))
-            ```
-        
-        3.  [.dir-local.el](file:///home/rgr/development/thirdparty/godot/bin) config for a debug template
+        2.  [.dir-local.el](file:///home/rgr/development/thirdparty/godot/bin) config for a debug template
         
             ```emacs-lisp
             ((c++-mode . ((dap-debug-template-configurations . (("Godot LLDB"
@@ -3112,7 +3025,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                                                                  :target "/home/rgr/bin/godot"))))))
             ```
         
-        4.  provide
+        3.  provide
         
             ```emacs-lisp
             (provide 'rgr/lsp)
@@ -3583,7 +3496,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfa9fc7f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8f36f8e) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3622,7 +3535,7 @@ fi
 ```
 
 
-<a id="orgfa9fc7f"></a>
+<a id="org8f36f8e"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -129,9 +129,9 @@
   magit
   :custom
   (vc-handled-backends '(git))
-  :config
-  (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-  (require 'magit-extras)
+  ;; :config
+  ;; (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
+  ;; (require 'magit-extras)
   :bind
   ("C-x g" . magit-status))
 
@@ -148,9 +148,14 @@
   :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
 
 (use-package forge
+  :disabled
   :after magit
+  ;; :init
+  ;; (use-package emacsql-sqlite-builtin)
+  ;; (setq forge-database-connector 'sqlite-builtin)
   :config
-  (use-package orgit-forge))
+   (use-package orgit-forge)
+  )
 
 (use-package git-gutter
   :config

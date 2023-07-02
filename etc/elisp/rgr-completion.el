@@ -70,8 +70,8 @@
                                            #'completion--in-region)))))
   (vertico-mode)
   :config
-  (advice-add #'completing-read-multiple
-              :override #'consult-completing-read-multiple)
+  ;; (advice-add #'completing-read-multiple
+  ;;             :override #'consult-completing-read-multiple)
   (defun disable-selection ()
     (when (eq minibuffer-completion-table #'org-tags-completion-function)
       (setq-local vertico-map minibuffer-local-completion-map

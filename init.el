@@ -363,6 +363,8 @@ creates a report in function-name.ftrace and opens it in a buffer"
 
 (use-package
   treemacs
+  :init
+  (add-to-list 'image-types 'svg)
   :custom
   (treemacs-follow-after-init t)
   :config
