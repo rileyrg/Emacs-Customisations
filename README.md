@@ -1242,7 +1242,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgcbe0603) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgbd72230) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2990,7 +2990,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :bind
               (:map flymake-mode-map
                     ([remap next-error] . flymake-goto-next-error)
-                    ([remap previous-error] . flymake-goto-prev-error)))
+                    ([remap previous-error] . flymake-goto-prev-error))
+                (:map eglot-mode-map
+                      ("<M-return>" . eglot-code-actions)))
             ```
         
         2.  provide
@@ -3455,7 +3457,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf0db6a4) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8ea5195) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3494,7 +3496,7 @@ fi
 ```
 
 
-<a id="orgf0db6a4"></a>
+<a id="org8ea5195"></a>
 
 ### Gnome protocol handler desktop file
 
