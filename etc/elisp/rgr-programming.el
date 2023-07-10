@@ -97,6 +97,7 @@
 
 (use-package
   flycheck
+  :disabled
   :custom
   (flycheck-global-modes '(not org-mode org-src-mode))
   (flycheck-emacs-lisp-load-path 'inherit)
@@ -168,23 +169,19 @@
   :config
   (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
   :bind (:map dart-mode-map
-              ("C-M-x" . #'flutter-run-or-hot-reload)))
+              ("C-M-x" . #'flutter-run-or-hot-reload))
+  ;; :hook
+  ;; (dart-mode . #'eglot-ensure)
+  )
 
-(use-package lsp-dart
-  :custom
-  (lsp-dart-closing-labels nil)
-  (lsp-dart-flutter-widget-guides nil)
-  :hook
-  (dart-mode . lsp))
+;; (use-package eglot
+;;   ;;:hook (java-mode . eglot-ensure)
+;;   )
 
-(use-package lsp-java
-  :hook (java-mode . lsp))
-
-;; use lsp nav in js files
 (use-package js
   :config
   (defun rgr/js-mode-hook ()
-    (lsp)
+    ;;(eglot-ensure)
     (local-unset-key (kbd "M-."))
     (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
   :hook
@@ -192,28 +189,6 @@
   :bind
   (:map js-mode-map
         ("M-." . #'lsp-ui-peek-find-definitions)))
-
-
-(use-package rjsx-mode
-  :disabled t
-  :config
-  (use-package npm-mode)
-  (defun rgr/js2-mode-hook ()
-    ;;         (setq-local zeal-at-point-docset '("JavaScript" "jQuery"))
-    (npm-mode t)
-    (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
-  (add-hook 'js2-mode-hook 'rgr/js2-mode-hook)
-  :init
-  ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . js2-mode))
-  ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
-  (add-to-list 'auto-mode-alist '("\\.js?\\'" . rjsx-mode))
-  (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
-  )
-
-
-
-
-;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
 
 (use-package rjsx-mode
   :disabled t
@@ -237,8 +212,7 @@
   ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
   (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
   (defun rgr/ts-mode-hook ()
-    (when (featurep 'lsp-mode)
-      (lsp))
+    ;;(eglot-ensure)
     (setq-local dash-docs-docsets '("React" "JavaScript")))
   (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 
@@ -286,11 +260,6 @@
   (add-hook 'compilation-finish-functions
             'rgr/platformio-compilation-mode-filter))
 
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp-deferred))))  ; or lsp
 (use-package  python
   :disabled t
   :config
@@ -302,7 +271,7 @@
       (apply orig-func current-prefix-arg)
       (unless (get-buffer-window (python-shell-get-buffer))
         (switch-to-buffer-other-window (python-shell-get-buffer)))))
-  (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer))
+  (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer)
 
 (setq python-shell-interpreter "ipython")
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
@@ -320,9 +289,8 @@
 ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
 (use-package haskell-mode
   :config
-  (use-package  lsp-haskell)
-  (add-hook 'haskell-mode-hook #'lsp-deferred)
-  (add-hook 'haskell-literate-mode-hook #'lsp-deferred)
+  ;; (add-hook 'haskell-mode-hook #'eglot-ensure)
+  ;; (add-hook 'haskell-literate-mode-hook #'eglot-ensure)
   (eval-after-load "haskell-mode"
     '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
   (eval-after-load "haskell-cabal"
@@ -335,8 +303,7 @@
 (use-package emacs
   :config
   (defun rgr/c-mode-common-save-hook()
-    ;;    (lsp-format-buffer)
-    ;;(eglot-format-buffer)
+    (eglot-format-buffer)
     )
   (defun rgr/c-mode-common-hook ()
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
@@ -344,8 +311,6 @@
         (setq completion-category-defaults nil))
     ;; (if(featurep 'eglot)
     ;;     (eglot-ensure))
-    (if(featurep 'lsp-mode)
-        (lsp-deferred))
     (if(featurep 'platformio-mode)
         (platformio-conditionally-enable))
     (if (featurep 'yasnippet)
