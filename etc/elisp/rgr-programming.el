@@ -164,6 +164,7 @@
   :bind
   ("C-x v ="  . git-gutter:popup-hunk))
 
+(use-package dart-mode)
 (use-package flutter
   :after dart-mode
   :config

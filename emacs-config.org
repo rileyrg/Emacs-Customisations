@@ -3133,6 +3133,7 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
 #+end_src
 ***** Dart/Flutter                                             :dart:flutter:
 #+begin_src emacs-lisp
+  (use-package dart-mode)
   (use-package flutter
     :after dart-mode
     :config
