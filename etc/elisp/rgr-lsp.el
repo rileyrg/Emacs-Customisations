@@ -7,6 +7,8 @@
   :bind
   (:map flymake-mode-map
         ([remap next-error] . flymake-goto-next-error)
-        ([remap previous-error] . flymake-goto-prev-error)))
+        ([remap previous-error] . flymake-goto-prev-error))
+    (:map eglot-mode-map
+          ("<M-return>" . eglot-code-actions)))
 
 (provide 'rgr/lsp)
