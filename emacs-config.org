@@ -112,13 +112,14 @@ CLOSED: [2021-08-06 Fri 11:01] SCHEDULED: <2021-07-24 Sat>
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
 
+  (defvar bootstrap-version)
   (let ((bootstrap-file
          (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
+        (bootstrap-version 6))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
           (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
            'silent 'inhibit-cookies)
         (goto-char (point-max))
         (eval-print-last-sexp)))
@@ -3006,6 +3007,7 @@ On the fly [[https://github.com/flycheck/flycheck][syntax checking]] for GNU Ema
 #+begin_src emacs-lisp
   (use-package
     flycheck
+    :disabled
     :custom
     (flycheck-global-modes '(not org-mode org-src-mode))
     (flycheck-emacs-lisp-load-path 'inherit)
@@ -3136,31 +3138,27 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
     :config
     (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
     :bind (:map dart-mode-map
-                ("C-M-x" . #'flutter-run-or-hot-reload)))
+                ("C-M-x" . #'flutter-run-or-hot-reload))
+    ;; :hook
+    ;; (dart-mode . #'eglot-ensure)
+    )
 
-  (use-package lsp-dart
-    :custom
-    (lsp-dart-closing-labels nil)
-    (lsp-dart-flutter-widget-guides nil)
-    :hook
-    (dart-mode . lsp))
 #+end_src
 ***** Java                                                             :java:
 #+begin_src emacs-lisp
-  (use-package lsp-java
-    :hook (java-mode . lsp))
+  ;; (use-package eglot
+  ;;   ;;:hook (java-mode . eglot-ensure)
+  ;;   )
 #+end_src
 **** Javascript                                                          :js:
 :PROPERTIES:
 :ID:       27571c84-2c40-487d-abd0-3013c53b731b
 :END:
 #+begin_src emacs-lisp
-
-  ;; use lsp nav in js files
   (use-package js
     :config
     (defun rgr/js-mode-hook ()
-      (lsp)
+      ;;(eglot-ensure)
       (local-unset-key (kbd "M-."))
       (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
     :hook
@@ -3170,26 +3168,6 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
           ("M-." . #'lsp-ui-peek-find-definitions)))
 
 
-  (use-package rjsx-mode
-    :disabled t
-    :config
-    (use-package npm-mode)
-    (defun rgr/js2-mode-hook ()
-      ;;         (setq-local zeal-at-point-docset '("JavaScript" "jQuery"))
-      (npm-mode t)
-      (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
-    (add-hook 'js2-mode-hook 'rgr/js2-mode-hook)
-    :init
-    ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . js2-mode))
-    ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
-    (add-to-list 'auto-mode-alist '("\\.js?\\'" . rjsx-mode))
-    (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
-    )
-
-
-
-
-  ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
 #+end_src
 **** RJSX
 :PROPERTIES:
@@ -3223,8 +3201,7 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
     ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
     (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
     (defun rgr/ts-mode-hook ()
-      (when (featurep 'lsp-mode)
-        (lsp))
+      ;;(eglot-ensure)
       (setq-local dash-docs-docsets '("React" "JavaScript")))
     (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 #+end_src
@@ -3253,123 +3230,17 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
-    :demand
+    :config
+    (use-package eldoc-box)
+    :hook
+    (prog-mode . eglot-ensure)
+    (prog-mode . eldoc-box-hover-mode)
     :bind
     (:map flymake-mode-map
           ([remap next-error] . flymake-goto-next-error)
           ([remap previous-error] . flymake-goto-prev-error)))
 #+end_src
 
-****** lsp                                                         :noexport:
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle yes
-:END:
-
-#+begin_src emacs-lisp
-    ;; if you want to change prefix for lsp-mode keybindings.
-    (setq lsp-keymap-prefix "s-l")
-
-    (use-package lsp-mode
-      :custom
-      (lsp-auto-configure t)
-      (lsp-auto-guess-root nil)
-      (lsp-clients-clangd-args '("--header-insertion-decorators=0" "--fallback-style=Google"))
-      (lsp-completion-enable  t)
-      (lsp-completion-provider :none)
-      (lsp-completion-show-kind t)
-      (lsp-diagnostics-flycheck-default-level 'warning)
-      (lsp-diagnostics-provider :auto)
-      (lsp-eldoc-enable-hover nil)
-      (lsp-enable-folding nil)
-      (lsp-enable-on-type-formatting t)
-      (lsp-enable-snippet nil)
-      (lsp-enable-symbol-highlighting t)
-      (lsp-headerline-breadcrumb-enable t)
-      (lsp-keep-workspace-alive nil)
-      (lsp-lens-enable t)
-      (lsp-modeline-code-actions-enable nil)
-      (lsp-modeline-diagnostics-enable nil)
-      (lsp-signature-auto-activate t)
-      :hook
-      (lsp-mode . (lambda()(lsp-enable-which-key-integration))))
-
-    (use-package lsp-treemacs
-      :config
-      (lsp-treemacs-sync-mode 1))
-
-    (use-package lsp-ui
-      :commands lsp-ui-mode
-      :custom
-      (lsp-ui-doc-delay 1.5)
-      (lsp-ui-doc-enable t)
-      (lsp-ui-doc-position 'top)
-      (lsp-ui-doc-max-height 32)
-      (lsp-ui-doc-position 'top)
-      (lsp-ui-doc-show-with-mouse t)
-      (lsp-ui-doc-show-with-cursor t)
-      (lsp-ui-peek-enable t)
-      (lsp-ui-peek-show-directory t)
-      (lsp-ui-sideline-enable t)
-      (lsp-ui-sideline-show-code-actions t)
-  ;;    (lsp-ui-sideline-show-diagnostics nil)
-      :bind
-      (:map lsp-ui-mode-map
-            ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-            ([remap xref-find-references] . #'lsp-ui-peek-find-references)))
-
-    (use-package dap-mode
-      :commands rgr/dap-debug
-      :custom
-      (dap-auto-configure-features '(locals  tooltip))
-      :config
-      (setq dap-ui-buffer-configurations
-            `((,"*Dap-ui-locals*"  . ((side . right) (slot . 1) (window-width . 0.50))) ;; changed this to 0.50
-              (,"*dap-ui-expressions*" . ((side . right) (slot . 2) (window-width . 0.50)))
-              (,"*dap-ui-sessions*" . ((side . right) (slot . 3) (window-width . 0.50)))
-              (,"*dap-ui-breakpoints*" . ((side . left) (slot . 2) (window-width . , 0.20)))
-              (,"*debug-window*" . ((side . bottom) (slot . 3) (window-width . 0.20)))))
-      (defun rgr/dap-debug()
-        (interactive)
-        (if current-prefix-arg
-            (call-interactively 'dap-debug)
-          (dap-debug-last)))
-      ;;(require 'dap-gdb-lldb)
-      ;;(dap-gdb-lldb-setup)
-      ;;(require 'dap-codelldb)
-      ;;(dap-codelldb-setup)
-      (require 'dap-cpptools)
-      ;;(dap-cpptools-setup)
-      ;; (require 'dap-lldb)
-      (add-hook 'dap-stopped-hook
-                (lambda (arg)
-                  (call-interactively #'dap-hydra)))
-      :config
-      (require 'dap-chrome)
-      :bind
-      (:map lsp-mode-map
-            ("C-<f9>" . 'rgr/dap-debug))
-      (:map dap-mode-map
-            ("<f8>" . dap-continue)
-            ("C-S-<f8>" . dap-delete-session)
-            ("<f9>" . dap-hydra)
-            ("<f10>" . dap-next)
-            ("<f11>" . dap-step-in)
-            ("S-<f11>" . dap-step-out)
-            ))
-#+end_src
-****** [[file:~/development/thirdparty/godot/bin][.dir-local.el]] config for a debug template
-:PROPERTIES:
-:END:
-#+begin_src emacs-lisp  :tangle no
-  ((c++-mode . ((dap-debug-template-configurations . (("Godot LLDB"
-                                                       :type "lldb"
-                                                       :request "launch"
-                                                       :target "/home/rgr/bin/godot")
-                                                      ("Godot GDB"
-                                                       :type "gdb"
-                                                       :request "launch"
-                                                       :target "/home/rgr/bin/godot"))))))
-#+end_src
 ****** provide
 #+begin_src emacs-lisp
   (provide 'rgr/lsp)
@@ -3438,11 +3309,6 @@ SCHEDULED: <2021-09-26 Sun>
 :ID:       d14b8271-2894-4ef1-931e-173c9d4d8503
 :END:
 #+begin_src emacs-lisp
-  (use-package lsp-pyright
-    :ensure t
-    :hook (python-mode . (lambda ()
-                           (require 'lsp-pyright)
-                           (lsp-deferred))))  ; or lsp
   (use-package  python
     :disabled t
     :config
@@ -3454,7 +3320,7 @@ SCHEDULED: <2021-09-26 Sun>
         (apply orig-func current-prefix-arg)
         (unless (get-buffer-window (python-shell-get-buffer))
           (switch-to-buffer-other-window (python-shell-get-buffer)))))
-    (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer))
+    (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer)
 #+end_src
 ***** ipython
 :LOGBOOK:
@@ -3484,9 +3350,8 @@ SCHEDULED: <2021-09-26 Sun>
   ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
   (use-package haskell-mode
     :config
-    (use-package  lsp-haskell)
-    (add-hook 'haskell-mode-hook #'lsp-deferred)
-    (add-hook 'haskell-literate-mode-hook #'lsp-deferred)
+    ;; (add-hook 'haskell-mode-hook #'eglot-ensure)
+    ;; (add-hook 'haskell-literate-mode-hook #'eglot-ensure)
     (eval-after-load "haskell-mode"
       '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
     (eval-after-load "haskell-cabal"
@@ -3504,8 +3369,7 @@ SCHEDULED: <2021-09-26 Sun>
   (use-package emacs
     :config
     (defun rgr/c-mode-common-save-hook()
-      ;;    (lsp-format-buffer)
-      ;;(eglot-format-buffer)
+      (eglot-format-buffer)
       )
     (defun rgr/c-mode-common-hook ()
       (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
@@ -3513,8 +3377,6 @@ SCHEDULED: <2021-09-26 Sun>
           (setq completion-category-defaults nil))
       ;; (if(featurep 'eglot)
       ;;     (eglot-ensure))
-      (if(featurep 'lsp-mode)
-          (lsp-deferred))
       (if(featurep 'platformio-mode)
           (platformio-conditionally-enable))
       (if (featurep 'yasnippet)

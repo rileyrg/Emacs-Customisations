@@ -1,5 +1,9 @@
 (use-package eglot
-  :demand
+  :config
+  (use-package eldoc-box)
+  :hook
+  (prog-mode . eglot-ensure)
+  (prog-mode . eldoc-box-hover-mode)
   :bind
   (:map flymake-mode-map
         ([remap next-error] . flymake-goto-next-error)

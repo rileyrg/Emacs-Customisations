@@ -95,13 +95,14 @@ A small "game" like utility that displays snippets to glance at. You can then in
 ```emacs-lisp
 (defvar bootstrap-version)
 
+(defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
+      (bootstrap-version 6))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
@@ -1241,7 +1242,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orge40804a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgcbe0603) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2770,6 +2771,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     ```emacs-lisp
     (use-package
       flycheck
+      :disabled
       :custom
       (flycheck-global-modes '(not org-mode org-src-mode))
       (flycheck-emacs-lisp-load-path 'inherit)
@@ -2887,32 +2889,28 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :config
           (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
           :bind (:map dart-mode-map
-                      ("C-M-x" . #'flutter-run-or-hot-reload)))
+                      ("C-M-x" . #'flutter-run-or-hot-reload))
+          ;; :hook
+          ;; (dart-mode . #'eglot-ensure)
+          )
         
-        (use-package lsp-dart
-          :custom
-          (lsp-dart-closing-labels nil)
-          (lsp-dart-flutter-widget-guides nil)
-          :hook
-          (dart-mode . lsp))
         ```
     
     6.  Java
     
         ```emacs-lisp
-        (use-package lsp-java
-          :hook (java-mode . lsp))
+        ;; (use-package eglot
+        ;;   ;;:hook (java-mode . eglot-ensure)
+        ;;   )
         ```
 
 14. Javascript
 
     ```emacs-lisp
-    
-    ;; use lsp nav in js files
     (use-package js
       :config
       (defun rgr/js-mode-hook ()
-        (lsp)
+        ;;(eglot-ensure)
         (local-unset-key (kbd "M-."))
         (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
       :hook
@@ -2922,26 +2920,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             ("M-." . #'lsp-ui-peek-find-definitions)))
     
     
-    (use-package rjsx-mode
-      :disabled t
-      :config
-      (use-package npm-mode)
-      (defun rgr/js2-mode-hook ()
-        ;;         (setq-local zeal-at-point-docset '("JavaScript" "jQuery"))
-        (npm-mode t)
-        (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
-      (add-hook 'js2-mode-hook 'rgr/js2-mode-hook)
-      :init
-      ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . js2-mode))
-      ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
-      (add-to-list 'auto-mode-alist '("\\.js?\\'" . rjsx-mode))
-      (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
-      )
-    
-    
-    
-    
-    ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
     ```
 
 15. RJSX
@@ -2975,8 +2953,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
       (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
       (defun rgr/ts-mode-hook ()
-        (when (featurep 'lsp-mode)
-          (lsp))
+        ;;(eglot-ensure)
         (setq-local dash-docs-docsets '("React" "JavaScript")))
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
@@ -3005,27 +2982,18 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             
             ```emacs-lisp
             (use-package eglot
-              :demand
+              :config
+              (use-package eldoc-box)
+              :hook
+              (prog-mode . eglot-ensure)
+              (prog-mode . eldoc-box-hover-mode)
               :bind
               (:map flymake-mode-map
                     ([remap next-error] . flymake-goto-next-error)
                     ([remap previous-error] . flymake-goto-prev-error)))
             ```
         
-        2.  [.dir-local.el](file:///home/rgr/development/thirdparty/godot/bin) config for a debug template
-        
-            ```emacs-lisp
-            ((c++-mode . ((dap-debug-template-configurations . (("Godot LLDB"
-                                                                 :type "lldb"
-                                                                 :request "launch"
-                                                                 :target "/home/rgr/bin/godot")
-                                                                ("Godot GDB"
-                                                                 :type "gdb"
-                                                                 :request "launch"
-                                                                 :target "/home/rgr/bin/godot"))))))
-            ```
-        
-        3.  provide
+        2.  provide
         
             ```emacs-lisp
             (provide 'rgr/lsp)
@@ -3088,11 +3056,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     1.  python-mode
     
         ```emacs-lisp
-        (use-package lsp-pyright
-          :ensure t
-          :hook (python-mode . (lambda ()
-                                 (require 'lsp-pyright)
-                                 (lsp-deferred))))  ; or lsp
         (use-package  python
           :disabled t
           :config
@@ -3104,7 +3067,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (apply orig-func current-prefix-arg)
               (unless (get-buffer-window (python-shell-get-buffer))
                 (switch-to-buffer-other-window (python-shell-get-buffer)))))
-          (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer))
+          (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer)
         ```
     
     2.  ipython
@@ -3140,9 +3103,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
         (use-package haskell-mode
           :config
-          (use-package  lsp-haskell)
-          (add-hook 'haskell-mode-hook #'lsp-deferred)
-          (add-hook 'haskell-literate-mode-hook #'lsp-deferred)
+          ;; (add-hook 'haskell-mode-hook #'eglot-ensure)
+          ;; (add-hook 'haskell-literate-mode-hook #'eglot-ensure)
           (eval-after-load "haskell-mode"
             '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
           (eval-after-load "haskell-cabal"
@@ -3165,8 +3127,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package emacs
       :config
       (defun rgr/c-mode-common-save-hook()
-        ;;    (lsp-format-buffer)
-        ;;(eglot-format-buffer)
+        (eglot-format-buffer)
         )
       (defun rgr/c-mode-common-hook ()
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
@@ -3174,8 +3135,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (setq completion-category-defaults nil))
         ;; (if(featurep 'eglot)
         ;;     (eglot-ensure))
-        (if(featurep 'lsp-mode)
-            (lsp-deferred))
         (if(featurep 'platformio-mode)
             (platformio-conditionally-enable))
         (if (featurep 'yasnippet)
@@ -3496,7 +3455,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8f36f8e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf0db6a4) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3535,7 +3494,7 @@ fi
 ```
 
 
-<a id="org8f36f8e"></a>
+<a id="orgf0db6a4"></a>
 
 ### Gnome protocol handler desktop file
 
