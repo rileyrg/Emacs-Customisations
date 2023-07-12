@@ -1,4 +1,4 @@
-`(use-package eglot ,@(when (>= emacs-major-version 29) '(:straight (:type built-in)))
+(eval `(use-package eglot ,@(when (>= emacs-major-version 29) '(:straight (:type built-in)))
   :config
   (use-package eldoc-box)
   :hook
@@ -9,6 +9,6 @@
         ([remap next-error] . flymake-goto-next-error)
         ([remap previous-error] . flymake-goto-prev-error))
   (:map eglot-mode-map
-        ("<M-return>" . eglot-code-actions)))
+        ("<M-return>" . eglot-code-actions))))
 
 (provide 'rgr/lsp)
