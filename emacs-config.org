@@ -125,7 +125,7 @@ CLOSED: [2021-08-06 Fri 11:01] SCHEDULED: <2021-07-24 Sat>
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-  (straight-use-package 'use-package)
+  (straight-use-package 'use-package '(:type built-in))
 
   (use-package straight
     :custom
@@ -3231,6 +3231,7 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   ;; TODO (straight-use-package `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in))))
+  ;; not working :   (use-package `(eglot ,@(when (>= emacs-major-version 29) '(:straight (:type built-in)))))
   (use-package eglot :straight (:type built-in)
     :config
     (use-package eldoc-box)
