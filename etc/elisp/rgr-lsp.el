@@ -1,4 +1,5 @@
 ;; TODO (straight-use-package `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in))))
+;; not working :   (use-package `(eglot ,@(when (>= emacs-major-version 29) '(:straight (:type built-in)))))
 (use-package eglot :straight (:type built-in)
   :config
   (use-package eldoc-box)
