@@ -22,7 +22,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -120,6 +119,7 @@
    '(("\\*Symfony Web Server\\*.*" display-buffer-no-window)
      (popwin:display-buffer-condition popwin:display-buffer-action)))
  '(display-time-mode t)
+ '(eglot-extend-to-xref t)
  '(el-docstring-sap--display-func 'el-docstring-sap--quick-peek)
  '(eldoc-box-only-multi-line t)
  '(elfeed-feeds
@@ -437,6 +437,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 105))))
+ '(eglot-highlight-symbol-face ((t (:inherit bold :underline t))))
  '(modus-themes-hl-line ((t (:extend t :background "white smoke"))) t)
  '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
  '(tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
