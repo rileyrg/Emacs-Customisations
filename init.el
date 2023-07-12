@@ -32,7 +32,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(straight-use-package 'use-package '(:type built-in))
+(straight-use-package `(use-package ,@(when (>= emacs-major-version 29) '(:type built-in))))
 
 (use-package straight
   :custom
