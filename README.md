@@ -1242,7 +1242,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgce85b7f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org6ceb484) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2982,9 +2982,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             Emacs lsp client <https://github.com/joaotavora/eglot>
             
             ```emacs-lisp
-            ;; TODO (straight-use-package `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in))))
-            ;; not working :   (use-package `(eglot ,@(when (>= emacs-major-version 29) '(:straight (:type built-in)))))
-            (use-package eglot :straight (:type built-in)
+            `(use-package eglot ,@(when (>= emacs-major-version 29) '(:straight (:type built-in)))
               :config
               (use-package eldoc-box)
               :hook
@@ -3460,7 +3458,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc182943) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org05d6c16) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3499,7 +3497,7 @@ fi
 ```
 
 
-<a id="orgc182943"></a>
+<a id="org05d6c16"></a>
 
 ### Gnome protocol handler desktop file
 
