@@ -3230,7 +3230,8 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
-  (eval `(use-package eglot ,@(when (>= emacs-major-version 29) '(:straight (:type built-in)))
+  (use-package eglot
+    :straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
     :config
     (use-package eldoc-box)
     :hook
@@ -3241,7 +3242,7 @@ https://github.com/joaotavora/eglot
           ([remap next-error] . flymake-goto-next-error)
           ([remap previous-error] . flymake-goto-prev-error))
     (:map eglot-mode-map
-          ("<M-return>" . eglot-code-actions))))
+          ("<M-return>" . eglot-code-actions)))
 #+end_src
 
 ****** provide
