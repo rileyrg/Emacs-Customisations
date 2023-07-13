@@ -1242,7 +1242,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7f6177d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org52e5df9) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2891,8 +2891,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
           :bind (:map dart-mode-map
                       ("C-M-x" . #'flutter-run-or-hot-reload))
-          ;; :hook
-          ;; (dart-mode . #'eglot-ensure)
+          :hook
+          (dart-mode . eglot-ensure)
           )
         
         ```
@@ -2900,8 +2900,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     6.  Java
     
         ```emacs-lisp
-        ;; (use-package eglot
-        ;;   ;;:hook (java-mode . eglot-ensure)
+        ;; (use-package emacs
+        ;;   :hook (java-mode . eglot-ensure)
         ;;   )
         ```
 
@@ -2911,7 +2911,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package js
       :config
       (defun rgr/js-mode-hook ()
-        ;;(eglot-ensure)
+        (eglot-ensure)
         (local-unset-key (kbd "M-."))
         (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
       :hook
@@ -2954,7 +2954,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
       (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
       (defun rgr/ts-mode-hook ()
-        ;;(eglot-ensure)
+        (eglot-ensure)
         (setq-local dash-docs-docsets '("React" "JavaScript")))
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
@@ -2987,14 +2987,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :config
               (use-package eldoc-box)
               :hook
-              (prog-mode . eglot-ensure)
               (prog-mode . eldoc-box-hover-mode)
               :bind
               (:map flymake-mode-map
                     ([remap next-error] . flymake-goto-next-error)
                     ([remap previous-error] . flymake-goto-prev-error))
               (:map eglot-mode-map
-                    ("<M-return>" . eglot-code-actions)))
+                    ("<C-return>" . eglot-code-actions)))
             ```
         
         2.  provide
@@ -3072,6 +3071,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (unless (get-buffer-window (python-shell-get-buffer))
                 (switch-to-buffer-other-window (python-shell-get-buffer)))))
           (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer)
+          :hook
+          (python-mode . elglot-ensure))
         ```
     
     2.  ipython
@@ -3107,8 +3108,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
         (use-package haskell-mode
           :config
-          ;; (add-hook 'haskell-mode-hook #'eglot-ensure)
-          ;; (add-hook 'haskell-literate-mode-hook #'eglot-ensure)
+          (add-hook 'haskell-mode-hook #'eglot-ensure)
+          (add-hook 'haskell-literate-mode-hook #'eglot-ensure)
           (eval-after-load "haskell-mode"
             '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
           (eval-after-load "haskell-cabal"
@@ -3131,14 +3132,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package emacs
       :config
       (defun rgr/c-mode-common-save-hook()
-        (eglot-format-buffer)
+                                            ;(eglot-format-buffer)
         )
       (defun rgr/c-mode-common-hook ()
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
+        (eglot-ensure)
         (if(featurep 'corfu)
             (setq completion-category-defaults nil))
-        ;; (if(featurep 'eglot)
-        ;;     (eglot-ensure))
         (if(featurep 'platformio-mode)
             (platformio-conditionally-enable))
         (if (featurep 'yasnippet)
@@ -3459,7 +3459,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge550a39) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org64be89a) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3498,7 +3498,7 @@ fi
 ```
 
 
-<a id="orge550a39"></a>
+<a id="org64be89a"></a>
 
 ### Gnome protocol handler desktop file
 
