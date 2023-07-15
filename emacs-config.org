@@ -2983,6 +2983,7 @@ https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-
                  '(pascal
                    "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 #+end_src
+
 **** JSON, YAML Configuration files                                    :json:
 :PROPERTIES:
 :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
@@ -2999,6 +3000,12 @@ https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-
     )
 
 #+end_src
+***** json
+#+begin_src emacs-lisp
+  (use-package json-reformat)
+  (use-package hydra)
+#+end_src
+
 **** Flycheck                                                 :flycheck:lint:
 :PROPERTIES:
 :ID:       3268489e-6d4d-4089-95f7-796e0e0da9db
