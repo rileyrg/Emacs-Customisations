@@ -1,5 +1,8 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
+(use-package breadcrumb
+  :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
+
 (use-package rmsbolt
   :config
   (defun rgr/rmsbolt-toggle()
@@ -304,7 +307,9 @@
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
 (use-package lldb-voltron
-  :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
+  :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
+  :config
+  (breadcrumb-mode t))
 
 (use-package emacs
   :config
