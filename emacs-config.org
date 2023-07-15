@@ -2661,7 +2661,12 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-r") 'recompile)
 #+end_src
-
+**** Breadcrumbs
+https://github.com/joaotavora/breadcrumb
+#+begin_src  emacs-lisp
+  (use-package breadcrumb
+    :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
+#+end_src
 ***** rmsbolt
 RMSbolt is a compiler output viewer in Emacs.
 https://github.com/emacsmirror/rmsbolt
@@ -3374,7 +3379,9 @@ SCHEDULED: <2021-09-26 Sun>
 ***** voltron
 #+begin_src emacs-lisp
   (use-package lldb-voltron
-    :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" ))
+    :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
+    :config
+    (breadcrumb-mode t))
 #+end_src
 **** c-mode-common-hook
 #+begin_src emacs-lisp
