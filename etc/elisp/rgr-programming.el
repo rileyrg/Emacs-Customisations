@@ -95,6 +95,9 @@
   (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
   )
 
+(use-package json-reformat)
+(use-package hydra)
+
 (use-package
   flycheck
   :disabled
