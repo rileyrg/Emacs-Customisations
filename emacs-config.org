@@ -1649,6 +1649,8 @@ CLOSED: [2021-05-19 Wed 20:30] SCHEDULED: <2021-05-09 Sun>
                                                      (nil (goldendict-dwim goldendict-dwim))
                                                      (c-mode  (rgr/devdocs rgr/devdocs))
                                                      (c++-mode  (rgr/devdocs rgr/devdocs))
+                                                     (flutter-mode  (rgr/devdocs rgr/devdocs))
+                                                     (dart-mode  (rgr/devdocs rgr/devdocs))
                                                      (gdscript-mode  (rgr/devdocs rgr/devdocs))
                                                      ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/devdocs))
                                                      (php-mode  (rgr/devdocs rgr/devdocs))
@@ -1845,6 +1847,11 @@ Browse devdocs.io documents inside Emacs!
       (if current-prefix-arg
           (call-interactively 'devdocs-browser-open-in)
         (devdocs-browser-open))))
+#+end_src
+
+***** Dash
+#+begin_src  emacs-lisp
+(use-package dash-docs)
 #+end_src
 
 **** Man Pages
@@ -3152,13 +3159,16 @@ Running emultaor from command line:
 
 #+begin_src emacs-lisp
   (use-package dart-mode
-    ;; Optional
-    :hook (dart-mode . flutter-test-mode))
+    :hook   (dart-mode . (lambda()
+                             (setq-local dash-docs-docsets '("Dart"))
+                             (eglot-ensure))))
+
 
   (use-package flutter
     :after dart-mode
     :config
     (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
+    (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
     :bind (:map dart-mode-map
                 ("C-M-x" . (lambda()
                              (interactive)
@@ -3166,7 +3176,8 @@ Running emultaor from command line:
                               (flutter-run-or-hot-reload))))
     :custom
     (flutter-sdk-path "~/bin/thirdparty/flutter")
-    :hook   (dart-mode . eglot-ensure))
+    :hook   (dart-mode . (lambda()
+                             (flutter-test-mode))))
 
 #+end_src
 ***** Java                                                             :java:

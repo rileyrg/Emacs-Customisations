@@ -1242,7 +1242,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb781d84) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org2ff99c2) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1519,6 +1519,8 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                                                            (nil (goldendict-dwim goldendict-dwim))
                                                            (c-mode  (rgr/devdocs rgr/devdocs))
                                                            (c++-mode  (rgr/devdocs rgr/devdocs))
+                                                           (flutter-mode  (rgr/devdocs rgr/devdocs))
+                                                           (dart-mode  (rgr/devdocs rgr/devdocs))
                                                            (gdscript-mode  (rgr/devdocs rgr/devdocs))
                                                            ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/devdocs))
                                                            (php-mode  (rgr/devdocs rgr/devdocs))
@@ -1707,6 +1709,12 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (if current-prefix-arg
                 (call-interactively 'devdocs-browser-open-in)
               (devdocs-browser-open))))
+        ```
+    
+    6.  Dash
+    
+        ```emacs-lisp
+        (use-package dash-docs)
         ```
 
 4.  Man Pages
@@ -2907,13 +2915,16 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         
         ```emacs-lisp
         (use-package dart-mode
-          ;; Optional
-          :hook (dart-mode . flutter-test-mode))
+          :hook   (dart-mode . (lambda()
+                                   (setq-local dash-docs-docsets '("Dart"))
+                                   (eglot-ensure))))
+        
         
         (use-package flutter
           :after dart-mode
           :config
           (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
+          (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
           :bind (:map dart-mode-map
                       ("C-M-x" . (lambda()
                                    (interactive)
@@ -2921,7 +2932,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                                     (flutter-run-or-hot-reload))))
           :custom
           (flutter-sdk-path "~/bin/thirdparty/flutter")
-          :hook   (dart-mode . eglot-ensure))
+          :hook   (dart-mode . (lambda()
+                                   (flutter-test-mode))))
         
         ```
     
@@ -3489,7 +3501,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb191c91) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org38a80d8) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3528,7 +3540,7 @@ fi
 ```
 
 
-<a id="orgb191c91"></a>
+<a id="org38a80d8"></a>
 
 ### Gnome protocol handler desktop file
 

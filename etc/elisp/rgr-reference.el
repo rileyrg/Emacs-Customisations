@@ -33,6 +33,8 @@
                                                    (nil (goldendict-dwim goldendict-dwim))
                                                    (c-mode  (rgr/devdocs rgr/devdocs))
                                                    (c++-mode  (rgr/devdocs rgr/devdocs))
+                                                   (flutter-mode  (rgr/devdocs rgr/devdocs))
+                                                   (dart-mode  (rgr/devdocs rgr/devdocs))
                                                    (gdscript-mode  (rgr/devdocs rgr/devdocs))
                                                    ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/devdocs))
                                                    (php-mode  (rgr/devdocs rgr/devdocs))
@@ -177,6 +179,8 @@
     (if current-prefix-arg
         (call-interactively 'devdocs-browser-open-in)
       (devdocs-browser-open))))
+
+(use-package dash-docs)
 
 (use-package elfeed
   :config
