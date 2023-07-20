@@ -152,6 +152,13 @@
   ;; (setq consult-project-function nil)
   )
 
+(use-package consult-dash
+   :straight (consult-dash :local-repo "~/development/projects/emacs/consult-dash" :type git :host codeberg :repo "ravi/consult-dash" )
+    :bind (("M-s d" . consult-dash))
+    :config
+    ;; Use the symbol at point as initial search term
+    (consult-customize consult-dash :initial (thing-at-point 'symbol)))
+
 (use-package embark
   :config
   (setq embark-action-indicator
