@@ -1,6 +1,6 @@
 (use-package
   emms
-  :disabled t
+  :disabled
   :custom
   (emms-source-file-default-directory "~/Music" emms-info-asynchronously t emms-show-format "♪ %s")
   (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)

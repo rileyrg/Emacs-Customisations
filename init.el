@@ -219,15 +219,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
     (switch-to-buffer (if (string= (buffer-name) n)
                           (other-buffer) n))))
 
-(use-package perspective
-  :custom
-  (persp-state-default-file (no-littering-expand-var-file-name "perspective/perspectile.el"))
-  :config
-  (persp-mode)
-  (add-hook 'kill-emacs-hook  #'persp-state-save)
-  :bind
-  ("C-x C-b" . persp-list-buffers))
-
 (use-package emacs
   :demand
   :config
@@ -282,56 +273,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
          ("M-`"   . popper-cycle)
          ("C-M-`" . popper-toggle-type)))
 
-(use-package transpose-frame
-  :disabled t
-  :config
-  (defun window-split-toggle ()
-    "Toggle between horizontal and vertical split with two windows."
-    (interactive)
-    (if (> (length (window-list)) 2)
-        (error "Can't toggle with more than 2 windows!")
-      (let ((func (if (window-full-height-p)
-                      #'split-window-vertically
-                    #'split-window-horizontally)))
-        (delete-other-windows)
-        (funcall func)
-        (save-selected-window
-          (other-window 1)
-          (switch-to-buffer (other-buffer))))))
-  :bind
-  ("C-M-t" . transpose-frame)
-  ("C-c T" . window-split-toggle)
-  )
-
-(use-package
-  hyperbole
-  :disabled t)
-
-(use-package undohist
-  :disabled t
-  :config
-  (undohist-initialize))
-
-(use-package undo-tree
-  :disabled t
-  :config
-  (global-undo-tree-mode))
-
-(use-package undo-fu
-  :disabled t
-  :init
-  (global-unset-key (kbd "C-z"))
-  (global-set-key (kbd "C-z")   'undo-fu-only-undo)
-  (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
-
-(use-package back-button
-  :disabled t
-  :config
-  (back-button-mode 1)
-  :bind
-  ("M-<left>" . previous-buffer)
-  ("M-<right>" . next-buffer))
-
 (use-package ace-window
   :init
   (defalias 'other-window 'ace-window)
@@ -354,7 +295,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ("M-s c" . ace-jump-mode)
   )
 
-(defun htop-regexp()
+(defun Htop-regexp()
   (interactive)
   (let ((s (completing-read (format "HTtop filter (%s): " (symbol-at-point)) minibuffer-history nil nil (symbol-at-point))))
     (condition-case nil
