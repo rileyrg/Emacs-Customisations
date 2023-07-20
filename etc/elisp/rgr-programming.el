@@ -170,16 +170,22 @@
   :bind
   ("C-x v ="  . git-gutter:popup-hunk))
 
-(use-package dart-mode)
+(use-package dart-mode
+  ;; Optional
+  :hook (dart-mode . flutter-test-mode))
+
 (use-package flutter
   :after dart-mode
   :config
   (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
   :bind (:map dart-mode-map
-              ("C-M-x" . #'flutter-run-or-hot-reload))
-  :hook
-  (dart-mode . eglot-ensure)
-  )
+              ("C-M-x" . (lambda()
+                           (interactive)
+                            (save-buffer)
+                            (flutter-run-or-hot-reload))))
+  :custom
+  (flutter-sdk-path "~/bin/thirdparty/flutter")
+  :hook   (dart-mode . eglot-ensure))
 
 ;; (use-package emacs
 ;;   :hook (java-mode . eglot-ensure)

@@ -3144,17 +3144,29 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
     ("C-x v ="  . git-gutter:popup-hunk))
 #+end_src
 ***** Dart/Flutter                                             :dart:flutter:
+Running emultaor from command line:
+
+#+begin_src bash
+  emulator -avd Pixel_6_Pro_API_33
+#+end_src
+
 #+begin_src emacs-lisp
-  (use-package dart-mode)
+  (use-package dart-mode
+    ;; Optional
+    :hook (dart-mode . flutter-test-mode))
+
   (use-package flutter
     :after dart-mode
     :config
     (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
     :bind (:map dart-mode-map
-                ("C-M-x" . #'flutter-run-or-hot-reload))
-    :hook
-    (dart-mode . eglot-ensure)
-    )
+                ("C-M-x" . (lambda()
+                             (interactive)
+                              (save-buffer)
+                              (flutter-run-or-hot-reload))))
+    :custom
+    (flutter-sdk-path "~/bin/thirdparty/flutter")
+    :hook   (dart-mode . eglot-ensure))
 
 #+end_src
 ***** Java                                                             :java:
@@ -3247,7 +3259,7 @@ https://github.com/joaotavora/eglot
     :config
     (use-package eldoc-box)
     :hook
-    (prog-mode . eldoc-box-hover-mode)
+    (prog-mode . eldoc-box-hover-at-point-mode)
     :bind
     (:map flymake-mode-map
           ([remap next-error] . flymake-goto-next-error)

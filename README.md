@@ -1242,7 +1242,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org2867282) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb781d84) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2899,17 +2899,29 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     5.  Dart/Flutter
     
+        Running emultaor from command line:
+        
+        ```bash
+        emulator -avd Pixel_6_Pro_API_33
+        ```
+        
         ```emacs-lisp
-        (use-package dart-mode)
+        (use-package dart-mode
+          ;; Optional
+          :hook (dart-mode . flutter-test-mode))
+        
         (use-package flutter
           :after dart-mode
           :config
           (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
           :bind (:map dart-mode-map
-                      ("C-M-x" . #'flutter-run-or-hot-reload))
-          :hook
-          (dart-mode . eglot-ensure)
-          )
+                      ("C-M-x" . (lambda()
+                                   (interactive)
+                                    (save-buffer)
+                                    (flutter-run-or-hot-reload))))
+          :custom
+          (flutter-sdk-path "~/bin/thirdparty/flutter")
+          :hook   (dart-mode . eglot-ensure))
         
         ```
     
@@ -3003,7 +3015,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :config
               (use-package eldoc-box)
               :hook
-              (prog-mode . eldoc-box-hover-mode)
+              (prog-mode . eldoc-box-hover-at-point-mode)
               :bind
               (:map flymake-mode-map
                     ([remap next-error] . flymake-goto-next-error)
@@ -3477,7 +3489,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4e0d711) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb191c91) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3516,7 +3528,7 @@ fi
 ```
 
 
-<a id="org4e0d711"></a>
+<a id="orgb191c91"></a>
 
 ### Gnome protocol handler desktop file
 

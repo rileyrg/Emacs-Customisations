@@ -3,7 +3,7 @@
   :config
   (use-package eldoc-box)
   :hook
-  (prog-mode . eldoc-box-hover-mode)
+  (prog-mode . eldoc-box-hover-at-point-mode)
   :bind
   (:map flymake-mode-map
         ([remap next-error] . flymake-goto-next-error)
