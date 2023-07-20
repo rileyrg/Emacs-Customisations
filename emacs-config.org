@@ -635,6 +635,17 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
     ;; (setq consult-project-function nil)
     )
 #+end_src
+
+***** consult-dash
+#+begin_src  emacs-lisp
+  (use-package consult-dash
+     :straight (consult-dash :local-repo "~/development/projects/emacs/consult-dash" :type git :host codeberg :repo "ravi/consult-dash" )
+      :bind (("M-s d" . consult-dash))
+      :config
+      ;; Use the symbol at point as initial search term
+      (consult-customize consult-dash :initial (thing-at-point 'symbol)))
+#+end_src
+
 **** [[https://github.com/oantolin/embark][Embark]] Emacs Mini-Buffer Actions Rooted in Keymaps
 :PROPERTIES:
 :ID:       39105473-5e9c-4bf6-91ac-0b9d21cac391
