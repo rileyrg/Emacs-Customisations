@@ -91,45 +91,6 @@
   :init
   (org-super-agenda-mode))
 
-(use-package org-roam
-  :disabled t
-  :demand
-  :custom
-  (epa-file-encrypt-to "rileyrg")
-  (epa-file-select-keys "auto")
-  (org-roam-dailies-directory "daily/")
-  (org-roam-capture-templates
-   '(("d" "default" plain "%?" :if-new
-      (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}
-")
-      :unnarrowed t)))
-  (org-roam-dailies-capture-templates
-   '(("d" "default" entry
-      "* %?"
-      :if-new (file+head "%<%Y-%m-%d>.org.gpg"
-                         "#+title: %<%Y-%m-%d>\n"))))
-  (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n a" . org-roam-alias-add)
-         ("C-c n r" . org-roam-add-ref)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ("C-c n C" . org-roam-capture-tomorrow)
-         :map org-mode-map
-         ("C_M-i" . completion-at-point)
-         :map org-roam-dailies-map
-         ("Y" . org-roam-dailies-capture-yesterday)
-         ("T" . org-roam-dailies-capture-tomorrow))
-  :bind-keymap
-  ("C-c n d" . org-roam-dailies-map)
-  :config
-  (org-roam-setup)
-  (require 'org-roam-dailies)
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
-
 (use-package
   ox-gfm
   :demand)

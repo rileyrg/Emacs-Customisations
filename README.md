@@ -1191,52 +1191,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
           (org-super-agenda-mode))
         ```
     
-    5.  org-roam
-    
-        Inspired by another System Crafters [video](https://systemcrafters.cc/build-a-second-brain-in-emacs/getting-started-with-org-roam/).
-        
-        ```emacs-lisp
-        (use-package org-roam
-          :disabled t
-          :demand
-          :custom
-          (epa-file-encrypt-to "rileyrg")
-          (epa-file-select-keys "auto")
-          (org-roam-dailies-directory "daily/")
-          (org-roam-capture-templates
-           '(("d" "default" plain "%?" :if-new
-              (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}
-        ")
-              :unnarrowed t)))
-          (org-roam-dailies-capture-templates
-           '(("d" "default" entry
-              "* %?"
-              :if-new (file+head "%<%Y-%m-%d>.org.gpg"
-                                 "#+title: %<%Y-%m-%d>\n"))))
-          (org-roam-directory (no-littering-expand-var-file-name "org/org-roam"))
-          :bind (("C-c n l" . org-roam-buffer-toggle)
-                 ("C-c n f" . org-roam-node-find)
-                 ("C-c n a" . org-roam-alias-add)
-                 ("C-c n r" . org-roam-add-ref)
-                 ("C-c n g" . org-roam-graph)
-                 ("C-c n i" . org-roam-node-insert)
-                 ("C-c n c" . org-roam-capture)
-                 ("C-c n C" . org-roam-capture-tomorrow)
-                 :map org-mode-map
-                 ("C_M-i" . completion-at-point)
-                 :map org-roam-dailies-map
-                 ("Y" . org-roam-dailies-capture-yesterday)
-                 ("T" . org-roam-dailies-capture-tomorrow))
-          :bind-keymap
-          ("C-c n d" . org-roam-dailies-map)
-          :config
-          (org-roam-setup)
-          (require 'org-roam-dailies)
-          ;; If using org-roam-protocol
-          (require 'org-roam-protocol))
-        ```
-    
-    6.  github compliant markup
+    5.  github compliant markup
     
         ```emacs-lisp
         (use-package
@@ -1253,7 +1208,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org5e6bebb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orge6f6920) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -1756,10 +1711,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
         :config
         (elfeed-org))
-      (use-package elfeed-goodies
-        :disabled
-        :config
-        (elfeed-goodies/setup))
       (run-at-time nil (* 8 60 60) #'elfeed-update)
       :bind
       ( "C-c w" . elfeed)
@@ -1807,7 +1758,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 ```emacs-lisp
 (use-package
   emms
-  :disabled t
+  :disabled
   :custom
   (emms-source-file-default-directory "~/Music" emms-info-asynchronously t emms-show-format "♪ %s")
   (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
@@ -1994,22 +1945,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ### General
 
-1.  perspective
-
-    project aware buffer handling <https://www.youtube.com/watch?v=uyMdDzjQFMU&ab_channel=SystemCrafters>
-    
-    ```emacs-lisp
-    (use-package perspective
-      :custom
-      (persp-state-default-file (no-littering-expand-var-file-name "perspective/perspectile.el"))
-      :config
-      (persp-mode)
-      (add-hook 'kill-emacs-hook  #'persp-state-save)
-      :bind
-      ("C-x C-b" . persp-list-buffers))
-    ```
-
-2.  buffer deletion - but keep scratch and messages!
+1.  buffer deletion - but keep scratch and messages!
 
     ```emacs-lisp
     (use-package emacs
@@ -2108,97 +2044,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
              ("C-M-`" . popper-toggle-type)))
     ```
 
-
-### Transpose windows, transpose-frame
-
-```emacs-lisp
-(use-package transpose-frame
-  :disabled t
-  :config
-  (defun window-split-toggle ()
-    "Toggle between horizontal and vertical split with two windows."
-    (interactive)
-    (if (> (length (window-list)) 2)
-        (error "Can't toggle with more than 2 windows!")
-      (let ((func (if (window-full-height-p)
-                      #'split-window-vertically
-                    #'split-window-horizontally)))
-        (delete-other-windows)
-        (funcall func)
-        (save-selected-window
-          (other-window 1)
-          (switch-to-buffer (other-buffer))))))
-  :bind
-  ("C-M-t" . transpose-frame)
-  ("C-c T" . window-split-toggle)
-  )
-```
-
-
-### Hyperbole
-
-[Hyperbole](https://www.emacswiki.org/emacs/Hyperbole) is more a window management system from what I can see. Need to explore it.
-
-```emacs-lisp
-(use-package
-  hyperbole
-  :disabled t)
-```
-
-
-### Undo utilities
-
-1.  undohist
-
-    [undo-hist](https://melpa.org/#/undohist) provides persistent undo across sessions.
-    
-    ```emacs-lisp
-    (use-package undohist
-      :disabled t
-      :config
-      (undohist-initialize))
-    ```
-
-2.  undo-tree
-
-    [undo-tree](https://github.com/apchamberlain/undo-tree.el) visualises the sometimes complex undo ring and allow stepping along the timeline
-    
-    ```emacs-lisp
-    (use-package undo-tree
-      :disabled t
-      :config
-      (global-undo-tree-mode))
-    ```
-
-3.  undo-fu
-
-    ```emacs-lisp
-    (use-package undo-fu
-      :disabled t
-      :init
-      (global-unset-key (kbd "C-z"))
-      (global-set-key (kbd "C-z")   'undo-fu-only-undo)
-      (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
-    ```
-
-
-### Navigation
-
-1.  Back Button
-
-    [Back-Button](https://github.com/rolandwalker/back-button) provides better navigation on the [local and global mark rings](https://www.gnu.org/software/emacs/manual/html_node/emacs/Mark-Ring.html). The jury is still out on this one.
-    
-    ```emacs-lisp
-    (use-package back-button
-      :disabled t
-      :config
-      (back-button-mode 1)
-      :bind
-      ("M-<left>" . previous-buffer)
-      ("M-<right>" . next-buffer))
-    ```
-
-2.  Window hopping
+3.  Window hopping
 
     1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
     
@@ -2211,7 +2057,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
           ("M-S o" . ace-delete-window))
         ```
 
-3.  hopping around links
+4.  hopping around links
 
     Quickly follow [links](https://github.com/abo-abo/ace-link) in Emacs.
     
@@ -2227,7 +2073,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
       )
     ```
 
-4.  hopping around in the buffer
+5.  hopping around in the buffer
 
     Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-jump-mode/wiki) is a food source of info.
     
@@ -2245,25 +2091,13 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 ### htop interface
 
 ```emacs-lisp
-(defun htop-regexp()
+(defun Htop-regexp()
   (interactive)
   (let ((s (completing-read (format "HTtop filter (%s): " (symbol-at-point)) minibuffer-history nil nil (symbol-at-point))))
     (condition-case nil
         (shell-command (format "htop-regexp %s" s))
       (error nil))))
 (global-set-key (kbd "C-S-p") 'htop-regexp)
-```
-
-
-### explain-pause-mode
-
-[explain-pause-mode](https://github.com/lastquestion/explain-pause-mode) is like an htop for emacs itself
-
-```emacs-lisp
-(use-package explain-pause-mode
-  :disabled
-  :config
-  (explain-pause-mode))
 ```
 
 
@@ -2799,31 +2633,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package hydra)
         ```
 
-12. Flycheck
-
-    On the fly [syntax checking](https://github.com/flycheck/flycheck) for GNU Emacs
-    
-    ```emacs-lisp
-    (use-package
-      flycheck
-      :disabled
-      :custom
-      (flycheck-global-modes '(not org-mode org-src-mode))
-      (flycheck-emacs-lisp-load-path 'inherit)
-      ;;(flycheck-check-syntax-automatically '(save))
-      :config (use-package
-                flycheck-pos-tip
-                :config
-                (flycheck-pos-tip-mode))
-      (global-flycheck-mode +1)
-      :bind ("<C-f8>" . (lambda()
-                        (interactive)
-                        (flycheck-mode 'toggle)
-                        (let((s (if flycheck-mode "on" "off")))
-                          (message "flycheck %s" s)))))
-    ```
-
-13. Flymake
+12. Flymake
 
     1.  diagnostic-at-point
     
@@ -2846,7 +2656,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :hook (sh-mode . rgr/sh-mode-hook))
         ```
 
-14. Version Control
+13. Version Control
 
     1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
     
@@ -2956,7 +2766,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ;;   )
         ```
 
-15. Javascript
+14. Javascript
 
     ```emacs-lisp
     (use-package js
@@ -2974,20 +2784,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     ```
 
-16. RJSX
-
-    [rjsx-mode](https://github.com/felipeochoa/rjsx-mode) extends js2-mode to include jsx parsing.
-    
-    ```emacs-lisp
-    (use-package rjsx-mode
-      :disabled t
-      :init
-      (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
-      (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
-      )
-    ```
-
-17. Typescript
+15. Typescript
 
     ```emacs-lisp
     ;; sudo npm i -g typescript-language-server
@@ -3010,13 +2807,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
 
-18. Javascript
+16. Javascript
 
     ```emacs-lisp
     
     ```
 
-19. Language Server Protocol (LSP), lsp-mode
+17. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -3053,7 +2850,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/lsp)
             ```
 
-20. Serial Port
+18. Serial Port
 
     ```emacs-lisp
     (defgroup rgr/serial-ports nil
@@ -3081,7 +2878,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       (selectSerialPortBuffer)))
     ```
 
-21. PlatformIO
+19. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
     
@@ -3105,53 +2902,24 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     1.  get compilation errors to work and submit ansi color fix?
 
-22. Python
+20. Python
 
-    1.  python-mode
-    
-        ```emacs-lisp
-        (use-package  python
-          :disabled t
-          :config
-          (defun rgr/python-shell-send-buffer(orig-func &rest args)
-            "create a python shell if there isnt one"
-            (interactive)
-            (save-selected-window
-              (save-excursion(run-python))
-              (apply orig-func current-prefix-arg)
-              (unless (get-buffer-window (python-shell-get-buffer))
-                (switch-to-buffer-other-window (python-shell-get-buffer)))))
-          (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer)
-          :hook
-          (python-mode . elglot-ensure))
-        ```
-    
-    2.  ipython
+    1.  ipython
     
         ```emacs-lisp
         (setq python-shell-interpreter "ipython")
         (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
         ```
     
-    3.  virtualenv
+    2.  virtualenv
     
         ```emacs-lisp
         (use-package auto-virtualenv
           :config
           (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
         ```
-    
-    4.  blacken reformatting
-    
-        ```emacs-lisp
-        (use-package blacken
-          :disabled t
-          :demand t
-          :config
-          (add-hook 'python-mode-hook  #'blacken-mode))
-        ```
 
-23. Haskell
+21. Haskell
 
     1.  haskell-mode
     
@@ -3168,7 +2936,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
         ```
 
-24. lldb debugging in emacs
+22. lldb debugging in emacs
 
     1.  voltron
     
@@ -3179,7 +2947,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (breadcrumb-mode t))
         ```
 
-25. c-mode-common-hook
+23. c-mode-common-hook
 
     ```emacs-lisp
     (use-package emacs
@@ -3203,7 +2971,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 ("TAB" . rgr/c-indent-complete))))
     ```
 
-26. C, c-mode
+24. C, c-mode
 
     ```emacs-lisp
     (defun rgr/c-mode-hook ()
@@ -3247,7 +3015,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         
         ```
 
-27. cc,cpp, C++, cc-mode
+25. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3255,7 +3023,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-28. Linux tools
+26. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -3267,7 +3035,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-29. Assembler
+27. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
@@ -3275,13 +3043,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-30. Godot GDScript
+28. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
     ```emacs-lisp
     (use-package gdscript-mode
-      ;;       :disabled t
       :straight (gdscript-mode
                  :type git
                  :host github
@@ -3301,7 +3068,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-31. Web,Symfony and Twig
+29. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -3350,7 +3117,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             ```emacs-lisp
             (use-package
               web-mode
-              ;;:disabled t
               :demand t
               :config
               (defun rgr/web-mode-hook()
@@ -3369,7 +3135,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-32. elf-mode - view the symbol list in a binary
+30. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -3381,7 +3147,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-33. provide
+31. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3512,7 +3278,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org27ec7c1) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9be6825) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3551,7 +3317,7 @@ fi
 ```
 
 
-<a id="org27ec7c1"></a>
+<a id="org9be6825"></a>
 
 ### Gnome protocol handler desktop file
 

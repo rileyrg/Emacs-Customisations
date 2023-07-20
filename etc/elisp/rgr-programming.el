@@ -101,24 +101,6 @@
 (use-package json-reformat)
 (use-package hydra)
 
-(use-package
-  flycheck
-  :disabled
-  :custom
-  (flycheck-global-modes '(not org-mode org-src-mode))
-  (flycheck-emacs-lisp-load-path 'inherit)
-  ;;(flycheck-check-syntax-automatically '(save))
-  :config (use-package
-            flycheck-pos-tip
-            :config
-            (flycheck-pos-tip-mode))
-  (global-flycheck-mode +1)
-  :bind ("<C-f8>" . (lambda()
-                    (interactive)
-                    (flycheck-mode 'toggle)
-                    (let((s (if flycheck-mode "on" "off")))
-                      (message "flycheck %s" s)))))
-
 (use-package flymake-diagnostic-at-point
   :after flymake
   :config
@@ -207,13 +189,6 @@
   (:map js-mode-map
         ("M-." . #'lsp-ui-peek-find-definitions)))
 
-(use-package rjsx-mode
-  :disabled t
-  :init
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
-  (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode))
-  )
-
 ;; sudo npm i -g typescript-language-server
 (use-package typescript-mode
   :after tree-sitter
@@ -277,33 +252,12 @@
   (add-hook 'compilation-finish-functions
             'rgr/platformio-compilation-mode-filter))
 
-(use-package  python
-  :disabled t
-  :config
-  (defun rgr/python-shell-send-buffer(orig-func &rest args)
-    "create a python shell if there isnt one"
-    (interactive)
-    (save-selected-window
-      (save-excursion(run-python))
-      (apply orig-func current-prefix-arg)
-      (unless (get-buffer-window (python-shell-get-buffer))
-        (switch-to-buffer-other-window (python-shell-get-buffer)))))
-  (advice-add 'python-shell-send-buffer :around #'rgr/python-shell-send-buffer)
-  :hook
-  (python-mode . elglot-ensure))
-
 (setq python-shell-interpreter "ipython")
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
 (use-package auto-virtualenv
   :config
   (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
-
-(use-package blacken
-  :disabled t
-  :demand t
-  :config
-  (add-hook 'python-mode-hook  #'blacken-mode))
 
 ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
 (use-package haskell-mode
@@ -384,7 +338,6 @@
 (use-package strace-mode)
 
 (use-package gdscript-mode
-  ;;       :disabled t
   :straight (gdscript-mode
              :type git
              :host github
@@ -430,7 +383,6 @@
 
 (use-package
   web-mode
-  ;;:disabled t
   :demand t
   :config
   (defun rgr/web-mode-hook()

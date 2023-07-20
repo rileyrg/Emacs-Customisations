@@ -190,10 +190,6 @@
     (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
     :config
     (elfeed-org))
-  (use-package elfeed-goodies
-    :disabled
-    :config
-    (elfeed-goodies/setup))
   (run-at-time nil (* 8 60 60) #'elfeed-update)
   :bind
   ( "C-c w" . elfeed)
