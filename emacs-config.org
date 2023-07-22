@@ -782,25 +782,7 @@ CLOSED: [2021-07-21 Wed 11:39]
   (use-package corfu
     ;; Optional customizations
     :custom
-    ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
     (corfu-auto t)                 ;; Enable auto completion
-    ;; (corfu-separator ?\s)          ;; Orderless field separator
-    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-    ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-    ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
-    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-    ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
-    ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-
-    ;; Enable Corfu only for certain modes.
-    ;; :hook ((prog-mode . corfu-mode)
-    ;;        (shell-mode . corfu-mode)
-    ;;        (eshell-mode . corfu-mode))
-
-    ;; Recommended: Enable Corfu globally.
-    ;; This is recommended since Dabbrev can be used globally (M-/).
-    ;; See also `corfu-excluded-modes'.
     :init
     (global-corfu-mode))
 
@@ -2255,6 +2237,7 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
         (error nil))))
   (global-set-key (kbd "C-S-p") 'htop-regexp)
 #+end_src
+
 ** Treemacs                                                       :CANCELLED:
 :PROPERTIES:
 :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
@@ -2515,6 +2498,7 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
 https://github.com/joaotavora/breadcrumb
 #+begin_src  emacs-lisp
   (use-package breadcrumb
+    :disabled
     :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
 #+end_src
 ***** rmsbolt
@@ -2978,16 +2962,21 @@ Running emultaor from command line:
 
 #+begin_src emacs-lisp
   (use-package dart-mode
+    :config
+    (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
+    :custom
+     (lsp-dart-flutter-widget-guides t)
     :hook   (dart-mode . (lambda()
                              (setq-local dash-docs-docsets '("Dart"))
-                             (eglot-ensure))))
-
+                             ;;(eglot-ensure)
+                             (lsp)
+                             )))
 
   (use-package flutter
     :after dart-mode
     :config
+    (use-package flutter-l10n-flycheck)
     (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
-    (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
     :bind (:map dart-mode-map
                 ("C-M-x" . (lambda()
                              (interactive)
@@ -3067,6 +3056,36 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-lsp.el" elisp-dir)
 :END:
 
+****** lsp
+:PROPERTIES:
+:ID:       9f1c1bb0-e5e0-4589-a42c-828bd44646ba
+:END:
+#+begin_src  emacs-lisp
+  (use-package lsp-mode
+    :init
+    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+    (setq lsp-keymap-prefix "C-l")
+    (defun my/lsp-mode-setup-completion ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(flex))) ;; Configure flex
+    :config
+    (use-package lsp-ui :commands lsp-ui-mode)
+    (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+    (lsp-treemacs-sync-mode 1)
+    (use-package flycheck)
+    (use-package dap-mode)
+    (use-package lsp-dart)
+    (setq lsp-completion-provider :none) ;; we use corfu
+    (defun my/lsp-mode-setup-completion ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(orderless))) ;; Configure orderless
+    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+           (lsp-completion-mode . my/lsp-mode-setup-completion)
+           (lsp-mode . lsp-enable-which-key-integration))
+    :commands (lsp lsp-deferred))
+
+#+end_src
+
 ****** eglot
 Emacs lsp client
 https://github.com/joaotavora/eglot
@@ -3126,6 +3145,7 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
   (use-package platformio-mode
     :demand t
     :custom
+
     (platformio-mode-silent nil)
     :init
     (require 'ansi-color)
