@@ -1,6 +1,7 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
 (use-package breadcrumb
+  :disabled
   :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
 
 (use-package rmsbolt
@@ -153,16 +154,21 @@
   ("C-x v ="  . git-gutter:popup-hunk))
 
 (use-package dart-mode
+  :config
+  (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
+  :custom
+   (lsp-dart-flutter-widget-guides t)
   :hook   (dart-mode . (lambda()
                            (setq-local dash-docs-docsets '("Dart"))
-                           (eglot-ensure))))
-
+                           ;;(eglot-ensure)
+                           (lsp)
+                           )))
 
 (use-package flutter
   :after dart-mode
   :config
+  (use-package flutter-l10n-flycheck)
   (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
-  (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
   :bind (:map dart-mode-map
               ("C-M-x" . (lambda()
                            (interactive)
@@ -239,6 +245,7 @@
 (use-package platformio-mode
   :demand t
   :custom
+
   (platformio-mode-silent nil)
   :init
   (require 'ansi-color)
