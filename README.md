@@ -705,25 +705,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (use-package corfu
       ;; Optional customizations
       :custom
-      ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
       (corfu-auto t)                 ;; Enable auto completion
-      ;; (corfu-separator ?\s)          ;; Orderless field separator
-      ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-      ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-      ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-      ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
-      ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-      ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
-      ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-    
-      ;; Enable Corfu only for certain modes.
-      ;; :hook ((prog-mode . corfu-mode)
-      ;;        (shell-mode . corfu-mode)
-      ;;        (eshell-mode . corfu-mode))
-    
-      ;; Recommended: Enable Corfu globally.
-      ;; This is recommended since Dabbrev can be used globally (M-/).
-      ;; See also `corfu-excluded-modes'.
       :init
       (global-corfu-mode))
     
@@ -1208,7 +1190,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orge6f6920) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgf99993f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2341,6 +2323,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     ```emacs-lisp
     (use-package breadcrumb
+      :disabled
       :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
     ```
     
@@ -2736,16 +2719,21 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         
         ```emacs-lisp
         (use-package dart-mode
+          :config
+          (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
+          :custom
+           (lsp-dart-flutter-widget-guides t)
           :hook   (dart-mode . (lambda()
                                    (setq-local dash-docs-docsets '("Dart"))
-                                   (eglot-ensure))))
-        
+                                   ;;(eglot-ensure)
+                                   (lsp)
+                                   )))
         
         (use-package flutter
           :after dart-mode
           :config
+          (use-package flutter-l10n-flycheck)
           (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
-          (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
           :bind (:map dart-mode-map
                       ("C-M-x" . (lambda()
                                    (interactive)
@@ -2825,7 +2813,35 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     1.  library
     
-        1.  eglot
+        1.  lsp
+        
+            ```emacs-lisp
+            (use-package lsp-mode
+              :init
+              ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+              (setq lsp-keymap-prefix "C-l")
+              (defun my/lsp-mode-setup-completion ()
+                (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+                      '(flex))) ;; Configure flex
+              :config
+              (use-package lsp-ui :commands lsp-ui-mode)
+              (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+              (lsp-treemacs-sync-mode 1)
+              (use-package flycheck)
+              (use-package dap-mode)
+              (use-package lsp-dart)
+              (setq lsp-completion-provider :none) ;; we use corfu
+              (defun my/lsp-mode-setup-completion ()
+                (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+                      '(orderless))) ;; Configure orderless
+              :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+                     (lsp-completion-mode . my/lsp-mode-setup-completion)
+                     (lsp-mode . lsp-enable-which-key-integration))
+              :commands (lsp lsp-deferred))
+            
+            ```
+        
+        2.  eglot
         
             Emacs lsp client <https://github.com/joaotavora/eglot>
             
@@ -2844,7 +2860,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                     ("<C-return>" . eglot-code-actions)))
             ```
         
-        2.  provide
+        3.  provide
         
             ```emacs-lisp
             (provide 'rgr/lsp)
@@ -2886,6 +2902,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package platformio-mode
       :demand t
       :custom
+    
       (platformio-mode-silent nil)
       :init
       (require 'ansi-color)
@@ -3278,7 +3295,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9be6825) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge19fec0) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3317,7 +3334,7 @@ fi
 ```
 
 
-<a id="org9be6825"></a>
+<a id="orge19fec0"></a>
 
 ### Gnome protocol handler desktop file
 
