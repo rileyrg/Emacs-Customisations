@@ -2,20 +2,29 @@
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-l")
+  (setq lsp-dart-sdk-dir (expand-file-name "~/bin/thirdparty/flutter/bin/cache/dart-sdk"))
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(flex))) ;; Configure flex
+  (setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024))
   :config
   (use-package lsp-ui :commands lsp-ui-mode)
-  (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-  (lsp-treemacs-sync-mode 1)
+
+  (use-package lsp-treemacs
+    :custom
+    (lsp-treemacs-sync-mode t)
+    :commands lsp-treemacs-errors-list)
+
   (use-package flycheck)
   (use-package dap-mode)
   (use-package lsp-dart)
-  (setq lsp-completion-provider :capf)
-  ;; (defun corfu-lsp-setup ()
-  ;;   (setq-local completion-styles '(orderless)
-  ;;               completion-category-defaults nil))
-  ;; (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
-
+  (setq lsp-completion-provider :none) ;; we use corfu
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless))) ;; Configure orderless
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (lsp-completion-mode . my/lsp-mode-setup-completion)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 

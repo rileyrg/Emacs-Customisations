@@ -1190,7 +1190,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgf99993f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org198229b) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2323,7 +2323,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     ```emacs-lisp
     (use-package breadcrumb
-      :disabled
       :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
     ```
     
@@ -2820,13 +2819,20 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :init
               ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
               (setq lsp-keymap-prefix "C-l")
+              (setq lsp-dart-sdk-dir (expand-file-name "~/bin/thirdparty/flutter/bin/cache/dart-sdk"))
               (defun my/lsp-mode-setup-completion ()
                 (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
                       '(flex))) ;; Configure flex
+              (setq gc-cons-threshold (* 100 1024 1024)
+                  read-process-output-max (* 1024 1024))
               :config
               (use-package lsp-ui :commands lsp-ui-mode)
-              (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-              (lsp-treemacs-sync-mode 1)
+            
+              (use-package lsp-treemacs
+                :custom
+                (lsp-treemacs-sync-mode t)
+                :commands lsp-treemacs-errors-list)
+            
               (use-package flycheck)
               (use-package dap-mode)
               (use-package lsp-dart)
@@ -3295,7 +3301,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge19fec0) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org86a1146) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3334,7 +3340,7 @@ fi
 ```
 
 
-<a id="orge19fec0"></a>
+<a id="org86a1146"></a>
 
 ### Gnome protocol handler desktop file
 

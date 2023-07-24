@@ -1,7 +1,6 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
 (use-package breadcrumb
-  :disabled
   :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
 
 (use-package rmsbolt
