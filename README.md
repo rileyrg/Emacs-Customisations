@@ -954,7 +954,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (use-package
           darkroom
           :bind
-          ( "<f7>" . 'darkroom-mode))
+          ( "<C-f7>" . 'darkroom-mode))
         ```
 
 3.  Ansi colour
@@ -1190,7 +1190,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org198229b) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org5d63041) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2720,6 +2720,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package dart-mode
           :config
           (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
+          (use-package lsp-dart :after lsp)
           :custom
            (lsp-dart-flutter-widget-guides t)
           :hook   (dart-mode . (lambda()
@@ -2819,7 +2820,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :init
               ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
               (setq lsp-keymap-prefix "C-l")
-              (setq lsp-dart-sdk-dir (expand-file-name "~/bin/thirdparty/flutter/bin/cache/dart-sdk"))
               (defun my/lsp-mode-setup-completion ()
                 (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
                       '(flex))) ;; Configure flex
@@ -2834,8 +2834,15 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 :commands lsp-treemacs-errors-list)
             
               (use-package flycheck)
-              (use-package dap-mode)
-              (use-package lsp-dart)
+              (use-package dap-mode
+                    :bind (:map dap-mode-map
+                            (("<f8>" . dap-next)
+                             ("<f7>" . dap-step-in)
+                             ("S-<f8>" . dap-continue)
+                             ("M-<f8>" . dap-debug)
+                             ("C-<f8>" . dap-disconnect)
+                             ("S-<f7>" . dap-step-out)
+                             )))
               (setq lsp-completion-provider :none) ;; we use corfu
               (defun my/lsp-mode-setup-completion ()
                 (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
@@ -2966,8 +2973,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ```emacs-lisp
         (use-package lldb-voltron
           :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
-          :config
-          (breadcrumb-mode t))
+          ;;:config
+          ;; (breadcrumb-mode t)
+          )
         ```
 
 23. c-mode-common-hook
@@ -3301,7 +3309,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org86a1146) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0b78c6c) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3340,7 +3348,7 @@ fi
 ```
 
 
-<a id="org86a1146"></a>
+<a id="org0b78c6c"></a>
 
 ### Gnome protocol handler desktop file
 

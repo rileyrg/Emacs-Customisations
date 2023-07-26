@@ -79,7 +79,7 @@
 (use-package
   darkroom
   :bind
-  ( "<f7>" . 'darkroom-mode))
+  ( "<C-f7>" . 'darkroom-mode))
 
 (defun consult-buffer-other-tab ()
   "Variant of `consult-buffer' which opens in other tab."
