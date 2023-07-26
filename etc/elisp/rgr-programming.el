@@ -155,6 +155,7 @@
 (use-package dart-mode
   :config
   (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
+  (use-package lsp-dart :after lsp)
   :custom
    (lsp-dart-flutter-widget-guides t)
   :hook   (dart-mode . (lambda()
@@ -278,8 +279,9 @@
 
 (use-package lldb-voltron
   :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
-  :config
-  (breadcrumb-mode t))
+  ;;:config
+  ;; (breadcrumb-mode t)
+  )
 
 (use-package emacs
   :config

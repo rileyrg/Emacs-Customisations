@@ -2,7 +2,6 @@
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-l")
-  (setq lsp-dart-sdk-dir (expand-file-name "~/bin/thirdparty/flutter/bin/cache/dart-sdk"))
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(flex))) ;; Configure flex
@@ -17,8 +16,15 @@
     :commands lsp-treemacs-errors-list)
 
   (use-package flycheck)
-  (use-package dap-mode)
-  (use-package lsp-dart)
+  (use-package dap-mode
+        :bind (:map dap-mode-map
+                (("<f8>" . dap-next)
+                 ("<f7>" . dap-step-in)
+                 ("S-<f8>" . dap-continue)
+                 ("M-<f8>" . dap-debug)
+                 ("C-<f8>" . dap-disconnect)
+                 ("S-<f7>" . dap-step-out)
+                 )))
   (setq lsp-completion-provider :none) ;; we use corfu
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))

@@ -1024,7 +1024,7 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
   (use-package
     darkroom
     :bind
-    ( "<f7>" . 'darkroom-mode))
+    ( "<C-f7>" . 'darkroom-mode))
 #+end_src
 
 **** Ansi colour
@@ -2963,6 +2963,7 @@ Running emultaor from command line:
   (use-package dart-mode
     :config
     (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
+    (use-package lsp-dart :after lsp)
     :custom
      (lsp-dart-flutter-widget-guides t)
     :hook   (dart-mode . (lambda()
@@ -3064,7 +3065,6 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
     :init
     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
     (setq lsp-keymap-prefix "C-l")
-    (setq lsp-dart-sdk-dir (expand-file-name "~/bin/thirdparty/flutter/bin/cache/dart-sdk"))
     (defun my/lsp-mode-setup-completion ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
             '(flex))) ;; Configure flex
@@ -3079,8 +3079,15 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
       :commands lsp-treemacs-errors-list)
 
     (use-package flycheck)
-    (use-package dap-mode)
-    (use-package lsp-dart)
+    (use-package dap-mode
+          :bind (:map dap-mode-map
+                  (("<f8>" . dap-next)
+                   ("<f7>" . dap-step-in)
+                   ("S-<f8>" . dap-continue)
+                   ("M-<f8>" . dap-debug)
+                   ("C-<f8>" . dap-disconnect)
+                   ("S-<f7>" . dap-step-out)
+                   )))
     (setq lsp-completion-provider :none) ;; we use corfu
     (defun my/lsp-mode-setup-completion ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
@@ -3207,8 +3214,9 @@ SCHEDULED: <2021-09-26 Sun>
 #+begin_src emacs-lisp
   (use-package lldb-voltron
     :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
-    :config
-    (breadcrumb-mode t))
+    ;;:config
+    ;; (breadcrumb-mode t)
+    )
 #+end_src
 **** c-mode-common-hook
 #+begin_src emacs-lisp
