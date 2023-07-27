@@ -17,15 +17,16 @@
 
 (use-package corfu
   :disabled
-  :after orderless
   ;; Optional customizations
-  ;; :custom
+  :init
+  (setq lsp-completion-provider :none)
+  :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  ;; (corfu-auto t)                 ;; Enable auto completion
-  ;; (corfu-separator ?\s)          ;; Orderless field separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  (corfu-auto t)                 ;; Enable auto completion
+  (corfu-separator ?_)          ;; Orderless field separator
+  ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  (corfu-preview-current t)    ;; Disable current candidate preview
   ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
   ;; (corfu-scroll-margin 5)        ;; Use scroll margin
@@ -58,7 +59,6 @@
 
 ;; Add extensions
 (use-package cape
-  :disabled
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
   :bind (("C-c p p" . completion-at-point) ;; capf
@@ -103,10 +103,11 @@
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
 
 (use-package orderless
+  :ensure t
   :init
-  (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))))))
+    (setq completion-styles '(orderless basic)
+    completion-category-defaults nil
+    completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;; Enable vertico
 (use-package vertico
