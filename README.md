@@ -712,7 +712,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     ```emacs-lisp
     (use-package company
-      ;;:disabled
+      :disabled
       :init
       (add-hook 'after-init-hook 'global-company-mode))
     ```
@@ -723,15 +723,15 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     
     ```emacs-lisp
     (use-package corfu
-      :disabled
+      ;;:disabled
       ;; Optional customizations
       :custom
       ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
       (corfu-auto t)                 ;; Enable auto completion
-      (corfu-separator ?_)          ;; Orderless field separator
+      (corfu-separator ?\s)          ;; Orderless field separator
       ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
       ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-      (corfu-preview-current t)    ;; Disable current candidate preview
+      ;;(corfu-preview-current t)    ;; Disable current candidate preview
       ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
       ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
       ;; (corfu-scroll-margin 5)        ;; Use scroll margin
@@ -750,8 +750,12 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
         (lsp-completion-provider :none) ;; we use Corfu!
         :init
         (defun my/lsp-mode-setup-completion ()
+          ;; (setq-local completion-styles '(orderless)
+          ;;     completion-category-defaults nil
+          ;;     completion-category-overrides nil)
           (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-                '(orderless))) ;; Configure orderless
+                '(orderless))
+          ) ;; Configure orderless
         :hook
         (lsp-completion-mode . my/lsp-mode-setup-completion))
     
@@ -1287,7 +1291,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgf18a525) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgc3a1b9a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2949,12 +2953,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             
             ```emacs-lisp
             (use-package eglot
-              :disabled
               :straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
-              :config
-              (use-package eldoc-box)
-              :hook
-              (prog-mode . eldoc-box-hover-at-point-mode)
+              ;; :config
+              ;; (use-package eldoc-box)
+              ;; :hook
+              ;; (prog-mode . eldoc-box-hover-at-point-mode)
               :bind
               (:map flymake-mode-map
                     ([remap next-error] . flymake-goto-next-error)
@@ -3399,7 +3402,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9ff5db6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org073f51a) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3438,7 +3441,7 @@ fi
 ```
 
 
-<a id="org9ff5db6"></a>
+<a id="org073f51a"></a>
 
 ### Gnome protocol handler desktop file
 
