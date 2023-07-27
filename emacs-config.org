@@ -766,7 +766,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 **** company
 #+begin_src  emacs-lisp
   (use-package company
-    :disabled
+    ;;:disabled
     :init
     (add-hook 'after-init-hook 'global-company-mode))
 #+end_src
@@ -774,7 +774,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 I've had to turn this off as moving up and down auto selects at times. Back to company-mode.
 #+begin_src emacs-lisp
   (use-package corfu
-    ;;:disabled
+    :disabled
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -796,14 +796,6 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
     ;; This is recommended since Dabbrev can be used globally (M-/).
     ;; See also `corfu-exclude-modes'.
     :init
-    (use-package orderless
-      :init
-      ;; Tune the global completion style settings to your liking!
-      ;; This affects the minibuffer and non-lsp completion at point.
-      (setq completion-styles '(orderless partial-completion basic)
-            completion-category-defaults nil
-            completion-category-overrides nil))
-
     (use-package lsp-mode
       :custom
       (lsp-completion-provider :none) ;; we use Corfu!
@@ -883,7 +875,15 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
 #+end_src
 **** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
-see Corfu
+#+begin_src  emacs-lisp
+    (use-package orderless
+      :init
+      ;; Tune the global completion style settings to your liking!
+      ;; This affects the minibuffer and non-lsp completion at point.
+      (setq completion-styles '(orderless partial-completion basic)
+            completion-category-defaults nil
+            completion-category-overrides nil))
+#+end_src
 **** vertico , vertical interactive completion
 #+begin_src emacs-lisp
   ;; Enable vertico
@@ -3070,7 +3070,7 @@ Running emultaor from command line:
   (use-package js
     :config
     (defun rgr/js-mode-hook ()
-      (eglot-ensure)
+      ;;(eglot-ensure)
       (local-unset-key (kbd "M-."))
       (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
     :hook
@@ -3100,7 +3100,7 @@ Running emultaor from command line:
     ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
     (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
     (defun rgr/ts-mode-hook ()
-      (eglot-ensure)
+      ;;(eglot-ensure)
       (setq-local dash-docs-docsets '("React" "JavaScript")))
     (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 #+end_src
@@ -3164,6 +3164,7 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
+    :disabled
     :straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
     :config
     (use-package eldoc-box)
@@ -3261,8 +3262,8 @@ SCHEDULED: <2021-09-26 Sun>
   ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
   (use-package haskell-mode
     :config
-    (add-hook 'haskell-mode-hook #'eglot-ensure)
-    (add-hook 'haskell-literate-mode-hook #'eglot-ensure)
+    ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
+    ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
     (eval-after-load "haskell-mode"
       '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
     (eval-after-load "haskell-cabal"
@@ -3287,7 +3288,7 @@ SCHEDULED: <2021-09-26 Sun>
       )
     (defun rgr/c-mode-common-hook ()
       (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-      (eglot-ensure)
+      ;;(eglot-ensure)
       (if(featurep 'corfu)
           (setq completion-category-defaults nil))
       (if(featurep 'platformio-mode)
