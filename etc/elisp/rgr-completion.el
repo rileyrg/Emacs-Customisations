@@ -32,7 +32,7 @@
   (corfu-separator ?\s)          ;; Orderless field separator
   ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;;(corfu-preview-current t)    ;; Disable current candidate preview
+  (corfu-preview-current t)    ;; Disable current candidate preview
   ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
   ;; (corfu-scroll-margin 5)        ;; Use scroll margin
@@ -45,19 +45,22 @@
   ;; Recommended: Enable Corfu globally.
   ;; This is recommended since Dabbrev can be used globally (M-/).
   ;; See also `corfu-exclude-modes'.
-  :init
-  (use-package lsp-mode
-    :custom
-    (lsp-completion-provider :none) ;; we use Corfu!
-    :init
-    (defun my/lsp-mode-setup-completion ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(orderless))
-      )
-    :hook
-    (lsp-completion-mode . my/lsp-mode-setup-completion))
+  :straight (:files (:defaults "extensions/*"))
+  ;;:init
+  ;; (use-package lsp-mode
+  ;;   :custom
+  ;;   (lsp-completion-provider :none) ;; we use Corfu!
+  ;;   :init
+  ;;   (defun my/lsp-mode-setup-completion ()
+  ;;     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+  ;;           '(orderless)))
 
+  ;;   :hook
+  ;;   (lsp-completion-mode . my/lsp-mode-setup-completion))
+  :config
+  (corfu-popupinfo-mode)
   (global-corfu-mode))
+
 
 ;; A few more useful configurations...
 (use-package emacs

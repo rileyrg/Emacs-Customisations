@@ -67,11 +67,8 @@
   :config
   (apheleia-global-mode +1))
 
-(use-package rainbow-delimiters
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-
 (use-package rainbow-identifiers
+  :disabled
   :config
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
@@ -160,8 +157,8 @@
    (lsp-dart-flutter-widget-guides t)
   :hook   (dart-mode . (lambda()
                            (setq-local dash-docs-docsets '("Dart"))
-                           ;;(eglot-ensure)
-                           (lsp)-deferred
+                           (eglot-ensure)
+                           ;;(lsp-deferred)
                            )))
 
 (use-package flutter
@@ -313,7 +310,8 @@
     )
   (defun rgr/c-mode-common-hook ()
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-    ;;(eglot-ensure)
+    (eglot-ensure)
+    ;;(lsp-deferred)
     (if(featurep 'corfu)
         (setq completion-category-defaults nil))
     (if(featurep 'platformio-mode)
@@ -324,7 +322,8 @@
   (c-mode-common . rgr/c-mode-common-hook)
   :bind  ( :map c-mode-base-map
            (("M-<return>" . rgr/c-complete-line)
-            ("TAB" . rgr/c-indent-complete))))
+             ("TAB" . rgr/c-indent-complete)
+            )))
 
 (defun rgr/c-mode-hook ()
   (setq-local dash-docs-docsets '("C")))

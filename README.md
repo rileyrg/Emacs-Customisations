@@ -743,7 +743,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (corfu-separator ?\s)          ;; Orderless field separator
       ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
       ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-      ;;(corfu-preview-current t)    ;; Disable current candidate preview
+      (corfu-preview-current t)    ;; Disable current candidate preview
       ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
       ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
       ;; (corfu-scroll-margin 5)        ;; Use scroll margin
@@ -756,19 +756,22 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;; Recommended: Enable Corfu globally.
       ;; This is recommended since Dabbrev can be used globally (M-/).
       ;; See also `corfu-exclude-modes'.
-      :init
-      (use-package lsp-mode
-        :custom
-        (lsp-completion-provider :none) ;; we use Corfu!
-        :init
-        (defun my/lsp-mode-setup-completion ()
-          (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-                '(orderless))
-          )
-        :hook
-        (lsp-completion-mode . my/lsp-mode-setup-completion))
+      :straight (:files (:defaults "extensions/*"))
+      ;;:init
+      ;; (use-package lsp-mode
+      ;;   :custom
+      ;;   (lsp-completion-provider :none) ;; we use Corfu!
+      ;;   :init
+      ;;   (defun my/lsp-mode-setup-completion ()
+      ;;     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+      ;;           '(orderless)))
     
+      ;;   :hook
+      ;;   (lsp-completion-mode . my/lsp-mode-setup-completion))
+      :config
+      (corfu-popupinfo-mode)
       (global-corfu-mode))
+    
     
     ;; A few more useful configurations...
     (use-package emacs
@@ -1021,6 +1024,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         ```emacs-lisp
         (use-package
           volatile-highlights
+          :disabled
           :init (volatile-highlights-mode 1))
         ```
     
@@ -1288,7 +1292,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org9d4fdcd) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb0a3cbb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2650,14 +2654,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 8.  rainbow delimiters
 
     ```emacs-lisp
-    (use-package rainbow-delimiters
-      :config
-      (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-    
     (use-package rainbow-identifiers
+      :disabled
       :config
       (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
-    
     ```
 
 9.  Project Management
@@ -2823,8 +2823,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
        (lsp-dart-flutter-widget-guides t)
       :hook   (dart-mode . (lambda()
                                (setq-local dash-docs-docsets '("Dart"))
-                               ;;(eglot-ensure)
-                               (lsp)-deferred
+                               (eglot-ensure)
+                               ;;(lsp-deferred)
                                )))
     
     (use-package flutter
@@ -3105,7 +3105,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         )
       (defun rgr/c-mode-common-hook ()
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-        ;;(eglot-ensure)
+        (eglot-ensure)
+        ;;(lsp-deferred)
         (if(featurep 'corfu)
             (setq completion-category-defaults nil))
         (if(featurep 'platformio-mode)
@@ -3116,7 +3117,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (c-mode-common . rgr/c-mode-common-hook)
       :bind  ( :map c-mode-base-map
                (("M-<return>" . rgr/c-complete-line)
-                ("TAB" . rgr/c-indent-complete))))
+                 ("TAB" . rgr/c-indent-complete)
+                )))
     ```
 
 26. C, c-mode
@@ -3426,7 +3428,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdc17d58) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7330626) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3465,7 +3467,7 @@ fi
 ```
 
 
-<a id="orgdc17d58"></a>
+<a id="org7330626"></a>
 
 ### Gnome protocol handler desktop file
 
