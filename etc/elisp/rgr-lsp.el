@@ -6,7 +6,7 @@
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(flex))) ;; Configure flex
   (setq gc-cons-threshold (* 100 1024 1024)
-      read-process-output-max (* 1024 1024))
+        read-process-output-max (* 1024 1024))
   :config
   (use-package lsp-ui :commands lsp-ui-mode)
 
@@ -17,7 +17,7 @@
 
   (use-package flycheck)
   (use-package dap-mode
-        :bind (:map dap-mode-map
+    :bind (:map dap-mode-map
                 (("<f8>" . dap-next)
                  ("S-<f8>" . dap-continue)
                  ("<f7>" . dap-step-in)
@@ -25,12 +25,14 @@
                  ("M-<f8>" . dap-debug)
                  ("C-<f8>" . dap-disconnect)
                  )))
-  ;;(setq lsp-completion-provider :none) ;; we use corfu
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless))) ;; Configure orderless
+  ;;(setq lsp-completion-provider :none)
+  ;; (defun corfu-lsp-setup ()
+  ;;   (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+  ;;         '(orderless)))
+  ;; (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
+  ;; (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (lsp-completion-mode . my/lsp-mode-setup-completion)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 
