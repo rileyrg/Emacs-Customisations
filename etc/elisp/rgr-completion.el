@@ -11,20 +11,20 @@
 (setq-default abbrev-mode 1)
 
 (use-package company
-  ;;:disabled
+  :disabled
   :init
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package corfu
-  :disabled
+  ;;:disabled
   ;; Optional customizations
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
-  (corfu-separator ?_)          ;; Orderless field separator
+  (corfu-separator ?\s)          ;; Orderless field separator
   ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  (corfu-preview-current t)    ;; Disable current candidate preview
+  ;;(corfu-preview-current t)    ;; Disable current candidate preview
   ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
   ;; (corfu-scroll-margin 5)        ;; Use scroll margin
@@ -43,8 +43,12 @@
     (lsp-completion-provider :none) ;; we use Corfu!
     :init
     (defun my/lsp-mode-setup-completion ()
+      ;; (setq-local completion-styles '(orderless)
+      ;;     completion-category-defaults nil
+      ;;     completion-category-overrides nil)
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(orderless))) ;; Configure orderless
+            '(orderless))
+      ) ;; Configure orderless
     :hook
     (lsp-completion-mode . my/lsp-mode-setup-completion))
 

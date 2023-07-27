@@ -27,12 +27,11 @@
   :commands (lsp lsp-deferred))
 
 (use-package eglot
-  :disabled
   :straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
-  :config
-  (use-package eldoc-box)
-  :hook
-  (prog-mode . eldoc-box-hover-at-point-mode)
+  ;; :config
+  ;; (use-package eldoc-box)
+  ;; :hook
+  ;; (prog-mode . eldoc-box-hover-at-point-mode)
   :bind
   (:map flymake-mode-map
         ([remap next-error] . flymake-goto-next-error)
