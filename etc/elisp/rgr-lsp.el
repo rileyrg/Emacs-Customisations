@@ -27,6 +27,7 @@
   :commands (lsp lsp-deferred))
 
 (use-package eglot
+  :disabled
   :straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
   :config
   (use-package eldoc-box)

@@ -11,12 +11,12 @@
 (setq-default abbrev-mode 1)
 
 (use-package company
-  :disabled
+  ;;:disabled
   :init
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package corfu
-  ;;:disabled
+  :disabled
   ;; Optional customizations
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -38,14 +38,6 @@
   ;; This is recommended since Dabbrev can be used globally (M-/).
   ;; See also `corfu-exclude-modes'.
   :init
-  (use-package orderless
-    :init
-    ;; Tune the global completion style settings to your liking!
-    ;; This affects the minibuffer and non-lsp completion at point.
-    (setq completion-styles '(orderless partial-completion basic)
-          completion-category-defaults nil
-          completion-category-overrides nil))
-
   (use-package lsp-mode
     :custom
     (lsp-completion-provider :none) ;; we use Corfu!
@@ -55,6 +47,7 @@
             '(orderless))) ;; Configure orderless
     :hook
     (lsp-completion-mode . my/lsp-mode-setup-completion))
+
   (global-corfu-mode))
 
 ;; A few more useful configurations...
@@ -117,6 +110,14 @@
   ;; Other useful Dabbrev configurations.
   :custom
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
+
+(use-package orderless
+  :init
+  ;; Tune the global completion style settings to your liking!
+  ;; This affects the minibuffer and non-lsp completion at point.
+  (setq completion-styles '(orderless partial-completion basic)
+        completion-category-defaults nil
+        completion-category-overrides nil))
 
 ;; Enable vertico
 (use-package vertico

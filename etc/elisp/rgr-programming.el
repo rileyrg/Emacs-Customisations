@@ -186,7 +186,7 @@
 (use-package js
   :config
   (defun rgr/js-mode-hook ()
-    (eglot-ensure)
+    ;;(eglot-ensure)
     (local-unset-key (kbd "M-."))
     (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
   :hook
@@ -210,7 +210,7 @@
   ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
   (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
   (defun rgr/ts-mode-hook ()
-    (eglot-ensure)
+    ;;(eglot-ensure)
     (setq-local dash-docs-docsets '("React" "JavaScript")))
   (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 
@@ -269,8 +269,8 @@
 ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
 (use-package haskell-mode
   :config
-  (add-hook 'haskell-mode-hook #'eglot-ensure)
-  (add-hook 'haskell-literate-mode-hook #'eglot-ensure)
+  ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
+  ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
   (eval-after-load "haskell-mode"
     '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
   (eval-after-load "haskell-cabal"
@@ -290,7 +290,7 @@
     )
   (defun rgr/c-mode-common-hook ()
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-    (eglot-ensure)
+    ;;(eglot-ensure)
     (if(featurep 'corfu)
         (setq completion-category-defaults nil))
     (if(featurep 'platformio-mode)

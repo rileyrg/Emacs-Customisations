@@ -712,7 +712,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     ```emacs-lisp
     (use-package company
-      :disabled
+      ;;:disabled
       :init
       (add-hook 'after-init-hook 'global-company-mode))
     ```
@@ -723,7 +723,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     
     ```emacs-lisp
     (use-package corfu
-      ;;:disabled
+      :disabled
       ;; Optional customizations
       :custom
       ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -745,14 +745,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;; This is recommended since Dabbrev can be used globally (M-/).
       ;; See also `corfu-exclude-modes'.
       :init
-      (use-package orderless
-        :init
-        ;; Tune the global completion style settings to your liking!
-        ;; This affects the minibuffer and non-lsp completion at point.
-        (setq completion-styles '(orderless partial-completion basic)
-              completion-category-defaults nil
-              completion-category-overrides nil))
-    
       (use-package lsp-mode
         :custom
         (lsp-completion-provider :none) ;; we use Corfu!
@@ -838,7 +830,15 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 7.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
-    see Corfu
+    ```emacs-lisp
+    (use-package orderless
+      :init
+      ;; Tune the global completion style settings to your liking!
+      ;; This affects the minibuffer and non-lsp completion at point.
+      (setq completion-styles '(orderless partial-completion basic)
+            completion-category-defaults nil
+            completion-category-overrides nil))
+    ```
 
 8.  vertico , vertical interactive completion
 
@@ -1287,7 +1287,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org90c64a4) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgf18a525) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2857,7 +2857,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package js
       :config
       (defun rgr/js-mode-hook ()
-        (eglot-ensure)
+        ;;(eglot-ensure)
         (local-unset-key (kbd "M-."))
         (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
       :hook
@@ -2887,7 +2887,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
       (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
       (defun rgr/ts-mode-hook ()
-        (eglot-ensure)
+        ;;(eglot-ensure)
         (setq-local dash-docs-docsets '("React" "JavaScript")))
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
@@ -2949,6 +2949,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             
             ```emacs-lisp
             (use-package eglot
+              :disabled
               :straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
               :config
               (use-package eldoc-box)
@@ -3046,8 +3047,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
         (use-package haskell-mode
           :config
-          (add-hook 'haskell-mode-hook #'eglot-ensure)
-          (add-hook 'haskell-literate-mode-hook #'eglot-ensure)
+          ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
+          ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
           (eval-after-load "haskell-mode"
             '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
           (eval-after-load "haskell-cabal"
@@ -3077,7 +3078,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         )
       (defun rgr/c-mode-common-hook ()
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-        (eglot-ensure)
+        ;;(eglot-ensure)
         (if(featurep 'corfu)
             (setq completion-category-defaults nil))
         (if(featurep 'platformio-mode)
@@ -3398,7 +3399,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org77c6c30) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9ff5db6) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3437,7 +3438,7 @@ fi
 ```
 
 
-<a id="org77c6c30"></a>
+<a id="org9ff5db6"></a>
 
 ### Gnome protocol handler desktop file
 
