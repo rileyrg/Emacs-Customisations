@@ -705,6 +705,7 @@ The [[https://github.com/minad/marginalia][marginalia]] pckage in emacs is very 
 :END:
 #+begin_src emacs-lisp
   (use-package affe
+    :disabled
     :after orderless
     :config
     ;; Configure Orderless
@@ -765,7 +766,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 **** company
 #+begin_src  emacs-lisp
   (use-package company
-    ;;:disabled
+    :disabled
     :init
     (add-hook 'after-init-hook 'global-company-mode))
 #+end_src
@@ -773,10 +774,8 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 I've had to turn this off as moving up and down auto selects at times. Back to company-mode.
 #+begin_src emacs-lisp
   (use-package corfu
-    :disabled
+    ;;:disabled
     ;; Optional customizations
-    :init
-    (setq lsp-completion-provider :none)
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
     (corfu-auto t)                 ;; Enable auto completion
@@ -797,6 +796,24 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
     ;; This is recommended since Dabbrev can be used globally (M-/).
     ;; See also `corfu-exclude-modes'.
     :init
+    (use-package orderless
+      :init
+      ;; Tune the global completion style settings to your liking!
+      ;; This affects the minibuffer and non-lsp completion at point.
+      (setq completion-styles '(orderless partial-completion basic)
+            completion-category-defaults nil
+            completion-category-overrides nil))
+
+    (use-package lsp-mode
+      :custom
+      (lsp-completion-provider :none) ;; we use Corfu!
+      :init
+      (defun my/lsp-mode-setup-completion ()
+        (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+              '(orderless))) ;; Configure orderless
+      :hook
+      (lsp-completion-mode . my/lsp-mode-setup-completion))
+
     (global-corfu-mode))
 
   ;; A few more useful configurations...
@@ -819,6 +836,7 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
 #+begin_src  emacs-lisp
   ;; Add extensions
   (use-package cape
+    :disabled
     ;; Bind dedicated completion commands
     ;; Alternative prefix keys: C-c p, M-p, M-+, ...
     :bind (("C-c p p" . completion-at-point) ;; capf
@@ -865,15 +883,7 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
 #+end_src
 **** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
-#+begin_src emacs-lisp
-  (use-package orderless
-    :ensure t
-    :init
-      (setq completion-styles '(orderless basic)
-      completion-category-defaults nil
-      completion-category-overrides '((file (styles basic partial-completion)))))
-
-#+end_src
+see Corfu
 **** vertico , vertical interactive completion
 #+begin_src emacs-lisp
   ;; Enable vertico
@@ -3127,7 +3137,6 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
           read-process-output-max (* 1024 1024))
     :config
     (use-package lsp-ui :commands lsp-ui-mode)
-
     (use-package lsp-treemacs
       :custom
       (lsp-treemacs-sync-mode t)
@@ -3143,12 +3152,6 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
                    ("M-<f8>" . dap-debug)
                    ("C-<f8>" . dap-disconnect)
                    )))
-    ;;(setq lsp-completion-provider :none)
-    ;; (defun corfu-lsp-setup ()
-    ;;   (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-    ;;         '(orderless)))
-    ;; (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
-    ;; (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
 
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
            (lsp-mode . lsp-enable-which-key-integration))

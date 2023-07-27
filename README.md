@@ -647,6 +647,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
     ```emacs-lisp
     (use-package affe
+      :disabled
       :after orderless
       :config
       ;; Configure Orderless
@@ -711,7 +712,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     ```emacs-lisp
     (use-package company
-      ;;:disabled
+      :disabled
       :init
       (add-hook 'after-init-hook 'global-company-mode))
     ```
@@ -722,16 +723,15 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     
     ```emacs-lisp
     (use-package corfu
-      :disabled
-      :after orderless
+      ;;:disabled
       ;; Optional customizations
-      ;; :custom
+      :custom
       ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-      ;; (corfu-auto t)                 ;; Enable auto completion
-      ;; (corfu-separator ?\s)          ;; Orderless field separator
-      ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+      (corfu-auto t)                 ;; Enable auto completion
+      (corfu-separator ?_)          ;; Orderless field separator
+      ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
       ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-      ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+      (corfu-preview-current t)    ;; Disable current candidate preview
       ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
       ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
       ;; (corfu-scroll-margin 5)        ;; Use scroll margin
@@ -745,6 +745,24 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;; This is recommended since Dabbrev can be used globally (M-/).
       ;; See also `corfu-exclude-modes'.
       :init
+      (use-package orderless
+        :init
+        ;; Tune the global completion style settings to your liking!
+        ;; This affects the minibuffer and non-lsp completion at point.
+        (setq completion-styles '(orderless partial-completion basic)
+              completion-category-defaults nil
+              completion-category-overrides nil))
+    
+      (use-package lsp-mode
+        :custom
+        (lsp-completion-provider :none) ;; we use Corfu!
+        :init
+        (defun my/lsp-mode-setup-completion ()
+          (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+                '(orderless))) ;; Configure orderless
+        :hook
+        (lsp-completion-mode . my/lsp-mode-setup-completion))
+    
       (global-corfu-mode))
     
     ;; A few more useful configurations...
@@ -761,6 +779,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;; Enable indentation+completion using the TAB key.
       ;; `completion-at-point' is often bound to M-TAB.
       (setq tab-always-indent 'complete))
+    
     ```
     
     1.  cape
@@ -819,13 +838,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 7.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
-    ```emacs-lisp
-    (use-package orderless
-      :init
-      (setq completion-styles '(orderless)
-            completion-category-defaults nil
-            completion-category-overrides '((file (styles . (partial-completion))))))
-    ```
+    see Corfu
 
 8.  vertico , vertical interactive completion
 
@@ -1274,7 +1287,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org79b7960) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org90c64a4) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2810,7 +2823,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :hook   (dart-mode . (lambda()
                                    (setq-local dash-docs-docsets '("Dart"))
                                    ;;(eglot-ensure)
-                                   (lsp)
+                                   (lsp)-deferred
                                    )))
         
         (use-package flutter
@@ -2904,14 +2917,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               :init
               ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
               (setq lsp-keymap-prefix "C-l")
-              (defun my/lsp-mode-setup-completion ()
-                (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-                      '(flex))) ;; Configure flex
               (setq gc-cons-threshold (* 100 1024 1024)
                     read-process-output-max (* 1024 1024))
               :config
               (use-package lsp-ui :commands lsp-ui-mode)
-            
               (use-package lsp-treemacs
                 :custom
                 (lsp-treemacs-sync-mode t)
@@ -2927,12 +2936,6 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                              ("M-<f8>" . dap-debug)
                              ("C-<f8>" . dap-disconnect)
                              )))
-              ;;(setq lsp-completion-provider :none)
-              ;; (defun corfu-lsp-setup ()
-              ;;   (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-              ;;         '(orderless)))
-              ;; (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
-              ;; (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
             
               :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
                      (lsp-mode . lsp-enable-which-key-integration))
@@ -3395,7 +3398,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf0b3f71) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org77c6c30) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3434,7 +3437,7 @@ fi
 ```
 
 
-<a id="orgf0b3f71"></a>
+<a id="org77c6c30"></a>
 
 ### Gnome protocol handler desktop file
 

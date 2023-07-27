@@ -193,6 +193,7 @@
               (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
 
 (use-package affe
+  :disabled
   :after orderless
   :config
   ;; Configure Orderless
