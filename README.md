@@ -711,13 +711,14 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     ```emacs-lisp
     (use-package company
+      ;;:disabled
       :init
       (add-hook 'after-init-hook 'global-company-mode))
     ```
 
 5.  corfu
 
-    I've had to turn this off as moving up and down auto selects at times.
+    I've had to turn this off as moving up and down auto selects at times. Back to company-mode.
     
     ```emacs-lisp
     (use-package corfu
@@ -761,6 +762,47 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;; `completion-at-point' is often bound to M-TAB.
       (setq tab-always-indent 'complete))
     ```
+    
+    1.  cape
+    
+        ```emacs-lisp
+        ;; Add extensions
+        (use-package cape
+          :disabled
+          ;; Bind dedicated completion commands
+          ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+          :bind (("C-c p p" . completion-at-point) ;; capf
+                 ("C-c p t" . complete-tag)        ;; etags
+                 ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+                 ("C-c p h" . cape-history)
+                 ("C-c p f" . cape-file)
+                 ("C-c p k" . cape-keyword)
+                 ("C-c p s" . cape-symbol)
+                 ("C-c p a" . cape-abbrev)
+                 ("C-c p l" . cape-line)
+                 ("C-c p w" . cape-dict)
+                 ("C-c p \\" . cape-tex)
+                 ("C-c p _" . cape-tex)
+                 ("C-c p ^" . cape-tex)
+                 ("C-c p &" . cape-sgml)
+                 ("C-c p r" . cape-rfc1345))
+          :init
+          ;; Add `completion-at-point-functions', used by `completion-at-point'.
+          ;; NOTE: The order matters!
+          (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+          (add-to-list 'completion-at-point-functions #'cape-file)
+          (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+          ;;(add-to-list 'completion-at-point-functions #'cape-history)
+          ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+          ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+          ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+          ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+          ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+          ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+          ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
+          ;;(add-to-list 'completion-at-point-functions #'cape-line)
+          )
+        ```
 
 6.  dabbrev
 
@@ -1232,7 +1274,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org49f12f4) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org79b7960) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2866,7 +2908,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
                       '(flex))) ;; Configure flex
               (setq gc-cons-threshold (* 100 1024 1024)
-                  read-process-output-max (* 1024 1024))
+                    read-process-output-max (* 1024 1024))
               :config
               (use-package lsp-ui :commands lsp-ui-mode)
             
@@ -2877,7 +2919,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             
               (use-package flycheck)
               (use-package dap-mode
-                    :bind (:map dap-mode-map
+                :bind (:map dap-mode-map
                             (("<f8>" . dap-next)
                              ("S-<f8>" . dap-continue)
                              ("<f7>" . dap-step-in)
@@ -2885,12 +2927,14 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                              ("M-<f8>" . dap-debug)
                              ("C-<f8>" . dap-disconnect)
                              )))
-              ;;(setq lsp-completion-provider :none) ;; we use corfu
-              (defun my/lsp-mode-setup-completion ()
-                (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-                      '(orderless))) ;; Configure orderless
+              ;;(setq lsp-completion-provider :none)
+              ;; (defun corfu-lsp-setup ()
+              ;;   (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+              ;;         '(orderless)))
+              ;; (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
+              ;; (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+            
               :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-                     (lsp-completion-mode . my/lsp-mode-setup-completion)
                      (lsp-mode . lsp-enable-which-key-integration))
               :commands (lsp lsp-deferred))
             
@@ -3351,7 +3395,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3e95961) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf0b3f71) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3390,7 +3434,7 @@ fi
 ```
 
 
-<a id="org3e95961"></a>
+<a id="orgf0b3f71"></a>
 
 ### Gnome protocol handler desktop file
 
