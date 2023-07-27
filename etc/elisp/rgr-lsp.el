@@ -6,7 +6,6 @@
         read-process-output-max (* 1024 1024))
   :config
   (use-package lsp-ui :commands lsp-ui-mode)
-
   (use-package lsp-treemacs
     :custom
     (lsp-treemacs-sync-mode t)
@@ -22,12 +21,6 @@
                  ("M-<f8>" . dap-debug)
                  ("C-<f8>" . dap-disconnect)
                  )))
-  ;;(setq lsp-completion-provider :none)
-  ;; (defun corfu-lsp-setup ()
-  ;;   (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-  ;;         '(orderless)))
-  ;; (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
-  ;; (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
 
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (lsp-mode . lsp-enable-which-key-integration))
