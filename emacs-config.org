@@ -763,6 +763,16 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 #+begin_src emacs-lisp
   (setq-default abbrev-mode 1)
 #+end_src
+**** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
+#+begin_src  emacs-lisp
+  (use-package orderless
+    :init
+    ;; Tune the global completion style settings to your liking!
+    ;; This affects the minibuffer and non-lsp completion at point.
+    (setq completion-styles '(orderless partial-completion basic)
+          completion-category-defaults nil
+          completion-category-overrides nil))
+#+end_src
 **** company
 #+begin_src  emacs-lisp
   (use-package company
@@ -801,12 +811,9 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
       (lsp-completion-provider :none) ;; we use Corfu!
       :init
       (defun my/lsp-mode-setup-completion ()
-        ;; (setq-local completion-styles '(orderless)
-        ;;     completion-category-defaults nil
-        ;;     completion-category-overrides nil)
         (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
               '(orderless))
-        ) ;; Configure orderless
+        )
       :hook
       (lsp-completion-mode . my/lsp-mode-setup-completion))
 
@@ -877,16 +884,6 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
   ;; Other useful Dabbrev configurations.
   :custom
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
-#+end_src
-**** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
-#+begin_src  emacs-lisp
-  (use-package orderless
-    :init
-    ;; Tune the global completion style settings to your liking!
-    ;; This affects the minibuffer and non-lsp completion at point.
-    (setq completion-styles '(orderless partial-completion basic)
-          completion-category-defaults nil
-          completion-category-overrides nil))
 #+end_src
 **** vertico , vertical interactive completion
 #+begin_src emacs-lisp
@@ -1086,7 +1083,7 @@ JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fo
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
-  ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
+;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
 #+end_src
 ***** Darkroom
 :PROPERTIES:
@@ -3024,7 +3021,7 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
     :bind
     ("C-x v ="  . git-gutter:popup-hunk))
 #+end_src
-***** Dart/Flutter                                             :dart:flutter:
+**** Dart/Flutter                                              :dart:flutter:
 Running emultaor from command line:
 
 #+begin_src bash
@@ -3084,6 +3081,31 @@ Running emultaor from command line:
           ("M-." . #'lsp-ui-peek-find-definitions)))
 
 
+#+end_src
+**** TreeSitter
+#+begin_src  emacs-lisp
+  ;; (setq treesit-language-source-alist
+  ;;  '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+  ;;    (cmake "https://github.com/uyha/tree-sitter-cmake")
+  ;;    (css "https://github.com/tree-sitter/tree-sitter-css")
+  ;;    (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+  ;;    (go "https://github.com/tree-sitter/tree-sitter-go")
+  ;;    (html "https://github.com/tree-sitter/tree-sitter-html")
+  ;;    (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+  ;;    (json "https://github.com/tree-sitter/tree-sitter-json")
+  ;;    (make "https://github.com/alemuller/tree-sitter-make")
+  ;;    (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+  ;;    (python "https://github.com/tree-sitter/tree-sitter-python")
+  ;;    (toml "https://github.com/tree-sitter/tree-sitter-toml")
+  ;;    (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+  ;;    (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+  ;;    (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+  (use-package tree-sitter
+    :config
+    (use-package tree-sitter-langs)
+    (global-tree-sitter-mode)
+    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 #+end_src
 **** Typescript
 :PROPERTIES:

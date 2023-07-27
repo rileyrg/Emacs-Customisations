@@ -708,7 +708,19 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-4.  company
+4.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+
+    ```emacs-lisp
+    (use-package orderless
+      :init
+      ;; Tune the global completion style settings to your liking!
+      ;; This affects the minibuffer and non-lsp completion at point.
+      (setq completion-styles '(orderless partial-completion basic)
+            completion-category-defaults nil
+            completion-category-overrides nil))
+    ```
+
+5.  company
 
     ```emacs-lisp
     (use-package company
@@ -717,7 +729,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (add-hook 'after-init-hook 'global-company-mode))
     ```
 
-5.  corfu
+6.  corfu
 
     I've had to turn this off as moving up and down auto selects at times. Back to company-mode.
     
@@ -750,12 +762,9 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
         (lsp-completion-provider :none) ;; we use Corfu!
         :init
         (defun my/lsp-mode-setup-completion ()
-          ;; (setq-local completion-styles '(orderless)
-          ;;     completion-category-defaults nil
-          ;;     completion-category-overrides nil)
           (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
                 '(orderless))
-          ) ;; Configure orderless
+          )
         :hook
         (lsp-completion-mode . my/lsp-mode-setup-completion))
     
@@ -819,7 +828,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           )
         ```
 
-6.  dabbrev
+7.  dabbrev
 
     ```emacs-lisp
     ;; Use Dabbrev with Corfu!
@@ -830,18 +839,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;; Other useful Dabbrev configurations.
       :custom
       (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
-    ```
-
-7.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
-
-    ```emacs-lisp
-    (use-package orderless
-      :init
-      ;; Tune the global completion style settings to your liking!
-      ;; This affects the minibuffer and non-lsp completion at point.
-      (setq completion-styles '(orderless partial-completion basic)
-            completion-category-defaults nil
-            completion-category-overrides nil))
     ```
 
 8.  vertico , vertical interactive completion
@@ -1044,7 +1041,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         JetBrains fonts are nice. See [nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
         
         ```emacs-lisp
-        ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :foundry "JB")
+        ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
         ```
     
     2.  Darkroom
@@ -1291,7 +1288,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgc3a1b9a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org9d4fdcd) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2808,46 +2805,46 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :bind
           ("C-x v ="  . git-gutter:popup-hunk))
         ```
+
+14. Dart/Flutter
+
+    Running emultaor from command line:
     
-    5.  Dart/Flutter
+    ```bash
+    emulator -avd Pixel_6_Pro_API_33
+    ```
     
-        Running emultaor from command line:
-        
-        ```bash
-        emulator -avd Pixel_6_Pro_API_33
-        ```
-        
-        ```emacs-lisp
-        (use-package dart-mode
-          :config
-          (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
-          (use-package lsp-dart :after lsp)
-          :custom
-           (lsp-dart-flutter-widget-guides t)
-          :hook   (dart-mode . (lambda()
-                                   (setq-local dash-docs-docsets '("Dart"))
-                                   ;;(eglot-ensure)
-                                   (lsp)-deferred
-                                   )))
-        
-        (use-package flutter
-          :after dart-mode
-          :config
-          (use-package flutter-l10n-flycheck)
-          (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
-          :bind (:map dart-mode-map
-                      ("C-M-x" . (lambda()
-                                   (interactive)
-                                    (save-buffer)
-                                    (flutter-run-or-hot-reload))))
-          :custom
-          (flutter-sdk-path "~/bin/thirdparty/flutter")
-          :hook   (dart-mode . (lambda()
-                                   (flutter-test-mode))))
-        
-        ```
+    ```emacs-lisp
+    (use-package dart-mode
+      :config
+      (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
+      (use-package lsp-dart :after lsp)
+      :custom
+       (lsp-dart-flutter-widget-guides t)
+      :hook   (dart-mode . (lambda()
+                               (setq-local dash-docs-docsets '("Dart"))
+                               ;;(eglot-ensure)
+                               (lsp)-deferred
+                               )))
     
-    6.  Java
+    (use-package flutter
+      :after dart-mode
+      :config
+      (use-package flutter-l10n-flycheck)
+      (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
+      :bind (:map dart-mode-map
+                  ("C-M-x" . (lambda()
+                               (interactive)
+                                (save-buffer)
+                                (flutter-run-or-hot-reload))))
+      :custom
+      (flutter-sdk-path "~/bin/thirdparty/flutter")
+      :hook   (dart-mode . (lambda()
+                               (flutter-test-mode))))
+    
+    ```
+    
+    1.  Java
     
         ```emacs-lisp
         ;; (use-package emacs
@@ -2855,7 +2852,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ;;   )
         ```
 
-14. Javascript
+15. Javascript
 
     ```emacs-lisp
     (use-package js
@@ -2873,7 +2870,34 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     ```
 
-15. Typescript
+16. TreeSitter
+
+    ```emacs-lisp
+    ;; (setq treesit-language-source-alist
+    ;;  '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+    ;;    (cmake "https://github.com/uyha/tree-sitter-cmake")
+    ;;    (css "https://github.com/tree-sitter/tree-sitter-css")
+    ;;    (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+    ;;    (go "https://github.com/tree-sitter/tree-sitter-go")
+    ;;    (html "https://github.com/tree-sitter/tree-sitter-html")
+    ;;    (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+    ;;    (json "https://github.com/tree-sitter/tree-sitter-json")
+    ;;    (make "https://github.com/alemuller/tree-sitter-make")
+    ;;    (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+    ;;    (python "https://github.com/tree-sitter/tree-sitter-python")
+    ;;    (toml "https://github.com/tree-sitter/tree-sitter-toml")
+    ;;    (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+    ;;    (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+    ;;    (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+    
+    (use-package tree-sitter
+      :config
+      (use-package tree-sitter-langs)
+      (global-tree-sitter-mode)
+      (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+    ```
+
+17. Typescript
 
     ```emacs-lisp
     ;; sudo npm i -g typescript-language-server
@@ -2896,13 +2920,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
 
-16. Javascript
+18. Javascript
 
     ```emacs-lisp
     
     ```
 
-17. Language Server Protocol (LSP), lsp-mode
+19. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2972,7 +2996,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/lsp)
             ```
 
-18. Serial Port
+20. Serial Port
 
     ```emacs-lisp
     (defgroup rgr/serial-ports nil
@@ -3000,7 +3024,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       (selectSerialPortBuffer)))
     ```
 
-19. PlatformIO
+21. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
     
@@ -3025,7 +3049,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     1.  get compilation errors to work and submit ansi color fix?
 
-20. Python
+22. Python
 
     1.  ipython
     
@@ -3042,7 +3066,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
         ```
 
-21. Haskell
+23. Haskell
 
     1.  haskell-mode
     
@@ -3059,7 +3083,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
         ```
 
-22. lldb debugging in emacs
+24. lldb debugging in emacs
 
     1.  voltron
     
@@ -3071,7 +3095,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           )
         ```
 
-23. c-mode-common-hook
+25. c-mode-common-hook
 
     ```emacs-lisp
     (use-package emacs
@@ -3095,7 +3119,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 ("TAB" . rgr/c-indent-complete))))
     ```
 
-24. C, c-mode
+26. C, c-mode
 
     ```emacs-lisp
     (defun rgr/c-mode-hook ()
@@ -3139,7 +3163,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         
         ```
 
-25. cc,cpp, C++, cc-mode
+27. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3147,7 +3171,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-26. Linux tools
+28. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -3159,7 +3183,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-27. Assembler
+29. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
@@ -3167,7 +3191,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-28. Godot GDScript
+30. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
@@ -3192,7 +3216,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-29. Web,Symfony and Twig
+31. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -3259,7 +3283,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-30. elf-mode - view the symbol list in a binary
+32. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -3271,7 +3295,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-31. provide
+33. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3402,7 +3426,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org073f51a) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdc17d58) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3441,7 +3465,7 @@ fi
 ```
 
 
-<a id="org073f51a"></a>
+<a id="orgdc17d58"></a>
 
 ### Gnome protocol handler desktop file
 

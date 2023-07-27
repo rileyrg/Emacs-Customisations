@@ -10,6 +10,14 @@
 
 (setq-default abbrev-mode 1)
 
+(use-package orderless
+  :init
+  ;; Tune the global completion style settings to your liking!
+  ;; This affects the minibuffer and non-lsp completion at point.
+  (setq completion-styles '(orderless partial-completion basic)
+        completion-category-defaults nil
+        completion-category-overrides nil))
+
 (use-package company
   :disabled
   :init
@@ -43,12 +51,9 @@
     (lsp-completion-provider :none) ;; we use Corfu!
     :init
     (defun my/lsp-mode-setup-completion ()
-      ;; (setq-local completion-styles '(orderless)
-      ;;     completion-category-defaults nil
-      ;;     completion-category-overrides nil)
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
             '(orderless))
-      ) ;; Configure orderless
+      )
     :hook
     (lsp-completion-mode . my/lsp-mode-setup-completion))
 
@@ -114,14 +119,6 @@
   ;; Other useful Dabbrev configurations.
   :custom
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
-
-(use-package orderless
-  :init
-  ;; Tune the global completion style settings to your liking!
-  ;; This affects the minibuffer and non-lsp completion at point.
-  (setq completion-styles '(orderless partial-completion basic)
-        completion-category-defaults nil
-        completion-category-overrides nil))
 
 ;; Enable vertico
 (use-package vertico
