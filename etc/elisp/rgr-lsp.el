@@ -19,13 +19,13 @@
   (use-package dap-mode
         :bind (:map dap-mode-map
                 (("<f8>" . dap-next)
-                 ("<f7>" . dap-step-in)
                  ("S-<f8>" . dap-continue)
+                 ("<f7>" . dap-step-in)
+                 ("S-<f7>" . dap-step-out)
                  ("M-<f8>" . dap-debug)
                  ("C-<f8>" . dap-disconnect)
-                 ("S-<f7>" . dap-step-out)
                  )))
-  (setq lsp-completion-provider :none) ;; we use corfu
+  ;;(setq lsp-completion-provider :none) ;; we use corfu
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless))) ;; Configure orderless

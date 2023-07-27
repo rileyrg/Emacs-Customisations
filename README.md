@@ -699,13 +699,50 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (yas-global-mode))
     ```
 
-3.  corfu
+3.  Abbrev Mode
+
+    [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
+    
+    ```emacs-lisp
+    (setq-default abbrev-mode 1)
+    ```
+
+4.  company
 
     ```emacs-lisp
+    (use-package company
+      :init
+      (add-hook 'after-init-hook 'global-company-mode))
+    ```
+
+5.  corfu
+
+    I've had to turn this off as moving up and down auto selects at times.
+    
+    ```emacs-lisp
     (use-package corfu
+      :disabled
+      :after orderless
       ;; Optional customizations
-      :custom
-      (corfu-auto t)                 ;; Enable auto completion
+      ;; :custom
+      ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+      ;; (corfu-auto t)                 ;; Enable auto completion
+      ;; (corfu-separator ?\s)          ;; Orderless field separator
+      ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+      ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+      ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+      ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+      ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+      ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+    
+      ;; Enable Corfu only for certain modes.
+      ;; :hook ((prog-mode . corfu-mode)
+      ;;        (shell-mode . corfu-mode)
+      ;;        (eshell-mode . corfu-mode))
+    
+      ;; Recommended: Enable Corfu globally.
+      ;; This is recommended since Dabbrev can be used globally (M-/).
+      ;; See also `corfu-exclude-modes'.
       :init
       (global-corfu-mode))
     
@@ -725,15 +762,20 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (setq tab-always-indent 'complete))
     ```
 
-4.  Abbrev Mode
+6.  dabbrev
 
-    [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
-    
     ```emacs-lisp
-    (setq-default abbrev-mode 1)
+    ;; Use Dabbrev with Corfu!
+    (use-package dabbrev
+      ;; Swap M-/ and C-M-/
+      :bind (("M-/" . dabbrev-completion)
+             ("C-M-/" . dabbrev-expand))
+      ;; Other useful Dabbrev configurations.
+      :custom
+      (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
     ```
 
-5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+7.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
     ```emacs-lisp
     (use-package orderless
@@ -743,7 +785,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
             completion-category-overrides '((file (styles . (partial-completion))))))
     ```
 
-6.  vertico , vertical interactive completion
+8.  vertico , vertical interactive completion
 
     ```emacs-lisp
     ;; Enable vertico
@@ -771,7 +813,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     
     ```
 
-7.  Abbrev Mode
+9.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
@@ -779,7 +821,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-8.  provide
+10. provide
 
     ```emacs-lisp
     (provide 'rgr/completion)
@@ -1190,7 +1232,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org5d63041) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org49f12f4) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2837,13 +2879,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (use-package dap-mode
                     :bind (:map dap-mode-map
                             (("<f8>" . dap-next)
-                             ("<f7>" . dap-step-in)
                              ("S-<f8>" . dap-continue)
+                             ("<f7>" . dap-step-in)
+                             ("S-<f7>" . dap-step-out)
                              ("M-<f8>" . dap-debug)
                              ("C-<f8>" . dap-disconnect)
-                             ("S-<f7>" . dap-step-out)
                              )))
-              (setq lsp-completion-provider :none) ;; we use corfu
+              ;;(setq lsp-completion-provider :none) ;; we use corfu
               (defun my/lsp-mode-setup-completion ()
                 (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
                       '(orderless))) ;; Configure orderless
@@ -3309,7 +3351,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0b78c6c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3e95961) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3348,7 +3390,7 @@ fi
 ```
 
 
-<a id="org0b78c6c"></a>
+<a id="org3e95961"></a>
 
 ### Gnome protocol handler desktop file
 
