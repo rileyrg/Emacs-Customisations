@@ -737,28 +737,6 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" elisp-dir)
 :END:
-**** CANCELLED fancy-dabbrev                                      :CANCELLED:
-CLOSED: [2021-07-21 Wed 11:39]
-:PROPERTIES:
-:ID:       63e64233-79d8-4e94-bd22-5c458416d3f1
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-07-21 Wed 11:39] \\
-  hmm, how to plug dabbrev into completing read!?
-:END:
-[[https://github.com/jrosdahl/fancy-dabbrev][fancy-dabbrev]] works ok with vertico and alt tab emacs completion
-#+begin_src emacs-lisp
-  ;; Load fancy-dabbrev.el:
-  (use-package fancy-dabbrev
-    :init
-    ;; Enable fancy-dabbrev previews everywhere:
-    (global-fancy-dabbrev-mode)
-    :bind
-    ("C-1" . #'fancy-dabbrev-forward)
-    ("C-2" . #'fancy-dabbrev-backward))
-#+end_src
-
 **** Which Key                                                    :which:key:
 :PROPERTIES:
 :END:
@@ -777,12 +755,45 @@ CLOSED: [2021-07-21 Wed 11:39]
     (use-package yasnippet-snippets)
     (yas-global-mode))
 #+end_src
+**** Abbrev Mode
+:PROPERTIES:
+:END:
+[[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
+#+begin_src emacs-lisp
+  (setq-default abbrev-mode 1)
+#+end_src
+**** company
+#+begin_src  emacs-lisp
+  (use-package company
+    :init
+    (add-hook 'after-init-hook 'global-company-mode))
+#+end_src
 **** corfu
+I've had to turn this off as moving up and down auto selects at times.
 #+begin_src emacs-lisp
   (use-package corfu
+    :disabled
+    :after orderless
     ;; Optional customizations
-    :custom
-    (corfu-auto t)                 ;; Enable auto completion
+    ;; :custom
+    ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+    ;; (corfu-auto t)                 ;; Enable auto completion
+    ;; (corfu-separator ?\s)          ;; Orderless field separator
+    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+    ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+    ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+    ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+
+    ;; Enable Corfu only for certain modes.
+    ;; :hook ((prog-mode . corfu-mode)
+    ;;        (shell-mode . corfu-mode)
+    ;;        (eshell-mode . corfu-mode))
+
+    ;; Recommended: Enable Corfu globally.
+    ;; This is recommended since Dabbrev can be used globally (M-/).
+    ;; See also `corfu-exclude-modes'.
     :init
     (global-corfu-mode))
 
@@ -801,12 +812,16 @@ CLOSED: [2021-07-21 Wed 11:39]
     ;; `completion-at-point' is often bound to M-TAB.
     (setq tab-always-indent 'complete))
 #+end_src
-**** Abbrev Mode
-:PROPERTIES:
-:END:
-[[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
-#+begin_src emacs-lisp
-  (setq-default abbrev-mode 1)
+**** dabbrev
+#+begin_src  emacs-lisp
+;; Use Dabbrev with Corfu!
+(use-package dabbrev
+  ;; Swap M-/ and C-M-/
+  :bind (("M-/" . dabbrev-completion)
+         ("C-M-/" . dabbrev-expand))
+  ;; Other useful Dabbrev configurations.
+  :custom
+  (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
 #+end_src
 **** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
 #+begin_src emacs-lisp
@@ -3082,13 +3097,13 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
     (use-package dap-mode
           :bind (:map dap-mode-map
                   (("<f8>" . dap-next)
-                   ("<f7>" . dap-step-in)
                    ("S-<f8>" . dap-continue)
+                   ("<f7>" . dap-step-in)
+                   ("S-<f7>" . dap-step-out)
                    ("M-<f8>" . dap-debug)
                    ("C-<f8>" . dap-disconnect)
-                   ("S-<f7>" . dap-step-out)
                    )))
-    (setq lsp-completion-provider :none) ;; we use corfu
+    ;;(setq lsp-completion-provider :none) ;; we use corfu
     (defun my/lsp-mode-setup-completion ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
             '(orderless))) ;; Configure orderless
