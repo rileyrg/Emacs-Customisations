@@ -774,15 +774,16 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
 #+begin_src emacs-lisp
   (use-package corfu
     :disabled
-    :after orderless
     ;; Optional customizations
-    ;; :custom
+    :init
+    (setq lsp-completion-provider :none)
+    :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    ;; (corfu-auto t)                 ;; Enable auto completion
-    ;; (corfu-separator ?\s)          ;; Orderless field separator
-    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+    (corfu-auto t)                 ;; Enable auto completion
+    (corfu-separator ?_)          ;; Orderless field separator
+    ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
     ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+    (corfu-preview-current t)    ;; Disable current candidate preview
     ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
     ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
     ;; (corfu-scroll-margin 5)        ;; Use scroll margin
@@ -812,12 +813,12 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
     ;; Enable indentation+completion using the TAB key.
     ;; `completion-at-point' is often bound to M-TAB.
     (setq tab-always-indent 'complete))
+
 #+end_src
 ***** cape
 #+begin_src  emacs-lisp
   ;; Add extensions
   (use-package cape
-    :disabled
     ;; Bind dedicated completion commands
     ;; Alternative prefix keys: C-c p, M-p, M-+, ...
     :bind (("C-c p p" . completion-at-point) ;; capf
@@ -866,10 +867,12 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
 **** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
 #+begin_src emacs-lisp
   (use-package orderless
+    :ensure t
     :init
-    (setq completion-styles '(orderless)
-          completion-category-defaults nil
-          completion-category-overrides '((file (styles . (partial-completion))))))
+      (setq completion-styles '(orderless basic)
+      completion-category-defaults nil
+      completion-category-overrides '((file (styles basic partial-completion)))))
+
 #+end_src
 **** vertico , vertical interactive completion
 #+begin_src emacs-lisp
@@ -3024,7 +3027,7 @@ Running emultaor from command line:
     :hook   (dart-mode . (lambda()
                              (setq-local dash-docs-docsets '("Dart"))
                              ;;(eglot-ensure)
-                             (lsp)
+                             (lsp)-deferred
                              )))
 
   (use-package flutter
@@ -3120,9 +3123,6 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
     :init
     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
     (setq lsp-keymap-prefix "C-l")
-    (defun my/lsp-mode-setup-completion ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(flex))) ;; Configure flex
     (setq gc-cons-threshold (* 100 1024 1024)
           read-process-output-max (* 1024 1024))
     :config

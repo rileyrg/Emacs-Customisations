@@ -161,7 +161,7 @@
   :hook   (dart-mode . (lambda()
                            (setq-local dash-docs-docsets '("Dart"))
                            ;;(eglot-ensure)
-                           (lsp)
+                           (lsp)-deferred
                            )))
 
 (use-package flutter
