@@ -150,31 +150,31 @@
   ("C-x v ="  . git-gutter:popup-hunk))
 
 (use-package dart-mode
+  :custom
+  (lsp-dart-flutter-widget-guides t)
+  :init
+  (use-package flutter
+    :after dart-mode
+    :custom
+    (flutter-sdk-path "~/bin/thirdparty/flutter")
+    :config
+    (use-package flutter-l10n-flycheck)
+    (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
+    :bind (:map dart-mode-map
+                ("C-M-x" . (lambda()
+                             (interactive)
+                             (save-buffer)
+                             (flutter-run-or-hot-reload))))
+    :hook   (dart-mode . (lambda()
+                           (flutter-test-mode))))
   :config
   (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
   (use-package lsp-dart :after lsp)
-  :custom
-   (lsp-dart-flutter-widget-guides t)
   :hook   (dart-mode . (lambda()
-                           (setq-local dash-docs-docsets '("Dart"))
-                           (eglot-ensure)
-                           ;;(lsp-deferred)
-                           )))
-
-(use-package flutter
-  :after dart-mode
-  :config
-  (use-package flutter-l10n-flycheck)
-  (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
-  :bind (:map dart-mode-map
-              ("C-M-x" . (lambda()
-                           (interactive)
-                            (save-buffer)
-                            (flutter-run-or-hot-reload))))
-  :custom
-  (flutter-sdk-path "~/bin/thirdparty/flutter")
-  :hook   (dart-mode . (lambda()
-                           (flutter-test-mode))))
+                         (setq-local dash-docs-docsets '("Dart"))
+                         ;;(eglot-ensure)
+                         (lsp-deferred)
+                         )))
 
 ;; (use-package emacs
 ;;   :hook (java-mode . eglot-ensure)
@@ -310,8 +310,8 @@
     )
   (defun rgr/c-mode-common-hook ()
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-    (eglot-ensure)
-    ;;(lsp-deferred)
+    ;;(eglot-ensure)
+    (lsp-deferred)
     (if(featurep 'corfu)
         (setq completion-category-defaults nil))
     (if(featurep 'platformio-mode)
