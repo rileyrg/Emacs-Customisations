@@ -475,7 +475,7 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
     :bind
     ( "C-x C-f" . rgr/ffap))
 #+end_src
-**** WAITING [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list :selectrum:WAITING:
+**** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list :selectrum:WAITING:
 :PROPERTIES:
 :ID:       f7f2ea39-77f2-45bd-9402-0eb09ef74b39
 :header-args:emacs-lisp: :tangle no
@@ -748,6 +748,14 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     :demand t
     :config (which-key-mode))
 #+end_src
+**** all-the-icons
+#+begin_src  emacs-lisp
+  (use-package all-the-icons-completion
+    :config
+    (all-the-icons-completion-mode)
+    (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
+
+#+end_src
 **** Yasnippet                                                    :yasnippet:
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
 #+begin_src emacs-lisp
@@ -763,6 +771,19 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 #+begin_src emacs-lisp
   (setq-default abbrev-mode 1)
 #+end_src
+**** company
+#+begin_src  emacs-lisp
+  (use-package company
+    ;;:disabled
+    :custom
+    (company-auto-complete  t)
+    :config
+    (add-hook 'after-init-hook 'global-company-mode))
+
+  (use-package company-box
+    :hook (company-mode . company-box-mode))
+
+#+end_src
 **** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
 #+begin_src  emacs-lisp
   (use-package orderless
@@ -773,18 +794,11 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
           completion-category-defaults nil
           completion-category-overrides nil))
 #+end_src
-**** company
-#+begin_src  emacs-lisp
-  (use-package company
-    :disabled
-    :init
-    (add-hook 'after-init-hook 'global-company-mode))
-#+end_src
 **** corfu
 I've had to turn this off as moving up and down auto selects at times. Back to company-mode.
 #+begin_src emacs-lisp
   (use-package corfu
-    ;;:disabled
+    :disabled
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -806,17 +820,17 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
     ;; This is recommended since Dabbrev can be used globally (M-/).
     ;; See also `corfu-exclude-modes'.
     :straight (:files (:defaults "extensions/*"))
-    ;;:init
-    ;; (use-package lsp-mode
-    ;;   :custom
-    ;;   (lsp-completion-provider :none) ;; we use Corfu!
-    ;;   :init
-    ;;   (defun my/lsp-mode-setup-completion ()
-    ;;     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-    ;;           '(orderless)))
+    :init
+    (use-package lsp-mode
+      :custom
+      (lsp-completion-provider :none) ;; we use Corfu!
+      :init
+      (defun my/lsp-mode-setup-completion ()
+        (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+              '(orderless)))
 
-    ;;   :hook
-    ;;   (lsp-completion-mode . my/lsp-mode-setup-completion))
+      :hook
+      (lsp-completion-mode . my/lsp-mode-setup-completion))
     :config
     (corfu-popupinfo-mode)
     (global-corfu-mode))
@@ -3030,31 +3044,31 @@ Running emultaor from command line:
 
 #+begin_src emacs-lisp
   (use-package dart-mode
+    :custom
+    (lsp-dart-flutter-widget-guides t)
+    :init
+    (use-package flutter
+      :after dart-mode
+      :custom
+      (flutter-sdk-path "~/bin/thirdparty/flutter")
+      :config
+      (use-package flutter-l10n-flycheck)
+      (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
+      :bind (:map dart-mode-map
+                  ("C-M-x" . (lambda()
+                               (interactive)
+                               (save-buffer)
+                               (flutter-run-or-hot-reload))))
+      :hook   (dart-mode . (lambda()
+                             (flutter-test-mode))))
     :config
     (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
     (use-package lsp-dart :after lsp)
-    :custom
-     (lsp-dart-flutter-widget-guides t)
     :hook   (dart-mode . (lambda()
-                             (setq-local dash-docs-docsets '("Dart"))
-                             (eglot-ensure)
-                             ;;(lsp-deferred)
-                             )))
-
-  (use-package flutter
-    :after dart-mode
-    :config
-    (use-package flutter-l10n-flycheck)
-    (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
-    :bind (:map dart-mode-map
-                ("C-M-x" . (lambda()
-                             (interactive)
-                              (save-buffer)
-                              (flutter-run-or-hot-reload))))
-    :custom
-    (flutter-sdk-path "~/bin/thirdparty/flutter")
-    :hook   (dart-mode . (lambda()
-                             (flutter-test-mode))))
+                           (setq-local dash-docs-docsets '("Dart"))
+                           ;;(eglot-ensure)
+                           (lsp-deferred)
+                           )))
 
 #+end_src
 ***** Java                                                             :java:
@@ -3313,8 +3327,8 @@ SCHEDULED: <2021-09-26 Sun>
       )
     (defun rgr/c-mode-common-hook ()
       (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-      (eglot-ensure)
-      ;;(lsp-deferred)
+      ;;(eglot-ensure)
+      (lsp-deferred)
       (if(featurep 'corfu)
           (setq completion-category-defaults nil))
       (if(featurep 'platformio-mode)

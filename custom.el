@@ -43,15 +43,6 @@
  '(ccls-sem-highlight-method 'overlay)
  '(centaur-tabs-cycle-scope 'tabs)
  '(clang-format-style "LLVM")
- '(company-box-enable-icon nil)
- '(company-c-headers-path-user
-   '("~/.platformio/packages/framework-arduinoavr/cores/arduino/Arduino.h"))
- '(company-dabbrev-downcase nil)
- '(company-irony-ignore-case 'smart)
- '(company-lsp-cache-candidates 'auto)
- '(company-quickhelp-color-background "#4F4F4F")
- '(company-quickhelp-color-foreground "#DCDCCC")
- '(company-tooltip-limit 20)
  '(compilation-ask-about-save nil)
  '(compilation-error-regexp-alist
    '(bash-xset-x dotnet-warning dotnet-error msbuild-warning msbuild-error xbuild-warning xbuild-error dotnet-testfail typescript-nglint-warning typescript-nglint-error typescript-tslint typescript-tsc-pretty typescript-tsc absoft ada aix ant bash borland python-tracebacks-and-caml cmake cmake-info comma cucumber msft edg-1 edg-2 epc ftnchek gradle-kotlin iar ibm irix java jikes-file maven jikes-line clang-include gcc-include ruby-Test::Unit gmake gnu lcc makepp mips-1 mips-2 omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line))

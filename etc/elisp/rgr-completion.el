@@ -3,12 +3,27 @@
   :demand t
   :config (which-key-mode))
 
+(use-package all-the-icons-completion
+  :config
+  (all-the-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
+
 (use-package yasnippet
   :config
   (use-package yasnippet-snippets)
   (yas-global-mode))
 
 (setq-default abbrev-mode 1)
+
+(use-package company
+  ;;:disabled
+  :custom
+  (company-auto-complete  t)
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 (use-package orderless
   :init
@@ -18,13 +33,8 @@
         completion-category-defaults nil
         completion-category-overrides nil))
 
-(use-package company
-  :disabled
-  :init
-  (add-hook 'after-init-hook 'global-company-mode))
-
 (use-package corfu
-  ;;:disabled
+  :disabled
   ;; Optional customizations
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -46,17 +56,17 @@
   ;; This is recommended since Dabbrev can be used globally (M-/).
   ;; See also `corfu-exclude-modes'.
   :straight (:files (:defaults "extensions/*"))
-  ;;:init
-  ;; (use-package lsp-mode
-  ;;   :custom
-  ;;   (lsp-completion-provider :none) ;; we use Corfu!
-  ;;   :init
-  ;;   (defun my/lsp-mode-setup-completion ()
-  ;;     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-  ;;           '(orderless)))
+  :init
+  (use-package lsp-mode
+    :custom
+    (lsp-completion-provider :none) ;; we use Corfu!
+    :init
+    (defun my/lsp-mode-setup-completion ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(orderless)))
 
-  ;;   :hook
-  ;;   (lsp-completion-mode . my/lsp-mode-setup-completion))
+    :hook
+    (lsp-completion-mode . my/lsp-mode-setup-completion))
   :config
   (corfu-popupinfo-mode)
   (global-corfu-mode))
