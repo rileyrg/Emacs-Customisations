@@ -17,10 +17,11 @@
 
 (use-package company
   :init
-  (global-company-mode)
   (message "init company-mode")
-  :bind
-  ("<tab>" .  company-indent-or-complete-common))
+  :bind( :map company-mode-map
+         ("<tab>" .  company-indent-or-complete-common))
+  :hook
+  (prog-mode . company-mode))
 (use-package company-box
   :config
   (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)

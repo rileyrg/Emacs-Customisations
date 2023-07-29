@@ -732,10 +732,11 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     ```emacs-lisp
     (use-package company
       :init
-      (global-company-mode)
       (message "init company-mode")
-      :bind
-      ("<tab>" .  company-indent-or-complete-common))
+      :bind( :map company-mode-map
+             ("<tab>" .  company-indent-or-complete-common))
+      :hook
+      (prog-mode . company-mode))
     (use-package company-box
       :config
       (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
@@ -1318,7 +1319,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org65d49fb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org1d55f81) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3454,7 +3455,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd207a14) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf6aabf6) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3493,7 +3494,7 @@ fi
 ```
 
 
-<a id="orgd207a14"></a>
+<a id="orgf6aabf6"></a>
 
 ### Gnome protocol handler desktop file
 
