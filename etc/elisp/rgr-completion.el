@@ -16,13 +16,14 @@
 (setq-default abbrev-mode 1)
 
 (use-package company
-  ;;:disabled
-  :custom
-  (company-auto-complete  t)
-  :config
-  (add-hook 'after-init-hook 'global-company-mode))
-
+  :init
+  (global-company-mode)
+  (message "init company-mode")
+  :bind
+  ("<tab>" .  company-indent-or-complete-common))
 (use-package company-box
+  :config
+  (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
   :hook (company-mode . company-box-mode))
 
 (use-package orderless

@@ -698,7 +698,17 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :config (which-key-mode))
     ```
 
-2.  Yasnippet
+2.  all-the-icons
+
+    ```emacs-lisp
+    (use-package all-the-icons-completion
+      :config
+      (all-the-icons-completion-mode)
+      (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
+    
+    ```
+
+3.  Yasnippet
 
     [YASnippet](https://github.com/joaotavora/yasnippet) is a template system for Emacs.
     
@@ -709,7 +719,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (yas-global-mode))
     ```
 
-3.  Abbrev Mode
+4.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
@@ -717,7 +727,23 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-4.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+5.  company
+
+    ```emacs-lisp
+    (use-package company
+      :init
+      (global-company-mode)
+      (message "init company-mode")
+      :bind
+      ("<tab>" .  company-indent-or-complete-common))
+    (use-package company-box
+      :config
+      (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
+      :hook (company-mode . company-box-mode))
+    
+    ```
+
+6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
     ```emacs-lisp
     (use-package orderless
@@ -729,65 +755,150 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
             completion-category-overrides nil))
     ```
 
-5.  company
+7.  corfu
 
+    I've had to turn this off as moving up and down auto selects at times. Back to company-mode.
+    
     ```emacs-lisp
-    (use-package company
-      ;;:disabled
+    (use-package corfu
+      :disabled
+      ;; Optional customizations
+      :custom
+      ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+      (corfu-auto t)                 ;; Enable auto completion
+      (corfu-separator ?\s)          ;; Orderless field separator
+      ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+      ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+      (corfu-preview-current t)    ;; Disable current candidate preview
+      ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+      ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+      ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+    
+      ;; Enable Corfu only for certain modes.
+      ;; :hook ((prog-mode . corfu-mode)
+      ;;        (shell-mode . corfu-mode)
+      ;;        (eshell-mode . corfu-mode))
+    
+      ;; Recommended: Enable Corfu globally.
+      ;; This is recommended since Dabbrev can be used globally (M-/).
+      ;; See also `corfu-exclude-modes'.
+      :straight (:files (:defaults "extensions/*"))
       :init
-      (add-hook 'after-init-hook 'global-company-mode))
-    ```
-
-6.  vertico , vertical interactive completion
-
-    ```emacs-lisp
-    ;; Enable vertico
-    (use-package vertico
-      :init
-      (vertico-mode)
+      (use-package lsp-mode
+        :custom
+        (lsp-completion-provider :none) ;; we use Corfu!
+        :init
+        (defun my/lsp-mode-setup-completion ()
+          (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+                '(orderless)))
     
-      ;; Different scroll margin
-      ;; (setq vertico-scroll-margin 0)
+        :hook
+        (lsp-completion-mode . my/lsp-mode-setup-completion))
+      :config
+      (corfu-popupinfo-mode)
+      (global-corfu-mode))
     
-      ;; Show more candidates
-      ;; (setq vertico-count 20)
-    
-      ;; Grow and shrink the Vertico minibuffer
-      ;; (setq vertico-resize t)
-    
-      ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-      ;; (setq vertico-cycle t)
-      )
     
     ;; A few more useful configurations...
     (use-package emacs
       :init
-      ;; Add prompt indicator to `completing-read-multiple'.
-      ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
-      (defun crm-indicator (args)
-        (cons (format "[CRM%s] %s"
-                      (replace-regexp-in-string
-                       "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                       crm-separator)
-                      (car args))
-              (cdr args)))
-      (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+      ;; TAB cycle if there are only few candidates
+      (setq completion-cycle-threshold 3)
     
-      ;; Do not allow the cursor in the minibuffer prompt
-      (setq minibuffer-prompt-properties
-            '(read-only t cursor-intangible t face minibuffer-prompt))
-      (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-    
-      ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-      ;; Vertico commands are hidden in normal buffers.
+      ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+      ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
       ;; (setq read-extended-command-predicate
       ;;       #'command-completion-default-include-p)
     
-      ;; Enable recursive minibuffers
-      (setq enable-recursive-minibuffers t))
+      ;; Enable indentation+completion using the TAB key.
+      ;; `completion-at-point' is often bound to M-TAB.
+      (setq tab-always-indent 'complete))
+    
+    ```
+    
+    1.  cape
+    
+        ```emacs-lisp
+        ;; Add extensions
+        (use-package cape
+          :disabled
+          ;; Bind dedicated completion commands
+          ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+          :bind (("C-c p p" . completion-at-point) ;; capf
+                 ("C-c p t" . complete-tag)        ;; etags
+                 ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+                 ("C-c p h" . cape-history)
+                 ("C-c p f" . cape-file)
+                 ("C-c p k" . cape-keyword)
+                 ("C-c p s" . cape-symbol)
+                 ("C-c p a" . cape-abbrev)
+                 ("C-c p l" . cape-line)
+                 ("C-c p w" . cape-dict)
+                 ("C-c p \\" . cape-tex)
+                 ("C-c p _" . cape-tex)
+                 ("C-c p ^" . cape-tex)
+                 ("C-c p &" . cape-sgml)
+                 ("C-c p r" . cape-rfc1345))
+          :init
+          ;; Add `completion-at-point-functions', used by `completion-at-point'.
+          ;; NOTE: The order matters!
+          (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+          (add-to-list 'completion-at-point-functions #'cape-file)
+          (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+          ;;(add-to-list 'completion-at-point-functions #'cape-history)
+          ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+          ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+          ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+          ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+          ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+          ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+          ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
+          ;;(add-to-list 'completion-at-point-functions #'cape-line)
+          )
+        ```
+
+8.  dabbrev
+
+    ```emacs-lisp
+    ;; Use Dabbrev with Corfu!
+    (use-package dabbrev
+      ;; Swap M-/ and C-M-/
+      :bind (("M-/" . dabbrev-completion)
+             ("C-M-/" . dabbrev-expand))
+      ;; Other useful Dabbrev configurations.
+      :custom
+      (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
     ```
 
-7.  Abbrev Mode
+9.  vertico , vertical interactive completion
+
+    ```emacs-lisp
+    ;; Enable vertico
+    (use-package vertico
+      :custom
+      (vertico-cycle t)
+      :init
+      ;; Use `consult-completion-in-region' if Vertico is enabled
+      (when (not (featurep 'corfu))
+        (add-hook 'vertico-mode-hook (lambda ()
+                                       (setq completion-in-region-function
+                                             (if vertico-mode
+                                                 #'consult-completion-in-region
+                                               #'completion--in-region)))))
+      (vertico-mode)
+      :config
+      ;; (advice-add #'completing-read-multiple
+      ;;             :override #'consult-completing-read-multiple)
+      (defun disable-selection ()
+        (when (eq minibuffer-completion-table #'org-tags-completion-function)
+          (setq-local vertico-map minibuffer-local-completion-map
+                      completion-cycle-threshold nil
+                      completion-styles '(basic))))
+      (advice-add #'vertico--setup :before #'disable-selection))
+    
+    ```
+
+10. Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
@@ -795,7 +906,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-8.  provide
+11. provide
 
     ```emacs-lisp
     (provide 'rgr/completion)
@@ -1207,7 +1318,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org30c750b) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org65d49fb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3020,8 +3131,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         )
       (defun rgr/c-mode-common-hook ()
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-        (eglot-ensure)
-        ;;(lsp-deferred)
+        ;;(eglot-ensure)
+        (lsp-deferred)
         (if(featurep 'corfu)
             (setq completion-category-defaults nil))
         (if(featurep 'platformio-mode)
@@ -3343,7 +3454,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb35e400) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd207a14) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3382,7 +3493,7 @@ fi
 ```
 
 
-<a id="orgb35e400"></a>
+<a id="orgd207a14"></a>
 
 ### Gnome protocol handler desktop file
 
