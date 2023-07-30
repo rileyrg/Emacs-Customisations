@@ -85,13 +85,14 @@
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
 
 (use-package org-projectile
-:bind (("C-c n p" . org-projectile-project-todo-completing-read)
-       ("C-c c" . org-capture))
-:config
-(org-projectile-per-project)
-(setq org-projectile-per-project-filepath "TODOs.org")
-(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)q))
-(push (org-projectile-project-todo-entry) org-capture-templates))
+  :disabled
+  :bind (("C-c n p" . org-projectile-project-todo-completing-read)
+         ("C-c c" . org-capture))
+  :config
+  (org-projectile-per-project)
+  (setq org-projectile-per-project-filepath "TODOs.org")
+  (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)q))
+  (push (org-projectile-project-todo-entry) org-capture-templates))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
