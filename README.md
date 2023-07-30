@@ -723,7 +723,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     ```emacs-lisp
     (use-package company
       ;;:disabled
-      :init
+      :config
       (use-package company-box
         :config
         (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
@@ -732,7 +732,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
              ("<tab>" .  company-indent-or-complete-common))
       :hook
       (prog-mode . company-mode))
-    
     ```
 
 6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
@@ -744,7 +743,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;; This affects the minibuffer and non-lsp completion at point.
       (setq completion-styles '(orderless partial-completion basic)
             completion-category-defaults nil
-            completion-category-overrides '((file (styles partial-completion))))
+            completion-category-overrides nil);;'((file (styles partial-completion))))
       ;; A few more useful configurations...
       (use-package emacs
         :init
@@ -904,32 +903,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :custom
       (vertico-cycle t)
       :init
-      ;; A few more useful configurations...
-      (use-package emacs
-        :init
-        ;; Add prompt indicator to `completing-read-multiple'.
-        ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
-        (defun crm-indicator (args)
-          (cons (format "[CRM%s] %s"
-                        (replace-regexp-in-string
-                         "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                         crm-separator)
-                        (car args))
-                (cdr args)))
-        (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-    
-        ;; Do not allow the cursor in the minibuffer prompt
-        (setq minibuffer-prompt-properties
-              '(read-only t cursor-intangible t face minibuffer-prompt))
-        (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-    
-        ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-        ;; Vertico commands are hidden in normal buffers.
-        ;; (setq read-extended-command-predicate
-        ;;       #'command-completion-default-include-p)
-    
-        ;; Enable recursive minibuffers
-        (setq enable-recursive-minibuffers t))
       (vertico-mode))
     
     ```
@@ -1354,7 +1327,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org30ce3fd) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb8b9850) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2485,8 +2458,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```emacs-lisp
     (use-package indent-bars
+      ;;:disabled
       :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-      :hook ((prog-mode) . indent-bars-mode))
+      :config
+      (add-hook 'server-after-make-frame-hook
+                (lambda ()
+                  (add-hook 'prog-mode-hook  'indent-bars-mode)
+                  )))
     ```
 
 3.  Breadcrumbs
@@ -3514,7 +3492,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1afc9a2) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge785d8f) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3553,7 +3531,7 @@ fi
 ```
 
 
-<a id="org1afc9a2"></a>
+<a id="orge785d8f"></a>
 
 ### Gnome protocol handler desktop file
 
