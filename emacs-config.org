@@ -475,12 +475,15 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
     :bind
     ( "C-x C-f" . rgr/ffap))
 #+end_src
-**** [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list :selectrum:WAITING:
+**** CANCELLED [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list :selectrum:CANCELLED:
+CLOSED: [2023-07-30 Sun 16:08]
 :PROPERTIES:
 :ID:       f7f2ea39-77f2-45bd-9402-0eb09ef74b39
 :header-args:emacs-lisp: :tangle no
 :END:
 :LOGBOOK:
+- State "CANCELLED"  from              [2023-07-30 Sun 16:08] \\
+  vertico supercedes selectrum
 - State "WAITING"    from              [2021-07-06 Tue 00:04] \\
   looking at vertico
 - State "WAITING"    from              [2021-05-15 Sat 16:21] \\
@@ -488,6 +491,7 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
 :END:
 #+begin_src emacs-lisp
   (use-package selectrum
+    :disabled
     :config
     (selectrum-mode +1)
     :bind ("C-x C-z" . #'selectrum-repeat))
@@ -911,23 +915,7 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
     :custom
     (vertico-cycle t)
     :init
-    ;; Use `consult-completion-in-region' if Vertico is enabled
-    (when (not (featurep 'corfu))
-      (add-hook 'vertico-mode-hook (lambda ()
-                                     (setq completion-in-region-function
-                                           (if vertico-mode
-                                               #'consult-completion-in-region
-                                             #'completion--in-region)))))
-    (vertico-mode)
-    :config
-    ;; (advice-add #'completing-read-multiple
-    ;;             :override #'consult-completing-read-multiple)
-    (defun disable-selection ()
-      (when (eq minibuffer-completion-table #'org-tags-completion-function)
-        (setq-local vertico-map minibuffer-local-completion-map
-                    completion-cycle-threshold nil
-                    completion-styles '(basic))))
-    (advice-add #'vertico--setup :before #'disable-selection))
+    (vertico-mode))
 
 #+end_src
 **** Abbrev Mode
