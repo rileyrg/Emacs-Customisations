@@ -1354,7 +1354,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org844796f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org5e696b0) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2747,6 +2747,21 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (projectile-mode +1)
           (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
         ```
+        
+        1.  org-projectile
+        
+            <https://github.com/IvanMalison/org-projectile>
+            
+            ```emacs-lisp
+            (use-package org-projectile
+            :bind (("C-c n p" . org-projectile-project-todo-completing-read)
+                   ("C-c c" . org-capture))
+            :config
+            (org-projectile-per-project)
+            (setq org-projectile-per-project-filepath "TODOs.org")
+            (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)q))
+            (push (org-projectile-project-todo-entry) org-capture-templates))
+            ```
 
 11. BASH
 
@@ -3498,7 +3513,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgde2b2bb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc079f85) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3537,7 +3552,7 @@ fi
 ```
 
 
-<a id="orgde2b2bb"></a>
+<a id="orgc079f85"></a>
 
 ### Gnome protocol handler desktop file
 
