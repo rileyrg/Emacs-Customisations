@@ -722,16 +722,16 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     ```emacs-lisp
     (use-package company
+      ;;:disabled
       :init
-      (message "init company-mode")
+      (use-package company-box
+        :config
+        (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
+        :hook (company-mode . company-box-mode))
       :bind( :map company-mode-map
              ("<tab>" .  company-indent-or-complete-common))
       :hook
       (prog-mode . company-mode))
-    (use-package company-box
-      :config
-      (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
-      :hook (company-mode . company-box-mode))
     
     ```
 
@@ -744,7 +744,33 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;; This affects the minibuffer and non-lsp completion at point.
       (setq completion-styles '(orderless partial-completion basic)
             completion-category-defaults nil
-            completion-category-overrides nil))
+            completion-category-overrides '((file (styles partial-completion))))
+      ;; A few more useful configurations...
+      (use-package emacs
+        :init
+        ;; Add prompt indicator to `completing-read-multiple'.
+        ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+        (defun crm-indicator (args)
+          (cons (format "[CRM%s] %s"
+                        (replace-regexp-in-string
+                         "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                         crm-separator)
+                        (car args))
+                (cdr args)))
+        (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+    
+        ;; Do not allow the cursor in the minibuffer prompt
+        (setq minibuffer-prompt-properties
+              '(read-only t cursor-intangible t face minibuffer-prompt))
+        (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+    
+        ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+        ;; Vertico commands are hidden in normal buffers.
+        ;; (setq read-extended-command-predicate
+        ;;       #'command-completion-default-include-p)
+    
+        ;; Enable recursive minibuffers
+        (setq enable-recursive-minibuffers t)))
     ```
 
 7.  corfu
@@ -811,42 +837,47 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     1.  cape
     
         ```emacs-lisp
-        ;; Add extensions
-        (use-package cape
-          :disabled
-          ;; Bind dedicated completion commands
-          ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-          :bind (("C-c p p" . completion-at-point) ;; capf
-                 ("C-c p t" . complete-tag)        ;; etags
-                 ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-                 ("C-c p h" . cape-history)
-                 ("C-c p f" . cape-file)
-                 ("C-c p k" . cape-keyword)
-                 ("C-c p s" . cape-symbol)
-                 ("C-c p a" . cape-abbrev)
-                 ("C-c p l" . cape-line)
-                 ("C-c p w" . cape-dict)
-                 ("C-c p \\" . cape-tex)
-                 ("C-c p _" . cape-tex)
-                 ("C-c p ^" . cape-tex)
-                 ("C-c p &" . cape-sgml)
-                 ("C-c p r" . cape-rfc1345))
-          :init
-          ;; Add `completion-at-point-functions', used by `completion-at-point'.
-          ;; NOTE: The order matters!
-          (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-          (add-to-list 'completion-at-point-functions #'cape-file)
-          (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-          ;;(add-to-list 'completion-at-point-functions #'cape-history)
-          ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-          ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-          ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-          ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-          ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-          ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-          ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
-          ;;(add-to-list 'completion-at-point-functions #'cape-line)
-          )
+          ;; Add extensions
+          (use-package cape
+            :disabled
+            ;; Bind dedicated completion commands
+            ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+            :bind (("C-c p p" . completion-at-point) ;; capf
+                   ("C-c p t" . complete-tag)        ;; etags
+                   ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+                   ("C-c p h" . cape-history)
+                   ("C-c p f" . cape-file)
+                   ("C-c p k" . cape-keyword)
+                   ("C-c p s" . cape-symbol)
+                   ("C-c p a" . cape-abbrev)
+                   ("C-c p l" . cape-line)
+                   ("C-c p w" . cape-dict)
+                   ("C-c p \\" . cape-tex)
+                   ("C-c p _" . cape-tex)
+                   ("C-c p ^" . cape-tex)
+                   ("C-c p &" . cape-sgml)
+                   ("C-c p r" . cape-rfc1345))
+            :init
+            ;; Add `completion-at-point-functions', used by `completion-at-point'.
+            ;; NOTE: The order matters!
+            (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+            (add-to-list 'completion-at-point-functions #'cape-file)
+            (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+            (advice-add 'lsp-completion-at-point :around #'cape-wrap-buster)
+        (advice-add 'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+        (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+        (advice-add 'eglot-completion-at-point :around #'cape-wrap-noninterruptible)
+        
+            ;;(add-to-list 'completion-at-point-functions #'cape-history)
+            ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+            ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+            ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+            ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+            ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+            ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+            ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
+            ;;(add-to-list 'completion-at-point-functions #'cape-line)
+            )
         ```
 
 8.  dabbrev
@@ -864,29 +895,42 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 9.  vertico , vertical interactive completion
 
+    <https://github.com/minad/vertico>
+    
     ```emacs-lisp
     ;; Enable vertico
     (use-package vertico
+      ;;:disabled
       :custom
       (vertico-cycle t)
       :init
-      ;; Use `consult-completion-in-region' if Vertico is enabled
-      (when (not (featurep 'corfu))
-        (add-hook 'vertico-mode-hook (lambda ()
-                                       (setq completion-in-region-function
-                                             (if vertico-mode
-                                                 #'consult-completion-in-region
-                                               #'completion--in-region)))))
-      (vertico-mode)
-      :config
-      ;; (advice-add #'completing-read-multiple
-      ;;             :override #'consult-completing-read-multiple)
-      (defun disable-selection ()
-        (when (eq minibuffer-completion-table #'org-tags-completion-function)
-          (setq-local vertico-map minibuffer-local-completion-map
-                      completion-cycle-threshold nil
-                      completion-styles '(basic))))
-      (advice-add #'vertico--setup :before #'disable-selection))
+      ;; A few more useful configurations...
+      (use-package emacs
+        :init
+        ;; Add prompt indicator to `completing-read-multiple'.
+        ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+        (defun crm-indicator (args)
+          (cons (format "[CRM%s] %s"
+                        (replace-regexp-in-string
+                         "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                         crm-separator)
+                        (car args))
+                (cdr args)))
+        (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+    
+        ;; Do not allow the cursor in the minibuffer prompt
+        (setq minibuffer-prompt-properties
+              '(read-only t cursor-intangible t face minibuffer-prompt))
+        (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+    
+        ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+        ;; Vertico commands are hidden in normal buffers.
+        ;; (setq read-extended-command-predicate
+        ;;       #'command-completion-default-include-p)
+    
+        ;; Enable recursive minibuffers
+        (setq enable-recursive-minibuffers t))
+      (vertico-mode))
     
     ```
 
@@ -1310,7 +1354,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org754db1d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org844796f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2437,7 +2481,15 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (global-set-key (kbd "C-c C-r") 'recompile)
     ```
 
-2.  Breadcrumbs
+2.  Indent Bars
+
+    ```emacs-lisp
+    (use-package indent-bars
+      :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+      :hook ((prog-mode) . indent-bars-mode))
+    ```
+
+3.  Breadcrumbs
 
     <https://github.com/joaotavora/breadcrumb>
     
@@ -2485,7 +2537,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
         ```
 
-3.  Emacs Lisp, ELisp Utils
+4.  Emacs Lisp, ELisp Utils
 
     Load this relatively early in order to have utils available if there's a faied load Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     
@@ -2625,21 +2677,21 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/elisp-utils)
             ```
 
-4.  prog-mode hack
+5.  prog-mode hack
 
     ```emacs-lisp
     (unless (fboundp 'prog-mode)
       (defalias 'prog-mode 'fundamental-mode))
     ```
 
-5.  Show Line numbers
+6.  Show Line numbers
 
     ```emacs-lisp
     (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
     (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
     ```
 
-6.  tree-sitter
+7.  tree-sitter
 
     <https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/>
     
@@ -2658,7 +2710,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :after tree-sitter)
     ```
 
-7.  code format
+8.  code format
 
     ```emacs-lisp
     ;; auto-format different source code files extremely intelligently
@@ -2669,7 +2721,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (apheleia-global-mode +1))
     ```
 
-8.  rainbow delimiters
+9.  rainbow delimiters
 
     ```emacs-lisp
     (use-package rainbow-identifiers
@@ -2678,7 +2730,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
     ```
 
-9.  Project Management
+10. Project Management
 
     1.  project
     
@@ -2696,7 +2748,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
         ```
 
-10. BASH
+11. BASH
 
     1.  Navigating Bash set -x output
     
@@ -2711,7 +2763,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                          "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
         ```
 
-11. JSON, YAML Configuration files
+12. JSON, YAML Configuration files
 
     1.  YAML
     
@@ -2731,7 +2783,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package hydra)
         ```
 
-12. Flymake
+13. Flymake
 
     1.  diagnostic-at-point
     
@@ -2754,7 +2806,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :hook (sh-mode . rgr/sh-mode-hook))
         ```
 
-13. Version Control
+14. Version Control
 
     1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
     
@@ -2824,7 +2876,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ("C-x v ="  . git-gutter:popup-hunk))
         ```
 
-14. Dart/Flutter
+15. Dart/Flutter
 
     Running emultaor from command line:
     
@@ -2870,7 +2922,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ;;   )
         ```
 
-15. Javascript
+16. Javascript
 
     ```emacs-lisp
     (use-package js
@@ -2888,7 +2940,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     ```
 
-16. TreeSitter
+17. TreeSitter
 
     ```emacs-lisp
     ;; (setq treesit-language-source-alist
@@ -2915,7 +2967,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
     ```
 
-17. Typescript
+18. Typescript
 
     ```emacs-lisp
     ;; sudo npm i -g typescript-language-server
@@ -2938,13 +2990,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
 
-18. Javascript
+19. Javascript
 
     ```emacs-lisp
     
     ```
 
-19. Language Server Protocol (LSP), lsp-mode
+20. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -3014,7 +3066,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/lsp)
             ```
 
-20. Serial Port
+21. Serial Port
 
     ```emacs-lisp
     (defgroup rgr/serial-ports nil
@@ -3042,7 +3094,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       (selectSerialPortBuffer)))
     ```
 
-21. PlatformIO
+22. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
     
@@ -3067,7 +3119,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     1.  get compilation errors to work and submit ansi color fix?
 
-22. Python
+23. Python
 
     1.  ipython
     
@@ -3084,7 +3136,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
         ```
 
-23. Haskell
+24. Haskell
 
     1.  haskell-mode
     
@@ -3101,7 +3153,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
         ```
 
-24. lldb debugging in emacs
+25. lldb debugging in emacs
 
     1.  voltron
     
@@ -3113,7 +3165,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           )
         ```
 
-25. c-mode-common-hook
+26. c-mode-common-hook
 
     ```emacs-lisp
     (use-package emacs
@@ -3139,7 +3191,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 )))
     ```
 
-26. C, c-mode
+27. C, c-mode
 
     ```emacs-lisp
     (defun rgr/c-mode-hook ()
@@ -3183,7 +3235,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         
         ```
 
-27. cc,cpp, C++, cc-mode
+28. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3191,7 +3243,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-28. Linux tools
+29. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -3203,7 +3255,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-29. Assembler
+30. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
@@ -3211,7 +3263,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-30. Godot GDScript
+31. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
@@ -3236,7 +3288,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-31. Web,Symfony and Twig
+32. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -3303,7 +3355,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-32. elf-mode - view the symbol list in a binary
+33. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -3315,7 +3367,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-33. provide
+34. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3446,7 +3498,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2b742a6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgde2b2bb) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3485,7 +3537,7 @@ fi
 ```
 
 
-<a id="org2b742a6"></a>
+<a id="orgde2b2bb"></a>
 
 ### Gnome protocol handler desktop file
 
