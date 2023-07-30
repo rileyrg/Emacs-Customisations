@@ -453,16 +453,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ( "C-x C-f" . rgr/ffap))
         ```
 
-4.  [Selectrum](https://github.com/raxod502/selectrum) provides UI for selection from candidate list
-
-    ```emacs-lisp
-    (use-package selectrum
-      :config
-      (selectrum-mode +1)
-      :bind ("C-x C-z" . #'selectrum-repeat))
-    ```
-
-5.  [Consult](https://github.com/minad/consult)
+4.  [Consult](https://github.com/minad/consult)
 
     [Consult](https://github.com/minad/consult) Provides various commands based on the Emacs completion function completing-read
     
@@ -600,7 +591,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (consult-customize consult-dash :initial (thing-at-point 'symbol)))
         ```
 
-6.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
+5.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
     ```emacs-lisp
     (use-package embark
@@ -634,7 +625,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
         
         ```
 
-7.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+6.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
     
@@ -652,7 +643,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                   (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
     ```
 
-8.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
+7.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
 
     ```emacs-lisp
     (use-package affe
@@ -667,7 +658,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (consult-customize affe-grep :preview-key (kbd "M-.")))
     ```
 
-9.  provide
+8.  provide
 
     ```emacs-lisp
     (provide 'rgr/minibuffer)
@@ -1319,7 +1310,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org1d55f81) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org754db1d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3455,7 +3446,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf6aabf6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2b742a6) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3494,7 +3485,7 @@ fi
 ```
 
 
-<a id="orgf6aabf6"></a>
+<a id="org2b742a6"></a>
 
 ### Gnome protocol handler desktop file
 
