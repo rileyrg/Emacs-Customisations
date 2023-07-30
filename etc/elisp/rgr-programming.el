@@ -1,8 +1,13 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
 (use-package indent-bars
+  ;;:disabled
   :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-  :hook ((prog-mode) . indent-bars-mode))
+  :config
+  (add-hook 'server-after-make-frame-hook
+            (lambda ()
+              (add-hook 'prog-mode-hook  'indent-bars-mode)
+              )))
 
 (use-package breadcrumb
   :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
