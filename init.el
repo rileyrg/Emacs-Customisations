@@ -317,6 +317,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
   (use-package treemacs-magit)
+  (use-package treemacs-projectile)
   :bind
   ("M-9"   . 'treemacs-select-window)
   (:map treemacs-mode-map
