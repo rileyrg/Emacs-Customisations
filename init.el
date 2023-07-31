@@ -151,8 +151,9 @@
          ("C-S-<f8>" . flyspell-buffer)
          ("M-<f8>" . flyspell-word)
          )
-  :hook
-  (prog-mode .  (flyspell-prog-mode)))
+  ;; :hook
+  ;; (prog-mode .  (flyspell-prog-mode))
+  )
 
 (use-package
   ripgrep)
