@@ -1567,14 +1567,12 @@ Set up default emacs browsing - I like eww but palming off some URLs to external
         ad-do-it))
 
     :bind
+    ("C-c u" . 'eww)
     (:map eww-mode-map
           ( "&" . (lambda()
                     (interactive)
                     (alert "Launching external browser")
                     (eww-browse-with-external-browser)))))
-
-
-
 #+end_src
 
 **** Google related
@@ -2602,6 +2600,12 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
 **** compilation
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-r") 'recompile)
+#+end_src
+**** duplicate line
+#+begin_src emacs-lisp
+  (use-package emacs
+    :bind
+     ("C-S-d" . 'duplicate-line))
 #+end_src
 **** Indent Bars
 #+begin_src  emacs-lisp

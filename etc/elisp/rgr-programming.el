@@ -1,5 +1,9 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
+(use-package emacs
+  :bind
+   ("C-S-d" . 'duplicate-line))
+
 (use-package indent-bars
   ;;:disabled
   :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
