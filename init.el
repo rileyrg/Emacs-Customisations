@@ -140,7 +140,7 @@
 (use-package flyspell
   :config
   (defun flyspell-check-next-highlighted-word ()
-    "Custom function to spell check next highlighted word"
+    "Custom fnction to spell check next highlighted word"
     (interactive)
     (flyspell-goto-next-error)
     (ispell-word)
@@ -150,7 +150,9 @@
          ("S-<f8>" . flyspell-check-previous-highlighted-word)
          ("C-S-<f8>" . flyspell-buffer)
          ("M-<f8>" . flyspell-word)
-         ))
+         )
+  :hook
+  (prog-mode .  (flyspell-prog-mode)))
 
 (use-package
   ripgrep)
