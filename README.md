@@ -1327,7 +1327,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgc1930cf) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org5706d80) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2233,6 +2233,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
   (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
   (use-package treemacs-magit)
+  (use-package treemacs-projectile)
   :bind
   ("M-9"   . 'treemacs-select-window)
   (:map treemacs-mode-map
@@ -3499,7 +3500,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org363d2e1) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6dc1b06) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3538,7 +3539,7 @@ fi
 ```
 
 
-<a id="org363d2e1"></a>
+<a id="org6dc1b06"></a>
 
 ### Gnome protocol handler desktop file
 
