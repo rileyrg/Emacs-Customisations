@@ -77,6 +77,10 @@
 
 ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
 
+(use-package nerd-icons-completion
+  :config
+  (nerd-icons-completion-mode))
+
 (use-package
   darkroom
   :bind

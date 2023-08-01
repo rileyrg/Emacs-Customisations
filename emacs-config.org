@@ -514,8 +514,8 @@ CLOSED: [2023-07-30 Sun 16:08]
           :config
           (selectrum-prescient-mode +1))))
 #+end_src
-**** [[https://github.com/minad/consult][Consult]]                                                        :consult:
-[[https://github.com/minad/consult][Consult]] Provides various commands based on the Emacs completion function completing-read
+**** Consult                                                        :consult:
+Consult]] Provides various commands based on the Emacs completion function completing-read
 :PROPERTIES:
 :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
 :END:
@@ -707,7 +707,9 @@ are marks or annotations placed at the margin of the page of a book or in this c
     ;; Marginalia must be activated in the :init section of use-package such that
     ;; the mode gets enabled right away. Note that this forces loading the
     ;; package.
-    (marginalia-mode))
+    (marginalia-mode)
+    :hook
+    (marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
 #+end_src
 **** [[https://github.com/minad/affe][affe]] Asynchronous Fuzzy Finder for Emacs
 :PROPERTIES:
@@ -1130,6 +1132,12 @@ JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fo
 :END:
 #+begin_src emacs-lisp
   ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
+#+end_src
+***** icons
+#+begin_src  emacs-lisp
+  (use-package nerd-icons-completion
+    :config
+    (nerd-icons-completion-mode))
 #+end_src
 ***** Darkroom
 :PROPERTIES:
