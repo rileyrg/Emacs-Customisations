@@ -748,7 +748,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     ```emacs-lisp
     (use-package company
-      ;;:disabled
+      :disabled
       :config
       (use-package company-box
         :config
@@ -804,7 +804,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     
     ```emacs-lisp
     (use-package corfu
-      :disabled
+      ;;:disabled
       ;; Optional customizations
       :custom
       ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -1362,7 +1362,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4dc01d2) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgcd84c2b) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2498,6 +2498,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :config
       (add-hook 'server-after-make-frame-hook
                 (lambda ()
+                  (use-package disable-mouse)
+                  (global-disable-mouse-mode)
                   (add-hook 'prog-mode-hook  'indent-bars-mode)
                   )))
     ```
@@ -2918,8 +2920,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (use-package lsp-dart :after lsp)
       :hook   (dart-mode . (lambda()
                              (setq-local dash-docs-docsets '("Dart"))
-                             (eglot-ensure)
-                             ;;(lsp-deferred)
+                             ;;(eglot-ensure)
+                             (lsp-deferred)
                              )))
     
     ```
@@ -3005,7 +3007,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         
             ```emacs-lisp
             (use-package lsp-mode
-              :disabled
+              ;;:disabled
               :init
               ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
               (setq lsp-keymap-prefix "C-l")
@@ -3028,7 +3030,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                              ("M-<f8>" . dap-debug)
                              ("C-<f8>" . dap-disconnect)
                              )))
-            
+              :config
+              (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features))
               :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
                      (lsp-mode . lsp-enable-which-key-integration))
               :commands (lsp lsp-deferred))
@@ -3169,10 +3172,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         )
       (defun rgr/c-mode-common-hook ()
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-        (eglot-ensure)
-        ;;(lsp-deferred)
-        (if(featurep 'corfu)
-            (setq completion-category-defaults nil))
+        ;;(eglot-ensure)
+        (lsp-deferred)
         (if(featurep 'platformio-mode)
             (platformio-conditionally-enable))
         (if (featurep 'yasnippet)
@@ -3492,7 +3493,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4b79ff8) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgafd2420) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3531,7 +3532,7 @@ fi
 ```
 
 
-<a id="org4b79ff8"></a>
+<a id="orgafd2420"></a>
 
 ### Gnome protocol handler desktop file
 
