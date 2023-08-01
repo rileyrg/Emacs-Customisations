@@ -617,7 +617,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     
       ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
       ;; strategy, if you want to see the documentation from multiple providers.
-      (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+      ;;(add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
       ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
     
       :config
@@ -669,6 +669,8 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     
     ```emacs-lisp
     (use-package all-the-icons
+      :demand
+      :after (marginalia)
       :config
       (use-package all-the-icons-completion
         :init (all-the-icons-completion-mode))
@@ -1362,7 +1364,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org6e228fc) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org207c3a3) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3493,7 +3495,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb8028bd) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org309fdfa) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3532,7 +3534,7 @@ fi
 ```
 
 
-<a id="orgb8028bd"></a>
+<a id="org309fdfa"></a>
 
 ### Gnome protocol handler desktop file
 

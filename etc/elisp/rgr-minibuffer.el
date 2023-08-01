@@ -178,7 +178,7 @@
 
   ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
   ;; strategy, if you want to see the documentation from multiple providers.
-  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;;(add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
   ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 
   :config
@@ -212,6 +212,8 @@
   (marginalia-mode))
 
 (use-package all-the-icons
+  :demand
+  :after (marginalia)
   :config
   (use-package all-the-icons-completion
     :init (all-the-icons-completion-mode))
