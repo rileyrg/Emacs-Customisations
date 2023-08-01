@@ -33,6 +33,8 @@
   :bind
   ( "C-x C-f" . rgr/ffap))
 
+(straight-use-package 'prescient)
+
 ;; Example configuration for Consult
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.
@@ -150,6 +152,8 @@
   ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
   ;;;; 5. No project support
   ;; (setq consult-project-function nil)
+  :config
+  (use-package company-prescient)
   )
 
 (use-package consult-dash

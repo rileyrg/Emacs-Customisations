@@ -453,7 +453,13 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ( "C-x C-f" . rgr/ffap))
         ```
 
-4.  Consult
+4.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
+
+    ```emacs-lisp
+    (straight-use-package 'prescient)
+    ```
+
+5.  Consult
 
     Consult]] Provides various commands based on the Emacs completion function completing-read
     
@@ -577,6 +583,8 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
       ;;;; 5. No project support
       ;; (setq consult-project-function nil)
+      :config
+      (use-package company-prescient)
       )
     ```
     
@@ -591,7 +599,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           (consult-customize consult-dash :initial (thing-at-point 'symbol)))
         ```
 
-5.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
+6.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
     ```emacs-lisp
     (use-package embark
@@ -631,7 +639,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           (embark-collect-mode . consult-preview-at-point-mode))
         ```
 
-6.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+7.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
     
@@ -655,7 +663,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (marginalia-mode))
     ```
 
-7.  all-the-icons
+8.  all-the-icons
 
     Remember to run **all-the-icons-install-fonts**.
     
@@ -671,7 +679,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     
     ```
 
-8.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
+9.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
 
     ```emacs-lisp
     (use-package affe
@@ -686,7 +694,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (consult-customize affe-grep :preview-key (kbd "M-.")))
     ```
 
-9.  provide
+10. provide
 
     ```emacs-lisp
     (provide 'rgr/minibuffer)
@@ -830,6 +838,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
         :hook
         (lsp-completion-mode . my/lsp-mode-setup-completion))
       :config
+      (use-package corfu-prescient)
       (corfu-popupinfo-mode)
       (global-corfu-mode))
     
@@ -920,6 +929,8 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       ;;:disabled
       :custom
       (vertico-cycle t)
+      :config
+      (use-package vertico-prescient)
       :init
       (vertico-mode))
     
@@ -1351,7 +1362,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org3df3366) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org4dc01d2) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3481,7 +3492,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org63c8083) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4b79ff8) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3520,7 +3531,7 @@ fi
 ```
 
 
-<a id="org63c8083"></a>
+<a id="org4b79ff8"></a>
 
 ### Gnome protocol handler desktop file
 
