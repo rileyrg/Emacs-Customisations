@@ -762,7 +762,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 **** company
 #+begin_src  emacs-lisp
   (use-package company
-    ;;:disabled
+    :disabled
     :config
     (use-package company-box
       :config
@@ -813,7 +813,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 I've had to turn this off as moving up and down auto selects at times. Back to company-mode.
 #+begin_src emacs-lisp
   (use-package corfu
-    :disabled
+    ;;:disabled
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -2603,6 +2603,8 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
     :config
     (add-hook 'server-after-make-frame-hook
               (lambda ()
+                (use-package disable-mouse)
+                (global-disable-mouse-mode)
                 (add-hook 'prog-mode-hook  'indent-bars-mode)
                 )))
 #+end_src
@@ -3089,8 +3091,8 @@ Running emultaor from command line:
     (use-package lsp-dart :after lsp)
     :hook   (dart-mode . (lambda()
                            (setq-local dash-docs-docsets '("Dart"))
-                           (eglot-ensure)
-                           ;;(lsp-deferred)
+                           ;;(eglot-ensure)
+                           (lsp-deferred)
                            )))
 
 #+end_src
@@ -3176,7 +3178,7 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 :END:
 #+begin_src  emacs-lisp
   (use-package lsp-mode
-    :disabled
+    ;;:disabled
     :init
     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
     (setq lsp-keymap-prefix "C-l")
@@ -3199,7 +3201,8 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
                    ("M-<f8>" . dap-debug)
                    ("C-<f8>" . dap-disconnect)
                    )))
-
+    :config
+    (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features))
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands (lsp lsp-deferred))
@@ -3334,10 +3337,8 @@ SCHEDULED: <2021-09-26 Sun>
       )
     (defun rgr/c-mode-common-hook ()
       (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-      (eglot-ensure)
-      ;;(lsp-deferred)
-      (if(featurep 'corfu)
-          (setq completion-category-defaults nil))
+      ;;(eglot-ensure)
+      (lsp-deferred)
       (if(featurep 'platformio-mode)
           (platformio-conditionally-enable))
       (if (featurep 'yasnippet)

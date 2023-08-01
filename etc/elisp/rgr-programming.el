@@ -10,6 +10,8 @@
   :config
   (add-hook 'server-after-make-frame-hook
             (lambda ()
+              (use-package disable-mouse)
+              (global-disable-mouse-mode)
               (add-hook 'prog-mode-hook  'indent-bars-mode)
               )))
 
@@ -182,8 +184,8 @@
   (use-package lsp-dart :after lsp)
   :hook   (dart-mode . (lambda()
                          (setq-local dash-docs-docsets '("Dart"))
-                         (eglot-ensure)
-                         ;;(lsp-deferred)
+                         ;;(eglot-ensure)
+                         (lsp-deferred)
                          )))
 
 ;; (use-package emacs
@@ -303,10 +305,8 @@
     )
   (defun rgr/c-mode-common-hook ()
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-    (eglot-ensure)
-    ;;(lsp-deferred)
-    (if(featurep 'corfu)
-        (setq completion-category-defaults nil))
+    ;;(eglot-ensure)
+    (lsp-deferred)
     (if(featurep 'platformio-mode)
         (platformio-conditionally-enable))
     (if (featurep 'yasnippet)

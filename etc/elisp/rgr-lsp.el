@@ -1,5 +1,5 @@
 (use-package lsp-mode
-  :disabled
+  ;;:disabled
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-l")
@@ -22,7 +22,8 @@
                  ("M-<f8>" . dap-debug)
                  ("C-<f8>" . dap-disconnect)
                  )))
-
+  :config
+  (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features))
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
