@@ -205,9 +205,16 @@
   ;; Marginalia must be activated in the :init section of use-package such that
   ;; the mode gets enabled right away. Note that this forces loading the
   ;; package.
-  (marginalia-mode)
-  :hook
-  (marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
+  (marginalia-mode))
+
+(use-package all-the-icons
+  :config
+  (use-package all-the-icons-completion
+    :init (all-the-icons-completion-mode))
+  (use-package all-the-icons-dired
+    :config
+    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
 
 (use-package affe
   :disabled
