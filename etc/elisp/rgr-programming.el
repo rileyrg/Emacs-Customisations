@@ -202,15 +202,11 @@
   (:map js-mode-map
         ("M-." . #'lsp-ui-peek-find-definitions)))
 
-(use-package emacs
+(use-package treesit-auto
   :custom
   (treesit-extra-load-path `(,(no-littering-expand-etc-file-name "treesit/grammars/")))
   :config
-  (require 'treesit)
-  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  (add-to-list 'major-mode-remap-alist
-               '(c-or-c++-mode . c-or-c++-ts-mode))
+  (global-treesit-auto-mode)
   :hook
   (c-ts-base-mode . (lambda()
                       (treesit-inspect-mode t)
