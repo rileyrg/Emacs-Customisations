@@ -453,9 +453,9 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ( "C-x C-f" . rgr/ffap))
         ```
 
-4.  [Consult](https://github.com/minad/consult)
+4.  Consult
 
-    [Consult](https://github.com/minad/consult) Provides various commands based on the Emacs completion function completing-read
+    Consult]] Provides various commands based on the Emacs completion function completing-read
     
     :ID: ec5375c7-4387-42a1-8938-5fad532be79b
     
@@ -646,7 +646,9 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ;; Marginalia must be activated in the :init section of use-package such that
       ;; the mode gets enabled right away. Note that this forces loading the
       ;; package.
-      (marginalia-mode))
+      (marginalia-mode)
+      :hook
+      (marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
     ```
 
 7.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
@@ -1089,7 +1091,15 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
         ```
     
-    2.  Darkroom
+    2.  icons
+    
+        ```emacs-lisp
+        (use-package nerd-icons-completion
+          :config
+          (nerd-icons-completion-mode))
+        ```
+    
+    3.  Darkroom
     
         Zoom in and center using [darkroom](https://github.com/joaotavora/darkroom).
         
@@ -1339,7 +1349,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb6edbf1) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org0438db8) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3479,7 +3489,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc48aba7) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb65b77b) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3518,7 +3528,7 @@ fi
 ```
 
 
-<a id="orgc48aba7"></a>
+<a id="orgb65b77b"></a>
 
 ### Gnome protocol handler desktop file
 
