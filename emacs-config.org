@@ -475,44 +475,9 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
     :bind
     ( "C-x C-f" . rgr/ffap))
 #+end_src
-**** CANCELLED [[https://github.com/raxod502/selectrum][Selectrum]] provides UI for selection from candidate list :selectrum:CANCELLED:
-CLOSED: [2023-07-30 Sun 16:08]
-:PROPERTIES:
-:ID:       f7f2ea39-77f2-45bd-9402-0eb09ef74b39
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2023-07-30 Sun 16:08] \\
-  vertico supercedes selectrum
-- State "WAITING"    from              [2021-07-06 Tue 00:04] \\
-  looking at vertico
-- State "WAITING"    from              [2021-05-15 Sat 16:21] \\
-  wait to see if need
-:END:
-#+begin_src emacs-lisp
-  (use-package selectrum
-    :disabled
-    :config
-    (selectrum-mode +1)
-    :bind ("C-x C-z" . #'selectrum-repeat))
-#+end_src
-**** WAITING [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.    :prescient:WAITING:
-:PROPERTIES:
-:ID:       9b550059-5fc0-4534-80a6-9cb5e1c207c2
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "WAITING"    from              [2021-07-06 Tue 00:43] \\
-  vertico uses savehist
-:END:
-#+begin_src emacs-lisp
-  (use-package prescient
-    :config
-    (prescient-persist-mode +1)
-    (if (featurep 'selectrum)
-        (use-package selectrum-prescient
-          :config
-          (selectrum-prescient-mode +1))))
+**** [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.
+#+begin_src  emacs-lisp
+  (straight-use-package 'prescient)
 #+end_src
 **** Consult                                                        :consult:
 Consult]] Provides various commands based on the Emacs completion function completing-read
@@ -637,6 +602,8 @@ Consult]] Provides various commands based on the Emacs completion function compl
     ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
     ;;;; 5. No project support
     ;; (setq consult-project-function nil)
+    :config
+    (use-package company-prescient)
     )
 #+end_src
 
@@ -880,6 +847,7 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
       :hook
       (lsp-completion-mode . my/lsp-mode-setup-completion))
     :config
+    (use-package corfu-prescient)
     (corfu-popupinfo-mode)
     (global-corfu-mode))
 
@@ -963,6 +931,8 @@ https://github.com/minad/vertico
     ;;:disabled
     :custom
     (vertico-cycle t)
+    :config
+    (use-package vertico-prescient)
     :init
     (vertico-mode))
 
