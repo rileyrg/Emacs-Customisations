@@ -595,34 +595,40 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
     ```emacs-lisp
     (use-package embark
-      :config
-      (setq embark-action-indicator
-            (lambda (map _target)
-              (which-key--show-keymap "Embark" map nil nil 'no-paging)
-              #'which-key--hide-popup-ignore-command)
-            embark-become-indicator embark-action-indicator)
+      :ensure t
+    
+      :bind
+      (("C-." . embark-act)         ;; pick some comfortable binding
+       ("C-;" . embark-dwim)        ;; good alternative: M-.
+       ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+    
+      :init
+    
       ;; Optionally replace the key help with a completing-read interface
       (setq prefix-help-command #'embark-prefix-help-command)
+    
+      ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
+      ;; strategy, if you want to see the documentation from multiple providers.
+      (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+      ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+    
+      :config
+    
       ;; Hide the mode line of the Embark live/completions buffers
       (add-to-list 'display-buffer-alist
                    '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                      nil
-                     (window-parameters (mode-line-format . none))))
-      :bind
-      ("M-e" . embark-act)       ;; pick some comfortable binding
-      ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+                     (window-parameters (mode-line-format . none)))))
     ```
     
     1.  embark-consult
     
         ```emacs-lisp
+        ;; Consult users will also want the embark-consult package.
         (use-package embark-consult
-          :after (embark consult)
-          ;; if you want to have consult previews as you move around an
-          ;; auto-updating embark collect buffer
+          :ensure t ; only need to install it, embark loads it after consult if found
           :hook
-          (embark-collect-mode . embark-consult-preview-minor-mode))
-        
+          (embark-collect-mode . consult-preview-at-point-mode))
         ```
 
 6.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
@@ -1349,7 +1355,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org0438db8) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgfee947d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2958,7 +2964,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'major-mode-remap-alist
                    '(c-or-c++-mode . c-or-c++-ts-mode))
       :hook
-      (c-ts-base-mode . rgr/c-mode-common-hook))
+      (c-ts-base-mode . (lambda()
+                          (treesit-inspect-mode t)
+                          (rgr/c-mode-common-hook))))
     ```
 
 18. Typescript
@@ -3489,7 +3497,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb65b77b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf34a283) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3528,7 +3536,7 @@ fi
 ```
 
 
-<a id="orgb65b77b"></a>
+<a id="orgf34a283"></a>
 
 ### Gnome protocol handler desktop file
 
