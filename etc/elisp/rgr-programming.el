@@ -212,7 +212,9 @@
   (add-to-list 'major-mode-remap-alist
                '(c-or-c++-mode . c-or-c++-ts-mode))
   :hook
-  (c-ts-base-mode . rgr/c-mode-common-hook))
+  (c-ts-base-mode . (lambda()
+                      (treesit-inspect-mode t)
+                      (rgr/c-mode-common-hook))))
 
 ;; sudo npm i -g typescript-language-server
 (use-package typescript-mode
