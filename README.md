@@ -1355,7 +1355,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgfee947d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org5251619) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2954,15 +2954,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 17. Tree Sitter
 
     ```emacs-lisp
-    (use-package emacs
+    (use-package treesit-auto
       :custom
       (treesit-extra-load-path `(,(no-littering-expand-etc-file-name "treesit/grammars/")))
       :config
-      (require 'treesit)
-      (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-      (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-      (add-to-list 'major-mode-remap-alist
-                   '(c-or-c++-mode . c-or-c++-ts-mode))
+      (global-treesit-auto-mode)
       :hook
       (c-ts-base-mode . (lambda()
                           (treesit-inspect-mode t)
@@ -3497,7 +3493,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf34a283) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org82b72bf) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3536,7 +3532,7 @@ fi
 ```
 
 
-<a id="orgf34a283"></a>
+<a id="org82b72bf"></a>
 
 ### Gnome protocol handler desktop file
 
