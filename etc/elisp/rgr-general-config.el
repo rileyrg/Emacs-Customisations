@@ -120,6 +120,12 @@
 
 (use-package recentf-ext
   :config
+  ;; remove symlink dups
+  ;; (defun my/recentf-exclude-symlinks (filename)
+  ;;   "Return t if FILENAME points to a symlink."
+  ;;   (file-symlink-p filename))
+  ;; ;; Add this predicate to `recentf-exclude` in an additive way
+  ;; (add-to-list  'recentf-exclude 'my/recentf-exclude-symlinks)
   (recentf-mode 1)
   ;;(setq savehist-minibuffer-history-variables (remove 'file-name-history savehist-minibuffer-history-variables))
   (if (featurep 'savehist)

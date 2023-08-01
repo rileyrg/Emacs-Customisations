@@ -584,11 +584,11 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     
         ```emacs-lisp
         (use-package consult-dash
-           :straight (consult-dash :local-repo "~/development/projects/emacs/consult-dash" :type git :host codeberg :repo "ravi/consult-dash" )
-            :bind (("M-s d" . consult-dash))
-            :config
-            ;; Use the symbol at point as initial search term
-            (consult-customize consult-dash :initial (thing-at-point 'symbol)))
+          :straight (consult-dash :local-repo "~/development/projects/emacs/consult-dash" :type git :host codeberg :repo "ravi/consult-dash" )
+          :bind (("M-s d" . consult-dash))
+          :config
+          ;; Use the symbol at point as initial search term
+          (consult-customize consult-dash :initial (thing-at-point 'symbol)))
         ```
 
 5.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
@@ -631,16 +631,22 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     
     :ID: f3802197-c745-40b2-ac0d-72d7da291aaf
     
-    The [marginalia](https://github.com/minad/marginalia) pckage in emacs is very helpful.
-    
     ```emacs-lisp
+    ;; Enable rich annotations using the Marginalia package
     (use-package marginalia
-      :custom
-      (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+      ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+      ;; available in the *Completions* buffer, add it to the
+      ;; `completion-list-mode-map'.
+      :bind (:map minibuffer-local-map
+             ("M-A" . marginalia-cycle))
+    
+      ;; The :init section is always executed.
       :init
-      (marginalia-mode)
-      (advice-add #'marginalia-cycle :after
-                  (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
+    
+      ;; Marginalia must be activated in the :init section of use-package such that
+      ;; the mode gets enabled right away. Note that this forces loading the
+      ;; package.
+      (marginalia-mode))
     ```
 
 7.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
@@ -836,47 +842,47 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     1.  cape
     
         ```emacs-lisp
-          ;; Add extensions
-          (use-package cape
-            :disabled
-            ;; Bind dedicated completion commands
-            ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-            :bind (("C-c p p" . completion-at-point) ;; capf
-                   ("C-c p t" . complete-tag)        ;; etags
-                   ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-                   ("C-c p h" . cape-history)
-                   ("C-c p f" . cape-file)
-                   ("C-c p k" . cape-keyword)
-                   ("C-c p s" . cape-symbol)
-                   ("C-c p a" . cape-abbrev)
-                   ("C-c p l" . cape-line)
-                   ("C-c p w" . cape-dict)
-                   ("C-c p \\" . cape-tex)
-                   ("C-c p _" . cape-tex)
-                   ("C-c p ^" . cape-tex)
-                   ("C-c p &" . cape-sgml)
-                   ("C-c p r" . cape-rfc1345))
-            :init
-            ;; Add `completion-at-point-functions', used by `completion-at-point'.
-            ;; NOTE: The order matters!
-            (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-            (add-to-list 'completion-at-point-functions #'cape-file)
-            (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-            (advice-add 'lsp-completion-at-point :around #'cape-wrap-buster)
-        (advice-add 'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
-        (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
-        (advice-add 'eglot-completion-at-point :around #'cape-wrap-noninterruptible)
+        ;; Add extensions
+        (use-package cape
+          :disabled
+          ;; Bind dedicated completion commands
+          ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+          :bind (("C-c p p" . completion-at-point) ;; capf
+                 ("C-c p t" . complete-tag)        ;; etags
+                 ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+                 ("C-c p h" . cape-history)
+                 ("C-c p f" . cape-file)
+                 ("C-c p k" . cape-keyword)
+                 ("C-c p s" . cape-symbol)
+                 ("C-c p a" . cape-abbrev)
+                 ("C-c p l" . cape-line)
+                 ("C-c p w" . cape-dict)
+                 ("C-c p \\" . cape-tex)
+                 ("C-c p _" . cape-tex)
+                 ("C-c p ^" . cape-tex)
+                 ("C-c p &" . cape-sgml)
+                 ("C-c p r" . cape-rfc1345))
+          :init
+          ;; Add `completion-at-point-functions', used by `completion-at-point'.
+          ;; NOTE: The order matters!
+          (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+          (add-to-list 'completion-at-point-functions #'cape-file)
+          (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+          (advice-add 'lsp-completion-at-point :around #'cape-wrap-buster)
+          (advice-add 'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+          (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+          (advice-add 'eglot-completion-at-point :around #'cape-wrap-noninterruptible)
         
-            ;;(add-to-list 'completion-at-point-functions #'cape-history)
-            ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-            ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-            ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-            ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-            ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-            ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-            ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
-            ;;(add-to-list 'completion-at-point-functions #'cape-line)
-            )
+          ;;(add-to-list 'completion-at-point-functions #'cape-history)
+          ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+          ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+          ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+          ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+          ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+          ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+          ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
+          ;;(add-to-list 'completion-at-point-functions #'cape-line)
+          )
         ```
 
 8.  dabbrev
@@ -1163,6 +1169,12 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         ```emacs-lisp
         (use-package recentf-ext
           :config
+          ;; remove symlink dups
+          ;; (defun my/recentf-exclude-symlinks (filename)
+          ;;   "Return t if FILENAME points to a symlink."
+          ;;   (file-symlink-p filename))
+          ;; ;; Add this predicate to `recentf-exclude` in an additive way
+          ;; (add-to-list  'recentf-exclude 'my/recentf-exclude-symlinks)
           (recentf-mode 1)
           ;;(setq savehist-minibuffer-history-variables (remove 'file-name-history savehist-minibuffer-history-variables))
           (if (featurep 'savehist)
@@ -1327,7 +1339,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org5706d80) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgb6edbf1) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2274,154 +2286,154 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 ### mu4e
 
 ```emacs-lisp
-  (use-package mu4e
-    :disabled
-    :straight ( :host github
-                 :files ("build/mu4e/*.elc")
-                 :branch "release/1.8"
-                 :repo "djcb/mu"
-                 :pre-build (("meson" "build")
-                             ("ninja" "-C" "build")))
-    :commands (mu4e mu4e-update-index)
+(use-package mu4e
+  :disabled
+  :straight ( :host github
+              :files ("build/mu4e/*.elc")
+              :branch "release/1.8"
+              :repo "djcb/mu"
+              :pre-build (("meson" "build")
+                          ("ninja" "-C" "build")))
+  :commands (mu4e mu4e-update-index)
+  :custom
+  ( mail-user-agent 'mu4e-user-agent )
+  ( mail-user-agent 'mu4e-user-agent )
+  ( message-send-mail-function 'smtpmail-send-it )
+  ( mu4e-attachment-dir "~/Downloads" )
+  ( mu4e-change-filenames-when-moving t )
+  ( mu4e-compose-context-policy 'ask )
+  ( mu4e-confirm-quit nil )
+  ( mu4e-context-policy 'pick-first )
+  ( mu4e-compose-reply-recipients 'sender )
+  ( mu4e-headers-include-related nil )
+  ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
+  ( mu4e-decryption-policy 'ask )
+  ( mu4e-hide-index-messages t )
+  ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
+  ( mu4e-update-interval nil )
+  ( mu4e-use-fancy-chars t )
+  ( mu4e-view-prefer-html nil )
+  ( mu4e-view-show-addresses t )
+  ( smtpmail-smtp-service 587 )
+  ( user-full-name "Richard G.Riley" )
+  :config
+
+
+  (use-package mu4e-maildirs-extension
     :custom
-    ( mail-user-agent 'mu4e-user-agent )
-    ( mail-user-agent 'mu4e-user-agent )
-    ( message-send-mail-function 'smtpmail-send-it )
-    ( mu4e-attachment-dir "~/Downloads" )
-    ( mu4e-change-filenames-when-moving t )
-    ( mu4e-compose-context-policy 'ask )
-    ( mu4e-confirm-quit nil )
-    ( mu4e-context-policy 'pick-first )
-    ( mu4e-compose-reply-recipients 'sender )
-    ( mu4e-headers-include-related nil )
-    ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
-    ( mu4e-decryption-policy 'ask )
-    ( mu4e-hide-index-messages t )
-    ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
-    ( mu4e-update-interval nil )
-    ( mu4e-use-fancy-chars t )
-    ( mu4e-view-prefer-html nil )
-    ( mu4e-view-show-addresses t )
-    ( smtpmail-smtp-service 587 )
-    ( user-full-name "Richard G.Riley" )
+    (mu4e-maildirs-extension-hide-empty-maildirs t)
     :config
+    (mu4e-maildirs-extension))
 
+  (use-package mu4e-column-faces
+    :after mu4e
+    :config (mu4e-column-faces-mode))
 
-    (use-package mu4e-maildirs-extension
-      :custom
-      (mu4e-maildirs-extension-hide-empty-maildirs t)
-      :config
-      (mu4e-maildirs-extension))
+  (setq mu4e-contexts
+        `( ,(make-mu4e-context
+             :name "aGmx"
+             :enter-func (lambda () (mu
+                                     4e-message "gmx context")(rgr/mu4e-refresh))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
+             :vars '( ( user-mail-address . "rileyrg@gmx.de" )
+                      ( user-full-name . "Richard G. Riley" )
+                      ( smtpmail-smtp-server . "mail.gmx.net")
+                      ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
+                      ( mu4e-refile-folder . "/gmx/Archive" )
+                      ( mu4e-sent-folder . "/gmx/Sent" )
+                      ( mu4e-sent-messages-behavior . sent)
+                      ( mu4e-trash-folder . "/gmx/Bin" )
+                      ( mu4e-drafts-folder . "/gmx/Drafts" )
+                      ;; (mu4e-maildir-shortcuts .
+                      ;;  (("/gmx/INBOX"             . ?i)
+                      ;;    ("/gmx/Sent" . ?s)
+                      ;;    ("/gmx/Bin"     . ?b)
+                      ;;    ("/gmx/Drafts"    . ?d)
+                      ;;    ("/gmx/Spam"    . ?p)
+                      ;;    ("/gmx/Archive"  . ?a)))
+                      ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmx/INBOX and flag:unread" :key ?i)
+                                          (:name "Learning" :query "maildir:/gmx/Learning* and flag:unread" :key ?l)
+                                          (:name "All Today's messages" :query "maildir:/gmx/*  AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent) AND date:today..now " :key ?t)
+                                          (:name "Last 7 days" :query "maildir:/gmx/* AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent)  AND date:7d..now" :hide-unread t :key ?w)
+                                          (:name "All" :query "maildir:/gmx/* and not (maildir:/gmx/Spam or maildir:/gmx/Bin)" :key ?a)
+                                          (:name "Bin" :query "maildir:/gmx/Bin" :key ?b)
+                                          ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
+                                          (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
+                      ( mu4e-compose-signature  .
+                        (concat
+                         "Richard G. Riley\n"
+                         "Ein bier, ein Helbing.\n"))))
+           ,(make-mu4e-context
+             :name "bGmail"
+             :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
+             ;; no leave-func
+             ;; we match based on the maildir of the message
+             ;; this matches maildir /Arkham and its sub-directories
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/gmail" (mu4e-message-field msg :maildir))))
+             :vars '( ( user-mail-address . "rileyrg@gmail.com"  )
+                      ( user-full-name . "Richie" )
+                      ( smtpmail-smtp-server . "smtp.gmail.com")
+                      ( mu4e-get-mail-command . "getmails gmail")
+                      ( mu4e-refile-folder . "/gmail/Archive" )
+                      ( mu4e-sent-folder . "/gmail/Sent" )
+                      ( mu4e-sent-messages-behavior . delete)
+                      ( mu4e-trash-folder . "/gmail/Bin" )
+                      ( mu4e-drafts-folder . "/gmail/Drafts" )
+                      ;; (mu4e-maildir-shortcuts .
+                      ;;   (("/gmail/INBOX"             . ?i)
+                      ;;    ("/gmail/Sent" . ?s)
+                      ;;    ("/gmail/Bin"     . ?b)
+                      ;;    ("/gmail/Drafts"    . ?d)
+                      ;;    ("/gmail/Spam"    . ?p)
+                      ;;    ("/gmail/Archive"  . ?a)))
+                      ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmail/INBOX and flag:unread" :key ?i)
+                                          (:name "All Today's messages" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:today..now " :key ?t)
+                                          (:name "Last 7 days" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:7d..now" :hide-unread t :key ?w)
+                                          (:name "All" :query "maildir:/gmail/* and not (maildir:/gmail/Spam or maildir:/gmail/Bin)" :key ?a)
+                                          (:name "Bin" :query "maildir:/gmail/Bin" :key ?b)
+                                          ;;                    (:name "Messages with images" :query "maildir:/gmail/* AND  NOT maildir:/gmail/Spam  AND  NOT maildir:/gmail/Sent" :key ?m)
+                                          (:name "Spam" :query "maildir:/gmail/Spam AND date:7d..now" :hide-unread t :key ?p)))
+                      ( mu4e-compose-signature . "Please change my email to 'rileyrg@gmx.de'.")))))
 
-    (use-package mu4e-column-faces
-      :after mu4e
-      :config (mu4e-column-faces-mode))
+  (defun mu4e-smarter-compose ()
+    "My settings for message composition."
+    (set-fill-column 72)
+    (flyspell-mode))
 
-    (setq mu4e-contexts
-          `( ,(make-mu4e-context
-               :name "aGmx"
-               :enter-func (lambda () (mu
-4e-message "gmx context")(rgr/mu4e-refresh))
-               :match-func (lambda (msg)
-                             (when msg
-                               (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
-               :vars '( ( user-mail-address . "rileyrg@gmx.de" )
-                        ( user-full-name . "Richard G. Riley" )
-                        ( smtpmail-smtp-server . "mail.gmx.net")
-                        ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
-                        ( mu4e-refile-folder . "/gmx/Archive" )
-                        ( mu4e-sent-folder . "/gmx/Sent" )
-                        ( mu4e-sent-messages-behavior . sent)
-                        ( mu4e-trash-folder . "/gmx/Bin" )
-                        ( mu4e-drafts-folder . "/gmx/Drafts" )
-                        ;; (mu4e-maildir-shortcuts .
-                        ;;  (("/gmx/INBOX"             . ?i)
-                        ;;    ("/gmx/Sent" . ?s)
-                        ;;    ("/gmx/Bin"     . ?b)
-                        ;;    ("/gmx/Drafts"    . ?d)
-                        ;;    ("/gmx/Spam"    . ?p)
-                        ;;    ("/gmx/Archive"  . ?a)))
-                        ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmx/INBOX and flag:unread" :key ?i)
-                                            (:name "Learning" :query "maildir:/gmx/Learning* and flag:unread" :key ?l)
-                                            (:name "All Today's messages" :query "maildir:/gmx/*  AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent) AND date:today..now " :key ?t)
-                                            (:name "Last 7 days" :query "maildir:/gmx/* AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent)  AND date:7d..now" :hide-unread t :key ?w)
-                                            (:name "All" :query "maildir:/gmx/* and not (maildir:/gmx/Spam or maildir:/gmx/Bin)" :key ?a)
-                                            (:name "Bin" :query "maildir:/gmx/Bin" :key ?b)
-                                            ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
-                                            (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                        ( mu4e-compose-signature  .
-                          (concat
-                           "Richard G. Riley\n"
-                           "Ein bier, ein Helbing.\n"))))
-             ,(make-mu4e-context
-               :name "bGmail"
-               :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
-               ;; no leave-func
-               ;; we match based on the maildir of the message
-               ;; this matches maildir /Arkham and its sub-directories
-               :match-func (lambda (msg)
-                             (when msg
-                               (string-match-p "^/gmail" (mu4e-message-field msg :maildir))))
-               :vars '( ( user-mail-address . "rileyrg@gmail.com"  )
-                        ( user-full-name . "Richie" )
-                        ( smtpmail-smtp-server . "smtp.gmail.com")
-                        ( mu4e-get-mail-command . "getmails gmail")
-                        ( mu4e-refile-folder . "/gmail/Archive" )
-                        ( mu4e-sent-folder . "/gmail/Sent" )
-                        ( mu4e-sent-messages-behavior . delete)
-                        ( mu4e-trash-folder . "/gmail/Bin" )
-                        ( mu4e-drafts-folder . "/gmail/Drafts" )
-                        ;; (mu4e-maildir-shortcuts .
-                        ;;   (("/gmail/INBOX"             . ?i)
-                        ;;    ("/gmail/Sent" . ?s)
-                        ;;    ("/gmail/Bin"     . ?b)
-                        ;;    ("/gmail/Drafts"    . ?d)
-                        ;;    ("/gmail/Spam"    . ?p)
-                        ;;    ("/gmail/Archive"  . ?a)))
-                        ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmail/INBOX and flag:unread" :key ?i)
-                                            (:name "All Today's messages" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:today..now " :key ?t)
-                                            (:name "Last 7 days" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:7d..now" :hide-unread t :key ?w)
-                                            (:name "All" :query "maildir:/gmail/* and not (maildir:/gmail/Spam or maildir:/gmail/Bin)" :key ?a)
-                                            (:name "Bin" :query "maildir:/gmail/Bin" :key ?b)
-                                            ;;                    (:name "Messages with images" :query "maildir:/gmail/* AND  NOT maildir:/gmail/Spam  AND  NOT maildir:/gmail/Sent" :key ?m)
-                                            (:name "Spam" :query "maildir:/gmail/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                        ( mu4e-compose-signature . "Please change my email to 'rileyrg@gmx.de'.")))))
+  (defun rgr/mu4e-refresh()
+    (interactive)
+    (when (featurep 'alert)
+      (alert "refreshing mu4e indexes"))
+    (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
 
-    (defun mu4e-smarter-compose ()
-      "My settings for message composition."
-      (set-fill-column 72)
-      (flyspell-mode))
-
-    (defun rgr/mu4e-refresh()
-      (interactive)
-      (when (featurep 'alert)
-        (alert "refreshing mu4e indexes"))
-      (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
-
-    (add-to-list 'mu4e-view-actions
-                 '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-    (add-to-list 'mu4e-view-actions
-                 '("XWidget View" . mu4e-action-view-with-xwidget) t)
-    (add-to-list 'mu4e-view-actions
-                 '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
-    (require 'mu4e-contrib)
-    :hook ((mu4e-view-mode . visual-line-mode)
-           (mu4e-compose-mode . mu4e-smarter-compose)
-           (mu4e-view-mode-hook .
-                                (lambda()
-                                  ;; try to emulate some of the eww key-bindings
-                                  (local-set-key (kbd "<tab>") 'shr-next-link)
-                                  (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-    :bind	  (("C-c u".  'mu4e)
-             (:map mu4e-main-mode-map
-                   ("m" . mu4e-compose-new))
-             (:map mu4e-main-mode-map
-                   ("g" . rgr/mu4e-refresh))
-             (:map mu4e-headers-mode-map
-                   ("C-c u" . mu4e-headers-mark-all-unread-read))))
-  ;;(
-  ;;:map mu4e-view-mode-map
-  ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
+  (add-to-list 'mu4e-view-actions
+               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  (add-to-list 'mu4e-view-actions
+               '("XWidget View" . mu4e-action-view-with-xwidget) t)
+  (add-to-list 'mu4e-view-actions
+               '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
+  (require 'mu4e-contrib)
+  :hook ((mu4e-view-mode . visual-line-mode)
+         (mu4e-compose-mode . mu4e-smarter-compose)
+         (mu4e-view-mode-hook .
+                              (lambda()
+                                ;; try to emulate some of the eww key-bindings
+                                (local-set-key (kbd "<tab>") 'shr-next-link)
+                                (local-set-key (kbd "<backtab>") 'shr-previous-link))))
+  :bind	  (("C-c u".  'mu4e)
+           (:map mu4e-main-mode-map
+                 ("m" . mu4e-compose-new))
+           (:map mu4e-main-mode-map
+                 ("g" . rgr/mu4e-refresh))
+           (:map mu4e-headers-mode-map
+                 ("C-c u" . mu4e-headers-mark-all-unread-read))))
+;;(
+;;:map mu4e-view-mode-map
+;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
 ```
 
 
@@ -2459,7 +2471,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     ```emacs-lisp
     (use-package emacs
       :bind
-       ("C-S-d" . 'duplicate-line))
+      ("C-S-d" . 'duplicate-line))
     ```
 
 3.  Indent Bars
@@ -2677,26 +2689,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
     ```
 
-8.  tree-sitter
-
-    <https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/>
-    
-    ```emacs-lisp
-    (use-package tree-sitter
-      :ensure t
-      :config
-      ;; activate tree-sitter on any buffer containing code for which it has a parser available
-      (global-tree-sitter-mode)
-      ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
-      ;; by switching on and off
-      (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-    
-    (use-package tree-sitter-langs
-      :ensure t
-      :after tree-sitter)
-    ```
-
-9.  code format
+8.  code format
 
     ```emacs-lisp
     ;; auto-format different source code files extremely intelligently
@@ -2707,7 +2700,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (apheleia-global-mode +1))
     ```
 
-10. rainbow delimiters
+9.  rainbow delimiters
 
     ```emacs-lisp
     (use-package rainbow-identifiers
@@ -2716,7 +2709,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
     ```
 
-11. Project Management
+10. Project Management
 
     1.  project
     
@@ -2750,7 +2743,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (push (org-projectile-project-todo-entry) org-capture-templates))
             ```
 
-12. BASH
+11. BASH
 
     1.  Navigating Bash set -x output
     
@@ -2765,7 +2758,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                          "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
         ```
 
-13. JSON, YAML Configuration files
+12. JSON, YAML Configuration files
 
     1.  YAML
     
@@ -2785,7 +2778,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package hydra)
         ```
 
-14. Flymake
+13. Flymake
 
     1.  diagnostic-at-point
     
@@ -2808,7 +2801,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :hook (sh-mode . rgr/sh-mode-hook))
         ```
 
-15. Version Control
+14. Version Control
 
     1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
     
@@ -2856,7 +2849,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ;; (use-package emacsql-sqlite-builtin)
           ;; (setq forge-database-connector 'sqlite-builtin)
           :config
-           (use-package orgit-forge)
+          (use-package orgit-forge)
           )
         ```
         
@@ -2878,7 +2871,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ("C-x v ="  . git-gutter:popup-hunk))
         ```
 
-16. Dart/Flutter
+15. Dart/Flutter
 
     Running emultaor from command line:
     
@@ -2910,8 +2903,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (use-package lsp-dart :after lsp)
       :hook   (dart-mode . (lambda()
                              (setq-local dash-docs-docsets '("Dart"))
-                             ;;(eglot-ensure)
-                             (lsp-deferred)
+                             (eglot-ensure)
+                             ;;(lsp-deferred)
                              )))
     
     ```
@@ -2924,7 +2917,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         ;;   )
         ```
 
-17. Javascript
+16. Javascript
 
     ```emacs-lisp
     (use-package js
@@ -2942,39 +2935,27 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     ```
 
-18. TreeSitter
+17. Tree Sitter
 
     ```emacs-lisp
-    ;; (setq treesit-language-source-alist
-    ;;  '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-    ;;    (cmake "https://github.com/uyha/tree-sitter-cmake")
-    ;;    (css "https://github.com/tree-sitter/tree-sitter-css")
-    ;;    (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-    ;;    (go "https://github.com/tree-sitter/tree-sitter-go")
-    ;;    (html "https://github.com/tree-sitter/tree-sitter-html")
-    ;;    (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-    ;;    (json "https://github.com/tree-sitter/tree-sitter-json")
-    ;;    (make "https://github.com/alemuller/tree-sitter-make")
-    ;;    (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-    ;;    (python "https://github.com/tree-sitter/tree-sitter-python")
-    ;;    (toml "https://github.com/tree-sitter/tree-sitter-toml")
-    ;;    (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-    ;;    (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-    ;;    (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
-    
-    (use-package tree-sitter
+    (use-package emacs
+      :custom
+      (treesit-extra-load-path `(,(no-littering-expand-etc-file-name "treesit/grammars/")))
       :config
-      (use-package tree-sitter-langs)
-      (global-tree-sitter-mode)
-      (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+      (require 'treesit)
+      (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+      (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+      (add-to-list 'major-mode-remap-alist
+                   '(c-or-c++-mode . c-or-c++-ts-mode))
+      :hook
+      (c-ts-base-mode . rgr/c-mode-common-hook))
     ```
 
-19. Typescript
+18. Typescript
 
     ```emacs-lisp
     ;; sudo npm i -g typescript-language-server
     (use-package typescript-mode
-      :after tree-sitter
       :config
       ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
       ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
@@ -2983,22 +2964,19 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
       ;; use our derived mode for tsx files
       (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-      ;; by default, typescript-mode is mapped to the treesitter typescript parser
-      ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
-      (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
       (defun rgr/ts-mode-hook ()
         ;;(eglot-ensure)
         (setq-local dash-docs-docsets '("React" "JavaScript")))
       (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
     ```
 
-20. Javascript
+19. Javascript
 
     ```emacs-lisp
     
     ```
 
-21. Language Server Protocol (LSP), lsp-mode
+20. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -3014,6 +2992,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         
             ```emacs-lisp
             (use-package lsp-mode
+              :disabled
               :init
               ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
               (setq lsp-keymap-prefix "C-l")
@@ -3049,7 +3028,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             
             ```emacs-lisp
             (use-package eglot
-              :straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
+              ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
               ;; :config
               ;; (use-package eldoc-box)
               ;; :hook
@@ -3068,7 +3047,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/lsp)
             ```
 
-22. Serial Port
+21. Serial Port
 
     ```emacs-lisp
     (defgroup rgr/serial-ports nil
@@ -3096,7 +3075,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       (selectSerialPortBuffer)))
     ```
 
-23. PlatformIO
+22. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
     
@@ -3121,7 +3100,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     1.  get compilation errors to work and submit ansi color fix?
 
-24. Python
+23. Python
 
     1.  ipython
     
@@ -3138,7 +3117,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
         ```
 
-25. Haskell
+24. Haskell
 
     1.  haskell-mode
     
@@ -3155,7 +3134,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
         ```
 
-26. lldb debugging in emacs
+25. lldb debugging in emacs
 
     1.  voltron
     
@@ -3167,7 +3146,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           )
         ```
 
-27. c-mode-common-hook
+26. c-mode-common-hook
 
     ```emacs-lisp
     (use-package emacs
@@ -3177,8 +3156,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         )
       (defun rgr/c-mode-common-hook ()
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-        ;;(eglot-ensure)
-        (lsp-deferred)
+        (eglot-ensure)
+        ;;(lsp-deferred)
         (if(featurep 'corfu)
             (setq completion-category-defaults nil))
         (if(featurep 'platformio-mode)
@@ -3189,11 +3168,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (c-mode-common . rgr/c-mode-common-hook)
       :bind  ( :map c-mode-base-map
                (("M-<return>" . rgr/c-complete-line)
-                 ("TAB" . rgr/c-indent-complete)
+                ("TAB" . rgr/c-indent-complete)
                 )))
     ```
 
-28. C, c-mode
+27. C, c-mode
 
     ```emacs-lisp
     (defun rgr/c-mode-hook ()
@@ -3237,7 +3216,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         
         ```
 
-29. cc,cpp, C++, cc-mode
+28. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3245,7 +3224,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-30. Linux tools
+29. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -3257,7 +3236,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-31. Assembler
+30. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
@@ -3265,7 +3244,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-32. Godot GDScript
+31. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
@@ -3290,7 +3269,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-33. Web,Symfony and Twig
+32. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -3357,7 +3336,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-34. elf-mode - view the symbol list in a binary
+33. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -3369,7 +3348,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-35. provide
+34. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3500,7 +3479,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6dc1b06) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc48aba7) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3539,7 +3518,7 @@ fi
 ```
 
 
-<a id="org6dc1b06"></a>
+<a id="orgc48aba7"></a>
 
 ### Gnome protocol handler desktop file
 

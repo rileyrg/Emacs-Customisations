@@ -153,11 +153,11 @@
   )
 
 (use-package consult-dash
-   :straight (consult-dash :local-repo "~/development/projects/emacs/consult-dash" :type git :host codeberg :repo "ravi/consult-dash" )
-    :bind (("M-s d" . consult-dash))
-    :config
-    ;; Use the symbol at point as initial search term
-    (consult-customize consult-dash :initial (thing-at-point 'symbol)))
+  :straight (consult-dash :local-repo "~/development/projects/emacs/consult-dash" :type git :host codeberg :repo "ravi/consult-dash" )
+  :bind (("M-s d" . consult-dash))
+  :config
+  ;; Use the symbol at point as initial search term
+  (consult-customize consult-dash :initial (thing-at-point 'symbol)))
 
 (use-package embark
   :config
@@ -184,13 +184,21 @@
   :hook
   (embark-collect-mode . embark-consult-preview-minor-mode))
 
+;; Enable rich annotations using the Marginalia package
 (use-package marginalia
-  :custom
-  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+
+  ;; The :init section is always executed.
   :init
-  (marginalia-mode)
-  (advice-add #'marginalia-cycle :after
-              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
+
+  ;; Marginalia must be activated in the :init section of use-package such that
+  ;; the mode gets enabled right away. Note that this forces loading the
+  ;; package.
+  (marginalia-mode))
 
 (use-package affe
   :disabled

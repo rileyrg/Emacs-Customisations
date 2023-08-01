@@ -1,4 +1,5 @@
 (use-package lsp-mode
+  :disabled
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-l")
@@ -27,7 +28,7 @@
   :commands (lsp lsp-deferred))
 
 (use-package eglot
-  :straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
+  ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
   ;; :config
   ;; (use-package eldoc-box)
   ;; :hook
