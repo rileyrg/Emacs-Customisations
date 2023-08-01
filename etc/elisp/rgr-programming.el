@@ -2,7 +2,7 @@
 
 (use-package emacs
   :bind
-   ("C-S-d" . 'duplicate-line))
+  ("C-S-d" . 'duplicate-line))
 
 (use-package indent-bars
   ;;:disabled
@@ -59,19 +59,6 @@
 
 (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
-
-(use-package tree-sitter
-  :ensure t
-  :config
-  ;; activate tree-sitter on any buffer containing code for which it has a parser available
-  (global-tree-sitter-mode)
-  ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
-  ;; by switching on and off
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-
-(use-package tree-sitter-langs
-  :ensure t
-  :after tree-sitter)
 
 ;; auto-format different source code files extremely intelligently
 ;; https://github.com/radian-software/apheleia
@@ -163,7 +150,7 @@
   ;; (use-package emacsql-sqlite-builtin)
   ;; (setq forge-database-connector 'sqlite-builtin)
   :config
-   (use-package orgit-forge)
+  (use-package orgit-forge)
   )
 
 (use-package git-gutter
@@ -195,8 +182,8 @@
   (use-package lsp-dart :after lsp)
   :hook   (dart-mode . (lambda()
                          (setq-local dash-docs-docsets '("Dart"))
-                         ;;(eglot-ensure)
-                         (lsp-deferred)
+                         (eglot-ensure)
+                         ;;(lsp-deferred)
                          )))
 
 ;; (use-package emacs
@@ -215,32 +202,20 @@
   (:map js-mode-map
         ("M-." . #'lsp-ui-peek-find-definitions)))
 
-;; (setq treesit-language-source-alist
-;;  '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-;;    (cmake "https://github.com/uyha/tree-sitter-cmake")
-;;    (css "https://github.com/tree-sitter/tree-sitter-css")
-;;    (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-;;    (go "https://github.com/tree-sitter/tree-sitter-go")
-;;    (html "https://github.com/tree-sitter/tree-sitter-html")
-;;    (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-;;    (json "https://github.com/tree-sitter/tree-sitter-json")
-;;    (make "https://github.com/alemuller/tree-sitter-make")
-;;    (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-;;    (python "https://github.com/tree-sitter/tree-sitter-python")
-;;    (toml "https://github.com/tree-sitter/tree-sitter-toml")
-;;    (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-;;    (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-;;    (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
-
-(use-package tree-sitter
+(use-package emacs
+  :custom
+  (treesit-extra-load-path `(,(no-littering-expand-etc-file-name "treesit/grammars/")))
   :config
-  (use-package tree-sitter-langs)
-  (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+  (require 'treesit)
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist
+               '(c-or-c++-mode . c-or-c++-ts-mode))
+  :hook
+  (c-ts-base-mode . rgr/c-mode-common-hook))
 
 ;; sudo npm i -g typescript-language-server
 (use-package typescript-mode
-  :after tree-sitter
   :config
   ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
   ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
@@ -249,9 +224,6 @@
 
   ;; use our derived mode for tsx files
   (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-  ;; by default, typescript-mode is mapped to the treesitter typescript parser
-  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
   (defun rgr/ts-mode-hook ()
     ;;(eglot-ensure)
     (setq-local dash-docs-docsets '("React" "JavaScript")))
@@ -333,8 +305,8 @@
     )
   (defun rgr/c-mode-common-hook ()
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-    ;;(eglot-ensure)
-    (lsp-deferred)
+    (eglot-ensure)
+    ;;(lsp-deferred)
     (if(featurep 'corfu)
         (setq completion-category-defaults nil))
     (if(featurep 'platformio-mode)
@@ -345,7 +317,7 @@
   (c-mode-common . rgr/c-mode-common-hook)
   :bind  ( :map c-mode-base-map
            (("M-<return>" . rgr/c-complete-line)
-             ("TAB" . rgr/c-indent-complete)
+            ("TAB" . rgr/c-indent-complete)
             )))
 
 (defun rgr/c-mode-hook ()
