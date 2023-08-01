@@ -10,8 +10,8 @@
   :config
   (add-hook 'server-after-make-frame-hook
             (lambda ()
-              (use-package disable-mouse)
-              (global-disable-mouse-mode)
+              ;; (use-package disable-mouse)
+              ;; (global-disable-mouse-mode)
               (add-hook 'prog-mode-hook  'indent-bars-mode)
               )))
 
