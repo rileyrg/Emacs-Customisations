@@ -713,9 +713,20 @@ are marks or annotations placed at the margin of the page of a book or in this c
     ;; Marginalia must be activated in the :init section of use-package such that
     ;; the mode gets enabled right away. Note that this forces loading the
     ;; package.
-    (marginalia-mode)
-    :hook
-    (marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
+    (marginalia-mode))
+#+end_src
+**** all-the-icons
+Remember to run *all-the-icons-install-fonts*.
+#+begin_src  emacs-lisp
+  (use-package all-the-icons
+    :config
+    (use-package all-the-icons-completion
+      :init (all-the-icons-completion-mode))
+    (use-package all-the-icons-dired
+      :config
+      (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
+
 #+end_src
 **** [[https://github.com/minad/affe][affe]] Asynchronous Fuzzy Finder for Emacs
 :PROPERTIES:
@@ -765,14 +776,6 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     which-key
     :demand t
     :config (which-key-mode))
-#+end_src
-**** all-the-icons
-#+begin_src  emacs-lisp
-  (use-package all-the-icons-completion
-    :config
-    (all-the-icons-completion-mode)
-    (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
-
 #+end_src
 **** Yasnippet                                                    :yasnippet:
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
@@ -1138,12 +1141,6 @@ JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fo
 :END:
 #+begin_src emacs-lisp
   ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
-#+end_src
-***** icons
-#+begin_src  emacs-lisp
-  (use-package nerd-icons-completion
-    :config
-    (nerd-icons-completion-mode))
 #+end_src
 ***** Darkroom
 :PROPERTIES:
@@ -2231,13 +2228,6 @@ A general interface to [[https://github.com/Silex/docker.el/tree/a2092b3b1702145
 :PROPERTIES:
 :ID:       0d37638b-55cd-4036-a0e0-6e6ab42a5046
 :END:
-**** dired icons
-#+begin_src emacs-lisp
-  (use-package all-the-icons-dired
-    :init
-    (add-hook 'dired-mode-hook  #'all-the-icons-dired-mode))
-#+end_src
-
 **** Dired Git Info
 :PROPERTIES:
 :ID:       c6fe4735-2499-4fc0-a8d4-250fa8ce7c4b

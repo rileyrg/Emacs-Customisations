@@ -3,11 +3,6 @@
   :demand t
   :config (which-key-mode))
 
-(use-package all-the-icons-completion
-  :config
-  (all-the-icons-completion-mode)
-  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
-
 (use-package yasnippet
   :config
   (use-package yasnippet-snippets)

@@ -238,10 +238,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ("M-0" . 'delete-window)
   ("M-1" . 'delete-other-windows))
 
-(use-package all-the-icons-dired
-  :init
-  (add-hook 'dired-mode-hook  #'all-the-icons-dired-mode))
-
 (use-package dired-git
   :config
   :hook (dired-mode . dired-git-mode))

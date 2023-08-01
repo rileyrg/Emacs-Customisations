@@ -652,12 +652,26 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ;; Marginalia must be activated in the :init section of use-package such that
       ;; the mode gets enabled right away. Note that this forces loading the
       ;; package.
-      (marginalia-mode)
-      :hook
-      (marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
+      (marginalia-mode))
     ```
 
-7.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
+7.  all-the-icons
+
+    Remember to run **all-the-icons-install-fonts**.
+    
+    ```emacs-lisp
+    (use-package all-the-icons
+      :config
+      (use-package all-the-icons-completion
+        :init (all-the-icons-completion-mode))
+      (use-package all-the-icons-dired
+        :config
+        (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+      :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
+    
+    ```
+
+8.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
 
     ```emacs-lisp
     (use-package affe
@@ -672,7 +686,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       (consult-customize affe-grep :preview-key (kbd "M-.")))
     ```
 
-8.  provide
+9.  provide
 
     ```emacs-lisp
     (provide 'rgr/minibuffer)
@@ -703,17 +717,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :config (which-key-mode))
     ```
 
-2.  all-the-icons
-
-    ```emacs-lisp
-    (use-package all-the-icons-completion
-      :config
-      (all-the-icons-completion-mode)
-      (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
-    
-    ```
-
-3.  Yasnippet
+2.  Yasnippet
 
     [YASnippet](https://github.com/joaotavora/yasnippet) is a template system for Emacs.
     
@@ -724,7 +728,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (yas-global-mode))
     ```
 
-4.  Abbrev Mode
+3.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
@@ -732,7 +736,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-5.  company
+4.  company
 
     ```emacs-lisp
     (use-package company
@@ -748,7 +752,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (prog-mode . company-mode))
     ```
 
-6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
     ```emacs-lisp
     (use-package orderless
@@ -786,7 +790,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
         (setq enable-recursive-minibuffers t)))
     ```
 
-7.  corfu
+6.  corfu
 
     I've had to turn this off as moving up and down auto selects at times. Back to company-mode.
     
@@ -893,7 +897,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           )
         ```
 
-8.  dabbrev
+7.  dabbrev
 
     ```emacs-lisp
     ;; Use Dabbrev with Corfu!
@@ -906,7 +910,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
     ```
 
-9.  vertico , vertical interactive completion
+8.  vertico , vertical interactive completion
 
     <https://github.com/minad/vertico>
     
@@ -921,7 +925,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     
     ```
 
-10. Abbrev Mode
+9.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
@@ -929,7 +933,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (setq-default abbrev-mode 1)
     ```
 
-11. provide
+10. provide
 
     ```emacs-lisp
     (provide 'rgr/completion)
@@ -1097,15 +1101,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
         ```
     
-    2.  icons
-    
-        ```emacs-lisp
-        (use-package nerd-icons-completion
-          :config
-          (nerd-icons-completion-mode))
-        ```
-    
-    3.  Darkroom
+    2.  Darkroom
     
         Zoom in and center using [darkroom](https://github.com/joaotavora/darkroom).
         
@@ -1355,7 +1351,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org5251619) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org3df3366) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2114,15 +2110,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ### dired - emacs file management
 
-1.  dired icons
-
-    ```emacs-lisp
-    (use-package all-the-icons-dired
-      :init
-      (add-hook 'dired-mode-hook  #'all-the-icons-dired-mode))
-    ```
-
-2.  Dired Git Info
+1.  Dired Git Info
 
     ```emacs-lisp
     (use-package dired-git
@@ -2130,7 +2118,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
       :hook (dired-mode . dired-git-mode))
     ```
 
-3.  dired hacks
+2.  dired hacks
 
     Collection of useful dired additions found on github [here](https://github.com/Fuco1/dired-hacks). Found out about it at the useful emacs resource [**Pragmatic Emacs**](http://pragmaticemacs.com/category/dired/).
     
@@ -3493,7 +3481,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org82b72bf) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org63c8083) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3532,7 +3520,7 @@ fi
 ```
 
 
-<a id="org82b72bf"></a>
+<a id="org63c8083"></a>
 
 ### Gnome protocol handler desktop file
 
