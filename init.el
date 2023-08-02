@@ -337,11 +337,16 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (global-set-key (kbd  "C-c e") #'rgr/erc-start)
 
 (use-package mu4e
-  :disabled
+  ;;:disabled
   :straight ( :host github
-              :files ("build/mu4e/*.elc")
               :branch "release/1.8"
               :repo "djcb/mu"
+              :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+              :main "mu4e/mu4e.el"
+              :pre-build (("./autogen.sh")
+                          ("ninja" "-C" "build")
+                          (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                              (expand-file-name "~/bin/mu") 'ok-if-exists))
               :pre-build (("meson" "build")
                           ("ninja" "-C" "build")))
   :commands (mu4e mu4e-update-index)
@@ -481,7 +486,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
                  ("g" . rgr/mu4e-refresh))
            (:map mu4e-headers-mode-map
                  ("C-c u" . mu4e-headers-mark-all-unread-read))))
-;;(
 ;;:map mu4e-view-mode-map
 ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
 
