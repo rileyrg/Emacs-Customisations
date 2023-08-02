@@ -1,8 +1,13 @@
 #!/bin/bash
-emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
+pgrep "emacs"
 if [ "$?" = "1" ]; then
-    emacsclient -n -c -a "" "$@" #none found so create frame
+   emacs "$@"
 else
-    emacsclient -n -a "" "$@"
-    pop-window "Emacs"
+    emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
+    if [ "$?" = 1 ]; then
+        emacsclient -n -c -a "" "$@"
+    else
+        emacsclient -n -a "" "$@"
+        pop-window "Emacs"
+    fi
 fi

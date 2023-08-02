@@ -652,7 +652,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
       ;; available in the *Completions* buffer, add it to the
       ;; `completion-list-mode-map'.
       :bind (:map minibuffer-local-map
-             ("M-A" . marginalia-cycle))
+                  ("M-A" . marginalia-cycle))
     
       ;; The :init section is always executed.
       :init
@@ -1366,7 +1366,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgc1ab21a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org437a37d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2485,27 +2485,21 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (global-set-key (kbd "C-c C-r") 'recompile)
     ```
 
-2.  duplicate line
+2.  indent bars
+
+    ```emacs-lisp
+    (use-package indent-bars
+      :disabled
+      :ensure t
+      :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars"))
+    ```
+
+3.  duplicate line
 
     ```emacs-lisp
     (use-package emacs
       :bind
       ("C-S-d" . 'duplicate-line))
-    ```
-
-3.  Indent Bars
-
-    ```emacs-lisp
-    (use-package indent-bars
-      ;;:disabled
-      :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-      :config
-      (add-hook 'server-after-make-frame-hook
-                (lambda ()
-                  ;; (use-package disable-mouse)
-                  ;; (global-disable-mouse-mode)
-                  (add-hook 'prog-mode-hook  'indent-bars-mode)
-                  )))
     ```
 
 4.  Breadcrumbs
@@ -2960,6 +2954,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```emacs-lisp
     (use-package treesit-auto
+      ;;:disable
       :custom
       (treesit-extra-load-path `(,(no-littering-expand-etc-file-name "treesit/grammars/")))
       :config
@@ -3018,7 +3013,12 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (setq gc-cons-threshold (* 100 1024 1024)
                     read-process-output-max (* 1024 1024))
               :config
-              (use-package lsp-ui :commands lsp-ui-mode)
+              (use-package lsp-ui
+                :init
+                (defun rgr/lsp-ui-mode-hook()
+                  )
+                :hook
+                (lsp-ui-mode . rgr/lsp-ui-mode-hook))
               (use-package lsp-treemacs
                 :custom
                 (lsp-treemacs-sync-mode t)
@@ -3178,6 +3178,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
         ;;(eglot-ensure)
         (lsp-deferred)
+        (if (fboundp 'indent-bars-mode)
+            (indent-bars-mode))
         (if(featurep 'platformio-mode)
             (platformio-conditionally-enable))
         (if (featurep 'yasnippet)
@@ -3497,7 +3499,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfa79029) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdfc8f9b) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3536,7 +3538,7 @@ fi
 ```
 
 
-<a id="orgfa79029"></a>
+<a id="orgdfc8f9b"></a>
 
 ### Gnome protocol handler desktop file
 
@@ -3584,12 +3586,17 @@ alias emacs='emacsclient --create-frame --alternate-editor=""'
 
 ```bash
 #!/bin/bash
-emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
+pgrep "emacs"
 if [ "$?" = "1" ]; then
-    emacsclient -n -c -a "" "$@" #none found so create frame
+   emacs "$@"
 else
-    emacsclient -n -a "" "$@"
-    pop-window "Emacs"
+    emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
+    if [ "$?" = 1 ]; then
+        emacsclient -n -c -a "" "$@"
+    else
+        emacsclient -n -a "" "$@"
+        pop-window "Emacs"
+    fi
 fi
 ```
 
