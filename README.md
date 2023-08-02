@@ -1316,6 +1316,8 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
                               (:name "Emacs related"
                                      ;; Boolean AND group matches items that match all subgroups
                                      :tag ("emacs"))
+                              (:name "Linux related"
+                                     :and (:tag ("linux") :not (:tag "emacs")))
                               (:name "Programming related"
                                      :and (:tag ("programming") :not (:tag "emacs")))
                               (:name "Food-related"
@@ -1364,7 +1366,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org207c3a3) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgc1ab21a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2752,7 +2754,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             
             ```emacs-lisp
             (use-package org-projectile
-              :disabled
+              ;;:disabled
               :bind (("C-c n p" . org-projectile-project-todo-completing-read)
                      ("C-c c" . org-capture))
               :config
@@ -3495,7 +3497,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org309fdfa) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfa79029) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3534,7 +3536,7 @@ fi
 ```
 
 
-<a id="org309fdfa"></a>
+<a id="orgfa79029"></a>
 
 ### Gnome protocol handler desktop file
 

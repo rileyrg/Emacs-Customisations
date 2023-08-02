@@ -83,7 +83,7 @@
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
 
 (use-package org-projectile
-  :disabled
+  ;;:disabled
   :bind (("C-c n p" . org-projectile-project-todo-completing-read)
          ("C-c c" . org-capture))
   :config
