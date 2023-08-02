@@ -61,6 +61,8 @@
                       (:name "Emacs related"
                              ;; Boolean AND group matches items that match all subgroups
                              :tag ("emacs"))
+                      (:name "Linux related"
+                             :and (:tag ("linux") :not (:tag "emacs")))
                       (:name "Programming related"
                              :and (:tag ("programming") :not (:tag "emacs")))
                       (:name "Food-related"

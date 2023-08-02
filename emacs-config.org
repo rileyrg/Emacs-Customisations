@@ -25,6 +25,8 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :tangle-mode (identity #o644)
 #+PROPERTY: header-args:gpg :cache no :tangle-mode (identity #o600)
 
+#+FILETAGS: :emacs:programming:
+
 * Introduction
 
 Emacs customisation generates [[file:init.el::defvar bootstrap-version][init.el]] and other [[file:etc/elisp/][emacs elisp utility files]]  using [[https://orgmode.org/manual/Extracting-Source-Code.html][org-babel-tangle]].
@@ -1359,6 +1361,8 @@ create unique link IDs when sharing a link to an org section
                         (:name "Emacs related"
                                ;; Boolean AND group matches items that match all subgroups
                                :tag ("emacs"))
+                        (:name "Linux related"
+                               :and (:tag ("linux") :not (:tag "emacs")))
                         (:name "Programming related"
                                :and (:tag ("programming") :not (:tag "emacs")))
                         (:name "Food-related"
@@ -2900,11 +2904,15 @@ CLOSED: [2021-07-21 Wed 11:28]
     (projectile-mode +1)
     (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
 #+end_src
-****** org-projectile
+****** TODO org-projectile
+SCHEDULED: <2023-08-03 Thu>
+:LOGBOOK:
+- State "TODO"       from              [2023-08-02 Wed 09:46]
+:END:
 https://github.com/IvanMalison/org-projectile
 #+begin_src  emacs-lisp
   (use-package org-projectile
-    :disabled
+    ;;:disabled
     :bind (("C-c n p" . org-projectile-project-todo-completing-read)
            ("C-c c" . org-capture))
     :config
