@@ -1366,7 +1366,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org437a37d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#orgd15a3da) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -3499,7 +3499,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdfc8f9b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7d2f607) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3538,7 +3538,7 @@ fi
 ```
 
 
-<a id="orgdfc8f9b"></a>
+<a id="org7d2f607"></a>
 
 ### Gnome protocol handler desktop file
 
@@ -3586,7 +3586,7 @@ alias emacs='emacsclient --create-frame --alternate-editor=""'
 
 ```bash
 #!/bin/bash
-pgrep "emacs"
+pgrep "emacs" > /dev/null
 if [ "$?" = "1" ]; then
    emacs "$@"
 else

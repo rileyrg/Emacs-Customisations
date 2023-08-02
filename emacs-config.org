@@ -3722,7 +3722,7 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
 :END:
 #+begin_src bash :tangle bin/emacs-same-frame
   #!/bin/bash
-  pgrep "emacs"
+  pgrep "emacs" > /dev/null
   if [ "$?" = "1" ]; then
      emacs "$@"
   else

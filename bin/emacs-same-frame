@@ -1,5 +1,5 @@
 #!/bin/bash
-pgrep "emacs"
+pgrep "emacs" > /dev/null
 if [ "$?" = "1" ]; then
    emacs "$@"
 else
