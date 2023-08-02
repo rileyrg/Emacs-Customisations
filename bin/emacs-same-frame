@@ -1,7 +1,6 @@
 #!/bin/bash
-pgrep "emacs" > /dev/null
-if [ "$?" = "1" ]; then
-   emacs "$@"
+if pidof "emacs"; then
+   emacs "$@" &
 else
     emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
     if [ "$?" = 1 ]; then

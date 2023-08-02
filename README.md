@@ -1366,7 +1366,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgd15a3da) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org2e543cf) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2306,11 +2306,16 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
 
 ```emacs-lisp
 (use-package mu4e
-  :disabled
+  ;;:disabled
   :straight ( :host github
-              :files ("build/mu4e/*.elc")
               :branch "release/1.8"
               :repo "djcb/mu"
+              :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+              :main "mu4e/mu4e.el"
+              :pre-build (("./autogen.sh")
+                          ("ninja" "-C" "build")
+                          (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                              (expand-file-name "~/bin/mu") 'ok-if-exists))
               :pre-build (("meson" "build")
                           ("ninja" "-C" "build")))
   :commands (mu4e mu4e-update-index)
@@ -2450,7 +2455,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
                  ("g" . rgr/mu4e-refresh))
            (:map mu4e-headers-mode-map
                  ("C-c u" . mu4e-headers-mark-all-unread-read))))
-;;(
 ;;:map mu4e-view-mode-map
 ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
 ```
@@ -3499,7 +3503,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7d2f607) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org63847e0) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3538,7 +3542,7 @@ fi
 ```
 
 
-<a id="org7d2f607"></a>
+<a id="org63847e0"></a>
 
 ### Gnome protocol handler desktop file
 
@@ -3586,9 +3590,8 @@ alias emacs='emacsclient --create-frame --alternate-editor=""'
 
 ```bash
 #!/bin/bash
-pgrep "emacs" > /dev/null
-if [ "$?" = "1" ]; then
-   emacs "$@"
+if pidof "emacs"; then
+   emacs "$@" &
 else
     emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
     if [ "$?" = 1 ]; then
