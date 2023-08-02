@@ -1,19 +1,13 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
+(use-package indent-bars
+  :disabled
+  :ensure t
+  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars"))
+
 (use-package emacs
   :bind
   ("C-S-d" . 'duplicate-line))
-
-(use-package indent-bars
-  ;;:disabled
-  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-  :config
-  (add-hook 'server-after-make-frame-hook
-            (lambda ()
-              ;; (use-package disable-mouse)
-              ;; (global-disable-mouse-mode)
-              (add-hook 'prog-mode-hook  'indent-bars-mode)
-              )))
 
 (use-package breadcrumb
   :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
@@ -205,6 +199,7 @@
         ("M-." . #'lsp-ui-peek-find-definitions)))
 
 (use-package treesit-auto
+  ;;:disable
   :custom
   (treesit-extra-load-path `(,(no-littering-expand-etc-file-name "treesit/grammars/")))
   :config
@@ -307,6 +302,8 @@
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
     ;;(eglot-ensure)
     (lsp-deferred)
+    (if (fboundp 'indent-bars-mode)
+        (indent-bars-mode))
     (if(featurep 'platformio-mode)
         (platformio-conditionally-enable))
     (if (featurep 'yasnippet)

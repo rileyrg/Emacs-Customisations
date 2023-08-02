@@ -674,7 +674,7 @@ are marks or annotations placed at the margin of the page of a book or in this c
     ;; available in the *Completions* buffer, add it to the
     ;; `completion-list-mode-map'.
     :bind (:map minibuffer-local-map
-           ("M-A" . marginalia-cycle))
+                ("M-A" . marginalia-cycle))
 
     ;; The :init section is always executed.
     :init
@@ -2595,26 +2595,19 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-r") 'recompile)
 #+end_src
+**** indent bars
+#+begin_src  emacs-lisp
+  (use-package indent-bars
+    :disabled
+    :ensure t
+    :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars"))
+#+end_src
 **** duplicate line
 #+begin_src emacs-lisp
   (use-package emacs
     :bind
     ("C-S-d" . 'duplicate-line))
 #+end_src
-**** Indent Bars
-#+begin_src  emacs-lisp
-  (use-package indent-bars
-    ;;:disabled
-    :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-    :config
-    (add-hook 'server-after-make-frame-hook
-              (lambda ()
-                ;; (use-package disable-mouse)
-                ;; (global-disable-mouse-mode)
-                (add-hook 'prog-mode-hook  'indent-bars-mode)
-                )))
-#+end_src
-
 **** Breadcrumbs
 https://github.com/joaotavora/breadcrumb
 #+begin_src  emacs-lisp
@@ -3134,6 +3127,7 @@ Running emultaor from command line:
 **** Tree Sitter
 #+begin_src  emacs-lisp
   (use-package treesit-auto
+    ;;:disable
     :custom
     (treesit-extra-load-path `(,(no-littering-expand-etc-file-name "treesit/grammars/")))
     :config
@@ -3195,7 +3189,12 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
     (setq gc-cons-threshold (* 100 1024 1024)
           read-process-output-max (* 1024 1024))
     :config
-    (use-package lsp-ui :commands lsp-ui-mode)
+    (use-package lsp-ui
+      :init
+      (defun rgr/lsp-ui-mode-hook()
+        )
+      :hook
+      (lsp-ui-mode . rgr/lsp-ui-mode-hook))
     (use-package lsp-treemacs
       :custom
       (lsp-treemacs-sync-mode t)
@@ -3349,6 +3348,8 @@ SCHEDULED: <2021-09-26 Sun>
       (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
       ;;(eglot-ensure)
       (lsp-deferred)
+      (if (fboundp 'indent-bars-mode)
+          (indent-bars-mode))
       (if(featurep 'platformio-mode)
           (platformio-conditionally-enable))
       (if (featurep 'yasnippet)
@@ -3721,12 +3722,17 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
 :END:
 #+begin_src bash :tangle bin/emacs-same-frame
   #!/bin/bash
-  emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
+  pgrep "emacs"
   if [ "$?" = "1" ]; then
-      emacsclient -n -c -a "" "$@" #none found so create frame
+     emacs "$@"
   else
-      emacsclient -n -a "" "$@"
-      pop-window "Emacs"
+      emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
+      if [ "$?" = 1 ]; then
+          emacsclient -n -c -a "" "$@"
+      else
+          emacsclient -n -a "" "$@"
+          pop-window "Emacs"
+      fi
   fi
 #+end_src
 ** compiling emacs

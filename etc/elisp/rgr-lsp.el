@@ -6,7 +6,12 @@
   (setq gc-cons-threshold (* 100 1024 1024)
         read-process-output-max (* 1024 1024))
   :config
-  (use-package lsp-ui :commands lsp-ui-mode)
+  (use-package lsp-ui
+    :init
+    (defun rgr/lsp-ui-mode-hook()
+      )
+    :hook
+    (lsp-ui-mode . rgr/lsp-ui-mode-hook))
   (use-package lsp-treemacs
     :custom
     (lsp-treemacs-sync-mode t)
