@@ -373,7 +373,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
     (use-package alert
       :init
       (let ((alert-fade-time 5))
-        (alert "Emacs is starting..." :title "Emacs")))
+        (if (daemonp) (alert "Emacs is starting..." :title "Emacs"))))
     
     (provide 'rgr/startup)
     ```
@@ -1366,7 +1366,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org3b6e55f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org57406b6) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2315,9 +2315,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
               :pre-build (("./autogen.sh")
                           ("ninja" "-C" "build")
                           (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                              (expand-file-name "~/bin/mu") 'ok-if-exists))
-              :pre-build (("meson" "build")
-                          ("ninja" "-C" "build")))
+                                              (expand-file-name "~/bin/mu") 'ok-if-exists)))
   :commands (mu4e mu4e-update-index)
   :custom
   ( mail-user-agent 'mu4e-user-agent )
@@ -2492,9 +2490,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     ```emacs-lisp
     (use-package indent-bars
-      :disabled
+      ;;:disabled
       :ensure t
-      :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars"))
+      :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+      :hook
+      (prog-mode . indent-bars-mode))
     ```
 
 3.  duplicate line
@@ -3181,8 +3181,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
         ;;(eglot-ensure)
         (lsp-deferred)
-        (if (fboundp 'indent-bars-mode)
-            (indent-bars-mode))
+        ;;(if (fboundp 'indent-bars-mode)
+          ;;  (indent-bars-mode))
         (if(featurep 'platformio-mode)
             (platformio-conditionally-enable))
         (if (featurep 'yasnippet)
@@ -3502,7 +3502,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgee41e66) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org33b9cc8) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3541,7 +3541,7 @@ fi
 ```
 
 
-<a id="orgee41e66"></a>
+<a id="org33b9cc8"></a>
 
 ### Gnome protocol handler desktop file
 
@@ -3589,7 +3589,7 @@ alias emacs='emacsclient --create-frame --alternate-editor=""'
 
 ```bash
 #!/bin/bash
-if pidof "emacs"; then
+if ! pidof "emacs"; then
    emacs "$@" &
 else
     emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
