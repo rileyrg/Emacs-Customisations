@@ -339,7 +339,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (use-package mu4e
   ;;:disabled
   :straight ( :host github
-              :branch "release/1.8"
+              :branch "release/1.10"
               :repo "djcb/mu"
               :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
               :main "mu4e/mu4e.el"
@@ -371,12 +371,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ( user-full-name "Richard G.Riley" )
   :config
 
-
-  (use-package mu4e-maildirs-extension
-    :custom
-    (mu4e-maildirs-extension-hide-empty-maildirs t)
-    :config
-    (mu4e-maildirs-extension))
 
   (use-package mu4e-column-faces
     :after mu4e
@@ -469,9 +463,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (add-to-list 'mu4e-view-actions
                '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
   (require 'mu4e-contrib)
-  :hook ((mu4e-view-mode . visual-line-mode)
+  :hook ((mu4e-view-rendered . visual-line-mode)
          (mu4e-compose-mode . mu4e-smarter-compose)
-         (mu4e-view-mode-hook .
+         (mu4e-view-rendered .
                               (lambda()
                                 ;; try to emulate some of the eww key-bindings
                                 (local-set-key (kbd "<tab>") 'shr-next-link)
