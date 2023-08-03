@@ -1,5 +1,5 @@
 #!/bin/bash
-if pidof "emacs"; then
+if ! pidof "emacs"; then
    emacs "$@" &
 else
     emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t

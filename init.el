@@ -387,8 +387,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   (setq mu4e-contexts
         `( ,(make-mu4e-context
              :name "aGmx"
-             :enter-func (lambda () (mu
-                                     4e-message "gmx context")(rgr/mu4e-refresh))
+             :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
              :match-func (lambda (msg)
                            (when msg
                              (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
