@@ -1,9 +1,11 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
 (use-package indent-bars
-  :disabled
+  ;;:disabled
   :ensure t
-  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars"))
+  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+  :hook
+  (prog-mode . indent-bars-mode))
 
 (use-package emacs
   :bind
@@ -302,8 +304,8 @@
     (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
     ;;(eglot-ensure)
     (lsp-deferred)
-    (if (fboundp 'indent-bars-mode)
-        (indent-bars-mode))
+    ;;(if (fboundp 'indent-bars-mode)
+      ;;  (indent-bars-mode))
     (if(featurep 'platformio-mode)
         (platformio-conditionally-enable))
     (if (featurep 'yasnippet)
