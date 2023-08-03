@@ -170,6 +170,7 @@
   :config
   (use-package vertico-prescient
     :init (vertico-prescient-mode))
+
   :init
   (vertico-mode))
 

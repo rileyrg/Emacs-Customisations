@@ -203,10 +203,20 @@
 (use-package treesit-auto
   ;;:disable
   :custom
-  (treesit-extra-load-path `(,(no-littering-expand-etc-file-name "treesit/grammars/")))
+  (treesit-auto-install 'prompt)
   :config
+  ;; (message "**** treesit dart ***")
+  ;; (setq my-dart-tsauto-config
+  ;;       (make-treesit-auto-recipe
+  ;;        :lang 'dart
+  ;;        :ts-mode 'dart-mode
+  ;;        :remap 'dart-mode
+  ;;        :url "https://github.com/UserNobody14/tree-sitter-dart"))
+  ;; (add-to-list 'treesit-auto-recipe-list my-dart-tsauto-config)
+
   (global-treesit-auto-mode)
   :hook
+  ;;(dart-mode . (lambda()(treesit-inspect-mode())))
   (c-ts-base-mode . (lambda()
                       (treesit-inspect-mode t)
                       (rgr/c-mode-common-hook))))
