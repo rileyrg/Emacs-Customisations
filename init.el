@@ -346,9 +346,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
               :pre-build (("./autogen.sh")
                           ("ninja" "-C" "build")
                           (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                              (expand-file-name "~/bin/mu") 'ok-if-exists))
-              :pre-build (("meson" "build")
-                          ("ninja" "-C" "build")))
+                                              (expand-file-name "~/bin/mu") 'ok-if-exists)))
   :commands (mu4e mu4e-update-index)
   :custom
   ( mail-user-agent 'mu4e-user-agent )
