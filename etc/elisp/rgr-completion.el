@@ -168,7 +168,8 @@
   :custom
   (vertico-cycle t)
   :config
-  (use-package vertico-prescient)
+  (use-package vertico-prescient
+    :init (vertico-prescient-mode))
   :init
   (vertico-mode))
 
