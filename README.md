@@ -1366,7 +1366,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org2e543cf) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+See `org-agenda-files` [org-agenda-files](#org3b6e55f) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
 ```conf
 ~/.emacs.d/var/org/orgfiles
@@ -2356,8 +2356,7 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
   (setq mu4e-contexts
         `( ,(make-mu4e-context
              :name "aGmx"
-             :enter-func (lambda () (mu
-                                     4e-message "gmx context")(rgr/mu4e-refresh))
+             :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
              :match-func (lambda (msg)
                            (when msg
                              (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
@@ -3503,7 +3502,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org63847e0) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgee41e66) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3542,7 +3541,7 @@ fi
 ```
 
 
-<a id="org63847e0"></a>
+<a id="orgee41e66"></a>
 
 ### Gnome protocol handler desktop file
 
