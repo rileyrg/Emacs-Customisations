@@ -379,7 +379,7 @@ If not already deamonised
   (use-package alert
     :init
     (let ((alert-fade-time 5))
-      (alert "Emacs is starting..." :title "Emacs")))
+      (if (daemonp) (alert "Emacs is starting..." :title "Emacs"))))
 
   (provide 'rgr/startup)
 #+end_src
@@ -3725,7 +3725,7 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
 :END:
 #+begin_src bash :tangle bin/emacs-same-frame
   #!/bin/bash
-  if pidof "emacs"; then
+  if ! pidof "emacs"; then
      emacs "$@" &
   else
       emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
