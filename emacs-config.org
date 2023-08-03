@@ -2601,9 +2601,11 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
 **** indent bars
 #+begin_src  emacs-lisp
   (use-package indent-bars
-    :disabled
+    ;;:disabled
     :ensure t
-    :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars"))
+    :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+    :hook
+    (prog-mode . indent-bars-mode))
 #+end_src
 **** duplicate line
 #+begin_src emacs-lisp
@@ -3351,8 +3353,8 @@ SCHEDULED: <2021-09-26 Sun>
       (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
       ;;(eglot-ensure)
       (lsp-deferred)
-      (if (fboundp 'indent-bars-mode)
-          (indent-bars-mode))
+      ;;(if (fboundp 'indent-bars-mode)
+        ;;  (indent-bars-mode))
       (if(featurep 'platformio-mode)
           (platformio-conditionally-enable))
       (if (featurep 'yasnippet)
