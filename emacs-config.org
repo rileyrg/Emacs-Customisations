@@ -1613,13 +1613,26 @@ Raw:[[file+sys:etc/elisp/rgr-google.el][rgr/google]]
     :config
     (google-this-mode 1))
 #+end_src
+****** go-translate
+This is a translation framework for emacs, and is flexible and powerful.
+#+begin_src  emacs-lisp
+  (use-package go-translate
+    ;;:disabled
+    :custom
+    (gts-translate-list '(("en" "de")))
+    (gts-default-translator
+     (gts-translator
+      :picker (gts-prompt-picker)
+      :engines (list (gts-bing-engine) (gts-google-engine))
+      :render (gts-buffer-render))))
+#+end_src
 ****** Google translate
 :PROPERTIES:
 :ID:       e410cd79-39c4-4724-b424-6082b20c70f1
 :END:
 #+begin_src emacs-lisp
   (use-package google-translate
-
+    ;;:disabled
     :init
     (require 'google-translate)
 
