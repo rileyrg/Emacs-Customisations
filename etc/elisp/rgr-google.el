@@ -7,8 +7,18 @@
   :config
   (google-this-mode 1))
 
-(use-package google-translate
+(use-package go-translate
+  ;;:disabled
+  :custom
+  (gts-translate-list '(("en" "de")))
+  (gts-default-translator
+   (gts-translator
+    :picker (gts-prompt-picker)
+    :engines (list (gts-bing-engine) (gts-google-engine))
+    :render (gts-buffer-render))))
 
+(use-package google-translate
+  ;;:disabled
   :init
   (require 'google-translate)
 

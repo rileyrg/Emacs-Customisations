@@ -1214,7 +1214,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgadaa69e)
+See `org-agenda-files` [org-agenda-files](#orgd1141ec)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1382,10 +1382,24 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                   :config
                   (google-this-mode 1))
         
-        2.  Google translate
+        2.  go-translate
+        
+            This is a translation framework for emacs, and is flexible and powerful.
+            
+                (use-package go-translate
+                  ;;:disabled
+                  :custom
+                  (gts-translate-list '(("en" "de")))
+                  (gts-default-translator
+                   (gts-translator
+                    :picker (gts-prompt-picker)
+                    :engines (list (gts-bing-engine) (gts-google-engine))
+                    :render (gts-buffer-render))))
+        
+        3.  Google translate
         
                 (use-package google-translate
-                
+                  ;;:disabled
                   :init
                   (require 'google-translate)
                 
@@ -1442,7 +1456,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                   ("C-c t" . rgr/google-translate-query-translate)
                   ("C-c b" . rgr/google-translate-in-history-buffer))
         
-        3.  provide
+        4.  provide
         
                 (provide 'rgr/google)
 
@@ -3120,7 +3134,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9eda3d5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge9ba8e8) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3153,7 +3167,7 @@ to add to version control.
     fi
 
 
-<a id="org9eda3d5"></a>
+<a id="orge9ba8e8"></a>
 
 ### Gnome protocol handler desktop file
 
