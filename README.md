@@ -679,7 +679,10 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :init
           ;; Tune the global completion style settings to your liking!
           ;; This affects the minibuffer and non-lsp completion at point.
-          (setq completion-styles '(orderless partial-completion basic)
+          (setq completion-styles '(
+                                    orderless
+                                    ;;partial-completion
+                                    basic)
                 completion-category-defaults nil
                 completion-category-overrides nil);;'((file (styles partial-completion))))
           ;; A few more useful configurations...
@@ -750,23 +753,28 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :config
           (use-package corfu-prescient)
           (corfu-popupinfo-mode)
-          (global-corfu-mode))
+          (global-corfu-mode)
+          :hook
+          (corfu-mode . (lambda()
+                          (setq-local completion-at-point-functions (delete 'tags-completion-at-point-function completion-at-point-functions))
+                          (setq-local completion-at-point-functions (delete 't completion-at-point-functions))
+                          )))
         
         
-        ;; A few more useful configurations...
-        (use-package emacs
-          :init
-          ;; TAB cycle if there are only few candidates
-          (setq completion-cycle-threshold 3)
+          ;; A few more useful configurations...
+          (use-package emacs
+            :init
+            ;; TAB cycle if there are only few candidates
+            (setq completion-cycle-threshold 3)
         
-          ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-          ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-          ;; (setq read-extended-command-predicate
-          ;;       #'command-completion-default-include-p)
+            ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+            ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+            ;; (setq read-extended-command-predicate
+            ;;       #'command-completion-default-include-p)
         
-          ;; Enable indentation+completion using the TAB key.
-          ;; `completion-at-point' is often bound to M-TAB.
-          (setq tab-always-indent 'complete))
+            ;; Enable indentation+completion using the TAB key.
+            ;; `completion-at-point' is often bound to M-TAB.
+            (setq tab-always-indent 'complete))
     
     1.  cape
     
@@ -1206,7 +1214,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org87ecc7d)
+See `org-agenda-files` [org-agenda-files](#org588d862)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2617,10 +2625,20 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package treesit-auto
           ;;:disable
           :custom
-          (treesit-extra-load-path `(,(no-littering-expand-etc-file-name "treesit/grammars/")))
+          (treesit-auto-install 'prompt)
           :config
+          ;; (message "**** treesit dart ***")
+          ;; (setq my-dart-tsauto-config
+          ;;       (make-treesit-auto-recipe
+          ;;        :lang 'dart
+          ;;        :ts-mode 'dart-mode
+          ;;        :remap 'dart-mode
+          ;;        :url "https://github.com/UserNobody14/tree-sitter-dart"))
+          ;; (add-to-list 'treesit-auto-recipe-list my-dart-tsauto-config)
+        
           (global-treesit-auto-mode)
           :hook
+          ;;(dart-mode . (lambda()(treesit-inspect-mode())))
           (c-ts-base-mode . (lambda()
                               (treesit-inspect-mode t)
                               (rgr/c-mode-common-hook))))
@@ -3042,6 +3060,9 @@ to add to version control.
     !info
     !info/*
     
+    !tree-sitter
+    !tree-sitter/*
+    
     !etc
     !var
     
@@ -3098,7 +3119,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbffe77d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga3d8dd2) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3131,7 +3152,7 @@ to add to version control.
     fi
 
 
-<a id="orgbffe77d"></a>
+<a id="orga3d8dd2"></a>
 
 ### Gnome protocol handler desktop file
 

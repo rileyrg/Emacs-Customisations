@@ -783,7 +783,10 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     :init
     ;; Tune the global completion style settings to your liking!
     ;; This affects the minibuffer and non-lsp completion at point.
-    (setq completion-styles '(orderless partial-completion basic)
+    (setq completion-styles '(
+                              orderless
+                              ;;partial-completion
+                              basic)
           completion-category-defaults nil
           completion-category-overrides nil);;'((file (styles partial-completion))))
     ;; A few more useful configurations...
@@ -853,23 +856,28 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
     :config
     (use-package corfu-prescient)
     (corfu-popupinfo-mode)
-    (global-corfu-mode))
+    (global-corfu-mode)
+    :hook
+    (corfu-mode . (lambda()
+                    (setq-local completion-at-point-functions (delete 'tags-completion-at-point-function completion-at-point-functions))
+                    (setq-local completion-at-point-functions (delete 't completion-at-point-functions))
+                    )))
 
 
-  ;; A few more useful configurations...
-  (use-package emacs
-    :init
-    ;; TAB cycle if there are only few candidates
-    (setq completion-cycle-threshold 3)
+    ;; A few more useful configurations...
+    (use-package emacs
+      :init
+      ;; TAB cycle if there are only few candidates
+      (setq completion-cycle-threshold 3)
 
-    ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-    ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-    ;; (setq read-extended-command-predicate
-    ;;       #'command-completion-default-include-p)
+      ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+      ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+      ;; (setq read-extended-command-predicate
+      ;;       #'command-completion-default-include-p)
 
-    ;; Enable indentation+completion using the TAB key.
-    ;; `completion-at-point' is often bound to M-TAB.
-    (setq tab-always-indent 'complete))
+      ;; Enable indentation+completion using the TAB key.
+      ;; `completion-at-point' is often bound to M-TAB.
+      (setq tab-always-indent 'complete))
 
 #+end_src
 ***** cape
