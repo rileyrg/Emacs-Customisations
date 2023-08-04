@@ -1577,7 +1577,7 @@ Set up default emacs browsing - I like eww but palming off some URLs to external
         ad-do-it))
 
     :bind
-    ("C-c u" . 'eww)
+    ("C-c o" . 'eww)
     (:map eww-mode-map
           ( "&" . (lambda()
                     (interactive)
@@ -1609,6 +1609,7 @@ Raw:[[file+sys:etc/elisp/rgr-google.el][rgr/google]]
     :after org
     :custom
     (google-this-keybind "g")
+    (google-this-browse-url-function 'browse-url-generic)
     :config
     (google-this-mode 1))
 #+end_src

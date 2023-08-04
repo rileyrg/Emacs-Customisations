@@ -17,7 +17,7 @@
       ad-do-it))
 
   :bind
-  ("C-c u" . 'eww)
+  ("C-c o" . 'eww)
   (:map eww-mode-map
         ( "&" . (lambda()
                   (interactive)
