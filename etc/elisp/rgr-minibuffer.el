@@ -33,7 +33,7 @@
   :bind
   ( "C-x C-f" . rgr/ffap))
 
-(straight-use-package 'prescient)
+(use-package 'prescient :disabled)
 
 ;; Example configuration for Consult
 (use-package consult
@@ -153,7 +153,7 @@
   ;;;; 5. No project support
   ;; (setq consult-project-function nil)
   :config
-  (use-package company-prescient)
+  (use-package company-prescient :disabled)
   )
 
 (use-package consult-dash

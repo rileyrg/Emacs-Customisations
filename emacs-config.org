@@ -478,8 +478,10 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
     ( "C-x C-f" . rgr/ffap))
 #+end_src
 **** [[https://github.com/raxod502/prescient.el][Prescient]] provides sorting and filtering.
+Disabled as I cant get my head around it. It doesnt seem to do much thats important to me
+that corfu and orderless and vertico do. Corfu and vertico already do recency ordering.
 #+begin_src  emacs-lisp
-  (straight-use-package 'prescient)
+  (use-package 'prescient :disabled)
 #+end_src
 **** Consult                                                        :consult:
 Consult]] Provides various commands based on the Emacs completion function completing-read
@@ -605,7 +607,7 @@ Consult]] Provides various commands based on the Emacs completion function compl
     ;;;; 5. No project support
     ;; (setq consult-project-function nil)
     :config
-    (use-package company-prescient)
+    (use-package company-prescient :disabled)
     )
 #+end_src
 
@@ -854,7 +856,7 @@ I've had to turn this off as moving up and down auto selects at times. Back to c
       :hook
       (lsp-completion-mode . my/lsp-mode-setup-completion))
     :config
-    (use-package corfu-prescient)
+    (use-package corfu-prescient :disabled)
     (corfu-popupinfo-mode)
     (global-corfu-mode)
     :hook
@@ -945,8 +947,10 @@ https://github.com/minad/vertico
     (vertico-cycle t)
     :config
     (use-package vertico-prescient
-      :init (vertico-prescient-mode))
-
+      :disabled
+      :init (vertico-prescient-mode)
+      :custom
+      (vertico-prescient-enable-sorting nil))
     :init
     (vertico-mode))
 

@@ -395,7 +395,10 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
 4.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
 
-        (straight-use-package 'prescient)
+    Disabled as I cant get my head around it. It doesnt seem to do much thats important to me
+    that corfu and orderless and vertico do. Corfu and vertico already do recency ordering.
+    
+        (use-package 'prescient :disabled)
 
 5.  Consult
 
@@ -521,7 +524,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;;;; 5. No project support
           ;; (setq consult-project-function nil)
           :config
-          (use-package company-prescient)
+          (use-package company-prescient :disabled)
           )
     
     1.  consult-dash
@@ -751,7 +754,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
             :hook
             (lsp-completion-mode . my/lsp-mode-setup-completion))
           :config
-          (use-package corfu-prescient)
+          (use-package corfu-prescient :disabled)
           (corfu-popupinfo-mode)
           (global-corfu-mode)
           :hook
@@ -842,8 +845,10 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           (vertico-cycle t)
           :config
           (use-package vertico-prescient
-            :init (vertico-prescient-mode))
-        
+            :disabled
+            :init (vertico-prescient-mode)
+            :custom
+            (vertico-prescient-enable-sorting nil))
           :init
           (vertico-mode))
 
@@ -1214,7 +1219,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgd1141ec)
+See `org-agenda-files` [org-agenda-files](#org889b712)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -3134,7 +3139,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge9ba8e8) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org03fee9d) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3167,7 +3172,7 @@ to add to version control.
     fi
 
 
-<a id="orge9ba8e8"></a>
+<a id="org03fee9d"></a>
 
 ### Gnome protocol handler desktop file
 
