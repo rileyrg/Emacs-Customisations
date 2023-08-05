@@ -94,7 +94,7 @@
     :hook
     (lsp-completion-mode . my/lsp-mode-setup-completion))
   :config
-  (use-package corfu-prescient)
+  (use-package corfu-prescient :disabled)
   (corfu-popupinfo-mode)
   (global-corfu-mode)
   :hook
@@ -177,8 +177,10 @@
   (vertico-cycle t)
   :config
   (use-package vertico-prescient
-    :init (vertico-prescient-mode))
-
+    :disabled
+    :init (vertico-prescient-mode)
+    :custom
+    (vertico-prescient-enable-sorting nil))
   :init
   (vertico-mode))
 
