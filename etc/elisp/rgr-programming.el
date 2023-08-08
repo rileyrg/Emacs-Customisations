@@ -214,6 +214,14 @@
   ;;        :url "https://github.com/UserNobody14/tree-sitter-dart"))
   ;; (add-to-list 'treesit-auto-recipe-list my-dart-tsauto-config)
 
+  (use-package treesitter-context
+    :straight (:host github :type git :repo "zbelial/treesitter-context.el" )
+    :init
+    (use-package posframe-plus
+      :straight (:host github :type git :repo "zbelial/posframe-plus" ))
+    :config
+    (treesitter-context-mode t))
+
   (global-treesit-auto-mode)
   :hook
   ;;(dart-mode . (lambda()(treesit-inspect-mode())))
