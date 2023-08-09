@@ -39,11 +39,9 @@
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 
-(use-package auto-package-update
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
+(straight-use-package 'org)
+
+(require 'rgr/org "rgr-org" 'NOERROR)
 
 ;; look for a debug init file and load, trigger the debugger
 (debug-init "debug-init-straight.el")
@@ -82,7 +80,7 @@
 (require 'rgr/completion "rgr-completion" 'NOERROR)
 
 (use-package bookmark+
-  :disabled
+  ;;:disabled
   :custom
   (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
   :demand)
@@ -95,8 +93,6 @@
   ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
 (require  'rgr/general-config "rgr-general-config" 'NOERROR)
-
-(require 'rgr/org "rgr-org" 'NOERROR)
 
 (use-package emojify
   :init
@@ -372,6 +368,9 @@ creates a report in function-name.ftrace and opens it in a buffer"
   ( user-full-name "Richard G.Riley" )
   :config
 
+  (use-package mu4e-alert
+    :init
+    (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
 
   (use-package mu4e-column-faces
     :after mu4e
