@@ -228,6 +228,7 @@
   ;;(dart-mode . (lambda()(treesit-inspect-mode())))
   (c-ts-base-mode . (lambda()
                       (treesit-inspect-mode t)
+                      (treesitter-context-mode t)
                       (rgr/c-mode-common-hook))))
 
 ;; sudo npm i -g typescript-language-server
