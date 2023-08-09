@@ -869,6 +869,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 ### bookmark+
 
     (use-package bookmark+
+      :disabled
       :custom
       (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
       :demand)
@@ -1219,7 +1220,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgfcb89bd)
+See `org-agenda-files` [org-agenda-files](#orgf15eacc)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2306,6 +2307,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     1.  scratch,messages
     
             (use-package scratch
+              :disabled
               :bind ("<f2>" . (lambda()
                                 (interactive)
                                 (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
@@ -3147,7 +3149,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd7bb1e9) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1f940ed) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3180,7 +3182,7 @@ to add to version control.
     fi
 
 
-<a id="orgd7bb1e9"></a>
+<a id="org1f940ed"></a>
 
 ### Gnome protocol handler desktop file
 
