@@ -39,7 +39,8 @@
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 
-(straight-use-package 'org)
+(straight-use-package '(org :type built-in)) ;; use emacs 20+ built in org
+;;(straight-use-package 'org) ;; build org
 
 (require 'rgr/org "rgr-org" 'NOERROR)
 
