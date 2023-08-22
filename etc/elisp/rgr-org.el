@@ -1,4 +1,5 @@
 (use-package org
+  ;; straight (:type built-in) ;; comment out to build org
   :demand t
   :custom
   (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
@@ -9,7 +10,6 @@
   (org-refile-use-outline-path 'file)
   (org-outline-path-complete-in-steps nil)
   :config
-  (use-package org-contrib)
   (set-face-attribute 'org-headline-done nil :strike-through t)
   (defun rgr/org-agenda (&optional arg)
     (interactive "P")
@@ -24,8 +24,9 @@
   ("C-c C-s" . org-schedule)
   ("C-c C-t" . org-todo)
   (:map org-mode-map  ("M-." . find-function-at-point)
-        ("<f11>" . org-edit-special))
-  (:map org-src-mode-map ("<f11>" . org-edit-src-exit)))
+        ))
+
+(use-package org-contrib)
 
 (require 'org-id)
 
@@ -98,9 +99,3 @@
   :demand)
 
 (provide 'rgr/org)
-
-(use-package auto-package-update
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))

@@ -139,7 +139,8 @@ CLOSED: [2021-08-06 Fri 11:01] SCHEDULED: <2021-07-24 Sat>
 *** org woes
 warnings suggest loading org early.
 #+begin_src  emacs-lisp
-  (straight-use-package 'org)
+  (straight-use-package '(org :type built-in)) ;; use emacs 20+ built in org
+  ;;(straight-use-package 'org) ;; build org
 #+end_src
 
 *** Org functionality
@@ -169,6 +170,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 #+begin_src emacs-lisp
 
   (use-package org
+    ;; straight (:type built-in) ;; comment out to build org
     :demand t
     :custom
     (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
@@ -179,7 +181,6 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
     (org-refile-use-outline-path 'file)
     (org-outline-path-complete-in-steps nil)
     :config
-    (use-package org-contrib)
     (set-face-attribute 'org-headline-done nil :strike-through t)
     (defun rgr/org-agenda (&optional arg)
       (interactive "P")
@@ -194,10 +195,11 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
     ("C-c C-s" . org-schedule)
     ("C-c C-t" . org-todo)
     (:map org-mode-map  ("M-." . find-function-at-point)
-          ("<f11>" . org-edit-special))
-    (:map org-src-mode-map ("<f11>" . org-edit-src-exit)))
-
-
+          ))
+#+end_src
+****** org-contrib
+#+begin_src  emacs-lisp
+      (use-package org-contrib)
 #+end_src
 ****** org-id
 :PROPERTIES:
@@ -312,14 +314,6 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
   ~/development/education/lessons/elisp
 #+end_src
 
-***** Updating packages
-#+begin_src emacs-lisp
-  (use-package auto-package-update
-    :config
-    (setq auto-package-update-delete-old-versions t)
-    (setq auto-package-update-hide-results t)
-    (auto-package-update-maybe))
-#+end_src
 * config
 :PROPERTIES:
 :CUSTOM_ID: b477a755
@@ -2001,9 +1995,9 @@ CLOSED: [2021-08-08 Sun 23:15] SCHEDULED: <2021-06-02 Wed>
 [[https://github.com/politza/pdf-tools][pdf-tools]] is, among other things, a replacement of DocView for PDF files
 #+begin_src emacs-lisp
   (use-package pdf-tools
-    :demand t
+    :after (org-plus-contrib)
     :config
-    ;;(pdf-tools-install)
+    (pdf-tools-install)
     (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
     (use-package org-pdftools
       :hook (org-mode . org-pdftools-setup-link)))
@@ -3178,6 +3172,7 @@ Running emultaor from command line:
     ;; (add-to-list 'treesit-auto-recipe-list my-dart-tsauto-config)
 
     (use-package treesitter-context
+      :disabled
       :straight (:host github :type git :repo "zbelial/treesitter-context.el" )
       :init
       (use-package posframe-plus
@@ -3190,7 +3185,7 @@ Running emultaor from command line:
     ;;(dart-mode . (lambda()(treesit-inspect-mode())))
     (c-ts-base-mode . (lambda()
                         (treesit-inspect-mode t)
-                        (treesitter-context-mode t)
+                        (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
                         (rgr/c-mode-common-hook))))
 #+end_src
 **** Typescript

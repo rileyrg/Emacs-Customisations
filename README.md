@@ -112,7 +112,8 @@ invoke google translate on them. Stores history.
 
 warnings suggest loading org early.
 
-    (straight-use-package 'org)
+    (straight-use-package '(org :type built-in)) ;; use emacs 20+ built in org
+    ;;(straight-use-package 'org) ;; build org
 
 
 ### Org functionality
@@ -129,6 +130,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
     
             
             (use-package org
+              ;; straight (:type built-in) ;; comment out to build org
               :demand t
               :custom
               (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
@@ -139,7 +141,6 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
               (org-refile-use-outline-path 'file)
               (org-outline-path-complete-in-steps nil)
               :config
-              (use-package org-contrib)
               (set-face-attribute 'org-headline-done nil :strike-through t)
               (defun rgr/org-agenda (&optional arg)
                 (interactive "P")
@@ -154,25 +155,28 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
               ("C-c C-s" . org-schedule)
               ("C-c C-t" . org-todo)
               (:map org-mode-map  ("M-." . find-function-at-point)
-                    ("<f11>" . org-edit-special))
-              (:map org-src-mode-map ("<f11>" . org-edit-src-exit)))
+                    ))
         
-        1.  org-id
+        1.  org-contrib
+        
+                (use-package org-contrib)
+        
+        2.  org-id
         
             create unique link IDs when sharing a link to an org section
             
                 (require 'org-id)
         
-        2.  crypt
+        3.  crypt
         
                 (require 'org-crypt)
                 (org-crypt-use-before-save-magic)
         
-        3.  async babel blocks
+        4.  async babel blocks
         
                 (use-package ob-async)
         
-        4.  org-super-agenda
+        5.  org-super-agenda
         
                 (use-package org-super-agenda
                   :custom
@@ -233,7 +237,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
                   :init
                   (org-super-agenda-mode))
         
-        5.  github compliant markup
+        6.  github compliant markup
         
                 (use-package
                   ox-gfm
@@ -245,7 +249,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
     
     3.  org agenda files
     
-        See `org-agenda-files` [org-agenda-files](#org5aea8a8)
+        See `org-agenda-files` [org-agenda-files](#orgb215a37)
         maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
         
             ~/.emacs.d/var/org/orgfiles
@@ -257,14 +261,6 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
             ~/development/education/lessons/python/coreyschafer
             ~/development/education/lessons/python/python-lernen.de
             ~/development/education/lessons/elisp
-    
-    4.  Updating packages
-    
-            (use-package auto-package-update
-              :config
-              (setq auto-package-update-delete-old-versions t)
-              (setq auto-package-update-hide-results t)
-              (auto-package-update-maybe))
 
 
 # config
@@ -2666,6 +2662,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ;; (add-to-list 'treesit-auto-recipe-list my-dart-tsauto-config)
         
           (use-package treesitter-context
+            :disabled
             :straight (:host github :type git :repo "zbelial/treesitter-context.el" )
             :init
             (use-package posframe-plus
@@ -2678,7 +2675,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           ;;(dart-mode . (lambda()(treesit-inspect-mode())))
           (c-ts-base-mode . (lambda()
                               (treesit-inspect-mode t)
-                              (treesitter-context-mode t)
+                              (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
                               (rgr/c-mode-common-hook))))
 
 18. Typescript
@@ -3157,7 +3154,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org49710d9) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org23ddc47) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3190,7 +3187,7 @@ to add to version control.
     fi
 
 
-<a id="org49710d9"></a>
+<a id="org23ddc47"></a>
 
 ### Gnome protocol handler desktop file
 
