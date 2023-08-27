@@ -143,11 +143,10 @@
   :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
 
 (use-package forge
-  :disabled
+  ;;:disabled
   :after magit
-  ;; :init
-  ;; (use-package emacsql-sqlite-builtin)
-  ;; (setq forge-database-connector 'sqlite-builtin)
+  :init
+  (straight-use-package 'sqlite3)
   :config
   (use-package orgit-forge)
   )

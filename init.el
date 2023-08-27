@@ -39,11 +39,6 @@
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 
-(straight-use-package '(org :type built-in)) ;; use emacs 20+ built in org
-;;(straight-use-package 'org) ;; build org
-
-(require 'rgr/org "rgr-org" 'NOERROR)
-
 ;; look for a debug init file and load, trigger the debugger
 (debug-init "debug-init-straight.el")
 
@@ -85,6 +80,8 @@
   :custom
   (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
   :demand)
+
+(require 'rgr/org "rgr-org" 'NOERROR)
 
 (use-package lazy-lang-learn
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
