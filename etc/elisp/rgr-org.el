@@ -1,5 +1,4 @@
 (use-package org
-  ;; straight (:type built-in) ;; comment out to build org
   :demand t
   :custom
   (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
