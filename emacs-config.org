@@ -3361,6 +3361,7 @@ SCHEDULED: <2021-09-26 Sun>
 #+begin_src emacs-lisp
   ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
   (use-package haskell-mode
+    :disabled t
     :config
     ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
     ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
@@ -3554,6 +3555,7 @@ CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 F
 :END:
 #+begin_src emacs-lisp
   (use-package php-mode
+    :disabled t
     :custom
     (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
     :config

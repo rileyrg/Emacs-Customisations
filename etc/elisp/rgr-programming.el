@@ -300,6 +300,7 @@
 
 ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
 (use-package haskell-mode
+  :disabled t
   :config
   ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
   ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
@@ -408,6 +409,7 @@
   :group 'rgr/symfony)
 
 (use-package php-mode
+  :disabled t
   :custom
   (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
   :config
