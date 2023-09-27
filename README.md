@@ -108,161 +108,6 @@ invoke google translate on them. Stores history.
       (straight-vc-git-default-protocol 'ssh))
 
 
-### org woes
-
-warnings suggest loading org early.
-
-    (straight-use-package '(org :type built-in)) ;; use emacs 20+ built in org
-    ;;(straight-use-package 'org) ;; build org
-
-
-### Org functionality
-
-General org-mode config
-
-Raw: [rgr/org](etc/elisp/rgr-org.el)
-
-    (require 'rgr/org "rgr-org" 'NOERROR)
-
-1.  org library
-
-    1.  Org Mode, org-mode
-    
-            
-            (use-package org
-              ;; straight (:type built-in) ;; comment out to build org
-              :demand t
-              :custom
-              (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
-              (org-fontify-done-headline t)
-              (org-fontify-todo-headline t)
-              (org-babel-default-header-args:python
-               '((:results  . "output")))
-              (org-refile-use-outline-path 'file)
-              (org-outline-path-complete-in-steps nil)
-              :config
-              (set-face-attribute 'org-headline-done nil :strike-through t)
-              (defun rgr/org-agenda (&optional arg)
-                (interactive "P")
-                (let ((org-agenda-tag-filter-preset '("-trash")))
-                  (org-agenda arg "a")))
-              :bind
-              ("C-c a" . org-agenda)
-              ("C-c A" . rgr/org-agenda)
-              ("C-c c" . org-capture)
-              ("C-c l" . org-store-link)
-              ("C-c C-l" . org-insert-link)
-              ("C-c C-s" . org-schedule)
-              ("C-c C-t" . org-todo)
-              (:map org-mode-map  ("M-." . find-function-at-point)
-                    ))
-        
-        1.  org-contrib
-        
-                (use-package org-contrib)
-        
-        2.  org-id
-        
-            create unique link IDs when sharing a link to an org section
-            
-                (require 'org-id)
-        
-        3.  crypt
-        
-                (require 'org-crypt)
-                (org-crypt-use-before-save-magic)
-        
-        4.  async babel blocks
-        
-                (use-package ob-async)
-        
-        5.  org-super-agenda
-        
-                (use-package org-super-agenda
-                  :custom
-                  (org-super-agenda-groups
-                   '(;; Each group has an implicit boolean OR operator between its selectors.
-                     (:name "Today"  ; Optionally specify section name
-                            :time-grid t  ; Items that appear on the time grid
-                            :todo "TODAY")  ; Items that have this TODO keyword
-                     (:name "Important"
-                            ;; Single arguments given alone
-                            :tag "bills"
-                            :priority "A")
-                     ;; Set order of multiple groups at once
-                     (:order-multi (2 (:name "home"
-                                             ;; Boolean AND group matches items that match all subgroups
-                                             :and (:tag "@home"))
-                                      (:name "caravan"
-                                             ;; Boolean AND group matches items that match all subgroups
-                                             :and (:tag "@caravan"))
-                                      (:name "shopping all"
-                                             ;; Boolean AND group matches items that match all subgroups
-                                             :and (:tag "shopping" :not (:tag "@home @caravan")))
-                                      (:name "shopping"
-                                             ;; Boolean AND group matches items that match all subgroups
-                                             :and (:tag "shopping" :not (:tag "@home @caravan")))
-                                      (:name "Emacs related"
-                                             ;; Boolean AND group matches items that match all subgroups
-                                             :tag ("emacs"))
-                                      (:name "Linux related"
-                                             :and (:tag ("linux") :not (:tag "emacs")))
-                                      (:name "Programming related"
-                                             :and (:tag ("programming") :not (:tag "emacs")))
-                                      (:name "Food-related"
-                                             ;; Multiple args given in list with implicit OR
-                                             :tag ("food" "dinner" "lunch" "breakfast"))
-                                      (:name "Personal"
-                                             :habit t
-                                             :tag "personal")
-                                      ))
-                     ;; Groups supply their own section names when none are given
-                     (:todo "WAITING" :order 8)  ; Set order of this section
-                     (:todo "STARTED" :order 8)
-                     (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
-                            ;; Show this group at the end of the agenda (since it has the
-                            ;; highest number). If you specified this group last, items
-                            ;; with these todo keywords that e.g. have priority A would be
-                            ;; displayed in that group instead, because items are grouped
-                            ;; out in the order the groups are listed.
-                            :order 9)
-                     (:priority<= "B"
-                                  ;; Show this section after "Today" and "Important", because
-                                  ;; their order is unspecified, defaulting to 0. Sections
-                                  ;; are displayed lowest-number-first.
-                                  :order 1)
-                     ;; After the last group, the agenda will display items that didn't
-                     ;; match any of these groups, with the default order position of 99
-                     ))
-                  :init
-                  (org-super-agenda-mode))
-        
-        6.  github compliant markup
-        
-                (use-package
-                  ox-gfm
-                  :demand)
-    
-    2.  provide
-    
-            (provide 'rgr/org)
-    
-    3.  org agenda files
-    
-        See `org-agenda-files` [org-agenda-files](#orgb215a37)
-        maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
-        
-            ~/.emacs.d/var/org/orgfiles
-            ~/.emacs.d/var/org/orgfiles/journals
-            ~/.emacs.d/var/org/orgfiles/projects
-            ~/development/education/lessons
-            ~/development/education/lessons/bash
-            ~/development/education/lessons/python
-            ~/development/education/lessons/python/coreyschafer
-            ~/development/education/lessons/python/python-lernen.de
-            ~/development/education/lessons/elisp
-
-
 # config
 
 
@@ -1021,6 +866,153 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
       :demand)
 
 1.  look into why bmkp store org link doesnt work
+
+
+## Org functionality
+
+General org-mode config
+
+Raw: [rgr/org](etc/elisp/rgr-org.el)
+
+    (require 'rgr/org "rgr-org" 'NOERROR)
+
+
+### org library
+
+1.  Org Mode, org-mode
+
+        
+        (use-package org
+          :demand t
+          :custom
+          (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
+          (org-fontify-done-headline t)
+          (org-fontify-todo-headline t)
+          (org-babel-default-header-args:python
+           '((:results  . "output")))
+          (org-refile-use-outline-path 'file)
+          (org-outline-path-complete-in-steps nil)
+          :config
+          (set-face-attribute 'org-headline-done nil :strike-through t)
+          (defun rgr/org-agenda (&optional arg)
+            (interactive "P")
+            (let ((org-agenda-tag-filter-preset '("-trash")))
+              (org-agenda arg "a")))
+          :bind
+          ("C-c a" . org-agenda)
+          ("C-c A" . rgr/org-agenda)
+          ("C-c c" . org-capture)
+          ("C-c l" . org-store-link)
+          ("C-c C-l" . org-insert-link)
+          ("C-c C-s" . org-schedule)
+          ("C-c C-t" . org-todo)
+          (:map org-mode-map  ("M-." . find-function-at-point)
+                ))
+    
+    1.  org-contrib
+    
+            (use-package org-contrib)
+    
+    2.  org-id
+    
+        create unique link IDs when sharing a link to an org section
+        
+            (require 'org-id)
+    
+    3.  crypt
+    
+            (require 'org-crypt)
+            (org-crypt-use-before-save-magic)
+    
+    4.  async babel blocks
+    
+            (use-package ob-async)
+    
+    5.  org-super-agenda
+    
+            (use-package org-super-agenda
+              :custom
+              (org-super-agenda-groups
+               '(;; Each group has an implicit boolean OR operator between its selectors.
+                 (:name "Today"  ; Optionally specify section name
+                        :time-grid t  ; Items that appear on the time grid
+                        :todo "TODAY")  ; Items that have this TODO keyword
+                 (:name "Important"
+                        ;; Single arguments given alone
+                        :tag "bills"
+                        :priority "A")
+                 ;; Set order of multiple groups at once
+                 (:order-multi (2 (:name "home"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :and (:tag "@home"))
+                                  (:name "caravan"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :and (:tag "@caravan"))
+                                  (:name "shopping all"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :and (:tag "shopping" :not (:tag "@home @caravan")))
+                                  (:name "shopping"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :and (:tag "shopping" :not (:tag "@home @caravan")))
+                                  (:name "Emacs related"
+                                         ;; Boolean AND group matches items that match all subgroups
+                                         :tag ("emacs"))
+                                  (:name "Linux related"
+                                         :and (:tag ("linux") :not (:tag "emacs")))
+                                  (:name "Programming related"
+                                         :and (:tag ("programming") :not (:tag "emacs")))
+                                  (:name "Food-related"
+                                         ;; Multiple args given in list with implicit OR
+                                         :tag ("food" "dinner" "lunch" "breakfast"))
+                                  (:name "Personal"
+                                         :habit t
+                                         :tag "personal")
+                                  ))
+                 ;; Groups supply their own section names when none are given
+                 (:todo "WAITING" :order 8)  ; Set order of this section
+                 (:todo "STARTED" :order 8)
+                 (:todo ("SOMEDAY" "TOREAD" "CHECK" "TO-WATCH" "WATCHING")
+                        ;; Show this group at the end of the agenda (since it has the
+                        ;; highest number). If you specified this group last, items
+                        ;; with these todo keywords that e.g. have priority A would be
+                        ;; displayed in that group instead, because items are grouped
+                        ;; out in the order the groups are listed.
+                        :order 9)
+                 (:priority<= "B"
+                              ;; Show this section after "Today" and "Important", because
+                              ;; their order is unspecified, defaulting to 0. Sections
+                              ;; are displayed lowest-number-first.
+                              :order 1)
+                 ;; After the last group, the agenda will display items that didn't
+                 ;; match any of these groups, with the default order position of 99
+                 ))
+              :init
+              (org-super-agenda-mode))
+    
+    6.  github compliant markup
+    
+            (use-package
+              ox-gfm
+              :demand)
+
+2.  provide
+
+        (provide 'rgr/org)
+
+3.  org agenda files
+
+    See `org-agenda-files` [org-agenda-files](#org07f275d)
+    maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    
+        ~/.emacs.d/var/org/orgfiles
+        ~/.emacs.d/var/org/orgfiles/journals
+        ~/.emacs.d/var/org/orgfiles/projects
+        ~/development/education/lessons
+        ~/development/education/lessons/bash
+        ~/development/education/lessons/python
+        ~/development/education/lessons/python/coreyschafer
+        ~/development/education/lessons/python/python-lernen.de
+        ~/development/education/lessons/elisp
 
 
 ## Lazy Language Learning, lazy-lang-learn
@@ -2557,11 +2549,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     3.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
     
             (use-package forge
-              :disabled
+              ;;:disabled
               :after magit
-              ;; :init
-              ;; (use-package emacsql-sqlite-builtin)
-              ;; (setq forge-database-connector 'sqlite-builtin)
+              :init
+              (straight-use-package 'sqlite3)
               :config
               (use-package orgit-forge)
               )
@@ -2835,6 +2826,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
             ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
             (use-package haskell-mode
+              :disabled t
               :config
               ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
               ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
@@ -2978,6 +2970,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         2.  Start a symfony web server when applicable
         
                 (use-package php-mode
+                  :disabled t
                   :custom
                   (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
                   :config
@@ -3154,7 +3147,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org23ddc47) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1992226) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3187,7 +3180,7 @@ to add to version control.
     fi
 
 
-<a id="org23ddc47"></a>
+<a id="org1992226"></a>
 
 ### Gnome protocol handler desktop file
 
