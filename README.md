@@ -343,16 +343,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
         ;;   (tramp-default-method "ssh")
         ;;   )
 
-2.  [ctrlf searching](https://github.com/raxod502/ctrlf)
-
-        (use-package ctrlf
-          :custom
-          (ctrlf-auto-recenter t)
-          (ctrlf-alternate-search-style 'fuzzy-regexp)
-          :init
-          (ctrlf-mode +1))
-
-3.  file opening
+2.  file opening
 
     1.  read only by default
     
@@ -384,14 +375,14 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
               :bind
               ( "C-x C-f" . rgr/ffap))
 
-4.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
+3.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
 
     Disabled as I cant get my head around it. It doesnt seem to do much thats important to me
     that corfu and orderless and vertico do. Corfu and vertico already do recency ordering.
     
         (use-package 'prescient :disabled)
 
-5.  Consult
+4.  Consult
 
     Consult]] Provides various commands based on the Emacs completion function completing-read
     
@@ -529,7 +520,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
               ;; Use the symbol at point as initial search term
               (consult-customize consult-dash :initial (thing-at-point 'symbol)))
 
-6.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
+5.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
         (use-package embark
           :ensure t
@@ -565,7 +556,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
               :hook
               (embark-collect-mode . consult-preview-at-point-mode))
 
-7.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+6.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
     
@@ -587,7 +578,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; package.
           (marginalia-mode))
 
-8.  all-the-icons
+7.  all-the-icons
 
     Remember to run **all-the-icons-install-fonts**.
     
@@ -602,7 +593,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
           :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
 
-9.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
+8.  [affe](https://github.com/minad/affe) Asynchronous Fuzzy Finder for Emacs
 
         (use-package affe
           :disabled
@@ -615,7 +606,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; Manual preview key for `affe-grep'
           (consult-customize affe-grep :preview-key (kbd "M-.")))
 
-10. provide
+9.  provide
 
         (provide 'rgr/minibuffer)
 
@@ -1001,7 +992,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org338bb5d)
+    See `org-agenda-files` [org-agenda-files](#org31ed61f)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -3147,7 +3138,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5be8faa) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org737c66d) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3180,7 +3171,7 @@ to add to version control.
     fi
 
 
-<a id="org5be8faa"></a>
+<a id="org737c66d"></a>
 
 ### Gnome protocol handler desktop file
 
