@@ -205,7 +205,8 @@
   :after (org-plus-contrib)
   :config
   (pdf-tools-install)
-  (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
+  (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
+                                           ))
   (use-package org-pdftools
     :hook (org-mode . org-pdftools-setup-link)))
 

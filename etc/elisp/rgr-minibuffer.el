@@ -4,13 +4,6 @@
 ;;   (tramp-default-method "ssh")
 ;;   )
 
-(use-package ctrlf
-  :custom
-  (ctrlf-auto-recenter t)
-  (ctrlf-alternate-search-style 'fuzzy-regexp)
-  :init
-  (ctrlf-mode +1))
-
 (defun maybe-read-only-mode()
   (when (cond ((eq major-mode 'org-mode) t))
     (message "Setting readonly mode for %s buffer" major-mode)

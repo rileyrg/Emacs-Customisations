@@ -404,7 +404,16 @@ is a package for editing remote files, similar to AngeFtp or efs. Whereas the ot
   ;;   (tramp-default-method "ssh")
   ;;   )
 #+end_src
-**** [[https://github.com/raxod502/ctrlf][ctrlf searching]]
+**** CANCELLED [[https://github.com/raxod502/ctrlf                                                   :CANCELLED:
+CLOSED: [2023-10-05 Thu 23:56]
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2023-10-05 Thu 23:56] \\
+  use isearch
+:END:
+][ctrlf searching]]
 #+begin_src emacs-lisp
   (use-package ctrlf
     :custom
@@ -1991,7 +2000,8 @@ CLOSED: [2021-08-08 Sun 23:15] SCHEDULED: <2021-06-02 Wed>
     :after (org-plus-contrib)
     :config
     (pdf-tools-install)
-    (add-hook 'pdf-isearch-minor-mode-hook (lambda () (ctrlf-local-mode -1)))
+    (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
+                                             ))
     (use-package org-pdftools
       :hook (org-mode . org-pdftools-setup-link)))
 #+end_src
