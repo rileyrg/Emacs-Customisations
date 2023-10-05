@@ -153,7 +153,9 @@
   ;;;; 5. No project support
   ;; (setq consult-project-function nil)
   :config
-  (use-package company-prescient :disabled)
+  (use-package company-prescient
+    ;;:disabled
+    )
   )
 
 (use-package consult-dash
