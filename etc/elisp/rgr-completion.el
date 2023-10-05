@@ -11,7 +11,7 @@
 (setq-default abbrev-mode 1)
 
 (use-package company
-  :disabled
+  ;;:disabled
   :config
   (use-package company-box
     :config
@@ -60,7 +60,7 @@
     (setq enable-recursive-minibuffers t)))
 
 (use-package corfu
-  ;;:disabled
+  :disabled
   ;; Optional customizations
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'

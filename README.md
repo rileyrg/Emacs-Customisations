@@ -515,7 +515,9 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;;;; 5. No project support
           ;; (setq consult-project-function nil)
           :config
-          (use-package company-prescient :disabled)
+          (use-package company-prescient
+            ;;:disabled
+            )
           )
     
     1.  consult-dash
@@ -656,7 +658,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 4.  company
 
         (use-package company
-          :disabled
+          ;;:disabled
           :config
           (use-package company-box
             :config
@@ -708,10 +710,8 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 6.  corfu
 
-    I've had to turn this off as moving up and down auto selects at times. Back to company-mode.
-    
         (use-package corfu
-          ;;:disabled
+          :disabled
           ;; Optional customizations
           :custom
           ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -1001,7 +1001,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org07f275d)
+    See `org-agenda-files` [org-agenda-files](#org338bb5d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2548,11 +2548,11 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     3.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
     
+            (straight-use-package 'sqlite3)
             (use-package forge
               ;;:disabled
               :after magit
               :init
-              (straight-use-package 'sqlite3)
               :config
               (use-package orgit-forge)
               )
@@ -3147,7 +3147,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1992226) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5be8faa) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3180,7 +3180,7 @@ to add to version control.
     fi
 
 
-<a id="org1992226"></a>
+<a id="org5be8faa"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -142,11 +142,11 @@
     (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
   :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
 
+(straight-use-package 'sqlite3)
 (use-package forge
   ;;:disabled
   :after magit
   :init
-  (straight-use-package 'sqlite3)
   :config
   (use-package orgit-forge)
   )
