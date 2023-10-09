@@ -331,6 +331,15 @@ creates a report in function-name.ftrace and opens it in a buffer"
 (require 'erc)
 (global-set-key (kbd  "C-c e") #'rgr/erc-start)
 
+(use-package notmuch
+  :init
+  (defun rgr/notmuch-new()
+    (message "refreshing notmuch")
+    (call-process-shell-command "notmuch new &" nil 0))
+  :hook
+  (notmuch-hello-mode . rgr/notmuch-new)
+  )
+
 (use-package mu4e
   ;;:disabled
   :straight ( :host github

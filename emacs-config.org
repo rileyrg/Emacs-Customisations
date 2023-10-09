@@ -2423,6 +2423,18 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
 :PROPERTIES:
 :ID:       1db35463-e9e1-4c38-b21f-437d475184e4
 :END:
+*** notmuch
+#+begin_src  emacs-lisp
+  (use-package notmuch
+    :init
+    (defun rgr/notmuch-new()
+      (message "refreshing notmuch")
+      (call-process-shell-command "notmuch new" nil 0))
+    :hook
+    (notmuch-hello-mode . rgr/notmuch-new)
+    )
+
+#+end_src
 *** mu4e                                                         :email:mu4e:
 :PROPERTIES:
 :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
