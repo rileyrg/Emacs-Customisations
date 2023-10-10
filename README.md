@@ -309,19 +309,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
       (desktop-save t)
       (desktop-load-locked-desktop t)
       :init
-      (defun rgr/restore-desktop()
-        (when (fboundp 'alert)
-          (alert (message (format "loading desktop from %s" desktop-path))))
-        ;;I include the run-with-timer despite being able to get this to work without as it's a timing
-        ;;issue and a little delay does no one any harm
-        (run-at-time "1" nil (lambda()
-                               (desktop-read)
-                               (desktop-save-mode 1))))
-      ;; (add-hook 'emacs-startup-hook
-      ;;           (lambda()
-      ;;             (if (daemonp)
-      ;;                 (add-hook 'server-after-make-frame-hook 'rgr/restore-desktop)
-      ;;               (rgr/restore-desktop))))
+      (desktop-save-mode t)
       )
     ```
 
@@ -347,14 +335,13 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
     (defun quit-or-close-emacs(&optional kill)
       (interactive)
       (if (or current-prefix-arg kill)
-          (server-shutdown)
+          (rgr/server-shutdown)
         (delete-frame)))
     
-    (defun server-shutdown ()
+    (defun rgr/server-shutdown ()
       "Save buffers, Quit, and Shutdown (kill) server"
       (interactive)
-      (save-some-buffers)
-      (kill-emacs))
+      (save-buffers-kill-emacs))
     
     (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
     (global-set-key (kbd "C-x C-c") 'nil)
@@ -1118,7 +1105,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgaa82ef9) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org61522c2) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -1190,10 +1177,6 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
         
         (defalias 'yes-or-no-p 'y-or-n-p)
-        
-        ;; ;; restore desktop
-        (setq desktop-dirname (expand-file-name "desktop" user-emacs-directory))
-        ;; (desktop-save-mode 1)
         
         (setq disabled-command-function nil)
         
@@ -3577,7 +3560,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgeda2495) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgafe032a) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3616,7 +3599,7 @@ fi
 ```
 
 
-<a id="orgeda2495"></a>
+<a id="orgafe032a"></a>
 
 ### Gnome protocol handler desktop file
 

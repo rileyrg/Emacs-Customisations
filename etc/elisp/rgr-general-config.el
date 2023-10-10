@@ -28,10 +28,6 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; ;; restore desktop
-(setq desktop-dirname (expand-file-name "desktop" user-emacs-directory))
-;; (desktop-save-mode 1)
-
 (setq disabled-command-function nil)
 
 (global-hl-line-mode t)
