@@ -24,6 +24,12 @@ int main(void)
     ("sendl" "<< std::endl " nil :count 9)
    ))
 
+(define-abbrev-table 'emacs-lisp-mode-abbrev-table
+  '(
+    ("(use-package )" "up" nil :count 0)
+    ("upg" "(use-package )" nil :count 1)
+   ))
+
 (define-abbrev-table 'global-abbrev-table
   '(
     (">>i" "cin >> " nil :count 0)
@@ -31,11 +37,11 @@ int main(void)
 
 (define-abbrev-table 'org-mode-abbrev-table
   '(
-    ("bs" "#+begin_src " nil :count 2)
+    ("bs" "#+begin_src " nil :count 3)
     ("bsb" "#+begin_src bash " nil :count 1)
     ("bse" "#+begin_src emacs-lisp" nil :count 3)
     ("eml" "emacs-lisp" nil :count 6)
-    ("es" "#+end_src" nil :count 2)
+    ("es" "#+end_src" nil :count 3)
     ("mls" "ehll\\nthere\\nend" nil :count 1)
    ))
 
