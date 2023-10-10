@@ -298,7 +298,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 ### rgr-startup library
 
-1.  desktop-save
+1.  desktop-save and history
 
     This has frequently caused problems. The docs seems slightly off and the setting of variables a little confusing. Google seems to confirm this. Anyways, this is working.
     
@@ -308,8 +308,37 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
       (desktop-path '("~/.emacs.d/var/desktop"))
       (desktop-save t)
       (desktop-load-locked-desktop t)
-      :init
+      (desktop-restore-frameset nil)
+      (desktop-restore-eager  10)
+      :config
+      (defun quit-or-close-emacs(&optional kill)
+        (interactive)
+        (if (or current-prefix-arg kill)
+            (rgr/server-shutdown)
+          (delete-frame)))
+    
+      (defun rgr/server-shutdown ()
+        "Save buffers, Quit, and Shutdown (kill) server"
+        (interactive)
+        (clean-buffer-list)
+        (savehist-save)
+        (save-buffers-kill-emacs))
+    
+      (save-place-mode 1)
+    
+      (savehist-mode 1)
+      (add-to-list 'savehist-additional-variables 'kill-ring)
+      (add-to-list 'savehist-additional-variables 'global-mark-ring)
+      (add-to-list 'savehist-ignored-variables 'file-name-history)
+    
+      (recentf-mode 1)
+      (add-to-list 'recentf-exclude no-littering-var-directory)
+      (add-to-list 'recentf-exclude no-littering-etc-directory)
+      (add-to-list 'recentf-exclude "~/.pub-cache")
+    
       (desktop-save-mode t)
+    
+      (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
       )
     ```
 
@@ -332,19 +361,6 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 3.  rest of startup
 
     ```emacs-lisp
-    (defun quit-or-close-emacs(&optional kill)
-      (interactive)
-      (if (or current-prefix-arg kill)
-          (rgr/server-shutdown)
-        (delete-frame)))
-    
-    (defun rgr/server-shutdown ()
-      "Save buffers, Quit, and Shutdown (kill) server"
-      (interactive)
-      (save-buffers-kill-emacs))
-    
-    (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
-    (global-set-key (kbd "C-x C-c") 'nil)
     
     (use-package alert
       :init
@@ -469,8 +485,8 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
              ;; M-s bindings (search-map)
              ("M-s d" . consult-find)
              ("M-s D" . consult-locate)
-             ("M-s g" . consult-grep)
-             ("M-s G" . consult-git-grep)
+             ("M-s G" . consult-grep)
+             ("M-s g" . consult-git-grep)
              ("M-s r" . consult-ripgrep)
              ("M-s l" . consult-line)
              ("M-s L" . consult-line-multi)
@@ -1105,7 +1121,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org61522c2) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org92abdfd) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -1317,47 +1333,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                        ("s" . tab-bar-switch-to-tab))))
         ```
 
-5.  Memory
-
-    1.  save-place-mode, remember position in files
-    
-        ```emacs-lisp
-        (save-place-mode +1)
-        ```
-    
-    2.  save-hist-mode, save history
-    
-        ```emacs-lisp
-        (savehist-mode 1)
-        (add-to-list 'savehist-additional-variables 'kill-ring)
-        (add-to-list 'savehist-additional-variables 'global-mark-ring)
-        ;; (add-hook 'kill-emacs-hook 'rgr/unpropertize-kill-ring)
-        ;; (defun rgr/unpropertize-kill-ring ()
-        ;; (setq kill-ring (mapcar 'substring-no-properties kill-ring)))
-        
-        ```
-    
-    3.  recentf-mode, remember recent files
-    
-        ```emacs-lisp
-        (use-package recentf-ext
-          :config
-          ;; remove symlink dups
-          ;; (defun my/recentf-exclude-symlinks (filename)
-          ;;   "Return t if FILENAME points to a symlink."
-          ;;   (file-symlink-p filename))
-          ;; ;; Add this predicate to `recentf-exclude` in an additive way
-          ;; (add-to-list  'recentf-exclude 'my/recentf-exclude-symlinks)
-          (recentf-mode 1)
-          ;;(setq savehist-minibuffer-history-variables (remove 'file-name-history savehist-minibuffer-history-variables))
-          (if (featurep 'savehist)
-              (add-to-list 'savehist-ignored-variables 'file-name-history))
-          (if (featurep 'no-littering)
-              (add-to-list 'recentf-exclude no-littering-var-directory)
-            (add-to-list 'recentf-exclude no-littering-etc-directory)))
-        ```
-
-6.  provide
+5.  provide
 
     ```emacs-lisp
     (provide 'rgr/general-config)
@@ -3560,7 +3536,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgafe032a) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdb607fb) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3599,7 +3575,7 @@ fi
 ```
 
 
-<a id="orgafe032a"></a>
+<a id="orgdb607fb"></a>
 
 ### Gnome protocol handler desktop file
 

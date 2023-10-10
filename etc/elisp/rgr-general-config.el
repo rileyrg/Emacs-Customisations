@@ -105,29 +105,4 @@
                ("c" . tab-bar-new-tab)
                ("s" . tab-bar-switch-to-tab))))
 
-(save-place-mode +1)
-
-(savehist-mode 1)
-(add-to-list 'savehist-additional-variables 'kill-ring)
-(add-to-list 'savehist-additional-variables 'global-mark-ring)
-;; (add-hook 'kill-emacs-hook 'rgr/unpropertize-kill-ring)
-;; (defun rgr/unpropertize-kill-ring ()
-;; (setq kill-ring (mapcar 'substring-no-properties kill-ring)))
-
-(use-package recentf-ext
-  :config
-  ;; remove symlink dups
-  ;; (defun my/recentf-exclude-symlinks (filename)
-  ;;   "Return t if FILENAME points to a symlink."
-  ;;   (file-symlink-p filename))
-  ;; ;; Add this predicate to `recentf-exclude` in an additive way
-  ;; (add-to-list  'recentf-exclude 'my/recentf-exclude-symlinks)
-  (recentf-mode 1)
-  ;;(setq savehist-minibuffer-history-variables (remove 'file-name-history savehist-minibuffer-history-variables))
-  (if (featurep 'savehist)
-      (add-to-list 'savehist-ignored-variables 'file-name-history))
-  (if (featurep 'no-littering)
-      (add-to-list 'recentf-exclude no-littering-var-directory)
-    (add-to-list 'recentf-exclude no-littering-etc-directory)))
-
 (provide 'rgr/general-config)
