@@ -386,7 +386,6 @@
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
  '(save-interprogram-paste-before-kill t)
- '(savehist-additional-variables '(global-mark-ring kill-ring))
  '(scroll-bar-mode nil)
  '(scroll-conservatively 10000)
  '(scroll-step 1)
