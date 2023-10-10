@@ -482,7 +482,7 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
 Disabled as I cant get my head around it. It doesnt seem to do much thats important to me
 that corfu and orderless and vertico do. Corfu and vertico already do recency ordering.
 #+begin_src  emacs-lisp
-  (use-package 'prescient :disabled)
+  (use-package prescient )
 #+end_src
 **** Consult                                                        :consult:
 Consult]] Provides various commands based on the Emacs completion function completing-read
@@ -609,7 +609,7 @@ Consult]] Provides various commands based on the Emacs completion function compl
         ;; (setq consult-project-function nil)
         :config
         (use-package company-prescient
-          ;;:disabled
+          :disabled
           )
         )
 #+end_src
@@ -938,6 +938,10 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     ;; Other useful Dabbrev configurations.
     :custom
     (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
+#+end_src
+**** vertical completion
+#+begin_src  emacs-lisp
+  ;;(fido-vertical-mode t)
 #+end_src
 **** vertico , vertical interactive completion
 https://github.com/minad/vertico

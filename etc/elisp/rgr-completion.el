@@ -170,6 +170,8 @@
   :custom
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
 
+;;(fido-vertical-mode t)
+
 ;; Enable vertico
 (use-package vertico
   ;;:disabled
