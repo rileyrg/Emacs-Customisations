@@ -335,7 +335,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :init
   (defun rgr/notmuch-new()
     (message "refreshing notmuch")
-    (call-process-shell-command "notmuch new &" nil 0))
+    (call-process-shell-command "notmuch new" nil 0))
   :hook
   (notmuch-hello-mode . rgr/notmuch-new)
   )

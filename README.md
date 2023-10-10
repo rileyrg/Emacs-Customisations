@@ -992,7 +992,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org9f80923)
+    See `org-agenda-files` [org-agenda-files](#orga98c001)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2519,7 +2519,26 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
 14. Version Control
 
-    1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
+    1.  consult-gh
+    
+        pending research  <https://github.com/armindarvish/consult-gh>
+        
+            (use-package consult-gh
+              :disabled
+              :straight (consult-gh :type git :host github :repo "armindarvish/consult-gh")
+            
+              :config
+              ;;add your main GitHub account (replace "armindarvish" with your user or org)
+              (add-to-list 'consult-gh-default-orgs-list "rileyrg")
+            
+              ;;use "gh org list" to get a list of all your organizations and adds them to default list
+              ;;(setq consult-gh-default-orgs-list (append consult-gh-default-orgs-list (remove "" (split-string (consult-gh--command-to-string "org" "list") "\n"))))
+            
+              ;; set the default folder for cloning repositories, By default Consult-GH will confirm this before cloning
+              (setq consult-gh-default-clone-directory "~/development/projects")
+            )
+    
+    2.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
     
         magit
         
@@ -2538,7 +2557,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 (use-package orgit
                   :after magit)
     
-    2.  EDiff - comparing files in Emacs
+    3.  EDiff - comparing files in Emacs
     
             (use-package ediff+
               :custom
@@ -2549,7 +2568,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
               :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
     
-    3.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
+    4.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
     
             (straight-use-package 'sqlite3)
             (use-package forge
@@ -2576,7 +2595,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             =MsQY
             &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
     
-    4.  Git Gutter Mode
+    5.  Git Gutter Mode
     
         [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
         
@@ -3150,7 +3169,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0cd9fc6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org779df3f) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3183,7 +3202,7 @@ to add to version control.
     fi
 
 
-<a id="org0cd9fc6"></a>
+<a id="org779df3f"></a>
 
 ### Gnome protocol handler desktop file
 
