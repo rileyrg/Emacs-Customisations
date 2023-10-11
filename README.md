@@ -311,7 +311,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
       (desktop-restore-frameset nil)
       (desktop-restore-eager  10)
       :config
-      (defun quit-or-close-emacs(&optional kill)
+      (defun rgr/quit-or-close-emacs(&optional kill)
         (interactive)
         (if (or current-prefix-arg kill)
             (rgr/server-shutdown)
@@ -321,7 +321,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         "Save buffers, Quit, and Shutdown (kill) server"
         (interactive)
         (clean-buffer-list)
-        (savehist-save)
+        ;;(savehist-save)
         (save-buffers-kill-emacs))
     
       (save-place-mode 1)
@@ -338,7 +338,14 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
     
       (desktop-save-mode t)
     
-      (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
+      (use-package psession
+        :disabled
+        :init
+        (psession-mode 1)
+        (psession-autosave-mode 1)
+        (psession-savehist-mode 1))
+    
+      (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
       )
     ```
 
@@ -1121,7 +1128,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org92abdfd) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#orgdb8c827) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -2928,11 +2935,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :config
       (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
       (use-package lsp-dart :after lsp)
-      :hook   (dart-mode . (lambda()
-                             (setq-local dash-docs-docsets '("Dart"))
-                             ;;(eglot-ensure)
-                             (lsp-deferred)
-                             )))
+      (defun rgr/init-dart-buffer()
+        (setq-local dash-docs-docsets '("Dart"))
+        (lsp-deferred) )
+      :hook   (dart-mode . rgr/init-dart-buffer ))
     
     ```
     
@@ -3065,9 +3071,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                              ("S-<f7>" . dap-step-out)
                              ("M-<f8>" . dap-debug)
                              ("C-<f8>" . dap-disconnect)
-                             )))
-              :config
-              (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features))
+                             ))
+                    :config
+                    (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
               :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
                      (lsp-mode . lsp-enable-which-key-integration))
               :commands (lsp lsp-deferred))
@@ -3536,7 +3542,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdb607fb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8640cec) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3575,7 +3581,7 @@ fi
 ```
 
 
-<a id="orgdb607fb"></a>
+<a id="org8640cec"></a>
 
 ### Gnome protocol handler desktop file
 

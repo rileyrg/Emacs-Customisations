@@ -49,6 +49,7 @@
  '(compilation-error-regexp-alist
    '(bash-xset-x dotnet-warning dotnet-error msbuild-warning msbuild-error xbuild-warning xbuild-error dotnet-testfail typescript-nglint-warning typescript-nglint-error typescript-tslint typescript-tsc-pretty typescript-tsc absoft ada aix ant bash borland python-tracebacks-and-caml cmake cmake-info comma cucumber msft edg-1 edg-2 epc ftnchek gradle-kotlin iar ibm irix java jikes-file maven jikes-line clang-include gcc-include ruby-Test::Unit gmake gnu lcc makepp mips-1 mips-2 omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line))
  '(compilation-message-face 'default)
+ '(confirm-kill-processes nil)
  '(confirm-nonexistent-file-or-buffer nil)
  '(create-lockfiles nil)
  '(cua-keep-region-after-copy nil)
@@ -66,8 +67,8 @@
    "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/vscode/webfreak.debug")
  '(dap-internal-terminal 'dap-internal-terminal-auto)
  '(dap-print-io t)
- '(dap-ui-controls-mode t)
- '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0" t)
+ '(dap-ui-controls-mode t nil (dap-ui))
+ '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0")
  '(delete-active-region 'kill)
  '(delete-old-versions t)
  '(delete-selection-mode t)
