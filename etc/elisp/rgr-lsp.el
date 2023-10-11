@@ -26,9 +26,9 @@
                  ("S-<f7>" . dap-step-out)
                  ("M-<f8>" . dap-debug)
                  ("C-<f8>" . dap-disconnect)
-                 )))
-  :config
-  (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features))
+                 ))
+        :config
+        (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))

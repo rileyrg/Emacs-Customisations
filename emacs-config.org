@@ -323,7 +323,7 @@ working.
     (desktop-restore-frameset nil)
     (desktop-restore-eager  10)
     :config
-    (defun quit-or-close-emacs(&optional kill)
+    (defun rgr/quit-or-close-emacs(&optional kill)
       (interactive)
       (if (or current-prefix-arg kill)
           (rgr/server-shutdown)
@@ -333,7 +333,7 @@ working.
       "Save buffers, Quit, and Shutdown (kill) server"
       (interactive)
       (clean-buffer-list)
-      (savehist-save)
+      ;;(savehist-save)
       (save-buffers-kill-emacs))
 
     (save-place-mode 1)
@@ -350,7 +350,14 @@ working.
 
     (desktop-save-mode t)
 
-    (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
+    (use-package psession
+      :disabled
+      :init
+      (psession-mode 1)
+      (psession-autosave-mode 1)
+      (psession-savehist-mode 1))
+
+    (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
     )
 #+end_src
 
@@ -3104,11 +3111,10 @@ Running emultaor from command line:
     :config
     (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
     (use-package lsp-dart :after lsp)
-    :hook   (dart-mode . (lambda()
-                           (setq-local dash-docs-docsets '("Dart"))
-                           ;;(eglot-ensure)
-                           (lsp-deferred)
-                           )))
+    (defun rgr/init-dart-buffer()
+      (setq-local dash-docs-docsets '("Dart"))
+      (lsp-deferred) )
+    :hook   (dart-mode . rgr/init-dart-buffer ))
 
 #+end_src
 ***** Java                                                             :java:
@@ -3241,9 +3247,9 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
                    ("S-<f7>" . dap-step-out)
                    ("M-<f8>" . dap-debug)
                    ("C-<f8>" . dap-disconnect)
-                   )))
-    :config
-    (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features))
+                   ))
+          :config
+          (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands (lsp lsp-deferred))

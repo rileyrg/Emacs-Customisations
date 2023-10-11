@@ -193,11 +193,10 @@
   :config
   (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
   (use-package lsp-dart :after lsp)
-  :hook   (dart-mode . (lambda()
-                         (setq-local dash-docs-docsets '("Dart"))
-                         ;;(eglot-ensure)
-                         (lsp-deferred)
-                         )))
+  (defun rgr/init-dart-buffer()
+    (setq-local dash-docs-docsets '("Dart"))
+    (lsp-deferred) )
+  :hook   (dart-mode . rgr/init-dart-buffer ))
 
 ;; (use-package emacs
 ;;   :hook (java-mode . eglot-ensure)

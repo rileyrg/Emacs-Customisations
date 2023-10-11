@@ -6,7 +6,7 @@
   (desktop-restore-frameset nil)
   (desktop-restore-eager  10)
   :config
-  (defun quit-or-close-emacs(&optional kill)
+  (defun rgr/quit-or-close-emacs(&optional kill)
     (interactive)
     (if (or current-prefix-arg kill)
         (rgr/server-shutdown)
@@ -16,7 +16,7 @@
     "Save buffers, Quit, and Shutdown (kill) server"
     (interactive)
     (clean-buffer-list)
-    (savehist-save)
+    ;;(savehist-save)
     (save-buffers-kill-emacs))
 
   (save-place-mode 1)
@@ -33,7 +33,14 @@
 
   (desktop-save-mode t)
 
-  (global-set-key (kbd "C-c x") 'quit-or-close-emacs)
+  (use-package psession
+    :disabled
+    :init
+    (psession-mode 1)
+    (psession-autosave-mode 1)
+    (psession-savehist-mode 1))
+
+  (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
   )
 
 ;; start emacs-server if not running
