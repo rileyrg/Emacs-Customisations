@@ -336,7 +336,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
       (add-to-list 'recentf-exclude no-littering-etc-directory)
       (add-to-list 'recentf-exclude "~/.pub-cache")
     
-      (desktop-save-mode t)
+      (desktop-save-mode -1) ;; TODO - doesnt work with lsp-deferred
     
       (use-package psession
         :disabled
@@ -1128,7 +1128,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgdb8c827) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#orgb403bcb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -3542,7 +3542,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8640cec) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgacafcd9) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3581,7 +3581,7 @@ fi
 ```
 
 
-<a id="org8640cec"></a>
+<a id="orgacafcd9"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -31,7 +31,7 @@
   (add-to-list 'recentf-exclude no-littering-etc-directory)
   (add-to-list 'recentf-exclude "~/.pub-cache")
 
-  (desktop-save-mode t)
+  (desktop-save-mode -1) ;; TODO - doesnt work with lsp-deferred
 
   (use-package psession
     :disabled
