@@ -13,6 +13,7 @@
     :hook
     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
   (use-package lsp-treemacs
+    :disabled ;; probelms with dap
     :custom
     (lsp-treemacs-sync-mode t)
     :commands lsp-treemacs-errors-list)
