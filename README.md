@@ -1128,7 +1128,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgb403bcb) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org2f23e73) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -2746,15 +2746,17 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             <https://github.com/IvanMalison/org-projectile>
             
             ```emacs-lisp
-            (use-package org-projectile
-              ;;:disabled
-              :bind (("C-c n p" . org-projectile-project-todo-completing-read)
-                     ("C-c c" . org-capture))
+            (use-package org-project-capture
+              :demand
               :config
+              (use-package org-projectile :demand)
+              (setq org-project-capture-default-backend
+                    (make-instance 'org-project-capture-projectile-backend))
               (org-projectile-per-project)
-              (setq org-projectile-per-project-filepath "TODOs.org")
-              (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)q))
-              (push (org-projectile-project-todo-entry) org-capture-templates))
+              (setq org-projectile-per-project-filepath "TODO.org")
+              ;;(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+              (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
+              :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
             ```
 
 11. BASH
@@ -3058,6 +3060,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 :hook
                 (lsp-ui-mode . rgr/lsp-ui-mode-hook))
               (use-package lsp-treemacs
+                :disabled ;; probelms with dap
                 :custom
                 (lsp-treemacs-sync-mode t)
                 :commands lsp-treemacs-errors-list)
@@ -3542,7 +3545,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgacafcd9) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc5e9ef3) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3581,7 +3584,7 @@ fi
 ```
 
 
-<a id="orgacafcd9"></a>
+<a id="orgc5e9ef3"></a>
 
 ### Gnome protocol handler desktop file
 

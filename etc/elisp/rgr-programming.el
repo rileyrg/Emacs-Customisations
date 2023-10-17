@@ -79,15 +79,17 @@
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
 
-(use-package org-projectile
-  ;;:disabled
-  :bind (("C-c n p" . org-projectile-project-todo-completing-read)
-         ("C-c c" . org-capture))
+(use-package org-project-capture
+  :demand
   :config
+  (use-package org-projectile :demand)
+  (setq org-project-capture-default-backend
+        (make-instance 'org-project-capture-projectile-backend))
   (org-projectile-per-project)
-  (setq org-projectile-per-project-filepath "TODOs.org")
-  (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)q))
-  (push (org-projectile-project-todo-entry) org-capture-templates))
+  (setq org-projectile-per-project-filepath "TODO.org")
+  ;;(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+  (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
+  :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile

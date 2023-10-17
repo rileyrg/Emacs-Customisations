@@ -22,6 +22,7 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -250,7 +251,12 @@
      (css . t)
      (makefile . t)))
  '(org-capture-templates
-   '(("t" "Todo" entry
+   '(("p" "Project Todo" entry
+      #'#[0 "\304\305\306\307\310\311\12!\312\313!\206\26\0r\312\314!q\210\13)\"\315\300\316\12\317\301&\11!\207"
+            ["* TODO %?\12" nil org-project-capture-strategy default-directory occ-capture-edit-at-marker make-instance occ-context :category org-project-capture-category-from-file org-project-capture-strategy-get-backend org-capture-get :original-file :original-buffer :template :strategy :options]
+            11]
+      "* TODO %?\12")
+     ("t" "Todo" entry
       (file+headline "refile.org" "Tasks To Refile")
       "* TODO %?\12:PROPERTIES:\12:DateCreated: %T\12:END:\12")
      ("n" "Quick note to refile later" entry
