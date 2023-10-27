@@ -207,11 +207,13 @@
 (use-package js
   :config
   (defun rgr/js-mode-hook ()
-    ;;(eglot-ensure)
+    (message "rgr/js-mode-hook")
+    (js-jsx-enable)
+    (lsp-deferred)
     (local-unset-key (kbd "M-."))
     (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
   :hook
-  (js-mode . rgr/js-mode-hook)
+  (js-ts-mode . rgr/js-mode-hook)
   :bind
   (:map js-mode-map
         ("M-." . #'lsp-ui-peek-find-definitions)))

@@ -324,7 +324,9 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         ;;(savehist-save)
         (save-buffers-kill-emacs))
     
-      (save-place-mode 1)
+      (use-package saveplace
+        :config
+        (save-place-mode t))
     
       (savehist-mode 1)
       (add-to-list 'savehist-additional-variables 'kill-ring)
@@ -1128,7 +1130,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2f23e73) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org59e2e8e) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -2958,14 +2960,17 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (use-package js
       :config
       (defun rgr/js-mode-hook ()
-        ;;(eglot-ensure)
+        (message "rgr/js-mode-hook")
+        (js-jsx-enable)
+        (lsp-deferred)
         (local-unset-key (kbd "M-."))
         (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
       :hook
-      (js-mode . rgr/js-mode-hook)
+      (js-ts-mode . rgr/js-mode-hook)
       :bind
       (:map js-mode-map
             ("M-." . #'lsp-ui-peek-find-definitions)))
+    
     
     
     ```
@@ -3545,7 +3550,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc5e9ef3) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9a2eedd) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3584,7 +3589,7 @@ fi
 ```
 
 
-<a id="orgc5e9ef3"></a>
+<a id="org9a2eedd"></a>
 
 ### Gnome protocol handler desktop file
 

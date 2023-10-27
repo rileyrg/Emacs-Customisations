@@ -1,3 +1,4 @@
+~/.emacs.d
 ~/.emacs.d/var/org/orgfiles
 ~/.emacs.d/var/org/orgfiles/journals
 ~/.emacs.d/var/org/orgfiles/projects

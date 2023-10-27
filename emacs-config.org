@@ -336,7 +336,9 @@ working.
       ;;(savehist-save)
       (save-buffers-kill-emacs))
 
-    (save-place-mode 1)
+    (use-package saveplace
+      :config
+      (save-place-mode t))
 
     (savehist-mode 1)
     (add-to-list 'savehist-additional-variables 'kill-ring)
@@ -3133,14 +3135,17 @@ Running emultaor from command line:
   (use-package js
     :config
     (defun rgr/js-mode-hook ()
-      ;;(eglot-ensure)
+      (message "rgr/js-mode-hook")
+      (js-jsx-enable)
+      (lsp-deferred)
       (local-unset-key (kbd "M-."))
       (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
     :hook
-    (js-mode . rgr/js-mode-hook)
+    (js-ts-mode . rgr/js-mode-hook)
     :bind
     (:map js-mode-map
           ("M-." . #'lsp-ui-peek-find-definitions)))
+
 
 
 #+end_src
