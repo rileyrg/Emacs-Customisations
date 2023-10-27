@@ -218,6 +218,21 @@
   (:map js-mode-map
         ("M-." . #'lsp-ui-peek-find-definitions)))
 
+;; sudo npm i -g typescript-language-server
+(use-package typescript-mode
+  :config
+  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
+  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
+  (define-derived-mode typescriptreact-mode typescript-mode
+    "TypeScript TSX")
+
+  ;; use our derived mode for tsx files
+  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+  (defun rgr/ts-mode-hook ()
+    (lsp-deferred)
+    (setq-local dash-docs-docsets '("React" "JavaScript")))
+  (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
+
 (use-package treesit-auto
   ;;:disable
   :custom
@@ -248,23 +263,6 @@
                       (treesit-inspect-mode t)
                       (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
                       (rgr/c-mode-common-hook))))
-
-;; sudo npm i -g typescript-language-server
-(use-package typescript-mode
-  :config
-  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-  (define-derived-mode typescriptreact-mode typescript-mode
-    "TypeScript TSX")
-
-  ;; use our derived mode for tsx files
-  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-  (defun rgr/ts-mode-hook ()
-    ;;(eglot-ensure)
-    (setq-local dash-docs-docsets '("React" "JavaScript")))
-  (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
-
-
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 
