@@ -62,6 +62,7 @@
 ;; auto-format different source code files extremely intelligently
 ;; https://github.com/radian-software/apheleia
 (use-package apheleia
+  :disabled
   :ensure t
   :config
   (apheleia-global-mode +1))
@@ -71,13 +72,14 @@
   :config
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
-(require 'project)
+;;(require 'project)
 
 (use-package projectile
   :demand
   :init
   (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
+  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+  (bind-key* "C-x p b" 'consult-project-buffer))
 
 (use-package org-project-capture
   :demand

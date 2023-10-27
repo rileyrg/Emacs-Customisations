@@ -2874,6 +2874,7 @@ CLOSED: [2021-07-21 Wed 11:28]
   ;; auto-format different source code files extremely intelligently
   ;; https://github.com/radian-software/apheleia
   (use-package apheleia
+    :disabled
     :ensure t
     :config
     (apheleia-global-mode +1))
@@ -2890,8 +2891,9 @@ CLOSED: [2021-07-21 Wed 11:28]
 #+end_src
 **** Project Management                                             :project:
 ***** project
+I prefer projectile
 #+begin_src emacs-lisp
-  (require 'project)
+  ;;(require 'project)
 #+end_src
 ***** projectile                                                 :projectile:
 #+begin_src emacs-lisp
@@ -2899,7 +2901,8 @@ CLOSED: [2021-07-21 Wed 11:28]
     :demand
     :init
     (projectile-mode +1)
-    (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
+    (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+    (bind-key* "C-x p b" 'consult-project-buffer))
 #+end_src
 ****** TODO org-projectile
 SCHEDULED: <2023-08-03 Thu>

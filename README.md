@@ -1130,7 +1130,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org4a86238) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org7001bdd) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -2711,6 +2711,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     ;; auto-format different source code files extremely intelligently
     ;; https://github.com/radian-software/apheleia
     (use-package apheleia
+      :disabled
       :ensure t
       :config
       (apheleia-global-mode +1))
@@ -2729,8 +2730,10 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 
     1.  project
     
+        I prefer projectile
+        
         ```emacs-lisp
-        (require 'project)
+        ;;(require 'project)
         ```
     
     2.  projectile
@@ -2740,7 +2743,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           :demand
           :init
           (projectile-mode +1)
-          (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
+          (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+          (bind-key* "C-x p b" 'consult-project-buffer))
         ```
         
         1.  org-projectile
@@ -3541,7 +3545,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6c44f34) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge3d2dea) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3580,7 +3584,7 @@ fi
 ```
 
 
-<a id="org6c44f34"></a>
+<a id="orge3d2dea"></a>
 
 ### Gnome protocol handler desktop file
 
