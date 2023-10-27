@@ -19,7 +19,9 @@
     ;;(savehist-save)
     (save-buffers-kill-emacs))
 
-  (save-place-mode 1)
+  (use-package saveplace
+    :config
+    (save-place-mode t))
 
   (savehist-mode 1)
   (add-to-list 'savehist-additional-variables 'kill-ring)
