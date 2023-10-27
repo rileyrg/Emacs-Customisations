@@ -1130,7 +1130,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org59e2e8e) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org4a86238) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -2970,12 +2970,28 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       :bind
       (:map js-mode-map
             ("M-." . #'lsp-ui-peek-find-definitions)))
-    
-    
-    
     ```
 
-17. Tree Sitter
+17. Typescript
+
+    ```emacs-lisp
+    ;; sudo npm i -g typescript-language-server
+    (use-package typescript-mode
+      :config
+      ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
+      ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
+      (define-derived-mode typescriptreact-mode typescript-mode
+        "TypeScript TSX")
+    
+      ;; use our derived mode for tsx files
+      (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+      (defun rgr/ts-mode-hook ()
+        (lsp-deferred)
+        (setq-local dash-docs-docsets '("React" "JavaScript")))
+      (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
+    ```
+
+18. Tree Sitter
 
     ```emacs-lisp
     (use-package treesit-auto
@@ -3010,32 +3026,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                           (rgr/c-mode-common-hook))))
     ```
 
-18. Typescript
-
-    ```emacs-lisp
-    ;; sudo npm i -g typescript-language-server
-    (use-package typescript-mode
-      :config
-      ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-      ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-      (define-derived-mode typescriptreact-mode typescript-mode
-        "TypeScript TSX")
-    
-      ;; use our derived mode for tsx files
-      (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-      (defun rgr/ts-mode-hook ()
-        ;;(eglot-ensure)
-        (setq-local dash-docs-docsets '("React" "JavaScript")))
-      (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
-    ```
-
-19. Javascript
-
-    ```emacs-lisp
-    
-    ```
-
-20. Language Server Protocol (LSP), lsp-mode
+19. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -3113,7 +3104,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             (provide 'rgr/lsp)
             ```
 
-21. Serial Port
+20. Serial Port
 
     ```emacs-lisp
     (defgroup rgr/serial-ports nil
@@ -3141,7 +3132,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                       (selectSerialPortBuffer)))
     ```
 
-22. PlatformIO
+21. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences. The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
     
@@ -3166,7 +3157,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     
     1.  get compilation errors to work and submit ansi color fix?
 
-23. Python
+22. Python
 
     1.  ipython
     
@@ -3183,7 +3174,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
         ```
 
-24. Haskell
+23. Haskell
 
     1.  haskell-mode
     
@@ -3201,7 +3192,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
         ```
 
-25. lldb debugging in emacs
+24. lldb debugging in emacs
 
     1.  voltron
     
@@ -3213,7 +3204,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           )
         ```
 
-26. c-mode-common-hook
+25. c-mode-common-hook
 
     ```emacs-lisp
     (use-package emacs
@@ -3239,7 +3230,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 )))
     ```
 
-27. C, c-mode
+26. C, c-mode
 
     ```emacs-lisp
     (defun rgr/c-mode-hook ()
@@ -3283,7 +3274,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         
         ```
 
-28. cc,cpp, C++, cc-mode
+27. cc,cpp, C++, cc-mode
 
     ```emacs-lisp
     (defun rgr/c++-mode-hook ()
@@ -3291,7 +3282,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
     (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     ```
 
-29. Linux tools
+28. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -3303,7 +3294,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
           (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
         ```
 
-30. Assembler
+29. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
@@ -3311,7 +3302,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
         (use-package strace-mode)
         ```
 
-31. Godot GDScript
+30. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
@@ -3336,7 +3327,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       )
     ```
 
-32. Web,Symfony and Twig
+31. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -3404,7 +3395,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
             ```
 
-33. elf-mode - view the symbol list in a binary
+32. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -3416,7 +3407,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
       (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
     ```
 
-34. provide
+33. provide
 
     ```emacs-lisp
     (provide 'rgr/programming)
@@ -3550,7 +3541,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9a2eedd) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6c44f34) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3589,7 +3580,7 @@ fi
 ```
 
 
-<a id="org9a2eedd"></a>
+<a id="org6c44f34"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -3145,9 +3145,25 @@ Running emultaor from command line:
     :bind
     (:map js-mode-map
           ("M-." . #'lsp-ui-peek-find-definitions)))
+#+end_src
+**** Typescript
+:PROPERTIES:
+:END:
+#+begin_src emacs-lisp
+  ;; sudo npm i -g typescript-language-server
+  (use-package typescript-mode
+    :config
+    ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
+    ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
+    (define-derived-mode typescriptreact-mode typescript-mode
+      "TypeScript TSX")
 
-
-
+    ;; use our derived mode for tsx files
+    (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+    (defun rgr/ts-mode-hook ()
+      (lsp-deferred)
+      (setq-local dash-docs-docsets '("React" "JavaScript")))
+    (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 #+end_src
 **** Tree Sitter
 #+begin_src  emacs-lisp
@@ -3182,30 +3198,6 @@ Running emultaor from command line:
                         (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
                         (rgr/c-mode-common-hook))))
 #+end_src
-**** Typescript
-:PROPERTIES:
-:END:
-#+begin_src emacs-lisp
-  ;; sudo npm i -g typescript-language-server
-  (use-package typescript-mode
-    :config
-    ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-    ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-    (define-derived-mode typescriptreact-mode typescript-mode
-      "TypeScript TSX")
-
-    ;; use our derived mode for tsx files
-    (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-    (defun rgr/ts-mode-hook ()
-      ;;(eglot-ensure)
-      (setq-local dash-docs-docsets '("React" "JavaScript")))
-    (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
-#+end_src
-
-**** Javascript
-#+begin_src emacs-lisp
-#+end_src
-
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
 :PROPERTIES:
 :END:
