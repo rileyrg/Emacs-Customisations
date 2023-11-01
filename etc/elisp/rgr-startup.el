@@ -46,18 +46,19 @@
   )
 
 ;; start emacs-server if not running
-(unless(daemonp)
-  (add-hook 'after-init-hook
-            (lambda ()
-              (require 'server)
-              (unless (server-running-p)
-                (message "Starting EmacsServer from init as not already running.")
-                (server-start))
-              )))
+;; problems in emacs 29 - temporarily stopped
+;; (unless(daemonp)
+;;   (add-hook 'after-init-hook
+;;             (lambda ()
+;;               (require 'server)
+;;               (unless (server-running-p)
+;;                 (message "Starting EmacsServer from init as not already running.")
+;;                 (server-start))
+;;               )))
 
 (use-package alert
   :init
   (let ((alert-fade-time 5))
-    (if (daemonp) (alert "Emacs is starting..." :title "Emacs"))))
+    (if (and (display-graphic-p) (daemonp)) (alert "Emacs is starting..." :title "Emacs"))))
 
 (provide 'rgr/startup)

@@ -155,6 +155,7 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
 :CUSTOM_ID: no_littering
 :END:
 #+begin_src emacs-lisp
+  ;;(use-package no-littering)
   (use-package no-littering
     :config
     (setq auto-save-file-name-transforms
@@ -367,14 +368,15 @@ working.
 If not already deamonised
 #+begin_src emacs-lisp
   ;; start emacs-server if not running
-  (unless(daemonp)
-    (add-hook 'after-init-hook
-              (lambda ()
-                (require 'server)
-                (unless (server-running-p)
-                  (message "Starting EmacsServer from init as not already running.")
-                  (server-start))
-                )))
+  ;; problems in emacs 29 - temporarily stopped
+  ;; (unless(daemonp)
+  ;;   (add-hook 'after-init-hook
+  ;;             (lambda ()
+  ;;               (require 'server)
+  ;;               (unless (server-running-p)
+  ;;                 (message "Starting EmacsServer from init as not already running.")
+  ;;                 (server-start))
+  ;;               )))
 #+end_src
 **** rest of startup
 
@@ -383,7 +385,7 @@ If not already deamonised
   (use-package alert
     :init
     (let ((alert-fade-time 5))
-      (if (daemonp) (alert "Emacs is starting..." :title "Emacs"))))
+      (if (and (display-graphic-p) (daemonp)) (alert "Emacs is starting..." :title "Emacs"))))
 
   (provide 'rgr/startup)
 #+end_src
@@ -3155,6 +3157,7 @@ Running emultaor from command line:
 #+begin_src emacs-lisp
   ;; sudo npm i -g typescript-language-server
   (use-package typescript-mode
+  ;;  :disabled
     :config
     ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
     ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
@@ -3167,6 +3170,12 @@ Running emultaor from command line:
       (lsp-deferred)
       (setq-local dash-docs-docsets '("React" "JavaScript")))
     (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
+
+  ;; (use-package typescript-ts-mode
+  ;;   :mode (("\\.ts\\'" . typescript-ts-mode)
+  ;;          ("\\.tsx\\'" . tsx-ts-mode)))
+
+
 #+end_src
 **** Tree Sitter
 #+begin_src  emacs-lisp
@@ -3766,7 +3775,8 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
 #+begin_src bash :tangle bin/emacs-same-frame
   #!/bin/bash
   if ! pidof "emacs"; then
-     emacs "$@" &
+     #emacs --daemon
+     emacsclient -n -c -a "" "$@"
   else
       emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
       if [ "$?" = 1 ]; then

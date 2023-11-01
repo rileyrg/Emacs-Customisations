@@ -42,6 +42,7 @@
 ;; look for a debug init file and load, trigger the debugger
 (debug-init "debug-init-straight.el")
 
+;;(use-package no-littering)
 (use-package no-littering
   :config
   (setq auto-save-file-name-transforms
