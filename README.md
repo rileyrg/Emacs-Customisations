@@ -137,11 +137,11 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
 ### [no-littering](https://github.com/emacscollective/no-littering) aims to keep our undies folded.
 
 ```emacs-lisp
-;;(use-package no-littering)
-(use-package no-littering
-  :config
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+(use-package no-littering)
+;; (use-package no-littering
+;;   :config
+;;   (setq auto-save-file-name-transforms
+;;         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 ```
 
 
@@ -306,6 +306,8 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
     ```emacs-lisp
     (use-package emacs
       :custom
+      (backup-directory-alist
+            `(("." . ,(concat user-emacs-directory "backups"))))
       (desktop-path '("~/.emacs.d/var/desktop"))
       (desktop-save t)
       (desktop-load-locked-desktop t)
@@ -376,7 +378,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
     (use-package alert
       :init
       (let ((alert-fade-time 5))
-        (if (and (display-graphic-p) (daemonp)) (alert "Emacs is starting..." :title "Emacs"))))
+        (if (display-graphic-p) (alert "Emacs is starting..." :title "Emacs"))))
     
     (provide 'rgr/startup)
     ```
@@ -1132,7 +1134,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgff8a0fe) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org95f1df2) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -3554,7 +3556,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org33cfe38) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgffb9abf) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3593,7 +3595,7 @@ fi
 ```
 
 
-<a id="org33cfe38"></a>
+<a id="orgffb9abf"></a>
 
 ### Gnome protocol handler desktop file
 

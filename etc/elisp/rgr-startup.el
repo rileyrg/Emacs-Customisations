@@ -1,5 +1,7 @@
 (use-package emacs
   :custom
+  (backup-directory-alist
+        `(("." . ,(concat user-emacs-directory "backups"))))
   (desktop-path '("~/.emacs.d/var/desktop"))
   (desktop-save t)
   (desktop-load-locked-desktop t)
@@ -59,6 +61,6 @@
 (use-package alert
   :init
   (let ((alert-fade-time 5))
-    (if (and (display-graphic-p) (daemonp)) (alert "Emacs is starting..." :title "Emacs"))))
+    (alert "Emacs is starting..." :title "Emacs")))
 
 (provide 'rgr/startup)
