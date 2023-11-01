@@ -222,6 +222,7 @@
 
 ;; sudo npm i -g typescript-language-server
 (use-package typescript-mode
+;;  :disabled
   :config
   ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
   ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
@@ -234,6 +235,10 @@
     (lsp-deferred)
     (setq-local dash-docs-docsets '("React" "JavaScript")))
   (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
+
+;; (use-package typescript-ts-mode
+;;   :mode (("\\.ts\\'" . typescript-ts-mode)
+;;          ("\\.tsx\\'" . tsx-ts-mode)))
 
 (use-package treesit-auto
   ;;:disable
