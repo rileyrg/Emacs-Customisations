@@ -40,10 +40,18 @@
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 
+(use-package notifications
+  :demand t
+  :config
+  (notifications-notify
+   :title "Emacs"
+   :body " ... is starting up..."))
+
 (use-package no-littering
   :init
   ;; Set eln-cache dir
   (when (boundp 'native-comp-eln-load-path)
     (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
+
 
 ;;; early-init.el ends here

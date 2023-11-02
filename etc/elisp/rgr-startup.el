@@ -58,9 +58,4 @@
 ;;                 (server-start))
 ;;               )))
 
-(use-package alert
-  :init
-  (let ((alert-fade-time 5))
-    (alert "Emacs is starting..." :title "Emacs")))
-
 (provide 'rgr/startup)
