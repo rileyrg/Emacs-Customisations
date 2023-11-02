@@ -6,11 +6,6 @@
 ;; look for a debug init file and load, trigger the debugger
 (debug-init "debug-init-straight.el")
 
-;; (use-package no-littering
-;;   :config
-;;   (setq auto-save-file-name-transforms
-;;         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
-
 (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
 (add-to-list 'load-path elisp-dir)
 (let ((default-directory elisp-dir))

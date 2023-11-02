@@ -94,11 +94,19 @@ A small "game" like utility that displays snippets to glance at. You can then in
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 
+(use-package notifications
+  :demand t
+  :config
+  (notifications-notify
+   :title "Emacs"
+   :body " ... is starting up..."))
+
 (use-package no-littering
   :init
   ;; Set eln-cache dir
   (when (boundp 'native-comp-eln-load-path)
     (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
+
 
 ;;; early-init.el ends here
 
@@ -133,17 +141,7 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
 ```
 
 
-## Paths, clutter
-
-
-### [no-littering](https://github.com/emacscollective/no-littering) aims to keep our undies folded.
-
-```emacs-lisp
-;; (use-package no-littering
-;;   :config
-;;   (setq auto-save-file-name-transforms
-;;         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
-```
+## Paths
 
 
 ### Path to our own elisp
@@ -217,7 +215,15 @@ Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/cu
           secret)))
     ```
 
-2.  Pass
+2.  1password
+
+    ```emacs-lisp
+    (use-package auth-source-1password
+      :config
+      (auth-source-1password-enable))
+    ```
+
+3.  Pass
 
     Uses the unix command line `pass` utility. Can be used via `process-lines` e.g
     
@@ -229,7 +235,7 @@ Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/cu
     (use-package pass)
     ```
 
-3.  provide
+4.  provide
 
     ```emacs-lisp
     (provide 'rgr/security)
@@ -287,7 +293,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
     ```
 
 
-## Emacs daemon & startup
+## Emacs startup
 
 Load up the daemon if not loaded, amongst other things.
 
@@ -375,12 +381,6 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 3.  rest of startup
 
     ```emacs-lisp
-    
-    (use-package alert
-      :init
-      (let ((alert-fade-time 5))
-        (alert "Emacs is starting..." :title "Emacs")))
-    
     (provide 'rgr/startup)
     ```
 
@@ -1135,7 +1135,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org42a2399) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#orgd9e94ff) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -3557,7 +3557,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2c99e75) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1170c7d) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3596,7 +3596,7 @@ fi
 ```
 
 
-<a id="org2c99e75"></a>
+<a id="org1170c7d"></a>
 
 ### Gnome protocol handler desktop file
 

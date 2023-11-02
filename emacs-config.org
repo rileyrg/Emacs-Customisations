@@ -117,11 +117,19 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (straight-use-package-by-default t)
     (straight-vc-git-default-protocol 'ssh))
 
+  (use-package notifications
+    :demand t
+    :config
+    (notifications-notify
+     :title "Emacs"
+     :body " ... is starting up..."))
+
   (use-package no-littering
     :init
     ;; Set eln-cache dir
     (when (boundp 'native-comp-eln-load-path)
       (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
+
 
   ;;; early-init.el ends here
 
@@ -146,20 +154,10 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
   ;; look for a debug init file and load, trigger the debugger
   (debug-init "debug-init-straight.el")
 #+end_src
-** Paths, clutter
+** Paths
 :PROPERTIES:
 :CUSTOM_ID: Paths_and_clutter
 :END:
-*** [[https://github.com/emacscollective/no-littering][no-littering]] aims to keep our undies folded.
-:PROPERTIES:
-:CUSTOM_ID: no_littering
-:END:
-#+begin_src emacs-lisp
-  ;; (use-package no-littering
-  ;;   :config
-  ;;   (setq auto-save-file-name-transforms
-  ;;         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
-#+end_src
 *** Path to our own elisp
 :PROPERTIES:
 :ID:       64b907df-b368-455e-8568-c2449fc0440e
@@ -228,6 +226,13 @@ example:
           (funcall secret)
         secret)))
 #+end_src
+**** 1password
+#+begin_src  emacs-lisp
+  (use-package auth-source-1password
+    :config
+    (auth-source-1password-enable))
+#+end_src
+
 **** Pass
 Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
 #+begin_src emacs-lisp :tangle no
@@ -293,7 +298,7 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 #+begin_src emacs-lisp
   (provide 'rgr/utils)
 #+end_src
-** Emacs daemon & startup                                    :daemon:startup:
+** Emacs startup                                             :startup:
 :PROPERTIES:
 :ID:       77ded746-89ff-4051-a4eb-a4d75d7917bc
 :END:
@@ -304,7 +309,7 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 #+begin_src emacs-lisp
   (require 'rgr/startup "rgr-startup" 'NOERROR)
 #+end_src
-*** rgr-startup library                                              :startup:daemon:
+*** rgr-startup library                                              :startup:
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-startup.el" elisp-dir)
 :ID:       ee7aaad4-5f12-4e5e-b7d7-91ed4296b129
@@ -382,12 +387,6 @@ If not already deamonised
 **** rest of startup
 
 #+begin_src emacs-lisp
-
-  (use-package alert
-    :init
-    (let ((alert-fade-time 5))
-      (alert "Emacs is starting..." :title "Emacs")))
-
   (provide 'rgr/startup)
 #+end_src
 ** Minibuffer Enrichment (search, sudo edit...)                  :minibuffer:
