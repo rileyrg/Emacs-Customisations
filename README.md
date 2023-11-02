@@ -34,7 +34,18 @@ A small "game" like utility that displays snippets to glance at. You can then in
 # early stuff
 
 
-## debug init utility function
+## early-init.el
+
+<https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html>
+
+```emacs-lisp
+;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+;; Maintained in emacs-config.org
+(setq max-specpdl-size 13000)
+```
+
+
+### debug init utility function
 
 ```emacs-lisp
 ;; look for a debug init file and load, trigger the debugger
@@ -53,49 +64,14 @@ A small "game" like utility that displays snippets to glance at. You can then in
 ```
 
 
-## early-init.el
-
-```emacs-lisp
-;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
-;; Maintained in emacs-config.org
-(setq package-enabled-at-startup nil)
-(setq max-specpdl-size 13000)
-;; Set eln-cache dir
-(when (boundp 'native-comp-eln-load-path)
-  (startup-redirect-eln-cache (expand-file-name "var/eln-cache" user-emacs-directory)))
-;;; early-init.el ends here
-```
-
-
-### look into removing those repos paths added in early-init. cant remember why they are there.
-
-
-## custom.el
-
-```emacs-lisp
-(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
-(load custom-file 'noerror)
-```
-
-
-## debug init before straight
-
-```emacs-lisp
-(debug-init)
-```
-
-
-# package management
-
-
-## straight.el package management
+### straight.el package management
 
 [straight.el](https://github.com/raxod502/straight.el#features): next-generation, purely functional package manager for the Emacs hacker.
 
-
-### bootstrap
-
 ```emacs-lisp
+
+(setq package-enabled-at-startup nil)
+
 (defvar bootstrap-version)
 
 (defvar bootstrap-version)
@@ -118,6 +94,29 @@ A small "game" like utility that displays snippets to glance at. You can then in
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 
+(use-package no-littering
+  :init
+  ;; Set eln-cache dir
+  (when (boundp 'native-comp-eln-load-path)
+    (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
+
+;;; early-init.el ends here
+
+```
+
+
+## custom.el
+
+```emacs-lisp
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
+(load custom-file 'noerror)
+```
+
+
+## debug init
+
+```emacs-lisp
+(debug-init)
 ```
 
 
@@ -140,7 +139,6 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
 ### [no-littering](https://github.com/emacscollective/no-littering) aims to keep our undies folded.
 
 ```emacs-lisp
-(use-package no-littering)
 ;; (use-package no-littering
 ;;   :config
 ;;   (setq auto-save-file-name-transforms
@@ -1137,7 +1135,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgbe8e25a) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org42a2399) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -3559,7 +3557,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge5ce16e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2c99e75) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3598,7 +3596,7 @@ fi
 ```
 
 
-<a id="orge5ce16e"></a>
+<a id="org2c99e75"></a>
 
 ### Gnome protocol handler desktop file
 
