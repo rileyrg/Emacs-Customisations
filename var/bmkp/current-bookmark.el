@@ -487,13 +487,13 @@
     (position . 182))
 #1=(#("xresources" 0 10
       (bmkp-full-record #1#))
-    (filename . "~/Dropbox/homefiles/linux-config.org")
+    (filename . "~/cloud/homefiles/linux-config.org")
     (front-context-string . "ources\n   #+begi")
     (rear-context-string . "d_src\n** ~/.Xres")
     (position . 6635))
 #1=(#("smart-connect" 0 13
       (bmkp-full-record #1#))
-    (filename . "~/Dropbox/homefiles/linux-config.org")
+    (filename . "~/cloud/homefiles/linux-config.org")
     (front-context-string . "tangle ~/bin/xra")
     (rear-context-string . "begin_src bash :")
     (position . 13983))
@@ -517,7 +517,7 @@
     (position . 193))
 #1=(#(".Xresources" 0 11
       (bmkp-full-record #1#))
-    (filename . "~/Dropbox/homefiles/DotFiles/.Xresources")
+    (filename . "~/cloud/homefiles/DotFiles/.Xresources")
     (front-context-string . "urxvt.font: xft:")
     (rear-context-string)
     (position . 1))
@@ -537,7 +537,7 @@
     (handler . Info-bookmark-jump))
 #1=(#("Dropbox" 0 7
       (bmkp-full-record #1#))
-    (filename . "~/Dropbox/")
+    (filename . "~/cloud/")
     (front-context-string . "homefiles\n  drwx")
     (rear-context-string . "96 Jan 25 14:56 ")
     (position . 477))
@@ -617,7 +617,7 @@
     (position . 1))
 #1=(#("linux-config" 0 12
       (bmkp-full-record #1#))
-    (filename . "~/Dropbox/homefiles/linux-config.org")
+    (filename . "~/cloud/homefiles/linux-config.org")
     (front-context-string . "d\n**  ~/.profile")
     (rear-context-string . "]\n\n* Bash relate")
     (position . 19971))
@@ -654,13 +654,13 @@
     (position . 2783))
 #1=(#("i3-config" 0 9
       (bmkp-full-record #1#))
-    (filename . "~/Dropbox/homefiles/linux-config.org")
+    (filename . "~/cloud/homefiles/linux-config.org")
     (front-context-string . "     # Maintaine")
     (rear-context-string . "onfig/i3/config\n")
     (position . 34588))
 #1=(#("i3blocks" 0 8
       (bmkp-full-record #1#))
-    (filename . "~/Dropbox/homefiles/linux-init-files.org")
+    (filename . "~/cloud/homefiles/linux-init-files.org")
     (front-context-string . "s\n*** ~/bin/my-b")
     (rear-context-string . " such as i3block")
     (position . 73761))
@@ -690,7 +690,7 @@
     (position . 2408))
 #1=(#("xidlehook" 0 9
       (bmkp-full-record #1#))
-    (filename . "~/Dropbox/homefiles/linux-init-files.org")
+    (filename . "~/cloud/homefiles/linux-init-files.org")
     (front-context-string . "      xidlehook ")
     (rear-context-string . "v/null || true\n\n")
     (position . 9070))

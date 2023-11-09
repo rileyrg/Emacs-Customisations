@@ -1135,7 +1135,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgd9e94ff) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org8363a8d) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -2050,6 +2050,23 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
           (file-name-nondirectory (directory-file-name default-directory)))))
     ```
 
+4.  EAT
+
+    [Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
+    
+    ```emacs-lisp
+    (straight-use-package
+     '(eat :type git
+           :host codeberg
+           :repo "akib/emacs-eat"
+           :files ("*.el" ("term" "term/*.el") "*.texi"
+                   "*.ti" ("terminfo/e" "terminfo/e/*")
+                   ("terminfo/65" "terminfo/65/*")
+                   ("integration" "integration/*")
+                   (:exclude ".dir-locals.el" "*-tests.el"))))
+    
+    ```
+
 
 ### vterm
 
@@ -2057,6 +2074,7 @@ Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
 
 ```emacs-lisp
 (use-package vterm
+  :disabled
   :custom
   (vterm-shell "/usr/bin/zsh")
   (vterm-max-scrollback 100000)
@@ -3557,7 +3575,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1170c7d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgab019d7) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3596,7 +3614,7 @@ fi
 ```
 
 
-<a id="org1170c7d"></a>
+<a id="orgab019d7"></a>
 
 ### Gnome protocol handler desktop file
 
