@@ -306,21 +306,29 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 ### rgr-startup library
 
-1.  desktop-save and history
+1.  persistence  and history
 
-    This has frequently caused problems. The docs seems slightly off and the setting of variables a little confusing. Google seems to confirm this. Anyways, this is working.
-    
     ```emacs-lisp
     (use-package emacs
-      :custom
-      (backup-directory-alist
-            `(("." . ,(concat user-emacs-directory "backups"))))
-      (desktop-path '("~/.emacs.d/var/desktop"))
-      (desktop-save t)
-      (desktop-load-locked-desktop t)
-      (desktop-restore-frameset nil)
-      (desktop-restore-eager  10)
+    
+      :bind
+      (("C-c x" . rgr/quit-or-close-emacs))
+    
+      :init
+      (recentf-mode 1)
+      (add-to-list 'recentf-exclude no-littering-var-directory)
+      (add-to-list 'recentf-exclude no-littering-etc-directory)
+      (add-to-list 'recentf-exclude "~/.pub-cache")
+      (require 'saveplace)
+      (save-place-mode t)
+      (require 'savehist)
+      (add-to-list 'savehist-additional-variables 'kill-ring)
+      (add-to-list 'savehist-additional-variables 'global-mark-ring)
+      (add-to-list 'savehist-ignored-variables 'file-name-history)
+      (savehist-mode 1)
+    
       :config
+    
       (defun rgr/quit-or-close-emacs(&optional kill)
         (interactive)
         (if (or current-prefix-arg kill)
@@ -334,51 +342,10 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         ;;(savehist-save)
         (save-buffers-kill-emacs))
     
-      (use-package saveplace
-        :config
-        (save-place-mode t))
-    
-      (savehist-mode 1)
-      (add-to-list 'savehist-additional-variables 'kill-ring)
-      (add-to-list 'savehist-additional-variables 'global-mark-ring)
-      (add-to-list 'savehist-ignored-variables 'file-name-history)
-    
-      (recentf-mode 1)
-      (add-to-list 'recentf-exclude no-littering-var-directory)
-      (add-to-list 'recentf-exclude no-littering-etc-directory)
-      (add-to-list 'recentf-exclude "~/.pub-cache")
-    
-      (desktop-save-mode -1) ;; TODO - doesnt work with lsp-deferred
-    
-      (use-package psession
-        :disabled
-        :init
-        (psession-mode 1)
-        (psession-autosave-mode 1)
-        (psession-savehist-mode 1))
-    
-      (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
       )
     ```
 
-2.  emacs server
-
-    If not already deamonised
-    
-    ```emacs-lisp
-    ;; start emacs-server if not running
-    ;; problems in emacs 29 - temporarily stopped
-    ;; (unless(daemonp)
-    ;;   (add-hook 'after-init-hook
-    ;;             (lambda ()
-    ;;               (require 'server)
-    ;;               (unless (server-running-p)
-    ;;                 (message "Starting EmacsServer from init as not already running.")
-    ;;                 (server-start))
-    ;;               )))
-    ```
-
-3.  rest of startup
+2.  rest of startup
 
     ```emacs-lisp
     (provide 'rgr/startup)
@@ -1135,7 +1102,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org647b1e6) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    See `org-agenda-files` [org-agenda-files](#org01d9288) maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
     ```conf
     ~/.emacs.d/var/org/orgfiles
@@ -3568,7 +3535,7 @@ An exclusionary .gitignore. You need to specfically add in things you wish to ad
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org53c720d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5934285) documented below.
 
 ```conf
 xdebug.file_link_format = "emacsclient://%f@%l"
@@ -3607,7 +3574,7 @@ fi
 ```
 
 
-<a id="org53c720d"></a>
+<a id="org5934285"></a>
 
 ### Gnome protocol handler desktop file
 
