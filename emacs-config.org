@@ -1908,12 +1908,6 @@ Use emacsclient if it's running. Might consider an alias
 #+begin_src conf
   alias man="eman"
 #+end_src
-#+begin_src bash :tangle ~/bin/eman
-  #!/usr/bin/bash
-  # Maintained in emacs-config.org
-  mp=${1:-"man"}
-  pgrep -x emacs > /dev/null && emacsclient -c -e "(manual-entry \"-a ${mp}\"))" &> /dev/null || man "$@"
-#+end_src
 **** Elfeed
 :PROPERTIES:
 :ID:       381fc830-2854-4eda-9744-efe1b0239f43
