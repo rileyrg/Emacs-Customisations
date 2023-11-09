@@ -2130,8 +2130,24 @@ Be sure to check out [[http://www.howardism.org/Technical/Emacs/eshell.html][Ali
         "Show only last directory."
         (file-name-nondirectory (directory-file-name default-directory)))))
 #+end_src
-*** DONE vterm
-CLOSED: [2021-06-10 Thu 06:15] SCHEDULED: <2021-04-13 Tue>
+
+**** EAT
+[[https://codeberg.org/akib/emacs-eat][Emulate A Terminal]], in a region, in a buffer and in Eshell
+#+begin_src  emacs-lisp
+  (straight-use-package
+   '(eat :type git
+         :host codeberg
+         :repo "akib/emacs-eat"
+         :files ("*.el" ("term" "term/*.el") "*.texi"
+                 "*.ti" ("terminfo/e" "terminfo/e/*")
+                 ("terminfo/65" "terminfo/65/*")
+                 ("integration" "integration/*")
+                 (:exclude ".dir-locals.el" "*-tests.el"))))
+
+#+end_src
+
+*** vterm
+SCHEDULED: <2021-04-13 Tue>
 :LOGBOOK:
 - State "DONE"       from              [2021-06-10 Thu 06:15]
 - State "CANCELLED"  from "WAITING"    [2021-05-08 Sat 16:11]
@@ -2143,6 +2159,7 @@ CLOSED: [2021-06-10 Thu 06:15] SCHEDULED: <2021-04-13 Tue>
 https://github.com/akermu/emacs-libvterm
 #+begin_src emacs-lisp
   (use-package vterm
+    :disabled
     :custom
     (vterm-shell "/usr/bin/zsh")
     (vterm-max-scrollback 100000)
