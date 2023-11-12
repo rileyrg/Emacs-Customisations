@@ -258,6 +258,16 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
 :END:
+**** linux journal utility
+https://github.com/SebastianMeisel/journalctl-mode
+This Emacs major mode is designed for viewing the output from systemd’s journalctl within Emacs. It provides a convenient way to interact with journalctl logs, including features like fontification, chunked loading for performance, and custom keyword highlighting.
+
+#+begin_src  emacs-lisp
+  (use-package journalctl-mode
+  :ensure t)
+
+#+end_src
+
 **** thing at point or region or input
 #+begin_src emacs-lisp
   (defun rgr/region-symbol-query()
@@ -1642,14 +1652,6 @@ This is a translation framework for emacs, and is flexible and powerful.
 
 The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search  to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
 
-****** CANCELLED [#A] look at making get region or symbol function interactive as an exercise :CANCELLED:
-CLOSED: [2021-05-19 Wed 20:30] SCHEDULED: <2021-05-09 Sun>
-:LOGBOOK:
-- State "CANCELLED"  from "TODO"       [2021-05-19 Wed 20:30] \\
-  nope
-- State "TODO"       from              [2021-05-09 Sun 11:27]
-:END:
-
 ***** utility funcs
 :PROPERTIES:
 :ID:       a32c8536-be64-43fe-b740-210f0d891f14
@@ -1905,8 +1907,8 @@ Use emacsclient if it's running. Might consider an alias
 :END:
 #+begin_src emacs-lisp
 #+end_src
-**** CANCELLED pdf-tools                                          :CANCELLED:
-CLOSED: [2021-08-08 Sun 23:15] SCHEDULED: <2021-06-02 Wed>
+**** pdf-tools                                                    :CANCELLED:
+SCHEDULED: <2021-06-02 Wed>
 :PROPERTIES:
 :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
 :END:
@@ -2574,6 +2576,7 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-programming.el" elisp-dir)
 :END:
+
 **** compilation
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-r") 'recompile)
