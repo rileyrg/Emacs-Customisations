@@ -1,3 +1,6 @@
+(use-package journalctl-mode
+:ensure t)
+
 (defun rgr/region-symbol-query()
   "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
   (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
