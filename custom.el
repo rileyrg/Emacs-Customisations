@@ -24,7 +24,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -396,7 +395,7 @@
  '(ring-bell-function 'ignore)
  '(save-interprogram-paste-before-kill t)
  '(savehist-additional-variables
-   '(el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring save-place-alist))
+   '(el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring))
  '(scroll-bar-mode nil)
  '(scroll-conservatively 10000)
  '(scroll-step 1)
