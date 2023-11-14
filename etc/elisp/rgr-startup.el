@@ -4,19 +4,10 @@
   (("C-c x" . rgr/quit-or-close-emacs))
 
   :init
-  (recentf-mode 1)
-  (add-to-list 'recentf-exclude no-littering-var-directory)
-  (add-to-list 'recentf-exclude no-littering-etc-directory)
-  (add-to-list 'recentf-exclude "~/.pub-cache")
-  (require 'saveplace)
-  (save-place-mode t)
-  (require 'savehist)
-  (add-to-list 'savehist-additional-variables 'kill-ring)
-  (add-to-list 'savehist-additional-variables 'global-mark-ring)
-  (add-to-list 'savehist-ignored-variables 'file-name-history)
-  (savehist-mode 1)
 
-  :config
+  (recentf-mode 1)
+  (savehist-mode 1)
+  (save-place-mode 1)
 
   (defun rgr/quit-or-close-emacs(&optional kill)
     (interactive)
