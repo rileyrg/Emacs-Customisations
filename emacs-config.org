@@ -333,19 +333,10 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
     (("C-c x" . rgr/quit-or-close-emacs))
 
     :init
-    (recentf-mode 1)
-    (add-to-list 'recentf-exclude no-littering-var-directory)
-    (add-to-list 'recentf-exclude no-littering-etc-directory)
-    (add-to-list 'recentf-exclude "~/.pub-cache")
-    (require 'saveplace)
-    (save-place-mode t)
-    (require 'savehist)
-    (add-to-list 'savehist-additional-variables 'kill-ring)
-    (add-to-list 'savehist-additional-variables 'global-mark-ring)
-    (add-to-list 'savehist-ignored-variables 'file-name-history)
-    (savehist-mode 1)
 
-    :config
+    (recentf-mode 1)
+    (savehist-mode 1)
+    (save-place-mode 1)
 
     (defun rgr/quit-or-close-emacs(&optional kill)
       (interactive)
@@ -361,7 +352,7 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
       (save-buffers-kill-emacs))
 
     )
-#+end_src
+
 
 **** rest of startup
 
@@ -3758,7 +3749,6 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
 #+begin_src bash :tangle bin/emacs-same-frame
   #!/bin/bash
   if ! pidof "emacs"; then
-     #emacs --daemon
      emacsclient -n -c -a "" "$@"
   else
       emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
