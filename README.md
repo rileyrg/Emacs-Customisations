@@ -274,40 +274,32 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 1.  persistence  and history
 
-        (use-package emacs
-        
-          :bind
-          (("C-c x" . rgr/quit-or-close-emacs))
-        
-          :init
-          (recentf-mode 1)
-          (add-to-list 'recentf-exclude no-littering-var-directory)
-          (add-to-list 'recentf-exclude no-littering-etc-directory)
-          (add-to-list 'recentf-exclude "~/.pub-cache")
-          (require 'saveplace)
-          (save-place-mode t)
-          (require 'savehist)
-          (add-to-list 'savehist-additional-variables 'kill-ring)
-          (add-to-list 'savehist-additional-variables 'global-mark-ring)
-          (add-to-list 'savehist-ignored-variables 'file-name-history)
-          (savehist-mode 1)
-        
-          :config
-        
-          (defun rgr/quit-or-close-emacs(&optional kill)
-            (interactive)
-            (if (or current-prefix-arg kill)
-                (rgr/server-shutdown)
-              (delete-frame)))
-        
-          (defun rgr/server-shutdown ()
-            "Save buffers, Quit, and Shutdown (kill) server"
-            (interactive)
-            (clean-buffer-list)
-            ;;(savehist-save)
-            (save-buffers-kill-emacs))
-        
-          )
+    \#+begin\_src emacs-lisp
+      (use-package emacs
+    
+    :bind
+    (("C-c x" . rgr/quit-or-close-emacs))
+    
+    :init
+    
+    (recentf-mode 1)
+    (savehist-mode 1)
+    (save-place-mode 1)
+    
+    (defun rgr/quit-or-close-emacs(&optional kill)
+      (interactive)
+      (if (or current-prefix-arg kill)
+          (rgr/server-shutdown)
+        (delete-frame)))
+    
+    (defun rgr/server-shutdown ()
+      "Save buffers, Quit, and Shutdown (kill) server"
+      (interactive)
+      (clean-buffer-list)
+      ;;(savehist-save)
+      (save-buffers-kill-emacs))
+    
+    )
 
 2.  rest of startup
 
@@ -988,7 +980,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org69632ae)
+    See `org-agenda-files` [org-agenda-files](#orgdc687ac)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2452,13 +2444,13 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
             
                 (use-package org-project-capture
                   :demand
+                  :custom
+                  (org-projectile-per-project-filepath "TODO.org")
                   :config
                   (use-package org-projectile :demand)
                   (setq org-project-capture-default-backend
                         (make-instance 'org-project-capture-projectile-backend))
-                  (org-projectile-per-project)
-                  (setq org-projectile-per-project-filepath "TODO.org")
-                  ;;(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+                  (org-project-capture-per-project)
                   (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
                   :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
 
@@ -3166,7 +3158,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org57b4f9c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org925577a) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3199,7 +3191,7 @@ to add to version control.
     fi
 
 
-<a id="org57b4f9c"></a>
+<a id="org925577a"></a>
 
 ### Gnome protocol handler desktop file
 
@@ -3239,7 +3231,6 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
 
     #!/bin/bash
     if ! pidof "emacs"; then
-       #emacs --daemon
        emacsclient -n -c -a "" "$@"
     else
         emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t

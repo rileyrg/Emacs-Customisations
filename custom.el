@@ -70,7 +70,7 @@
    "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/vscode/webfreak.debug")
  '(dap-internal-terminal 'dap-internal-terminal-auto)
  '(dap-print-io t)
- '(dap-ui-controls-mode t)
+ '(dap-ui-controls-mode t nil (dap-ui))
  '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0" t)
  '(delete-active-region 'kill)
  '(delete-old-versions t)
@@ -293,6 +293,7 @@
  '(org-log-into-drawer t nil nil "Customized with use-package org")
  '(org-modules
    '(org-crypt ol-docview ol-eww ol-info ol-irc ol-mhe ol-rmail ol-w3m ol-eshell ol-bookmark ol-elisp-symbol ol-man))
+ '(org-project-capture-projects-file "TODO.org")
  '(org-refile-allow-creating-parent-nodes 'confirm nil nil "Customized with use-package org")
  '(org-refile-targets
    '((org-agenda-files :tag . "refile")

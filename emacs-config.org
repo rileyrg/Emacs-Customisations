@@ -2889,13 +2889,13 @@ https://github.com/IvanMalison/org-projectile
 #+begin_src  emacs-lisp
   (use-package org-project-capture
     :demand
+    :custom
+    (org-projectile-per-project-filepath "TODO.org")
     :config
     (use-package org-projectile :demand)
     (setq org-project-capture-default-backend
           (make-instance 'org-project-capture-projectile-backend))
-    (org-projectile-per-project)
-    (setq org-projectile-per-project-filepath "TODO.org")
-    ;;(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+    (org-project-capture-per-project)
     (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
     :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
 #+end_src
