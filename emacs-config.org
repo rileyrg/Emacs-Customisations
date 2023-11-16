@@ -1193,7 +1193,7 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
   (show-paren-mode 1)
   (winner-mode 1)
 
-  (global-auto-revert-mode t)
+  (global-auto-revert-mode 1)
   ;; Also auto refresh dired, but be quiet about it
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
@@ -2996,7 +2996,9 @@ magit
     ;; (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
     ;; (require 'magit-extras)
     :bind
-    ("C-x g" . magit-status))
+    ("C-x g" . magit-status)
+    :config
+    (magit-auto-revert-mode 1))
 #+end_src
 ****** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
 :PROPERTIES:
