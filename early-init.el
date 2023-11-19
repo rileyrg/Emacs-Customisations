@@ -49,7 +49,8 @@
 
 (use-package no-littering
   :init
-  ;; Set eln-cache dir
+  (setq backup-directory-alist
+    `(("." . ,(no-littering-expand-var-file-name "backup/"))))
   (when (boundp 'native-comp-eln-load-path)
     (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
