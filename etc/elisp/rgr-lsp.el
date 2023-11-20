@@ -20,6 +20,7 @@
 
   (use-package flycheck)
   (use-package dap-mode
+    :disabled
     :bind (:map dap-mode-map
                 (("<f8>" . dap-next)
                  ("S-<f8>" . dap-continue)
