@@ -754,18 +754,18 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
   (setq-default abbrev-mode 1)
 #+end_src
 **** company
-#+begin_src  emacs-lisp
+#+begin_src emacs-lisp
   (use-package company
     ;;:disabled
+    :init
+    (global-company-mode)
     :config
     (use-package company-box
       :config
       (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
       :hook (company-mode . company-box-mode))
     :bind( :map company-mode-map
-           ("<tab>" .  company-indent-or-complete-common))
-    :hook
-    (prog-mode . company-mode))
+           ("<tab>" .  company-indent-or-complete-common)))
 #+end_src
 **** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
 #+begin_src  emacs-lisp
@@ -2837,6 +2837,12 @@ CLOSED: [2021-07-21 Wed 11:28]
 #+begin_src emacs-lisp
   (unless (fboundp 'prog-mode)
     (defalias 'prog-mode 'fundamental-mode))
+#+end_src
+**** undo tree
+#+begin_src
+  (use-package undo-tree
+    :init
+    (global-undo-tree-mode))
 #+end_src
 ****  Show Line numbers
 :PROPERTIES:

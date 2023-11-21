@@ -12,15 +12,15 @@
 
 (use-package company
   ;;:disabled
+  :init
+  (global-company-mode)
   :config
   (use-package company-box
     :config
     (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
     :hook (company-mode . company-box-mode))
   :bind( :map company-mode-map
-         ("<tab>" .  company-indent-or-complete-common))
-  :hook
-  (prog-mode . company-mode))
+         ("<tab>" .  company-indent-or-complete-common)))
 
 (use-package orderless
   :init
