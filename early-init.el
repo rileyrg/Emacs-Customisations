@@ -48,6 +48,8 @@
    :body " ... is starting up..."))
 
 (use-package no-littering
+  :custom
+  (make-backup-files nil)
   :init
   (setq backup-directory-alist
     `(("." . ,(no-littering-expand-var-file-name "backup/"))))
