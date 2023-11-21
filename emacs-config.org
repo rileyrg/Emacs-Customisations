@@ -125,6 +125,8 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
      :body " ... is starting up..."))
 
   (use-package no-littering
+    :custom
+    (make-backup-files nil)
     :init
     (setq backup-directory-alist
       `(("." . ,(no-littering-expand-var-file-name "backup/"))))
