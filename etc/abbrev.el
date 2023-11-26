@@ -30,11 +30,6 @@ int main(void)
     ("upg" "(use-package )" nil :count 1)
    ))
 
-(define-abbrev-table 'global-abbrev-table
-  '(
-    (">>i" "cin >> " nil :count 0)
-   ))
-
 (define-abbrev-table 'org-mode-abbrev-table
   '(
     ("bs" "#+begin_src " nil :count 3)
@@ -44,5 +39,19 @@ int main(void)
     ("eml" "emacs-lisp" nil :count 6)
     ("es" "#+end_src" nil :count 3)
     ("mls" "ehll\\nthere\\nend" nil :count 1)
+    ("tem" "#+TITLE: %CHANGEME%
+#+AUTHOR: rileyrg
+#+EMAIL: rileyrg at g m x dot de
+
+#+LANGUAGE: en
+#+STARTUP: showall
+
+#+EXPORT_FILE_NAME: README.md
+#+OPTIONS: toc:8 num:nil
+
+#+category: %CHANGEME%
+#+FILETAGS: :%CHANGEME%:
+
+#+PROPERTY: header-args:bash :tangle-mode (identity #o755)" nil :count 3)
    ))
 

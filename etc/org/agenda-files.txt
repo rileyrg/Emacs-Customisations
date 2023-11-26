@@ -1,12 +1,10 @@
 ~/.emacs.d
-
-~/cloud/homefiles
-
 ~/.emacs.d/var/org/orgfiles
 ~/.emacs.d/var/org/orgfiles/journals
 
+~/cloud/homefiles
+
 ~/development/projects/emacs/el-docstring-sap
 ~/development/projects/emacs/lazy-lang-learn
-
 ~/development/education/lessons/elisp
 ~/development/Udemy/reactNativeCourse/rn-starter
