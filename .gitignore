@@ -34,6 +34,7 @@
 
 !etc/org
 !etc/org/agenda-files.txt
+!etc/org/template.org
 
 !etc/eshell
 !etc/eshell/alias
