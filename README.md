@@ -632,6 +632,24 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
         (setq-default abbrev-mode 1)
+        (defadvice expand-abbrev (after my-expand-abbrev activate)
+          ;; if there was an expansion
+          (if ad-return-value
+              ;; start idle timer to ensure insertion of abbrev activator
+              ;; character (e.g. space) is finished
+              (run-with-idle-timer 0 nil
+                                   (lambda ()
+                                     ;; if there is the string "@@" in the
+                                     ;; expansion then move cursor there and
+                                     ;; delete the string
+                                     (let ((cursor "%CHANGEME%"))
+                                       (when (search-backward  cursor last-abbrev-location t)
+                                         (goto-char  last-abbrev-location)
+                                         (search-forward cursor)
+                                         (backward-word)
+                                         (highlight-symbol-at-point)
+                                         (delete-char (length cursor))
+                                         ))))))
 
 4.  company
 
@@ -983,7 +1001,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org6f6c8e2)
+    See `org-agenda-files` [org-agenda-files](#org73fdfe1)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -3132,6 +3150,7 @@ to add to version control.
     
     !etc/org
     !etc/org/agenda-files.txt
+    !etc/org/template.org
     
     !etc/eshell
     !etc/eshell/alias
@@ -3170,7 +3189,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org163f670) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3aedee9) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3203,7 +3222,7 @@ to add to version control.
     fi
 
 
-<a id="org163f670"></a>
+<a id="org3aedee9"></a>
 
 ### Gnome protocol handler desktop file
 
