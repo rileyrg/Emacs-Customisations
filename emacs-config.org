@@ -1513,14 +1513,6 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 :END:
 
 **** web browsing
-Set up default emacs browsing - I like eww but palming off some URLs to external browser.
-#+begin_src emacs-lisp
-  (custom-set-variables
-   '(eww-search-prefix "https://google.com/search?q=")
-   '(browse-url-browser-function 'eww-browse-url)
-   '(browse-url-generic-program "google-chrome")
-   '(browse-url-secondary-browser-function 'browse-url-default-browser))
-#+end_src
 ***** eww
 #+begin_src emacs-lisp
 
