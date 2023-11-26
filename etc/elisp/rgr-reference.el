@@ -1,9 +1,3 @@
-(custom-set-variables
- '(eww-search-prefix "https://google.com/search?q=")
- '(browse-url-browser-function 'eww-browse-url)
- '(browse-url-generic-program "google-chrome")
- '(browse-url-secondary-browser-function 'browse-url-default-browser))
-
 (use-package eww
   :config
   ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
