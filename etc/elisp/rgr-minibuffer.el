@@ -21,7 +21,11 @@
     (interactive)
     (let ((url (ffap-url-at-point)))
       (if (and url current-prefix-arg)
-          (browse-url-generic url)
+          (progn
+            (notifications-notify
+             :title "Emacs"
+             :body "opening url in generic browser")
+            (browse-url-generic url))
         (call-interactively 'find-file-at-point))))
   :bind
   ( "C-x C-f" . rgr/ffap))
