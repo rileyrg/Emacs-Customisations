@@ -84,7 +84,7 @@
 (use-package org-project-capture
   :demand
   :custom
-  (org-projectile-per-project-filepath "TODO.org")
+  (org-project-capture-per-project-filepath "TODO.org")
   :config
   (use-package org-projectile :demand)
   (setq org-project-capture-default-backend

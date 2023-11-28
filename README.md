@@ -1001,7 +1001,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org0ca3143)
+    See `org-agenda-files` [org-agenda-files](#orge66b31f)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2434,7 +2434,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                 (use-package org-project-capture
                   :demand
                   :custom
-                  (org-projectile-per-project-filepath "TODO.org")
+                  (org-project-capture-per-project-filepath "TODO.org")
                   :config
                   (use-package org-projectile :demand)
                   (setq org-project-capture-default-backend
@@ -3149,7 +3149,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8b764a5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2781dc2) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3182,7 +3182,7 @@ to add to version control.
     fi
 
 
-<a id="org8b764a5"></a>
+<a id="org2781dc2"></a>
 
 ### Gnome protocol handler desktop file
 
