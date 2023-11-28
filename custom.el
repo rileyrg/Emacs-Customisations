@@ -25,6 +25,7 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -245,7 +246,9 @@
       ((agenda "" nil)
        (alltodo "" nil))
       nil)))
+ '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-scheduled-if-deadline-is-shown t nil nil "Customized with use-package org")
+ '(org-agenda-skip-scheduled-if-done t)
  '(org-agenda-start-on-weekday 0 nil nil "Customized with use-package org")
  '(org-babel-load-languages
    '((emacs-lisp . t)
@@ -298,7 +301,7 @@
  '(org-refile-targets
    '((org-agenda-files :tag . "refile")
      (org-agenda-files :maxlevel . 16)) nil nil "Customized with use-package org")
- '(org-return-follows-link nil)
+ '(org-return-follows-link t)
  '(org-reverse-note-order t nil nil "Customized with use-package org")
  '(org-src-window-setup 'current-window)
  '(org-structure-template-alist
@@ -316,6 +319,7 @@
      ("q" . "quote")
      ("s" . "src")
      ("v" . "verse")))
+ '(org-tab-follows-link t)
  '(org-tag-alist
    '((:startgroup)
      (#("@caravan" 0 8

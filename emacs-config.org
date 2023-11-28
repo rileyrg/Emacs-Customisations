@@ -1912,12 +1912,13 @@ Use emacsclient if it's running. Might consider an alias
 :END:
 #+begin_src emacs-lisp
 #+end_src
-**** pdf-tools                                                    :CANCELLED:
-SCHEDULED: <2021-06-02 Wed>
+**** CANCELLED pdf-tools                                          :CANCELLED:
+CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-06-02 Wed>
 :PROPERTIES:
 :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
 :END:
 :LOGBOOK:
+- State "CANCELLED"  from              [2023-11-27 Mon 04:59]
 - State "CANCELLED"  from              [2021-08-08 Sun 23:15]
 - State "CANCELLED"  from "TODO"       [2021-06-10 Thu 06:15]
 - Note taken on [2021-05-31 Mon 06:06] \\
@@ -2116,9 +2117,10 @@ Be sure to check out [[http://www.howardism.org/Technical/Emacs/eshell.html][Ali
 
 #+end_src
 
-*** vterm
-SCHEDULED: <2021-04-13 Tue>
+*** CANCELLED vterm                                               :CANCELLED:
+CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-04-13 Tue>
 :LOGBOOK:
+- State "CANCELLED"  from              [2023-11-27 Mon 04:59]
 - State "DONE"       from              [2021-06-10 Thu 06:15]
 - State "CANCELLED"  from "WAITING"    [2021-05-08 Sat 16:11]
 - State "WAITING"    from "DONE"       [2021-04-18 So 23:04]
@@ -2900,9 +2902,10 @@ I prefer projectile
     (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
     (bind-key* "C-x p b" 'consult-project-buffer))
 #+end_src
-****** TODO org-projectile
+****** org-projectile
 SCHEDULED: <2023-08-03 Thu>
 :LOGBOOK:
+- State "CANCELLED"  from "TODO"       [2023-11-27 Mon 05:00]
 - State "TODO"       from              [2023-08-02 Wed 09:46]
 :END:
 https://github.com/IvanMalison/org-projectile
@@ -3338,9 +3341,10 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (add-hook 'compilation-finish-functions
               'rgr/platformio-compilation-mode-filter))
 #+end_src
-***** TODO [#A] get compilation errors to work and submit ansi color fix?
-SCHEDULED: <2021-09-26 Sun>
+***** CANCELLED [#A] get compilation errors to work and submit ansi color fix? :CANCELLED:
+CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 :LOGBOOK:
+- State "CANCELLED"  from "TODO"       [2023-11-27 Mon 04:59]
 - State "TODO"       from              [2021-09-26 Sun 21:13]
 :END:
 **** Python                                                          :python:
