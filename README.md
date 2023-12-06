@@ -992,7 +992,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org03041bb)
+    See `org-agenda-files` [org-agenda-files](#orgf15c71b)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2193,7 +2193,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
 2.  indent bars
 
         (use-package indent-bars
-          ;;:disabled
+          :disabled
           :ensure t
           :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
           :hook
@@ -3140,7 +3140,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgce6ca44) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2a4da16) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3173,7 +3173,7 @@ to add to version control.
     fi
 
 
-<a id="orgce6ca44"></a>
+<a id="org2a4da16"></a>
 
 ### Gnome protocol handler desktop file
 

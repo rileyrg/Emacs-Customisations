@@ -1,7 +1,7 @@
 (global-set-key (kbd "C-c C-r") 'recompile)
 
 (use-package indent-bars
-  ;;:disabled
+  :disabled
   :ensure t
   :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
   :hook
