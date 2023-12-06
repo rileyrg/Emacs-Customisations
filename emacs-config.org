@@ -2579,7 +2579,7 @@ Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
 **** indent bars
 #+begin_src  emacs-lisp
   (use-package indent-bars
-    ;;:disabled
+    :disabled
     :ensure t
     :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
     :hook
