@@ -221,15 +221,4 @@
     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
   :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
 
-(use-package affe
-  :disabled
-  :after orderless
-  :config
-  ;; Configure Orderless
-  (setq affe-regexp-function #'orderless-pattern-compiler
-        affe-highlight-function #'orderless--highlight)
-
-  ;; Manual preview key for `affe-grep'
-  (consult-customize affe-grep :preview-key (kbd "M-.")))
-
 (provide 'rgr/minibuffer)

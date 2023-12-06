@@ -695,22 +695,6 @@ Remember to run *all-the-icons-install-fonts*.
     :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
 
 #+end_src
-**** [[https://github.com/minad/affe][affe]] Asynchronous Fuzzy Finder for Emacs
-:PROPERTIES:
-:ID:       c29a8a56-5c74-4625-9b06-3963e234bb0f
-:END:
-#+begin_src emacs-lisp
-  (use-package affe
-    :disabled
-    :after orderless
-    :config
-    ;; Configure Orderless
-    (setq affe-regexp-function #'orderless-pattern-compiler
-          affe-highlight-function #'orderless--highlight)
-
-    ;; Manual preview key for `affe-grep'
-    (consult-customize affe-grep :preview-key (kbd "M-.")))
-#+end_src
 **** provide
 :PROPERTIES:
 :END:
