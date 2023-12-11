@@ -2102,6 +2102,7 @@ Be sure to check out [[http://www.howardism.org/Technical/Emacs/eshell.html][Ali
                  ("terminfo/65" "terminfo/65/*")
                  ("integration" "integration/*")
                  (:exclude ".dir-locals.el" "*-tests.el"))))
+    (global-set-key (kbd "M-g v") 'eat)
 
 #+end_src
 
@@ -2871,7 +2872,6 @@ CLOSED: [2021-07-21 Wed 11:28]
 :END:
 #+begin_src emacs-lisp
   (use-package rainbow-identifiers
-    :disabled
     :config
     (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 #+end_src
@@ -2888,7 +2888,8 @@ I prefer projectile
     :init
     (projectile-mode +1)
     (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-    (bind-key* "C-x p b" 'consult-project-buffer))
+    (define-key projectile-command-map (kbd "x t") #'eat)
+    )
 #+end_src
 ****** org-projectile
 SCHEDULED: <2023-08-03 Thu>
