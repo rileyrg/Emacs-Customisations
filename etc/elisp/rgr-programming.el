@@ -68,7 +68,6 @@
   (apheleia-global-mode +1))
 
 (use-package rainbow-identifiers
-  :disabled
   :config
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
@@ -79,7 +78,8 @@
   :init
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-  (bind-key* "C-x p b" 'consult-project-buffer))
+  (define-key projectile-command-map (kbd "x t") #'eat)
+  )
 
 (use-package org-project-capture
   :demand

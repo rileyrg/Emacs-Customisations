@@ -168,6 +168,7 @@ creates a report in function-name.ftrace and opens it in a buffer"
                ("terminfo/65" "terminfo/65/*")
                ("integration" "integration/*")
                (:exclude ".dir-locals.el" "*-tests.el"))))
+  (global-set-key (kbd "M-g v") 'eat)
 
 (use-package vterm
   :disabled

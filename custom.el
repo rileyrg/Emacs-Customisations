@@ -233,7 +233,6 @@
  '(large-file-warning-threshold nil)
  '(lsp-tcp-connection-timeout 5)
  '(lsp-ui-doc-delay 1)
- '(lsp-ui-doc-enable nil)
  '(lsp-ui-doc-show-with-cursor t)
  '(max-lisp-eval-depth 32000)
  '(mu4e-compose-signature '(concat "" "https://github.com/rileyrg?tab=repositories"))
