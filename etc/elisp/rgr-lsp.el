@@ -10,6 +10,8 @@
     :init
     (defun rgr/lsp-ui-mode-hook()
       )
+    :custom
+    (lsp-ui-doc-mode 1)
     :hook
     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
   (use-package lsp-treemacs
@@ -29,8 +31,8 @@
                  ("M-<f8>" . dap-debug)
                  ("C-<f8>" . dap-disconnect)
                  ))
-        :config
-        (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
+    :config
+    (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
