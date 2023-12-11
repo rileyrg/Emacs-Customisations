@@ -992,7 +992,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgf15c71b)
+    See `org-agenda-files` [org-agenda-files](#orgd881c2f)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2704,6 +2704,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                     :init
                     (defun rgr/lsp-ui-mode-hook()
                       )
+                    :custom
+                    (lsp-ui-doc-mode 1)
                     :hook
                     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
                   (use-package lsp-treemacs
@@ -2723,8 +2725,8 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
                                  ("M-<f8>" . dap-debug)
                                  ("C-<f8>" . dap-disconnect)
                                  ))
-                        :config
-                        (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
+                    :config
+                    (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
                   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
                          (lsp-mode . lsp-enable-which-key-integration))
                   :commands (lsp lsp-deferred))
@@ -3140,7 +3142,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2a4da16) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org666ec9a) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3173,7 +3175,7 @@ to add to version control.
     fi
 
 
-<a id="org2a4da16"></a>
+<a id="org666ec9a"></a>
 
 ### Gnome protocol handler desktop file
 
