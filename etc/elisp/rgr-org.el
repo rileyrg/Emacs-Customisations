@@ -4,6 +4,7 @@
   (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
   (org-fontify-done-headline t)
   (org-fontify-todo-headline t)
+  (org-clock-idle-time 10)
   (org-babel-default-header-args:python
    '((:results  . "output")))
   (org-refile-use-outline-path 'file)
@@ -22,6 +23,7 @@
   ("C-c C-l" . org-insert-link)
   ("C-c C-s" . org-schedule)
   ("C-c C-t" . org-todo)
+  ("C-c C-x C-j" . org-clock-goto)
   (:map org-mode-map  ("M-." . find-function-at-point)
         ))
 
