@@ -25,8 +25,8 @@
   ("C-c C-s" . org-schedule)
   ("C-c C-t" . org-todo)
   ("C-c C-x C-j" . org-clock-goto)
-  (:map org-mode-map  ("M-." . find-function-at-point)
-        ))
+  (:map org-mode-map
+        ("M-." . find-function-at-point)))
 
 (use-package org-contrib)
 

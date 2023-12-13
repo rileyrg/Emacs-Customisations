@@ -424,6 +424,8 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ("M-s u" . consult-focus-lines)
                  ;; Isearch integration
                  ("M-s e" . consult-isearch-history)
+                 :map org-mode-map
+                  ("M-s o" . consult-org-heading)
                  :map isearch-mode-map
                  ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
                  ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
@@ -872,7 +874,6 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 1.  Org Mode, org-mode
 
-        
         (use-package org
           :demand t
           ;;:straight (:type built-in)
@@ -900,8 +901,8 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
           ("C-c C-s" . org-schedule)
           ("C-c C-t" . org-todo)
           ("C-c C-x C-j" . org-clock-goto)
-          (:map org-mode-map  ("M-." . find-function-at-point)
-                ))
+          (:map org-mode-map
+                ("M-." . find-function-at-point)))
     
     1.  org-contrib
     
@@ -995,7 +996,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org742163a)
+    See `org-agenda-files` [org-agenda-files](#orgdab837c)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -3146,7 +3147,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org48387bc) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf023cc0) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3179,7 +3180,7 @@ to add to version control.
     fi
 
 
-<a id="org48387bc"></a>
+<a id="orgf023cc0"></a>
 
 ### Gnome protocol handler desktop file
 
