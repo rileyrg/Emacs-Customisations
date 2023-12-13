@@ -3,7 +3,6 @@
   :after org
   :custom
   (google-this-keybind "g")
-  (google-this-browse-url-function 'browse-url-generic)
   :config
   (google-this-mode 1))
 
