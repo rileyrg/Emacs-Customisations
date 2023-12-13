@@ -1550,7 +1550,6 @@ Raw:[[file+sys:etc/elisp/rgr-google.el][rgr/google]]
     :after org
     :custom
     (google-this-keybind "g")
-    (google-this-browse-url-function 'browse-url-generic)
     :config
     (google-this-mode 1))
 #+end_src
