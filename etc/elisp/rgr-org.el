@@ -1,5 +1,6 @@
 (use-package org
   :demand t
+  ;;:straight (:type built-in)
   :custom
   (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
   (org-fontify-done-headline t)
