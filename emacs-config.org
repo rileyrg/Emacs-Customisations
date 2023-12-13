@@ -526,6 +526,8 @@ Consult]] Provides various commands based on the Emacs completion function compl
            ("M-s u" . consult-focus-lines)
            ;; Isearch integration
            ("M-s e" . consult-isearch-history)
+           :map org-mode-map
+            ("M-s o" . consult-org-heading)
            :map isearch-mode-map
            ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
            ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
@@ -1019,7 +1021,6 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 :ID:       80d295c4-fe60-4bef-99e2-2f15bcb1e36a
 :END:
 #+begin_src emacs-lisp
-
   (use-package org
     :demand t
     ;;:straight (:type built-in)
@@ -1047,8 +1048,8 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
     ("C-c C-s" . org-schedule)
     ("C-c C-t" . org-todo)
     ("C-c C-x C-j" . org-clock-goto)
-    (:map org-mode-map  ("M-." . find-function-at-point)
-          ))
+    (:map org-mode-map
+          ("M-." . find-function-at-point)))
 #+end_src
 ***** org-contrib
 #+begin_src  emacs-lisp
