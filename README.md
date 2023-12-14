@@ -996,7 +996,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga52ef4c)
+    See `org-agenda-files` [org-agenda-files](#org83f9118)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1215,6 +1215,18 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
                  scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
                  scroll-margin_t))
+
+2.  multiple-cursors
+
+    <https://github.com/magnars/multiple-cursors.emacs-lisp>
+    
+        (use-package multiple-cursors
+        :bind (("C-M-SPC" . set-rectangular-region-anchor)
+               ("C->" . mc/mark-next-like-this)
+               ("C-<" . mc/mark-previous-like-this)
+               ("C-c C->" . mc/mark-all-like-this)
+               ("C-c C-SPC" . mc/edit-lines)
+               ))
 
 
 ### Folding/Hide Show
@@ -1742,6 +1754,16 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
       ("M-9"   . 'treemacs-select-window)
       (:map treemacs-mode-map
             ("<right>" . treemacs-peek)))
+
+
+## Golden Ratio
+
+Zoom into current buffer
+
+    (use-package
+      golden-ratio
+      :init
+      (golden-ratio-mode 1))
 
 
 ## Online Chats
@@ -2591,37 +2613,37 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               ;; (breadcrumb-mode t)
               )
 
-26. c-mode-common-hook
-
-        (use-package emacs
-          :config
-          (defun rgr/c-mode-common-save-hook()
-                                                ;(eglot-format-buffer)
-            )
-          (defun rgr/c-mode-common-hook ()
-            (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
-            ;;(eglot-ensure)
-            (lsp-deferred)
-            ;;(if (fboundp 'indent-bars-mode)
-              ;;  (indent-bars-mode))
-            (if(featurep 'platformio-mode)
-                (platformio-conditionally-enable))
-            (if (featurep 'yasnippet)
-                (yas-minor-mode)))
-          :hook
-          (c-mode-common . rgr/c-mode-common-hook)
-          :bind  ( :map c-mode-base-map
-                   (("M-<return>" . rgr/c-complete-line)
-                    ("TAB" . rgr/c-indent-complete)
-                    )))
-
-27. C, c-mode
+26. C, c-mode
 
         (defun rgr/c-mode-hook ()
-          (setq-local dash-docs-docsets '("C")))
+          )
         (add-hook 'c-mode-hook 'rgr/c-mode-hook)
     
-    1.  line utilities
+    1.  c-mode-common-hook
+    
+            (use-package emacs
+              :config
+              (defun rgr/c-mode-common-save-hook()
+                                                    ;(eglot-format-buffer)
+                )
+              (defun rgr/c-mode-common-hook ()
+                (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
+                ;;(eglot-ensure)
+                (lsp-deferred)
+                ;;(if (fboundp 'indent-bars-mode)
+                  ;;  (indent-bars-mode))
+                (if(featurep 'platformio-mode)
+                    (platformio-conditionally-enable))
+                (if (featurep 'yasnippet)
+                    (yas-minor-mode)))
+              :hook
+              (c-mode-common . rgr/c-mode-common-hook)
+              :bind  ( :map c-mode-base-map
+                       (("M-<return>" . rgr/c-complete-line)
+                        ("TAB" . rgr/c-indent-complete)
+                        )))
+    
+    2.  line utilities
     
             (defun rgr/c-complete-line()
               (interactive)
@@ -2642,7 +2664,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (end-of-line)
               (newline-and-indent))
     
-    2.  formatting
+    3.  formatting
     
             
             (defun rgr/c-indent-complete()
@@ -2652,124 +2674,124 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (when (= p (point))
                   (call-interactively 'complete-symbol))))
 
-28. cc,cpp, C++, cc-mode
+27. cc,cpp, C++, cc-mode
 
         (defun rgr/c++-mode-hook ()
-          (setq-local dash-docs-docsets '("C++")))
-        (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
-
-29. Linux tools
-
-    1.  [logview](https://github.com/doublep/logview) - view system logfiles
-    
-            (use-package logview
-              :demand t
-              :init
-              (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
-              (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
-
-30. Assembler
-
-    1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
-    
-            (use-package strace-mode)
-
-31. Godot GDScript
-
-    This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
-    
-        (use-package gdscript-mode
-          :straight (gdscript-mode
-                     :type git
-                     :host github
-                     :repo "rileyrg/emacs-gdscript-mode")
-          :init
-          (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
-            "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
-            (if (string-equal major-mode "gdscript-mode")
-                (let ((json-data (nth 0 args)))
-                  (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
-                           (not (gethash "id" json-data nil))
-                           (not (gethash "method" json-data nil)))
-                      nil ; (message "Method not found")
-                    (apply original-function args)))
-              (apply original-function args)))
-          (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
           )
-
-32. Web,Symfony and Twig
-
-    1.  Symfony
+        (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
     
-        1.  custom
+    1.  Linux tools
+    
+        1.  [logview](https://github.com/doublep/logview) - view system logfiles
         
-                (defgroup rgr/symfony nil
-                  "Symfony Development"
-                  :group 'rgr)
-                
-                (defcustom symfony-server-command "~/.symfony/bin/symfony server:start"
-                  "Start the symfony web server"
-                  :type 'string
-                  :group 'rgr/symfony)
-        
-        2.  Start a symfony web server when applicable
-        
-                (use-package php-mode
-                  :disabled t
-                  :custom
-                  (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
-                  :config
-                  (add-to-list 'display-buffer-alist
-                               (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
-                  (defun start-symfony-web-server()
-                    (interactive)
-                    (let ((default-directory (project-root (project-current t))))
-                      (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
-                          (async-shell-command symfony-server-command "*Symfony Web Server*"))))
-                  (defun php-mode-webserver-hook ()
-                    (interactive)
-                    (start-symfony-web-server)
-                    ))
-            
-            We can trigger it using a .dir-locals.el
-            
-                ((php-mode
-                  (eval php-mode-webserver-hook)))
-        
-        3.  webmode
-        
-                (use-package
-                  web-mode
+                (use-package logview
                   :demand t
-                  :config
-                  (defun rgr/web-mode-hook()
-                    (setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
-                    )
-                  (add-hook 'web-mode-hook 'rgr/web-mode-hook)
-                  ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-                  ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.twig\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
-
-33. elf-mode - view the symbol list in a binary
-
-    [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
+                  :init
+                  (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
+                  (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
     
-        (use-package elf-mode
-          :demand t
-          :config
-          (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
-          (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
-
-34. provide
-
-        (provide 'rgr/programming)
+    2.  Assembler
+    
+        1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
+        
+                (use-package strace-mode)
+    
+    3.  Godot GDScript
+    
+        This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
+        
+            (use-package gdscript-mode
+              :straight (gdscript-mode
+                         :type git
+                         :host github
+                         :repo "rileyrg/emacs-gdscript-mode")
+              :init
+              (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
+                "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
+                (if (string-equal major-mode "gdscript-mode")
+                    (let ((json-data (nth 0 args)))
+                      (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
+                               (not (gethash "id" json-data nil))
+                               (not (gethash "method" json-data nil)))
+                          nil ; (message "Method not found")
+                        (apply original-function args)))
+                  (apply original-function args)))
+              (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
+              )
+    
+    4.  Web,Symfony and Twig
+    
+        1.  Symfony
+        
+            1.  custom
+            
+                    (defgroup rgr/symfony nil
+                      "Symfony Development"
+                      :group 'rgr)
+                    
+                    (defcustom symfony-server-command "~/.symfony/bin/symfony server:start"
+                      "Start the symfony web server"
+                      :type 'string
+                      :group 'rgr/symfony)
+            
+            2.  Start a symfony web server when applicable
+            
+                    (use-package php-mode
+                      :disabled t
+                      :custom
+                      (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
+                      :config
+                      (add-to-list 'display-buffer-alist
+                                   (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
+                      (defun start-symfony-web-server()
+                        (interactive)
+                        (let ((default-directory (project-root (project-current t))))
+                          (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
+                              (async-shell-command symfony-server-command "*Symfony Web Server*"))))
+                      (defun php-mode-webserver-hook ()
+                        (interactive)
+                        (start-symfony-web-server)
+                        ))
+                
+                We can trigger it using a .dir-locals.el
+                
+                    ((php-mode
+                      (eval php-mode-webserver-hook)))
+            
+            3.  webmode
+            
+                    (use-package
+                      web-mode
+                      :demand t
+                      :config
+                      (defun rgr/web-mode-hook()
+                        (setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
+                        )
+                      (add-hook 'web-mode-hook 'rgr/web-mode-hook)
+                      ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+                      ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+                      (add-to-list 'auto-mode-alist '("\\.twig\\'" . web-mode))
+                      (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+                      (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+                      (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+                      (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+                      (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+                      (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+                      (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
+    
+    5.  elf-mode - view the symbol list in a binary
+    
+        [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
+        
+            (use-package elf-mode
+              :demand t
+              :config
+              (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
+              (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
+    
+    6.  provide
+    
+            (provide 'rgr/programming)
 
 
 ## Themes
@@ -2893,7 +2915,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org91ac164) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4d16b25) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2926,7 +2948,7 @@ to add to version control.
     fi
 
 
-<a id="org91ac164"></a>
+<a id="org4d16b25"></a>
 
 ### Gnome protocol handler desktop file
 

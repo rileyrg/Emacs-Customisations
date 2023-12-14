@@ -71,6 +71,14 @@
          scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
          scroll-margin_t))
 
+(use-package multiple-cursors
+:bind (("C-M-SPC" . set-rectangular-region-anchor)
+       ("C->" . mc/mark-next-like-this)
+       ("C-<" . mc/mark-previous-like-this)
+       ("C-c C->" . mc/mark-all-like-this)
+       ("C-c C-SPC" . mc/edit-lines)
+       ))
+
 (use-package hideshow
   :config
   (defun toggle-selective-display (column)
@@ -221,6 +229,11 @@
   ("M-9"   . 'treemacs-select-window)
   (:map treemacs-mode-map
         ("<right>" . treemacs-peek)))
+
+(use-package
+  golden-ratio
+  :init
+  (golden-ratio-mode 1))
 
 (defun rgr/erc-switch-to-channel(&optional channel)
   (when (string= (or channel "#emacs") (buffer-name (current-buffer)))

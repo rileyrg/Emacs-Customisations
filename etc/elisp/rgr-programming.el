@@ -334,6 +334,10 @@
   ;; (breadcrumb-mode t)
   )
 
+(defun rgr/c-mode-hook ()
+  )
+(add-hook 'c-mode-hook 'rgr/c-mode-hook)
+
 (use-package emacs
   :config
   (defun rgr/c-mode-common-save-hook()
@@ -355,10 +359,6 @@
            (("M-<return>" . rgr/c-complete-line)
             ("TAB" . rgr/c-indent-complete)
             )))
-
-(defun rgr/c-mode-hook ()
-  (setq-local dash-docs-docsets '("C")))
-(add-hook 'c-mode-hook 'rgr/c-mode-hook)
 
 (defun rgr/c-complete-line()
   (interactive)
@@ -387,7 +387,7 @@
       (call-interactively 'complete-symbol))))
 
 (defun rgr/c++-mode-hook ()
-  (setq-local dash-docs-docsets '("C++")))
+  )
 (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
 
 (use-package logview
