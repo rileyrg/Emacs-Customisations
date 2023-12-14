@@ -995,7 +995,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org9c95ddd)
+    See `org-agenda-files` [org-agenda-files](#org78bfbda)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1508,62 +1508,59 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               :config
               (defun rgr/devdocs(&optional i)
                 (interactive)
-                (if current-prefix-arg
-                    (call-interactively 'devdocs-browser-open-in)
-                  (devdocs-browser-open)))
+                (unless (and (string-equal major-mode "emacs-lisp-mode") (rgr/elisp-lookup-reference-dwim))
+                  (if current-prefix-arg
+                      (call-interactively 'devdocs-browser-open-in)
+                    (devdocs-browser-open))))
               :bind
-                ("C-q" . rgr/devdocs))
+              ("C-q" . rgr/devdocs))
     
-    6.  Dash
+    6.  Man Pages
     
-            (use-package dash-docs)
+        Use emacsclient if it's running. Might consider an alias
+        
+            alias man="eman"
+    
+    7.  Elfeed
+    
+        [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
+        
+            (use-package elfeed
+              :config
+              (use-package elfeed-org
+                :ensure t
+                :custom
+                (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
+                :config
+                (elfeed-org))
+              (run-at-time nil (* 8 60 60) #'elfeed-update)
+              :bind
+              ( "C-c w" . elfeed)
+              (:map elfeed-show-mode-map
+                    ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
+              (:map elfeed-search-mode-map
+                    ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
+        
+        1.  elfeed-org
+    
+    8.  pdf-tools
+    
+        [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
+        
+            (use-package pdf-tools
+              :after (org-plus-contrib)
+              :config
+              (pdf-tools-install)
+              (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
+                                                       ))
+              (use-package org-pdftools
+                :hook (org-mode . org-pdftools-setup-link)))
+        
+        1.  requirements
+        
+                sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-4.  Man Pages
-
-    Use emacsclient if it's running. Might consider an alias
-    
-        alias man="eman"
-
-5.  Elfeed
-
-    [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
-    
-        (use-package elfeed
-          :config
-          (use-package elfeed-org
-            :ensure t
-            :custom
-            (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
-            :config
-            (elfeed-org))
-          (run-at-time nil (* 8 60 60) #'elfeed-update)
-          :bind
-          ( "C-c w" . elfeed)
-          (:map elfeed-show-mode-map
-                ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
-          (:map elfeed-search-mode-map
-                ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
-    
-    1.  elfeed-org
-
-6.  pdf-tools
-
-    [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
-    
-        (use-package pdf-tools
-          :after (org-plus-contrib)
-          :config
-          (pdf-tools-install)
-          (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
-                                                   ))
-          (use-package org-pdftools
-            :hook (org-mode . org-pdftools-setup-link)))
-    
-    1.  requirements
-    
-            sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
-
-7.  impatient-showdow, markdown view live
+4.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown.
     <https://github.com/jcs-elpa/impatient-showdown>
@@ -1571,7 +1568,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (use-package impatient-showdown
           :hook (markdown-mode . impatient-showdown-mode))
 
-8.  provide
+5.  provide
 
         (provide 'rgr/reference)
 
@@ -1935,17 +1932,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
 
 
-## Screen recording
-
-
-### Emacs screencasts
-
-Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
-
-    (use-package keycast
-      )
-
-
 ## Programming Language related
 
     (require 'rgr/programming "rgr-programming" 'NOERROR)
@@ -2280,11 +2266,9 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (vc-handled-backends '(git))
               :config
               (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-              (require 'magit-extras)
+              (magit-auto-revert-mode 1)
               :bind
-              ("C-x g" . magit)
-              :config
-              (magit-auto-revert-mode 1))
+              ("C-x g" . magit-status))
         
         1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents
         
@@ -2910,7 +2894,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge09cea7) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgee4d933) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2943,7 +2927,7 @@ to add to version control.
     fi
 
 
-<a id="orge09cea7"></a>
+<a id="orgee4d933"></a>
 
 ### Gnome protocol handler desktop file
 

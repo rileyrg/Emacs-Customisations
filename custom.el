@@ -113,7 +113,7 @@
    '((c++-mode "cpp")
      (c-mode "c")
      (go-mode "go")
-     (js-ts-mode "react")
+     (js-ts-mode "react-native")
      (python-mode "Python")
      (emacs-lisp-mode "elisp")
      (rust-mode "rust")

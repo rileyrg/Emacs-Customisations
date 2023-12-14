@@ -83,13 +83,12 @@
   :config
   (defun rgr/devdocs(&optional i)
     (interactive)
-    (if current-prefix-arg
-        (call-interactively 'devdocs-browser-open-in)
-      (devdocs-browser-open)))
+    (unless (and (string-equal major-mode "emacs-lisp-mode") (rgr/elisp-lookup-reference-dwim))
+      (if current-prefix-arg
+          (call-interactively 'devdocs-browser-open-in)
+        (devdocs-browser-open))))
   :bind
-    ("C-q" . rgr/devdocs))
-
-(use-package dash-docs)
+  ("C-q" . rgr/devdocs))
 
 (use-package elfeed
   :config

@@ -146,11 +146,9 @@
   (vc-handled-backends '(git))
   :config
   (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-  (require 'magit-extras)
+  (magit-auto-revert-mode 1)
   :bind
-  ("C-x g" . magit)
-  :config
-  (magit-auto-revert-mode 1))
+  ("C-x g" . magit-status))
 
 (use-package orgit
   :after magit)

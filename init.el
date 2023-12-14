@@ -395,9 +395,6 @@
 ;;:map mu4e-view-mode-map
 ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
 
-(use-package keycast
-  )
-
 (require 'rgr/programming "rgr-programming" 'NOERROR)
 
 (use-package modus-themes
