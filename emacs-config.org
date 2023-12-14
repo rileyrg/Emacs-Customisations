@@ -1420,7 +1420,17 @@ https://github.com/iqbalansari/emacs-emojify
     (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
            scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
            scroll-margin_t))
-
+#+end_src
+**** multiple-cursors
+https://github.com/magnars/multiple-cursors.emacs-lisp
+#+begin_src  emacs-lisp
+  (use-package multiple-cursors
+  :bind (("C-M-SPC" . set-rectangular-region-anchor)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C->" . mc/mark-all-like-this)
+         ("C-c C-SPC" . mc/edit-lines)
+         ))
 #+end_src
 *** Folding/Hide Show
 :PROPERTIES:
@@ -2042,7 +2052,14 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
           ("<right>" . treemacs-peek)))
 
 #+end_src
-
+** Golden Ratio
+Zoom into current buffer
+#+begin_src emacs-lisp
+  (use-package
+    golden-ratio
+    :init
+    (golden-ratio-mode 1))
+#+end_src
 ** Online Chats
 :PROPERTIES:
 :ID:       04bb339b-884b-4571-a740-81d210097aa8
@@ -3050,7 +3067,16 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     ;; (breadcrumb-mode t)
     )
 #+end_src
-**** c-mode-common-hook
+**** C, c-mode                                                            :c:
+  :PROPERTIES:
+  :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
+  :END:
+#+begin_src emacs-lisp
+  (defun rgr/c-mode-hook ()
+    )
+  (add-hook 'c-mode-hook 'rgr/c-mode-hook)
+#+end_src
+***** c-mode-common-hook
 #+begin_src emacs-lisp
   (use-package emacs
     :config
@@ -3073,15 +3099,6 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
              (("M-<return>" . rgr/c-complete-line)
               ("TAB" . rgr/c-indent-complete)
               )))
-#+end_src
-**** C, c-mode                                                            :c:
-  :PROPERTIES:
-  :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
-  :END:
-#+begin_src emacs-lisp
-  (defun rgr/c-mode-hook ()
-    (setq-local dash-docs-docsets '("C")))
-  (add-hook 'c-mode-hook 'rgr/c-mode-hook)
 #+end_src
 ***** line utilities
 :PROPERTIES:
@@ -3127,13 +3144,13 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 :END:
 #+begin_src emacs-lisp
   (defun rgr/c++-mode-hook ()
-    (setq-local dash-docs-docsets '("C++")))
+    )
   (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
 #+end_src
-**** Linux tools
+***** Linux tools
 :PROPERTIES:
 :END:
-***** [[https://github.com/doublep/logview][logview]] - view system logfiles
+****** [[https://github.com/doublep/logview][logview]] - view system logfiles
 :PROPERTIES:
 :ID:       bfd57f96-8cc4-41a1-81ab-e683345664e1
 :END:
@@ -3144,18 +3161,18 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
     (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 #+end_src
-**** Assembler
+***** Assembler
 :PROPERTIES:
 :ID:       2bc81dc1-4f5f-47b9-9446-464af96a2365
 :END:
-***** [[https://nullprogram.com/blog/2015/11/21/][x86Lookup]]
+****** [[https://nullprogram.com/blog/2015/11/21/][x86Lookup]]
 :PROPERTIES:
 :ID:       feb458b6-b2ab-4553-b2d9-95c121b29e7e
 :END:
 #+begin_src emacs-lisp
   (use-package strace-mode)
 #+end_src
-**** Godot GDScript                                                   :godot:
+***** Godot GDScript                                                  :godot:
 :PROPERTIES:
 :ID:       19daf0bd-1652-4638-9d72-50f0b8af1586
 :END:
@@ -3181,15 +3198,15 @@ This [[https://github.com/GDQuest/emacs-gdscript-mode][package]] adds support fo
     )
 #+end_src
 
-**** Web,Symfony and Twig
+***** Web,Symfony and Twig
 :PROPERTIES:
 :ID:       5c88e4a3-3af1-42e4-81ec-913b4fa88853
 :END:
-***** Tasks                                                        :tasklist:
+****** Tasks                                                       :tasklist:
 :PROPERTIES:
 :ID:       0d8f29bf-bbd2-4387-a8fa-e2907704dc82
 :END:
-****** DONE put dash docset in here!
+******* DONE put dash docset in here!
 CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 Fr>
 :PROPERTIES:
 :ID:       fc1fca41-5417-484d-ae16-5f6dcc2e4fa7
@@ -3199,11 +3216,11 @@ CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 F
 - State "TODO"       from              [2020-03-06 Fr 03:55]
 :END:
 
-***** Symfony
+****** Symfony
 :PROPERTIES:
 :ID:       02d41cb7-37c1-4e61-aec1-7014650f29bc
 :END:
-****** custom
+******* custom
 :PROPERTIES:
 :ID:       0af7ade2-dc61-4d8c-a98b-b39db18b8370
 :END:
@@ -3219,7 +3236,7 @@ CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 F
     :group 'rgr/symfony)
 #+end_src
 
-****** Start a symfony web server when applicable
+******* Start a symfony web server when applicable
 :PROPERTIES:
 :ID:       e985339e-df07-40f2-b0c6-0356749a21c4
 :END:
@@ -3251,7 +3268,7 @@ We can trigger it using a .dir-locals.el
 
 
 
-****** webmode
+******* webmode
 :PROPERTIES:
 :ID:       1f6b744d-f3f8-4d7b-abbe-e8d765ee3cc8
 :END:
@@ -3276,7 +3293,7 @@ We can trigger it using a .dir-locals.el
     (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 #+end_src
 
-**** elf-mode - view the symbol list in a binary
+***** elf-mode - view the symbol list in a binary
 :PROPERTIES:
 :ID:       41cf30f2-5a70-4aab-aa93-2bd9a249b72f
 :END:
@@ -3289,7 +3306,7 @@ We can trigger it using a .dir-locals.el
     (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
     (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 #+end_src
-**** provide
+***** provide
 #+begin_src emacs-lisp
   (provide 'rgr/programming)
 #+end_src
