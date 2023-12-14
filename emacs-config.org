@@ -1649,6 +1649,7 @@ The aim here is to link to different reference sources and have a sensible defau
 :PROPERTIES:
 :ID:       a32c8536-be64-43fe-b740-210f0d891f14
 :END:
+A bit of a dogs dinner.
 #+begin_src emacs-lisp
 
   (defgroup rgr/lookup-reference nil
@@ -1670,6 +1671,7 @@ The aim here is to link to different reference sources and have a sensible defau
                                                      (js2-mode (rgr/devdocs rgr/devdocs))
                                                      (python-mode (rgr/devdocs rgr/devdocs))
                                                      (js-mode (rgr/devdocs rgr/devdocs))
+                                                     (js-ts-mode (rgr/devdocs rgr/devdocs))
                                                      (rjsx-mode (rgr/devdocs rgr/devdocs))
                                                      (typescript-mode (rgr/devdocs rgr/devdocs))
                                                      (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs))
