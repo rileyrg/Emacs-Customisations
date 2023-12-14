@@ -214,7 +214,6 @@ example:
   (setq passw (get-auth-info "licenses" "my-auth-token"))
 #+end_src
 #+begin_src emacs-lisp
-  (require 'transient)
   (require 'auth-source)
   (defun get-auth-info (host user &optional port)
     "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
@@ -3011,7 +3010,7 @@ magit
     (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
     (require 'magit-extras)
     :bind
-    ("C-x g" . magit-status)
+    ("C-x g" . magit)
     :config
     (magit-auto-revert-mode 1))
 #+end_src

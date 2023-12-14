@@ -148,7 +148,7 @@
   (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
   (require 'magit-extras)
   :bind
-  ("C-x g" . magit-status)
+  ("C-x g" . magit)
   :config
   (magit-auto-revert-mode 1))
 
