@@ -995,7 +995,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org5f792a8)
+    See `org-agenda-files` [org-agenda-files](#org9c95ddd)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1408,69 +1408,10 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 3.  Reference and dictionary
 
-    The aim here is to link to different reference sources and have a sensible default for different modes. eg elisp mode would use internal doc sources, whereas javascript uses Dash/Zeal or even a straight URL search  to lookup help. On top of that provide a list of other sources you can call by prefixing the core lookup-reference-dwim call. But if you lookup internal docs and it doesnt exist then why not farm it out to something like Goldendict which you can configure to look wherever you want? Examples here show Goldendict plugged into google translate amonst other things. The world's your oyster.
-    
     1.  utility funcs
     
         A bit of a dogs dinner.
         
-            
-            (defgroup rgr/lookup-reference nil
-              "Define functions to be used for lookup"
-              :group 'rgr)
-            
-            (defcustom mode-lookup-reference-functions-alist '(
-                                                               (nil (goldendict-dwim goldendict-dwim))
-                                                               (c-mode  (rgr/devdocs rgr/devdocs))
-                                                               (c++-mode  (rgr/devdocs rgr/devdocs))
-                                                               (flutter-mode  (rgr/devdocs rgr/devdocs))
-                                                               (dart-mode  (rgr/devdocs rgr/devdocs))
-                                                               (gdscript-mode  (rgr/devdocs rgr/devdocs))
-                                                               ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/devdocs))
-                                                               (php-mode  (rgr/devdocs rgr/devdocs))
-                                                               (web-mode  (rgr/devdocs rgr/devdocs))
-                                                               (org-mode (rgr/elisp-lookup-reference-dwim))
-                                                               (Info-mode (rgr/elisp-lookup-reference-dwim))
-                                                               (js2-mode (rgr/devdocs rgr/devdocs))
-                                                               (python-mode (rgr/devdocs rgr/devdocs))
-                                                               (js-mode (rgr/devdocs rgr/devdocs))
-                                                               (js-ts-mode (rgr/devdocs rgr/devdocs))
-                                                               (rjsx-mode (rgr/devdocs rgr/devdocs))
-                                                               (typescript-mode (rgr/devdocs rgr/devdocs))
-                                                               (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs))
-                                                               (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs)))
-              "mode lookup functions"
-              :group 'rgr/lookup-reference)
-            
-            (defun get-mode-lookup-reference-functions(&optional m)
-              (let* ((m (if m m major-mode))
-                     (default-funcs (copy-tree(cadr (assoc nil mode-lookup-reference-functions-alist))))
-                     (mode-funcs (cadr (assoc m mode-lookup-reference-functions-alist))))
-                (if mode-funcs (progn
-                                 (setcar default-funcs (car mode-funcs))
-                                 (if (cadr mode-funcs)
-                                     (setcdr default-funcs (cdr mode-funcs)))))
-                default-funcs)) ;; (get-mode-lookup-reference-functions 'org-mode)
-            
-            (defcustom linguee-url-template "https://www.linguee.com/english-german/search?source=auto&query=%S%"
-              "linguee url search template"
-              :type 'string
-              :group 'rgr/lookup-reference)
-            
-            (defcustom php-api-url-template "https://www.google.com/search?q=php[%S%]"
-              "php api url search template"
-              :type 'string
-              :group 'rgr/lookup-reference)
-            
-            (defcustom jquery-url-template "https://api.jquery.com/?s=%S%"
-              "jquery url search template"
-              :type 'string
-              :group 'rgr/lookup-reference)
-            
-            (defcustom  lookup-reference-functions '(rgr/describe-symbol goldendict-dwim rgr/linguee-lookup rgr/dictionary-search google-this-search)
-              "list of functions to be called via C-n prefix call to lookup-reference-dwim"
-              :type 'hook
-              :group 'rgr/lookup-reference)
             
             (defun sys-browser-lookup(w template)
               (interactive)
@@ -1481,38 +1422,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (let ((s (if (symbolp w) w (intern-soft w))))
                 (if s (describe-symbol s)
                   (message "No such symbol: %s" w))))
-            
-            (defun rgr/linguee-lookup(w)
-              (interactive (cons (rgr/region-symbol-query) nil))
-              (sys-browser-lookup w linguee-url-template))
-            
-            (defun rgr/gdscript-docs-browse-symbol-at-point(&optional w)
-              (gdscript-docs-browse-symbol-at-point))
-            
-            (defun lookup-reference-dwim(&optional secondary)
-              "if we have a numeric prefix then index into lookup-reference functions"
-              (interactive)
-              (let((w (rgr/region-symbol-query))
-                   ;; PREFIX integer including 4... eg C-2 lookup-reference-dwim
-                   (idx (if (and  current-prefix-arg (not (listp current-prefix-arg)))
-                            (- current-prefix-arg 1)
-                          nil)))
-                (if idx (let((f (nth idx lookup-reference-functions)))
-                          (funcall (if f f (car lookup-reference-functions)) w))
-                  (let* ((funcs (get-mode-lookup-reference-functions))
-                         (p (car funcs))
-                         (s (cadr funcs)))
-                    (if (not secondary)
-                        (unless (funcall p w)
-                          (if s (funcall s w)))
-                      (if s (funcall s w)))))))
-            
-            (defun lookup-reference-dwim-secondary()
-              (interactive)
-              (lookup-reference-dwim t))
-            
-            (bind-key* "C-q" 'lookup-reference-dwim) ;; overrides major mode bindings
-            (bind-key* "C-S-q" 'lookup-reference-dwim-secondary)
     
     2.  Dictionary
     
@@ -1601,7 +1510,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (interactive)
                 (if current-prefix-arg
                     (call-interactively 'devdocs-browser-open-in)
-                  (devdocs-browser-open))))
+                  (devdocs-browser-open)))
+              :bind
+                ("C-q" . rgr/devdocs))
     
     6.  Dash
     
@@ -1635,7 +1546,24 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     1.  elfeed-org
 
-6.  impatient-showdow, markdown view live
+6.  pdf-tools
+
+    [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
+    
+        (use-package pdf-tools
+          :after (org-plus-contrib)
+          :config
+          (pdf-tools-install)
+          (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
+                                                   ))
+          (use-package org-pdftools
+            :hook (org-mode . org-pdftools-setup-link)))
+    
+    1.  requirements
+    
+            sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
+
+7.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown.
     <https://github.com/jcs-elpa/impatient-showdown>
@@ -1643,181 +1571,28 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (use-package impatient-showdown
           :hook (markdown-mode . impatient-showdown-mode))
 
-7.  provide
+8.  provide
 
         (provide 'rgr/reference)
-
-
-## EMMS
-
-[Emms](https://github.com/skeeto/elfeed) is the Emacs Multimedia System. Emms displays and plays multimedia from within GNU/Emacs using a variety of external players and from different sources.
-
-Raw:[rgr/emms](./etc/elisp/rgr-emms.el)
-
-    (require 'rgr/emms "rgr-emms" 'NOERROR)
-
-
-### rgr/emms library
-
-    (use-package
-      emms
-      :disabled
-      :custom
-      (emms-source-file-default-directory "~/Music" emms-info-asynchronously t emms-show-format "♪ %s")
-      (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
-      (emms-history-start-playing nil)
-      :config
-      (defun rgr/emms-play-url()
-        (interactive)
-        (let* ((url (thing-at-point-url-at-point))
-               (url (if (and (not current-prefix-arg)
-                             url) url (read-string (format "URL to play %s: " (if url url "")) nil
-                             nil url))))
-          (message "Playing: %s" url)
-          (kill-new url)
-          (emms-play-url url)))
-      (defun rgr/emms-play-playlist()
-        (interactive)
-        (let(( emms-source-file-default-directory (expand-file-name "Playlists/" emms-source-file-default-directory)))
-          (call-interactively 'emms-play-playlist)))
-      (require 'emms-setup)
-      (emms-all)
-      (emms-default-players)
-      (require 'emms-history)
-      (emms-history-load)
-      :bind ("C-c e e" . #'emms-smart-browse)
-      ("C-c e j" . #'emms-seek-backward)
-      ("C-c e l" . #'emms-seek-forward)
-      ("C-c e p" . #'rgr/emms-play-playlist)
-      ;;        ("C-c e p" . #'emms-play-playlist)
-      ("C-c e <SPC>" . #'emms-pause)
-      ("C-c e o" . #'rgr/emms-play-url)
-      (:map emms-playlist-mode-map
-            ("<SPC>" . #'emms-pause)
-            ("j" . #'emms-seek-backward)
-            ("l" . #'emms-seek-forward)
-            ("k" . #'emms-pause)))
-    (provide 'rgr/emms)
 
 
 ## Shells and Terminals
 
 
-### Eshell
+### EAT
 
-[EShell](https://www.masteringemacs.org/article/complete-guide-mastering-eshell) is, amongst other things,  convenient for cat/console debugging in Symfony etc to have all output in easily browsed Emacs buffers via [EShell redirection](https://www.emacswiki.org/emacs/EshellRedirection).
+[Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
 
-1.  Eshell functions
-
-    1.  Bootstrap  clean emacs
-    
-            (defun eshell/emacs-clean (&rest args)
-              "run a clean emacs"
-              (interactive)
-              (message "args are %s" args)
-              (save-window-excursion
-                (shell-command "emacs -Q -l ~/.emacs.d/straight/repos/straight.el/bootstrap.el &")))
-        
-        1.  ftrace - debugging the kernel utility funtions
-        
-            1.  run a function trace
-            
-                    (defun eshell/_ftrace_fn (&rest args)
-                      "useage: _ftrace_fn &optional function-name(def:printf)  depth(def:1)
-                    creates a report in function-name.ftrace and opens it in a buffer"
-                      (interactive)
-                      (let ((fn (or (nth 2 args) "printf"))
-                            (depth (or (nth 3 args) 1)))
-                        (shell-command (format "sudo trace-cmd record -p function_graph --max-graph-depth %s -e syscalls -F %s && trace-cmd report | tee %s.ftrace" depth fn fn))
-                        (switch-to-buffer (find-file-noselect (format "%s.ftrace" fn) ))))
-
-2.  EShell Aliases
-
-    Be sure to check out [Aliases](http://www.howardism.org/Technical/Emacs/eshell.html). Aliases are very powerful allowing you to mix up shell script, elisp raw and elisp library function. My current [alias file](eshell/alias) (subject to change&#x2026;) is currently, at this time of discovery:-
-    
-        alias HOME $*
-        alias god cd ~/bin/thirdparty/godot
-        alias in ssh intel-nuc
-        alias prj cd ~/development/Symfony/the_spacebar/
-        alias gs git status
-        alias clconf find ~/Dropbox/ -path "*(*s conflicted copy [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*" -exec rm -f {} \;
-        alias twigs grep -i "twig.*"$1 *
-        alias rgr rg --color=never $* > #<*ripgrep*>; switch-to-buffer "*ripgrep*"
-        alias to httplug.client.app.http_methods
-        alias grep grep --color=always --exclude="*.lock" --exclude-dir=log --exclude-dir=cache -iR $*
-        alias gg *grep -C 2 -iR $*
-        alias awg aw|*grep -C 2 -i $*
-        alias dconp co debug:container  --show-private $*
-        alias dcon co debug:container  $*
-        alias dc co debug:config $*
-        alias cc co cache:clear
-        alias ll ls -l $*
-        alias aw co debug:autowiring
-        alias cdu co config:dump $1
-        alias co bin/console --no-ansi $*
-        alias em cd ~/.emacs.d
-        alias dcg dc $1 |*grep -C 5 -i $2
-        alias coenv co about
-        alias R/W multiple sector transfer: Max = 1 Current = 1
-        alias mlg ag -o -i --no-color -U --smart-case "(?=(?:.|\n)*?$1)(?:.|\n)*?$2" . > #<*mlg*> && switch-to-buffer "*mlg*"
-        alias csr console server:run
-        alias dr co debug:router
-        alias dconparm dcon --parameters
-        alias cr composer recipes $*
-        alias property: $*
-        alias gds cd ~/.emacs.d/straight/repos/emacs-gdscript-mode
-        alias tcfr trace-cmd report > $1
-
-3.  EShell Config
-
-        (use-package
-          eshell
-          :init
-          (require 'em-hist)
-          (require 'em-tramp)
-          (require 'em-smart)
-          :config
-          (defun eshell-mode-hook-func ()
-            ;; (setq eshell-path-env (concat "/home/rgr/bin:" eshell-path-env))
-            ;; (setenv "PATH" (concat "/home/rgr/bin:" (getenv "PATH")))
-            (setq pcomplete-cycle-completions nil))
-          (add-to-list 'eshell-modules-list 'eshell-tramp)
-          (add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
-          (setq eshell-review-quick-commands nil)
-          (setq eshell-smart-space-goes-to-end t)
-        
-          (use-package
-            eshell-git-prompt
-            :config
-            (eshell-git-prompt-use-theme 'powerline)
-            (define-advice
-                eshell-git-prompt-powerline-dir
-                (:override ()
-                           short)
-              "Show only last directory."
-              (file-name-nondirectory (directory-file-name default-directory)))))
-
-4.  EAT
-
-    [Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
-    
-        (straight-use-package
-         '(eat :type git
-               :host codeberg
-               :repo "akib/emacs-eat"
-               :files ("*.el" ("term" "term/*.el") "*.texi"
-                       "*.ti" ("terminfo/e" "terminfo/e/*")
-                       ("terminfo/65" "terminfo/65/*")
-                       ("integration" "integration/*")
-                       (:exclude ".dir-locals.el" "*-tests.el"))))
-          (global-set-key (kbd "M-g v") 'eat)
-
-
-### Docker
-
-A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b170214587127b6c05f386504cae6981b).
-
-    (use-package docker)
+    (straight-use-package
+     '(eat :type git
+           :host codeberg
+           :repo "akib/emacs-eat"
+           :files ("*.el" ("term" "term/*.el") "*.texi"
+                   "*.ti" ("terminfo/e" "terminfo/e/*")
+                   ("terminfo/65" "terminfo/65/*")
+                   ("integration" "integration/*")
+                   (:exclude ".dir-locals.el" "*-tests.el"))))
+      (global-set-key (kbd "M-g v") 'eat)
 
 
 ## Buffers and Windows
@@ -1949,20 +1724,6 @@ A general interface to [docker](https://github.com/Silex/docker.el/tree/a2092b3b
           :bind
           ("M-s c" . ace-jump-mode)
           )
-
-
-## System
-
-
-### htop interface
-
-    (defun Htop-regexp()
-      (interactive)
-      (let ((s (completing-read (format "HTtop filter (%s): " (symbol-at-point)) minibuffer-history nil nil (symbol-at-point))))
-        (condition-case nil
-            (shell-command (format "htop-regexp %s" s))
-          (error nil))))
-    (global-set-key (kbd "C-S-p") 'htop-regexp)
 
 
 ## Treemacs
@@ -2521,7 +2282,7 @@ Package [keycast](https://github.com/tarsius/keycast) shows the keys pressed
               (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
               (require 'magit-extras)
               :bind
-              ("C-x g" . magit-status)
+              ("C-x g" . magit)
               :config
               (magit-auto-revert-mode 1))
         
@@ -3149,7 +2910,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org26d9745) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge09cea7) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3182,7 +2943,7 @@ to add to version control.
     fi
 
 
-<a id="org26d9745"></a>
+<a id="orge09cea7"></a>
 
 ### Gnome protocol handler desktop file
 

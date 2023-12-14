@@ -20,63 +20,6 @@
 
 (require 'rgr/google "rgr-google")
 
-(defgroup rgr/lookup-reference nil
-  "Define functions to be used for lookup"
-  :group 'rgr)
-
-(defcustom mode-lookup-reference-functions-alist '(
-                                                   (nil (goldendict-dwim goldendict-dwim))
-                                                   (c-mode  (rgr/devdocs rgr/devdocs))
-                                                   (c++-mode  (rgr/devdocs rgr/devdocs))
-                                                   (flutter-mode  (rgr/devdocs rgr/devdocs))
-                                                   (dart-mode  (rgr/devdocs rgr/devdocs))
-                                                   (gdscript-mode  (rgr/devdocs rgr/devdocs))
-                                                   ;;                                                         (gdscript-mode  (rgr/gdscript-docs-browse-symbol-at-point rgr/devdocs))
-                                                   (php-mode  (rgr/devdocs rgr/devdocs))
-                                                   (web-mode  (rgr/devdocs rgr/devdocs))
-                                                   (org-mode (rgr/elisp-lookup-reference-dwim))
-                                                   (Info-mode (rgr/elisp-lookup-reference-dwim))
-                                                   (js2-mode (rgr/devdocs rgr/devdocs))
-                                                   (python-mode (rgr/devdocs rgr/devdocs))
-                                                   (js-mode (rgr/devdocs rgr/devdocs))
-                                                   (js-ts-mode (rgr/devdocs rgr/devdocs))
-                                                   (rjsx-mode (rgr/devdocs rgr/devdocs))
-                                                   (typescript-mode (rgr/devdocs rgr/devdocs))
-                                                   (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs))
-                                                   (emacs-lisp-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs)))
-  "mode lookup functions"
-  :group 'rgr/lookup-reference)
-
-(defun get-mode-lookup-reference-functions(&optional m)
-  (let* ((m (if m m major-mode))
-         (default-funcs (copy-tree(cadr (assoc nil mode-lookup-reference-functions-alist))))
-         (mode-funcs (cadr (assoc m mode-lookup-reference-functions-alist))))
-    (if mode-funcs (progn
-                     (setcar default-funcs (car mode-funcs))
-                     (if (cadr mode-funcs)
-                         (setcdr default-funcs (cdr mode-funcs)))))
-    default-funcs)) ;; (get-mode-lookup-reference-functions 'org-mode)
-
-(defcustom linguee-url-template "https://www.linguee.com/english-german/search?source=auto&query=%S%"
-  "linguee url search template"
-  :type 'string
-  :group 'rgr/lookup-reference)
-
-(defcustom php-api-url-template "https://www.google.com/search?q=php[%S%]"
-  "php api url search template"
-  :type 'string
-  :group 'rgr/lookup-reference)
-
-(defcustom jquery-url-template "https://api.jquery.com/?s=%S%"
-  "jquery url search template"
-  :type 'string
-  :group 'rgr/lookup-reference)
-
-(defcustom  lookup-reference-functions '(rgr/describe-symbol goldendict-dwim rgr/linguee-lookup rgr/dictionary-search google-this-search)
-  "list of functions to be called via C-n prefix call to lookup-reference-dwim"
-  :type 'hook
-  :group 'rgr/lookup-reference)
-
 (defun sys-browser-lookup(w template)
   (interactive)
   (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (rgr/region-symbol-query)) template)))
@@ -86,38 +29,6 @@
   (let ((s (if (symbolp w) w (intern-soft w))))
     (if s (describe-symbol s)
       (message "No such symbol: %s" w))))
-
-(defun rgr/linguee-lookup(w)
-  (interactive (cons (rgr/region-symbol-query) nil))
-  (sys-browser-lookup w linguee-url-template))
-
-(defun rgr/gdscript-docs-browse-symbol-at-point(&optional w)
-  (gdscript-docs-browse-symbol-at-point))
-
-(defun lookup-reference-dwim(&optional secondary)
-  "if we have a numeric prefix then index into lookup-reference functions"
-  (interactive)
-  (let((w (rgr/region-symbol-query))
-       ;; PREFIX integer including 4... eg C-2 lookup-reference-dwim
-       (idx (if (and  current-prefix-arg (not (listp current-prefix-arg)))
-                (- current-prefix-arg 1)
-              nil)))
-    (if idx (let((f (nth idx lookup-reference-functions)))
-              (funcall (if f f (car lookup-reference-functions)) w))
-      (let* ((funcs (get-mode-lookup-reference-functions))
-             (p (car funcs))
-             (s (cadr funcs)))
-        (if (not secondary)
-            (unless (funcall p w)
-              (if s (funcall s w)))
-          (if s (funcall s w)))))))
-
-(defun lookup-reference-dwim-secondary()
-  (interactive)
-  (lookup-reference-dwim t))
-
-(bind-key* "C-q" 'lookup-reference-dwim) ;; overrides major mode bindings
-(bind-key* "C-S-q" 'lookup-reference-dwim-secondary)
 
 (use-package
   dictionary
@@ -174,7 +85,9 @@
     (interactive)
     (if current-prefix-arg
         (call-interactively 'devdocs-browser-open-in)
-      (devdocs-browser-open))))
+      (devdocs-browser-open)))
+  :bind
+    ("C-q" . rgr/devdocs))
 
 (use-package dash-docs)
 

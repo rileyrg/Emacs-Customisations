@@ -114,51 +114,6 @@
 
 (require 'rgr/reference "rgr-reference" 'NOERROR)
 
-(require 'rgr/emms "rgr-emms" 'NOERROR)
-
-(defun eshell/emacs-clean (&rest args)
-  "run a clean emacs"
-  (interactive)
-  (message "args are %s" args)
-  (save-window-excursion
-    (shell-command "emacs -Q -l ~/.emacs.d/straight/repos/straight.el/bootstrap.el &")))
-
-(defun eshell/_ftrace_fn (&rest args)
-  "useage: _ftrace_fn &optional function-name(def:printf)  depth(def:1)
-creates a report in function-name.ftrace and opens it in a buffer"
-  (interactive)
-  (let ((fn (or (nth 2 args) "printf"))
-        (depth (or (nth 3 args) 1)))
-    (shell-command (format "sudo trace-cmd record -p function_graph --max-graph-depth %s -e syscalls -F %s && trace-cmd report | tee %s.ftrace" depth fn fn))
-    (switch-to-buffer (find-file-noselect (format "%s.ftrace" fn) ))))
-
-(use-package
-  eshell
-  :init
-  (require 'em-hist)
-  (require 'em-tramp)
-  (require 'em-smart)
-  :config
-  (defun eshell-mode-hook-func ()
-    ;; (setq eshell-path-env (concat "/home/rgr/bin:" eshell-path-env))
-    ;; (setenv "PATH" (concat "/home/rgr/bin:" (getenv "PATH")))
-    (setq pcomplete-cycle-completions nil))
-  (add-to-list 'eshell-modules-list 'eshell-tramp)
-  (add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
-  (setq eshell-review-quick-commands nil)
-  (setq eshell-smart-space-goes-to-end t)
-
-  (use-package
-    eshell-git-prompt
-    :config
-    (eshell-git-prompt-use-theme 'powerline)
-    (define-advice
-        eshell-git-prompt-powerline-dir
-        (:override ()
-                   short)
-      "Show only last directory."
-      (file-name-nondirectory (directory-file-name default-directory)))))
-
 (straight-use-package
  '(eat :type git
        :host codeberg
@@ -169,16 +124,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
                ("integration" "integration/*")
                (:exclude ".dir-locals.el" "*-tests.el"))))
   (global-set-key (kbd "M-g v") 'eat)
-
-(use-package vterm
-  :disabled
-  :custom
-  (vterm-shell "/usr/bin/zsh")
-  (vterm-max-scrollback 100000)
-  :bind
-  ("M-g v" . vterm))
-
-(use-package docker)
 
 (defun rgr/toggle-buffer(n)
   "jump to or from buffer named n else default to *Messages*"
@@ -259,14 +204,6 @@ creates a report in function-name.ftrace and opens it in a buffer"
   :bind
   ("M-s c" . ace-jump-mode)
   )
-
-(defun Htop-regexp()
-  (interactive)
-  (let ((s (completing-read (format "HTtop filter (%s): " (symbol-at-point)) minibuffer-history nil nil (symbol-at-point))))
-    (condition-case nil
-        (shell-command (format "htop-regexp %s" s))
-      (error nil))))
-(global-set-key (kbd "C-S-p") 'htop-regexp)
 
 (use-package
   treemacs
