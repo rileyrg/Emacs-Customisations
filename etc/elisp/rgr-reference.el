@@ -39,6 +39,7 @@
                                                    (js2-mode (rgr/devdocs rgr/devdocs))
                                                    (python-mode (rgr/devdocs rgr/devdocs))
                                                    (js-mode (rgr/devdocs rgr/devdocs))
+                                                   (js-ts-mode (rgr/devdocs rgr/devdocs))
                                                    (rjsx-mode (rgr/devdocs rgr/devdocs))
                                                    (typescript-mode (rgr/devdocs rgr/devdocs))
                                                    (lisp-interaction-mode (rgr/elisp-lookup-reference-dwim rgr/devdocs))
