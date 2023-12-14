@@ -83,12 +83,13 @@ invoke google translate on them. Stores history.
           (eval-print-last-sexp)))
       (load bootstrap-file nil 'nomessage))
     
-    (straight-use-package `(use-package ,@(when (>= emacs-major-version 29) '(:type built-in))))
+    ;;(straight-use-package `(use-package ,@(when (>= emacs-major-version 29) '(:type built-in))))
     
     (use-package straight
       :custom
       (straight-use-package-by-default t)
       (straight-vc-git-default-protocol 'ssh))
+    
     
     (use-package notifications
       :demand t
@@ -995,7 +996,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org78bfbda)
+    See `org-agenda-files` [org-agenda-files](#orga52ef4c)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2261,12 +2262,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         
             (use-package
               magit
-              :demand t
-              :custom
-              (vc-handled-backends '(git))
-              :config
-              (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-              (magit-auto-revert-mode 1)
               :bind
               ("C-x g" . magit-status))
         
@@ -2288,9 +2283,13 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     4.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
     
+        a real PITA. I'm having to disable this. all sorts of slot/version issues.
+        
+        :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
+        
             (straight-use-package 'sqlite3)
             (use-package forge
-              ;;:disabled
+              :disabled
               :after magit
               :init
               :config
@@ -2894,7 +2893,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgee4d933) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org91ac164) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2927,7 +2926,7 @@ to add to version control.
     fi
 
 
-<a id="orgee4d933"></a>
+<a id="org91ac164"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -33,12 +33,13 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(straight-use-package `(use-package ,@(when (>= emacs-major-version 29) '(:type built-in))))
+;;(straight-use-package `(use-package ,@(when (>= emacs-major-version 29) '(:type built-in))))
 
 (use-package straight
   :custom
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
+
 
 (use-package notifications
   :demand t
