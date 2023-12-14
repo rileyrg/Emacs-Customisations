@@ -1764,19 +1764,15 @@ Browse devdocs.io documents inside Emacs!
     :config
     (defun rgr/devdocs(&optional i)
       (interactive)
-      (if current-prefix-arg
-          (call-interactively 'devdocs-browser-open-in)
-        (devdocs-browser-open)))
+      (unless (and (string-equal major-mode "emacs-lisp-mode") (rgr/elisp-lookup-reference-dwim))
+        (if current-prefix-arg
+            (call-interactively 'devdocs-browser-open-in)
+          (devdocs-browser-open))))
     :bind
-      ("C-q" . rgr/devdocs))
+    ("C-q" . rgr/devdocs))
 #+end_src
 
-***** Dash
-#+begin_src  emacs-lisp
-  (use-package dash-docs)
-#+end_src
-
-**** Man Pages
+***** Man Pages
 :PROPERTIES:
 :ID:       b432ab5d-12af-48db-989d-6392d88ac874
 :END:
@@ -1784,7 +1780,7 @@ Use emacsclient if it's running. Might consider an alias
 #+begin_src conf
   alias man="eman"
 #+end_src
-**** Elfeed
+***** Elfeed
 :PROPERTIES:
 :ID:       381fc830-2854-4eda-9744-efe1b0239f43
 :END:
@@ -1806,13 +1802,13 @@ Use emacsclient if it's running. Might consider an alias
     (:map elfeed-search-mode-map
           ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
 #+end_src
-***** elfeed-org
+****** elfeed-org
 :PROPERTIES:
 :ID:       63b211b7-3b48-451b-878e-0a6aa9e72c81
 :END:
 #+begin_src emacs-lisp
 #+end_src
-**** pdf-tools
+***** pdf-tools
 :PROPERTIES:
 :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
 :END:
@@ -1827,7 +1823,7 @@ Use emacsclient if it's running. Might consider an alias
     (use-package org-pdftools
       :hook (org-mode . org-pdftools-setup-link)))
 #+end_src
-***** requirements
+****** requirements
 #+begin_src bash
   sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 #+end_src
@@ -2238,40 +2234,6 @@ Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-
   ;;:map mu4e-view-mode-map
   ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
 #+end_src
-** Screen recording
-:PROPERTIES:
-:ID:       3134a8a2-7e5b-4d79-9238-1bdf6dc63865
-:END:
-*** CANCELLED camcorder                                           :CANCELLED:
-CLOSED: [2021-05-08 Sat 16:14]
-:PROPERTIES:
-:ID:       0e4b5c80-3293-4ec9-ad19-c27d97563736
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-05-08 Sat 16:14] \\
-  unknown variable camcorder-
-- Note taken on [2021-04-08 Thu 01:09] \\
-  error building
-- State "TODO"       from              [2021-04-08 Thu 01:09]
-:END:
-do screen recording directly from emacs
-#+begin_src emacs-lisp
-  (use-package camcorder
-    :custom
-    (camcorder-output-directory  "~/tmp"))
-#+end_src
-*** Emacs screencasts
-:PROPERTIES:
-:ID:       8d2cb70a-d7f2-49cf-b559-25e1641627cb
-:END:
-Package [[https://github.com/tarsius/keycast][keycast]] shows the keys pressed
-#+begin_src emacs-lisp
-  (use-package keycast
-    )
-
-#+end_src
-
 ** Programming Language related                                 :programming:
 :PROPERTIES:
 :ID:       7070b720-582e-451c-8eed-47ab61cdd130
@@ -2720,11 +2682,9 @@ magit
     (vc-handled-backends '(git))
     :config
     (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-    (require 'magit-extras)
+    (magit-auto-revert-mode 1)
     :bind
-    ("C-x g" . magit)
-    :config
-    (magit-auto-revert-mode 1))
+    ("C-x g" . magit-status))
 #+end_src
 ****** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
 :PROPERTIES:
