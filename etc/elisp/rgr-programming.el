@@ -141,11 +141,12 @@
 
 (use-package
   magit
+  :demand t
   :custom
   (vc-handled-backends '(git))
-  ;; :config
-  ;; (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-  ;; (require 'magit-extras)
+  :config
+  (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
+  (require 'magit-extras)
   :bind
   ("C-x g" . magit-status)
   :config
