@@ -141,12 +141,6 @@
 
 (use-package
   magit
-  :demand t
-  :custom
-  (vc-handled-backends '(git))
-  :config
-  (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-  (magit-auto-revert-mode 1)
   :bind
   ("C-x g" . magit-status))
 
@@ -164,7 +158,7 @@
 
 (straight-use-package 'sqlite3)
 (use-package forge
-  ;;:disabled
+  :disabled
   :after magit
   :init
   :config

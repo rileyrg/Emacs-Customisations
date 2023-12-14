@@ -110,12 +110,13 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-  (straight-use-package `(use-package ,@(when (>= emacs-major-version 29) '(:type built-in))))
+  ;;(straight-use-package `(use-package ,@(when (>= emacs-major-version 29) '(:type built-in))))
 
   (use-package straight
     :custom
     (straight-use-package-by-default t)
     (straight-vc-git-default-protocol 'ssh))
+
 
   (use-package notifications
     :demand t
@@ -2677,12 +2678,6 @@ magit
 #+begin_src emacs-lisp
   (use-package
     magit
-    :demand t
-    :custom
-    (vc-handled-backends '(git))
-    :config
-    (add-hook 'magit-post-commit-hook 'magit-mode-bury-buffer)
-    (magit-auto-revert-mode 1)
     :bind
     ("C-x g" . magit-status))
 #+end_src
@@ -2713,13 +2708,14 @@ magit
 #+end_src
 
 ***** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests                       :forge:git:github:
+a real PITA. I'm having to disable this. all sorts of slot/version issues.
 :PROPERTIES:
 :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
 :END:
 #+begin_src emacs-lisp
   (straight-use-package 'sqlite3)
   (use-package forge
-    ;;:disabled
+    :disabled
     :after magit
     :init
     :config
