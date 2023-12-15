@@ -122,16 +122,18 @@
 
 (require 'rgr/reference "rgr-reference" 'NOERROR)
 
-(straight-use-package
- '(eat :type git
+(use-package
+  eat
+ :straight (:type git
        :host codeberg
        :repo "akib/emacs-eat"
        :files ("*.el" ("term" "term/*.el") "*.texi"
                "*.ti" ("terminfo/e" "terminfo/e/*")
                ("terminfo/65" "terminfo/65/*")
                ("integration" "integration/*")
-               (:exclude ".dir-locals.el" "*-tests.el"))))
-  (global-set-key (kbd "M-g v") 'eat)
+               (:exclude ".dir-locals.el" "*-tests.el")))
+ :bind
+  ("M-g v" . eat))
 
 (defun rgr/toggle-buffer(n)
   "jump to or from buffer named n else default to *Messages*"

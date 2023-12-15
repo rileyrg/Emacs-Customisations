@@ -996,7 +996,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org83f9118)
+    See `org-agenda-files` [org-agenda-files](#orgcb35def)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1593,16 +1593,18 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 [Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
 
-    (straight-use-package
-     '(eat :type git
+    (use-package
+      eat
+     :straight (:type git
            :host codeberg
            :repo "akib/emacs-eat"
            :files ("*.el" ("term" "term/*.el") "*.texi"
                    "*.ti" ("terminfo/e" "terminfo/e/*")
                    ("terminfo/65" "terminfo/65/*")
                    ("integration" "integration/*")
-                   (:exclude ".dir-locals.el" "*-tests.el"))))
-      (global-set-key (kbd "M-g v") 'eat)
+                   (:exclude ".dir-locals.el" "*-tests.el")))
+     :bind
+      ("M-g v" . eat))
 
 
 ## Buffers and Windows
@@ -2191,8 +2193,15 @@ Zoom into current buffer
               :init
               (projectile-mode +1)
               (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-              (define-key projectile-command-map (kbd "x t") #'eat)
-              )
+              (define-key projectile-command-map (kbd "x t") 'eat)
+              (defun rgr/projectile-term()
+                (interactive)
+                (if (string-equal major-mode "eat-mode")
+                    (previous-buffer)
+                  (eat)))
+              :bind (:map projectile-mode-map ((
+                                                ("C-t" . rgr/projectile-term)
+                                                ("C-p" . projectile-find-file)))))
         
         1.  org-projectile
         
@@ -2915,7 +2924,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4d16b25) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd3122e5) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2948,7 +2957,7 @@ to add to version control.
     fi
 
 
-<a id="org4d16b25"></a>
+<a id="orgd3122e5"></a>
 
 ### Gnome protocol handler desktop file
 

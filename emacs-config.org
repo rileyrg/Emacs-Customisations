@@ -1858,16 +1858,18 @@ https://github.com/jcs-elpa/impatient-showdown
 *** EAT
 [[https://codeberg.org/akib/emacs-eat][Emulate A Terminal]], in a region, in a buffer and in Eshell
 #+begin_src  emacs-lisp
-  (straight-use-package
-   '(eat :type git
+  (use-package
+    eat
+   :straight (:type git
          :host codeberg
          :repo "akib/emacs-eat"
          :files ("*.el" ("term" "term/*.el") "*.texi"
                  "*.ti" ("terminfo/e" "terminfo/e/*")
                  ("terminfo/65" "terminfo/65/*")
                  ("integration" "integration/*")
-                 (:exclude ".dir-locals.el" "*-tests.el"))))
-    (global-set-key (kbd "M-g v") 'eat)
+                 (:exclude ".dir-locals.el" "*-tests.el")))
+   :bind
+    ("M-g v" . eat))
 #+end_src
 
 ** Buffers and Windows
@@ -2581,8 +2583,15 @@ I prefer projectile
     :init
     (projectile-mode +1)
     (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-    (define-key projectile-command-map (kbd "x t") #'eat)
-    )
+    (define-key projectile-command-map (kbd "x t") 'eat)
+    (defun rgr/projectile-term()
+      (interactive)
+      (if (string-equal major-mode "eat-mode")
+          (previous-buffer)
+        (eat)))
+    :bind (:map projectile-mode-map ((
+                                      ("C-t" . rgr/projectile-term)
+                                      ("C-p" . projectile-find-file)))))
 #+end_src
 ****** org-projectile
 SCHEDULED: <2023-08-03 Thu>
