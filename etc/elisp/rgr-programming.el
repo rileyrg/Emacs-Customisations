@@ -78,8 +78,15 @@
   :init
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-  (define-key projectile-command-map (kbd "x t") #'eat)
-  )
+  (define-key projectile-command-map (kbd "x t") 'eat)
+  (defun rgr/projectile-term()
+    (interactive)
+    (if (string-equal major-mode "eat-mode")
+        (previous-buffer)
+      (eat)))
+  :bind (:map projectile-mode-map ((
+                                    ("C-t" . rgr/projectile-term)
+                                    ("C-p" . projectile-find-file)))))
 
 (use-package org-project-capture
   :demand
