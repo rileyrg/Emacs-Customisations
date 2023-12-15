@@ -85,8 +85,8 @@
         (previous-buffer)
       (eat)))
   :bind (:map projectile-mode-map ((
-                                    ("C-t" . rgr/projectile-term)
-                                    ("C-p" . projectile-find-file)))))
+                                    ("C-t" . #'rgr/projectile-term)
+                                    ("C-p" . #'projectile-find-file)))))
 
 (use-package org-project-capture
   :demand

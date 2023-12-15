@@ -5,9 +5,11 @@
 
   :init
 
-  (recentf-mode 1)
-  (savehist-mode 1)
-  (save-place-mode 1)
+  ;(recentf-mode 1)
+  ;(savehist-mode 1)
+  ;(save-place-mode 1)
+  (desktop-save-mode 1)
+  (add-to-list 'after-make-frame-functions '(lambda()((desktop-save-mode 1))))
 
   (defun rgr/quit-or-close-emacs(&optional kill)
     (interactive)

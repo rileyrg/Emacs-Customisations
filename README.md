@@ -277,32 +277,33 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 1.  persistence  and history
 
-    \#+begin\_src emacs-lisp
-      (use-package emacs
-    
-    :bind
-    (("C-c x" . rgr/quit-or-close-emacs))
-    
-    :init
-    
-    (recentf-mode 1)
-    (savehist-mode 1)
-    (save-place-mode 1)
-    
-    (defun rgr/quit-or-close-emacs(&optional kill)
-      (interactive)
-      (if (or current-prefix-arg kill)
-          (rgr/server-shutdown)
-        (delete-frame)))
-    
-    (defun rgr/server-shutdown ()
-      "Save buffers, Quit, and Shutdown (kill) server"
-      (interactive)
-      (clean-buffer-list)
-      ;;(savehist-save)
-      (save-buffers-kill-emacs))
-    
-    )
+        (use-package emacs
+        
+          :bind
+          (("C-c x" . rgr/quit-or-close-emacs))
+        
+          :init
+        
+          ;(recentf-mode 1)
+          ;(savehist-mode 1)
+          ;(save-place-mode 1)
+          (desktop-save-mode 1)
+          (add-to-list 'after-make-frame-functions '(lambda()((desktop-save-mode 1))))
+        
+          (defun rgr/quit-or-close-emacs(&optional kill)
+            (interactive)
+            (if (or current-prefix-arg kill)
+                (rgr/server-shutdown)
+              (delete-frame)))
+        
+          (defun rgr/server-shutdown ()
+            "Save buffers, Quit, and Shutdown (kill) server"
+            (interactive)
+            (clean-buffer-list)
+            ;;(savehist-save)
+            (save-buffers-kill-emacs))
+        
+          )
 
 2.  rest of startup
 
@@ -996,7 +997,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgcb35def)
+    See `org-agenda-files` [org-agenda-files](#org2745e35)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2200,8 +2201,8 @@ Zoom into current buffer
                     (previous-buffer)
                   (eat)))
               :bind (:map projectile-mode-map ((
-                                                ("C-t" . rgr/projectile-term)
-                                                ("C-p" . projectile-find-file)))))
+                                                ("C-t" . #'rgr/projectile-term)
+                                                ("C-p" . #'projectile-find-file)))))
         
         1.  org-projectile
         
@@ -2924,7 +2925,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd3122e5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org453fc5d) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2957,7 +2958,7 @@ to add to version control.
     fi
 
 
-<a id="orgd3122e5"></a>
+<a id="org453fc5d"></a>
 
 ### Gnome protocol handler desktop file
 
