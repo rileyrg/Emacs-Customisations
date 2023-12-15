@@ -337,9 +337,11 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 
     :init
 
-    (recentf-mode 1)
-    (savehist-mode 1)
-    (save-place-mode 1)
+    ;(recentf-mode 1)
+    ;(savehist-mode 1)
+    ;(save-place-mode 1)
+    (desktop-save-mode 1)
+    (add-to-list 'after-make-frame-functions '(lambda()((desktop-save-mode 1))))
 
     (defun rgr/quit-or-close-emacs(&optional kill)
       (interactive)
@@ -355,7 +357,7 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
       (save-buffers-kill-emacs))
 
     )
-
+#+end_src
 
 **** rest of startup
 
@@ -2590,8 +2592,8 @@ I prefer projectile
           (previous-buffer)
         (eat)))
     :bind (:map projectile-mode-map ((
-                                      ("C-t" . rgr/projectile-term)
-                                      ("C-p" . projectile-find-file)))))
+                                      ("C-t" . #'rgr/projectile-term)
+                                      ("C-p" . #'projectile-find-file)))))
 #+end_src
 ****** org-projectile
 SCHEDULED: <2023-08-03 Thu>
