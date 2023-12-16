@@ -76,7 +76,7 @@
  '(delete-old-versions t)
  '(delete-selection-mode t)
  '(desktop-globals-to-save
-   '(search-ring regexp-search-ring register-alist file-name-history minibuffer-history))
+   '(search-ring regexp-search-ring register-alist file-name-history minibuffer-history shell-command-history))
  '(desktop-load-locked-desktop t)
  '(desktop-save t)
  '(desktop-save-mode t)
