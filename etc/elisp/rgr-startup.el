@@ -1,18 +1,27 @@
-;; (recentf-mode 1)
-;; (savehist-mode 1)
-;; (save-place-mode 1)
+(use-package emacs
+  :custom
+  (desktop-restore-eager  4)
+  (desktop-globals-to-save
+   '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history))
+  '(desktop-load-locked-desktop t)
+  :init
 
-(defun my/startup-hook ()
-  (switch-to-buffer (get-register ?l)))
+  (savehist-mode 1)
 
-(defun my/remember-last-buffer (f)
-  (unless
-  (when buffer-file-name
-    (set-register ?l (buffer-name)))))
+  (defun my/startup-hook ()
+    (switch-to-buffer (get-register ?l)))
 
-(add-hook 'window-buffer-change-functions #'my/remember-last-buffer)
+  (defun my/remember-last-buffer (f)
+    (unless
+        (when buffer-file-name
+          (set-register ?l (buffer-name)))))
 
-(add-hook 'server-after-make-frame-hook #'my/startup-hook)
+  (add-hook 'window-buffer-change-functions #'my/remember-last-buffer)
+
+  (add-hook 'server-after-make-frame-hook #'my/startup-hook)
+
+  (desktop-save-mode))
+
 
 (defun rgr/quit-or-close-emacs(&optional kill)
   (interactive)
