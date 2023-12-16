@@ -75,7 +75,7 @@
 
 (use-package projectile
   :demand
-  :init
+  :config
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (define-key projectile-command-map (kbd "x t") 'eat)
@@ -87,6 +87,13 @@
   :bind (:map projectile-mode-map ((
                                     ("C-t" . #'rgr/projectile-term)
                                     ("C-p" . #'projectile-find-file)))))
+
+(projectile-register-project-type 'npm '("package.json")
+                                  :project-file "package.json"
+       			    :compile "npm install"
+       			    :test "npm test"
+       			    :run "alacritty -e npm start"
+       			    :test-suffix ".spec")
 
 (use-package org-project-capture
   :demand
