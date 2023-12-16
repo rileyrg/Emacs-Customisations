@@ -275,22 +275,33 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 1.  persistence  and history
 
+    I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
+    
         
-        ;; (recentf-mode 1)
-        ;; (savehist-mode 1)
-        ;; (save-place-mode 1)
+        (use-package emacs
+          :custom
+          (desktop-restore-eager  4)
+          (desktop-globals-to-save
+           '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history))
+          '(desktop-load-locked-desktop t)
+          :init
         
-        (defun my/startup-hook ()
-          (switch-to-buffer (get-register ?l)))
+          (savehist-mode 1)
         
-        (defun my/remember-last-buffer (f)
-          (unless
-          (when buffer-file-name
-            (set-register ?l (buffer-name)))))
+          (defun my/startup-hook ()
+            (switch-to-buffer (get-register ?l)))
         
-        (add-hook 'window-buffer-change-functions #'my/remember-last-buffer)
+          (defun my/remember-last-buffer (f)
+            (unless
+                (when buffer-file-name
+                  (set-register ?l (buffer-name)))))
         
-        (add-hook 'server-after-make-frame-hook #'my/startup-hook)
+          (add-hook 'window-buffer-change-functions #'my/remember-last-buffer)
+        
+          (add-hook 'server-after-make-frame-hook #'my/startup-hook)
+        
+          (desktop-save-mode))
+        
         
         (defun rgr/quit-or-close-emacs(&optional kill)
           (interactive)
@@ -999,7 +1010,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgfeb21f8)
+    See `org-agenda-files` [org-agenda-files](#org39cfbdd)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2936,7 +2947,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcf1e24e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5974224) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2969,7 +2980,7 @@ to add to version control.
     fi
 
 
-<a id="orgcf1e24e"></a>
+<a id="org5974224"></a>
 
 ### Gnome protocol handler desktop file
 
