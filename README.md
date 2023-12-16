@@ -266,8 +266,6 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
 ## Emacs startup
 
-Load up the daemon if not loaded, amongst other things.
-
 Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
     (require 'rgr/startup "rgr-startup" 'NOERROR)
@@ -277,33 +275,37 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 1.  persistence  and history
 
-        (recentf-mode 1)
-        (savehist-mode 1)
-        (save-place-mode 1)
         
-          ;; (defun rgr/startup-hook (f)
-          ;;   (desktop-save-mode)
-          ;;   (desktop-read)
-          ;;   )
+        ;; (recentf-mode 1)
+        ;; (savehist-mode 1)
+        ;; (save-place-mode 1)
         
-          ;; (add-hook 'desktop-after-read-hook (lambda()(consult-buffer)))
-          ;; (add-hook 'after-make-frame-functions #'rgr/startup-hook)
-          ;; ;;(add-hook 'server-switch-hook #'rgr/startup-hook)
+        (defun my/startup-hook ()
+          (switch-to-buffer (get-register ?l)))
         
-          (defun rgr/quit-or-close-emacs(&optional kill)
-            (interactive)
-            (if (or current-prefix-arg kill)
-                (rgr/server-shutdown)
-              (delete-frame)))
+        (defun my/remember-last-buffer (f)
+          (unless
+          (when buffer-file-name
+            (set-register ?l (buffer-name)))))
         
-          (defun rgr/server-shutdown ()
-            "Save buffers, Quit, and Shutdown (kill) server"
-            (interactive)
-            (clean-buffer-list)
-            ;;(savehist-save)
-            (save-buffers-kill-emacs))
+        (add-hook 'window-buffer-change-functions #'my/remember-last-buffer)
         
-          (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
+        (add-hook 'server-after-make-frame-hook #'my/startup-hook)
+        
+        (defun rgr/quit-or-close-emacs(&optional kill)
+          (interactive)
+          (if (or current-prefix-arg kill)
+              (rgr/server-shutdown)
+            (delete-frame)))
+        
+        (defun rgr/server-shutdown ()
+          "Save buffers, Quit, and Shutdown (kill) server"
+          (interactive)
+          (clean-buffer-list)
+          ;;(savehist-save)
+          (save-buffers-kill-emacs))
+        
+        (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
 
 2.  rest of startup
 
@@ -997,7 +999,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgd06cbe2)
+    See `org-agenda-files` [org-agenda-files](#org1f1f8ac)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2925,7 +2927,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org83d1fb1) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org23b3209) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2958,7 +2960,7 @@ to add to version control.
     fi
 
 
-<a id="org83d1fb1"></a>
+<a id="org23b3209"></a>
 
 ### Gnome protocol handler desktop file
 

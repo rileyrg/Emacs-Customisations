@@ -25,7 +25,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -77,8 +76,10 @@
  '(delete-old-versions t)
  '(delete-selection-mode t)
  '(desktop-globals-to-save
-   '(search-ring regexp-search-ring register-alist file-name-history))
+   '(search-ring regexp-search-ring register-alist file-name-history minibuffer-history))
+ '(desktop-load-locked-desktop t)
  '(desktop-save t)
+ '(desktop-save-mode t)
  '(devdocs-alist
    '((c-mode . "c")
      (c++-mode . "c++")
