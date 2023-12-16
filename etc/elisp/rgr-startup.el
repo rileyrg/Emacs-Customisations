@@ -1,5 +1,7 @@
 (use-package emacs
+  :demand t
   :custom
+  (desktop-base-file-name "emacs.desktop")
   (desktop-restore-eager  4)
   (desktop-globals-to-save
    '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history))
@@ -8,17 +10,17 @@
 
   (savehist-mode 1)
 
-  (defun my/startup-hook ()
+  (defun rgr/startup-hook ()
     (switch-to-buffer (get-register ?l)))
 
-  (defun my/remember-last-buffer (f)
+  (defun rgr/remember-last-buffer (f)
     (unless
         (when buffer-file-name
           (set-register ?l (buffer-name)))))
 
-  (add-hook 'window-buffer-change-functions #'my/remember-last-buffer)
+  (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
 
-  (add-hook 'server-after-make-frame-hook #'my/startup-hook)
+  (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
   (desktop-save-mode))
 
