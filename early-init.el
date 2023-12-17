@@ -55,6 +55,8 @@
   :init
   (setq backup-directory-alist
     `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+  (setq auto-save-file-name-transforms
+    `((".*" ,(no-littering-expand-var-file-name "autosaves/") t)))
   (when (boundp 'native-comp-eln-load-path)
     (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 

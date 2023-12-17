@@ -105,6 +105,8 @@ invoke google translate on them. Stores history.
       :init
       (setq backup-directory-alist
         `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+      (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "autosaves/") t)))
       (when (boundp 'native-comp-eln-load-path)
         (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
     
@@ -1013,7 +1015,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga55920c)
+    See `org-agenda-files` [org-agenda-files](#orgf4c8d29)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2950,7 +2952,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org48289f5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgff4da16) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2983,7 +2985,7 @@ to add to version control.
     fi
 
 
-<a id="org48289f5"></a>
+<a id="orgff4da16"></a>
 
 ### Gnome protocol handler desktop file
 
