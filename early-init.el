@@ -51,12 +51,12 @@
 
 (use-package no-littering
   :custom
-  (make-backup-files nil)
+  (make-backup-files t)
   :init
   (setq backup-directory-alist
     `(("." . ,(no-littering-expand-var-file-name "backup/"))))
   (setq auto-save-file-name-transforms
-    `((".*" ,(no-littering-expand-var-file-name "autosaves/") t)))
+    `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
   (when (boundp 'native-comp-eln-load-path)
     (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
