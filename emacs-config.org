@@ -2705,24 +2705,6 @@ https://github.com/IvanMalison/org-projectile
 :PROPERTIES:
 :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
 :END:
-***** consult-gh
-pending research  https://github.com/armindarvish/consult-gh
-#+begin_src  emacs-lisp
-  (use-package consult-gh
-    :disabled
-    :straight (consult-gh :type git :host github :repo "armindarvish/consult-gh")
-
-    :config
-    ;;add your main GitHub account (replace "armindarvish" with your user or org)
-    (add-to-list 'consult-gh-default-orgs-list "rileyrg")
-
-    ;;use "gh org list" to get a list of all your organizations and adds them to default list
-    ;;(setq consult-gh-default-orgs-list (append consult-gh-default-orgs-list (remove "" (split-string (consult-gh--command-to-string "org" "list") "\n"))))
-
-    ;; set the default folder for cloning repositories, By default Consult-GH will confirm this before cloning
-    (setq consult-gh-default-clone-directory "~/development/projects")
-  )
-#+end_src
 ***** It's [[Https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs :magit:
 :PROPERTIES:
 :ID:       af65c6af-be13-4c09-87ae-a128711ddc14
@@ -2740,46 +2722,16 @@ magit
     :hook
     (magit-status-mode . magit-filenotify-mode))
 #+end_src
-****** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
-:PROPERTIES:
-:ID:       66507d88-e049-4c4b-b3a6-e8fb932417a9
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-04-23 Fr 23:10]
-:END:
-#+begin_src emacs-lisp
-  (use-package orgit
-    :after magit)
-#+end_src
-***** EDiff - comparing files in Emacs                           :diff:ediff:
-:PROPERTIES:
-:ID:       8e09b947-9859-4b89-8354-3c39b1649c33
-:END:
-#+begin_src emacs-lisp
-  (use-package ediff+
-    :custom
-    (ediff-window-setup-function 'ediff-setup-windows-plain)
-    (ediff-split-window-function 'split-window-horizontally)
-    :config
-    (when (fboundp 'winnder-undo)
-      (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
-    :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
-#+end_src
-
 ***** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests                       :forge:git:github:
-a real PITA. I'm having to disable this. all sorts of slot/version issues.
+always causes issues. disabled.
 :PROPERTIES:
 :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
 :END:
 #+begin_src emacs-lisp
   (straight-use-package 'sqlite3)
   (use-package forge
-    :disabled
-    :after magit
-    :init
-    :config
-    (use-package orgit-forge)
-    )
+    ;disabled
+    :after magit)
 #+end_src
 
 ****** token                                                    :crypt:token:
@@ -2850,6 +2802,7 @@ Running emultaor from command line:
   ;;   )
 #+end_src
 **** Javascript                                                          :js:
+It's all a bit confusing : using typescript mode
 :PROPERTIES:
 :ID:       27571c84-2c40-487d-abd0-3013c53b731b
 :END:
@@ -2875,20 +2828,6 @@ Running emultaor from command line:
 :END:
 #+begin_src emacs-lisp
   ;; sudo npm i -g typescript-language-server
-  (use-package typescript-mode
-    :disabled
-    :config
-    ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-    ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-    (define-derived-mode typescriptreact-mode typescript-mode
-      "TypeScript TSX")
-
-    ;; use our derived mode for tsx files
-    (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-    (defun rgr/ts-mode-hook ()
-      (lsp-deferred)
-      )
-    (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 
   (use-package typescript-ts-mode
     :init
@@ -2901,37 +2840,14 @@ Running emultaor from command line:
 
 #+end_src
 **** Tree Sitter
+***** treesit-auto
+Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
 #+begin_src  emacs-lisp
   (use-package treesit-auto
-    ;;:disabled
     :custom
     (treesit-auto-install 'prompt)
     :config
-    ;; (message "**** treesit dart ***")
-    ;; (setq my-dart-tsauto-config
-    ;;       (make-treesit-auto-recipe
-    ;;        :lang 'dart
-    ;;        :ts-mode 'dart-mode
-    ;;        :remap 'dart-mode
-    ;;        :url "https://github.com/UserNobody14/tree-sitter-dart"))
-    ;; (add-to-list 'treesit-auto-recipe-list my-dart-tsauto-config)
-
-    (use-package treesitter-context
-      :disabled
-      :straight (:host github :type git :repo "zbelial/treesitter-context.el" )
-      :init
-      (use-package posframe-plus
-        :straight (:host github :type git :repo "zbelial/posframe-plus" ))
-      :config
-      (treesitter-context-mode t))
-
-    (global-treesit-auto-mode)
-    :hook
-    ;;(dart-mode . (lambda()(treesit-inspect-mode())))
-    (c-ts-base-mode . (lambda()
-                        (treesit-inspect-mode t)
-                        (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
-                        (rgr/c-ts-mode-common-hook))))
+    (global-treesit-auto-mode))
 #+end_src
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
 :PROPERTIES:
