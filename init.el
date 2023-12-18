@@ -175,6 +175,7 @@
 (use-package posframe)
 
 (use-package popper
+  :disabled
   :ensure t
   :init
   (use-package posframe)

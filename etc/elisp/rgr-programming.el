@@ -355,7 +355,6 @@
   )
 
 (use-package emacs
-  :demand t
   :config
   (require 'c-ts-mode)
   (defun rgr/c-ts-mode-hook ()
