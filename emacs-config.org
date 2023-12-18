@@ -2733,8 +2733,12 @@ magit
 #+begin_src emacs-lisp
   (use-package
     magit
+    :init
+    (use-package magit-filenotify)
     :bind
-    ("C-x g" . magit-status))
+    ("C-x g" . magit-status)
+    :hook
+    (magit-status-mode . magit-filenotify-mode))
 #+end_src
 ****** [[https://github.com/magit/orgit][Orgit]] allows us to link to Magit buffers from Org documents :CANCELLED:
 :PROPERTIES:
@@ -3119,11 +3123,32 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   :END:
 ***** c-mode-common-hook
 #+begin_src emacs-lisp
-  (use-package emacs
+  (use-package c-ts-mode
     :config
-    (require 'c-ts-mode)
+
+    (defun rgr/c-complete-line()
+      (interactive)
+      (end-of-line)
+      (delete-trailing-whitespace)
+      (unless (eql ?\; (char-before (point-at-eol)))
+        (progn (insert ";")))
+      (newline-and-indent))
+
+    (defun rgr/c-insert-previous-line()
+      (interactive)
+      (previous-line)
+      (end-of-line)
+      (newline-and-indent)
+      (insert (string-trim (current-kill 0))))
+
+    (defun rgr/c-newline-below()
+      (interactive)
+      (end-of-line)
+      (newline-and-indent))
+
     (defun rgr/c-ts-mode-hook ()
       )
+
     (defun rgr/c-ts-mode-common-hook ()
       ;;(eglot-ensure)
       (lsp-deferred)
@@ -3133,51 +3158,14 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
           (platformio-conditionally-enable))
       (if (featurep 'yasnippet)
           (yas-minor-mode)))
+
     :hook
     (c-mode-common . rgr/c-ts-mode-common-hook)
     (c-ts-mode . rgr/c-ts-mode-hook)
-    :bind  ( :map c-ts-mode-map
-             (("M-<return>" . rgr/c-complete-line)
-              ("TAB" . rgr/c-indent-complete)
-              )))
-#+end_src
-***** line utilities
-:PROPERTIES:
-:ID:       8c0d8f29-8b5f-4ac5-b784-04db47f4c045
-:END:
-#+begin_src emacs-lisp
-  (defun rgr/c-complete-line()
-    (interactive)
-    (end-of-line)
-    (delete-trailing-whitespace)
-    (unless (eql ?\; (char-before (point-at-eol)))
-      (progn (insert ";")))
-    (newline-and-indent))
-  ;;(define-key c-mode-map (kbd "M-<return>") 'rgr/c-complete-line)
-  (defun rgr/c-insert-previous-line()
-    (interactive)
-    (previous-line)
-    (end-of-line)
-    (newline-and-indent)
-    (insert (string-trim (current-kill 0))))
-  (defun rgr/c-newline-below()
-    (interactive)
-    (end-of-line)
-    (newline-and-indent))
-#+end_src
-*****  formatting
-:PROPERTIES:
-:ID:       6d52acda-609a-4ca0-844e-3bab04de12cb
-:END:
-#+begin_src emacs-lisp
-
-  (defun rgr/c-indent-complete()
-    (interactive)
-    (let (( p (point)))
-      (c-indent-line-or-region)
-      (when (= p (point))
-        (call-interactively 'complete-symbol))))
-
+    :bind  ( :map c++-ts-mode-map
+             (("M-<return>" . rgr/c-complete-line))
+             :map c-ts-mode-map
+             (("M-<return>" . rgr/c-complete-line))))
 #+end_src
 **** cc,cpp, C++, cc-mode                                               :cpp:
 :PROPERTIES:
