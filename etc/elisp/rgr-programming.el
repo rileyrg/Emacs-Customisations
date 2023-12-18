@@ -138,21 +138,6 @@
     (flymake-mode +1))
   :hook (sh-mode . rgr/sh-mode-hook))
 
-(use-package consult-gh
-  :disabled
-  :straight (consult-gh :type git :host github :repo "armindarvish/consult-gh")
-
-  :config
-  ;;add your main GitHub account (replace "armindarvish" with your user or org)
-  (add-to-list 'consult-gh-default-orgs-list "rileyrg")
-
-  ;;use "gh org list" to get a list of all your organizations and adds them to default list
-  ;;(setq consult-gh-default-orgs-list (append consult-gh-default-orgs-list (remove "" (split-string (consult-gh--command-to-string "org" "list") "\n"))))
-
-  ;; set the default folder for cloning repositories, By default Consult-GH will confirm this before cloning
-  (setq consult-gh-default-clone-directory "~/development/projects")
-)
-
 (use-package
   magit
   :init
@@ -162,26 +147,10 @@
   :hook
   (magit-status-mode . magit-filenotify-mode))
 
-(use-package orgit
-  :after magit)
-
-(use-package ediff+
-  :custom
-  (ediff-window-setup-function 'ediff-setup-windows-plain)
-  (ediff-split-window-function 'split-window-horizontally)
-  :config
-  (when (fboundp 'winnder-undo)
-    (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
-  :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
-
 (straight-use-package 'sqlite3)
 (use-package forge
-  :disabled
-  :after magit
-  :init
-  :config
-  (use-package orgit-forge)
-  )
+  ;disabled
+  :after magit)
 
 (use-package git-gutter
   :config
@@ -236,20 +205,6 @@
         ("M-." . #'lsp-ui-peek-find-definitions)))
 
 ;; sudo npm i -g typescript-language-server
-(use-package typescript-mode
-  :disabled
-  :config
-  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-  (define-derived-mode typescriptreact-mode typescript-mode
-    "TypeScript TSX")
-
-  ;; use our derived mode for tsx files
-  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-  (defun rgr/ts-mode-hook ()
-    (lsp-deferred)
-    )
-  (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 
 (use-package typescript-ts-mode
   :init
@@ -260,35 +215,10 @@
          ("\\.tsx\\'" . tsx-ts-mode)))
 
 (use-package treesit-auto
-  ;;:disabled
   :custom
   (treesit-auto-install 'prompt)
   :config
-  ;; (message "**** treesit dart ***")
-  ;; (setq my-dart-tsauto-config
-  ;;       (make-treesit-auto-recipe
-  ;;        :lang 'dart
-  ;;        :ts-mode 'dart-mode
-  ;;        :remap 'dart-mode
-  ;;        :url "https://github.com/UserNobody14/tree-sitter-dart"))
-  ;; (add-to-list 'treesit-auto-recipe-list my-dart-tsauto-config)
-
-  (use-package treesitter-context
-    :disabled
-    :straight (:host github :type git :repo "zbelial/treesitter-context.el" )
-    :init
-    (use-package posframe-plus
-      :straight (:host github :type git :repo "zbelial/posframe-plus" ))
-    :config
-    (treesitter-context-mode t))
-
-  (global-treesit-auto-mode)
-  :hook
-  ;;(dart-mode . (lambda()(treesit-inspect-mode())))
-  (c-ts-base-mode . (lambda()
-                      (treesit-inspect-mode t)
-                      (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
-                      (rgr/c-ts-mode-common-hook))))
+  (global-treesit-auto-mode))
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 

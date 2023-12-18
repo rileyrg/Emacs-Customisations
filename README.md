@@ -1013,7 +1013,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org20d3eee)
+    See `org-agenda-files` [org-agenda-files](#orgd30fb6d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2295,26 +2295,7 @@ Zoom into current buffer
 
 15. Version Control
 
-    1.  consult-gh
-    
-        pending research  <https://github.com/armindarvish/consult-gh>
-        
-            (use-package consult-gh
-              :disabled
-              :straight (consult-gh :type git :host github :repo "armindarvish/consult-gh")
-            
-              :config
-              ;;add your main GitHub account (replace "armindarvish" with your user or org)
-              (add-to-list 'consult-gh-default-orgs-list "rileyrg")
-            
-              ;;use "gh org list" to get a list of all your organizations and adds them to default list
-              ;;(setq consult-gh-default-orgs-list (append consult-gh-default-orgs-list (remove "" (split-string (consult-gh--command-to-string "org" "list") "\n"))))
-            
-              ;; set the default folder for cloning repositories, By default Consult-GH will confirm this before cloning
-              (setq consult-gh-default-clone-directory "~/development/projects")
-            )
-    
-    2.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
+    1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
     
         magit
         
@@ -2326,37 +2307,17 @@ Zoom into current buffer
               ("C-x g" . magit-status)
               :hook
               (magit-status-mode . magit-filenotify-mode))
-        
-        1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents
-        
-                (use-package orgit
-                  :after magit)
     
-    3.  EDiff - comparing files in Emacs
+    2.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
     
-            (use-package ediff+
-              :custom
-              (ediff-window-setup-function 'ediff-setup-windows-plain)
-              (ediff-split-window-function 'split-window-horizontally)
-              :config
-              (when (fboundp 'winnder-undo)
-                (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
-              :bind (:map prog-mode-map ("C-c C-d" . 'ediff-files)))
-    
-    4.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
-    
-        a real PITA. I'm having to disable this. all sorts of slot/version issues.
+        always causes issues. disabled.
         
         :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
         
             (straight-use-package 'sqlite3)
             (use-package forge
-              :disabled
-              :after magit
-              :init
-              :config
-              (use-package orgit-forge)
-              )
+              ;disabled
+              :after magit)
         
         1.  token
         
@@ -2374,7 +2335,7 @@ Zoom into current buffer
             =MsQY
             &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
     
-    5.  Git Gutter Mode
+    3.  Git Gutter Mode
     
         [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
         
@@ -2424,6 +2385,10 @@ Zoom into current buffer
 
 17. Javascript
 
+    It's all a bit confusing : using typescript mode
+    
+    :ID:       27571c84-2c40-487d-abd0-3013c53b731b
+    
         (use-package js
           :disabled
           :config
@@ -2443,20 +2408,6 @@ Zoom into current buffer
 18. Typescript
 
         ;; sudo npm i -g typescript-language-server
-        (use-package typescript-mode
-          :disabled
-          :config
-          ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-          ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-          (define-derived-mode typescriptreact-mode typescript-mode
-            "TypeScript TSX")
-        
-          ;; use our derived mode for tsx files
-          (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-          (defun rgr/ts-mode-hook ()
-            (lsp-deferred)
-            )
-          (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
         
         (use-package typescript-ts-mode
           :init
@@ -2468,36 +2419,15 @@ Zoom into current buffer
 
 19. Tree Sitter
 
-        (use-package treesit-auto
-          ;;:disabled
-          :custom
-          (treesit-auto-install 'prompt)
-          :config
-          ;; (message "**** treesit dart ***")
-          ;; (setq my-dart-tsauto-config
-          ;;       (make-treesit-auto-recipe
-          ;;        :lang 'dart
-          ;;        :ts-mode 'dart-mode
-          ;;        :remap 'dart-mode
-          ;;        :url "https://github.com/UserNobody14/tree-sitter-dart"))
-          ;; (add-to-list 'treesit-auto-recipe-list my-dart-tsauto-config)
+    1.  treesit-auto
+    
+        Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
         
-          (use-package treesitter-context
-            :disabled
-            :straight (:host github :type git :repo "zbelial/treesitter-context.el" )
-            :init
-            (use-package posframe-plus
-              :straight (:host github :type git :repo "zbelial/posframe-plus" ))
-            :config
-            (treesitter-context-mode t))
-        
-          (global-treesit-auto-mode)
-          :hook
-          ;;(dart-mode . (lambda()(treesit-inspect-mode())))
-          (c-ts-base-mode . (lambda()
-                              (treesit-inspect-mode t)
-                              (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
-                              (rgr/c-ts-mode-common-hook))))
+            (use-package treesit-auto
+              :custom
+              (treesit-auto-install 'prompt)
+              :config
+              (global-treesit-auto-mode))
 
 20. Language Server Protocol (LSP), lsp-mode
 
@@ -2963,7 +2893,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org67f98cf) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6913444) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2996,7 +2926,7 @@ to add to version control.
     fi
 
 
-<a id="org67f98cf"></a>
+<a id="org6913444"></a>
 
 ### Gnome protocol handler desktop file
 
