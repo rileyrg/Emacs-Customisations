@@ -155,8 +155,12 @@
 
 (use-package
   magit
+  :init
+  (use-package magit-filenotify)
   :bind
-  ("C-x g" . magit-status))
+  ("C-x g" . magit-status)
+  :hook
+  (magit-status-mode . magit-filenotify-mode))
 
 (use-package orgit
   :after magit)
@@ -354,11 +358,32 @@
   ;; (breadcrumb-mode t)
   )
 
-(use-package emacs
+(use-package c-ts-mode
   :config
-  (require 'c-ts-mode)
+
+  (defun rgr/c-complete-line()
+    (interactive)
+    (end-of-line)
+    (delete-trailing-whitespace)
+    (unless (eql ?\; (char-before (point-at-eol)))
+      (progn (insert ";")))
+    (newline-and-indent))
+
+  (defun rgr/c-insert-previous-line()
+    (interactive)
+    (previous-line)
+    (end-of-line)
+    (newline-and-indent)
+    (insert (string-trim (current-kill 0))))
+
+  (defun rgr/c-newline-below()
+    (interactive)
+    (end-of-line)
+    (newline-and-indent))
+
   (defun rgr/c-ts-mode-hook ()
     )
+
   (defun rgr/c-ts-mode-common-hook ()
     ;;(eglot-ensure)
     (lsp-deferred)
@@ -368,39 +393,14 @@
         (platformio-conditionally-enable))
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
+
   :hook
   (c-mode-common . rgr/c-ts-mode-common-hook)
   (c-ts-mode . rgr/c-ts-mode-hook)
-  :bind  ( :map c-ts-mode-map
-           (("M-<return>" . rgr/c-complete-line)
-            ("TAB" . rgr/c-indent-complete)
-            )))
-
-(defun rgr/c-complete-line()
-  (interactive)
-  (end-of-line)
-  (delete-trailing-whitespace)
-  (unless (eql ?\; (char-before (point-at-eol)))
-    (progn (insert ";")))
-  (newline-and-indent))
-;;(define-key c-mode-map (kbd "M-<return>") 'rgr/c-complete-line)
-(defun rgr/c-insert-previous-line()
-  (interactive)
-  (previous-line)
-  (end-of-line)
-  (newline-and-indent)
-  (insert (string-trim (current-kill 0))))
-(defun rgr/c-newline-below()
-  (interactive)
-  (end-of-line)
-  (newline-and-indent))
-
-(defun rgr/c-indent-complete()
-  (interactive)
-  (let (( p (point)))
-    (c-indent-line-or-region)
-    (when (= p (point))
-      (call-interactively 'complete-symbol))))
+  :bind  ( :map c++-ts-mode-map
+           (("M-<return>" . rgr/c-complete-line))
+           :map c-ts-mode-map
+           (("M-<return>" . rgr/c-complete-line))))
 
 (defun rgr/c++-mode-hook ()
   )

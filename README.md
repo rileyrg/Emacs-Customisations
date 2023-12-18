@@ -1013,7 +1013,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org240743f)
+    See `org-agenda-files` [org-agenda-files](#org20d3eee)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2320,8 +2320,12 @@ Zoom into current buffer
         
             (use-package
               magit
+              :init
+              (use-package magit-filenotify)
               :bind
-              ("C-x g" . magit-status))
+              ("C-x g" . magit-status)
+              :hook
+              (magit-status-mode . magit-filenotify-mode))
         
         1.  [Orgit](https://github.com/magit/orgit) allows us to link to Magit buffers from Org documents
         
@@ -2661,11 +2665,32 @@ Zoom into current buffer
 
     1.  c-mode-common-hook
     
-            (use-package emacs
+            (use-package c-ts-mode
               :config
-              (require 'c-ts-mode)
+            
+              (defun rgr/c-complete-line()
+                (interactive)
+                (end-of-line)
+                (delete-trailing-whitespace)
+                (unless (eql ?\; (char-before (point-at-eol)))
+                  (progn (insert ";")))
+                (newline-and-indent))
+            
+              (defun rgr/c-insert-previous-line()
+                (interactive)
+                (previous-line)
+                (end-of-line)
+                (newline-and-indent)
+                (insert (string-trim (current-kill 0))))
+            
+              (defun rgr/c-newline-below()
+                (interactive)
+                (end-of-line)
+                (newline-and-indent))
+            
               (defun rgr/c-ts-mode-hook ()
                 )
+            
               (defun rgr/c-ts-mode-common-hook ()
                 ;;(eglot-ensure)
                 (lsp-deferred)
@@ -2675,44 +2700,14 @@ Zoom into current buffer
                     (platformio-conditionally-enable))
                 (if (featurep 'yasnippet)
                     (yas-minor-mode)))
+            
               :hook
               (c-mode-common . rgr/c-ts-mode-common-hook)
               (c-ts-mode . rgr/c-ts-mode-hook)
-              :bind  ( :map c-ts-mode-map
-                       (("M-<return>" . rgr/c-complete-line)
-                        ("TAB" . rgr/c-indent-complete)
-                        )))
-    
-    2.  line utilities
-    
-            (defun rgr/c-complete-line()
-              (interactive)
-              (end-of-line)
-              (delete-trailing-whitespace)
-              (unless (eql ?\; (char-before (point-at-eol)))
-                (progn (insert ";")))
-              (newline-and-indent))
-            ;;(define-key c-mode-map (kbd "M-<return>") 'rgr/c-complete-line)
-            (defun rgr/c-insert-previous-line()
-              (interactive)
-              (previous-line)
-              (end-of-line)
-              (newline-and-indent)
-              (insert (string-trim (current-kill 0))))
-            (defun rgr/c-newline-below()
-              (interactive)
-              (end-of-line)
-              (newline-and-indent))
-    
-    3.  formatting
-    
-            
-            (defun rgr/c-indent-complete()
-              (interactive)
-              (let (( p (point)))
-                (c-indent-line-or-region)
-                (when (= p (point))
-                  (call-interactively 'complete-symbol))))
+              :bind  ( :map c++-ts-mode-map
+                       (("M-<return>" . rgr/c-complete-line))
+                       :map c-ts-mode-map
+                       (("M-<return>" . rgr/c-complete-line))))
 
 27. cc,cpp, C++, cc-mode
 
@@ -2968,7 +2963,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf8e4b30) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org67f98cf) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3001,7 +2996,7 @@ to add to version control.
     fi
 
 
-<a id="orgf8e4b30"></a>
+<a id="org67f98cf"></a>
 
 ### Gnome protocol handler desktop file
 
