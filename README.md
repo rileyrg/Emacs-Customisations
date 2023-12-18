@@ -1013,7 +1013,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org5ac30a4)
+    See `org-agenda-files` [org-agenda-files](#org240743f)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1702,6 +1702,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     [Popper](https://github.com/karthink/popper) is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
     
         (use-package popper
+          :disabled
           :ensure t
           :init
           (use-package posframe)
@@ -2661,7 +2662,6 @@ Zoom into current buffer
     1.  c-mode-common-hook
     
             (use-package emacs
-              :demand t
               :config
               (require 'c-ts-mode)
               (defun rgr/c-ts-mode-hook ()
@@ -2968,7 +2968,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org092002b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf8e4b30) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3001,7 +3001,7 @@ to add to version control.
     fi
 
 
-<a id="org092002b"></a>
+<a id="orgf8e4b30"></a>
 
 ### Gnome protocol handler desktop file
 
