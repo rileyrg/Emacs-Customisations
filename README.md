@@ -1015,7 +1015,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgb469407)
+    See `org-agenda-files` [org-agenda-files](#org3ab1510)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2409,7 +2409,7 @@ Zoom into current buffer
           (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
           (use-package lsp-dart :after lsp)
           (defun rgr/init-dart-buffer()
-            (setq-local dash-docs-docsets '("Dart"))
+            ;;(setq-local dash-docs-docsets '("Dart"))
             (lsp-deferred) )
           :hook   (dart-mode . rgr/init-dart-buffer ))
     
@@ -2422,13 +2422,15 @@ Zoom into current buffer
 17. Javascript
 
         (use-package js
+          :disabled
           :config
           (defun rgr/js-mode-hook ()
             (message "rgr/js-mode-hook")
             (js-jsx-enable)
             (lsp-deferred)
             (local-unset-key (kbd "M-."))
-            (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
+            ;(setq-local dash-docs-docsets '("React" "JavaScript" "jQuery"))
+            )
           :hook
           (js-ts-mode . rgr/js-mode-hook)
           :bind
@@ -2439,7 +2441,7 @@ Zoom into current buffer
 
         ;; sudo npm i -g typescript-language-server
         (use-package typescript-mode
-        ;;  :disabled
+          :disabled
           :config
           ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
           ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
@@ -2450,17 +2452,21 @@ Zoom into current buffer
           (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
           (defun rgr/ts-mode-hook ()
             (lsp-deferred)
-            (setq-local dash-docs-docsets '("React" "JavaScript")))
+            )
           (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
         
-        ;; (use-package typescript-ts-mode
-        ;;   :mode (("\\.ts\\'" . typescript-ts-mode)
-        ;;          ("\\.tsx\\'" . tsx-ts-mode)))
+        (use-package typescript-ts-mode
+          :init
+          (defun rgr/ts-mode-hook ()
+            (lsp-deferred))
+          (add-hook 'typescript-ts-mode-hook  #'rgr/ts-mode-hook)
+          :mode (("\\.ts\\'" . typescript-ts-mode)("\\.js\\'" . typescript-ts-mode)
+                 ("\\.tsx\\'" . tsx-ts-mode)))
 
 19. Tree Sitter
 
         (use-package treesit-auto
-          ;;:disable
+          ;;:disabled
           :custom
           (treesit-auto-install 'prompt)
           :config
@@ -2516,6 +2522,8 @@ Zoom into current buffer
                       )
                     :custom
                     (lsp-ui-doc-mode 1)
+                    :bind (:map lsp-ui-mode-map
+                                ("M-." . #'lsp-find-definition))
                     :hook
                     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
                   (use-package lsp-treemacs
@@ -2799,10 +2807,11 @@ Zoom into current buffer
             
                     (use-package
                       web-mode
+                      :disabled
                       :demand t
                       :config
                       (defun rgr/web-mode-hook()
-                        (setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
+                        ;;(setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
                         )
                       (add-hook 'web-mode-hook 'rgr/web-mode-hook)
                       ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
@@ -2839,6 +2848,7 @@ Zoom into current buffer
 <https://github.com/protesilaos/modus-themes>
 
     (use-package modus-themes
+      ;:disabled
       :init
       ;; Add all your customizations prior to loading the themes
       (setq modus-themes-slanted-constructs t
@@ -2849,6 +2859,17 @@ Zoom into current buffer
       :config
       (load-theme 'modus-operandi :no-confirm))
     ;; (modus-themes-load-vivendi))
+
+
+### ef-themes
+
+<https://github.com/protesilaos/ef-themes>
+
+    (use-package ef-themes
+      :disabled
+      :demand t
+      :config
+      (ef-themes-select 'ef-duo-light))
 
 
 ### humanoid themes
@@ -2952,7 +2973,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2011a59) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb9da514) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2985,7 +3006,7 @@ to add to version control.
     fi
 
 
-<a id="org2011a59"></a>
+<a id="orgb9da514"></a>
 
 ### Gnome protocol handler desktop file
 
