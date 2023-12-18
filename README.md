@@ -90,8 +90,6 @@ invoke google translate on them. Stores history.
       (straight-use-package-by-default t)
       (straight-vc-git-default-protocol 'ssh))
     
-    (use-package transient)
-    
     (use-package notifications
       :demand t
       :config
@@ -1015,7 +1013,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org3ab1510)
+    See `org-agenda-files` [org-agenda-files](#org60bb148)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2494,7 +2492,7 @@ Zoom into current buffer
           (c-ts-base-mode . (lambda()
                               (treesit-inspect-mode t)
                               (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
-                              (rgr/c-mode-common-hook))))
+                              (rgr/c-ts-mode-common-hook))))
 
 20. Language Server Protocol (LSP), lsp-mode
 
@@ -2667,12 +2665,10 @@ Zoom into current buffer
     1.  c-mode-common-hook
     
             (use-package emacs
+              :demand t
               :config
-              (defun rgr/c-mode-common-save-hook()
-                                                    ;(eglot-format-buffer)
-                )
-              (defun rgr/c-mode-common-hook ()
-                (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
+              (require 'c-ts-mode)
+              (defun rgr/c-ts-mode-common-hook ()
                 ;;(eglot-ensure)
                 (lsp-deferred)
                 ;;(if (fboundp 'indent-bars-mode)
@@ -2682,8 +2678,8 @@ Zoom into current buffer
                 (if (featurep 'yasnippet)
                     (yas-minor-mode)))
               :hook
-              (c-mode-common . rgr/c-mode-common-hook)
-              :bind  ( :map c-mode-base-map
+              (c-mode-common . rgr/c-ts-mode-common-hook)
+              :bind  ( :map c-ts-mode-map
                        (("M-<return>" . rgr/c-complete-line)
                         ("TAB" . rgr/c-indent-complete)
                         )))
@@ -2973,7 +2969,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb9da514) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga1de35e) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3006,7 +3002,7 @@ to add to version control.
     fi
 
 
-<a id="orgb9da514"></a>
+<a id="orga1de35e"></a>
 
 ### Gnome protocol handler desktop file
 

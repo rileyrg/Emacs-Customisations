@@ -117,8 +117,6 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (straight-use-package-by-default t)
     (straight-vc-git-default-protocol 'ssh))
 
-  (use-package transient)
-
   (use-package notifications
     :demand t
     :config
@@ -2928,7 +2926,7 @@ Running emultaor from command line:
     (c-ts-base-mode . (lambda()
                         (treesit-inspect-mode t)
                         (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
-                        (rgr/c-mode-common-hook))))
+                        (rgr/c-ts-mode-common-hook))))
 #+end_src
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
 :PROPERTIES:
@@ -3126,12 +3124,10 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 ***** c-mode-common-hook
 #+begin_src emacs-lisp
   (use-package emacs
+    :demand t
     :config
-    (defun rgr/c-mode-common-save-hook()
-                                          ;(eglot-format-buffer)
-      )
-    (defun rgr/c-mode-common-hook ()
-      (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
+    (require 'c-ts-mode)
+    (defun rgr/c-ts-mode-common-hook ()
       ;;(eglot-ensure)
       (lsp-deferred)
       ;;(if (fboundp 'indent-bars-mode)
@@ -3141,8 +3137,8 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
       (if (featurep 'yasnippet)
           (yas-minor-mode)))
     :hook
-    (c-mode-common . rgr/c-mode-common-hook)
-    :bind  ( :map c-mode-base-map
+    (c-mode-common . rgr/c-ts-mode-common-hook)
+    :bind  ( :map c-ts-mode-map
              (("M-<return>" . rgr/c-complete-line)
               ("TAB" . rgr/c-indent-complete)
               )))
