@@ -182,7 +182,7 @@
   (setq popper-reference-buffers
         '(
           "\\*Messages\\*"
-          magit-mode
+          ;;magit-mode
           ;;      help-mode
           helpful-mode
           inferior-python-mode

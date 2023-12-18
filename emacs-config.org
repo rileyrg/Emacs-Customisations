@@ -1999,7 +1999,7 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
     (setq popper-reference-buffers
           '(
             "\\*Messages\\*"
-            magit-mode
+            ;;magit-mode
             ;;      help-mode
             helpful-mode
             inferior-python-mode
