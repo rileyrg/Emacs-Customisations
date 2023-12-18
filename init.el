@@ -413,6 +413,7 @@
 (require 'rgr/programming "rgr-programming" 'NOERROR)
 
 (use-package modus-themes
+  ;:disabled
   :init
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-slanted-constructs t
@@ -423,5 +424,11 @@
   :config
   (load-theme 'modus-operandi :no-confirm))
 ;; (modus-themes-load-vivendi))
+
+(use-package ef-themes
+  :disabled
+  :demand t
+  :config
+  (ef-themes-select 'ef-duo-light))
 
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))

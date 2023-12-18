@@ -12,6 +12,8 @@
       )
     :custom
     (lsp-ui-doc-mode 1)
+    :bind (:map lsp-ui-mode-map
+                ("M-." . #'lsp-find-definition))
     :hook
     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
   (use-package lsp-treemacs

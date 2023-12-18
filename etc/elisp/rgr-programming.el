@@ -207,7 +207,7 @@
   (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
   (use-package lsp-dart :after lsp)
   (defun rgr/init-dart-buffer()
-    (setq-local dash-docs-docsets '("Dart"))
+    ;;(setq-local dash-docs-docsets '("Dart"))
     (lsp-deferred) )
   :hook   (dart-mode . rgr/init-dart-buffer ))
 
@@ -216,13 +216,15 @@
 ;;   )
 
 (use-package js
+  :disabled
   :config
   (defun rgr/js-mode-hook ()
     (message "rgr/js-mode-hook")
     (js-jsx-enable)
     (lsp-deferred)
     (local-unset-key (kbd "M-."))
-    (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
+    ;(setq-local dash-docs-docsets '("React" "JavaScript" "jQuery"))
+    )
   :hook
   (js-ts-mode . rgr/js-mode-hook)
   :bind
@@ -231,7 +233,7 @@
 
 ;; sudo npm i -g typescript-language-server
 (use-package typescript-mode
-;;  :disabled
+  :disabled
   :config
   ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
   ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
@@ -242,15 +244,19 @@
   (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
   (defun rgr/ts-mode-hook ()
     (lsp-deferred)
-    (setq-local dash-docs-docsets '("React" "JavaScript")))
+    )
   (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 
-;; (use-package typescript-ts-mode
-;;   :mode (("\\.ts\\'" . typescript-ts-mode)
-;;          ("\\.tsx\\'" . tsx-ts-mode)))
+(use-package typescript-ts-mode
+  :init
+  (defun rgr/ts-mode-hook ()
+    (lsp-deferred))
+  (add-hook 'typescript-ts-mode-hook  #'rgr/ts-mode-hook)
+  :mode (("\\.ts\\'" . typescript-ts-mode)("\\.js\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)))
 
 (use-package treesit-auto
-  ;;:disable
+  ;;:disabled
   :custom
   (treesit-auto-install 'prompt)
   :config
@@ -459,10 +465,11 @@
 
 (use-package
   web-mode
+  :disabled
   :demand t
   :config
   (defun rgr/web-mode-hook()
-    (setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
+    ;;(setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
     )
   (add-hook 'web-mode-hook 'rgr/web-mode-hook)
   ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))

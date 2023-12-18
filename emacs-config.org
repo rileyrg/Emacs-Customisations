@@ -2835,7 +2835,7 @@ Running emultaor from command line:
     (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
     (use-package lsp-dart :after lsp)
     (defun rgr/init-dart-buffer()
-      (setq-local dash-docs-docsets '("Dart"))
+      ;;(setq-local dash-docs-docsets '("Dart"))
       (lsp-deferred) )
     :hook   (dart-mode . rgr/init-dart-buffer ))
 
@@ -2851,19 +2851,21 @@ Running emultaor from command line:
 :ID:       27571c84-2c40-487d-abd0-3013c53b731b
 :END:
 #+begin_src emacs-lisp
-  (use-package js
-    :config
-    (defun rgr/js-mode-hook ()
-      (message "rgr/js-mode-hook")
-      (js-jsx-enable)
-      (lsp-deferred)
-      (local-unset-key (kbd "M-."))
-      (setq-local dash-docs-docsets '("React" "JavaScript" "jQuery")))
-    :hook
-    (js-ts-mode . rgr/js-mode-hook)
-    :bind
-    (:map js-mode-map
-          ("M-." . #'lsp-ui-peek-find-definitions)))
+    (use-package js
+      :disabled
+      :config
+      (defun rgr/js-mode-hook ()
+        (message "rgr/js-mode-hook")
+        (js-jsx-enable)
+        (lsp-deferred)
+        (local-unset-key (kbd "M-."))
+        ;(setq-local dash-docs-docsets '("React" "JavaScript" "jQuery"))
+        )
+      :hook
+      (js-ts-mode . rgr/js-mode-hook)
+      :bind
+      (:map js-mode-map
+            ("M-." . #'lsp-ui-peek-find-definitions)))
 #+end_src
 **** Typescript
 :PROPERTIES:
@@ -2871,7 +2873,7 @@ Running emultaor from command line:
 #+begin_src emacs-lisp
   ;; sudo npm i -g typescript-language-server
   (use-package typescript-mode
-  ;;  :disabled
+    :disabled
     :config
     ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
     ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
@@ -2882,19 +2884,23 @@ Running emultaor from command line:
     (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
     (defun rgr/ts-mode-hook ()
       (lsp-deferred)
-      (setq-local dash-docs-docsets '("React" "JavaScript")))
+      )
     (add-hook 'typescript-mode-hook 'rgr/ts-mode-hook))
 
-  ;; (use-package typescript-ts-mode
-  ;;   :mode (("\\.ts\\'" . typescript-ts-mode)
-  ;;          ("\\.tsx\\'" . tsx-ts-mode)))
+  (use-package typescript-ts-mode
+    :init
+    (defun rgr/ts-mode-hook ()
+      (lsp-deferred))
+    (add-hook 'typescript-ts-mode-hook  #'rgr/ts-mode-hook)
+    :mode (("\\.ts\\'" . typescript-ts-mode)("\\.js\\'" . typescript-ts-mode)
+           ("\\.tsx\\'" . tsx-ts-mode)))
 
 
 #+end_src
 **** Tree Sitter
 #+begin_src  emacs-lisp
   (use-package treesit-auto
-    ;;:disable
+    ;;:disabled
     :custom
     (treesit-auto-install 'prompt)
     :config
@@ -2958,6 +2964,8 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
         )
       :custom
       (lsp-ui-doc-mode 1)
+      :bind (:map lsp-ui-mode-map
+                  ("M-." . #'lsp-find-definition))
       :hook
       (lsp-ui-mode . rgr/lsp-ui-mode-hook))
     (use-package lsp-treemacs
@@ -3314,10 +3322,11 @@ We can trigger it using a .dir-locals.el
 #+begin_src emacs-lisp
   (use-package
     web-mode
+    :disabled
     :demand t
     :config
     (defun rgr/web-mode-hook()
-      (setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
+      ;;(setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
       )
     (add-hook 'web-mode-hook 'rgr/web-mode-hook)
     ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
@@ -3360,6 +3369,7 @@ We can trigger it using a .dir-locals.el
 https://github.com/protesilaos/modus-themes
 #+begin_src emacs-lisp
   (use-package modus-themes
+    ;:disabled
     :init
     ;; Add all your customizations prior to loading the themes
     (setq modus-themes-slanted-constructs t
@@ -3370,6 +3380,15 @@ https://github.com/protesilaos/modus-themes
     :config
     (load-theme 'modus-operandi :no-confirm))
   ;; (modus-themes-load-vivendi))
+#+end_src
+*** ef-themes
+https://github.com/protesilaos/ef-themes
+#+begin_src  emacs-lisp
+  (use-package ef-themes
+    :disabled
+    :demand t
+    :config
+    (ef-themes-select 'ef-duo-light))
 #+end_src
 *** humanoid themes
 :PROPERTIES:
