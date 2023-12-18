@@ -40,8 +40,6 @@
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 
-(use-package transient)
-
 (use-package notifications
   :demand t
   :config

@@ -284,7 +284,7 @@
   (c-ts-base-mode . (lambda()
                       (treesit-inspect-mode t)
                       (when (fboundp 'treesitter-context-mode) (treesitter-context-mode t))
-                      (rgr/c-mode-common-hook))))
+                      (rgr/c-ts-mode-common-hook))))
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 
@@ -359,12 +359,10 @@
 (add-hook 'c-mode-hook 'rgr/c-mode-hook)
 
 (use-package emacs
+  :demand t
   :config
-  (defun rgr/c-mode-common-save-hook()
-                                        ;(eglot-format-buffer)
-    )
-  (defun rgr/c-mode-common-hook ()
-    (add-hook 'before-save-hook #'rgr/c-mode-common-save-hook nil t)
+  (require 'c-ts-mode)
+  (defun rgr/c-ts-mode-common-hook ()
     ;;(eglot-ensure)
     (lsp-deferred)
     ;;(if (fboundp 'indent-bars-mode)
@@ -374,8 +372,8 @@
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
   :hook
-  (c-mode-common . rgr/c-mode-common-hook)
-  :bind  ( :map c-mode-base-map
+  (c-mode-common . rgr/c-ts-mode-common-hook)
+  :bind  ( :map c-ts-mode-map
            (("M-<return>" . rgr/c-complete-line)
             ("TAB" . rgr/c-indent-complete)
             )))
