@@ -1013,7 +1013,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org60bb148)
+    See `org-agenda-files` [org-agenda-files](#org5ac30a4)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1709,7 +1709,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (setq popper-reference-buffers
                 '(
                   "\\*Messages\\*"
-                  magit-mode
+                  ;;magit-mode
                   ;;      help-mode
                   helpful-mode
                   inferior-python-mode
@@ -2658,27 +2658,26 @@ Zoom into current buffer
 
 26. C, c-mode
 
-        (defun rgr/c-mode-hook ()
-          )
-        (add-hook 'c-mode-hook 'rgr/c-mode-hook)
-    
     1.  c-mode-common-hook
     
             (use-package emacs
               :demand t
               :config
               (require 'c-ts-mode)
+              (defun rgr/c-ts-mode-hook ()
+                )
               (defun rgr/c-ts-mode-common-hook ()
                 ;;(eglot-ensure)
                 (lsp-deferred)
                 ;;(if (fboundp 'indent-bars-mode)
-                  ;;  (indent-bars-mode))
+                ;;  (indent-bars-mode))
                 (if(featurep 'platformio-mode)
                     (platformio-conditionally-enable))
                 (if (featurep 'yasnippet)
                     (yas-minor-mode)))
               :hook
               (c-mode-common . rgr/c-ts-mode-common-hook)
+              (c-ts-mode . rgr/c-ts-mode-hook)
               :bind  ( :map c-ts-mode-map
                        (("M-<return>" . rgr/c-complete-line)
                         ("TAB" . rgr/c-indent-complete)
@@ -2719,7 +2718,7 @@ Zoom into current buffer
 
         (defun rgr/c++-mode-hook ()
           )
-        (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
+        (add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
     
     1.  Linux tools
     
@@ -2969,7 +2968,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga1de35e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org092002b) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3002,7 +3001,7 @@ to add to version control.
     fi
 
 
-<a id="orga1de35e"></a>
+<a id="org092002b"></a>
 
 ### Gnome protocol handler desktop file
 

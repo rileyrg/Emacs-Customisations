@@ -354,25 +354,24 @@
   ;; (breadcrumb-mode t)
   )
 
-(defun rgr/c-mode-hook ()
-  )
-(add-hook 'c-mode-hook 'rgr/c-mode-hook)
-
 (use-package emacs
   :demand t
   :config
   (require 'c-ts-mode)
+  (defun rgr/c-ts-mode-hook ()
+    )
   (defun rgr/c-ts-mode-common-hook ()
     ;;(eglot-ensure)
     (lsp-deferred)
     ;;(if (fboundp 'indent-bars-mode)
-      ;;  (indent-bars-mode))
+    ;;  (indent-bars-mode))
     (if(featurep 'platformio-mode)
         (platformio-conditionally-enable))
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
   :hook
   (c-mode-common . rgr/c-ts-mode-common-hook)
+  (c-ts-mode . rgr/c-ts-mode-hook)
   :bind  ( :map c-ts-mode-map
            (("M-<return>" . rgr/c-complete-line)
             ("TAB" . rgr/c-indent-complete)
@@ -406,7 +405,7 @@
 
 (defun rgr/c++-mode-hook ()
   )
-(add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
+(add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
 
 (use-package logview
   :demand t

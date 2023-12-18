@@ -3116,28 +3116,26 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   :PROPERTIES:
   :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
   :END:
-#+begin_src emacs-lisp
-  (defun rgr/c-mode-hook ()
-    )
-  (add-hook 'c-mode-hook 'rgr/c-mode-hook)
-#+end_src
 ***** c-mode-common-hook
 #+begin_src emacs-lisp
   (use-package emacs
     :demand t
     :config
     (require 'c-ts-mode)
+    (defun rgr/c-ts-mode-hook ()
+      )
     (defun rgr/c-ts-mode-common-hook ()
       ;;(eglot-ensure)
       (lsp-deferred)
       ;;(if (fboundp 'indent-bars-mode)
-        ;;  (indent-bars-mode))
+      ;;  (indent-bars-mode))
       (if(featurep 'platformio-mode)
           (platformio-conditionally-enable))
       (if (featurep 'yasnippet)
           (yas-minor-mode)))
     :hook
     (c-mode-common . rgr/c-ts-mode-common-hook)
+    (c-ts-mode . rgr/c-ts-mode-hook)
     :bind  ( :map c-ts-mode-map
              (("M-<return>" . rgr/c-complete-line)
               ("TAB" . rgr/c-indent-complete)
@@ -3188,7 +3186,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 #+begin_src emacs-lisp
   (defun rgr/c++-mode-hook ()
     )
-  (add-hook 'c++-mode-hook 'rgr/c++-mode-hook)
+  (add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
 #+end_src
 ***** Linux tools
 :PROPERTIES:
