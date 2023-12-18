@@ -4,11 +4,9 @@
   (desktop-base-file-name "emacs.desktop")
   (desktop-restore-eager  4)
   (desktop-globals-to-save
-   '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history))
-  '(desktop-load-locked-desktop t)
+   '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
+  (desktop-load-locked-desktop t)
   :init
-
-  (savehist-mode 1)
 
   (defun rgr/startup-hook ()
     (switch-to-buffer (get-register ?l)))
