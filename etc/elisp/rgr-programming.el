@@ -188,6 +188,12 @@
 ;;   :hook (java-mode . eglot-ensure)
 ;;   )
 
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (global-treesit-auto-mode))
+
 (use-package js
   :disabled
   :config
@@ -204,21 +210,12 @@
   (:map js-mode-map
         ("M-." . #'lsp-ui-peek-find-definitions)))
 
-;; sudo npm i -g typescript-language-server
-
 (use-package typescript-ts-mode
-  :init
-  (defun rgr/ts-mode-hook ()
-    (lsp-deferred))
-  (add-hook 'typescript-ts-mode-hook  #'rgr/ts-mode-hook)
-  :mode (("\\.ts\\'" . typescript-ts-mode)("\\.js\\'" . typescript-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode)))
-
-(use-package treesit-auto
-  :custom
-  (treesit-auto-install 'prompt)
   :config
-  (global-treesit-auto-mode))
+  (defun my/js-ts-mode-hook ()
+    (lsp-deferred))
+  (add-hook 'js-ts-mode-hook  #'my/js-ts-mode-hook)
+  :mode (("\\.js\\'" . js-ts-mode)))
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 
