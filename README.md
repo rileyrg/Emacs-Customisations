@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org5a39c3a)
+    See `org-agenda-files` [org-agenda-files](#org58b69ac)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2381,7 +2381,19 @@ Zoom into current buffer
             ;;   :hook (java-mode . eglot-ensure)
             ;;   )
 
-17. Javascript
+17. Tree Sitter
+
+    1.  treesit-auto
+    
+        Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
+        
+            (use-package treesit-auto
+              :custom
+              (treesit-auto-install 'prompt)
+              :config
+              (global-treesit-auto-mode))
+
+18. Javascript
 
     It's all a bit confusing : using typescript mode
     
@@ -2403,29 +2415,14 @@ Zoom into current buffer
           (:map js-mode-map
                 ("M-." . #'lsp-ui-peek-find-definitions)))
 
-18. Typescript
+19. Typescript
 
-        ;; sudo npm i -g typescript-language-server
-        
         (use-package typescript-ts-mode
-          :init
-          (defun rgr/ts-mode-hook ()
+          :config
+          (defun my/js-ts-mode-hook ()
             (lsp-deferred))
-          (add-hook 'typescript-ts-mode-hook  #'rgr/ts-mode-hook)
-          :mode (("\\.ts\\'" . typescript-ts-mode)("\\.js\\'" . typescript-ts-mode)
-                 ("\\.tsx\\'" . tsx-ts-mode)))
-
-19. Tree Sitter
-
-    1.  treesit-auto
-    
-        Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
-        
-            (use-package treesit-auto
-              :custom
-              (treesit-auto-install 'prompt)
-              :config
-              (global-treesit-auto-mode))
+          (add-hook 'js-ts-mode-hook  #'my/js-ts-mode-hook)
+          :mode (("\\.js\\'" . js-ts-mode)))
 
 20. Language Server Protocol (LSP), lsp-mode
 
@@ -2891,7 +2888,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0635e24) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf8467e5) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2924,7 +2921,7 @@ to add to version control.
     fi
 
 
-<a id="org0635e24"></a>
+<a id="orgf8467e5"></a>
 
 ### Gnome protocol handler desktop file
 

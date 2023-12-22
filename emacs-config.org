@@ -2799,44 +2799,6 @@ Running emultaor from command line:
   ;;   :hook (java-mode . eglot-ensure)
   ;;   )
 #+end_src
-**** Javascript                                                          :js:
-It's all a bit confusing : using typescript mode
-:PROPERTIES:
-:ID:       27571c84-2c40-487d-abd0-3013c53b731b
-:END:
-#+begin_src emacs-lisp
-    (use-package js
-      :disabled
-      :config
-      (defun rgr/js-mode-hook ()
-        (message "rgr/js-mode-hook")
-        (js-jsx-enable)
-        (lsp-deferred)
-        (local-unset-key (kbd "M-."))
-        ;(setq-local dash-docs-docsets '("React" "JavaScript" "jQuery"))
-        )
-      :hook
-      (js-ts-mode . rgr/js-mode-hook)
-      :bind
-      (:map js-mode-map
-            ("M-." . #'lsp-ui-peek-find-definitions)))
-#+end_src
-**** Typescript
-:PROPERTIES:
-:END:
-#+begin_src emacs-lisp
-  ;; sudo npm i -g typescript-language-server
-
-  (use-package typescript-ts-mode
-    :init
-    (defun rgr/ts-mode-hook ()
-      (lsp-deferred))
-    (add-hook 'typescript-ts-mode-hook  #'rgr/ts-mode-hook)
-    :mode (("\\.ts\\'" . typescript-ts-mode)("\\.js\\'" . typescript-ts-mode)
-           ("\\.tsx\\'" . tsx-ts-mode)))
-
-
-#+end_src
 **** Tree Sitter
 ***** treesit-auto
 Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
@@ -2846,6 +2808,39 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (treesit-auto-install 'prompt)
     :config
     (global-treesit-auto-mode))
+#+end_src
+
+**** Javascript                                                          :js:
+It's all a bit confusing : using typescript mode
+:PROPERTIES:
+:ID:       27571c84-2c40-487d-abd0-3013c53b731b
+:END:
+#+begin_src emacs-lisp
+  (use-package js
+    :disabled
+    :config
+    (defun rgr/js-mode-hook ()
+      (message "rgr/js-mode-hook")
+      (js-jsx-enable)
+      (lsp-deferred)
+      (local-unset-key (kbd "M-."))
+      ;(setq-local dash-docs-docsets '("React" "JavaScript" "jQuery"))
+      )
+    :hook
+    (js-ts-mode . rgr/js-mode-hook)
+    :bind
+    (:map js-mode-map
+          ("M-." . #'lsp-ui-peek-find-definitions)))
+#+end_src
+**** Typescript
+#+begin_src emacs-lisp
+  (use-package typescript-ts-mode
+    :config
+    (defun my/js-ts-mode-hook ()
+      (lsp-deferred))
+    (add-hook 'js-ts-mode-hook  #'my/js-ts-mode-hook)
+    :mode (("\\.js\\'" . js-ts-mode)))
+
 #+end_src
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
 :PROPERTIES:
