@@ -72,7 +72,7 @@
          scroll-margin_t))
 
 (use-package multiple-cursors
-:bind (("C-M-SPC" . set-rectangular-region-anchor)
+:bind (("C-<mouse-1>" . mc/add-cursor-on-click)
        ("C->" . mc/mark-next-like-this)
        ("C-<" . mc/mark-previous-like-this)
        ("C-c C->" . mc/mark-all-like-this)
