@@ -1442,7 +1442,7 @@ https://github.com/iqbalansari/emacs-emojify
 https://github.com/magnars/multiple-cursors.emacs-lisp
 #+begin_src  emacs-lisp
   (use-package multiple-cursors
-  :bind (("C-M-SPC" . set-rectangular-region-anchor)
+  :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
          ("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C->" . mc/mark-all-like-this)

@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org58b69ac)
+    See `org-agenda-files` [org-agenda-files](#org46aed36)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1236,7 +1236,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     <https://github.com/magnars/multiple-cursors.emacs-lisp>
     
         (use-package multiple-cursors
-        :bind (("C-M-SPC" . set-rectangular-region-anchor)
+        :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
                ("C->" . mc/mark-next-like-this)
                ("C-<" . mc/mark-previous-like-this)
                ("C-c C->" . mc/mark-all-like-this)
@@ -2888,7 +2888,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf8467e5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf1bc5af) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2921,7 +2921,7 @@ to add to version control.
     fi
 
 
-<a id="orgf8467e5"></a>
+<a id="orgf1bc5af"></a>
 
 ### Gnome protocol handler desktop file
 
