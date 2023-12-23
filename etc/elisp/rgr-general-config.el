@@ -4,7 +4,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (show-paren-mode 1)
-(winner-mode 1)
+(winner-mode 0)
 
 (global-auto-revert-mode 1)
 ;; Also auto refresh dired, but be quiet about it
