@@ -1442,7 +1442,7 @@ https://github.com/iqbalansari/emacs-emojify
 https://github.com/magnars/multiple-cursors.emacs-lisp
 #+begin_src  emacs-lisp
   (use-package multiple-cursors
-  :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+  - :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
          ("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C->" . mc/mark-all-like-this)
@@ -2009,7 +2009,7 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
            ("M-`"   . popper-cycle)
            ("C-M-`" . popper-toggle-type)))
 #+end_src
-**** Window hopping
+**** ACE utilities
 :PROPERTIES:
 :ID:       024175d8-f05e-4c41-9c04-4a61d55a5d66
 :END:
@@ -2019,17 +2019,17 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
     :init
     (defalias 'other-window 'ace-window)
     :bind*
-    ("M-o" . ace-window)
+    ("C-x o" . ace-window)
     ("M-S o" . ace-delete-window))
 #+end_src
-**** hopping around links
+***** hopping around links
 :PROPERTIES:
 :ID:       6a50d585-4163-4b7e-9dd8-b25fd0ee4e6b
 :END:
 Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
 #+begin_src emacs-lisp
   (use-package ace-link
-    :demand t
+    :Demand t
     :config
     (ace-link-setup-default)
     :bind*
@@ -2038,7 +2038,7 @@ Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
     ("C-c o" . ace-link)
     )
 #+end_src
-**** hopping around in the buffer
+***** hopping around in the buffer
 :PROPERTIES:
 :ID:       a1befd07-164b-4ee3-a6cb-c0f4c11094f0
 :END:

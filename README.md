@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org46aed36)
+    See `org-agenda-files` [org-agenda-files](#org3b6140b)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1236,7 +1236,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     <https://github.com/magnars/multiple-cursors.emacs-lisp>
     
         (use-package multiple-cursors
-        :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+        - :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
                ("C->" . mc/mark-next-like-this)
                ("C-<" . mc/mark-previous-like-this)
                ("C-c C->" . mc/mark-all-like-this)
@@ -1719,7 +1719,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                  ("M-`"   . popper-cycle)
                  ("C-M-`" . popper-toggle-type)))
 
-3.  Window hopping
+3.  ACE utilities
 
     1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
     
@@ -1727,31 +1727,31 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               :init
               (defalias 'other-window 'ace-window)
               :bind*
-              ("M-o" . ace-window)
+              ("C-x o" . ace-window)
               ("M-S o" . ace-delete-window))
-
-4.  hopping around links
-
-    Quickly follow [links](https://github.com/abo-abo/ace-link) in Emacs.
     
-        (use-package ace-link
-          :demand t
-          :config
-          (ace-link-setup-default)
-          :bind*
-          (:map emacs-lisp-mode-map
-                ("C-c o" . ace-link-addr))
-          ("C-c o" . ace-link)
-          )
-
-5.  hopping around in the buffer
-
-    Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-jump-mode/wiki) is a food source of info.
+    2.  hopping around links
     
-        (use-package ace-jump-mode
-          :bind
-          ("M-s c" . ace-jump-mode)
-          )
+        Quickly follow [links](https://github.com/abo-abo/ace-link) in Emacs.
+        
+            (use-package ace-link
+              :Demand t
+              :config
+              (ace-link-setup-default)
+              :bind*
+              (:map emacs-lisp-mode-map
+                    ("C-c o" . ace-link-addr))
+              ("C-c o" . ace-link)
+              )
+    
+    3.  hopping around in the buffer
+    
+        Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-jump-mode/wiki) is a food source of info.
+        
+            (use-package ace-jump-mode
+              :bind
+              ("M-s c" . ace-jump-mode)
+              )
 
 
 ## Treemacs
@@ -2888,7 +2888,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf1bc5af) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org95a2e2e) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2921,7 +2921,7 @@ to add to version control.
     fi
 
 
-<a id="orgf1bc5af"></a>
+<a id="org95a2e2e"></a>
 
 ### Gnome protocol handler desktop file
 
