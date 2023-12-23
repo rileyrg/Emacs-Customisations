@@ -72,7 +72,7 @@
          scroll-margin_t))
 
 (use-package multiple-cursors
-:bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+- :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
        ("C->" . mc/mark-next-like-this)
        ("C-<" . mc/mark-previous-like-this)
        ("C-c C->" . mc/mark-all-like-this)
@@ -198,11 +198,11 @@
   :init
   (defalias 'other-window 'ace-window)
   :bind*
-  ("M-o" . ace-window)
+  ("C-x o" . ace-window)
   ("M-S o" . ace-delete-window))
 
 (use-package ace-link
-  :demand t
+  :Demand t
   :config
   (ace-link-setup-default)
   :bind*
