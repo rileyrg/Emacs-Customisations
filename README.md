@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org1f7f031)
+    See `org-agenda-files` [org-agenda-files](#org2ce02a7)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1236,7 +1236,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     <https://github.com/magnars/multiple-cursors.emacs-lisp>
     
         (use-package multiple-cursors
-        - :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+         :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
                ("C->" . mc/mark-next-like-this)
                ("C-<" . mc/mark-previous-like-this)
                ("C-c C->" . mc/mark-all-like-this)
@@ -1735,7 +1735,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         Quickly follow [links](https://github.com/abo-abo/ace-link) in Emacs.
         
             (use-package ace-link
-              :Demand t
+              :demand
               :config
               (ace-link-setup-default)
               :bind*
@@ -2888,7 +2888,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org960e590) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8a1ea16) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2921,7 +2921,7 @@ to add to version control.
     fi
 
 
-<a id="org960e590"></a>
+<a id="org8a1ea16"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -1442,7 +1442,7 @@ https://github.com/iqbalansari/emacs-emojify
 https://github.com/magnars/multiple-cursors.emacs-lisp
 #+begin_src  emacs-lisp
   (use-package multiple-cursors
-  - :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+   :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
          ("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C->" . mc/mark-all-like-this)
@@ -2029,7 +2029,7 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
 Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
 #+begin_src emacs-lisp
   (use-package ace-link
-    :Demand t
+    :demand
     :config
     (ace-link-setup-default)
     :bind*

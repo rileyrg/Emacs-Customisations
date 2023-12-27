@@ -72,7 +72,7 @@
          scroll-margin_t))
 
 (use-package multiple-cursors
-- :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+ :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
        ("C->" . mc/mark-next-like-this)
        ("C-<" . mc/mark-previous-like-this)
        ("C-c C->" . mc/mark-all-like-this)
@@ -202,7 +202,7 @@
   ("M-S o" . ace-delete-window))
 
 (use-package ace-link
-  :Demand t
+  :demand
   :config
   (ace-link-setup-default)
   :bind*
