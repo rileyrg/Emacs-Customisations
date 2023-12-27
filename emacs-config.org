@@ -1877,16 +1877,24 @@ https://github.com/jcs-elpa/impatient-showdown
 #+begin_src  emacs-lisp
   (use-package
     eat
-   :straight (:type git
-         :host codeberg
-         :repo "akib/emacs-eat"
-         :files ("*.el" ("term" "term/*.el") "*.texi"
-                 "*.ti" ("terminfo/e" "terminfo/e/*")
-                 ("terminfo/65" "terminfo/65/*")
-                 ("integration" "integration/*")
-                 (:exclude ".dir-locals.el" "*-tests.el")))
-   :bind
-    ("M-g v" . eat))
+    :straight (:type git
+                     :host codeberg
+                     :repo "akib/emacs-eat"
+                     :files ("*.el" ("term" "term/*.el") "*.texi"
+                             "*.ti" ("terminfo/e" "terminfo/e/*")
+                             ("terminfo/65" "terminfo/65/*")
+                             ("integration" "integration/*")
+                             (:exclude ".dir-locals.el" "*-tests.el")))
+    :config
+    (defun rgr/projectile-term()
+      (interactive)
+      (if (string-equal major-mode "eat-mode")
+          (previous-buffer)
+        (let ((default-directory (projectile-project-root)))
+          (eat))))
+
+    :bind
+    ("M-g v" . #'rgr/projectile-term))
 #+end_src
 
 ** Buffers and Windows
@@ -2600,16 +2608,7 @@ I prefer projectile
     :demand
     :config
     (projectile-mode +1)
-    (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-    (define-key projectile-command-map (kbd "x t") 'eat)
-    (defun rgr/projectile-term()
-      (interactive)
-      (if (string-equal major-mode "eat-mode")
-          (previous-buffer)
-        (eat)))
-    :bind (:map projectile-mode-map ((
-                                      ("C-t" . #'rgr/projectile-term)
-                                      ("C-p" . #'projectile-find-file)))))
+    (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map))
 #+end_src
 ****** projectile npm support
 #+begin_src  emacs-lisp

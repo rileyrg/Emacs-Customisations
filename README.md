@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2ce02a7)
+    See `org-agenda-files` [org-agenda-files](#orgc893f41)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1610,16 +1610,24 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
     (use-package
       eat
-     :straight (:type git
-           :host codeberg
-           :repo "akib/emacs-eat"
-           :files ("*.el" ("term" "term/*.el") "*.texi"
-                   "*.ti" ("terminfo/e" "terminfo/e/*")
-                   ("terminfo/65" "terminfo/65/*")
-                   ("integration" "integration/*")
-                   (:exclude ".dir-locals.el" "*-tests.el")))
-     :bind
-      ("M-g v" . eat))
+      :straight (:type git
+                       :host codeberg
+                       :repo "akib/emacs-eat"
+                       :files ("*.el" ("term" "term/*.el") "*.texi"
+                               "*.ti" ("terminfo/e" "terminfo/e/*")
+                               ("terminfo/65" "terminfo/65/*")
+                               ("integration" "integration/*")
+                               (:exclude ".dir-locals.el" "*-tests.el")))
+      :config
+      (defun rgr/projectile-term()
+        (interactive)
+        (if (string-equal major-mode "eat-mode")
+            (previous-buffer)
+          (let ((default-directory (projectile-project-root)))
+            (eat))))
+    
+      :bind
+      ("M-g v" . #'rgr/projectile-term))
 
 
 ## Buffers and Windows
@@ -2208,16 +2216,7 @@ Zoom into current buffer
               :demand
               :config
               (projectile-mode +1)
-              (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-              (define-key projectile-command-map (kbd "x t") 'eat)
-              (defun rgr/projectile-term()
-                (interactive)
-                (if (string-equal major-mode "eat-mode")
-                    (previous-buffer)
-                  (eat)))
-              :bind (:map projectile-mode-map ((
-                                                ("C-t" . #'rgr/projectile-term)
-                                                ("C-p" . #'projectile-find-file)))))
+              (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map))
         
         1.  projectile npm support
         
@@ -2888,7 +2887,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8a1ea16) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org38009ea) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2921,7 +2920,7 @@ to add to version control.
     fi
 
 
-<a id="org8a1ea16"></a>
+<a id="org38009ea"></a>
 
 ### Gnome protocol handler desktop file
 

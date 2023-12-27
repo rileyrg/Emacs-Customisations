@@ -77,16 +77,7 @@
   :demand
   :config
   (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-  (define-key projectile-command-map (kbd "x t") 'eat)
-  (defun rgr/projectile-term()
-    (interactive)
-    (if (string-equal major-mode "eat-mode")
-        (previous-buffer)
-      (eat)))
-  :bind (:map projectile-mode-map ((
-                                    ("C-t" . #'rgr/projectile-term)
-                                    ("C-p" . #'projectile-find-file)))))
+  (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map))
 
 (projectile-register-project-type 'npm '("package.json")
                                   :project-file "package.json"
