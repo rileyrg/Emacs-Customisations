@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org8851ef2)
+    See `org-agenda-files` [org-agenda-files](#org6d32e6a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2300,6 +2300,8 @@ Zoom into current buffer
               magit
               :init
               (use-package magit-filenotify)
+              (use-package transient
+                :straight (transient :type git :host github :repo "magit/transient"))
               :bind
               ("C-x g" . magit-status)
               :hook
@@ -2891,7 +2893,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga594b41) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge4f1c2b) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2924,7 +2926,7 @@ to add to version control.
     fi
 
 
-<a id="orga594b41"></a>
+<a id="orge4f1c2b"></a>
 
 ### Gnome protocol handler desktop file
 
