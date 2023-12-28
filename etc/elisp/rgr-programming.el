@@ -189,7 +189,7 @@
   :disabled
   :config
   (defun rgr/js-mode-hook ()
-    (message "rgr/js-mode-hook")
+    (electric-pair-mode 1)
     (js-jsx-enable)
     (lsp-deferred)
     (local-unset-key (kbd "M-."))
