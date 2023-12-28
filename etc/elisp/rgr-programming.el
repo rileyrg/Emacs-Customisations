@@ -140,7 +140,7 @@
 
 (straight-use-package 'sqlite3)
 (use-package forge
-  ;disabled
+  :disabled
   :after magit)
 
 (use-package git-gutter
@@ -202,11 +202,15 @@
         ("M-." . #'lsp-ui-peek-find-definitions)))
 
 (use-package typescript-ts-mode
-  :config
-  (defun my/js-ts-mode-hook ()
-    (lsp-deferred))
-  (add-hook 'js-ts-mode-hook  #'my/js-ts-mode-hook)
-  :mode (("\\.js\\'" . js-ts-mode)))
+  :demand t
+  :init
+  (defun rgr/typescript-ts-mode-hook ()
+    (electric-pair-mode 1)
+    (lsp))
+  :hook
+  (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
+
+  ;:mode (("\\.js\\'" . js-ts-mode)))
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 
