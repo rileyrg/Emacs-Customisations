@@ -2727,7 +2727,7 @@ always causes issues. disabled.
 #+begin_src emacs-lisp
   (straight-use-package 'sqlite3)
   (use-package forge
-    ;disabled
+    :disabled
     :after magit)
 #+end_src
 
@@ -2834,12 +2834,15 @@ It's all a bit confusing : using typescript mode
 **** Typescript
 #+begin_src emacs-lisp
   (use-package typescript-ts-mode
-    :config
-    (defun my/js-ts-mode-hook ()
-      (lsp-deferred))
-    (add-hook 'js-ts-mode-hook  #'my/js-ts-mode-hook)
-    :mode (("\\.js\\'" . js-ts-mode)))
+    :demand t
+    :init
+    (defun rgr/typescript-ts-mode-hook ()
+      (electric-pair-mode 1)
+      (lsp))
+    :hook
+    (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
+    ;:mode (("\\.js\\'" . js-ts-mode)))
 #+end_src
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
 :PROPERTIES:
