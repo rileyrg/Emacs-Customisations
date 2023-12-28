@@ -133,6 +133,8 @@
   magit
   :init
   (use-package magit-filenotify)
+  (use-package transient
+    :straight (transient :type git :host github :repo "magit/transient"))
   :bind
   ("C-x g" . magit-status)
   :hook
