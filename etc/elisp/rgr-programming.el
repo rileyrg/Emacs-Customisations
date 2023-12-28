@@ -207,12 +207,12 @@
   :demand t
   :init
   (defun rgr/typescript-ts-mode-hook ()
+    (message "rgr/typescript-ts-mode-hook")
     (electric-pair-mode 1)
     (lsp))
   :hook
   (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
-
-  ;:mode (("\\.js\\'" . js-ts-mode)))
+;;:mode (("\\.js\\'" . typescript-ts-mode)))
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 
