@@ -20,7 +20,7 @@
 
   (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
-  (desktop-save-mode))
+  (desktop-save-mode 1))
 
 
 (defun rgr/quit-or-close-emacs(&optional kill)
