@@ -54,7 +54,8 @@
 (use-package emacs
   :init
   ;;(global-set-key (kbd "C-z") 'undo)
-  (cua-mode 1))
+  ;; (cua-mode 1)
+  )
 
 (use-package emojify
   :init

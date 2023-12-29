@@ -67,9 +67,13 @@
   :init (volatile-highlights-mode 1))
 
 (use-package
-  webpaste
-  :bind ("C-c y" . (lambda()(interactive)(call-interactively 'webpaste-paste-region)(deactivate-mark)))
-  ("C-c Y" . webpaste-paste-buffer))
+  dpaste
+  :init
+  ;; Choosing githup gist only
+  (setq webpaste-provider-priority '("gist.github.com"))
+  ;; You can always append this list as much as you like, and which providers
+  ;; that exists is documented below in the readme.
+  :bind ("C-c y" . dpaste-region-or-buffer))
 
 ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
 
