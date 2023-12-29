@@ -1295,12 +1295,12 @@ brings visual feedback to some operations by highlighting portions relating to t
     :disabled
     :init (volatile-highlights-mode 1))
 #+end_src
-***** webpaste                                                     :webpaste:
+***** web pasting
 #+begin_src emacs-lisp
   (use-package
-    webpaste
-    :bind ("C-c y" . (lambda()(interactive)(call-interactively 'webpaste-paste-region)(deactivate-mark)))
-    ("C-c Y" . webpaste-paste-buffer))
+    dpaste
+    :init
+    :bind ("C-c y" . dpaste-region-or-buffer))
 
 #+end_src
 **** Accessibility
@@ -1411,7 +1411,8 @@ CLOSED: [2021-05-24 Mo 19:54]
   (use-package emacs
     :init
     ;;(global-set-key (kbd "C-z") 'undo)
-    (cua-mode 1))
+    ;; (cua-mode 1)
+    )
 #+end_src
 *** emjois
 https://github.com/iqbalansari/emacs-emojify
