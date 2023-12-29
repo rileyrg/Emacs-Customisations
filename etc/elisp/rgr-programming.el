@@ -211,8 +211,8 @@
     (electric-pair-mode 1)
     (lsp))
   :hook
-  (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
-;;:mode (("\\.js\\'" . typescript-ts-mode)))
+  (typescript-ts-mode .  rgr/typescript-ts-mode-hook)
+  :mode (("\\.js\\'" . typescript-ts-mode)))
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 

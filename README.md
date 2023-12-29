@@ -301,7 +301,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         
           (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
         
-          (desktop-save-mode))
+          (desktop-save-mode 1))
         
         
         (defun rgr/quit-or-close-emacs(&optional kill)
@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org3f274f2)
+    See `org-agenda-files` [org-agenda-files](#orgbed5b1b)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1200,6 +1200,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 
 ## Text tools
+
+
+### basic editing
+
+    (use-package emacs
+      :init
+      ;;(global-set-key (kbd "C-z") 'undo)
+      (cua-mode 1))
 
 
 ### emjois
@@ -2426,8 +2434,8 @@ Zoom into current buffer
             (electric-pair-mode 1)
             (lsp))
           :hook
-          (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
-        ;;:mode (("\\.js\\'" . typescript-ts-mode)))
+          (typescript-ts-mode .  rgr/typescript-ts-mode-hook)
+          :mode (("\\.js\\'" . typescript-ts-mode)))
 
 20. Language Server Protocol (LSP), lsp-mode
 
@@ -2893,7 +2901,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6ad774f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgab05e3a) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2926,7 +2934,7 @@ to add to version control.
     fi
 
 
-<a id="org6ad774f"></a>
+<a id="orgab05e3a"></a>
 
 ### Gnome protocol handler desktop file
 

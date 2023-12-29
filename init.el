@@ -51,6 +51,11 @@
 
 (require  'rgr/general-config "rgr-general-config" 'NOERROR)
 
+(use-package emacs
+  :init
+  ;;(global-set-key (kbd "C-z") 'undo)
+  (cua-mode 1))
+
 (use-package emojify
   :init
   (global-emojify-mode))

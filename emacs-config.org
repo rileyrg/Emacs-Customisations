@@ -354,7 +354,7 @@ I use a persistent register to remember the last file buffer and to resore it on
 
       (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
-      (desktop-save-mode))
+      (desktop-save-mode 1))
 
 
     (defun rgr/quit-or-close-emacs(&optional kill)
@@ -1406,6 +1406,13 @@ CLOSED: [2021-05-24 Mo 19:54]
 :PROPERTIES:
 :ID:       6c385a8b-078e-4905-9f27-29bdb4e63b0b
 :END:
+*** basic editing
+#+begin_src  emacs-lisp
+  (use-package emacs
+    :init
+    ;;(global-set-key (kbd "C-z") 'undo)
+    (cua-mode 1))
+#+end_src
 *** emjois
 https://github.com/iqbalansari/emacs-emojify
 #+begin_src emacs-lisp
@@ -2843,8 +2850,8 @@ It's all a bit confusing : using typescript mode
       (electric-pair-mode 1)
       (lsp))
     :hook
-    (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
-  ;;:mode (("\\.js\\'" . typescript-ts-mode)))
+    (typescript-ts-mode .  rgr/typescript-ts-mode-hook)
+    :mode (("\\.js\\'" . typescript-ts-mode)))
 #+end_src
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
 :PROPERTIES:
