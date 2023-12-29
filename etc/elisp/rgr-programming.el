@@ -7,9 +7,9 @@
   :hook
   (prog-mode . indent-bars-mode))
 
-(use-package emacs
+(use-package duplicate-thing
   :bind
-  ("C-S-d" . 'duplicate-line))
+  ("C-S-d" . 'duplicate-thing))
 
 (use-package breadcrumb
   :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
