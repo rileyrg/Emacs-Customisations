@@ -301,7 +301,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         
           (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
         
-          (desktop-save-mode 1))
+          (desktop-save-mode))
         
         
         (defun rgr/quit-or-close-emacs(&optional kill)
@@ -1012,7 +1012,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org7b83127)
+    See `org-agenda-files` [org-agenda-files](#orgeda7463)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2416,25 +2416,14 @@ Zoom into current buffer
 
 18. Javascript
 
-    It's all a bit confusing : using typescript mode
-    
-    :ID:       27571c84-2c40-487d-abd0-3013c53b731b
-    
         (use-package js
-          :disabled
           :config
           (defun rgr/js-mode-hook ()
             (electric-pair-mode 1)
-            (js-jsx-enable)
             (lsp-deferred)
-            (local-unset-key (kbd "M-."))
-            ;(setq-local dash-docs-docsets '("React" "JavaScript" "jQuery"))
             )
           :hook
-          (js-ts-mode . rgr/js-mode-hook)
-          :bind
-          (:map js-mode-map
-                ("M-." . #'lsp-ui-peek-find-definitions)))
+          (js-ts-mode . rgr/js-mode-hook))
 
 19. Typescript
 
@@ -2442,12 +2431,11 @@ Zoom into current buffer
           :demand t
           :init
           (defun rgr/typescript-ts-mode-hook ()
-            (message "rgr/typescript-ts-mode-hook")
             (electric-pair-mode 1)
-            (lsp))
+            (lsp-deferred))
           :hook
-          (typescript-ts-mode .  rgr/typescript-ts-mode-hook)
-          :mode (("\\.js\\'" . typescript-ts-mode)))
+          (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
+          ;:mode (("\\.js\\'" . typescript-ts-mode)))
 
 20. Language Server Protocol (LSP), lsp-mode
 
@@ -2913,7 +2901,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6347e1a) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org88d01bb) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2946,7 +2934,7 @@ to add to version control.
     fi
 
 
-<a id="org6347e1a"></a>
+<a id="org88d01bb"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -354,7 +354,7 @@ I use a persistent register to remember the last file buffer and to resore it on
 
       (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
-      (desktop-save-mode 1))
+      (desktop-save-mode))
 
 
     (defun rgr/quit-or-close-emacs(&optional kill)
@@ -2826,26 +2826,18 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
 #+end_src
 
 **** Javascript                                                          :js:
-It's all a bit confusing : using typescript mode
 :PROPERTIES:
 :ID:       27571c84-2c40-487d-abd0-3013c53b731b
 :END:
 #+begin_src emacs-lisp
   (use-package js
-    :disabled
     :config
     (defun rgr/js-mode-hook ()
       (electric-pair-mode 1)
-      (js-jsx-enable)
       (lsp-deferred)
-      (local-unset-key (kbd "M-."))
-      ;(setq-local dash-docs-docsets '("React" "JavaScript" "jQuery"))
       )
     :hook
-    (js-ts-mode . rgr/js-mode-hook)
-    :bind
-    (:map js-mode-map
-          ("M-." . #'lsp-ui-peek-find-definitions)))
+    (js-ts-mode . rgr/js-mode-hook))
 #+end_src
 **** Typescript
 #+begin_src emacs-lisp
@@ -2853,12 +2845,11 @@ It's all a bit confusing : using typescript mode
     :demand t
     :init
     (defun rgr/typescript-ts-mode-hook ()
-      (message "rgr/typescript-ts-mode-hook")
       (electric-pair-mode 1)
-      (lsp))
+      (lsp-deferred))
     :hook
-    (typescript-ts-mode .  rgr/typescript-ts-mode-hook)
-    :mode (("\\.js\\'" . typescript-ts-mode)))
+    (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
+    ;:mode (("\\.js\\'" . typescript-ts-mode)))
 #+end_src
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
 :PROPERTIES:

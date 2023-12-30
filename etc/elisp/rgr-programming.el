@@ -189,31 +189,23 @@
   (global-treesit-auto-mode))
 
 (use-package js
-  :disabled
   :config
   (defun rgr/js-mode-hook ()
     (electric-pair-mode 1)
-    (js-jsx-enable)
     (lsp-deferred)
-    (local-unset-key (kbd "M-."))
-    ;(setq-local dash-docs-docsets '("React" "JavaScript" "jQuery"))
     )
   :hook
-  (js-ts-mode . rgr/js-mode-hook)
-  :bind
-  (:map js-mode-map
-        ("M-." . #'lsp-ui-peek-find-definitions)))
+  (js-ts-mode . rgr/js-mode-hook))
 
 (use-package typescript-ts-mode
   :demand t
   :init
   (defun rgr/typescript-ts-mode-hook ()
-    (message "rgr/typescript-ts-mode-hook")
     (electric-pair-mode 1)
-    (lsp))
+    (lsp-deferred))
   :hook
-  (typescript-ts-mode .  rgr/typescript-ts-mode-hook)
-  :mode (("\\.js\\'" . typescript-ts-mode)))
+  (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
+  ;:mode (("\\.js\\'" . typescript-ts-mode)))
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 
