@@ -293,9 +293,8 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
             (switch-to-buffer (get-register ?l)))
         
           (defun rgr/remember-last-buffer (f)
-            (unless
                 (when buffer-file-name
-                  (set-register ?l (buffer-name)))))
+                  (set-register ?l (buffer-name))))
         
           (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
         
@@ -1012,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgeda7463)
+    See `org-agenda-files` [org-agenda-files](#orgc7a8eee)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2901,7 +2900,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org88d01bb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge0d90fb) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2934,7 +2933,7 @@ to add to version control.
     fi
 
 
-<a id="org88d01bb"></a>
+<a id="orge0d90fb"></a>
 
 ### Gnome protocol handler desktop file
 

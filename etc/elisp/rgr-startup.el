@@ -12,9 +12,8 @@
     (switch-to-buffer (get-register ?l)))
 
   (defun rgr/remember-last-buffer (f)
-    (unless
         (when buffer-file-name
-          (set-register ?l (buffer-name)))))
+          (set-register ?l (buffer-name))))
 
   (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
 
