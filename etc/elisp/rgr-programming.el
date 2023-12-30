@@ -77,7 +77,8 @@
   :demand
   :config
   (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map))
+  (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map)
+  (define-key projectile-command-map  (kbd "b") #'consult-project-buffer))
 
 (projectile-register-project-type 'npm '("package.json")
                                   :project-file "package.json"

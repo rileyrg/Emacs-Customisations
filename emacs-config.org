@@ -2616,7 +2616,8 @@ I prefer projectile
     :demand
     :config
     (projectile-mode +1)
-    (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map))
+    (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map)
+    (define-key projectile-command-map  (kbd "b") #'consult-project-buffer))
 #+end_src
 ****** projectile npm support
 #+begin_src  emacs-lisp
@@ -2628,11 +2629,6 @@ I prefer projectile
            			    :test-suffix ".spec")
 #+end_src
 ****** org-projectile
-SCHEDULED: <2023-08-03 Thu>
-:LOGBOOK:
-- State "CANCELLED"  from "TODO"       [2023-11-27 Mon 05:00]
-- State "TODO"       from              [2023-08-02 Wed 09:46]
-:END:
 https://github.com/IvanMalison/org-projectile
 #+begin_src  emacs-lisp
   (use-package org-project-capture
