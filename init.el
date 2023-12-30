@@ -220,6 +220,7 @@
   :init
   (defalias 'other-window 'ace-window)
   :bind*
+  ("M-o" . 'other-window)
   ("C-x o" . ace-window)
   ("M-S o" . ace-delete-window))
 
