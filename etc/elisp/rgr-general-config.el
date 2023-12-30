@@ -4,7 +4,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (show-paren-mode 1)
-(winner-mode 0)
+(winner-mode 1)
 
 (global-auto-revert-mode 1)
 ;; Also auto refresh dired, but be quiet about it
@@ -69,10 +69,6 @@
 (use-package
   dpaste
   :init
-  ;; Choosing githup gist only
-  (setq webpaste-provider-priority '("gist.github.com"))
-  ;; You can always append this list as much as you like, and which providers
-  ;; that exists is documented below in the readme.
   :bind ("C-c y" . dpaste-region-or-buffer))
 
 ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
