@@ -82,10 +82,10 @@
 
 (projectile-register-project-type 'npm '("package.json")
                                   :project-file "package.json"
-       			    :compile "npm install"
-       			    :test "npm test"
-       			    :run "alacritty -e npm start"
-       			    :test-suffix ".spec")
+       			          :compile "npm install"
+       			          :test "npm test"
+       			          :run "alacritty --command tmux new-session -A -s 'npm projectile' 'npm start'"
+       			          :test-suffix ".spec")
 
 (use-package org-project-capture
   :demand
