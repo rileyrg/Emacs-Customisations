@@ -53,9 +53,17 @@
 
 (use-package emacs
   :init
-  ;;(global-set-key (kbd "C-z") 'undo)
-  ;; (cua-mode 1)
-  )
+  (defun open-next-line (arg)
+    "Move to the next line and then opens a line.
+    See also `newline-and-indent'."
+    (interactive "p")
+    (end-of-line)
+    (open-line arg)
+    (forward-line 1)
+    (when newline-and-indent
+      (indent-according-to-mode)))
+  :bind
+  ("<C-return>" . #'open-next-line))
 
 (use-package emojify
   :init
