@@ -22,7 +22,6 @@
     (lsp-treemacs-sync-mode t)
     :commands lsp-treemacs-errors-list)
 
-  (use-package flycheck)
   (use-package dap-mode
     :disabled
     :bind (:map dap-mode-map
@@ -40,15 +39,13 @@
   :commands (lsp lsp-deferred))
 
 (use-package eglot
+  :disabled
   ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
   ;; :config
   ;; (use-package eldoc-box)
   ;; :hook
   ;; (prog-mode . eldoc-box-hover-at-point-mode)
   :bind
-  (:map flymake-mode-map
-        ([remap next-error] . flymake-goto-next-error)
-        ([remap previous-error] . flymake-goto-prev-error))
   (:map eglot-mode-map
         ("<C-return>" . eglot-code-actions)))
 
