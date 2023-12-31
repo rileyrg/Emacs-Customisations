@@ -2694,6 +2694,17 @@ https://github.com/IvanMalison/org-projectile
 #+end_src
 
 **** Flymake
+#+begin_src  emacs-lisp
+  (use-package flymake
+    :demand t
+    :init
+    (defun rgr/flymake-hook()
+         (setq-local next-error-function 'flymake-goto-next-error))
+    (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
+    :bind
+    ("M-n" . next-error)
+    ("M-p" . previous-error))
+#+end_src
 ***** diagnostic-at-point
 #+begin_src emacs-lisp
   (use-package flymake-diagnostic-at-point
@@ -2781,6 +2792,7 @@ Running emultaor from command line:
 
 #+begin_src emacs-lisp
   (use-package dart-mode
+    :disabled
     :custom
     (lsp-dart-flutter-widget-guides t)
     :init
@@ -2894,7 +2906,6 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
       (lsp-treemacs-sync-mode t)
       :commands lsp-treemacs-errors-list)
 
-    (use-package flycheck)
     (use-package dap-mode
       :disabled
       :bind (:map dap-mode-map
@@ -2918,15 +2929,13 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
+    :disabled
     ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
     ;; :config
     ;; (use-package eldoc-box)
     ;; :hook
     ;; (prog-mode . eldoc-box-hover-at-point-mode)
     :bind
-    (:map flymake-mode-map
-          ([remap next-error] . flymake-goto-next-error)
-          ([remap previous-error] . flymake-goto-prev-error))
     (:map eglot-mode-map
           ("<C-return>" . eglot-code-actions)))
 #+end_src

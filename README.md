@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgc7a8eee)
+    See `org-agenda-files` [org-agenda-files](#org030faad)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2292,6 +2292,16 @@ Zoom into current buffer
 
 14. Flymake
 
+        (use-package flymake
+          :demand t
+          :init
+          (defun rgr/flymake-hook()
+               (setq-local next-error-function 'flymake-goto-next-error))
+          (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
+          :bind
+          ("M-n" . next-error)
+          ("M-p" . previous-error))
+    
     1.  diagnostic-at-point
     
             (use-package flymake-diagnostic-at-point
@@ -2370,6 +2380,7 @@ Zoom into current buffer
         emulator -avd Pixel_6_Pro_API_33
     
         (use-package dart-mode
+          :disabled
           :custom
           (lsp-dart-flutter-widget-guides t)
           :init
@@ -2472,7 +2483,6 @@ Zoom into current buffer
                     (lsp-treemacs-sync-mode t)
                     :commands lsp-treemacs-errors-list)
                 
-                  (use-package flycheck)
                   (use-package dap-mode
                     :disabled
                     :bind (:map dap-mode-map
@@ -2495,15 +2505,13 @@ Zoom into current buffer
             <https://github.com/joaotavora/eglot>
             
                 (use-package eglot
+                  :disabled
                   ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
                   ;; :config
                   ;; (use-package eldoc-box)
                   ;; :hook
                   ;; (prog-mode . eldoc-box-hover-at-point-mode)
                   :bind
-                  (:map flymake-mode-map
-                        ([remap next-error] . flymake-goto-next-error)
-                        ([remap previous-error] . flymake-goto-prev-error))
                   (:map eglot-mode-map
                         ("<C-return>" . eglot-code-actions)))
         
@@ -2900,7 +2908,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge0d90fb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd2cc433) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2933,7 +2941,7 @@ to add to version control.
     fi
 
 
-<a id="orge0d90fb"></a>
+<a id="orgd2cc433"></a>
 
 ### Gnome protocol handler desktop file
 

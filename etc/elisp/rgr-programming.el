@@ -117,6 +117,16 @@
 (use-package json-reformat)
 (use-package hydra)
 
+(use-package flymake
+  :demand t
+  :init
+  (defun rgr/flymake-hook()
+       (setq-local next-error-function 'flymake-goto-next-error))
+  (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
+  :bind
+  ("M-n" . next-error)
+  ("M-p" . previous-error))
+
 (use-package flymake-diagnostic-at-point
   :after flymake
   :config
@@ -153,6 +163,7 @@
   ("C-x v ="  . git-gutter:popup-hunk))
 
 (use-package dart-mode
+  :disabled
   :custom
   (lsp-dart-flutter-widget-guides t)
   :init

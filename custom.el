@@ -18,7 +18,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -456,9 +455,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 105))))
- '(eglot-highlight-symbol-face ((t (:inherit bold :underline t))))
- '(lsp-flycheck-info-unnecessary-face ((t (:foreground "dim gray"))) t)
- '(modus-themes-hl-line ((t (:extend t :background "white smoke"))) t)
+ '(lsp-flycheck-info-unnecessary-face ((t (:foreground "dim gray"))))
  '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
  '(tab-bar-tab ((t (:inherit bold :background "black" :foreground "#ffffff" :box (:line-width (2 . -2) :color "orange")))))
  '(tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff")))))
