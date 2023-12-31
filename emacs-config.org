@@ -1410,17 +1410,30 @@ CLOSED: [2021-05-24 Mo 19:54]
 #+begin_src  emacs-lisp
   (use-package emacs
     :init
-    (defun open-next-line (arg)
-      "Move to the next line and then opens a line.
-      See also `newline-and-indent'."
-      (interactive "p")
+    (setq rgr/complete-line-function 'rgr/newline-below)
+    :config
+    (defun rgr/complete-c-line()
+      (interactive)
       (end-of-line)
-      (open-line arg)
-      (forward-line 1)
-      (when newline-and-indent
-        (indent-according-to-mode)))
+      (delete-trailing-whitespace)
+      (unless (eql ?\; (char-before (point-at-eol)))
+        (progn (insert ";")))
+      (newline-and-indent))
+
+    (defun rgr/insert-previous-line()
+      (interactive)
+      (previous-line)
+      (end-of-line)
+      (newline-and-indent)
+      (insert (string-trim (current-kill 0))))
+
+    (defun rgr/newline-below()
+      (interactive)
+      (end-of-line)
+      (newline-and-indent))
     :bind
-    ("<C-return>" . #'open-next-line))
+    ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
+
 #+end_src
 *** emjois
 https://github.com/iqbalansari/emacs-emojify
@@ -2826,7 +2839,7 @@ Running emultaor from command line:
   ;;   )
 #+end_src
 **** Tree Sitter
-***** treesit-auto
+**** treesit-auto
 Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
 #+begin_src  emacs-lisp
   (use-package treesit-auto
@@ -2835,32 +2848,36 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     :config
     (global-treesit-auto-mode))
 #+end_src
-
-**** Javascript                                                          :js:
+****JavaScript Family
+***** Javascript                                                         :js:
 :PROPERTIES:
 :ID:       27571c84-2c40-487d-abd0-3013c53b731b
 :END:
 #+begin_src emacs-lisp
   (use-package js
+    :demand t
     :config
-    (defun rgr/js-mode-hook ()
+    (defun rgr/js-ts-common-mode-hook ()
       (electric-pair-mode 1)
+      (setq-local rgr/complete-line-function 'rgr/complete-c-line)
       (lsp-deferred)
       )
+    (defun rgr/js-mode-hook ()
+      )
     :hook
+    (js-ts-mode . rgr/js-ts-common-mode-hook)
     (js-ts-mode . rgr/js-mode-hook))
 #+end_src
-**** Typescript
+***** Typescript
 #+begin_src emacs-lisp
   (use-package typescript-ts-mode
     :demand t
     :init
     (defun rgr/typescript-ts-mode-hook ()
-      (electric-pair-mode 1)
-      (lsp-deferred))
+      )
     :hook
+    (typescript-ts-mode .  rgr/js-ts-common-mode-hook)
     (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
-    ;:mode (("\\.js\\'" . typescript-ts-mode)))
 #+end_src
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
 :PROPERTIES:
@@ -3051,26 +3068,6 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 #+begin_src emacs-lisp
   (use-package c-ts-mode
     :config
-
-    (defun rgr/c-complete-line()
-      (interactive)
-      (end-of-line)
-      (delete-trailing-whitespace)
-      (unless (eql ?\; (char-before (point-at-eol)))
-        (progn (insert ";")))
-      (newline-and-indent))
-
-    (defun rgr/c-insert-previous-line()
-      (interactive)
-      (previous-line)
-      (end-of-line)
-      (newline-and-indent)
-      (insert (string-trim (current-kill 0))))
-
-    (defun rgr/c-newline-below()
-      (interactive)
-      (end-of-line)
-      (newline-and-indent))
 
     (defun rgr/c-ts-mode-hook ()
       )

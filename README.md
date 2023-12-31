@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org030faad)
+    See `org-agenda-files` [org-agenda-files](#org32fbf9a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1206,17 +1206,29 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
     (use-package emacs
       :init
-      (defun open-next-line (arg)
-        "Move to the next line and then opens a line.
-        See also `newline-and-indent'."
-        (interactive "p")
+      (setq rgr/complete-line-function 'rgr/newline-below)
+      :config
+      (defun rgr/complete-c-line()
+        (interactive)
         (end-of-line)
-        (open-line arg)
-        (forward-line 1)
-        (when newline-and-indent
-          (indent-according-to-mode)))
+        (delete-trailing-whitespace)
+        (unless (eql ?\; (char-before (point-at-eol)))
+          (progn (insert ";")))
+        (newline-and-indent))
+    
+      (defun rgr/insert-previous-line()
+        (interactive)
+        (previous-line)
+        (end-of-line)
+        (newline-and-indent)
+        (insert (string-trim (current-kill 0))))
+    
+      (defun rgr/newline-below()
+        (interactive)
+        (end-of-line)
+        (newline-and-indent))
       :bind
-      ("<C-return>" . #'open-next-line))
+      ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
 
 
 ### emjois
@@ -2414,40 +2426,46 @@ Zoom into current buffer
 
 17. Tree Sitter
 
-    1.  treesit-auto
+18. treesit-auto
+
+    Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
     
-        Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
-        
-            (use-package treesit-auto
-              :custom
-              (treesit-auto-install 'prompt)
-              :config
-              (global-treesit-auto-mode))
-
-18. Javascript
-
-        (use-package js
+        (use-package treesit-auto
+          :custom
+          (treesit-auto-install 'prompt)
           :config
-          (defun rgr/js-mode-hook ()
-            (electric-pair-mode 1)
-            (lsp-deferred)
-            )
-          :hook
-          (js-ts-mode . rgr/js-mode-hook))
+          (global-treesit-auto-mode))
+    
+    \*\*\*\*JavaScript Family
+    
+    1.  Javascript
+    
+            (use-package js
+              :demand t
+              :config
+              (defun rgr/js-ts-common-mode-hook ()
+                (electric-pair-mode 1)
+                (setq-local rgr/complete-line-function 'rgr/complete-c-line)
+                (lsp-deferred)
+                )
+              (defun rgr/js-mode-hook ()
+                )
+              :hook
+              (js-ts-mode . rgr/js-ts-common-mode-hook)
+              (js-ts-mode . rgr/js-mode-hook))
+    
+    2.  Typescript
+    
+            (use-package typescript-ts-mode
+              :demand t
+              :init
+              (defun rgr/typescript-ts-mode-hook ()
+                )
+              :hook
+              (typescript-ts-mode .  rgr/js-ts-common-mode-hook)
+              (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
-19. Typescript
-
-        (use-package typescript-ts-mode
-          :demand t
-          :init
-          (defun rgr/typescript-ts-mode-hook ()
-            (electric-pair-mode 1)
-            (lsp-deferred))
-          :hook
-          (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
-          ;:mode (("\\.js\\'" . typescript-ts-mode)))
-
-20. Language Server Protocol (LSP), lsp-mode
+19. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2519,7 +2537,7 @@ Zoom into current buffer
         
                 (provide 'rgr/lsp)
 
-21. Serial Port
+20. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2545,7 +2563,7 @@ Zoom into current buffer
                           (interactive)
                           (selectSerialPortBuffer)))
 
-22. PlatformIO
+21. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2567,7 +2585,7 @@ Zoom into current buffer
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-23. Python
+22. Python
 
     1.  ipython
     
@@ -2580,7 +2598,7 @@ Zoom into current buffer
               :config
               (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-24. Haskell
+23. Haskell
 
     1.  haskell-mode
     
@@ -2596,7 +2614,7 @@ Zoom into current buffer
                           '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-25. lldb debugging in emacs
+24. lldb debugging in emacs
 
     1.  voltron
     
@@ -2606,32 +2624,12 @@ Zoom into current buffer
               ;; (breadcrumb-mode t)
               )
 
-26. C, c-mode
+25. C, c-mode
 
     1.  c-mode-common-hook
     
             (use-package c-ts-mode
               :config
-            
-              (defun rgr/c-complete-line()
-                (interactive)
-                (end-of-line)
-                (delete-trailing-whitespace)
-                (unless (eql ?\; (char-before (point-at-eol)))
-                  (progn (insert ";")))
-                (newline-and-indent))
-            
-              (defun rgr/c-insert-previous-line()
-                (interactive)
-                (previous-line)
-                (end-of-line)
-                (newline-and-indent)
-                (insert (string-trim (current-kill 0))))
-            
-              (defun rgr/c-newline-below()
-                (interactive)
-                (end-of-line)
-                (newline-and-indent))
             
               (defun rgr/c-ts-mode-hook ()
                 )
@@ -2654,7 +2652,7 @@ Zoom into current buffer
                        :map c-ts-mode-map
                        (("M-<return>" . rgr/c-complete-line))))
 
-27. cc,cpp, C++, cc-mode
+26. cc,cpp, C++, cc-mode
 
         (defun rgr/c++-mode-hook ()
           )
@@ -2908,7 +2906,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd2cc433) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org443fffc) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2941,7 +2939,7 @@ to add to version control.
     fi
 
 
-<a id="orgd2cc433"></a>
+<a id="org443fffc"></a>
 
 ### Gnome protocol handler desktop file
 
