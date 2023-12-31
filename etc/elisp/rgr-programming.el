@@ -200,23 +200,27 @@
   (global-treesit-auto-mode))
 
 (use-package js
+  :demand t
   :config
-  (defun rgr/js-mode-hook ()
+  (defun rgr/js-ts-common-mode-hook ()
     (electric-pair-mode 1)
+    (setq-local rgr/complete-line-function 'rgr/complete-c-line)
     (lsp-deferred)
     )
+  (defun rgr/js-mode-hook ()
+    )
   :hook
+  (js-ts-mode . rgr/js-ts-common-mode-hook)
   (js-ts-mode . rgr/js-mode-hook))
 
 (use-package typescript-ts-mode
   :demand t
   :init
   (defun rgr/typescript-ts-mode-hook ()
-    (electric-pair-mode 1)
-    (lsp-deferred))
+    )
   :hook
+  (typescript-ts-mode .  rgr/js-ts-common-mode-hook)
   (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
-  ;:mode (("\\.js\\'" . typescript-ts-mode)))
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 
@@ -288,26 +292,6 @@
 
 (use-package c-ts-mode
   :config
-
-  (defun rgr/c-complete-line()
-    (interactive)
-    (end-of-line)
-    (delete-trailing-whitespace)
-    (unless (eql ?\; (char-before (point-at-eol)))
-      (progn (insert ";")))
-    (newline-and-indent))
-
-  (defun rgr/c-insert-previous-line()
-    (interactive)
-    (previous-line)
-    (end-of-line)
-    (newline-and-indent)
-    (insert (string-trim (current-kill 0))))
-
-  (defun rgr/c-newline-below()
-    (interactive)
-    (end-of-line)
-    (newline-and-indent))
 
   (defun rgr/c-ts-mode-hook ()
     )

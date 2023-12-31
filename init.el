@@ -53,17 +53,29 @@
 
 (use-package emacs
   :init
-  (defun open-next-line (arg)
-    "Move to the next line and then opens a line.
-    See also `newline-and-indent'."
-    (interactive "p")
+  (setq rgr/complete-line-function 'rgr/newline-below)
+  :config
+  (defun rgr/complete-c-line()
+    (interactive)
     (end-of-line)
-    (open-line arg)
-    (forward-line 1)
-    (when newline-and-indent
-      (indent-according-to-mode)))
+    (delete-trailing-whitespace)
+    (unless (eql ?\; (char-before (point-at-eol)))
+      (progn (insert ";")))
+    (newline-and-indent))
+
+  (defun rgr/insert-previous-line()
+    (interactive)
+    (previous-line)
+    (end-of-line)
+    (newline-and-indent)
+    (insert (string-trim (current-kill 0))))
+
+  (defun rgr/newline-below()
+    (interactive)
+    (end-of-line)
+    (newline-and-indent))
   :bind
-  ("<C-return>" . #'open-next-line))
+  ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
 
 (use-package emojify
   :init
