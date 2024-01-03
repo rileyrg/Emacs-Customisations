@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org32fbf9a)
+    See `org-agenda-files` [org-agenda-files](#org67bf316)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2442,17 +2442,19 @@ Zoom into current buffer
     
             (use-package js
               :demand t
-              :config
-              (defun rgr/js-ts-common-mode-hook ()
+              :init
+              (defun rgr/javascript-typescript-common-mode-hook ()
                 (electric-pair-mode 1)
+                (setq-local devdocs-browser-active-docs '("react" "react_native" "javascript" "css" "html"))
                 (setq-local rgr/complete-line-function 'rgr/complete-c-line)
                 (lsp-deferred)
                 )
-              (defun rgr/js-mode-hook ()
+              :config
+              (defun rgr/js-ts-mode-hook ()
                 )
               :hook
-              (js-ts-mode . rgr/js-ts-common-mode-hook)
-              (js-ts-mode . rgr/js-mode-hook))
+              (js-ts-mode . rgr/javascript-typescript-common-mode-hook)
+              (js-ts-mode . rgr/js-ts-mode-hook))
     
     2.  Typescript
     
@@ -2462,7 +2464,7 @@ Zoom into current buffer
               (defun rgr/typescript-ts-mode-hook ()
                 )
               :hook
-              (typescript-ts-mode .  rgr/js-ts-common-mode-hook)
+              (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
               (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
 19. Language Server Protocol (LSP), lsp-mode
@@ -2906,7 +2908,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org443fffc) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6393551) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2939,7 +2941,7 @@ to add to version control.
     fi
 
 
-<a id="org443fffc"></a>
+<a id="org6393551"></a>
 
 ### Gnome protocol handler desktop file
 
