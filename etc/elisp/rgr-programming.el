@@ -201,17 +201,19 @@
 
 (use-package js
   :demand t
-  :config
-  (defun rgr/js-ts-common-mode-hook ()
+  :init
+  (defun rgr/javascript-typescript-common-mode-hook ()
     (electric-pair-mode 1)
+    (setq-local devdocs-browser-active-docs '("react" "react_native" "javascript" "css" "html"))
     (setq-local rgr/complete-line-function 'rgr/complete-c-line)
     (lsp-deferred)
     )
-  (defun rgr/js-mode-hook ()
+  :config
+  (defun rgr/js-ts-mode-hook ()
     )
   :hook
-  (js-ts-mode . rgr/js-ts-common-mode-hook)
-  (js-ts-mode . rgr/js-mode-hook))
+  (js-ts-mode . rgr/javascript-typescript-common-mode-hook)
+  (js-ts-mode . rgr/js-ts-mode-hook))
 
 (use-package typescript-ts-mode
   :demand t
@@ -219,7 +221,7 @@
   (defun rgr/typescript-ts-mode-hook ()
     )
   :hook
-  (typescript-ts-mode .  rgr/js-ts-common-mode-hook)
+  (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
   (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
