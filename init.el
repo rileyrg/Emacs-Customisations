@@ -61,7 +61,11 @@
     (delete-trailing-whitespace)
     (unless (eql ?\; (char-before (point-at-eol)))
       (progn (insert ";")))
-    (newline-and-indent))
+    (if current-prefix-arg
+        (newline-and-indent)
+      (progn
+        (next-line)
+        (beginning-of-visual-line))))
 
   (defun rgr/insert-previous-line()
     (interactive)
