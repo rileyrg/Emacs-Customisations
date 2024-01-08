@@ -2347,19 +2347,32 @@ Y0lSPvXH7dBCTWu2rSWhIvgCQfv6Nihs3Jc455oZgajN7G/rgZNb0ER8YTYncZjY
 gtVhIJfSArVFXuCGLnZMoMHSC4rV
 =MsQY
 -----END PGP MESSAGE-----
-***** Git Gutter Mode
+***** Git Gutter
 :PROPERTIES:
 :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
 :END:
+****** git-gutter.el
 [[https://github.com/emacsorphanage/git-gutter][git-gutter.el]] is  an Emacs port of the Sublime Text plugin GitGutter.
+- left out for now in favour of diff-hl mode
 #+begin_src emacs-lisp
   (use-package git-gutter
-    :after org
+    :disabled
     :hook
       (server-after-make-frame .  global-git-gutter-mode)
     :bind
     ("C-x v ="  . git-gutter:popup-hunk))
 #+end_src
+****** diff-hl mode
+#+begin_src emacs-lisp
+  (use-package diff-hl
+    :hook
+    (server-after-make-frame .  global-diff-hl-mode)
+    (magit-pre-refresh . diff-hl-magit-pre-refresh)
+    (magit-post-refresh . diff-hl-magit-post-refresh)
+    :bind
+    ("C-x v ="  . diff-hl-show-hunk))
+#+end_src
+
 **** Dart/Flutter
 Running emultaor from command line:
 
