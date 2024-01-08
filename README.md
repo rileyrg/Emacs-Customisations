@@ -325,25 +325,21 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
     
         
         (recentf-mode)
-        (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
-        (save-place-mode)
-        
-        (use-package better-registers
-          :demand t
-          :custom
-          (better-registers-save-file (no-littering-expand-var-file-name "better-registers.el"))
-          :config
-          (better-registers-install-save-registers-hook)
-          (load better-registers-save-file))
+        ;; (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
+        ;; (save-place-mode)
+        (desktop-save-mode)
+        (midnight-mode)
+        (add-hook 'desktop-save-hook 'clean-buffer-list)
         
         (defun rgr/startup-hook ()
           (switch-to-buffer "*scratch*")
-          (switch-to-buffer (get-register ?L))
-          )
+          (let ((fname (get-register ?L)))
+            (when (and fname (file-exists-p fname))
+              (find-file fname))))
         
         (defun rgr/remember-last-buffer (f)
           (when buffer-file-name
-            (set-register ?L (buffer-name))))
+            (set-register ?L (buffer-file-name))))
         
         (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
         
@@ -360,8 +356,6 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         (defun rgr/server-shutdown ()
           "Save buffers, Quit, and Shutdown (kill) server"
           (interactive)
-          (clean-buffer-list)
-          ;;(savehist-save)
           (save-buffers-kill-emacs))
         
         (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
@@ -426,10 +420,10 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (add-hook 'before-save-hook 'delete-trailing-whitespace)
           :bind
           ("C-x k" . rgr/kill-current-buffer)
-          ("M-0" . 'delete-window)
-          ("M-1" . 'delete-other-windows)
-          ("S-<f1>" . 'describe-face)
-          ( "M-m"  . 'manual-entry)
+          ("M-0" . delete-window)
+          ("M-1" . delete-other-windows)
+          ("S-<f1>" . describe-face)
+          ( "M-m"  . manual-entry)
           ("S-<f10>" . 'menu-bar-open))
 
 2.  posframe
@@ -1376,7 +1370,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org8dd6b04)
+    See `org-agenda-files` [org-agenda-files](#org29347f1)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1462,12 +1456,14 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                (gts-translator
                 :picker (gts-prompt-picker)
                 :engines (list (gts-bing-engine) (gts-google-engine))
-                :render (gts-buffer-render))))
+                :render (gts-buffer-render)))
+              :bind
+              ("C-c T" . gts-do-translate))
         
         1.  Google translate
         
                 (use-package google-translate
-                  ;;:disabled
+                  :disabled ;; use go-translate
                   :init
                   (require 'google-translate)
                 
@@ -2801,7 +2797,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8ff961e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf6795ce) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2834,7 +2830,7 @@ to add to version control.
     fi
 
 
-<a id="org8ff961e"></a>
+<a id="orgf6795ce"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -34,10 +34,12 @@
    (gts-translator
     :picker (gts-prompt-picker)
     :engines (list (gts-bing-engine) (gts-google-engine))
-    :render (gts-buffer-render))))
+    :render (gts-buffer-render)))
+  :bind
+  ("C-c T" . gts-do-translate))
 
 (use-package google-translate
-  ;;:disabled
+  :disabled ;; use go-translate
   :init
   (require 'google-translate)
 

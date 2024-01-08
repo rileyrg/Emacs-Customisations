@@ -1,23 +1,19 @@
 (recentf-mode)
-(savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
-(save-place-mode)
-
-(use-package better-registers
-  :demand t
-  :custom
-  (better-registers-save-file (no-littering-expand-var-file-name "better-registers.el"))
-  :config
-  (better-registers-install-save-registers-hook)
-  (load better-registers-save-file))
+;; (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
+;; (save-place-mode)
+(desktop-save-mode)
+(midnight-mode)
+(add-hook 'desktop-save-hook 'clean-buffer-list)
 
 (defun rgr/startup-hook ()
   (switch-to-buffer "*scratch*")
-  (switch-to-buffer (get-register ?L))
-  )
+  (let ((fname (get-register ?L)))
+    (when (and fname (file-exists-p fname))
+      (find-file fname))))
 
 (defun rgr/remember-last-buffer (f)
   (when buffer-file-name
-    (set-register ?L (buffer-name))))
+    (set-register ?L (buffer-file-name))))
 
 (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
 
@@ -32,8 +28,6 @@
 (defun rgr/server-shutdown ()
   "Save buffers, Quit, and Shutdown (kill) server"
   (interactive)
-  (clean-buffer-list)
-  ;;(savehist-save)
   (save-buffers-kill-emacs))
 
 (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
