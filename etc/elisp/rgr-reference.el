@@ -42,6 +42,8 @@
   ("<f6>" . rgr/dictionary-search)
   ("S-<f6>" . mw-thesaurus-lookup-at-point))
 
+(add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+
 (defun rgr/elisp-lookup-reference-dwim (&optional sym)
   "Checks to see if the 'thing' is known to elisp and, if so, use internal docs and return symbol else return nil to signal maybe fallback"
   (interactive)

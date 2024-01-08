@@ -7,6 +7,23 @@
   :hook
   (prog-mode . indent-bars-mode))
 
+(use-package
+  treemacs
+  :init
+  (add-to-list 'image-types 'svg)
+  :custom
+  (treemacs-follow-after-init t)
+  :config
+  (treemacs-follow-mode +1)
+  (treemacs-fringe-indicator-mode)
+  (treemacs-git-mode 'deferred)
+  (use-package treemacs-magit)
+  (use-package treemacs-projectile)
+  :bind
+  ("M-9"   . 'treemacs-select-window)
+  (:map treemacs-mode-map
+        ("<right>" . treemacs-peek)))
+
 (use-package duplicate-thing
   :bind
   ("C-S-d" . 'duplicate-thing))

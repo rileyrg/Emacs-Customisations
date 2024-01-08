@@ -262,16 +262,6 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
 :END:
-**** linux journal utility
-https://github.com/SebastianMeisel/journalctl-mode
-This Emacs major mode is designed for viewing the output from systemd’s journalctl within Emacs. It provides a convenient way to interact with journalctl logs, including features like fontification, chunked loading for performance, and custom keyword highlighting.
-
-#+begin_src  emacs-lisp
-  (use-package journalctl-mode
-  :ensure t)
-
-#+end_src
-
 **** thing at point or region or input
 #+begin_src emacs-lisp
   (defun rgr/region-symbol-query()
@@ -305,6 +295,40 @@ This Emacs major mode is designed for viewing the output from systemd’s journa
       (read (current-buffer))))
 #+end_src
 
+**** completing lines
+#+begin_src  emacs-lisp
+  (use-package emacs
+    :init
+    (setq rgr/complete-line-function 'rgr/newline-below)
+    :config
+    (defun rgr/complete-c-line()
+      (interactive)
+      (end-of-line)
+      (delete-trailing-whitespace)
+      (unless (eql ?\; (char-before (point-at-eol)))
+        (progn (insert ";")))
+      (if current-prefix-arg
+          (newline-and-indent)
+        (progn
+          (next-line)
+          (beginning-of-visual-line))))
+
+    (defun rgr/insert-previous-line()
+      (interactive)
+      (previous-line)
+      (end-of-line)
+      (newline-and-indent)
+      (insert (string-trim (current-kill 0))))
+
+    (defun rgr/newline-below()
+      (interactive)
+      (end-of-line)
+      (newline-and-indent))
+    :bind
+    ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
+
+#+end_src
+
 **** provide
 :PROPERTIES:
 :ID:       1a15ae4d-fd90-4a41-b8d5-1efbec77bf8d
@@ -327,41 +351,26 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-startup.el" elisp-dir)
 :ID:       ee7aaad4-5f12-4e5e-b7d7-91ed4296b129
 :END:
-
 **** persistence  and history
 I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
 #+begin_src emacs-lisp
 
-  (use-package emacs
-    :demand t
-    ;; :custom
-    ;; (desktop-base-file-name "emacs.desktop")
-    ;; (desktop-restore-eager  4)
-    ;; (desktop-globals-to-save
-    ;;  '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
-    ;; (desktop-load-locked-desktop t)
-    :init
+  (recentf-mode)
+  (savehist-mode)
+  (save-place-mode)
 
-    (recentf-mode)
-    (savehist-mode)
-    (save-place-mode)
-
-    (defun rgr/startup-hook ()
-      ;(switch-to-buffer (get-register ?l))
-      (switch-to-buffer "*scratch*")
-      )
-
-    (defun rgr/remember-last-buffer (f)
-      (when buffer-file-name
-        (set-register ?l (buffer-name))))
-
-    (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
-
-    (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-
+  (defun rgr/startup-hook ()
+                                          ;(switch-to-buffer (get-register ?l))
+    (switch-to-buffer "*scratch*")
     )
 
+  (defun rgr/remember-last-buffer (f)
+    (when buffer-file-name
+      (set-register ?l (buffer-name))))
 
+  (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+
+  (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 #+end_src
 
 **** rest of startup
@@ -396,11 +405,8 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-general-config.el" elisp-dir)
 :END:
-**** General                                              :blackout:modeline:
-:PROPERTIES:
-:END:
-***** a - unfiled
-#+begin_src emacs-lisp
+**** general ui
+#+begin_src  emacs-lisp
   (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
                                           ; t60
   (scroll-bar-mode -1)
@@ -440,14 +446,151 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
 
   ;; display dir name when core name clashes
   (require 'uniquify)
-
-  (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
-
-
-  (global-set-key (kbd "C-c r") 'query-replace-regexp)
+#+end_src 
+**** toggle buffer
+:PROPERTIES:
+:ID:       cf781280-b126-402f-9700-c061a385bf81
+:END:
+#+begin_src emacs-lisp
+  (defun rgr/toggle-buffer(n)
+    "jump to or from buffer named n else default to *Messages*"
+    (interactive "bbuffer:")
+    (let ((n (or n
+                 "*Messages*")))
+      (switch-to-buffer (if (string= (buffer-name) n)
+                            (other-buffer) n))))
+#+end_src
+**** dired - emacs file management                                   :dired:
+:PROPERTIES:
+:ID:       0d37638b-55cd-4036-a0e0-6e6ab42a5046
+:END:
+**** Dired Git Info
+:PROPERTIES:
+:ID:       c6fe4735-2499-4fc0-a8d4-250fa8ce7c4b
+:END:
+#+begin_src emacs-lisp
+  (use-package dired-git
+    :config
+    :hook (dired-mode . dired-git-mode))
+#+end_src
+**** dired hacks
+:PROPERTIES:
+:ID:       209d1415-fe48-4df2-b6bd-e51c769a4ea7
+:END:
+Collection of useful dired additions found on github [[https://github.com/Fuco1/dired-hacks][here]]. Found out about
+it at the useful emacs resource [[http://pragmaticemacs.com/category/dired/][*Pragmatic Emacs*]].
+***** dired subtree
+:PROPERTIES:
+:ID:       faf0adb5-f75d-46cd-acd0-6d3739e4b517
+:END:
+#+begin_src emacs-lisp
+  (use-package dired-subtree
+    :bind (:map dired-mode-map
+                ("i" . dired-subtree-insert)
+                (";" . dired-subtree-remove)))
+#+end_src
+***** dired filter
+:PROPERTIES:
+:ID:       31375a7b-3f6a-4a42-b8ba-ef657feed86f
+:END:
+More dired based filtering see [[help:dired-filter-prefix][dired-filter-prefix]]
+#+begin_src emacs-lisp
+  (use-package dired-filter
+    :init
+    (define-key dired-mode-map (kbd "/") dired-filter-map))
 
 #+end_src
-***** beacon                                                         :beacon:
+**** PopUp Utilities
+:PROPERTIES:
+:ID:       31d692c1-44b5-442f-876a-c0520ded03c5
+:END:
+**** posframe                                                      :posframe:
+:PROPERTIES:
+:ID:       0f03bab9-b745-451a-a8ad-ab7703977c61
+:END:
+[[https://github.com/tumashu/posframe][Posframe]]
+can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
+#+begin_src emacs-lisp
+  (use-package posframe)
+#+end_src
+**** popper                                                          :popper:
+:PROPERTIES:
+:ID:       eee77fbe-0a8f-41ca-868c-e3cba953f452
+:END:
+[[https://github.com/karthink/popper][Popper]] is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
+:PROPERTIES:
+:END:
+#+begin_src emacs-lisp
+  (use-package popper
+    :disabled
+    :ensure t
+    :init
+    (use-package posframe)
+    ;;(setq popper-display-function 'rgr/popper-display-posframe)
+    (setq popper-reference-buffers
+          '(
+            "\\*Messages\\*"
+            ;;magit-mode
+            ;;      help-mode
+            helpful-mode
+            inferior-python-mode
+            dictionary-mode
+            compilation-mode))
+    (popper-mode +1)
+    :bind (("C-`"   . popper-toggle-latest)
+           ("M-`"   . popper-cycle)
+           ("C-M-`" . popper-toggle-type)))
+#+end_src
+**** ACE utilities
+:PROPERTIES:
+:ID:       024175d8-f05e-4c41-9c04-4a61d55a5d66
+:END:
+***** [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :init
+    (defalias 'other-window 'ace-window)
+    :bind*
+    ("M-o" . 'other-window)
+    ("C-x o" . ace-window)
+    ("M-S o" . ace-delete-window))
+#+end_src
+***** hopping around links
+:PROPERTIES:
+:ID:       6a50d585-4163-4b7e-9dd8-b25fd0ee4e6b
+:END:
+Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
+#+begin_src emacs-lisp
+  (use-package ace-link
+    :demand
+    :config
+    (ace-link-setup-default)
+    :bind*
+    (:map emacs-lisp-mode-map
+          ("C-c o" . ace-link-addr))
+    ("C-c o" . ace-link)
+    )
+#+end_src
+***** hopping around in the buffer
+:PROPERTIES:
+:ID:       a1befd07-164b-4ee3-a6cb-c0f4c11094f0
+:END:
+Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-mode/wiki][wiki]] is a food source of info.
+#+begin_src emacs-lisp
+  (use-package ace-jump-mode
+    :bind
+    ("M-s c" . ace-jump-mode)
+    )
+#+end_src
+**** Golden Ratio
+Zoom into current buffer
+#+begin_src emacs-lisp
+  (use-package
+    golden-ratio
+    :init
+    (golden-ratio-mode 1))
+#+end_src
+**** beacon                                                          :beacon:
 visual feedback as to cursor position
 #+begin_src emacs-lisp
   (use-package beacon
@@ -461,13 +604,13 @@ visual feedback as to cursor position
     (beacon-mode 1))
 
 #+end_src
-***** blackout modeline                                            :blackout:
+**** blackout modeline                                             :blackout:
 Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
 #+begin_src emacs-lisp
   (straight-use-package
    '(blackout :host github :repo "raxod502/blackout"))
 #+end_src
-***** boxquote                                                     :boxquote:
+**** boxquote                                                      :boxquote:
 #+begin_src emacs-lisp
   (use-package boxquote
     :straight (:branch "main")
@@ -475,7 +618,7 @@ Blackout is a package which allows you to hide or customize the display of major
     ("C-S-r" . boxquote-region))
 
 #+end_src
-***** volatile-highlights                               :volatilehighlights:volatile:
+**** volatile-highlights                        :volatilehighlights:volatile:
 brings visual feedback to some operations by highlighting portions relating to the operations.
 #+begin_src emacs-lisp
   (use-package
@@ -483,7 +626,7 @@ brings visual feedback to some operations by highlighting portions relating to t
     :disabled
     :init (volatile-highlights-mode 1))
 #+end_src
-***** web pasting
+**** web pasting
 #+begin_src emacs-lisp
   (use-package
     dpaste
@@ -492,8 +635,6 @@ brings visual feedback to some operations by highlighting portions relating to t
 
 #+end_src
 **** Accessibility
-:PROPERTIES:
-:END:
 ***** fonts
 :PROPERTIES:
 :END:
@@ -524,7 +665,6 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 #+end_src
 **** Tabs
-***** Tab Bar Mode
 #+begin_src emacs-lisp
 
   (defun consult-buffer-other-tab ()
@@ -570,7 +710,107 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
     (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
     :demand)
 #+end_src
-****** provide
+**** emjois
+https://github.com/iqbalansari/emacs-emojify
+#+begin_src emacs-lisp
+  (use-package emojify
+    :init
+    (global-emojify-mode))
+#+end_src
+**** Cursor/Region related
+:PROPERTIES:
+:ID:       63f2b25a-b0fc-4fdf-b893-fc2bd90ad454
+:END:
+#+begin_src emacs-lisp
+  (defun centreCursorLineOn()
+    "set properties to keep current line approx at centre of screen height. Useful for debugging."
+    ;; a faster more concise alternative to MELPA's centered-cursor-mode
+    (interactive)
+    (setq  scroll-preserve-screen-position_t scroll-preserve-screen-position scroll-conservatively_t
+           scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
+           scroll-margin)
+    (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
+          scroll-margin 99999))
+
+  (defun centreCursorLineOff()
+    (interactive)
+    (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
+           scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
+           scroll-margin_t))
+#+end_src
+***** multiple-cursors
+https://github.com/magnars/multiple-cursors.emacs-lisp
+#+begin_src  emacs-lisp
+  (use-package multiple-cursors
+   :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C->" . mc/mark-all-like-this)
+         ("C-c C-SPC" . mc/edit-lines)
+         ))
+#+end_src
+**** Folding/Hide Show
+:PROPERTIES:
+:ID:       d7f8785f-3b79-4e7a-947b-008f7d985ae0
+:END:
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html][hs-minor-mode]] allows hiding and showing different blocks of text/code (folding).
+#+begin_src emacs-lisp
+  (use-package hideshow
+    :config
+    (defun toggle-selective-display (column)
+      (interactive "P")
+      (set-selective-display
+       (or column
+           (unless selective-display
+             (1+ (current-column))))))
+    (defun toggle-hiding (column)
+      (interactive "P")
+      (if hs-minor-mode
+          (if (condition-case nil
+                  (hs-toggle-hiding)
+                (error t))
+              (hs-show-all))
+        (toggle-selective-display column)))
+    (add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
+    :bind ( "C-+" . toggle-hiding)
+    ("C-\\" . toggle-selective-display))
+
+#+end_src
+
+#+end_src
+**** flyspell                                                :flyspell:spell:
+:PROPERTIES:
+:ID:       9f285553-52e6-41f2-aa76-386ef9abe279
+:END:
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :config
+    (defun flyspell-check-next-highlighted-word ()
+      "Custom fnction to spell check next highlighted word"
+      (interactive)
+      (flyspell-goto-next-error)
+      (ispell-word)
+      )
+
+    :bind (("C-<f8>" . flyspell-mode)
+           ("S-<f8>" . flyspell-check-previous-highlighted-word)
+           ("C-S-<f8>" . flyspell-buffer)
+           ("M-<f8>" . flyspell-word)
+           )
+    ;; :hook
+    ;; (prog-mode .  (flyspell-prog-mode))
+    )
+#+end_src
+**** rg, ripgrep
+:PROPERTIES:
+:ID:       994cd90f-bba4-4a3d-87f1-6cb9faba1270
+:END:
+rg is pretty quick
+#+begin_src emacs-lisp
+  (use-package
+    ripgrep)
+#+end_src
+**** provide
 :PROPERTIES:
 :ID:       101d96b3-5d00-4d97-93c4-2c2f7aac8852
 :END:
@@ -1322,147 +1562,6 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
     ("<f12>" . lazy-lang-learn-translate)
     ("S-<f12>" . lazy-lang-learn-translate-from-history))
 #+end_src
-** Text tools
-:PROPERTIES:
-:ID:       6c385a8b-078e-4905-9f27-29bdb4e63b0b
-:END:
-*** basic editing
-#+begin_src  emacs-lisp
-  (use-package emacs
-    :init
-    (setq rgr/complete-line-function 'rgr/newline-below)
-    :config
-    (defun rgr/complete-c-line()
-      (interactive)
-      (end-of-line)
-      (delete-trailing-whitespace)
-      (unless (eql ?\; (char-before (point-at-eol)))
-        (progn (insert ";")))
-      (if current-prefix-arg
-          (newline-and-indent)
-        (progn
-          (next-line)
-          (beginning-of-visual-line))))
-
-    (defun rgr/insert-previous-line()
-      (interactive)
-      (previous-line)
-      (end-of-line)
-      (newline-and-indent)
-      (insert (string-trim (current-kill 0))))
-
-    (defun rgr/newline-below()
-      (interactive)
-      (end-of-line)
-      (newline-and-indent))
-    :bind
-    ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
-
-#+end_src
-*** emjois
-https://github.com/iqbalansari/emacs-emojify
-#+begin_src emacs-lisp
-  (use-package emojify
-    :init
-    (global-emojify-mode))
-#+end_src
-*** Cursor/Region related
-:PROPERTIES:
-:ID:       63f2b25a-b0fc-4fdf-b893-fc2bd90ad454
-:END:
-**** General
-:PROPERTIES:
-:ID:       07ce72ec-d6b8-46ed-9c2e-790b6852386b
-:END:
-#+begin_src emacs-lisp
-  (defun centreCursorLineOn()
-    "set properties to keep current line approx at centre of screen height. Useful for debugging."
-    ;; a faster more concise alternative to MELPA's centered-cursor-mode
-    (interactive)
-    (setq  scroll-preserve-screen-position_t scroll-preserve-screen-position scroll-conservatively_t
-           scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
-           scroll-margin)
-    (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
-          scroll-margin 99999))
-
-  (defun centreCursorLineOff()
-    (interactive)
-    (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
-           scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
-           scroll-margin_t))
-#+end_src
-**** multiple-cursors
-https://github.com/magnars/multiple-cursors.emacs-lisp
-#+begin_src  emacs-lisp
-  (use-package multiple-cursors
-   :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
-         ("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
-         ("C-c C->" . mc/mark-all-like-this)
-         ("C-c C-SPC" . mc/edit-lines)
-         ))
-#+end_src
-*** Folding/Hide Show
-:PROPERTIES:
-:ID:       d7f8785f-3b79-4e7a-947b-008f7d985ae0
-:END:
-[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html][hs-minor-mode]] allows hiding and showing different blocks of text/code (folding).
-#+begin_src emacs-lisp
-  (use-package hideshow
-    :config
-    (defun toggle-selective-display (column)
-      (interactive "P")
-      (set-selective-display
-       (or column
-           (unless selective-display
-             (1+ (current-column))))))
-    (defun toggle-hiding (column)
-      (interactive "P")
-      (if hs-minor-mode
-          (if (condition-case nil
-                  (hs-toggle-hiding)
-                (error t))
-              (hs-show-all))
-        (toggle-selective-display column)))
-    (add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
-    :bind ( "C-+" . toggle-hiding)
-    ("C-\\" . toggle-selective-display))
-
-#+end_src
-
-#+end_src
-*** flyspell                                                 :flyspell:spell:
-:PROPERTIES:
-:ID:       9f285553-52e6-41f2-aa76-386ef9abe279
-:END:
-#+begin_src emacs-lisp
-  (use-package flyspell
-    :config
-    (defun flyspell-check-next-highlighted-word ()
-      "Custom fnction to spell check next highlighted word"
-      (interactive)
-      (flyspell-goto-next-error)
-      (ispell-word)
-      )
-
-    :bind (("C-<f8>" . flyspell-mode)
-           ("S-<f8>" . flyspell-check-previous-highlighted-word)
-           ("C-S-<f8>" . flyspell-buffer)
-           ("M-<f8>" . flyspell-word)
-           )
-    ;; :hook
-    ;; (prog-mode .  (flyspell-prog-mode))
-    )
-#+end_src
-*** rg, ripgrep
-:PROPERTIES:
-:ID:       994cd90f-bba4-4a3d-87f1-6cb9faba1270
-:END:
-rg is pretty quick
-#+begin_src emacs-lisp
-  (use-package
-    ripgrep)
-#+end_src
 ** Reference/Lookup/Media
 :PROPERTIES:
 :ID:       959f68c3-8447-4eb8-aaa8-86f828859f49
@@ -1672,6 +1771,11 @@ The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
 :PROPERTIES:
 :ID:       f2e666e0-e5ee-460d-95d2-c4eac568db1e
 :END:
+
+****** external info
+#+begin_src emacs-lisp
+(add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+#+end_src 
 ****** quick help for function etc at point
 :PROPERTIES:
 :ID:       199187b3-1dca-46dc-a5de-3dd5e4843140
@@ -1860,222 +1964,6 @@ https://github.com/jcs-elpa/impatient-showdown
     ("M-g v" . #'rgr/projectile-term))
 #+end_src
 
-** Buffers and Windows
-:PROPERTIES:
-:ID:       6fed61bf-f3a5-4e9f-bda0-15548caa2a0f
-:END:
-*** toggle buffer
-:PROPERTIES:
-:ID:       cf781280-b126-402f-9700-c061a385bf81
-:END:
-#+begin_src emacs-lisp
-  (defun rgr/toggle-buffer(n)
-    "jump to or from buffer named n else default to *Messages*"
-    (interactive "bbuffer:")
-    (let ((n (or n
-                 "*Messages*")))
-      (switch-to-buffer (if (string= (buffer-name) n)
-                            (other-buffer) n))))
-#+end_src
-*** General
-:PROPERTIES:
-:ID:       d8dd73d0-9574-42a4-a23a-b211c17de532
-:END:
-**** buffer deletion - but keep scratch and messages!
-#+begin_src emacs-lisp
-  (use-package emacs
-    :demand
-    :config
-    (defun rgr/kill-current-buffer()
-      (interactive)
-      (if (member (buffer-name) '("*Messages*" "*scratch*"))
-          (progn
-            (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-            (delete-window))
-        (kill-current-buffer)))
-    (add-hook 'before-save-hook 'delete-trailing-whitespace)
-    :bind
-    ("C-x k" . rgr/kill-current-buffer)
-    ("M-0" . 'delete-window)
-    ("M-1" . 'delete-other-windows))
-#+end_src
-*** dired - emacs file management                                     :dired:
-:PROPERTIES:
-:ID:       0d37638b-55cd-4036-a0e0-6e6ab42a5046
-:END:
-**** Dired Git Info
-:PROPERTIES:
-:ID:       c6fe4735-2499-4fc0-a8d4-250fa8ce7c4b
-:END:
-#+begin_src emacs-lisp
-  (use-package dired-git
-    :config
-    :hook (dired-mode . dired-git-mode))
-#+end_src
-**** dired hacks
-:PROPERTIES:
-:ID:       209d1415-fe48-4df2-b6bd-e51c769a4ea7
-:END:
-Collection of useful dired additions found on github [[https://github.com/Fuco1/dired-hacks][here]]. Found out about
-it at the useful emacs resource [[http://pragmaticemacs.com/category/dired/][*Pragmatic Emacs*]].
-***** dired subtree
-:PROPERTIES:
-:ID:       faf0adb5-f75d-46cd-acd0-6d3739e4b517
-:END:
-#+begin_src emacs-lisp
-  (use-package dired-subtree
-    :bind (:map dired-mode-map
-                ("i" . dired-subtree-insert)
-                (";" . dired-subtree-remove)))
-#+end_src
-***** dired filter
-:PROPERTIES:
-:ID:       31375a7b-3f6a-4a42-b8ba-ef657feed86f
-:END:
-More dired based filtering see [[help:dired-filter-prefix][dired-filter-prefix]]
-#+begin_src emacs-lisp
-  (use-package dired-filter
-    :init
-    (define-key dired-mode-map (kbd "/") dired-filter-map))
-
-#+end_src
-*** PopUp Utilities
-:PROPERTIES:
-:ID:       31d692c1-44b5-442f-876a-c0520ded03c5
-:END:
-**** posframe                                                      :posframe:
-:PROPERTIES:
-:ID:       0f03bab9-b745-451a-a8ad-ab7703977c61
-:END:
-[[https://github.com/tumashu/posframe][Posframe]]
-can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
-#+begin_src emacs-lisp
-  (use-package posframe)
-#+end_src
-**** popper                                                          :popper:
-:PROPERTIES:
-:ID:       eee77fbe-0a8f-41ca-868c-e3cba953f452
-:END:
-[[https://github.com/karthink/popper][Popper]] is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
-:PROPERTIES:
-:END:
-#+begin_src emacs-lisp
-  (use-package popper
-    :disabled
-    :ensure t
-    :init
-    (use-package posframe)
-    ;;(setq popper-display-function 'rgr/popper-display-posframe)
-    (setq popper-reference-buffers
-          '(
-            "\\*Messages\\*"
-            ;;magit-mode
-            ;;      help-mode
-            helpful-mode
-            inferior-python-mode
-            dictionary-mode
-            compilation-mode))
-    (popper-mode +1)
-    :bind (("C-`"   . popper-toggle-latest)
-           ("M-`"   . popper-cycle)
-           ("C-M-`" . popper-toggle-type)))
-#+end_src
-**** ACE utilities
-:PROPERTIES:
-:ID:       024175d8-f05e-4c41-9c04-4a61d55a5d66
-:END:
-***** [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
-#+begin_src emacs-lisp
-  (use-package ace-window
-    :init
-    (defalias 'other-window 'ace-window)
-    :bind*
-    ("M-o" . 'other-window)
-    ("C-x o" . ace-window)
-    ("M-S o" . ace-delete-window))
-#+end_src
-***** hopping around links
-:PROPERTIES:
-:ID:       6a50d585-4163-4b7e-9dd8-b25fd0ee4e6b
-:END:
-Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
-#+begin_src emacs-lisp
-  (use-package ace-link
-    :demand
-    :config
-    (ace-link-setup-default)
-    :bind*
-    (:map emacs-lisp-mode-map
-          ("C-c o" . ace-link-addr))
-    ("C-c o" . ace-link)
-    )
-#+end_src
-***** hopping around in the buffer
-:PROPERTIES:
-:ID:       a1befd07-164b-4ee3-a6cb-c0f4c11094f0
-:END:
-Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-mode/wiki][wiki]] is a food source of info.
-#+begin_src emacs-lisp
-  (use-package ace-jump-mode
-    :bind
-    ("M-s c" . ace-jump-mode)
-    )
-#+end_src
-** Treemacs
-:PROPERTIES:
-:ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
-:END:
-#+begin_src emacs-lisp
-  (use-package
-    treemacs
-    :init
-    (add-to-list 'image-types 'svg)
-    :custom
-    (treemacs-follow-after-init t)
-    :config
-    (treemacs-follow-mode +1)
-    (treemacs-fringe-indicator-mode)
-    (treemacs-git-mode 'deferred)
-    (use-package treemacs-magit)
-    (use-package treemacs-projectile)
-    :bind
-    ("M-9"   . 'treemacs-select-window)
-    (:map treemacs-mode-map
-          ("<right>" . treemacs-peek)))
-
-#+end_src
-** Golden Ratio
-Zoom into current buffer
-#+begin_src emacs-lisp
-  (use-package
-    golden-ratio
-    :init
-    (golden-ratio-mode 1))
-#+end_src
-** Online Chats
-:PROPERTIES:
-:ID:       04bb339b-884b-4571-a740-81d210097aa8
-:END:
-*** irc/erc
-#+begin_src emacs-lisp
-
-  (defun rgr/erc-switch-to-channel(&optional channel)
-    (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
-      (switch-to-buffer (current-buffer))))
-
-  (defun rgr/erc-start()
-    (interactive)
-    (if (not (get-buffer "irc.libera.chat:6697"))
-        (progn
-          (erc-tls :server "irc.libera.chat" :port "6697")
-          ;;(erc-tls :server "irc.freenode.net" :port "6667")
-          (erc-tls :server "irc.oftc.net" :port "6697")
-          (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
-      (erc-switch-to-buffer)))
-
-  (require 'erc)
-  (global-set-key (kbd  "C-c e") #'rgr/erc-start)
-#+end_src
 ** Email
 :PROPERTIES:
 :ID:       1db35463-e9e1-4c38-b21f-437d475184e4
@@ -2282,19 +2170,42 @@ Zoom into current buffer
     :hook
     (prog-mode . indent-bars-mode))
 #+end_src
-**** duplicate thing
+**** Treemacs
+:PROPERTIES:
+:ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
+:END:
+#+begin_src emacs-lisp
+  (use-package
+    treemacs
+    :init
+    (add-to-list 'image-types 'svg)
+    :custom
+    (treemacs-follow-after-init t)
+    :config
+    (treemacs-follow-mode +1)
+    (treemacs-fringe-indicator-mode)
+    (treemacs-git-mode 'deferred)
+    (use-package treemacs-magit)
+    (use-package treemacs-projectile)
+    :bind
+    ("M-9"   . 'treemacs-select-window)
+    (:map treemacs-mode-map
+          ("<right>" . treemacs-peek)))
+
+#+end_src
+****** duplicate thing
 #+begin_src emacs-lisp
   (use-package duplicate-thing
     :bind
     ("C-S-d" . 'duplicate-thing))
 #+end_src
-**** Breadcrumbs
+****** Breadcrumbs
 https://github.com/joaotavora/breadcrumb
 #+begin_src  emacs-lisp
   (use-package breadcrumb
     :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
 #+end_src
-***** rmsbolt
+******* rmsbolt
 RMSbolt is a compiler output viewer in Emacs.
 https://github.com/emacsmirror/rmsbolt
 #+begin_src emacs-lisp
@@ -2318,7 +2229,7 @@ https://github.com/emacsmirror/rmsbolt
 
 #+end_src
 
-***** parrot
+******* parrot
 #+begin_src emacs-lisp
   (defun my/parrot-animate-when-compile-success (buffer result)
     (if (string-match "^finished" result)
@@ -2330,7 +2241,7 @@ https://github.com/emacsmirror/rmsbolt
     (parrot-mode)
     (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 #+end_src
-**** Emacs Lisp, ELisp Utils                                    :elisp:utils:
+****** Emacs Lisp, ELisp Utils                                  :elisp:utils:
 :PROPERTIES:
 :ID:       eb119ffb-f073-4fe0-a8f4-b031291d9e4d
 :END:
@@ -2341,12 +2252,12 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
   (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 #+end_src
 
-***** rgr/elisp-utils library
+******* rgr/elisp-utils library
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp-utils.el" elisp-dir)
 :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
 :END:
-****** smartparens
+******** smartparens
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
@@ -2359,7 +2270,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
     :hook
     ((emacs-lisp-mode . smartparens-mode)))
 #+end_src
-****** electric-pair-mode
+******** electric-pair-mode
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
@@ -2372,7 +2283,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
     :hook
     ((emacs-lisp-mode . electric-pair-mode)))
 #+end_src
-****** elisp checks
+******** elisp checks
 :PROPERTIES:
 :ID:       ca5b425c-df7f-47e9-a095-a5c59159ceb4
 :END:
@@ -2381,7 +2292,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
     "return non nil if this buffer edits elisp"
     (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 #+end_src
-****** linting                                                         :lint:
+******** linting                                                       :lint:
 :PROPERTIES:
 :ID:       2f4d8bac-b94c-4bd8-bf58-b08cb86bc0a7
 :END:
@@ -2389,7 +2300,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 #+begin_src emacs-lisp
   (use-package package-lint)
 #+end_src
-****** helpful, enriched elisp help
+******** helpful, enriched elisp help
 :PROPERTIES:
 :ID:       e5517321-9188-4c5f-abfe-6511580c6193
 :END:
@@ -2426,7 +2337,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
     ;; look at interactive functions.
     (global-set-key (kbd "C-h C") #'helpful-command))
 #+end_src
-****** elisp popup context help                                 :popup:elisp:
+******** elisp popup context help                               :popup:elisp:
 :LOGBOOK:
 - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
 - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
@@ -2445,7 +2356,7 @@ Display a poup containing docstring at point
     ("M-<f1>" . el-docstring-sap-mode))
 
 #+end_src
-****** CANCELLED lispy                                            :CANCELLED:
+******** CANCELLED lispy                                          :CANCELLED:
 CLOSED: [2021-07-21 Wed 11:28]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
@@ -2458,7 +2369,7 @@ CLOSED: [2021-07-21 Wed 11:28]
   (use-package lispy
     :bind (:map emacs-lisp-mode-map (("C-1" . (lambda()(interactive)(lispy-describe-inline))))))
 #+end_src
-****** Elisp debugging
+******** Elisp debugging
 :PROPERTIES:
 :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
 :END:
@@ -2480,7 +2391,7 @@ CLOSED: [2021-07-21 Wed 11:28]
 
 #+RESULTS:
 | myELisp | edebug-x-mode |
-****** Formatting
+******** Formatting
 :PROPERTIES:
 :ID:       d360a0c5-e21a-445b-a9ae-d97d33dce966
 :END:
@@ -2491,7 +2402,7 @@ CLOSED: [2021-07-21 Wed 11:28]
     (:map emacs-lisp-mode-map
           ("C-c f" . elisp-format-region)))
 #+end_src
-****** popup query symbol
+******** popup query symbol
 :PROPERTIES:
 :ID:       4745e152-bad7-4a31-8f9b-79cb62cdb430
 :END:
@@ -2507,14 +2418,14 @@ CLOSED: [2021-07-21 Wed 11:28]
     :bind
     (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 #+end_src
-****** provide
+******** provide
 :PROPERTIES:
 :ID:       7dcc7be3-1449-44e8-aed9-c223334e150f
 :END:
 #+begin_src emacs-lisp
   (provide 'rgr/elisp-utils)
 #+end_src
-**** prog-mode hack
+****** prog-mode hack
 :PROPERTIES:
 :ID:       2e3c4e82-1056-47ea-ba0a-e4492fe56709
 :END:
@@ -2522,13 +2433,13 @@ CLOSED: [2021-07-21 Wed 11:28]
   (unless (fboundp 'prog-mode)
     (defalias 'prog-mode 'fundamental-mode))
 #+end_src
-**** undo tree
+****** undo tree
 #+begin_src
   (use-package undo-tree
     :init
     (global-undo-tree-mode))
 #+end_src
-****  Show Line numbers
+******  Show Line numbers
 :PROPERTIES:
 :ID:       1c88f735-c6b7-41d1-b7ea-b09b1e70b539
 :END:
@@ -2536,7 +2447,7 @@ CLOSED: [2021-07-21 Wed 11:28]
   (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
   (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
 #+end_src
-**** code format
+****** code format
 #+begin_src emacs-lisp
   ;; auto-format different source code files extremely intelligently
   ;; https://github.com/radian-software/apheleia
@@ -2546,7 +2457,7 @@ CLOSED: [2021-07-21 Wed 11:28]
     :config
     (apheleia-global-mode +1))
 #+end_src
-**** rainbow delimiters
+****** rainbow delimiters
 :PROPERTIES:
 :ID:       0551cfd4-3325-4b79-90e1-d0edd4c1304e
 :END:
@@ -2555,13 +2466,13 @@ CLOSED: [2021-07-21 Wed 11:28]
     :config
     (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 #+end_src
-**** Project Management                                             :project:
-***** project
+****** Project Management                                           :project:
+******* project
 I prefer projectile
 #+begin_src emacs-lisp
   ;;(require 'project)
 #+end_src
-***** projectile                                                 :projectile:
+******* projectile                                               :projectile:
 #+begin_src emacs-lisp
   (use-package projectile
     :demand
@@ -2570,7 +2481,7 @@ I prefer projectile
     (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map)
     (define-key projectile-command-map  (kbd "b") #'consult-project-buffer))
 #+end_src
-****** projectile npm support
+******** projectile npm support
 #+begin_src  emacs-lisp
   (projectile-register-project-type 'npm '("package.json")
                                     :project-file "package.json"
@@ -2579,7 +2490,7 @@ I prefer projectile
          			          :run "alacritty --command tmux new-session -A -s 'npm projectile' 'npm start'"
          			          :test-suffix ".spec")
 #+end_src
-****** org-projectile
+******** org-projectile
 https://github.com/IvanMalison/org-projectile
 #+begin_src  emacs-lisp
   (use-package org-project-capture
@@ -2594,11 +2505,11 @@ https://github.com/IvanMalison/org-projectile
     (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
     :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
 #+end_src
-**** BASH                                                              :bash:
+****** BASH                                                            :bash:
 :PROPERTIES:
 :ID:       4dd2f546-25a2-498f-ad8c-25a29c09a303
 :END:
-***** Navigating Bash set -x output
+******* Navigating Bash set -x output
 :PROPERTIES:
 :ID:       043858ea-c607-49f5-bf6e-74622398d1e5
 :END:
@@ -2613,11 +2524,11 @@ https://github.com/IvanMalison/org-projectile
                    "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 #+end_src
 
-**** JSON, YAML Configuration files                                    :json:
+****** JSON, YAML Configuration files                                  :json:
 :PROPERTIES:
 :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
 :END:
-***** YAML
+******* YAML
 :PROPERTIES:
 :ID:       26c28417-3965-452a-a180-61de98d44ef5
 :END:
@@ -2629,13 +2540,13 @@ https://github.com/IvanMalison/org-projectile
     )
 
 #+end_src
-***** json
+******* json
 #+begin_src emacs-lisp
   (use-package json-reformat)
   (use-package hydra)
 #+end_src
 
-**** Flymake
+****** Flymake
 #+begin_src  emacs-lisp
   (use-package flymake
     :demand t
@@ -2647,14 +2558,14 @@ https://github.com/IvanMalison/org-projectile
     ("M-n" . next-error)
     ("M-p" . previous-error))
 #+end_src
-***** diagnostic-at-point
+******* diagnostic-at-point
 #+begin_src emacs-lisp
   (use-package flymake-diagnostic-at-point
     :after flymake
     :config
     (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
 #+end_src
-***** shellcheck
+******* shellcheck
 #+begin_src emacs-lisp
   (use-package flymake-shellcheck
     :commands flymake-shellcheck-load
@@ -2664,11 +2575,11 @@ https://github.com/IvanMalison/org-projectile
       (flymake-mode +1))
     :hook (sh-mode . rgr/sh-mode-hook))
 #+end_src
-**** Version Control                                                 :git:vc:
+****** Version Control                                               :git:vc:
 :PROPERTIES:
 :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
 :END:
-***** It's [[Https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs :magit:
+******* It's [[Https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs :magit:
 :PROPERTIES:
 :ID:       af65c6af-be13-4c09-87ae-a128711ddc14
 :END:
@@ -2687,7 +2598,7 @@ magit
     :hook
     (magit-status-mode . magit-filenotify-mode))
 #+end_src
-***** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests                       :forge:git:github:
+******* [[https://github.com/magit/forge][Forge]] ahead with Pull Requests :forge:git:github:
 always causes issues. disabled.
 :PROPERTIES:
 :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
@@ -2699,7 +2610,7 @@ always causes issues. disabled.
     :after magit)
 #+end_src
 
-****** token                                                    :crypt:token:
+******** token                                                  :crypt:token:
 -----BEGIN PGP MESSAGE-----
 
 hQEMA7IjL5SkHG4iAQgAhMUIMTYGMMJOxJT9Cpd4yXSe7D3nYO1JLdyFFADgiHDq
@@ -2713,7 +2624,7 @@ Y0lSPvXH7dBCTWu2rSWhIvgCQfv6Nihs3Jc455oZgajN7G/rgZNb0ER8YTYncZjY
 gtVhIJfSArVFXuCGLnZMoMHSC4rV
 =MsQY
 -----END PGP MESSAGE-----
-***** Git Gutter Mode                                                :gutter:
+******* Git Gutter Mode                                              :gutter:
 :PROPERTIES:
 :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
 :END:
@@ -2725,7 +2636,7 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
     :bind
     ("C-x v ="  . git-gutter:popup-hunk))
 #+end_src
-**** Dart/Flutter                                              :dart:flutter:
+****** Dart/Flutter                                            :dart:flutter:
 Running emultaor from command line:
 
 #+begin_src bash
@@ -2761,14 +2672,14 @@ Running emultaor from command line:
     :hook   (dart-mode . rgr/init-dart-buffer ))
 
 #+end_src
-***** Java                                                             :java:
+******* Java                                                           :java:
 #+begin_src emacs-lisp
   ;; (use-package emacs
   ;;   :hook (java-mode . eglot-ensure)
   ;;   )
 #+end_src
-**** Tree Sitter
-**** treesit-auto
+****** Tree Sitter
+****** treesit-auto
 Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
 #+begin_src  emacs-lisp
   (use-package treesit-auto
@@ -2778,7 +2689,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (global-treesit-auto-mode))
 #+end_src
 ****JavaScript Family
-***** Javascript                                                         :js:
+******* Javascript                                                       :js:
 :PROPERTIES:
 :ID:       27571c84-2c40-487d-abd0-3013c53b731b
 :END:
@@ -2800,7 +2711,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (js-ts-mode . rgr/javascript-typescript-common-mode-hook)
     (js-ts-mode . rgr/js-ts-mode-hook))
 #+end_src
-***** Typescript
+******* Typescript
 #+begin_src emacs-lisp
   (use-package typescript-ts-mode
     :demand t
@@ -2811,7 +2722,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
     (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 #+end_src
-**** Language Server Protocol (LSP), lsp-mode                           :lsp:
+****** Language Server Protocol (LSP), lsp-mode                         :lsp:
 :PROPERTIES:
 :END:
 [[https://github.com/emacs-lsp][Emacs-lsp]] : Language Server Protocol client for Emacs
@@ -2821,12 +2732,12 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
   (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 #+end_src
 
-***** library
+******* library
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-lsp.el" elisp-dir)
 :END:
 
-****** lsp
+******** lsp
 :PROPERTIES:
 :ID:       9f1c1bb0-e5e0-4589-a42c-828bd44646ba
 :END:
@@ -2873,7 +2784,7 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 
 #+end_src
 
-****** eglot
+******** eglot
 Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
@@ -2889,11 +2800,11 @@ https://github.com/joaotavora/eglot
           ("<C-return>" . eglot-code-actions)))
 #+end_src
 
-****** provide
+******** provide
 #+begin_src emacs-lisp
   (provide 'rgr/lsp)
 #+end_src
-**** Serial Port
+****** Serial Port
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
@@ -2921,7 +2832,7 @@ https://github.com/joaotavora/eglot
                     (interactive)
                     (selectSerialPortBuffer)))
 #+end_src
-**** PlatformIO
+****** PlatformIO
 :PROPERTIES:
 :END:
 [[https://github.com/emacsmirror/platformio-mode][platformio-mode]] is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
@@ -2944,17 +2855,17 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (add-hook 'compilation-finish-functions
               'rgr/platformio-compilation-mode-filter))
 #+end_src
-***** CANCELLED [#A] get compilation errors to work and submit ansi color fix? :CANCELLED:
+******* CANCELLED [#A] get compilation errors to work and submit ansi color fix? :CANCELLED:
 CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 :LOGBOOK:
 - State "CANCELLED"  from "TODO"       [2023-11-27 Mon 04:59]
 - State "TODO"       from              [2021-09-26 Sun 21:13]
 :END:
-**** Python                                                          :python:
+****** Python                                                        :python:
 :PROPERTIES:
 :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
 :END:
-***** ipython
+******* ipython
 :LOGBOOK:
 - State "SOMEDAY"    from              [2021-04-03 Sa 09:41]
 :END:
@@ -2962,14 +2873,14 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   (setq python-shell-interpreter "ipython")
   (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 #+end_src
-***** virtualenv                                                 :virtualenv:
+******* virtualenv                                               :virtualenv:
 #+begin_src emacs-lisp
   (use-package auto-virtualenv
     :config
     (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 #+end_src
-**** Haskell                                                         :python:
-***** haskell-mode
+****** Haskell                                                       :python:
+******* haskell-mode
 #+begin_src emacs-lisp
   ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
   (use-package haskell-mode
@@ -2983,8 +2894,8 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
                 '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
     (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 #+end_src
-**** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
-***** voltron
+****** lldb debugging in emacs                       :lldb:llvm:voltron:tmux:
+******* voltron
 #+begin_src emacs-lisp
   (use-package lldb-voltron
     :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
@@ -2992,11 +2903,11 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     ;; (breadcrumb-mode t)
     )
 #+end_src
-**** C, c-mode                                                            :c:
+****** C, c-mode                                                          :c:
   :PROPERTIES:
   :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
   :END:
-***** c-mode-common-hook
+******* c-mode-common-hook
 #+begin_src emacs-lisp
   (use-package c-ts-mode
     :config
@@ -3022,7 +2933,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
              :map c-ts-mode-map
              (("M-<return>" . rgr/c-complete-line))))
 #+end_src
-**** cc,cpp, C++, cc-mode                                               :cpp:
+****** cc,cpp, C++, cc-mode                                             :cpp:
 :PROPERTIES:
 :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b
 :END:
@@ -3031,10 +2942,10 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     )
   (add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
 #+end_src
-***** Linux tools
+******* Linux tools
 :PROPERTIES:
 :END:
-****** [[https://github.com/doublep/logview][logview]] - view system logfiles
+******** [[https://github.com/doublep/logview][logview]] - view system logfiles
 :PROPERTIES:
 :ID:       bfd57f96-8cc4-41a1-81ab-e683345664e1
 :END:
@@ -3045,18 +2956,18 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
     (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 #+end_src
-***** Assembler
+******* Assembler
 :PROPERTIES:
 :ID:       2bc81dc1-4f5f-47b9-9446-464af96a2365
 :END:
-****** [[https://nullprogram.com/blog/2015/11/21/][x86Lookup]]
+******** [[https://nullprogram.com/blog/2015/11/21/][x86Lookup]]
 :PROPERTIES:
 :ID:       feb458b6-b2ab-4553-b2d9-95c121b29e7e
 :END:
 #+begin_src emacs-lisp
   (use-package strace-mode)
 #+end_src
-***** Godot GDScript                                                  :godot:
+******* Godot GDScript                                                :godot:
 :PROPERTIES:
 :ID:       19daf0bd-1652-4638-9d72-50f0b8af1586
 :END:
@@ -3082,15 +2993,15 @@ This [[https://github.com/GDQuest/emacs-gdscript-mode][package]] adds support fo
     )
 #+end_src
 
-***** Web,Symfony and Twig
+******* Web,Symfony and Twig
 :PROPERTIES:
 :ID:       5c88e4a3-3af1-42e4-81ec-913b4fa88853
 :END:
-****** Tasks                                                       :tasklist:
+******** Tasks                                                     :tasklist:
 :PROPERTIES:
 :ID:       0d8f29bf-bbd2-4387-a8fa-e2907704dc82
 :END:
-******* DONE put dash docset in here!
+********* DONE put dash docset in here!
 CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 Fr>
 :PROPERTIES:
 :ID:       fc1fca41-5417-484d-ae16-5f6dcc2e4fa7
@@ -3100,11 +3011,11 @@ CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 F
 - State "TODO"       from              [2020-03-06 Fr 03:55]
 :END:
 
-****** Symfony
+******** Symfony
 :PROPERTIES:
 :ID:       02d41cb7-37c1-4e61-aec1-7014650f29bc
 :END:
-******* custom
+********* custom
 :PROPERTIES:
 :ID:       0af7ade2-dc61-4d8c-a98b-b39db18b8370
 :END:
@@ -3120,7 +3031,7 @@ CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 F
     :group 'rgr/symfony)
 #+end_src
 
-******* Start a symfony web server when applicable
+********* Start a symfony web server when applicable
 :PROPERTIES:
 :ID:       e985339e-df07-40f2-b0c6-0356749a21c4
 :END:
@@ -3152,7 +3063,7 @@ We can trigger it using a .dir-locals.el
 
 
 
-******* webmode
+********* webmode
 :PROPERTIES:
 :ID:       1f6b744d-f3f8-4d7b-abbe-e8d765ee3cc8
 :END:
@@ -3178,7 +3089,7 @@ We can trigger it using a .dir-locals.el
     (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 #+end_src
 
-***** elf-mode - view the symbol list in a binary
+******* elf-mode - view the symbol list in a binary
 :PROPERTIES:
 :ID:       41cf30f2-5a70-4aab-aa93-2bd9a249b72f
 :END:
@@ -3191,7 +3102,7 @@ We can trigger it using a .dir-locals.el
     (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
     (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 #+end_src
-***** provide
+******* provide
 #+begin_src emacs-lisp
   (provide 'rgr/programming)
 #+end_src

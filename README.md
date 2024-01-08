@@ -224,15 +224,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
 ### rgr-utils library
 
-1.  linux journal utility
-
-    <https://github.com/SebastianMeisel/journalctl-mode>
-    This Emacs major mode is designed for viewing the output from systemd’s journalctl within Emacs. It provides a convenient way to interact with journalctl logs, including features like fontification, chunked loading for performance, and custom keyword highlighting.
-    
-        (use-package journalctl-mode
-        :ensure t)
-
-2.  thing at point or region or input
+1.  thing at point or region or input
 
         (defun rgr/region-symbol-query()
           "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
@@ -247,7 +239,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
                  (result (if w w (read-string "lookup:"))))
             result))
 
-3.  read and write elisp vars to file
+2.  read and write elisp vars to file
 
         
         (defun rgr/elisp-write-var (f v)
@@ -259,6 +251,38 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (insert-file-contents f)
             (cl-assert (eq (point) (point-min)))
             (read (current-buffer))))
+
+3.  completing lines
+
+        (use-package emacs
+          :init
+          (setq rgr/complete-line-function 'rgr/newline-below)
+          :config
+          (defun rgr/complete-c-line()
+            (interactive)
+            (end-of-line)
+            (delete-trailing-whitespace)
+            (unless (eql ?\; (char-before (point-at-eol)))
+              (progn (insert ";")))
+            (if current-prefix-arg
+                (newline-and-indent)
+              (progn
+                (next-line)
+                (beginning-of-visual-line))))
+        
+          (defun rgr/insert-previous-line()
+            (interactive)
+            (previous-line)
+            (end-of-line)
+            (newline-and-indent)
+            (insert (string-trim (current-kill 0))))
+        
+          (defun rgr/newline-below()
+            (interactive)
+            (end-of-line)
+            (newline-and-indent))
+          :bind
+          ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
 
 4.  provide
 
@@ -279,34 +303,22 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
     I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
     
         
-        (use-package emacs
-          :demand t
-          ;; :custom
-          ;; (desktop-base-file-name "emacs.desktop")
-          ;; (desktop-restore-eager  4)
-          ;; (desktop-globals-to-save
-          ;;  '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
-          ;; (desktop-load-locked-desktop t)
-          :init
+        (recentf-mode)
+        (savehist-mode)
+        (save-place-mode)
         
-          (recentf-mode)
-          (savehist-mode)
-          (save-place-mode)
-        
-          (defun rgr/startup-hook ()
-            ;(switch-to-buffer (get-register ?l))
-            (switch-to-buffer "*scratch*")
-            )
-        
-          (defun rgr/remember-last-buffer (f)
-            (when buffer-file-name
-              (set-register ?l (buffer-name))))
-        
-          (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
-        
-          (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-        
+        (defun rgr/startup-hook ()
+                                                ;(switch-to-buffer (get-register ?l))
+          (switch-to-buffer "*scratch*")
           )
+        
+        (defun rgr/remember-last-buffer (f)
+          (when buffer-file-name
+            (set-register ?l (buffer-name))))
+        
+        (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+        
+        (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
 2.  rest of startup
 
@@ -337,100 +349,208 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 ### library
 
-1.  General
+1.  general ui
 
-    1.  a - unfiled
-    
-            (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
-                                                    ; t60
-            (scroll-bar-mode -1)
-            (tool-bar-mode -1)
-            (menu-bar-mode -1)
-            (show-paren-mode 1)
-            (winner-mode 1)
-            
-            (global-auto-revert-mode 1)
-            ;; Also auto refresh dired, but be quiet about it
-            (setq global-auto-revert-non-file-buffers t)
-            (setq auto-revert-verbose nil)
-            
-            (global-visual-line-mode 1)
-            
-            (setq column-number-mode t)
-            
-            (delete-selection-mode 1)
-            
-            (global-set-key (kbd "S-<f1>") 'describe-face)
-            (global-set-key (kbd "M-m") 'manual-entry)
-            
-            (global-set-key (kbd "S-<f10>") #'menu-bar-open)
-                                                    ;          (global-set-key (kbd "<f10>") #'imenu)
-            
-            
-            (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
-            
-            (defalias 'yes-or-no-p 'y-or-n-p)
-            
-            (setq disabled-command-function nil)
-            
-            (global-hl-line-mode t)
-            
-            (use-package
-              browse-url-dwim)
-            
-            ;; display dir name when core name clashes
-            (require 'uniquify)
-            
-            (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
-            
-            
-            (global-set-key (kbd "C-c r") 'query-replace-regexp)
-    
-    2.  beacon
-    
-        visual feedback as to cursor position
+        (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
+                                                ; t60
+        (scroll-bar-mode -1)
+        (tool-bar-mode -1)
+        (menu-bar-mode -1)
+        (show-paren-mode 1)
+        (winner-mode 1)
         
-            (use-package beacon
-              :custom
-              (beacon-blink-delay 1)
-              (beacon-size 10)
-              (beacon-color "orange" nil nil "Customized with use-package beacon")
-              (beacon-blink-when-point-moves-horizontally 32)
-              (beacon-blink-when-point-moves-vertically 8)
-              :config
-              (beacon-mode 1))
-    
-    3.  blackout modeline
-    
-        Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
+        (global-auto-revert-mode 1)
+        ;; Also auto refresh dired, but be quiet about it
+        (setq global-auto-revert-non-file-buffers t)
+        (setq auto-revert-verbose nil)
         
-            (straight-use-package
-             '(blackout :host github :repo "raxod502/blackout"))
-    
-    4.  boxquote
-    
-            (use-package boxquote
-              :straight (:branch "main")
-              :bind
-              ("C-S-r" . boxquote-region))
-    
-    5.  volatile-highlights
-    
-        brings visual feedback to some operations by highlighting portions relating to the operations.
+        (global-visual-line-mode 1)
         
-            (use-package
-              volatile-highlights
-              :disabled
-              :init (volatile-highlights-mode 1))
+        (setq column-number-mode t)
+        
+        (delete-selection-mode 1)
+        
+        (global-set-key (kbd "S-<f1>") 'describe-face)
+        (global-set-key (kbd "M-m") 'manual-entry)
+        
+        (global-set-key (kbd "S-<f10>") #'menu-bar-open)
+                                                ;          (global-set-key (kbd "<f10>") #'imenu)
+        
+        
+        (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+        
+        (defalias 'yes-or-no-p 'y-or-n-p)
+        
+        (setq disabled-command-function nil)
+        
+        (global-hl-line-mode t)
+        
+        (use-package
+          browse-url-dwim)
+        
+        ;; display dir name when core name clashes
+        (require 'uniquify)
+
+2.  toggle buffer
+
+        (defun rgr/toggle-buffer(n)
+          "jump to or from buffer named n else default to *Messages*"
+          (interactive "bbuffer:")
+          (let ((n (or n
+                       "*Messages*")))
+            (switch-to-buffer (if (string= (buffer-name) n)
+                                  (other-buffer) n))))
+
+3.  dired - emacs file management
+
+4.  Dired Git Info
+
+        (use-package dired-git
+          :config
+          :hook (dired-mode . dired-git-mode))
+
+5.  dired hacks
+
+    Collection of useful dired additions found on github [here](https://github.com/Fuco1/dired-hacks). Found out about
+    it at the useful emacs resource [**Pragmatic Emacs**](http://pragmaticemacs.com/category/dired/).
     
-    6.  web pasting
+    1.  dired subtree
     
-            (use-package
-              dpaste
+            (use-package dired-subtree
+              :bind (:map dired-mode-map
+                          ("i" . dired-subtree-insert)
+                          (";" . dired-subtree-remove)))
+    
+    2.  dired filter
+    
+        More dired based filtering see [dired-filter-prefix](dired-filter-prefix)
+        
+            (use-package dired-filter
               :init
-              :bind ("C-c y" . dpaste-region-or-buffer))
+              (define-key dired-mode-map (kbd "/") dired-filter-map))
 
-2.  Accessibility
+6.  PopUp Utilities
+
+7.  posframe
+
+    [Posframe](https://github.com/tumashu/posframe)
+    can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
+    
+        (use-package posframe)
+
+8.  popper
+
+    [Popper](https://github.com/karthink/popper) is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
+    
+        (use-package popper
+          :disabled
+          :ensure t
+          :init
+          (use-package posframe)
+          ;;(setq popper-display-function 'rgr/popper-display-posframe)
+          (setq popper-reference-buffers
+                '(
+                  "\\*Messages\\*"
+                  ;;magit-mode
+                  ;;      help-mode
+                  helpful-mode
+                  inferior-python-mode
+                  dictionary-mode
+                  compilation-mode))
+          (popper-mode +1)
+          :bind (("C-`"   . popper-toggle-latest)
+                 ("M-`"   . popper-cycle)
+                 ("C-M-`" . popper-toggle-type)))
+
+9.  ACE utilities
+
+    1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
+    
+            (use-package ace-window
+              :init
+              (defalias 'other-window 'ace-window)
+              :bind*
+              ("M-o" . 'other-window)
+              ("C-x o" . ace-window)
+              ("M-S o" . ace-delete-window))
+    
+    2.  hopping around links
+    
+        Quickly follow [links](https://github.com/abo-abo/ace-link) in Emacs.
+        
+            (use-package ace-link
+              :demand
+              :config
+              (ace-link-setup-default)
+              :bind*
+              (:map emacs-lisp-mode-map
+                    ("C-c o" . ace-link-addr))
+              ("C-c o" . ace-link)
+              )
+    
+    3.  hopping around in the buffer
+    
+        Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-jump-mode/wiki) is a food source of info.
+        
+            (use-package ace-jump-mode
+              :bind
+              ("M-s c" . ace-jump-mode)
+              )
+
+10. Golden Ratio
+
+    Zoom into current buffer
+    
+        (use-package
+          golden-ratio
+          :init
+          (golden-ratio-mode 1))
+
+11. beacon
+
+    visual feedback as to cursor position
+    
+        (use-package beacon
+          :custom
+          (beacon-blink-delay 1)
+          (beacon-size 10)
+          (beacon-color "orange" nil nil "Customized with use-package beacon")
+          (beacon-blink-when-point-moves-horizontally 32)
+          (beacon-blink-when-point-moves-vertically 8)
+          :config
+          (beacon-mode 1))
+
+12. blackout modeline
+
+    Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
+    
+        (straight-use-package
+         '(blackout :host github :repo "raxod502/blackout"))
+
+13. boxquote
+
+        (use-package boxquote
+          :straight (:branch "main")
+          :bind
+          ("C-S-r" . boxquote-region))
+
+14. volatile-highlights
+
+    brings visual feedback to some operations by highlighting portions relating to the operations.
+    
+        (use-package
+          volatile-highlights
+          :disabled
+          :init (volatile-highlights-mode 1))
+
+15. web pasting
+
+        (use-package
+          dpaste
+          :init
+          :bind ("C-c y" . dpaste-region-or-buffer))
+
+16. Accessibility
 
     1.  fonts
     
@@ -447,7 +567,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :bind
               ( "<C-f7>" . 'darkroom-mode))
 
-3.  Ansi colour
+17. Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
     
@@ -455,39 +575,37 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
         (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-4.  Tabs
+18. Tabs
 
-    1.  Tab Bar Mode
-    
-            
-            (defun consult-buffer-other-tab ()
-              "Variant of `consult-buffer' which opens in other tab."
-              (interactive)
-              (let ((consult--buffer-display #'switch-to-buffer-other-tab))
-                (consult-buffer)))
-            
-            (use-package tab-bar
-              :defer t
-              :custom
-              (tab-bar-show t)
-              (tab-bar-close-button-show nil)
-              (tab-bar-new-button-show nil)
-              (tab-bar-tab-hints t)
-              (tab-bar-new-tab-choice "*scratch*")
-              (tab-bar-select-tab-modifiers '(control))
-              :custom-face
-              (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
-              (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
-              (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
-              :bind (:map tab-prefix-map
-                          (("x" . tab-close)
-                           ("b" . consult-buffer-other-tab)
-                           ("p" . tab-previous)
-                           ("n" . tab-next)
-                           ("c" . tab-bar-new-tab)
-                           ("s" . tab-bar-switch-to-tab))))
+        
+        (defun consult-buffer-other-tab ()
+          "Variant of `consult-buffer' which opens in other tab."
+          (interactive)
+          (let ((consult--buffer-display #'switch-to-buffer-other-tab))
+            (consult-buffer)))
+        
+        (use-package tab-bar
+          :defer t
+          :custom
+          (tab-bar-show t)
+          (tab-bar-close-button-show nil)
+          (tab-bar-new-button-show nil)
+          (tab-bar-tab-hints t)
+          (tab-bar-new-tab-choice "*scratch*")
+          (tab-bar-select-tab-modifiers '(control))
+          :custom-face
+          (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
+          (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
+          (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+          :bind (:map tab-prefix-map
+                      (("x" . tab-close)
+                       ("b" . consult-buffer-other-tab)
+                       ("p" . tab-previous)
+                       ("n" . tab-next)
+                       ("c" . tab-bar-new-tab)
+                       ("s" . tab-bar-switch-to-tab))))
 
-5.  bookmarks
+19. bookmarks
 
     1.  bookmark+
     
@@ -496,10 +614,101 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :custom
               (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
               :demand)
+
+20. emjois
+
+    <https://github.com/iqbalansari/emacs-emojify>
+    
+        (use-package emojify
+          :init
+          (global-emojify-mode))
+
+21. Cursor/Region related
+
+        (defun centreCursorLineOn()
+          "set properties to keep current line approx at centre of screen height. Useful for debugging."
+          ;; a faster more concise alternative to MELPA's centered-cursor-mode
+          (interactive)
+          (setq  scroll-preserve-screen-position_t scroll-preserve-screen-position scroll-conservatively_t
+                 scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
+                 scroll-margin)
+          (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
+                scroll-margin 99999))
         
-        1.  provide
+        (defun centreCursorLineOff()
+          (interactive)
+          (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
+                 scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
+                 scroll-margin_t))
+    
+    1.  multiple-cursors
+    
+        <https://github.com/magnars/multiple-cursors.emacs-lisp>
         
-                (provide 'rgr/general-config)
+            (use-package multiple-cursors
+             :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+                   ("C->" . mc/mark-next-like-this)
+                   ("C-<" . mc/mark-previous-like-this)
+                   ("C-c C->" . mc/mark-all-like-this)
+                   ("C-c C-SPC" . mc/edit-lines)
+                   ))
+
+22. Folding/Hide Show
+
+    [hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
+    
+        (use-package hideshow
+          :config
+          (defun toggle-selective-display (column)
+            (interactive "P")
+            (set-selective-display
+             (or column
+                 (unless selective-display
+                   (1+ (current-column))))))
+          (defun toggle-hiding (column)
+            (interactive "P")
+            (if hs-minor-mode
+                (if (condition-case nil
+                        (hs-toggle-hiding)
+                      (error t))
+                    (hs-show-all))
+              (toggle-selective-display column)))
+          (add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
+          :bind ( "C-+" . toggle-hiding)
+          ("C-\\" . toggle-selective-display))
+    
+    \#+end\_src
+
+23. flyspell
+
+        (use-package flyspell
+          :config
+          (defun flyspell-check-next-highlighted-word ()
+            "Custom fnction to spell check next highlighted word"
+            (interactive)
+            (flyspell-goto-next-error)
+            (ispell-word)
+            )
+        
+          :bind (("C-<f8>" . flyspell-mode)
+                 ("S-<f8>" . flyspell-check-previous-highlighted-word)
+                 ("C-S-<f8>" . flyspell-buffer)
+                 ("M-<f8>" . flyspell-word)
+                 )
+          ;; :hook
+          ;; (prog-mode .  (flyspell-prog-mode))
+          )
+
+24. rg, ripgrep
+
+    rg is pretty quick
+    
+        (use-package
+          ripgrep)
+
+25. provide
+
+        (provide 'rgr/general-config)
 
 
 ## Minibuffer Enrichment (search, sudo edit&#x2026;)
@@ -1166,7 +1375,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org9881bfd)
+    See `org-agenda-files` [org-agenda-files](#org8071bfb)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1188,140 +1397,6 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
       ("C-c L" . lazy-lang-learn-mode)
       ("<f12>" . lazy-lang-learn-translate)
       ("S-<f12>" . lazy-lang-learn-translate-from-history))
-
-
-## Text tools
-
-
-### basic editing
-
-    (use-package emacs
-      :init
-      (setq rgr/complete-line-function 'rgr/newline-below)
-      :config
-      (defun rgr/complete-c-line()
-        (interactive)
-        (end-of-line)
-        (delete-trailing-whitespace)
-        (unless (eql ?\; (char-before (point-at-eol)))
-          (progn (insert ";")))
-        (if current-prefix-arg
-            (newline-and-indent)
-          (progn
-            (next-line)
-            (beginning-of-visual-line))))
-    
-      (defun rgr/insert-previous-line()
-        (interactive)
-        (previous-line)
-        (end-of-line)
-        (newline-and-indent)
-        (insert (string-trim (current-kill 0))))
-    
-      (defun rgr/newline-below()
-        (interactive)
-        (end-of-line)
-        (newline-and-indent))
-      :bind
-      ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
-
-
-### emjois
-
-<https://github.com/iqbalansari/emacs-emojify>
-
-    (use-package emojify
-      :init
-      (global-emojify-mode))
-
-
-### Cursor/Region related
-
-1.  General
-
-        (defun centreCursorLineOn()
-          "set properties to keep current line approx at centre of screen height. Useful for debugging."
-          ;; a faster more concise alternative to MELPA's centered-cursor-mode
-          (interactive)
-          (setq  scroll-preserve-screen-position_t scroll-preserve-screen-position scroll-conservatively_t
-                 scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
-                 scroll-margin)
-          (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
-                scroll-margin 99999))
-        
-        (defun centreCursorLineOff()
-          (interactive)
-          (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
-                 scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
-                 scroll-margin_t))
-
-2.  multiple-cursors
-
-    <https://github.com/magnars/multiple-cursors.emacs-lisp>
-    
-        (use-package multiple-cursors
-         :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
-               ("C->" . mc/mark-next-like-this)
-               ("C-<" . mc/mark-previous-like-this)
-               ("C-c C->" . mc/mark-all-like-this)
-               ("C-c C-SPC" . mc/edit-lines)
-               ))
-
-
-### Folding/Hide Show
-
-[hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
-
-    (use-package hideshow
-      :config
-      (defun toggle-selective-display (column)
-        (interactive "P")
-        (set-selective-display
-         (or column
-             (unless selective-display
-               (1+ (current-column))))))
-      (defun toggle-hiding (column)
-        (interactive "P")
-        (if hs-minor-mode
-            (if (condition-case nil
-                    (hs-toggle-hiding)
-                  (error t))
-                (hs-show-all))
-          (toggle-selective-display column)))
-      (add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
-      :bind ( "C-+" . toggle-hiding)
-      ("C-\\" . toggle-selective-display))
-
-\#+end\_src
-
-
-### flyspell
-
-    (use-package flyspell
-      :config
-      (defun flyspell-check-next-highlighted-word ()
-        "Custom fnction to spell check next highlighted word"
-        (interactive)
-        (flyspell-goto-next-error)
-        (ispell-word)
-        )
-    
-      :bind (("C-<f8>" . flyspell-mode)
-             ("S-<f8>" . flyspell-check-previous-highlighted-word)
-             ("C-S-<f8>" . flyspell-buffer)
-             ("M-<f8>" . flyspell-word)
-             )
-      ;; :hook
-      ;; (prog-mode .  (flyspell-prog-mode))
-      )
-
-
-### rg, ripgrep
-
-rg is pretty quick
-
-    (use-package
-      ripgrep)
 
 
 ## Reference/Lookup/Media
@@ -1498,7 +1573,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     3.  Elisp reference
     
-        1.  quick help for function etc at point
+        1.  external info
+        
+                (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+        
+        2.  quick help for function etc at point
         
             If an elisp object is there it brings up the internal docs:
             
@@ -1652,193 +1731,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
       :bind
       ("M-g v" . #'rgr/projectile-term))
-
-
-## Buffers and Windows
-
-
-### toggle buffer
-
-    (defun rgr/toggle-buffer(n)
-      "jump to or from buffer named n else default to *Messages*"
-      (interactive "bbuffer:")
-      (let ((n (or n
-                   "*Messages*")))
-        (switch-to-buffer (if (string= (buffer-name) n)
-                              (other-buffer) n))))
-
-
-### General
-
-1.  buffer deletion - but keep scratch and messages!
-
-        (use-package emacs
-          :demand
-          :config
-          (defun rgr/kill-current-buffer()
-            (interactive)
-            (if (member (buffer-name) '("*Messages*" "*scratch*"))
-                (progn
-                  (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-                  (delete-window))
-              (kill-current-buffer)))
-          (add-hook 'before-save-hook 'delete-trailing-whitespace)
-          :bind
-          ("C-x k" . rgr/kill-current-buffer)
-          ("M-0" . 'delete-window)
-          ("M-1" . 'delete-other-windows))
-
-
-### dired - emacs file management
-
-1.  Dired Git Info
-
-        (use-package dired-git
-          :config
-          :hook (dired-mode . dired-git-mode))
-
-2.  dired hacks
-
-    Collection of useful dired additions found on github [here](https://github.com/Fuco1/dired-hacks). Found out about
-    it at the useful emacs resource [**Pragmatic Emacs**](http://pragmaticemacs.com/category/dired/).
-    
-    1.  dired subtree
-    
-            (use-package dired-subtree
-              :bind (:map dired-mode-map
-                          ("i" . dired-subtree-insert)
-                          (";" . dired-subtree-remove)))
-    
-    2.  dired filter
-    
-        More dired based filtering see [dired-filter-prefix](dired-filter-prefix)
-        
-            (use-package dired-filter
-              :init
-              (define-key dired-mode-map (kbd "/") dired-filter-map))
-
-
-### PopUp Utilities
-
-1.  posframe
-
-    [Posframe](https://github.com/tumashu/posframe)
-    can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
-    
-        (use-package posframe)
-
-2.  popper
-
-    [Popper](https://github.com/karthink/popper) is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
-    
-        (use-package popper
-          :disabled
-          :ensure t
-          :init
-          (use-package posframe)
-          ;;(setq popper-display-function 'rgr/popper-display-posframe)
-          (setq popper-reference-buffers
-                '(
-                  "\\*Messages\\*"
-                  ;;magit-mode
-                  ;;      help-mode
-                  helpful-mode
-                  inferior-python-mode
-                  dictionary-mode
-                  compilation-mode))
-          (popper-mode +1)
-          :bind (("C-`"   . popper-toggle-latest)
-                 ("M-`"   . popper-cycle)
-                 ("C-M-`" . popper-toggle-type)))
-
-3.  ACE utilities
-
-    1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
-    
-            (use-package ace-window
-              :init
-              (defalias 'other-window 'ace-window)
-              :bind*
-              ("M-o" . 'other-window)
-              ("C-x o" . ace-window)
-              ("M-S o" . ace-delete-window))
-    
-    2.  hopping around links
-    
-        Quickly follow [links](https://github.com/abo-abo/ace-link) in Emacs.
-        
-            (use-package ace-link
-              :demand
-              :config
-              (ace-link-setup-default)
-              :bind*
-              (:map emacs-lisp-mode-map
-                    ("C-c o" . ace-link-addr))
-              ("C-c o" . ace-link)
-              )
-    
-    3.  hopping around in the buffer
-    
-        Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-jump-mode/wiki) is a food source of info.
-        
-            (use-package ace-jump-mode
-              :bind
-              ("M-s c" . ace-jump-mode)
-              )
-
-
-## Treemacs
-
-    (use-package
-      treemacs
-      :init
-      (add-to-list 'image-types 'svg)
-      :custom
-      (treemacs-follow-after-init t)
-      :config
-      (treemacs-follow-mode +1)
-      (treemacs-fringe-indicator-mode)
-      (treemacs-git-mode 'deferred)
-      (use-package treemacs-magit)
-      (use-package treemacs-projectile)
-      :bind
-      ("M-9"   . 'treemacs-select-window)
-      (:map treemacs-mode-map
-            ("<right>" . treemacs-peek)))
-
-
-## Golden Ratio
-
-Zoom into current buffer
-
-    (use-package
-      golden-ratio
-      :init
-      (golden-ratio-mode 1))
-
-
-## Online Chats
-
-
-### irc/erc
-
-    
-    (defun rgr/erc-switch-to-channel(&optional channel)
-      (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
-        (switch-to-buffer (current-buffer))))
-    
-    (defun rgr/erc-start()
-      (interactive)
-      (if (not (get-buffer "irc.libera.chat:6697"))
-          (progn
-            (erc-tls :server "irc.libera.chat" :port "6697")
-            ;;(erc-tls :server "irc.freenode.net" :port "6667")
-            (erc-tls :server "irc.oftc.net" :port "6697")
-            (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))
-        (erc-switch-to-buffer)))
-    
-    (require 'erc)
-    (global-set-key (kbd  "C-c e") #'rgr/erc-start)
 
 
 ## Email
@@ -2033,752 +1925,771 @@ Zoom into current buffer
           :hook
           (prog-mode . indent-bars-mode))
 
-3.  duplicate thing
+3.  Treemacs
 
-        (use-package duplicate-thing
+        (use-package
+          treemacs
+          :init
+          (add-to-list 'image-types 'svg)
+          :custom
+          (treemacs-follow-after-init t)
+          :config
+          (treemacs-follow-mode +1)
+          (treemacs-fringe-indicator-mode)
+          (treemacs-git-mode 'deferred)
+          (use-package treemacs-magit)
+          (use-package treemacs-projectile)
           :bind
-          ("C-S-d" . 'duplicate-thing))
-
-4.  Breadcrumbs
-
-    <https://github.com/joaotavora/breadcrumb>
+          ("M-9"   . 'treemacs-select-window)
+          (:map treemacs-mode-map
+                ("<right>" . treemacs-peek)))
     
-        (use-package breadcrumb
-          :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
+    1.  duplicate thing
     
-    1.  rmsbolt
-    
-        RMSbolt is a compiler output viewer in Emacs.
-        <https://github.com/emacsmirror/rmsbolt>
-        
-            (use-package rmsbolt
-              :config
-              (defun rgr/rmsbolt-toggle()
-                (interactive)
-                (if rmsbolt-mode
-                    (progn
-                      (when (get-buffer
-                             rmsbolt-output-buffer)
-                        (with-current-buffer rmsbolt-output-buffer
-                          (kill-buffer-and-window)))
-                      (rmsbolt-mode -1))
-                  (progn
-                    (rmsbolt-mode +1)
-                    (rmsbolt-compile))))
+            (use-package duplicate-thing
               :bind
-              (:map prog-mode-map
-                    ("C-c d" . rgr/rmsbolt-toggle)))
+              ("C-S-d" . 'duplicate-thing))
     
-    2.  parrot
+    2.  Breadcrumbs
     
-            (defun my/parrot-animate-when-compile-success (buffer result)
-              (if (string-match "^finished" result)
-                  (parrot-start-animation)))
+        <https://github.com/joaotavora/breadcrumb>
+        
+            (use-package breadcrumb
+              :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
+        
+        1.  rmsbolt
+        
+            RMSbolt is a compiler output viewer in Emacs.
+            <https://github.com/emacsmirror/rmsbolt>
             
-            (use-package parrot
-              :ensure t
-              :config
-              (parrot-mode)
-              (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
-
-5.  Emacs Lisp, ELisp Utils
-
-    Load this relatively early in order to have utils available if there's a faied load
-    Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
-    
-        (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
-    
-    1.  rgr/elisp-utils library
-    
-        1.  smartparens
-        
-                (use-package smartparens
-                  :hook
-                  ((emacs-lisp-mode . smartparens-mode)))
-        
-        2.  electric-pair-mode
-        
-            [auto insert closing brackets](emacs#Matching)
-            
-                (use-package emacs
-                  :hook
-                  ((emacs-lisp-mode . electric-pair-mode)))
-        
-        3.  elisp checks
-        
-                (defun rgr/elisp-edit-mode()
-                  "return non nil if this buffer edits elisp"
-                  (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
-        
-        4.  linting
-        
-            [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
-            
-                (use-package package-lint)
-        
-        5.  helpful, enriched elisp help
-        
-                (use-package helpful
+                (use-package rmsbolt
                   :config
-                  ;; Note that the built-in `describe-function' includes both functions
-                  ;; and macros. `helpful-function' is functions only, so we provide
-                  ;; `helpful-callable as a drop-in replacement.
-                  (global-set-key (kbd "C-h e")
-                                  (lambda()
-                                    (interactive)
-                                    (if(get-buffer "*info*")
-                                        (switch-to-buffer "*info*")
-                                      (info "elisp"))))
-                  (global-set-key (kbd "C-h f") #'helpful-callable)
-                
-                  (global-set-key (kbd "C-h v") #'helpful-variable)
-                  (global-set-key (kbd "C-h k") #'helpful-key)
-                  ;;I also recommend the following keybindings to get the most out of helpful:
-                  ;; Lookup the current symbol at point. C-c C-d is a common keybinding
-                  ;; for this in lisp modes.
-                  (global-set-key (kbd "C-h SPC") #'helpful-at-point)
-                  ;; Look up *F*unctions (excludes macros).
-                  ;;
-                  ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
-                  ;; already links to the manual, if a function is referenced there.
-                  (global-set-key (kbd "C-h F") #'helpful-function)
-                
-                  ;; Look up *C*ommands.
-                  ;;
-                  ;; By default, C-h C is bound to describe `describe-coding-system'. I
-                  ;; don't find this very useful, but it's frequently useful to only
-                  ;; look at interactive functions.
-                  (global-set-key (kbd "C-h C") #'helpful-command))
-        
-        6.  elisp popup context help
-        
-            Display a poup containing docstring at point
-            
-                (use-package el-docstring-sap-
-                  :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
-                  :init
-                  (use-package quick-peek)
-                  :hook
-                  (emacs-lisp-mode . el-docstring-sap-mode)
-                  :bind
-                  ("M-<f2>" . el-docstring-sap-display)
-                  ("M-<f1>" . el-docstring-sap-mode))
-        
-        7.  Elisp debugging
-        
-                (use-package
-                  edebug-x
-                  :demand t
-                  :init
-                  (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
-                  ;;(edebug-trace nil)
-                  :config
-                  (require 'edebug)
-                  (defun instrumentForDebugging()
-                    "use the universal prefix arg (C-u) to remove instrumentation"
+                  (defun rgr/rmsbolt-toggle()
                     (interactive)
-                    (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
-                  )
-        
-        8.  Formatting
-        
-                (use-package
-                  elisp-format
+                    (if rmsbolt-mode
+                        (progn
+                          (when (get-buffer
+                                 rmsbolt-output-buffer)
+                            (with-current-buffer rmsbolt-output-buffer
+                              (kill-buffer-and-window)))
+                          (rmsbolt-mode -1))
+                      (progn
+                        (rmsbolt-mode +1)
+                        (rmsbolt-compile))))
                   :bind
-                  (:map emacs-lisp-mode-map
-                        ("C-c f" . elisp-format-region)))
+                  (:map prog-mode-map
+                        ("C-c d" . rgr/rmsbolt-toggle)))
         
-        9.  popup query symbol
+        2.  parrot
         
-                (use-package popup
-                  :config
-                  (defun rgr/show-symbol-details ()
-                    (interactive)
-                    (popup-tip (format "intern-soft thing-at-point: %s, symbolp: %s, symbol-name:%s"
-                                       (setq-local sym (intern-soft (thing-at-point 'symbol)))
-                                       (symbolp sym)
-                                       (symbol-name sym))))
-                  :bind
-                  (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
-        
-        10. provide
-        
-                (provide 'rgr/elisp-utils)
-
-6.  prog-mode hack
-
-        (unless (fboundp 'prog-mode)
-          (defalias 'prog-mode 'fundamental-mode))
-
-7.  undo tree
-
-        (use-package undo-tree
-          :init
-          (global-undo-tree-mode))
-
-8.  Show Line numbers
-
-        (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
-        (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
-
-9.  code format
-
-        ;; auto-format different source code files extremely intelligently
-        ;; https://github.com/radian-software/apheleia
-        (use-package apheleia
-          :disabled
-          :ensure t
-          :config
-          (apheleia-global-mode +1))
-
-10. rainbow delimiters
-
-        (use-package rainbow-identifiers
-          :config
-          (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
-
-11. Project Management
-
-    1.  project
-    
-        I prefer projectile
-        
-            ;;(require 'project)
-    
-    2.  projectile
-    
-            (use-package projectile
-              :demand
-              :config
-              (projectile-mode +1)
-              (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map)
-              (define-key projectile-command-map  (kbd "b") #'consult-project-buffer))
-        
-        1.  projectile npm support
-        
-                (projectile-register-project-type 'npm '("package.json")
-                                                  :project-file "package.json"
-                                                  :compile "npm install"
-                                                  :test "npm test"
-                                                  :run "alacritty --command tmux new-session -A -s 'npm projectile' 'npm start'"
-                                                  :test-suffix ".spec")
-        
-        2.  org-projectile
-        
-            <https://github.com/IvanMalison/org-projectile>
-            
-                (use-package org-project-capture
-                  :demand
-                  :custom
-                  (org-project-capture-per-project-filepath "TODO.org")
-                  :config
-                  (use-package org-projectile :demand)
-                  (setq org-project-capture-default-backend
-                        (make-instance 'org-project-capture-projectile-backend))
-                  (org-project-capture-per-project)
-                  (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
-                  :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
-
-12. BASH
-
-    1.  Navigating Bash set -x output
-    
-            ;; try to work with next-error for bash's "set -x" output
-            (use-package compile
-              :config
-              (add-to-list 'compilation-error-regexp-alist
-                           'bash-set-x)
-              (add-to-list 'compilation-error-regexp-alist-alist
-                           '(pascal
-                             "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
-
-13. JSON, YAML Configuration files
-
-    1.  YAML
-    
-            (use-package
-              yaml-mode
-              :config
-              (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
-              )
-    
-    2.  json
-    
-            (use-package json-reformat)
-            (use-package hydra)
-
-14. Flymake
-
-        (use-package flymake
-          :demand t
-          :init
-          (defun rgr/flymake-hook()
-               (setq-local next-error-function 'flymake-goto-next-error))
-          (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
-          :bind
-          ("M-n" . next-error)
-          ("M-p" . previous-error))
-    
-    1.  diagnostic-at-point
-    
-            (use-package flymake-diagnostic-at-point
-              :after flymake
-              :config
-              (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
-    
-    2.  shellcheck
-    
-            (use-package flymake-shellcheck
-              :commands flymake-shellcheck-load
-              :init
-              (defun rgr/sh-mode-hook()
-                (flymake-shellcheck-load)
-                (flymake-mode +1))
-              :hook (sh-mode . rgr/sh-mode-hook))
-
-15. Version Control
-
-    1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
-    
-        magit
-        
-            (use-package
-              magit
-              :init
-              (use-package magit-filenotify)
-              (use-package transient
-                :straight (transient :type git :host github :repo "magit/transient"))
-              :bind
-              ("C-x g" . magit-status)
-              :hook
-              (magit-status-mode . magit-filenotify-mode))
-    
-    2.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
-    
-        always causes issues. disabled.
-        
-        :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
-        
-            (straight-use-package 'sqlite3)
-            (use-package forge
-              :disabled
-              :after magit)
-        
-        1.  token
-        
-            &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
-            
-            hQEMA7IjL5SkHG4iAQgAhMUIMTYGMMJOxJT9Cpd4yXSe7D3nYO1JLdyFFADgiHDq
-            1D68ig/iJdH5aPZNmKOOqSeI3zObJjDOnQ95+PK+DBDaDHlwJ/LWYdR/A4eWAh5G
-            WcRqCn+diQ/amAXuaISDLBCpEa/GKS3kHObVf41VwL43INMAwssDI2rOFnhOEUWF
-            jAWKyhzcS/D+1BqxV5XcloY8tn8qCZbLHOi1+YKr+ZeefFtJtmaqQtyjt6P1Z+H/
-            eCvdX0P4JdMm9Lp/fbzDQOPo8QVuWLKAWphMSfgCqetR5gfz9W/3+fcqzOP3amnt
-            qTM3K7LywQOeiJhLgyhw5bemiEXIKuNygb7Wmmv5xNKEAc5/QrR0YnZIuEnDN4Gb
-            aPjOOiu73X7xh76DX+5CxBXhQZzYtnqD8ctuenIMgvbD9AY1+H4fU0Wv6qGi9uNh
-            Y0lSPvXH7dBCTWu2rSWhIvgCQfv6Nihs3Jc455oZgajN7G/rgZNb0ER8YTYncZjY
-            gtVhIJfSArVFXuCGLnZMoMHSC4rV
-            =MsQY
-            &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
-    
-    3.  Git Gutter Mode
-    
-        [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
-        
-            (use-package git-gutter
-              :config
-              (global-git-gutter-mode +1)
-              :bind
-              ("C-x v ="  . git-gutter:popup-hunk))
-
-16. Dart/Flutter
-
-    Running emultaor from command line:
-    
-        emulator -avd Pixel_6_Pro_API_33
-    
-        (use-package dart-mode
-          :disabled
-          :custom
-          (lsp-dart-flutter-widget-guides t)
-          :init
-          (use-package flutter
-            :after dart-mode
-            :custom
-            (flutter-sdk-path "~/bin/thirdparty/flutter")
-            :config
-            (use-package flutter-l10n-flycheck)
-            (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
-            :bind (:map dart-mode-map
-                        ("C-M-x" . (lambda()
-                                     (interactive)
-                                     (save-buffer)
-                                     (flutter-run-or-hot-reload))))
-            :hook   (dart-mode . (lambda()
-                                   (flutter-test-mode))))
-          :config
-          (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
-          (use-package lsp-dart :after lsp)
-          (defun rgr/init-dart-buffer()
-            ;;(setq-local dash-docs-docsets '("Dart"))
-            (lsp-deferred) )
-          :hook   (dart-mode . rgr/init-dart-buffer ))
-    
-    1.  Java
-    
-            ;; (use-package emacs
-            ;;   :hook (java-mode . eglot-ensure)
-            ;;   )
-
-17. Tree Sitter
-
-18. treesit-auto
-
-    Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
-    
-        (use-package treesit-auto
-          :custom
-          (treesit-auto-install 'prompt)
-          :config
-          (global-treesit-auto-mode))
-    
-    \*\*\*\*JavaScript Family
-    
-    1.  Javascript
-    
-            (use-package js
-              :demand t
-              :init
-              (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
-              (defun rgr/javascript-typescript-common-mode-hook ()
-                (electric-pair-mode 1)
-                (setq-local devdocs-browser-active-docs '("react" "react_native" "javascript" "css" "html"))
-                (setq-local rgr/complete-line-function 'rgr/complete-c-line)
-                (lsp-deferred)
-                )
-              :config
-              (defun rgr/js-ts-mode-hook ()
-                )
-              :hook
-              (js-ts-mode . rgr/javascript-typescript-common-mode-hook)
-              (js-ts-mode . rgr/js-ts-mode-hook))
-    
-    2.  Typescript
-    
-            (use-package typescript-ts-mode
-              :demand t
-              :init
-              (defun rgr/typescript-ts-mode-hook ()
-                )
-              :hook
-              (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
-              (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
-
-19. Language Server Protocol (LSP), lsp-mode
-
-    [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
-    
-    Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
-    
-        (require 'rgr/lsp "rgr-lsp" 'NOERROR)
-    
-    1.  library
-    
-        1.  lsp
-        
-                (use-package lsp-mode
-                  ;;:disabled
-                  :init
-                  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-                  (setq lsp-keymap-prefix "C-l")
-                  (setq gc-cons-threshold (* 100 1024 1024)
-                        read-process-output-max (* 1024 1024))
-                  :config
-                  (use-package lsp-ui
-                    :init
-                    (defun rgr/lsp-ui-mode-hook()
-                      )
-                    :custom
-                    (lsp-ui-doc-mode 1)
-                    :bind (:map lsp-ui-mode-map
-                                ("M-." . #'lsp-find-definition))
-                    :hook
-                    (lsp-ui-mode . rgr/lsp-ui-mode-hook))
-                  (use-package lsp-treemacs
-                    :disabled ;; probelms with dap
-                    :custom
-                    (lsp-treemacs-sync-mode t)
-                    :commands lsp-treemacs-errors-list)
+                (defun my/parrot-animate-when-compile-success (buffer result)
+                  (if (string-match "^finished" result)
+                      (parrot-start-animation)))
                 
-                  (use-package dap-mode
-                    :disabled
-                    :bind (:map dap-mode-map
-                                (("<f8>" . dap-next)
-                                 ("S-<f8>" . dap-continue)
-                                 ("<f7>" . dap-step-in)
-                                 ("S-<f7>" . dap-step-out)
-                                 ("M-<f8>" . dap-debug)
-                                 ("C-<f8>" . dap-disconnect)
-                                 ))
-                    :config
-                    (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
-                  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-                         (lsp-mode . lsp-enable-which-key-integration))
-                  :commands (lsp lsp-deferred))
+                (use-package parrot
+                  :ensure t
+                  :config
+                  (parrot-mode)
+                  (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
+    
+    3.  Emacs Lisp, ELisp Utils
+    
+        Load this relatively early in order to have utils available if there's a faied load
+        Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
         
-        2.  eglot
+            (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
         
-            Emacs lsp client
-            <https://github.com/joaotavora/eglot>
+        1.  rgr/elisp-utils library
+        
+            1.  smartparens
             
-                (use-package eglot
-                  :disabled
-                  ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
-                  ;; :config
-                  ;; (use-package eldoc-box)
-                  ;; :hook
-                  ;; (prog-mode . eldoc-box-hover-at-point-mode)
-                  :bind
-                  (:map eglot-mode-map
-                        ("<C-return>" . eglot-code-actions)))
-        
-        3.  provide
-        
-                (provide 'rgr/lsp)
-
-20. Serial Port
-
-        (defgroup rgr/serial-ports nil
-          "serial port customization"
-          :group 'rgr)
-        
-        (defcustom rgr/serialIOPort "/dev/ttyACM0"
-          "Serial device for emacs to display"
-          :type 'string
-          :group 'rgr/serial-ports)
-        
-        (defcustom rgr/serialIOPortBaud 9600
-          "Default serial baud rate"
-          :type 'integer
-          :group 'rgr/serial-ports)
-        
-        (defun selectSerialPortBuffer()
-          (setq ser (get-buffer rgr/serialIOPort))
-          (if ser (switch-to-buffer ser)
-            (serial-term rgr/serialIOPort rgr/serialIOPortBaud)))
-        
-        (global-set-key (kbd "C-c s")
-                        (lambda()
-                          (interactive)
-                          (selectSerialPortBuffer)))
-
-21. PlatformIO
-
-    [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
-    The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
-    
-        (use-package platformio-mode
-          :demand t
-          :custom
-        
-          (platformio-mode-silent nil)
-          :init
-          (require 'ansi-color)
-          (defun rgr/platformio-compilation-mode-filter (buf _)
-            (interactive)
-            (with-current-buffer buf
-              (when (derived-mode-p 'platformio-compilation-mode)
-                (let ((inhibit-read-only t))
-                  (ansi-color-apply-on-region (point-min) (point-max))))))
-        
-          (add-hook 'compilation-finish-functions
-                    'rgr/platformio-compilation-mode-filter))
-
-22. Python
-
-    1.  ipython
-    
-            (setq python-shell-interpreter "ipython")
-            (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
-    
-    2.  virtualenv
-    
-            (use-package auto-virtualenv
-              :config
-              (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
-
-23. Haskell
-
-    1.  haskell-mode
-    
-            ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
-            (use-package haskell-mode
-              :disabled t
-              :config
-              ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
-              ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
-              (eval-after-load "haskell-mode"
-                '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
-              (eval-after-load "haskell-cabal"
-                          '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
-              (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
-
-24. lldb debugging in emacs
-
-    1.  voltron
-    
-            (use-package lldb-voltron
-              :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
-              ;;:config
-              ;; (breadcrumb-mode t)
-              )
-
-25. C, c-mode
-
-    1.  c-mode-common-hook
-    
-            (use-package c-ts-mode
-              :config
+                    (use-package smartparens
+                      :hook
+                      ((emacs-lisp-mode . smartparens-mode)))
             
-              (defun rgr/c-ts-mode-hook ()
-                )
+            2.  electric-pair-mode
             
-              (defun rgr/c-ts-mode-common-hook ()
-                ;;(eglot-ensure)
-                (lsp-deferred)
-                ;;(if (fboundp 'indent-bars-mode)
-                ;;  (indent-bars-mode))
-                (if(featurep 'platformio-mode)
-                    (platformio-conditionally-enable))
-                (if (featurep 'yasnippet)
-                    (yas-minor-mode)))
+                [auto insert closing brackets](emacs#Matching)
+                
+                    (use-package emacs
+                      :hook
+                      ((emacs-lisp-mode . electric-pair-mode)))
             
-              :hook
-              (c-mode-common . rgr/c-ts-mode-common-hook)
-              (c-ts-mode . rgr/c-ts-mode-hook)
-              :bind  ( :map c++-ts-mode-map
-                       (("M-<return>" . rgr/c-complete-line))
-                       :map c-ts-mode-map
-                       (("M-<return>" . rgr/c-complete-line))))
-
-26. cc,cpp, C++, cc-mode
-
-        (defun rgr/c++-mode-hook ()
-          )
-        (add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
-    
-    1.  Linux tools
-    
-        1.  [logview](https://github.com/doublep/logview) - view system logfiles
-        
-                (use-package logview
-                  :demand t
-                  :init
-                  (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
-                  (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
-    
-    2.  Assembler
-    
-        1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
-        
-                (use-package strace-mode)
-    
-    3.  Godot GDScript
-    
-        This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
-        
-            (use-package gdscript-mode
-              :straight (gdscript-mode
-                         :type git
-                         :host github
-                         :repo "rileyrg/emacs-gdscript-mode")
-              :init
-              (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
-                "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
-                (if (string-equal major-mode "gdscript-mode")
-                    (let ((json-data (nth 0 args)))
-                      (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
-                               (not (gethash "id" json-data nil))
-                               (not (gethash "method" json-data nil)))
-                          nil ; (message "Method not found")
-                        (apply original-function args)))
-                  (apply original-function args)))
-              (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
-              )
-    
-    4.  Web,Symfony and Twig
-    
-        1.  Symfony
-        
-            1.  custom
+            3.  elisp checks
             
-                    (defgroup rgr/symfony nil
-                      "Symfony Development"
-                      :group 'rgr)
-                    
-                    (defcustom symfony-server-command "~/.symfony/bin/symfony server:start"
-                      "Start the symfony web server"
-                      :type 'string
-                      :group 'rgr/symfony)
+                    (defun rgr/elisp-edit-mode()
+                      "return non nil if this buffer edits elisp"
+                      (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
             
-            2.  Start a symfony web server when applicable
+            4.  linting
             
-                    (use-package php-mode
-                      :disabled t
-                      :custom
-                      (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
+                [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
+                
+                    (use-package package-lint)
+            
+            5.  helpful, enriched elisp help
+            
+                    (use-package helpful
                       :config
-                      (add-to-list 'display-buffer-alist
-                                   (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
-                      (defun start-symfony-web-server()
-                        (interactive)
-                        (let ((default-directory (project-root (project-current t))))
-                          (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
-                              (async-shell-command symfony-server-command "*Symfony Web Server*"))))
-                      (defun php-mode-webserver-hook ()
-                        (interactive)
-                        (start-symfony-web-server)
-                        ))
-                
-                We can trigger it using a .dir-locals.el
-                
-                    ((php-mode
-                      (eval php-mode-webserver-hook)))
+                      ;; Note that the built-in `describe-function' includes both functions
+                      ;; and macros. `helpful-function' is functions only, so we provide
+                      ;; `helpful-callable as a drop-in replacement.
+                      (global-set-key (kbd "C-h e")
+                                      (lambda()
+                                        (interactive)
+                                        (if(get-buffer "*info*")
+                                            (switch-to-buffer "*info*")
+                                          (info "elisp"))))
+                      (global-set-key (kbd "C-h f") #'helpful-callable)
+                    
+                      (global-set-key (kbd "C-h v") #'helpful-variable)
+                      (global-set-key (kbd "C-h k") #'helpful-key)
+                      ;;I also recommend the following keybindings to get the most out of helpful:
+                      ;; Lookup the current symbol at point. C-c C-d is a common keybinding
+                      ;; for this in lisp modes.
+                      (global-set-key (kbd "C-h SPC") #'helpful-at-point)
+                      ;; Look up *F*unctions (excludes macros).
+                      ;;
+                      ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+                      ;; already links to the manual, if a function is referenced there.
+                      (global-set-key (kbd "C-h F") #'helpful-function)
+                    
+                      ;; Look up *C*ommands.
+                      ;;
+                      ;; By default, C-h C is bound to describe `describe-coding-system'. I
+                      ;; don't find this very useful, but it's frequently useful to only
+                      ;; look at interactive functions.
+                      (global-set-key (kbd "C-h C") #'helpful-command))
             
-            3.  webmode
+            6.  elisp popup context help
+            
+                Display a poup containing docstring at point
+                
+                    (use-package el-docstring-sap-
+                      :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+                      :init
+                      (use-package quick-peek)
+                      :hook
+                      (emacs-lisp-mode . el-docstring-sap-mode)
+                      :bind
+                      ("M-<f2>" . el-docstring-sap-display)
+                      ("M-<f1>" . el-docstring-sap-mode))
+            
+            7.  Elisp debugging
             
                     (use-package
-                      web-mode
-                      :disabled
+                      edebug-x
                       :demand t
+                      :init
+                      (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
+                      ;;(edebug-trace nil)
                       :config
-                      (defun rgr/web-mode-hook()
-                        ;;(setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
-                        )
-                      (add-hook 'web-mode-hook 'rgr/web-mode-hook)
-                      ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-                      ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
-                      (add-to-list 'auto-mode-alist '("\\.twig\\'" . web-mode))
-                      (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-                      (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-                      (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-                      (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-                      (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-                      (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-                      (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
+                      (require 'edebug)
+                      (defun instrumentForDebugging()
+                        "use the universal prefix arg (C-u) to remove instrumentation"
+                        (interactive)
+                        (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
+                      )
+            
+            8.  Formatting
+            
+                    (use-package
+                      elisp-format
+                      :bind
+                      (:map emacs-lisp-mode-map
+                            ("C-c f" . elisp-format-region)))
+            
+            9.  popup query symbol
+            
+                    (use-package popup
+                      :config
+                      (defun rgr/show-symbol-details ()
+                        (interactive)
+                        (popup-tip (format "intern-soft thing-at-point: %s, symbolp: %s, symbol-name:%s"
+                                           (setq-local sym (intern-soft (thing-at-point 'symbol)))
+                                           (symbolp sym)
+                                           (symbol-name sym))))
+                      :bind
+                      (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
+            
+            10. provide
+            
+                    (provide 'rgr/elisp-utils)
     
-    5.  elf-mode - view the symbol list in a binary
+    4.  prog-mode hack
     
-        [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
-        
-            (use-package elf-mode
-              :demand t
+            (unless (fboundp 'prog-mode)
+              (defalias 'prog-mode 'fundamental-mode))
+    
+    5.  undo tree
+    
+            (use-package undo-tree
+              :init
+              (global-undo-tree-mode))
+    
+    6.  Show Line numbers
+    
+            (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
+            (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
+    
+    7.  code format
+    
+            ;; auto-format different source code files extremely intelligently
+            ;; https://github.com/radian-software/apheleia
+            (use-package apheleia
+              :disabled
+              :ensure t
               :config
-              (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
-              (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
+              (apheleia-global-mode +1))
     
-    6.  provide
+    8.  rainbow delimiters
     
-            (provide 'rgr/programming)
+            (use-package rainbow-identifiers
+              :config
+              (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+    
+    9.  Project Management
+    
+        1.  project
+        
+            I prefer projectile
+            
+                ;;(require 'project)
+        
+        2.  projectile
+        
+                (use-package projectile
+                  :demand
+                  :config
+                  (projectile-mode +1)
+                  (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map)
+                  (define-key projectile-command-map  (kbd "b") #'consult-project-buffer))
+            
+            1.  projectile npm support
+            
+                    (projectile-register-project-type 'npm '("package.json")
+                                                      :project-file "package.json"
+                                                      :compile "npm install"
+                                                      :test "npm test"
+                                                      :run "alacritty --command tmux new-session -A -s 'npm projectile' 'npm start'"
+                                                      :test-suffix ".spec")
+            
+            2.  org-projectile
+            
+                <https://github.com/IvanMalison/org-projectile>
+                
+                    (use-package org-project-capture
+                      :demand
+                      :custom
+                      (org-project-capture-per-project-filepath "TODO.org")
+                      :config
+                      (use-package org-projectile :demand)
+                      (setq org-project-capture-default-backend
+                            (make-instance 'org-project-capture-projectile-backend))
+                      (org-project-capture-per-project)
+                      (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
+                      :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
+    
+    10. BASH
+    
+        1.  Navigating Bash set -x output
+        
+                ;; try to work with next-error for bash's "set -x" output
+                (use-package compile
+                  :config
+                  (add-to-list 'compilation-error-regexp-alist
+                               'bash-set-x)
+                  (add-to-list 'compilation-error-regexp-alist-alist
+                               '(pascal
+                                 "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
+    
+    11. JSON, YAML Configuration files
+    
+        1.  YAML
+        
+                (use-package
+                  yaml-mode
+                  :config
+                  (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
+                  )
+        
+        2.  json
+        
+                (use-package json-reformat)
+                (use-package hydra)
+    
+    12. Flymake
+    
+            (use-package flymake
+              :demand t
+              :init
+              (defun rgr/flymake-hook()
+                   (setq-local next-error-function 'flymake-goto-next-error))
+              (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
+              :bind
+              ("M-n" . next-error)
+              ("M-p" . previous-error))
+        
+        1.  diagnostic-at-point
+        
+                (use-package flymake-diagnostic-at-point
+                  :after flymake
+                  :config
+                  (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+        
+        2.  shellcheck
+        
+                (use-package flymake-shellcheck
+                  :commands flymake-shellcheck-load
+                  :init
+                  (defun rgr/sh-mode-hook()
+                    (flymake-shellcheck-load)
+                    (flymake-mode +1))
+                  :hook (sh-mode . rgr/sh-mode-hook))
+    
+    13. Version Control
+    
+        1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
+        
+            magit
+            
+                (use-package
+                  magit
+                  :init
+                  (use-package magit-filenotify)
+                  (use-package transient
+                    :straight (transient :type git :host github :repo "magit/transient"))
+                  :bind
+                  ("C-x g" . magit-status)
+                  :hook
+                  (magit-status-mode . magit-filenotify-mode))
+        
+        2.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
+        
+            always causes issues. disabled.
+            
+            :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
+            
+                (straight-use-package 'sqlite3)
+                (use-package forge
+                  :disabled
+                  :after magit)
+            
+            1.  token
+            
+                &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
+                
+                hQEMA7IjL5SkHG4iAQgAhMUIMTYGMMJOxJT9Cpd4yXSe7D3nYO1JLdyFFADgiHDq
+                1D68ig/iJdH5aPZNmKOOqSeI3zObJjDOnQ95+PK+DBDaDHlwJ/LWYdR/A4eWAh5G
+                WcRqCn+diQ/amAXuaISDLBCpEa/GKS3kHObVf41VwL43INMAwssDI2rOFnhOEUWF
+                jAWKyhzcS/D+1BqxV5XcloY8tn8qCZbLHOi1+YKr+ZeefFtJtmaqQtyjt6P1Z+H/
+                eCvdX0P4JdMm9Lp/fbzDQOPo8QVuWLKAWphMSfgCqetR5gfz9W/3+fcqzOP3amnt
+                qTM3K7LywQOeiJhLgyhw5bemiEXIKuNygb7Wmmv5xNKEAc5/QrR0YnZIuEnDN4Gb
+                aPjOOiu73X7xh76DX+5CxBXhQZzYtnqD8ctuenIMgvbD9AY1+H4fU0Wv6qGi9uNh
+                Y0lSPvXH7dBCTWu2rSWhIvgCQfv6Nihs3Jc455oZgajN7G/rgZNb0ER8YTYncZjY
+                gtVhIJfSArVFXuCGLnZMoMHSC4rV
+                =MsQY
+                &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
+        
+        3.  Git Gutter Mode
+        
+            [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
+            
+                (use-package git-gutter
+                  :config
+                  (global-git-gutter-mode +1)
+                  :bind
+                  ("C-x v ="  . git-gutter:popup-hunk))
+    
+    14. Dart/Flutter
+    
+        Running emultaor from command line:
+        
+            emulator -avd Pixel_6_Pro_API_33
+        
+            (use-package dart-mode
+              :disabled
+              :custom
+              (lsp-dart-flutter-widget-guides t)
+              :init
+              (use-package flutter
+                :after dart-mode
+                :custom
+                (flutter-sdk-path "~/bin/thirdparty/flutter")
+                :config
+                (use-package flutter-l10n-flycheck)
+                (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
+                :bind (:map dart-mode-map
+                            ("C-M-x" . (lambda()
+                                         (interactive)
+                                         (save-buffer)
+                                         (flutter-run-or-hot-reload))))
+                :hook   (dart-mode . (lambda()
+                                       (flutter-test-mode))))
+              :config
+              (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
+              (use-package lsp-dart :after lsp)
+              (defun rgr/init-dart-buffer()
+                ;;(setq-local dash-docs-docsets '("Dart"))
+                (lsp-deferred) )
+              :hook   (dart-mode . rgr/init-dart-buffer ))
+        
+        1.  Java
+        
+                ;; (use-package emacs
+                ;;   :hook (java-mode . eglot-ensure)
+                ;;   )
+    
+    15. Tree Sitter
+    
+    16. treesit-auto
+    
+        Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
+        
+            (use-package treesit-auto
+              :custom
+              (treesit-auto-install 'prompt)
+              :config
+              (global-treesit-auto-mode))
+        
+        \*\*\*\*JavaScript Family
+        
+        1.  Javascript
+        
+                (use-package js
+                  :demand t
+                  :init
+                  (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
+                  (defun rgr/javascript-typescript-common-mode-hook ()
+                    (electric-pair-mode 1)
+                    (setq-local devdocs-browser-active-docs '("react" "react_native" "javascript" "css" "html"))
+                    (setq-local rgr/complete-line-function 'rgr/complete-c-line)
+                    (lsp-deferred)
+                    )
+                  :config
+                  (defun rgr/js-ts-mode-hook ()
+                    )
+                  :hook
+                  (js-ts-mode . rgr/javascript-typescript-common-mode-hook)
+                  (js-ts-mode . rgr/js-ts-mode-hook))
+        
+        2.  Typescript
+        
+                (use-package typescript-ts-mode
+                  :demand t
+                  :init
+                  (defun rgr/typescript-ts-mode-hook ()
+                    )
+                  :hook
+                  (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
+                  (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
+    
+    17. Language Server Protocol (LSP), lsp-mode
+    
+        [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
+        
+        Raw: [rgr/lsp](etc/elisp/rgr-lsp.el)
+        
+            (require 'rgr/lsp "rgr-lsp" 'NOERROR)
+        
+        1.  library
+        
+            1.  lsp
+            
+                    (use-package lsp-mode
+                      ;;:disabled
+                      :init
+                      ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+                      (setq lsp-keymap-prefix "C-l")
+                      (setq gc-cons-threshold (* 100 1024 1024)
+                            read-process-output-max (* 1024 1024))
+                      :config
+                      (use-package lsp-ui
+                        :init
+                        (defun rgr/lsp-ui-mode-hook()
+                          )
+                        :custom
+                        (lsp-ui-doc-mode 1)
+                        :bind (:map lsp-ui-mode-map
+                                    ("M-." . #'lsp-find-definition))
+                        :hook
+                        (lsp-ui-mode . rgr/lsp-ui-mode-hook))
+                      (use-package lsp-treemacs
+                        :disabled ;; probelms with dap
+                        :custom
+                        (lsp-treemacs-sync-mode t)
+                        :commands lsp-treemacs-errors-list)
+                    
+                      (use-package dap-mode
+                        :disabled
+                        :bind (:map dap-mode-map
+                                    (("<f8>" . dap-next)
+                                     ("S-<f8>" . dap-continue)
+                                     ("<f7>" . dap-step-in)
+                                     ("S-<f7>" . dap-step-out)
+                                     ("M-<f8>" . dap-debug)
+                                     ("C-<f8>" . dap-disconnect)
+                                     ))
+                        :config
+                        (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
+                      :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+                             (lsp-mode . lsp-enable-which-key-integration))
+                      :commands (lsp lsp-deferred))
+            
+            2.  eglot
+            
+                Emacs lsp client
+                <https://github.com/joaotavora/eglot>
+                
+                    (use-package eglot
+                      :disabled
+                      ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
+                      ;; :config
+                      ;; (use-package eldoc-box)
+                      ;; :hook
+                      ;; (prog-mode . eldoc-box-hover-at-point-mode)
+                      :bind
+                      (:map eglot-mode-map
+                            ("<C-return>" . eglot-code-actions)))
+            
+            3.  provide
+            
+                    (provide 'rgr/lsp)
+    
+    18. Serial Port
+    
+            (defgroup rgr/serial-ports nil
+              "serial port customization"
+              :group 'rgr)
+            
+            (defcustom rgr/serialIOPort "/dev/ttyACM0"
+              "Serial device for emacs to display"
+              :type 'string
+              :group 'rgr/serial-ports)
+            
+            (defcustom rgr/serialIOPortBaud 9600
+              "Default serial baud rate"
+              :type 'integer
+              :group 'rgr/serial-ports)
+            
+            (defun selectSerialPortBuffer()
+              (setq ser (get-buffer rgr/serialIOPort))
+              (if ser (switch-to-buffer ser)
+                (serial-term rgr/serialIOPort rgr/serialIOPortBaud)))
+            
+            (global-set-key (kbd "C-c s")
+                            (lambda()
+                              (interactive)
+                              (selectSerialPortBuffer)))
+    
+    19. PlatformIO
+    
+        [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
+        The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
+        
+            (use-package platformio-mode
+              :demand t
+              :custom
+            
+              (platformio-mode-silent nil)
+              :init
+              (require 'ansi-color)
+              (defun rgr/platformio-compilation-mode-filter (buf _)
+                (interactive)
+                (with-current-buffer buf
+                  (when (derived-mode-p 'platformio-compilation-mode)
+                    (let ((inhibit-read-only t))
+                      (ansi-color-apply-on-region (point-min) (point-max))))))
+            
+              (add-hook 'compilation-finish-functions
+                        'rgr/platformio-compilation-mode-filter))
+    
+    20. Python
+    
+        1.  ipython
+        
+                (setq python-shell-interpreter "ipython")
+                (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
+        
+        2.  virtualenv
+        
+                (use-package auto-virtualenv
+                  :config
+                  (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
+    
+    21. Haskell
+    
+        1.  haskell-mode
+        
+                ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
+                (use-package haskell-mode
+                  :disabled t
+                  :config
+                  ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
+                  ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
+                  (eval-after-load "haskell-mode"
+                    '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
+                  (eval-after-load "haskell-cabal"
+                              '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
+                  (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
+    
+    22. lldb debugging in emacs
+    
+        1.  voltron
+        
+                (use-package lldb-voltron
+                  :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
+                  ;;:config
+                  ;; (breadcrumb-mode t)
+                  )
+    
+    23. C, c-mode
+    
+        1.  c-mode-common-hook
+        
+                (use-package c-ts-mode
+                  :config
+                
+                  (defun rgr/c-ts-mode-hook ()
+                    )
+                
+                  (defun rgr/c-ts-mode-common-hook ()
+                    ;;(eglot-ensure)
+                    (lsp-deferred)
+                    ;;(if (fboundp 'indent-bars-mode)
+                    ;;  (indent-bars-mode))
+                    (if(featurep 'platformio-mode)
+                        (platformio-conditionally-enable))
+                    (if (featurep 'yasnippet)
+                        (yas-minor-mode)))
+                
+                  :hook
+                  (c-mode-common . rgr/c-ts-mode-common-hook)
+                  (c-ts-mode . rgr/c-ts-mode-hook)
+                  :bind  ( :map c++-ts-mode-map
+                           (("M-<return>" . rgr/c-complete-line))
+                           :map c-ts-mode-map
+                           (("M-<return>" . rgr/c-complete-line))))
+    
+    24. cc,cpp, C++, cc-mode
+    
+            (defun rgr/c++-mode-hook ()
+              )
+            (add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
+        
+        1.  Linux tools
+        
+            1.  [logview](https://github.com/doublep/logview) - view system logfiles
+            
+                    (use-package logview
+                      :demand t
+                      :init
+                      (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
+                      (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
+        
+        2.  Assembler
+        
+            1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
+            
+                    (use-package strace-mode)
+        
+        3.  Godot GDScript
+        
+            This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
+            
+                (use-package gdscript-mode
+                  :straight (gdscript-mode
+                             :type git
+                             :host github
+                             :repo "rileyrg/emacs-gdscript-mode")
+                  :init
+                  (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
+                    "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
+                    (if (string-equal major-mode "gdscript-mode")
+                        (let ((json-data (nth 0 args)))
+                          (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
+                                   (not (gethash "id" json-data nil))
+                                   (not (gethash "method" json-data nil)))
+                              nil ; (message "Method not found")
+                            (apply original-function args)))
+                      (apply original-function args)))
+                  (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
+                  )
+        
+        4.  Web,Symfony and Twig
+        
+            1.  Symfony
+            
+                1.  custom
+                
+                        (defgroup rgr/symfony nil
+                          "Symfony Development"
+                          :group 'rgr)
+                        
+                        (defcustom symfony-server-command "~/.symfony/bin/symfony server:start"
+                          "Start the symfony web server"
+                          :type 'string
+                          :group 'rgr/symfony)
+                
+                2.  Start a symfony web server when applicable
+                
+                        (use-package php-mode
+                          :disabled t
+                          :custom
+                          (lsp-intelephense-licence-key (get-auth-info "licenses" "intelephense"))
+                          :config
+                          (add-to-list 'display-buffer-alist
+                                       (cons "\\*Symfony Web Server\\*.*" (cons #'display-buffer-no-window nil)))
+                          (defun start-symfony-web-server()
+                            (interactive)
+                            (let ((default-directory (project-root (project-current t))))
+                              (if (and default-directory (file-exists-p "bin/console") (eq (length (shell-command-to-string "pgrep symfony")) 0) (yes-or-no-p "Start web server?"))
+                                  (async-shell-command symfony-server-command "*Symfony Web Server*"))))
+                          (defun php-mode-webserver-hook ()
+                            (interactive)
+                            (start-symfony-web-server)
+                            ))
+                    
+                    We can trigger it using a .dir-locals.el
+                    
+                        ((php-mode
+                          (eval php-mode-webserver-hook)))
+                
+                3.  webmode
+                
+                        (use-package
+                          web-mode
+                          :disabled
+                          :demand t
+                          :config
+                          (defun rgr/web-mode-hook()
+                            ;;(setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
+                            )
+                          (add-hook 'web-mode-hook 'rgr/web-mode-hook)
+                          ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+                          ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+                          (add-to-list 'auto-mode-alist '("\\.twig\\'" . web-mode))
+                          (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+                          (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+                          (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+                          (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+                          (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+                          (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+                          (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
+        
+        5.  elf-mode - view the symbol list in a binary
+        
+            [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
+            
+                (use-package elf-mode
+                  :demand t
+                  :config
+                  (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
+                  (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
+        
+        6.  provide
+        
+                (provide 'rgr/programming)
 
 
 ## Themes
@@ -2911,7 +2822,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0f03e69) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7954c22) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2944,7 +2855,7 @@ to add to version control.
     fi
 
 
-<a id="org0f03e69"></a>
+<a id="org7954c22"></a>
 
 ### Gnome protocol handler desktop file
 
