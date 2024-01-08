@@ -43,10 +43,10 @@
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :bind
   ("C-x k" . rgr/kill-current-buffer)
-  ("M-0" . 'delete-window)
-  ("M-1" . 'delete-other-windows)
-  ("S-<f1>" . 'describe-face)
-  ( "M-m"  . 'manual-entry)
+  ("M-0" . delete-window)
+  ("M-1" . delete-other-windows)
+  ("S-<f1>" . describe-face)
+  ( "M-m"  . manual-entry)
   ("S-<f10>" . 'menu-bar-open))
 
 (use-package posframe)

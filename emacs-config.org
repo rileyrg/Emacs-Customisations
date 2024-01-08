@@ -386,25 +386,21 @@ I use a persistent register to remember the last file buffer and to resore it on
 #+begin_src emacs-lisp
 
   (recentf-mode)
-  (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
-  (save-place-mode)
-
-  (use-package better-registers
-    :demand t
-    :custom
-    (better-registers-save-file (no-littering-expand-var-file-name "better-registers.el"))
-    :config
-    (better-registers-install-save-registers-hook)
-    (load better-registers-save-file))
+  ;; (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
+  ;; (save-place-mode)
+  (desktop-save-mode)
+  (midnight-mode)
+  (add-hook 'desktop-save-hook 'clean-buffer-list)
 
   (defun rgr/startup-hook ()
     (switch-to-buffer "*scratch*")
-    (switch-to-buffer (get-register ?L))
-    )
+    (let ((fname (get-register ?L)))
+      (when (and fname (file-exists-p fname))
+        (find-file fname))))
 
   (defun rgr/remember-last-buffer (f)
     (when buffer-file-name
-      (set-register ?L (buffer-name))))
+      (set-register ?L (buffer-file-name))))
 
   (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
 
@@ -423,8 +419,6 @@ I use a persistent register to remember the last file buffer and to resore it on
   (defun rgr/server-shutdown ()
     "Save buffers, Quit, and Shutdown (kill) server"
     (interactive)
-    (clean-buffer-list)
-    ;;(savehist-save)
     (save-buffers-kill-emacs))
 
   (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
@@ -491,10 +485,10 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
     (add-hook 'before-save-hook 'delete-trailing-whitespace)
     :bind
     ("C-x k" . rgr/kill-current-buffer)
-    ("M-0" . 'delete-window)
-    ("M-1" . 'delete-other-windows)
-    ("S-<f1>" . 'describe-face)
-    ( "M-m"  . 'manual-entry)
+    ("M-0" . delete-window)
+    ("M-1" . delete-other-windows)
+    ("S-<f1>" . describe-face)
+    ( "M-m"  . manual-entry)
     ("S-<f10>" . 'menu-bar-open))
 
 #+end_src
@@ -1628,7 +1622,9 @@ This is a translation framework for emacs, and is flexible and powerful.
      (gts-translator
       :picker (gts-prompt-picker)
       :engines (list (gts-bing-engine) (gts-google-engine))
-      :render (gts-buffer-render))))
+      :render (gts-buffer-render)))
+    :bind
+    ("C-c T" . gts-do-translate))
 #+end_src
 
 ****** Google translate
@@ -1637,7 +1633,7 @@ This is a translation framework for emacs, and is flexible and powerful.
 :END:
 #+begin_src emacs-lisp
   (use-package google-translate
-    ;;:disabled
+    :disabled ;; use go-translate
     :init
     (require 'google-translate)
 
