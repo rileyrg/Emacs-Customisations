@@ -1,15 +1,23 @@
 (recentf-mode)
-(savehist-mode)
+(savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
 (save-place-mode)
 
+(use-package better-registers
+  :demand t
+  :custom
+  (better-registers-save-file (no-littering-expand-var-file-name "better-registers.el"))
+  :config
+  (better-registers-install-save-registers-hook)
+  (load better-registers-save-file))
+
 (defun rgr/startup-hook ()
-                                        ;(switch-to-buffer (get-register ?l))
   (switch-to-buffer "*scratch*")
+  (switch-to-buffer (get-register ?L))
   )
 
 (defun rgr/remember-last-buffer (f)
   (when buffer-file-name
-    (set-register ?l (buffer-name))))
+    (set-register ?L (buffer-name))))
 
 (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
 
