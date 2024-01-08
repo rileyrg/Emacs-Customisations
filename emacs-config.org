@@ -347,7 +347,9 @@ I use a persistent register to remember the last file buffer and to resore it on
     (save-place-mode)
 
     (defun rgr/startup-hook ()
-      (switch-to-buffer (get-register ?l)))
+      ;(switch-to-buffer (get-register ?l))
+      (switch-to-buffer "*scratch*")
+      )
 
     (defun rgr/remember-last-buffer (f)
       (when buffer-file-name
@@ -2339,27 +2341,12 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
   (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 #+end_src
 
-***** scratch,messages
-:PROPERTIES:
-:ID:       563d21f1-803e-40b1-9689-fa95ca9f44c3
-:END:
-#+begin_src emacs-lisp
-  (use-package scratch
-    :disabled
-    :bind ("<f2>" . (lambda()
-                      (interactive)
-                      (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
-    ("C-<f2>" . (lambda()
-                  (interactive)
-                  (switch-to-buffer(messages-buffer)))))
-#+end_src
 ***** rgr/elisp-utils library
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp-utils.el" elisp-dir)
 :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
 :END:
-****** CANCELLED smartparens                                      :CANCELLED:
-CLOSED: [2021-05-09 Sun 11:35]
+****** smartparens
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
@@ -2372,8 +2359,7 @@ CLOSED: [2021-05-09 Sun 11:35]
     :hook
     ((emacs-lisp-mode . smartparens-mode)))
 #+end_src
-****** CANCELLED electric-pair-mode                               :CANCELLED:
-CLOSED: [2021-05-13 Thu 21:53]
+****** electric-pair-mode
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
@@ -2412,7 +2398,7 @@ CLOSED: [2021-05-13 Thu 21:53]
     :config
     ;; Note that the built-in `describe-function' includes both functions
     ;; and macros. `helpful-function' is functions only, so we provide
-    ;; `helpful-callable' as a drop-in replacement.
+    ;; `helpful-callable as a drop-in replacement.
     (global-set-key (kbd "C-h e")
                     (lambda()
                       (interactive)
@@ -3256,7 +3242,6 @@ https://github.com/protesilaos/ef-themes
 :END:
 #+begin_src emacs-lisp
   (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
-  (switch-to-buffer "*scratch*")
 #+end_src
 * Associated emacs things
 :PROPERTIES:

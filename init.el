@@ -295,4 +295,3 @@
 (require 'rgr/themes "rgr-themes" 'NOERROR)
 
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
-(switch-to-buffer "*scratch*")

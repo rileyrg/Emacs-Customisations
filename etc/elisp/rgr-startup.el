@@ -13,7 +13,9 @@
   (save-place-mode)
 
   (defun rgr/startup-hook ()
-    (switch-to-buffer (get-register ?l)))
+    ;(switch-to-buffer (get-register ?l))
+    (switch-to-buffer "*scratch*")
+    )
 
   (defun rgr/remember-last-buffer (f)
     (when buffer-file-name
