@@ -6,7 +6,6 @@
 (add-hook 'desktop-save-hook 'clean-buffer-list)
 
 (defun rgr/startup-hook ()
-  (switch-to-buffer "*scratch*")
   (let ((fname (get-register ?L)))
     (when (and fname (file-exists-p fname))
       (find-file fname))))

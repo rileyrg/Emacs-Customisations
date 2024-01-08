@@ -114,11 +114,7 @@
                '(pascal
                  "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 
-(use-package
-  yaml-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
-  )
+(use-package yaml-mode)
 
 (use-package json-reformat)
 (use-package hydra)
@@ -163,8 +159,9 @@
   :after magit)
 
 (use-package git-gutter
-  :config
-  (global-git-gutter-mode +1)
+  :after org
+  :hook
+    (server-after-make-frame .  global-git-gutter-mode)
   :bind
   ("C-x v ="  . git-gutter:popup-hunk))
 

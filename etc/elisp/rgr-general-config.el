@@ -51,31 +51,11 @@
 
 (use-package posframe)
 
-(use-package popper
-  :disabled
-  :ensure t
-  :init
-  (use-package posframe)
-  ;;(setq popper-display-function 'rgr/popper-display-posframe)
-  (setq popper-reference-buffers
-        '(
-          "\\*Messages\\*"
-          ;;magit-mode
-          ;;      help-mode
-          helpful-mode
-          inferior-python-mode
-          dictionary-mode
-          compilation-mode))
-  (popper-mode +1)
-  :bind (("C-`"   . popper-toggle-latest)
-         ("M-`"   . popper-cycle)
-         ("C-M-`" . popper-toggle-type)))
-
 (use-package ace-window
   :init
   (defalias 'other-window 'ace-window)
-  :bind*
-  ("M-o" . 'other-window)
+  :bind
+  ("M-o" . other-window)
   ("C-x o" . ace-window)
   ("M-S o" . ace-delete-window))
 
