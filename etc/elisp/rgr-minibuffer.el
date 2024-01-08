@@ -1,9 +1,3 @@
-;;(require 'tramp)
-;; (use-package tramp
-;;   :custom
-;;   (tramp-default-method "ssh")
-;;   )
-
 (defun maybe-read-only-mode()
   (when (cond ((eq major-mode 'org-mode) t))
     (message "Setting readonly mode for %s buffer" major-mode)

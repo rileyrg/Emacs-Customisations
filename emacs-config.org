@@ -332,50 +332,54 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
 #+begin_src emacs-lisp
 
-    (use-package emacs
-      :demand t
-      :custom
-      (desktop-base-file-name "emacs.desktop")
-      (desktop-restore-eager  4)
-      (desktop-globals-to-save
-       '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
-      (desktop-load-locked-desktop t)
-      :init
+  (use-package emacs
+    :demand t
+    ;; :custom
+    ;; (desktop-base-file-name "emacs.desktop")
+    ;; (desktop-restore-eager  4)
+    ;; (desktop-globals-to-save
+    ;;  '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
+    ;; (desktop-load-locked-desktop t)
+    :init
 
-      (defun rgr/startup-hook ()
-        (switch-to-buffer (get-register ?l)))
+    (recentf-mode)
+    (savehist-mode)
+    (save-place-mode)
 
-      (defun rgr/remember-last-buffer (f)
-            (when buffer-file-name
-              (set-register ?l (buffer-name))))
+    (defun rgr/startup-hook ()
+      (switch-to-buffer (get-register ?l)))
 
-      (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+    (defun rgr/remember-last-buffer (f)
+      (when buffer-file-name
+        (set-register ?l (buffer-name))))
 
-      (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+    (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
 
-      (desktop-save-mode))
+    (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
+    )
 
-    (defun rgr/quit-or-close-emacs(&optional kill)
-      (interactive)
-      (if (or current-prefix-arg kill)
-          (rgr/server-shutdown)
-        (delete-frame)))
-
-    (defun rgr/server-shutdown ()
-      "Save buffers, Quit, and Shutdown (kill) server"
-      (interactive)
-      (clean-buffer-list)
-      ;;(savehist-save)
-      (save-buffers-kill-emacs))
-
-    (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
 
 #+end_src
 
 **** rest of startup
 
 #+begin_src emacs-lisp
+  (defun rgr/quit-or-close-emacs(&optional kill)
+    (interactive)
+    (if (or current-prefix-arg kill)
+        (rgr/server-shutdown)
+      (delete-frame)))
+
+  (defun rgr/server-shutdown ()
+    "Save buffers, Quit, and Shutdown (kill) server"
+    (interactive)
+    (clean-buffer-list)
+    ;;(savehist-save)
+    (save-buffers-kill-emacs))
+
+  (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
+
   (provide 'rgr/startup)
 #+end_src
 ** Minibuffer Enrichment (search, sudo edit...)                  :minibuffer:
@@ -395,50 +399,6 @@ Raw: [[file+sys:etc/elisp/rgr-minibuffer.el][rgr/minibuffer]]
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-minibuffer.el" elisp-dir)
 :ID:       1c6e6128-9063-478b-b8a5-14f1953dd0ea
 :END:
-**** [[https://www.emacswiki.org/emacs/TrampMode][TRAMP]] (Transparent Remote Access, Multiple Protocols)
-:PROPERTIES:
-:ID:       c193fd9e-7050-41eb-aaa2-bff0bac41f26
-:END:
-is a package for editing remote files, similar to AngeFtp or efs. Whereas the others use FTP to connect to the remote host and to transfer the files, TRAMP uses a remote shell connection (rlogin, telnet, ssh). It can transfer the files using rcp or a similar program, or it can encode the file contents (using uuencode or base64) and transfer them right through the shell connection.
-#+begin_src emacs-lisp
-  ;;(require 'tramp)
-  ;; (use-package tramp
-  ;;   :custom
-  ;;   (tramp-default-method "ssh")
-  ;;   )
-#+end_src
-**** CANCELLED [[https://github.com/raxod502/ctrlf                                                   :CANCELLED:
-CLOSED: [2023-10-05 Thu 23:56]
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2023-10-05 Thu 23:56] \\
-  use isearch
-:END:
-][ctrlf searching]]
-#+begin_src emacs-lisp
-  (use-package ctrlf
-    :custom
-    (ctrlf-auto-recenter t)
-    (ctrlf-alternate-search-style 'fuzzy-regexp)
-    :init
-    (ctrlf-mode +1))
-#+end_src
-**** CANCELLED [[https://github.com/junegunn/fzf][fzf]]                                                :CANCELLED:
-CLOSED: [2021-08-06 Fri 11:09]
-:PROPERTIES:
-:ID:       5bc5ae65-7df4-476a-b93b-d501fffd8471
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-08-06 Fri 11:09] \\
-  using affe
-:END:
-#+begin_src emacs-lisp
-  (use-package fzf
-    :bind (("M-s z" . fzf)))
-#+end_src
 **** file opening
 :PROPERTIES:
 :ID:       42a5cc93-ab6e-46bd-bae6-0517215cdc47
@@ -2160,7 +2120,14 @@ Zoom into current buffer
 :PROPERTIES:
 :ID:       1db35463-e9e1-4c38-b21f-437d475184e4
 :END:
-*** notmuch
+#+begin_src emacs-lisp
+  (require 'rgr/email "rgr-email" 'NOERROR)
+#+end_src
+*** Email library
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-email.el" elisp-dir)
+:END:
+**** notmuch
 #+begin_src  emacs-lisp
   (use-package notmuch
     :init
@@ -2172,7 +2139,7 @@ Zoom into current buffer
     )
 
 #+end_src
-*** mu4e                                                         :email:mu4e:
+**** mu4e                                                        :email:mu4e:
 :PROPERTIES:
 :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
 :END:
@@ -2323,6 +2290,10 @@ Zoom into current buffer
                    ("C-c u" . mu4e-headers-mark-all-unread-read))))
   ;;:map mu4e-view-mode-map
   ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'rgr/email)
 #+end_src
 ** Programming Language related                                 :programming:
 :PROPERTIES:
@@ -3281,10 +3252,14 @@ We can trigger it using a .dir-locals.el
   (provide 'rgr/programming)
 #+end_src
 ** Themes                                                            :themes:
+#+begin_src emacs-lisp
+  (require 'rgr/themes "rgr-themes" 'NOERROR)
+#+end_src
+*** Themes library
 :PROPERTIES:
-:ID:       a03660f8-04b0-4a62-a6a3-24146f7db536
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-themes.el" elisp-dir)
 :END:
-*** modus themes
+**** modus themes
 :PROPERTIES:
 :ID:       fa3ac5bf-2fbe-4e67-9032-0cb23a84c434
 :END:
@@ -3303,7 +3278,7 @@ https://github.com/protesilaos/modus-themes
     (load-theme 'modus-operandi :no-confirm))
   ;; (modus-themes-load-vivendi))
 #+end_src
-*** ef-themes
+**** ef-themes
 https://github.com/protesilaos/ef-themes
 #+begin_src  emacs-lisp
   (use-package ef-themes
@@ -3312,17 +3287,9 @@ https://github.com/protesilaos/ef-themes
     :config
     (ef-themes-select 'ef-duo-light))
 #+end_src
-*** humanoid themes
-:PROPERTIES:
-:ID:       c3a6a618-fbe0-4dae-8610-d8f6ef4a8a0a
-:header-args:emacs-lisp: :tangle no
-:END:
-https://github.com/humanoid-colors/emacs-humanoid-themes
+**** provide
 #+begin_src emacs-lisp
-  (use-package humanoid-themes
-    :init
-    ;; Add all your customizations prior to loading the themes
-    (load-theme 'humanoid-dark t))
+  (provide 'rgr/themes)
 #+end_src
 
 ** Late load
@@ -3331,6 +3298,7 @@ https://github.com/humanoid-colors/emacs-humanoid-themes
 :END:
 #+begin_src emacs-lisp
   (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
+  (switch-to-buffer "*scratch*")
 #+end_src
 * Associated emacs things
 :PROPERTIES:
