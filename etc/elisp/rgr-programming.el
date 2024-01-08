@@ -44,15 +44,6 @@
 
 (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
 
-(use-package scratch
-  :disabled
-  :bind ("<f2>" . (lambda()
-                    (interactive)
-                    (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
-  ("C-<f2>" . (lambda()
-                (interactive)
-                (switch-to-buffer(messages-buffer)))))
-
 (unless (fboundp 'prog-mode)
   (defalias 'prog-mode 'fundamental-mode))
 

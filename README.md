@@ -281,28 +281,35 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         
         (use-package emacs
           :demand t
-          :custom
-          (desktop-base-file-name "emacs.desktop")
-          (desktop-restore-eager  4)
-          (desktop-globals-to-save
-           '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
-          (desktop-load-locked-desktop t)
+          ;; :custom
+          ;; (desktop-base-file-name "emacs.desktop")
+          ;; (desktop-restore-eager  4)
+          ;; (desktop-globals-to-save
+          ;;  '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
+          ;; (desktop-load-locked-desktop t)
           :init
         
+          (recentf-mode)
+          (savehist-mode)
+          (save-place-mode)
+        
           (defun rgr/startup-hook ()
-            (switch-to-buffer (get-register ?l)))
+            ;(switch-to-buffer (get-register ?l))
+            (switch-to-buffer "*scratch*")
+            )
         
           (defun rgr/remember-last-buffer (f)
-                (when buffer-file-name
-                  (set-register ?l (buffer-name))))
+            (when buffer-file-name
+              (set-register ?l (buffer-name))))
         
           (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
         
           (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
         
-          (desktop-save-mode))
-        
-        
+          )
+
+2.  rest of startup
+
         (defun rgr/quit-or-close-emacs(&optional kill)
           (interactive)
           (if (or current-prefix-arg kill)
@@ -317,10 +324,182 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
           (save-buffers-kill-emacs))
         
         (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
-
-2.  rest of startup
-
+        
         (provide 'rgr/startup)
+
+
+## General configuration
+
+Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
+
+    (require  'rgr/general-config "rgr-general-config" 'NOERROR)
+
+
+### library
+
+1.  General
+
+    1.  a - unfiled
+    
+            (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
+                                                    ; t60
+            (scroll-bar-mode -1)
+            (tool-bar-mode -1)
+            (menu-bar-mode -1)
+            (show-paren-mode 1)
+            (winner-mode 1)
+            
+            (global-auto-revert-mode 1)
+            ;; Also auto refresh dired, but be quiet about it
+            (setq global-auto-revert-non-file-buffers t)
+            (setq auto-revert-verbose nil)
+            
+            (global-visual-line-mode 1)
+            
+            (setq column-number-mode t)
+            
+            (delete-selection-mode 1)
+            
+            (global-set-key (kbd "S-<f1>") 'describe-face)
+            (global-set-key (kbd "M-m") 'manual-entry)
+            
+            (global-set-key (kbd "S-<f10>") #'menu-bar-open)
+                                                    ;          (global-set-key (kbd "<f10>") #'imenu)
+            
+            
+            (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+            
+            (defalias 'yes-or-no-p 'y-or-n-p)
+            
+            (setq disabled-command-function nil)
+            
+            (global-hl-line-mode t)
+            
+            (use-package
+              browse-url-dwim)
+            
+            ;; display dir name when core name clashes
+            (require 'uniquify)
+            
+            (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+            
+            
+            (global-set-key (kbd "C-c r") 'query-replace-regexp)
+    
+    2.  beacon
+    
+        visual feedback as to cursor position
+        
+            (use-package beacon
+              :custom
+              (beacon-blink-delay 1)
+              (beacon-size 10)
+              (beacon-color "orange" nil nil "Customized with use-package beacon")
+              (beacon-blink-when-point-moves-horizontally 32)
+              (beacon-blink-when-point-moves-vertically 8)
+              :config
+              (beacon-mode 1))
+    
+    3.  blackout modeline
+    
+        Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
+        
+            (straight-use-package
+             '(blackout :host github :repo "raxod502/blackout"))
+    
+    4.  boxquote
+    
+            (use-package boxquote
+              :straight (:branch "main")
+              :bind
+              ("C-S-r" . boxquote-region))
+    
+    5.  volatile-highlights
+    
+        brings visual feedback to some operations by highlighting portions relating to the operations.
+        
+            (use-package
+              volatile-highlights
+              :disabled
+              :init (volatile-highlights-mode 1))
+    
+    6.  web pasting
+    
+            (use-package
+              dpaste
+              :init
+              :bind ("C-c y" . dpaste-region-or-buffer))
+
+2.  Accessibility
+
+    1.  fonts
+    
+        JetBrains fonts are nice. See [nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
+        
+            ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
+    
+    2.  Darkroom
+    
+        Zoom in and center using [darkroom](https://github.com/joaotavora/darkroom).
+        
+            (use-package
+              darkroom
+              :bind
+              ( "<C-f7>" . 'darkroom-mode))
+
+3.  Ansi colour
+
+    [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
+    
+        (require 'ansi-color)
+        (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+        (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
+4.  Tabs
+
+    1.  Tab Bar Mode
+    
+            
+            (defun consult-buffer-other-tab ()
+              "Variant of `consult-buffer' which opens in other tab."
+              (interactive)
+              (let ((consult--buffer-display #'switch-to-buffer-other-tab))
+                (consult-buffer)))
+            
+            (use-package tab-bar
+              :defer t
+              :custom
+              (tab-bar-show t)
+              (tab-bar-close-button-show nil)
+              (tab-bar-new-button-show nil)
+              (tab-bar-tab-hints t)
+              (tab-bar-new-tab-choice "*scratch*")
+              (tab-bar-select-tab-modifiers '(control))
+              :custom-face
+              (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
+              (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
+              (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+              :bind (:map tab-prefix-map
+                          (("x" . tab-close)
+                           ("b" . consult-buffer-other-tab)
+                           ("p" . tab-previous)
+                           ("n" . tab-next)
+                           ("c" . tab-bar-new-tab)
+                           ("s" . tab-bar-switch-to-tab))))
+
+5.  bookmarks
+
+    1.  bookmark+
+    
+            (use-package bookmark+
+              ;;:disabled
+              :custom
+              (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
+              :demand)
+        
+        1.  provide
+        
+                (provide 'rgr/general-config)
 
 
 ## Minibuffer Enrichment (search, sudo edit&#x2026;)
@@ -334,17 +513,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
 ### library
 
-1.  [TRAMP](https://www.emacswiki.org/emacs/TrampMode) (Transparent Remote Access, Multiple Protocols)
-
-    is a package for editing remote files, similar to AngeFtp or efs. Whereas the others use FTP to connect to the remote host and to transfer the files, TRAMP uses a remote shell connection (rlogin, telnet, ssh). It can transfer the files using rcp or a similar program, or it can encode the file contents (using uuencode or base64) and transfer them right through the shell connection.
-    
-        ;;(require 'tramp)
-        ;; (use-package tramp
-        ;;   :custom
-        ;;   (tramp-default-method "ssh")
-        ;;   )
-
-2.  file opening
+1.  file opening
 
     1.  read only by default
     
@@ -380,14 +549,14 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
               :bind
               ( "C-x C-f" . rgr/ffap))
 
-3.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
+2.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
 
     Disabled as I cant get my head around it. It doesnt seem to do much thats important to me
     that corfu and orderless and vertico do. Corfu and vertico already do recency ordering.
     
         (use-package prescient )
 
-4.  Consult
+3.  Consult
 
     Consult]] Provides various commands based on the Emacs completion function completing-read
     
@@ -527,7 +696,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
               ;; Use the symbol at point as initial search term
               (consult-customize consult-dash :initial (thing-at-point 'symbol)))
 
-5.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
+4.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
         (use-package embark
           :ensure t
@@ -563,7 +732,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
               :hook
               (embark-collect-mode . consult-preview-at-point-mode))
 
-6.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+5.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
     
@@ -585,7 +754,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; package.
           (marginalia-mode))
 
-7.  all-the-icons
+6.  all-the-icons
 
     Remember to run **all-the-icons-install-fonts**.
     
@@ -600,7 +769,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
           :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
 
-8.  provide
+7.  provide
 
         (provide 'rgr/minibuffer)
 
@@ -614,7 +783,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     (require 'rgr/completion "rgr-completion" 'NOERROR)
 
 
-### rgr-completion library
+### completion library
 
 1.  Which Key
 
@@ -862,20 +1031,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
         (provide 'rgr/completion)
 
 
-## bookmarks
-
-
-### bookmark+
-
-    (use-package bookmark+
-      ;;:disabled
-      :custom
-      (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
-      :demand)
-
-1.  look into why bmkp store org link doesnt work
-
-
 ## Org functionality
 
 General org-mode config
@@ -1011,7 +1166,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org5824b88)
+    See `org-agenda-files` [org-agenda-files](#org9881bfd)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1033,170 +1188,6 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
       ("C-c L" . lazy-lang-learn-mode)
       ("<f12>" . lazy-lang-learn-translate)
       ("S-<f12>" . lazy-lang-learn-translate-from-history))
-
-
-## General configuration
-
-Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
-
-    (require  'rgr/general-config "rgr-general-config" 'NOERROR)
-
-
-### library
-
-1.  General
-
-    1.  a - unfiled
-    
-            (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
-                                                    ; t60
-            (scroll-bar-mode -1)
-            (tool-bar-mode -1)
-            (menu-bar-mode -1)
-            (show-paren-mode 1)
-            (winner-mode 1)
-            
-            (global-auto-revert-mode 1)
-            ;; Also auto refresh dired, but be quiet about it
-            (setq global-auto-revert-non-file-buffers t)
-            (setq auto-revert-verbose nil)
-            
-            (global-visual-line-mode 1)
-            
-            (setq column-number-mode t)
-            
-            (delete-selection-mode 1)
-            
-            (global-set-key (kbd "S-<f1>") 'describe-face)
-            (global-set-key (kbd "M-m") 'manual-entry)
-            
-            (global-set-key (kbd "S-<f10>") #'menu-bar-open)
-                                                    ;          (global-set-key (kbd "<f10>") #'imenu)
-            
-            
-            (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
-            
-            (defalias 'yes-or-no-p 'y-or-n-p)
-            
-            (setq disabled-command-function nil)
-            
-            (global-hl-line-mode t)
-            
-            (use-package
-              browse-url-dwim)
-            
-            ;; display dir name when core name clashes
-            (require 'uniquify)
-            
-            (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
-            
-            
-            (global-set-key (kbd "C-c r") 'query-replace-regexp)
-    
-    2.  beacon
-    
-        visual feedback as to cursor position
-        
-            (use-package beacon
-              :custom
-              (beacon-blink-delay 1)
-              (beacon-size 10)
-              (beacon-color "orange" nil nil "Customized with use-package beacon")
-              (beacon-blink-when-point-moves-horizontally 32)
-              (beacon-blink-when-point-moves-vertically 8)
-              :config
-              (beacon-mode 1))
-    
-    3.  blackout modeline
-    
-        Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
-        
-            (straight-use-package
-             '(blackout :host github :repo "raxod502/blackout"))
-    
-    4.  boxquote
-    
-            (use-package boxquote
-              :straight (:branch "main")
-              :bind
-              ("C-S-r" . boxquote-region))
-    
-    5.  volatile-highlights
-    
-        brings visual feedback to some operations by highlighting portions relating to the operations.
-        
-            (use-package
-              volatile-highlights
-              :disabled
-              :init (volatile-highlights-mode 1))
-    
-    6.  web pasting
-    
-            (use-package
-              dpaste
-              :init
-              :bind ("C-c y" . dpaste-region-or-buffer))
-
-2.  Accessibility
-
-    1.  fonts
-    
-        JetBrains fonts are nice. See [nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
-        
-            ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
-    
-    2.  Darkroom
-    
-        Zoom in and center using [darkroom](https://github.com/joaotavora/darkroom).
-        
-            (use-package
-              darkroom
-              :bind
-              ( "<C-f7>" . 'darkroom-mode))
-
-3.  Ansi colour
-
-    [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
-    
-        (require 'ansi-color)
-        (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-        (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-
-4.  Tabs
-
-    1.  Tab Bar Mode
-    
-            
-            (defun consult-buffer-other-tab ()
-              "Variant of `consult-buffer' which opens in other tab."
-              (interactive)
-              (let ((consult--buffer-display #'switch-to-buffer-other-tab))
-                (consult-buffer)))
-            
-            (use-package tab-bar
-              :defer t
-              :custom
-              (tab-bar-show t)
-              (tab-bar-close-button-show nil)
-              (tab-bar-new-button-show nil)
-              (tab-bar-tab-hints t)
-              (tab-bar-new-tab-choice "*scratch*")
-              (tab-bar-select-tab-modifiers '(control))
-              :custom-face
-              (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
-              (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
-              (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
-              :bind (:map tab-prefix-map
-                          (("x" . tab-close)
-                           ("b" . consult-buffer-other-tab)
-                           ("p" . tab-previous)
-                           ("n" . tab-next)
-                           ("c" . tab-bar-new-tab)
-                           ("s" . tab-bar-switch-to-tab))))
-
-5.  provide
-
-        (provide 'rgr/general-config)
 
 
 ## Text tools
@@ -1852,167 +1843,174 @@ Zoom into current buffer
 
 ## Email
 
-
-### notmuch
-
-    (use-package notmuch
-      :init
-      (defun rgr/notmuch-new()
-        (message "refreshing notmuch")
-        (call-process-shell-command "notmuch new" nil 0))
-      :hook
-      (notmuch-hello-mode . rgr/notmuch-new)
-      )
+    (require 'rgr/email "rgr-email" 'NOERROR)
 
 
-### mu4e
+### Email library
 
-    (use-package mu4e
-      ;;:disabled
-      :straight ( :host github
-                  :branch "release/1.10"
-                  :repo "djcb/mu"
-                  :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
-                  :main "mu4e/mu4e.el"
-                  :pre-build (("./autogen.sh")
-                              ("ninja" "-C" "build")
-                              (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                                  (expand-file-name "~/bin/mu") 'ok-if-exists)))
-      :commands (mu4e mu4e-update-index)
-      :custom
-      ( mail-user-agent 'mu4e-user-agent )
-      ( mail-user-agent 'mu4e-user-agent )
-      ( message-send-mail-function 'smtpmail-send-it )
-      ( mu4e-attachment-dir "~/Downloads" )
-      ( mu4e-change-filenames-when-moving t )
-      ( mu4e-compose-context-policy 'ask )
-      ( mu4e-confirm-quit nil )
-      ( mu4e-context-policy 'pick-first )
-      ( mu4e-compose-reply-recipients 'sender )
-      ( mu4e-headers-include-related nil )
-      ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
-      ( mu4e-decryption-policy 'ask )
-      ( mu4e-hide-index-messages t )
-      ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
-      ( mu4e-update-interval nil )
-      ( mu4e-use-fancy-chars t )
-      ( mu4e-view-prefer-html nil )
-      ( mu4e-view-show-addresses t )
-      ( smtpmail-smtp-service 587 )
-      ( user-full-name "Richard G.Riley" )
-      :config
-    
-      (use-package mu4e-alert
-        :init
-        (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
-    
-      (use-package mu4e-column-faces
-        :after mu4e
-        :config (mu4e-column-faces-mode))
-    
-      (setq mu4e-contexts
-            `( ,(make-mu4e-context
-                 :name "aGmx"
-                 :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
-                 :match-func (lambda (msg)
-                               (when msg
-                                 (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
-                 :vars '( ( user-mail-address . "rileyrg@gmx.de" )
-                          ( user-full-name . "Richard G. Riley" )
-                          ( smtpmail-smtp-server . "mail.gmx.net")
-                          ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
-                          ( mu4e-refile-folder . "/gmx/Archive" )
-                          ( mu4e-sent-folder . "/gmx/Sent" )
-                          ( mu4e-sent-messages-behavior . sent)
-                          ( mu4e-trash-folder . "/gmx/Bin" )
-                          ( mu4e-drafts-folder . "/gmx/Drafts" )
-                          ;; (mu4e-maildir-shortcuts .
-                          ;;  (("/gmx/INBOX"             . ?i)
-                          ;;    ("/gmx/Sent" . ?s)
-                          ;;    ("/gmx/Bin"     . ?b)
-                          ;;    ("/gmx/Drafts"    . ?d)
-                          ;;    ("/gmx/Spam"    . ?p)
-                          ;;    ("/gmx/Archive"  . ?a)))
-                          ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmx/INBOX and flag:unread" :key ?i)
-                                              (:name "Learning" :query "maildir:/gmx/Learning* and flag:unread" :key ?l)
-                                              (:name "All Today's messages" :query "maildir:/gmx/*  AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent) AND date:today..now " :key ?t)
-                                              (:name "Last 7 days" :query "maildir:/gmx/* AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent)  AND date:7d..now" :hide-unread t :key ?w)
-                                              (:name "All" :query "maildir:/gmx/* and not (maildir:/gmx/Spam or maildir:/gmx/Bin)" :key ?a)
-                                              (:name "Bin" :query "maildir:/gmx/Bin" :key ?b)
-                                              ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
-                                              (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                          ( mu4e-compose-signature  .
-                            (concat
-                             "Richard G. Riley\n"
-                             "Ein bier, ein Helbing.\n"))))
-               ,(make-mu4e-context
-                 :name "bGmail"
-                 :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
-                 ;; no leave-func
-                 ;; we match based on the maildir of the message
-                 ;; this matches maildir /Arkham and its sub-directories
-                 :match-func (lambda (msg)
-                               (when msg
-                                 (string-match-p "^/gmail" (mu4e-message-field msg :maildir))))
-                 :vars '( ( user-mail-address . "rileyrg@gmail.com"  )
-                          ( user-full-name . "Richie" )
-                          ( smtpmail-smtp-server . "smtp.gmail.com")
-                          ( mu4e-get-mail-command . "getmails gmail")
-                          ( mu4e-refile-folder . "/gmail/Archive" )
-                          ( mu4e-sent-folder . "/gmail/Sent" )
-                          ( mu4e-sent-messages-behavior . delete)
-                          ( mu4e-trash-folder . "/gmail/Bin" )
-                          ( mu4e-drafts-folder . "/gmail/Drafts" )
-                          ;; (mu4e-maildir-shortcuts .
-                          ;;   (("/gmail/INBOX"             . ?i)
-                          ;;    ("/gmail/Sent" . ?s)
-                          ;;    ("/gmail/Bin"     . ?b)
-                          ;;    ("/gmail/Drafts"    . ?d)
-                          ;;    ("/gmail/Spam"    . ?p)
-                          ;;    ("/gmail/Archive"  . ?a)))
-                          ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmail/INBOX and flag:unread" :key ?i)
-                                              (:name "All Today's messages" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:today..now " :key ?t)
-                                              (:name "Last 7 days" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:7d..now" :hide-unread t :key ?w)
-                                              (:name "All" :query "maildir:/gmail/* and not (maildir:/gmail/Spam or maildir:/gmail/Bin)" :key ?a)
-                                              (:name "Bin" :query "maildir:/gmail/Bin" :key ?b)
-                                              ;;                    (:name "Messages with images" :query "maildir:/gmail/* AND  NOT maildir:/gmail/Spam  AND  NOT maildir:/gmail/Sent" :key ?m)
-                                              (:name "Spam" :query "maildir:/gmail/Spam AND date:7d..now" :hide-unread t :key ?p)))
-                          ( mu4e-compose-signature . "Please change my email to 'rileyrg@gmx.de'.")))))
-    
-      (defun mu4e-smarter-compose ()
-        "My settings for message composition."
-        (set-fill-column 72)
-        (flyspell-mode))
-    
-      (defun rgr/mu4e-refresh()
-        (interactive)
-        (when (featurep 'alert)
-          (alert "refreshing mu4e indexes"))
-        (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
-    
-      (add-to-list 'mu4e-view-actions
-                   '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-      (add-to-list 'mu4e-view-actions
-                   '("XWidget View" . mu4e-action-view-with-xwidget) t)
-      (add-to-list 'mu4e-view-actions
-                   '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
-      (require 'mu4e-contrib)
-      :hook ((mu4e-view-rendered . visual-line-mode)
-             (mu4e-compose-mode . mu4e-smarter-compose)
-             (mu4e-view-rendered .
-                                  (lambda()
-                                    ;; try to emulate some of the eww key-bindings
-                                    (local-set-key (kbd "<tab>") 'shr-next-link)
-                                    (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-      :bind	  (("C-c u".  'mu4e)
-               (:map mu4e-main-mode-map
-                     ("m" . mu4e-compose-new))
-               (:map mu4e-main-mode-map
-                     ("g" . rgr/mu4e-refresh))
-               (:map mu4e-headers-mode-map
-                     ("C-c u" . mu4e-headers-mark-all-unread-read))))
-    ;;:map mu4e-view-mode-map
-    ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
+1.  notmuch
+
+        (use-package notmuch
+          :init
+          (defun rgr/notmuch-new()
+            (message "refreshing notmuch")
+            (call-process-shell-command "notmuch new" nil 0))
+          :hook
+          (notmuch-hello-mode . rgr/notmuch-new)
+          )
+
+2.  mu4e
+
+        (use-package mu4e
+          ;;:disabled
+          :straight ( :host github
+                      :branch "release/1.10"
+                      :repo "djcb/mu"
+                      :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+                      :main "mu4e/mu4e.el"
+                      :pre-build (("./autogen.sh")
+                                  ("ninja" "-C" "build")
+                                  (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                                      (expand-file-name "~/bin/mu") 'ok-if-exists)))
+          :commands (mu4e mu4e-update-index)
+          :custom
+          ( mail-user-agent 'mu4e-user-agent )
+          ( mail-user-agent 'mu4e-user-agent )
+          ( message-send-mail-function 'smtpmail-send-it )
+          ( mu4e-attachment-dir "~/Downloads" )
+          ( mu4e-change-filenames-when-moving t )
+          ( mu4e-compose-context-policy 'ask )
+          ( mu4e-confirm-quit nil )
+          ( mu4e-context-policy 'pick-first )
+          ( mu4e-compose-reply-recipients 'sender )
+          ( mu4e-headers-include-related nil )
+          ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
+          ( mu4e-decryption-policy 'ask )
+          ( mu4e-hide-index-messages t )
+          ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
+          ( mu4e-update-interval nil )
+          ( mu4e-use-fancy-chars t )
+          ( mu4e-view-prefer-html nil )
+          ( mu4e-view-show-addresses t )
+          ( smtpmail-smtp-service 587 )
+          ( user-full-name "Richard G.Riley" )
+          :config
+        
+          (use-package mu4e-alert
+            :init
+            (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
+        
+          (use-package mu4e-column-faces
+            :after mu4e
+            :config (mu4e-column-faces-mode))
+        
+          (setq mu4e-contexts
+                `( ,(make-mu4e-context
+                     :name "aGmx"
+                     :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
+                     :match-func (lambda (msg)
+                                   (when msg
+                                     (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
+                     :vars '( ( user-mail-address . "rileyrg@gmx.de" )
+                              ( user-full-name . "Richard G. Riley" )
+                              ( smtpmail-smtp-server . "mail.gmx.net")
+                              ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
+                              ( mu4e-refile-folder . "/gmx/Archive" )
+                              ( mu4e-sent-folder . "/gmx/Sent" )
+                              ( mu4e-sent-messages-behavior . sent)
+                              ( mu4e-trash-folder . "/gmx/Bin" )
+                              ( mu4e-drafts-folder . "/gmx/Drafts" )
+                              ;; (mu4e-maildir-shortcuts .
+                              ;;  (("/gmx/INBOX"             . ?i)
+                              ;;    ("/gmx/Sent" . ?s)
+                              ;;    ("/gmx/Bin"     . ?b)
+                              ;;    ("/gmx/Drafts"    . ?d)
+                              ;;    ("/gmx/Spam"    . ?p)
+                              ;;    ("/gmx/Archive"  . ?a)))
+                              ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmx/INBOX and flag:unread" :key ?i)
+                                                  (:name "Learning" :query "maildir:/gmx/Learning* and flag:unread" :key ?l)
+                                                  (:name "All Today's messages" :query "maildir:/gmx/*  AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent) AND date:today..now " :key ?t)
+                                                  (:name "Last 7 days" :query "maildir:/gmx/* AND NOT (maildir:/gmx/Spam  OR  maildir:/gmx/Sent)  AND date:7d..now" :hide-unread t :key ?w)
+                                                  (:name "All" :query "maildir:/gmx/* and not (maildir:/gmx/Spam or maildir:/gmx/Bin)" :key ?a)
+                                                  (:name "Bin" :query "maildir:/gmx/Bin" :key ?b)
+                                                  ;;                      (:name "Messages with images" :query "maildir:/gmx/* AND  NOT maildir:/gmx/Spam  AND  NOT maildir:/gmx/Sent" :key ?m)
+                                                  (:name "Spam" :query "maildir:/gmx/Spam AND date:7d..now" :hide-unread t :key ?p)))
+                              ( mu4e-compose-signature  .
+                                (concat
+                                 "Richard G. Riley\n"
+                                 "Ein bier, ein Helbing.\n"))))
+                   ,(make-mu4e-context
+                     :name "bGmail"
+                     :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
+                     ;; no leave-func
+                     ;; we match based on the maildir of the message
+                     ;; this matches maildir /Arkham and its sub-directories
+                     :match-func (lambda (msg)
+                                   (when msg
+                                     (string-match-p "^/gmail" (mu4e-message-field msg :maildir))))
+                     :vars '( ( user-mail-address . "rileyrg@gmail.com"  )
+                              ( user-full-name . "Richie" )
+                              ( smtpmail-smtp-server . "smtp.gmail.com")
+                              ( mu4e-get-mail-command . "getmails gmail")
+                              ( mu4e-refile-folder . "/gmail/Archive" )
+                              ( mu4e-sent-folder . "/gmail/Sent" )
+                              ( mu4e-sent-messages-behavior . delete)
+                              ( mu4e-trash-folder . "/gmail/Bin" )
+                              ( mu4e-drafts-folder . "/gmail/Drafts" )
+                              ;; (mu4e-maildir-shortcuts .
+                              ;;   (("/gmail/INBOX"             . ?i)
+                              ;;    ("/gmail/Sent" . ?s)
+                              ;;    ("/gmail/Bin"     . ?b)
+                              ;;    ("/gmail/Drafts"    . ?d)
+                              ;;    ("/gmail/Spam"    . ?p)
+                              ;;    ("/gmail/Archive"  . ?a)))
+                              ( mu4e-bookmarks . ((:name "Inbox" :query "maildir:/gmail/INBOX and flag:unread" :key ?i)
+                                                  (:name "All Today's messages" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:today..now " :key ?t)
+                                                  (:name "Last 7 days" :query "maildir:/gmail/* AND NOT (maildir:/gmail/Spam  OR  maildir:/gmail/Sent) AND date:7d..now" :hide-unread t :key ?w)
+                                                  (:name "All" :query "maildir:/gmail/* and not (maildir:/gmail/Spam or maildir:/gmail/Bin)" :key ?a)
+                                                  (:name "Bin" :query "maildir:/gmail/Bin" :key ?b)
+                                                  ;;                    (:name "Messages with images" :query "maildir:/gmail/* AND  NOT maildir:/gmail/Spam  AND  NOT maildir:/gmail/Sent" :key ?m)
+                                                  (:name "Spam" :query "maildir:/gmail/Spam AND date:7d..now" :hide-unread t :key ?p)))
+                              ( mu4e-compose-signature . "Please change my email to 'rileyrg@gmx.de'.")))))
+        
+          (defun mu4e-smarter-compose ()
+            "My settings for message composition."
+            (set-fill-column 72)
+            (flyspell-mode))
+        
+          (defun rgr/mu4e-refresh()
+            (interactive)
+            (when (featurep 'alert)
+              (alert "refreshing mu4e indexes"))
+            (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
+        
+          (add-to-list 'mu4e-view-actions
+                       '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+          (add-to-list 'mu4e-view-actions
+                       '("XWidget View" . mu4e-action-view-with-xwidget) t)
+          (add-to-list 'mu4e-view-actions
+                       '("Markall as read" . mu4e-headers-mark-all-unread-read) t)
+          (require 'mu4e-contrib)
+          :hook ((mu4e-view-rendered . visual-line-mode)
+                 (mu4e-compose-mode . mu4e-smarter-compose)
+                 (mu4e-view-rendered .
+                                      (lambda()
+                                        ;; try to emulate some of the eww key-bindings
+                                        (local-set-key (kbd "<tab>") 'shr-next-link)
+                                        (local-set-key (kbd "<backtab>") 'shr-previous-link))))
+          :bind	  (("C-c u".  'mu4e)
+                   (:map mu4e-main-mode-map
+                         ("m" . mu4e-compose-new))
+                   (:map mu4e-main-mode-map
+                         ("g" . rgr/mu4e-refresh))
+                   (:map mu4e-headers-mode-map
+                         ("C-c u" . mu4e-headers-mark-all-unread-read))))
+        ;;:map mu4e-view-mode-map
+        ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
+
+3.  provide
+
+        (provide 'rgr/email)
 
 
 ## Programming Language related
@@ -2090,38 +2088,41 @@ Zoom into current buffer
     
         (require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
     
-    1.  scratch,messages
+    1.  rgr/elisp-utils library
     
-            (use-package scratch
-              :disabled
-              :bind ("<f2>" . (lambda()
-                                (interactive)
-                                (switch-to-buffer(scratch--create 'emacs-lisp-mode "*scratch*"))))
-              ("C-<f2>" . (lambda()
-                            (interactive)
-                            (switch-to-buffer(messages-buffer)))))
-    
-    2.  rgr/elisp-utils library
-    
-        1.  elisp checks
+        1.  smartparens
+        
+                (use-package smartparens
+                  :hook
+                  ((emacs-lisp-mode . smartparens-mode)))
+        
+        2.  electric-pair-mode
+        
+            [auto insert closing brackets](emacs#Matching)
+            
+                (use-package emacs
+                  :hook
+                  ((emacs-lisp-mode . electric-pair-mode)))
+        
+        3.  elisp checks
         
                 (defun rgr/elisp-edit-mode()
                   "return non nil if this buffer edits elisp"
                   (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
         
-        2.  linting
+        4.  linting
         
             [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
             
                 (use-package package-lint)
         
-        3.  helpful, enriched elisp help
+        5.  helpful, enriched elisp help
         
                 (use-package helpful
                   :config
                   ;; Note that the built-in `describe-function' includes both functions
                   ;; and macros. `helpful-function' is functions only, so we provide
-                  ;; `helpful-callable' as a drop-in replacement.
+                  ;; `helpful-callable as a drop-in replacement.
                   (global-set-key (kbd "C-h e")
                                   (lambda()
                                     (interactive)
@@ -2149,7 +2150,7 @@ Zoom into current buffer
                   ;; look at interactive functions.
                   (global-set-key (kbd "C-h C") #'helpful-command))
         
-        4.  elisp popup context help
+        6.  elisp popup context help
         
             Display a poup containing docstring at point
             
@@ -2163,7 +2164,7 @@ Zoom into current buffer
                   ("M-<f2>" . el-docstring-sap-display)
                   ("M-<f1>" . el-docstring-sap-mode))
         
-        5.  Elisp debugging
+        7.  Elisp debugging
         
                 (use-package
                   edebug-x
@@ -2179,7 +2180,7 @@ Zoom into current buffer
                     (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
                   )
         
-        6.  Formatting
+        8.  Formatting
         
                 (use-package
                   elisp-format
@@ -2187,7 +2188,7 @@ Zoom into current buffer
                   (:map emacs-lisp-mode-map
                         ("C-c f" . elisp-format-region)))
         
-        7.  popup query symbol
+        9.  popup query symbol
         
                 (use-package popup
                   :config
@@ -2200,7 +2201,7 @@ Zoom into current buffer
                   :bind
                   (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
         
-        8.  provide
+        10. provide
         
                 (provide 'rgr/elisp-utils)
 
@@ -2782,44 +2783,41 @@ Zoom into current buffer
 
 ## Themes
 
+    (require 'rgr/themes "rgr-themes" 'NOERROR)
 
-### modus themes
 
-<https://github.com/protesilaos/modus-themes>
+### Themes library
 
-    (use-package modus-themes
-      ;:disabled
-      :init
-      ;; Add all your customizations prior to loading the themes
-      (setq modus-themes-slanted-constructs t
-            modus-themes-bold-constructs nil)
+1.  modus themes
+
+    <https://github.com/protesilaos/modus-themes>
     
-      ;; Load the theme files before enabling a theme
-      ;; (modus-themes-load-themes)
-      :config
-      (load-theme 'modus-operandi :no-confirm))
-    ;; (modus-themes-load-vivendi))
+        (use-package modus-themes
+          ;:disabled
+          :init
+          ;; Add all your customizations prior to loading the themes
+          (setq modus-themes-slanted-constructs t
+                modus-themes-bold-constructs nil)
+        
+          ;; Load the theme files before enabling a theme
+          ;; (modus-themes-load-themes)
+          :config
+          (load-theme 'modus-operandi :no-confirm))
+        ;; (modus-themes-load-vivendi))
 
+2.  ef-themes
 
-### ef-themes
+    <https://github.com/protesilaos/ef-themes>
+    
+        (use-package ef-themes
+          :disabled
+          :demand t
+          :config
+          (ef-themes-select 'ef-duo-light))
 
-<https://github.com/protesilaos/ef-themes>
+3.  provide
 
-    (use-package ef-themes
-      :disabled
-      :demand t
-      :config
-      (ef-themes-select 'ef-duo-light))
-
-
-### humanoid themes
-
-<https://github.com/humanoid-colors/emacs-humanoid-themes>
-
-    (use-package humanoid-themes
-      :init
-      ;; Add all your customizations prior to loading the themes
-      (load-theme 'humanoid-dark t))
+        (provide 'rgr/themes)
 
 
 ## Late load
@@ -2913,7 +2911,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4796af1) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0f03e69) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2946,7 +2944,7 @@ to add to version control.
     fi
 
 
-<a id="org4796af1"></a>
+<a id="org0f03e69"></a>
 
 ### Gnome protocol handler desktop file
 
