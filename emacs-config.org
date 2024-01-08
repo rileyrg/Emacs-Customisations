@@ -382,6 +382,199 @@ I use a persistent register to remember the last file buffer and to resore it on
 
   (provide 'rgr/startup)
 #+end_src
+** General configuration
+:PROPERTIES:
+:END:
+Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
+#+begin_src emacs-lisp
+  (require  'rgr/general-config "rgr-general-config" 'NOERROR)
+#+end_src
+
+*** library
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-general-config.el" elisp-dir)
+:END:
+**** General                                              :blackout:modeline:
+:PROPERTIES:
+:END:
+***** a - unfiled
+#+begin_src emacs-lisp
+  (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
+                                          ; t60
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (show-paren-mode 1)
+  (winner-mode 1)
+
+  (global-auto-revert-mode 1)
+  ;; Also auto refresh dired, but be quiet about it
+  (setq global-auto-revert-non-file-buffers t)
+  (setq auto-revert-verbose nil)
+
+  (global-visual-line-mode 1)
+
+  (setq column-number-mode t)
+
+  (delete-selection-mode 1)
+
+  (global-set-key (kbd "S-<f1>") 'describe-face)
+  (global-set-key (kbd "M-m") 'manual-entry)
+
+  (global-set-key (kbd "S-<f10>") #'menu-bar-open)
+                                          ;          (global-set-key (kbd "<f10>") #'imenu)
+
+
+  (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  (setq disabled-command-function nil)
+
+  (global-hl-line-mode t)
+
+  (use-package
+    browse-url-dwim)
+
+  ;; display dir name when core name clashes
+  (require 'uniquify)
+
+  (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+
+
+  (global-set-key (kbd "C-c r") 'query-replace-regexp)
+
+#+end_src
+***** beacon                                                         :beacon:
+visual feedback as to cursor position
+#+begin_src emacs-lisp
+  (use-package beacon
+    :custom
+    (beacon-blink-delay 1)
+    (beacon-size 10)
+    (beacon-color "orange" nil nil "Customized with use-package beacon")
+    (beacon-blink-when-point-moves-horizontally 32)
+    (beacon-blink-when-point-moves-vertically 8)
+    :config
+    (beacon-mode 1))
+
+#+end_src
+***** blackout modeline                                            :blackout:
+Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
+#+begin_src emacs-lisp
+  (straight-use-package
+   '(blackout :host github :repo "raxod502/blackout"))
+#+end_src
+***** boxquote                                                     :boxquote:
+#+begin_src emacs-lisp
+  (use-package boxquote
+    :straight (:branch "main")
+    :bind
+    ("C-S-r" . boxquote-region))
+
+#+end_src
+***** volatile-highlights                               :volatilehighlights:volatile:
+brings visual feedback to some operations by highlighting portions relating to the operations.
+#+begin_src emacs-lisp
+  (use-package
+    volatile-highlights
+    :disabled
+    :init (volatile-highlights-mode 1))
+#+end_src
+***** web pasting
+#+begin_src emacs-lisp
+  (use-package
+    dpaste
+    :init
+    :bind ("C-c y" . dpaste-region-or-buffer))
+
+#+end_src
+**** Accessibility
+:PROPERTIES:
+:END:
+***** fonts
+:PROPERTIES:
+:END:
+JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]]
+:PROPERTIES:
+:END:
+#+begin_src emacs-lisp
+  ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
+#+end_src
+***** Darkroom
+:PROPERTIES:
+:END:
+Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
+#+begin_src emacs-lisp
+  (use-package
+    darkroom
+    :bind
+    ( "<C-f7>" . 'darkroom-mode))
+#+end_src
+
+**** Ansi colour
+:PROPERTIES:
+:END:
+[[https://www.emacswiki.org/emacs/AnsiColor][Ansi colour hooks]] to enable emacs buffers to handle ansi.
+#+begin_src emacs-lisp :tangle no
+  (require 'ansi-color)
+  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+  (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+#+end_src
+**** Tabs
+***** Tab Bar Mode
+#+begin_src emacs-lisp
+
+  (defun consult-buffer-other-tab ()
+    "Variant of `consult-buffer' which opens in other tab."
+    (interactive)
+    (let ((consult--buffer-display #'switch-to-buffer-other-tab))
+      (consult-buffer)))
+
+  (use-package tab-bar
+    :defer t
+    :custom
+    (tab-bar-show t)
+    (tab-bar-close-button-show nil)
+    (tab-bar-new-button-show nil)
+    (tab-bar-tab-hints t)
+    (tab-bar-new-tab-choice "*scratch*")
+    (tab-bar-select-tab-modifiers '(control))
+    :custom-face
+    (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
+    (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
+    (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+    :bind (:map tab-prefix-map
+                (("x" . tab-close)
+                 ("b" . consult-buffer-other-tab)
+                 ("p" . tab-previous)
+                 ("n" . tab-next)
+                 ("c" . tab-bar-new-tab)
+                 ("s" . tab-bar-switch-to-tab))))
+#+end_src
+**** bookmarks
+***** bookmark+                                                        :bmkp:
+:PROPERTIES:
+:ID:       02489c8b-1ce3-407e-a800-2b92f94827b9
+:END:
+:LOGBOOK:
+- State "CANCELLED"  from              [2021-06-30 Wed 19:02]
+- State "CANCELLED"  from              [2021-06-30 Wed 08:05]
+:END:
+#+begin_src emacs-lisp
+  (use-package bookmark+
+    ;;:disabled
+    :custom
+    (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
+    :demand)
+#+end_src
+****** provide
+:PROPERTIES:
+:ID:       101d96b3-5d00-4d97-93c4-2c2f7aac8852
+:END:
+#+begin_src emacs-lisp
+  (provide 'rgr/general-config)
+#+end_src
 ** Minibuffer Enrichment (search, sudo edit...)                  :minibuffer:
 :PROPERTIES:
 :ID:       ccdf6738-f921-4d2f-81ea-6dd00883867c
@@ -692,7 +885,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 #+end_src
 
 
-*** rgr-completion library
+*** completion library
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" elisp-dir)
 :END:
@@ -947,35 +1140,6 @@ https://github.com/minad/vertico
 #+begin_src emacs-lisp
   (provide 'rgr/completion)
 #+end_src
-** bookmarks
-*** bookmark+                                                          :bmkp:
-:PROPERTIES:
-:ID:       02489c8b-1ce3-407e-a800-2b92f94827b9
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-06-30 Wed 19:02]
-- State "CANCELLED"  from              [2021-06-30 Wed 08:05]
-:END:
-#+begin_src emacs-lisp
-  (use-package bookmark+
-    ;;:disabled
-    :custom
-    (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
-    :demand)
-#+end_src
-**** CANCELLED waiting on replies to reddit post about bmkp vesioning :CANCELLED:
-CLOSED: [2021-08-08 Sun 23:15] SCHEDULED: <2021-07-24 Sat>
-:PROPERTIES:
-:DateCreated: <2021-07-22 Thu 16:17>
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from "TODO"       [2021-08-08 Sun 23:15]
-- State "TODO"       from              [2021-07-22 Thu 16:18]
-:END:
-**** TODO look into why bmkp store org link doesnt work
-:PROPERTIES:
-:DateCreated: <2021-07-22 Thu 02:27>
-:END:
 ** Org functionality
 :PROPERTIES:
 :ID:       98f4dbe1-6f34-4246-8ee6-96e8ab24d1b1
@@ -1155,212 +1319,6 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
     ("C-c L" . lazy-lang-learn-mode)
     ("<f12>" . lazy-lang-learn-translate)
     ("S-<f12>" . lazy-lang-learn-translate-from-history))
-#+end_src
-** General configuration
-:PROPERTIES:
-:END:
-Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
-#+begin_src emacs-lisp
-  (require  'rgr/general-config "rgr-general-config" 'NOERROR)
-#+end_src
-
-*** library
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-general-config.el" elisp-dir)
-:END:
-**** General                                              :blackout:modeline:
-:PROPERTIES:
-:END:
-***** a - unfiled
-#+begin_src emacs-lisp
-  (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
-                                          ; t60
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (show-paren-mode 1)
-  (winner-mode 1)
-
-  (global-auto-revert-mode 1)
-  ;; Also auto refresh dired, but be quiet about it
-  (setq global-auto-revert-non-file-buffers t)
-  (setq auto-revert-verbose nil)
-
-  (global-visual-line-mode 1)
-
-  (setq column-number-mode t)
-
-  (delete-selection-mode 1)
-
-  (global-set-key (kbd "S-<f1>") 'describe-face)
-  (global-set-key (kbd "M-m") 'manual-entry)
-
-  (global-set-key (kbd "S-<f10>") #'menu-bar-open)
-                                          ;          (global-set-key (kbd "<f10>") #'imenu)
-
-
-  (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
-
-  (defalias 'yes-or-no-p 'y-or-n-p)
-
-  (setq disabled-command-function nil)
-
-  (global-hl-line-mode t)
-
-  (use-package
-    browse-url-dwim)
-
-  ;; display dir name when core name clashes
-  (require 'uniquify)
-
-  (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
-
-
-  (global-set-key (kbd "C-c r") 'query-replace-regexp)
-
-#+end_src
-***** beacon                                                         :beacon:
-visual feedback as to cursor position
-#+begin_src emacs-lisp
-  (use-package beacon
-    :custom
-    (beacon-blink-delay 1)
-    (beacon-size 10)
-    (beacon-color "orange" nil nil "Customized with use-package beacon")
-    (beacon-blink-when-point-moves-horizontally 32)
-    (beacon-blink-when-point-moves-vertically 8)
-    :config
-    (beacon-mode 1))
-
-#+end_src
-***** blackout modeline                                            :blackout:
-Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
-#+begin_src emacs-lisp
-  (straight-use-package
-   '(blackout :host github :repo "raxod502/blackout"))
-#+end_src
-***** boxquote                                                     :boxquote:
-#+begin_src emacs-lisp
-  (use-package boxquote
-    :straight (:branch "main")
-    :bind
-    ("C-S-r" . boxquote-region))
-
-#+end_src
-***** volatile-highlights                               :volatilehighlights:volatile:
-brings visual feedback to some operations by highlighting portions relating to the operations.
-#+begin_src emacs-lisp
-  (use-package
-    volatile-highlights
-    :disabled
-    :init (volatile-highlights-mode 1))
-#+end_src
-***** web pasting
-#+begin_src emacs-lisp
-  (use-package
-    dpaste
-    :init
-    :bind ("C-c y" . dpaste-region-or-buffer))
-
-#+end_src
-**** Accessibility
-:PROPERTIES:
-:END:
-***** fonts
-:PROPERTIES:
-:END:
-JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]]
-:PROPERTIES:
-:END:
-#+begin_src emacs-lisp
-  ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
-#+end_src
-***** Darkroom
-:PROPERTIES:
-:END:
-Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
-#+begin_src emacs-lisp
-  (use-package
-    darkroom
-    :bind
-    ( "<C-f7>" . 'darkroom-mode))
-#+end_src
-
-**** Ansi colour
-:PROPERTIES:
-:END:
-[[https://www.emacswiki.org/emacs/AnsiColor][Ansi colour hooks]] to enable emacs buffers to handle ansi.
-#+begin_src emacs-lisp :tangle no
-  (require 'ansi-color)
-  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-  (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-#+end_src
-**** Tabs
-***** CANCELLED Centaur Tabs                              :centaur:CANCELLED:
-CLOSED: [2021-05-24 Mo 19:54]
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-05-24 Mo 19:54] \\
-  nope
-- State "QUOTE"      from              [2021-04-06 Di 23:18]
-:END:
-#+begin_src emacs-lisp
-  (use-package centaur-tabs
-    :init
-    (centaur-tabs-mode +1)
-    :custom
-    (centaur-tabs-enable-ido-completion nil)
-    (centaur-tabs-set-bar 'under)
-    (x-underline-at-descent-line t)
-    :custom-face
-    (centaur-tabs-active-bar-face ((t (:background "orange"))))
-    :config
-    (centaur-tabs-enable-buffer-reordering)
-    :bind
-    ("C-<next>" . centaur-tabs-backward-group)
-    ("C-<prior>" . centaur-tabs-forward-group)
-    ("M-<next>" . centaur-tabs-backward)
-    ("M-<prior>" . centaur-tabs-forward)
-    ("C-x t s" . centaur-tabs-switch-group))
-#+end_src
-***** Tab Bar Mode
-#+begin_src emacs-lisp
-
-  (defun consult-buffer-other-tab ()
-    "Variant of `consult-buffer' which opens in other tab."
-    (interactive)
-    (let ((consult--buffer-display #'switch-to-buffer-other-tab))
-      (consult-buffer)))
-
-  (use-package tab-bar
-    :defer t
-    :custom
-    (tab-bar-show t)
-    (tab-bar-close-button-show nil)
-    (tab-bar-new-button-show nil)
-    (tab-bar-tab-hints t)
-    (tab-bar-new-tab-choice "*scratch*")
-    (tab-bar-select-tab-modifiers '(control))
-    :custom-face
-    (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
-    (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
-    (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
-    :bind (:map tab-prefix-map
-                (("x" . tab-close)
-                 ("b" . consult-buffer-other-tab)
-                 ("p" . tab-previous)
-                 ("n" . tab-next)
-                 ("c" . tab-bar-new-tab)
-                 ("s" . tab-bar-switch-to-tab))))
-#+end_src
-**** provide
-:PROPERTIES:
-:ID:       101d96b3-5d00-4d97-93c4-2c2f7aac8852
-:END:
-#+begin_src emacs-lisp
-  (provide 'rgr/general-config)
 #+end_src
 ** Text tools
 :PROPERTIES:
