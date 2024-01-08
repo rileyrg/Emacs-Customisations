@@ -38,27 +38,6 @@
 ;; display dir name when core name clashes
 (require 'uniquify)
 
-(defun rgr/toggle-buffer(n)
-  "jump to or from buffer named n else default to *Messages*"
-  (interactive "bbuffer:")
-  (let ((n (or n
-               "*Messages*")))
-    (switch-to-buffer (if (string= (buffer-name) n)
-                          (other-buffer) n))))
-
-(use-package dired-git
-  :config
-  :hook (dired-mode . dired-git-mode))
-
-(use-package dired-subtree
-  :bind (:map dired-mode-map
-              ("i" . dired-subtree-insert)
-              (";" . dired-subtree-remove)))
-
-(use-package dired-filter
-  :init
-  (define-key dired-mode-map (kbd "/") dired-filter-map))
-
 (use-package posframe)
 
 (use-package popper

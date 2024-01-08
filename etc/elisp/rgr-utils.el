@@ -1,3 +1,11 @@
+(defun rgr/toggle-buffer(n)
+  "jump to or from buffer named n else default to *Messages*"
+  (interactive "bbuffer:")
+  (let ((n (or n
+               "*Messages*")))
+    (switch-to-buffer (if (string= (buffer-name) n)
+                          (other-buffer) n))))
+
 (defun rgr/region-symbol-query()
   "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
   (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
@@ -50,5 +58,12 @@
     (newline-and-indent))
   :bind
   ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
+
+(use-package lazy-lang-learn
+  :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
+  :bind
+  ("C-c L" . lazy-lang-learn-mode)
+  ("<f12>" . lazy-lang-learn-translate)
+  ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
 (provide 'rgr/utils)

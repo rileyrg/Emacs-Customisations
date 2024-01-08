@@ -59,8 +59,6 @@
   (parrot-mode)
   (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
-(require 'rgr/elisp-utils (expand-file-name "rgr-elisp-utils" elisp-dir))
-
 (unless (fboundp 'prog-mode)
   (defalias 'prog-mode 'fundamental-mode))
 

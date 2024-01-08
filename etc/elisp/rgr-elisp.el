@@ -77,4 +77,4 @@
   :bind
   (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 
-(provide 'rgr/elisp-utils)
+(provide 'rgr/elisp)
