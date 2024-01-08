@@ -1345,7 +1345,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgbcf4c03)
+    See `org-agenda-files` [org-agenda-files](#org3777b1b)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2111,16 +2111,30 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             =MsQY
             &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
     
-    3.  Git Gutter Mode
+    3.  Git Gutter
     
-        [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
+        1.  git-gutter.el
         
-            (use-package git-gutter
-              :after org
-              :hook
-                (server-after-make-frame .  global-git-gutter-mode)
-              :bind
-              ("C-x v ="  . git-gutter:popup-hunk))
+            [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
+            
+            -   left out for now in favour of diff-hl mode
+            
+                (use-package git-gutter
+                  :disabled
+                  :hook
+                    (server-after-make-frame .  global-git-gutter-mode)
+                  :bind
+                  ("C-x v ="  . git-gutter:popup-hunk))
+        
+        2.  diff-hl mode
+        
+                (use-package diff-hl
+                  :hook
+                  (server-after-make-frame .  global-diff-hl-mode)
+                  (magit-pre-refresh . diff-hl-magit-pre-refresh)
+                  (magit-post-refresh . diff-hl-magit-post-refresh)
+                  :bind
+                  ("C-x v ="  . diff-hl-show-hunk))
 
 16. Dart/Flutter
 
@@ -2767,7 +2781,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org154cb14) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org316bed8) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2800,7 +2814,7 @@ to add to version control.
     fi
 
 
-<a id="org154cb14"></a>
+<a id="org316bed8"></a>
 
 ### Gnome protocol handler desktop file
 

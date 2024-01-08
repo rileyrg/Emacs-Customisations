@@ -159,11 +159,19 @@
   :after magit)
 
 (use-package git-gutter
-  :after org
+  :disabled
   :hook
     (server-after-make-frame .  global-git-gutter-mode)
   :bind
   ("C-x v ="  . git-gutter:popup-hunk))
+
+(use-package diff-hl
+  :hook
+  (server-after-make-frame .  global-diff-hl-mode)
+  (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  (magit-post-refresh . diff-hl-magit-post-refresh)
+  :bind
+  ("C-x v ="  . diff-hl-show-hunk))
 
 (use-package dart-mode
   :disabled
