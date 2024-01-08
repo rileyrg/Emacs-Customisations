@@ -1011,7 +1011,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga72d821)
+    See `org-agenda-files` [org-agenda-files](#org5824b88)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2447,6 +2447,7 @@ Zoom into current buffer
             (use-package js
               :demand t
               :init
+              (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
               (defun rgr/javascript-typescript-common-mode-hook ()
                 (electric-pair-mode 1)
                 (setq-local devdocs-browser-active-docs '("react" "react_native" "javascript" "css" "html"))
@@ -2912,7 +2913,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org665cce9) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4796af1) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2945,7 +2946,7 @@ to add to version control.
     fi
 
 
-<a id="org665cce9"></a>
+<a id="org4796af1"></a>
 
 ### Gnome protocol handler desktop file
 

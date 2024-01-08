@@ -202,6 +202,7 @@
 (use-package js
   :demand t
   :init
+  (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
   (defun rgr/javascript-typescript-common-mode-hook ()
     (electric-pair-mode 1)
     (setq-local devdocs-browser-active-docs '("react" "react_native" "javascript" "css" "html"))
