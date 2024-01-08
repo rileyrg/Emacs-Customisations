@@ -36,7 +36,7 @@
   ;; look at interactive functions.
   (global-set-key (kbd "C-h C") #'helpful-command))
 
-(use-package el-docstring-sap-
+(use-package el-docstring-sap
   :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
   :init
   (use-package quick-peek)
