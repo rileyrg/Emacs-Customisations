@@ -386,7 +386,7 @@
  '(rgr/alert-learn-period 300)
  '(rgr/chat-close-functions '(slack-ws-close rgr/erc-quit))
  '(rgr/chat-functions '(rgr/erc-start))
- '(rgr/eww-external-launch-url-chunks '("youtube" "babeljs" "icons" "udemy"))
+ '(rgr/eww-external-launch-url-chunks '("youtube" "babeljs" "icons" "udemy" "execjs"))
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
  '(save-interprogram-paste-before-kill t)
