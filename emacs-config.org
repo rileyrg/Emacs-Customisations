@@ -393,7 +393,6 @@ I use a persistent register to remember the last file buffer and to resore it on
   (add-hook 'desktop-save-hook 'clean-buffer-list)
 
   (defun rgr/startup-hook ()
-    (switch-to-buffer "*scratch*")
     (let ((fname (get-register ?L)))
       (when (and fname (file-exists-p fname))
         (find-file fname))))
@@ -407,7 +406,7 @@ I use a persistent register to remember the last file buffer and to resore it on
   (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 #+end_src
 
-**** rest of startup
+**** quitting emacs
 
 #+begin_src emacs-lisp
   (defun rgr/quit-or-close-emacs(&optional kill)
@@ -501,34 +500,6 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
 #+begin_src emacs-lisp
   (use-package posframe)
 #+end_src
-**** popper                                                          :popper:
-:PROPERTIES:
-:ID:       eee77fbe-0a8f-41ca-868c-e3cba953f452
-:END:
-[[https://github.com/karthink/popper][Popper]] is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
-:PROPERTIES:
-:END:
-#+begin_src emacs-lisp
-  (use-package popper
-    :disabled
-    :ensure t
-    :init
-    (use-package posframe)
-    ;;(setq popper-display-function 'rgr/popper-display-posframe)
-    (setq popper-reference-buffers
-          '(
-            "\\*Messages\\*"
-            ;;magit-mode
-            ;;      help-mode
-            helpful-mode
-            inferior-python-mode
-            dictionary-mode
-            compilation-mode))
-    (popper-mode +1)
-    :bind (("C-`"   . popper-toggle-latest)
-           ("M-`"   . popper-cycle)
-           ("C-M-`" . popper-toggle-type)))
-#+end_src
 **** ACE utilities
 :PROPERTIES:
 :ID:       024175d8-f05e-4c41-9c04-4a61d55a5d66
@@ -538,8 +509,8 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
   (use-package ace-window
     :init
     (defalias 'other-window 'ace-window)
-    :bind*
-    ("M-o" . 'other-window)
+    :bind
+    ("M-o" . other-window)
     ("C-x o" . ace-window)
     ("M-S o" . ace-delete-window))
 #+end_src
@@ -2296,12 +2267,7 @@ https://github.com/IvanMalison/org-projectile
 :ID:       26c28417-3965-452a-a180-61de98d44ef5
 :END:
 #+begin_src emacs-lisp
-  (use-package
-    yaml-mode
-    :config
-    (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
-    )
-
+  (use-package yaml-mode)
 #+end_src
 ***** json
 #+begin_src emacs-lisp
@@ -2338,17 +2304,11 @@ https://github.com/IvanMalison/org-projectile
       (flymake-mode +1))
     :hook (sh-mode . rgr/sh-mode-hook))
 #+end_src
-**** Version Control                                                 :git:vc:
+**** Version Control
 :PROPERTIES:
 :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
 :END:
-***** It's [[Https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs :magit:
-:PROPERTIES:
-:ID:       af65c6af-be13-4c09-87ae-a128711ddc14
-:END:
-:PROPERTIES:
-magit
-:END:
+***** It's [[Https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs
 #+begin_src emacs-lisp
   (use-package
     magit
@@ -2373,7 +2333,7 @@ always causes issues. disabled.
     :after magit)
 #+end_src
 
-****** token                                                    :crypt:token:
+****** token                                                    :crypt:
 -----BEGIN PGP MESSAGE-----
 
 hQEMA7IjL5SkHG4iAQgAhMUIMTYGMMJOxJT9Cpd4yXSe7D3nYO1JLdyFFADgiHDq
@@ -2387,19 +2347,20 @@ Y0lSPvXH7dBCTWu2rSWhIvgCQfv6Nihs3Jc455oZgajN7G/rgZNb0ER8YTYncZjY
 gtVhIJfSArVFXuCGLnZMoMHSC4rV
 =MsQY
 -----END PGP MESSAGE-----
-***** Git Gutter Mode                                                :gutter:
+***** Git Gutter Mode
 :PROPERTIES:
 :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
 :END:
 [[https://github.com/emacsorphanage/git-gutter][git-gutter.el]] is  an Emacs port of the Sublime Text plugin GitGutter.
 #+begin_src emacs-lisp
   (use-package git-gutter
-    :config
-    (global-git-gutter-mode +1)
+    :after org
+    :hook
+      (server-after-make-frame .  global-git-gutter-mode)
     :bind
     ("C-x v ="  . git-gutter:popup-hunk))
 #+end_src
-**** Dart/Flutter                                              :dart:flutter:
+**** Dart/Flutter
 Running emultaor from command line:
 
 #+begin_src bash

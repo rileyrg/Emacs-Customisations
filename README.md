@@ -332,7 +332,6 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         (add-hook 'desktop-save-hook 'clean-buffer-list)
         
         (defun rgr/startup-hook ()
-          (switch-to-buffer "*scratch*")
           (let ((fname (get-register ?L)))
             (when (and fname (file-exists-p fname))
               (find-file fname))))
@@ -345,7 +344,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         
         (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
-2.  rest of startup
+2.  quitting emacs
 
         (defun rgr/quit-or-close-emacs(&optional kill)
           (interactive)
@@ -433,39 +432,15 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     
         (use-package posframe)
 
-3.  popper
-
-    [Popper](https://github.com/karthink/popper) is a minor-mode to tame the flood of ephemeral windows Emacs produces, while still keeping them within arm’s reach. Designate any buffer to “popup” status, and it will stay out of your way.
-    
-        (use-package popper
-          :disabled
-          :ensure t
-          :init
-          (use-package posframe)
-          ;;(setq popper-display-function 'rgr/popper-display-posframe)
-          (setq popper-reference-buffers
-                '(
-                  "\\*Messages\\*"
-                  ;;magit-mode
-                  ;;      help-mode
-                  helpful-mode
-                  inferior-python-mode
-                  dictionary-mode
-                  compilation-mode))
-          (popper-mode +1)
-          :bind (("C-`"   . popper-toggle-latest)
-                 ("M-`"   . popper-cycle)
-                 ("C-M-`" . popper-toggle-type)))
-
-4.  ACE utilities
+3.  ACE utilities
 
     1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
     
             (use-package ace-window
               :init
               (defalias 'other-window 'ace-window)
-              :bind*
-              ("M-o" . 'other-window)
+              :bind
+              ("M-o" . other-window)
               ("C-x o" . ace-window)
               ("M-S o" . ace-delete-window))
     
@@ -492,7 +467,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               ("M-s c" . ace-jump-mode)
               )
 
-5.  Golden Ratio
+4.  Golden Ratio
 
     Zoom into current buffer
     
@@ -501,7 +476,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :init
           (golden-ratio-mode 1))
 
-6.  beacon
+5.  beacon
 
     visual feedback as to cursor position
     
@@ -515,21 +490,21 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :config
           (beacon-mode 1))
 
-7.  blackout modeline
+6.  blackout modeline
 
     Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
     
         (straight-use-package
          '(blackout :host github :repo "raxod502/blackout"))
 
-8.  boxquote
+7.  boxquote
 
         (use-package boxquote
           :straight (:branch "main")
           :bind
           ("C-S-r" . boxquote-region))
 
-9.  volatile-highlights
+8.  volatile-highlights
 
     brings visual feedback to some operations by highlighting portions relating to the operations.
     
@@ -538,14 +513,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :disabled
           :init (volatile-highlights-mode 1))
 
-10. web pasting
+9.  web pasting
 
         (use-package
           dpaste
           :init
           :bind ("C-c y" . dpaste-region-or-buffer))
 
-11. Accessibility
+10. Accessibility
 
     1.  fonts
     
@@ -562,7 +537,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :bind
               ( "<C-f7>" . 'darkroom-mode))
 
-12. Ansi colour
+11. Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
     
@@ -570,7 +545,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
         (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-13. Tabs
+12. Tabs
 
         
         (defun consult-buffer-other-tab ()
@@ -600,7 +575,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                        ("c" . tab-bar-new-tab)
                        ("s" . tab-bar-switch-to-tab))))
 
-14. bookmarks
+13. bookmarks
 
     1.  bookmark+
     
@@ -610,7 +585,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
               :demand)
 
-15. emjois
+14. emjois
 
     <https://github.com/iqbalansari/emacs-emojify>
     
@@ -618,7 +593,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :init
           (global-emojify-mode))
 
-16. Cursor/Region related
+15. Cursor/Region related
 
         (defun centreCursorLineOn()
           "set properties to keep current line approx at centre of screen height. Useful for debugging."
@@ -648,7 +623,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                    ("C-c C-SPC" . mc/edit-lines)
                    ))
 
-17. Folding/Hide Show
+16. Folding/Hide Show
 
     [hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
     
@@ -674,7 +649,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     
     \#+end\_src
 
-18. flyspell
+17. flyspell
 
         (use-package flyspell
           :config
@@ -694,14 +669,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           ;; (prog-mode .  (flyspell-prog-mode))
           )
 
-19. rg, ripgrep
+18. rg, ripgrep
 
     rg is pretty quick
     
         (use-package
           ripgrep)
 
-20. provide
+19. provide
 
         (provide 'rgr/general-config)
 
@@ -1370,7 +1345,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org29347f1)
+    See `org-agenda-files` [org-agenda-files](#orgbcf4c03)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2058,11 +2033,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
     1.  YAML
     
-            (use-package
-              yaml-mode
-              :config
-              (add-to-list 'auto-mode-alist '("\\.yml\\.yaml\\'" . yaml-mode))
-              )
+            (use-package yaml-mode)
     
     2.  json
     
@@ -2102,8 +2073,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
     1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
     
-        magit
-        
             (use-package
               magit
               :init
@@ -2147,8 +2116,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
         
             (use-package git-gutter
-              :config
-              (global-git-gutter-mode +1)
+              :after org
+              :hook
+                (server-after-make-frame .  global-git-gutter-mode)
               :bind
               ("C-x v ="  . git-gutter:popup-hunk))
 
@@ -2797,7 +2767,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf6795ce) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org154cb14) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2830,7 +2800,7 @@ to add to version control.
     fi
 
 
-<a id="orgf6795ce"></a>
+<a id="org154cb14"></a>
 
 ### Gnome protocol handler desktop file
 

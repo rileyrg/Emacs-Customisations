@@ -68,7 +68,7 @@
  '(delete-old-versions t)
  '(delete-selection-mode t)
  '(desktop-globals-to-save
-   '(desktop-missing-file-warning tags-file-name tags-table-list search-ring regexp-search-ring register-alist file-name-history extended-command-history))
+   '(desktop-missing-file-warning tags-file-name tags-table-list search-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
  '(desktop-locals-to-save nil)
  '(desktop-restore-eager 3)
  '(devdocs-alist
