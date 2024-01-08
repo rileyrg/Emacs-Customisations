@@ -72,6 +72,8 @@
 
 (require 'rgr/programming "rgr-programming" 'NOERROR)
 
+(require 'rgr/elisp (expand-file-name "rgr-elisp" elisp-dir))
+
 (require 'rgr/themes "rgr-themes" 'NOERROR)
 
 (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
