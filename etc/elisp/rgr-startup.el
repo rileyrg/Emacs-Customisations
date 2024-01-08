@@ -1,31 +1,19 @@
-(use-package emacs
-  :demand t
-  ;; :custom
-  ;; (desktop-base-file-name "emacs.desktop")
-  ;; (desktop-restore-eager  4)
-  ;; (desktop-globals-to-save
-  ;;  '(search-ring global-mark-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
-  ;; (desktop-load-locked-desktop t)
-  :init
+(recentf-mode)
+(savehist-mode)
+(save-place-mode)
 
-  (recentf-mode)
-  (savehist-mode)
-  (save-place-mode)
-
-  (defun rgr/startup-hook ()
-    ;(switch-to-buffer (get-register ?l))
-    (switch-to-buffer "*scratch*")
-    )
-
-  (defun rgr/remember-last-buffer (f)
-    (when buffer-file-name
-      (set-register ?l (buffer-name))))
-
-  (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
-
-  (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-
+(defun rgr/startup-hook ()
+                                        ;(switch-to-buffer (get-register ?l))
+  (switch-to-buffer "*scratch*")
   )
+
+(defun rgr/remember-last-buffer (f)
+  (when buffer-file-name
+    (set-register ?l (buffer-name))))
+
+(add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+
+(add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
 (defun rgr/quit-or-close-emacs(&optional kill)
   (interactive)
