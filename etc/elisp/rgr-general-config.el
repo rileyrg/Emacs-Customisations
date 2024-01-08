@@ -105,4 +105,10 @@
                ("c" . tab-bar-new-tab)
                ("s" . tab-bar-switch-to-tab))))
 
+(use-package bookmark+
+  ;;:disabled
+  :custom
+  (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
+  :demand)
+
 (provide 'rgr/general-config)

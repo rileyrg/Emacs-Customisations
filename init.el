@@ -30,15 +30,11 @@
 
 (require 'rgr/startup "rgr-startup" 'NOERROR)
 
+(require  'rgr/general-config "rgr-general-config" 'NOERROR)
+
 (require 'rgr/minibuffer "rgr-minibuffer" 'NOERROR)
 
 (require 'rgr/completion "rgr-completion" 'NOERROR)
-
-(use-package bookmark+
-  ;;:disabled
-  :custom
-  (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
-  :demand)
 
 (require 'rgr/org "rgr-org" 'NOERROR)
 
@@ -48,8 +44,6 @@
   ("C-c L" . lazy-lang-learn-mode)
   ("<f12>" . lazy-lang-learn-translate)
   ("S-<f12>" . lazy-lang-learn-translate-from-history))
-
-(require  'rgr/general-config "rgr-general-config" 'NOERROR)
 
 (use-package emacs
   :init
