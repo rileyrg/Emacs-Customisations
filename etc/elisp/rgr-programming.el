@@ -158,13 +158,6 @@
   :disabled
   :after magit)
 
-(use-package git-gutter
-  :disabled
-  :hook
-    (server-after-make-frame .  global-git-gutter-mode)
-  :bind
-  ("C-x v ="  . git-gutter:popup-hunk))
-
 (use-package diff-hl
   :hook
   (server-after-make-frame .  global-diff-hl-mode)

@@ -1345,7 +1345,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org3777b1b)
+    See `org-agenda-files` [org-agenda-files](#org0caf86c)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1595,10 +1595,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :config
           (defun rgr/devdocs(&optional i)
             (interactive)
-            (unless (and (string-equal major-mode "emacs-lisp-mode") (rgr/elisp-lookup-reference-dwim))
-              (if current-prefix-arg
-                  (call-interactively 'devdocs-browser-open-in)
-                (devdocs-browser-open))))
+            (if (member major-mode '(org-mode emacs-lisp-mode))
+                (rgr/elisp-lookup-reference-dwim)
+            (if current-prefix-arg
+                (call-interactively 'devdocs-browser-open-in)
+              (devdocs-browser-open))))
           :bind
           ("C-q" . rgr/devdocs))
 
@@ -2113,21 +2114,10 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     3.  Git Gutter
     
-        1.  git-gutter.el
+        1.  diff-hl mode
         
-            [git-gutter.el](https://github.com/emacsorphanage/git-gutter) is  an Emacs port of the Sublime Text plugin GitGutter.
+            I prefer this to [git-gutter.el](https://github.com/emacsorphanage/git-gutter).
             
-            -   left out for now in favour of diff-hl mode
-            
-                (use-package git-gutter
-                  :disabled
-                  :hook
-                    (server-after-make-frame .  global-git-gutter-mode)
-                  :bind
-                  ("C-x v ="  . git-gutter:popup-hunk))
-        
-        2.  diff-hl mode
-        
                 (use-package diff-hl
                   :hook
                   (server-after-make-frame .  global-diff-hl-mode)
@@ -2781,7 +2771,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org316bed8) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge74b9fb) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2814,7 +2804,7 @@ to add to version control.
     fi
 
 
-<a id="org316bed8"></a>
+<a id="orge74b9fb"></a>
 
 ### Gnome protocol handler desktop file
 
