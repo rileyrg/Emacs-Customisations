@@ -73,18 +73,15 @@
   :config
   (apheleia-global-mode +1))
 
-(use-package rainbow-identifiers
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
-
-;;(require 'project)
-
 (use-package projectile
   :demand
   :config
   (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map)
-  (define-key projectile-command-map  (kbd "b") #'consult-project-buffer))
+  :bind
+  (:map projectile-mode-map
+        (("C-x p" . projectile-command-map)))
+  (:map projectile-command-map
+        (( "b" . consult-project-buffer))))
 
 (projectile-register-project-type 'npm '("package.json")
                                   :project-file "package.json"

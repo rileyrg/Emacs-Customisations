@@ -1345,7 +1345,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org49f3d01)
+    See `org-agenda-files` [org-agenda-files](#org9e29776)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1601,7 +1601,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (call-interactively 'devdocs-browser-open-in)
               (devdocs-browser-open))))
           :bind
-          ("C-q" . rgr/devdocs))
+          ("C-h f" . rgr/devdocs))
 
 6.  Elfeed
 
@@ -1969,28 +1969,19 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :config
           (apheleia-global-mode +1))
 
-10. rainbow delimiters
+10. Project Management
 
-        (use-package rainbow-identifiers
-          :config
-          (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
-
-11. Project Management
-
-    1.  project
-    
-        I prefer projectile
-        
-            ;;(require 'project)
-    
-    2.  projectile
+    1.  projectile
     
             (use-package projectile
               :demand
               :config
               (projectile-mode +1)
-              (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map)
-              (define-key projectile-command-map  (kbd "b") #'consult-project-buffer))
+              :bind
+              (:map projectile-mode-map
+                    (("C-x p" . projectile-command-map)))
+              (:map projectile-command-map
+                    (( "b" . consult-project-buffer))))
         
         1.  projectile npm support
         
@@ -2017,7 +2008,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                   (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
                   :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
 
-12. BASH
+11. BASH
 
     1.  Navigating Bash set -x output
     
@@ -2030,7 +2021,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                            '(pascal
                              "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 
-13. JSON, YAML Configuration files
+12. JSON, YAML Configuration files
 
     1.  YAML
     
@@ -2041,7 +2032,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (use-package json-reformat)
             (use-package hydra)
 
-14. Flymake
+13. Flymake
 
         (use-package flymake
           :demand t
@@ -2070,7 +2061,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (flymake-mode +1))
               :hook (sh-mode . rgr/sh-mode-hook))
 
-15. Version Control
+14. Version Control
 
     1.  It's [Magit](//github.com/magit/magit)! A Git porcelain inside Emacs
     
@@ -2126,7 +2117,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                   :bind
                   ("C-x v ="  . diff-hl-show-hunk))
 
-16. Dart/Flutter
+15. Dart/Flutter
 
     Running emultaor from command line:
     
@@ -2165,9 +2156,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             ;;   :hook (java-mode . eglot-ensure)
             ;;   )
 
-17. Tree Sitter
+16. Tree Sitter
 
-18. treesit-auto
+17. treesit-auto
 
     Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
     
@@ -2209,7 +2200,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
               (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
-19. Language Server Protocol (LSP), lsp-mode
+18. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2281,7 +2272,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         
                 (provide 'rgr/lsp)
 
-20. Serial Port
+19. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2307,7 +2298,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                           (interactive)
                           (selectSerialPortBuffer)))
 
-21. PlatformIO
+20. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2329,7 +2320,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-22. Python
+21. Python
 
     1.  ipython
     
@@ -2342,7 +2333,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               :config
               (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-23. Haskell
+22. Haskell
 
     1.  haskell-mode
     
@@ -2358,7 +2349,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                           '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-24. lldb debugging in emacs
+23. lldb debugging in emacs
 
     1.  voltron
     
@@ -2368,7 +2359,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               ;; (breadcrumb-mode t)
               )
 
-25. C, c-mode
+24. C, c-mode
 
     1.  c-mode-common-hook
     
@@ -2396,13 +2387,13 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                        :map c-ts-mode-map
                        (("M-<return>" . rgr/c-complete-line))))
 
-26. cc,cpp, C++, cc-mode
+25. cc,cpp, C++, cc-mode
 
         (defun rgr/c++-mode-hook ()
           )
         (add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
 
-27. Linux tools
+26. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2412,13 +2403,13 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-28. Assembler
+27. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-29. Godot GDScript
+28. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
@@ -2441,7 +2432,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
           )
 
-30. Web,Symfony and Twig
+29. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2502,7 +2493,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
-31. elf-mode - view the symbol list in a binary
+30. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2512,7 +2503,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
           (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-32. provide
+31. provide
 
         (provide 'rgr/programming)
 
@@ -2771,7 +2762,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7833814) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf7d07c7) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2804,7 +2795,7 @@ to add to version control.
     fi
 
 
-<a id="org7833814"></a>
+<a id="orgf7d07c7"></a>
 
 ### Gnome protocol handler desktop file
 
