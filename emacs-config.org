@@ -1785,10 +1785,11 @@ Browse devdocs.io documents inside Emacs!
     :config
     (defun rgr/devdocs(&optional i)
       (interactive)
-      (unless (and (string-equal major-mode "emacs-lisp-mode") (rgr/elisp-lookup-reference-dwim))
-        (if current-prefix-arg
-            (call-interactively 'devdocs-browser-open-in)
-          (devdocs-browser-open))))
+      (if (member major-mode '(org-mode emacs-lisp-mode))
+          (rgr/elisp-lookup-reference-dwim)
+      (if current-prefix-arg
+          (call-interactively 'devdocs-browser-open-in)
+        (devdocs-browser-open))))
     :bind
     ("C-q" . rgr/devdocs))
 #+end_src
@@ -2351,18 +2352,8 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
 :PROPERTIES:
 :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
 :END:
-****** git-gutter.el
-[[https://github.com/emacsorphanage/git-gutter][git-gutter.el]] is  an Emacs port of the Sublime Text plugin GitGutter.
-- left out for now in favour of diff-hl mode
-#+begin_src emacs-lisp
-  (use-package git-gutter
-    :disabled
-    :hook
-      (server-after-make-frame .  global-git-gutter-mode)
-    :bind
-    ("C-x v ="  . git-gutter:popup-hunk))
-#+end_src
 ****** diff-hl mode
+I prefer this to [[https://github.com/emacsorphanage/git-gutter][git-gutter.el]].
 #+begin_src emacs-lisp
   (use-package diff-hl
     :hook
