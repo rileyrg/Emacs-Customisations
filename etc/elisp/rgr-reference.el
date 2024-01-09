@@ -161,7 +161,7 @@
   :config
   (defun rgr/devdocs(&optional i)
     (interactive)
-    (if (member major-mode '(org-mode emacs-lisp-mode))
+    (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
         (rgr/elisp-lookup-reference-dwim)
     (if current-prefix-arg
         (call-interactively 'devdocs-browser-open-in)
