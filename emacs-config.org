@@ -1791,7 +1791,7 @@ Browse devdocs.io documents inside Emacs!
           (call-interactively 'devdocs-browser-open-in)
         (devdocs-browser-open))))
     :bind
-    ("C-q" . rgr/devdocs))
+    ("C-h f" . rgr/devdocs))
 #+end_src
 
 **** Elfeed
@@ -2192,29 +2192,18 @@ https://github.com/emacsmirror/rmsbolt
     :config
     (apheleia-global-mode +1))
 #+end_src
-**** rainbow delimiters
-:PROPERTIES:
-:ID:       0551cfd4-3325-4b79-90e1-d0edd4c1304e
-:END:
-#+begin_src emacs-lisp
-  (use-package rainbow-identifiers
-    :config
-    (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
-#+end_src
 **** Project Management                                             :project:
-***** project
-I prefer projectile
-#+begin_src emacs-lisp
-  ;;(require 'project)
-#+end_src
 ***** projectile                                                 :projectile:
 #+begin_src emacs-lisp
   (use-package projectile
     :demand
     :config
     (projectile-mode +1)
-    (define-key projectile-mode-map (kbd "C-x p") #'projectile-command-map)
-    (define-key projectile-command-map  (kbd "b") #'consult-project-buffer))
+    :bind
+    (:map projectile-mode-map
+          (("C-x p" . projectile-command-map)))
+    (:map projectile-command-map
+          (( "b" . consult-project-buffer))))
 #+end_src
 ****** projectile npm support
 #+begin_src  emacs-lisp

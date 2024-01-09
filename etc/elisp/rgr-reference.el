@@ -167,7 +167,7 @@
         (call-interactively 'devdocs-browser-open-in)
       (devdocs-browser-open))))
   :bind
-  ("C-q" . rgr/devdocs))
+  ("C-h f" . rgr/devdocs))
 
 (use-package elfeed
   :config
