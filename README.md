@@ -1,3 +1,4 @@
+q#+TITLE: Emacs configuration
 
 
 # Introduction
@@ -404,7 +405,11 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (global-hl-line-mode t)
         
           (use-package
-            browse-url-dwim)
+            browse-url-dwim
+            :config
+            (browse-url-dwim-mode))
+        
+          (use-package alert)
         
           ;; display dir name when core name clashes
           (require 'uniquify)
@@ -1345,7 +1350,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org9e29776)
+    See `org-agenda-files` [org-agenda-files](#orge311c5a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1403,23 +1408,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               ("C-c o" . 'eww)
               (:map eww-mode-map
                     ( "&" . (lambda()
-                              (interactive)
-                              (alert "Launching external browser")
-                              (eww-browse-with-external-browser)))))
+                              (interactive
+                               (alert "Launching external browser")
+                               (eww-browse-with-external-browser))))))
     
-    2.  Google This
-    
-        [google-this](https://melpa.org/#/google-this) includes an interface to [google translate](https://translate.google.com/).
-        
-            (use-package
-              google-this
-              :after org
-              :custom
-              (google-this-keybind "g")
-              :config
-              (google-this-mode 1))
-    
-    3.  go-translate
+    2.  go-translate
     
         This is a translation framework for emacs, and is flexible and powerful.
         
@@ -1495,7 +1488,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                   ("C-c t" . rgr/google-translate-query-translate)
                   ("C-c b" . rgr/google-translate-in-history-buffer))
     
-    4.  utility funcs
+    3.  utility funcs
     
         A bit of a dogs dinner.
         
@@ -1557,27 +1550,22 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         
         ![img](./images/lookup-goldendict.png "lookup using goldendict")
         
-            (defun rgr/elisp-lookup-reference-dwim (&optional sym)
-              "Checks to see if the 'thing' is known to elisp and, if so, use internal docs and return symbol else return nil to signal maybe fallback"
+            (defun rgr/elisp-lookup-reference ()
+              "Elisp help at point"
               (interactive)
-              (let* ((sym (if sym sym (rgr/region-symbol-query)))
-                     (sym (if (symbolp sym) sym (intern-soft sym))))
-                (when sym
-                  (if (fboundp sym)
-                      (if (featurep 'helpful)
-                          (helpful-function sym)
-                        (describe-function sym))
-                    (if (boundp sym)
-                        (if (featurep 'helpful)
-                            (helpful-variable sym)
-                          (describe-variable sym))
-                      (progn
-                        (let ((msg (format "No elisp help for '%s" sym)))
-                          (if (featurep 'alert)
-                              (alert msg)
-                            (message msg)))
-                        (setq sym nil)))))
-                sym))
+              (if (featurep 'helpful)
+                  (helpful-at-point)
+                (let* ((sym (rgr/region-symbol-query))
+                       (sym (if (symbolp sym) sym (intern-soft sym))))
+                  (when sym
+                    (if (fboundp sym)
+                        (describe-function sym)
+                      (if (boundp sym)
+                          (describe-variable sym)
+                        (progn
+                          (let ((msg (format "No elisp help for '%s" sym)))
+                            (alert msg))
+                          (setq sym nil))))))))
     
     2.  external info files
     
@@ -1596,12 +1584,12 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (defun rgr/devdocs(&optional i)
             (interactive)
             (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-                (rgr/elisp-lookup-reference-dwim)
+                (rgr/elisp-lookup-reference)
             (if current-prefix-arg
                 (call-interactively 'devdocs-browser-open-in)
               (devdocs-browser-open))))
           :bind
-          ("C-h f" . rgr/devdocs))
+          ("C-q" . rgr/devdocs))
 
 6.  Elfeed
 
@@ -2546,37 +2534,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 5.  helpful, enriched elisp help
 
-        (use-package helpful
-          :config
-          ;; Note that the built-in `describe-function' includes both functions
-          ;; and macros. `helpful-function' is functions only, so we provide
-          ;; `helpful-callable as a drop-in replacement.
-          (global-set-key (kbd "C-h e")
-                          (lambda()
-                            (interactive)
-                            (if(get-buffer "*info*")
-                                (switch-to-buffer "*info*")
-                              (info "elisp"))))
-          (global-set-key (kbd "C-h f") #'helpful-callable)
-        
-          (global-set-key (kbd "C-h v") #'helpful-variable)
-          (global-set-key (kbd "C-h k") #'helpful-key)
-          ;;I also recommend the following keybindings to get the most out of helpful:
-          ;; Lookup the current symbol at point. C-c C-d is a common keybinding
-          ;; for this in lisp modes.
-          (global-set-key (kbd "C-h SPC") #'helpful-at-point)
-          ;; Look up *F*unctions (excludes macros).
-          ;;
-          ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
-          ;; already links to the manual, if a function is referenced there.
-          (global-set-key (kbd "C-h F") #'helpful-function)
-        
-          ;; Look up *C*ommands.
-          ;;
-          ;; By default, C-h C is bound to describe `describe-coding-system'. I
-          ;; don't find this very useful, but it's frequently useful to only
-          ;; look at interactive functions.
-          (global-set-key (kbd "C-h C") #'helpful-command))
+        (use-package helpful)
 
 6.  elisp popup context help
 
@@ -2762,7 +2720,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf7d07c7) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc2fbc87) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2795,7 +2753,7 @@ to add to version control.
     fi
 
 
-<a id="orgf7d07c7"></a>
+<a id="orgc2fbc87"></a>
 
 ### Gnome protocol handler desktop file
 
