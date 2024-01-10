@@ -14,17 +14,9 @@
   ("C-c o" . 'eww)
   (:map eww-mode-map
         ( "&" . (lambda()
-                  (interactive)
-                  (alert "Launching external browser")
-                  (eww-browse-with-external-browser)))))
-
-(use-package
-  google-this
-  :after org
-  :custom
-  (google-this-keybind "g")
-  :config
-  (google-this-mode 1))
+                  (interactive
+                   (alert "Launching external browser")
+                   (eww-browse-with-external-browser))))))
 
 (use-package go-translate
   ;;:disabled
@@ -131,27 +123,22 @@
       (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
   :bind (("C-x G" . goldendict-dwim)))
 
-(defun rgr/elisp-lookup-reference-dwim (&optional sym)
-  "Checks to see if the 'thing' is known to elisp and, if so, use internal docs and return symbol else return nil to signal maybe fallback"
+(defun rgr/elisp-lookup-reference ()
+  "Elisp help at point"
   (interactive)
-  (let* ((sym (if sym sym (rgr/region-symbol-query)))
-         (sym (if (symbolp sym) sym (intern-soft sym))))
-    (when sym
-      (if (fboundp sym)
-          (if (featurep 'helpful)
-              (helpful-function sym)
-            (describe-function sym))
-        (if (boundp sym)
-            (if (featurep 'helpful)
-                (helpful-variable sym)
-              (describe-variable sym))
-          (progn
-            (let ((msg (format "No elisp help for '%s" sym)))
-              (if (featurep 'alert)
-                  (alert msg)
-                (message msg)))
-            (setq sym nil)))))
-    sym))
+  (if (featurep 'helpful)
+      (helpful-at-point)
+    (let* ((sym (rgr/region-symbol-query))
+           (sym (if (symbolp sym) sym (intern-soft sym))))
+      (when sym
+        (if (fboundp sym)
+            (describe-function sym)
+          (if (boundp sym)
+              (describe-variable sym)
+            (progn
+              (let ((msg (format "No elisp help for '%s" sym)))
+                (alert msg))
+              (setq sym nil))))))))
 
 (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
 
@@ -162,12 +149,12 @@
   (defun rgr/devdocs(&optional i)
     (interactive)
     (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-        (rgr/elisp-lookup-reference-dwim)
+        (rgr/elisp-lookup-reference)
     (if current-prefix-arg
         (call-interactively 'devdocs-browser-open-in)
       (devdocs-browser-open))))
   :bind
-  ("C-h f" . rgr/devdocs))
+  ("C-q" . rgr/devdocs))
 
 (use-package elfeed
   :config

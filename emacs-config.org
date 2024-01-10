@@ -1,4 +1,4 @@
-#+TITLE: Emacs configuration
+q#+TITLE: Emacs configuration
 #+AUTHOR: rileyrg
 #+EMAIL: rileyrg at g mx dot de
 
@@ -469,7 +469,11 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
     (global-hl-line-mode t)
 
     (use-package
-      browse-url-dwim)
+      browse-url-dwim
+      :config
+      (browse-url-dwim-mode))
+
+    (use-package alert)
 
     ;; display dir name when core name clashes
     (require 'uniquify)
@@ -1562,24 +1566,9 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
     ("C-c o" . 'eww)
     (:map eww-mode-map
           ( "&" . (lambda()
-                    (interactive)
-                    (alert "Launching external browser")
-                    (eww-browse-with-external-browser)))))
-#+end_src
-
-***** Google This
-:PROPERTIES:
-:ID:       e0e0dc51-94ae-44b8-b55c-b53d9a29c7aa
-:END:
-[[https://melpa.org/#/google-this][google-this]] includes an interface to [[https://translate.google.com/][google translate]].
-#+begin_src emacs-lisp
-  (use-package
-    google-this
-    :after org
-    :custom
-    (google-this-keybind "g")
-    :config
-    (google-this-mode 1))
+                    (interactive
+                     (alert "Launching external browser")
+                     (eww-browse-with-external-browser))))))
 #+end_src
 
 ***** go-translate
@@ -1746,27 +1735,22 @@ else it palms it off to goldendict.
 [[./images/lookup-goldendict.png]]
 
 #+begin_src emacs-lisp
-  (defun rgr/elisp-lookup-reference-dwim (&optional sym)
-    "Checks to see if the 'thing' is known to elisp and, if so, use internal docs and return symbol else return nil to signal maybe fallback"
+  (defun rgr/elisp-lookup-reference ()
+    "Elisp help at point"
     (interactive)
-    (let* ((sym (if sym sym (rgr/region-symbol-query)))
-           (sym (if (symbolp sym) sym (intern-soft sym))))
-      (when sym
-        (if (fboundp sym)
-            (if (featurep 'helpful)
-                (helpful-function sym)
-              (describe-function sym))
-          (if (boundp sym)
-              (if (featurep 'helpful)
-                  (helpful-variable sym)
-                (describe-variable sym))
-            (progn
-              (let ((msg (format "No elisp help for '%s" sym)))
-                (if (featurep 'alert)
-                    (alert msg)
-                  (message msg)))
-              (setq sym nil)))))
-      sym))
+    (if (featurep 'helpful)
+        (helpful-at-point)
+      (let* ((sym (rgr/region-symbol-query))
+             (sym (if (symbolp sym) sym (intern-soft sym))))
+        (when sym
+          (if (fboundp sym)
+              (describe-function sym)
+            (if (boundp sym)
+                (describe-variable sym)
+              (progn
+                (let ((msg (format "No elisp help for '%s" sym)))
+                  (alert msg))
+                (setq sym nil))))))))
 #+end_src
 ***** external info files
 #+begin_src emacs-lisp
@@ -1786,12 +1770,12 @@ Browse devdocs.io documents inside Emacs!
     (defun rgr/devdocs(&optional i)
       (interactive)
       (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-          (rgr/elisp-lookup-reference-dwim)
+          (rgr/elisp-lookup-reference)
       (if current-prefix-arg
           (call-interactively 'devdocs-browser-open-in)
         (devdocs-browser-open))))
     :bind
-    ("C-h f" . rgr/devdocs))
+    ("C-q" . rgr/devdocs))
 #+end_src
 
 **** Elfeed
@@ -2887,37 +2871,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 :ID:       e5517321-9188-4c5f-abfe-6511580c6193
 :END:
 #+begin_src emacs-lisp
-  (use-package helpful
-    :config
-    ;; Note that the built-in `describe-function' includes both functions
-    ;; and macros. `helpful-function' is functions only, so we provide
-    ;; `helpful-callable as a drop-in replacement.
-    (global-set-key (kbd "C-h e")
-                    (lambda()
-                      (interactive)
-                      (if(get-buffer "*info*")
-                          (switch-to-buffer "*info*")
-                        (info "elisp"))))
-    (global-set-key (kbd "C-h f") #'helpful-callable)
-
-    (global-set-key (kbd "C-h v") #'helpful-variable)
-    (global-set-key (kbd "C-h k") #'helpful-key)
-    ;;I also recommend the following keybindings to get the most out of helpful:
-    ;; Lookup the current symbol at point. C-c C-d is a common keybinding
-    ;; for this in lisp modes.
-    (global-set-key (kbd "C-h SPC") #'helpful-at-point)
-    ;; Look up *F*unctions (excludes macros).
-    ;;
-    ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
-    ;; already links to the manual, if a function is referenced there.
-    (global-set-key (kbd "C-h F") #'helpful-function)
-
-    ;; Look up *C*ommands.
-    ;;
-    ;; By default, C-h C is bound to describe `describe-coding-system'. I
-    ;; don't find this very useful, but it's frequently useful to only
-    ;; look at interactive functions.
-    (global-set-key (kbd "C-h C") #'helpful-command))
+  (use-package helpful)
 #+end_src
 **** elisp popup context help                                   :popup:elisp:
 :LOGBOOK:

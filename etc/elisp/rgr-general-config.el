@@ -28,7 +28,11 @@
   (global-hl-line-mode t)
 
   (use-package
-    browse-url-dwim)
+    browse-url-dwim
+    :config
+    (browse-url-dwim-mode))
+
+  (use-package alert)
 
   ;; display dir name when core name clashes
   (require 'uniquify)
