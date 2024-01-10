@@ -1,4 +1,3 @@
-q#+TITLE: Emacs configuration
 
 
 # Introduction
@@ -108,6 +107,8 @@ invoke google translate on them. Stores history.
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
       (when (boundp 'native-comp-eln-load-path)
         (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
+    
+    
     ;;; early-init.el ends here
 
 
@@ -242,7 +243,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
                             (let ((sel-text
                                    (buffer-substring-no-properties
                                     (mark)
-         (point))))
+                                    (point))))
                               sel-text)
                           (thing-at-point 'symbol)) nil))
                  (result (if w w (read-string "lookup:"))))
@@ -1124,67 +1125,8 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
             ;; Enable indentation+completion using the TAB key.
             ;; `completion-at-point' is often bound to M-TAB.
             (setq tab-always-indent 'complete))
-    
-    1.  cape
-    
-            ;; Add extensions
-            (use-package cape
-              :disabled
-              ;; Bind dedicated completion commands
-              ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-              :bind (("C-c p p" . completion-at-point) ;; capf
-                     ("C-c p t" . complete-tag)        ;; etags
-                     ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-                     ("C-c p h" . cape-history)
-                     ("C-c p f" . cape-file)
-                     ("C-c p k" . cape-keyword)
-                     ("C-c p s" . cape-symbol)
-                     ("C-c p a" . cape-abbrev)
-                     ("C-c p l" . cape-line)
-                     ("C-c p w" . cape-dict)
-                     ("C-c p \\" . cape-tex)
-                     ("C-c p _" . cape-tex)
-                     ("C-c p ^" . cape-tex)
-                     ("C-c p &" . cape-sgml)
-                     ("C-c p r" . cape-rfc1345))
-              :init
-              ;; Add `completion-at-point-functions', used by `completion-at-point'.
-              ;; NOTE: The order matters!
-              (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-              (add-to-list 'completion-at-point-functions #'cape-file)
-              (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-              (advice-add 'lsp-completion-at-point :around #'cape-wrap-buster)
-              (advice-add 'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
-              (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
-              (advice-add 'eglot-completion-at-point :around #'cape-wrap-noninterruptible)
-            
-              ;;(add-to-list 'completion-at-point-functions #'cape-history)
-              ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-              ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-              ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-              ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-              ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-              ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-              ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
-              ;;(add-to-list 'completion-at-point-functions #'cape-line)
-              )
 
-7.  dabbrev
-
-        ;; Use Dabbrev with Corfu!
-        (use-package dabbrev
-          ;; Swap M-/ and C-M-/
-          :bind (("M-/" . dabbrev-completion)
-                 ("C-M-/" . dabbrev-expand))
-          ;; Other useful Dabbrev configurations.
-          :custom
-          (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
-
-8.  vertical completion
-
-        ;;(fido-vertical-mode t)
-
-9.  vertico , vertical interactive completion
+7.  vertico , vertical interactive completion
 
     <https://github.com/minad/vertico>
     
@@ -1202,13 +1144,13 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :init
           (vertico-mode))
 
-10. Abbrev Mode
+8.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
         (setq-default abbrev-mode 1)
 
-11. provide
+9.  provide
 
         (provide 'rgr/completion)
 
@@ -1348,7 +1290,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgd6bf8c1)
+    See `org-agenda-files` [org-agenda-files](#org30a686a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1385,7 +1327,26 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 ### library
 
-1.  web lookup/view
+1.  copy at point
+
+        (defun rgr/elisp-lookup-reference ()
+          "Elisp help at point"
+          (interactive)
+          (if (and nil (featurep 'helpful))
+              (helpful-at-point)
+            (let* ((sym (rgr/region-symbol-query))
+                   (sym (if (symbolp sym) sym (intern-soft sym))))
+              (when sym
+                (if (fboundp sym)
+                    (describe-function sym)
+                  (if (boundp sym)
+                      (describe-variable sym)
+                    (progn
+                      (let ((msg (format "No elisp help for '%s" sym)))
+                        (alert msg))
+                      (setq sym nil))))))))
+
+2.  web lookup/view
 
     1.  eww
     
@@ -1490,13 +1451,16 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
         A bit of a dogs dinner.
 
-2.  Dictionary,Thesaurus
+3.  Dictionary,Thesaurus
 
     The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
     
         (use-package
           dictionary
           :commands (rgr/dictionary-search)
+          :custom
+          (dictionary-server "dict.org")
+          ;;(dictionary-server "localhost")
           :config
           (use-package mw-thesaurus)
           (defun rgr/dictionary-search(&optional w)
@@ -1504,9 +1468,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (dictionary-search (if w w (rgr/region-symbol-query))))
           :bind
           ("<f6>" . rgr/dictionary-search)
-          ("S-<f6>" . mw-thesaurus-lookup-at-point))
+          ("S-<f6>" . mw-thesaurus-lookup-dwim))
 
-3.  GoldenDict - external lookup and reference
+4.  GoldenDict - external lookup and reference
 
     When using goldendict-dwim why not add your program to the wonderful [GoldenDict](http://goldendict.org/)? A call to [trans-shell](https://github.com/soimort/translate-shell) in the dictionary programs tab gives us google translate:-
     
@@ -1525,7 +1489,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-x G" . goldendict-dwim)))
 
-4.  Elisp
+5.  Elisp
 
     Use helpful if installed else built in
     
@@ -1550,7 +1514,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
-5.  emacs-devdocs-browser
+6.  emacs-devdocs-browser
 
     <https://github.com/blahgeek/emacs-devdocs-browser> :
     
@@ -1564,13 +1528,13 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (interactive)
             (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
                 (rgr/elisp-lookup-reference)
-            (if current-prefix-arg
-                (call-interactively 'devdocs-browser-open-in)
-              (devdocs-browser-open))))
+              (if current-prefix-arg
+                  (call-interactively 'devdocs-browser-open-in)
+                (devdocs-browser-open))))
           :bind
           ("C-q" . rgr/devdocs))
 
-6.  Elfeed
+7.  Elfeed
 
     [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
     
@@ -1592,7 +1556,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     1.  elfeed-org
 
-7.  pdf-tools
+8.  pdf-tools
 
     [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
     
@@ -1609,7 +1573,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-8.  impatient-showdow, markdown view live
+9.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown.
     <https://github.com/jcs-elpa/impatient-showdown>
@@ -1617,7 +1581,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (use-package impatient-showdown
           :hook (markdown-mode . impatient-showdown-mode))
 
-9.  provide
+10. provide
 
         (provide 'rgr/reference)
 
@@ -1804,10 +1768,10 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :hook ((mu4e-view-rendered . visual-line-mode)
                  (mu4e-compose-mode . mu4e-smarter-compose)
                  (mu4e-view-rendered .
-                                      (lambda()
-                                        ;; try to emulate some of the eww key-bindings
-                                        (local-set-key (kbd "<tab>") 'shr-next-link)
-                                        (local-set-key (kbd "<backtab>") 'shr-previous-link))))
+                                     (lambda()
+                                       ;; try to emulate some of the eww key-bindings
+                                       (local-set-key (kbd "<tab>") 'shr-next-link)
+                                       (local-set-key (kbd "<backtab>") 'shr-previous-link))))
           :bind	  (("C-c u".  'mu4e)
                    (:map mu4e-main-mode-map
                          ("m" . mu4e-compose-new))
@@ -2005,7 +1969,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :demand t
           :init
           (defun rgr/flymake-hook()
-               (setq-local next-error-function 'flymake-goto-next-error))
+            (setq-local next-error-function 'flymake-goto-next-error))
           (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
           :bind
           ("M-n" . next-error)
@@ -2125,19 +2089,21 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 16. Tree Sitter
 
-17. treesit-auto
-
-    Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
+    1.  treesit-auto
     
-        (use-package treesit-auto
-          :custom
-          (treesit-auto-install 'prompt)
-          :config
-          (global-treesit-auto-mode))
+        Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
+        
+            (use-package treesit-auto
+              :custom
+              (treesit-auto-install 'prompt)
+              (treesit-extra-load-path `(,(no-littering-expand-var-file-name "tree-sitter")))
+              :config
+              (treesit-auto-add-to-auto-mode-alist 'all)
+              (global-treesit-auto-mode))
+        
+        \*\*\*\*JavaScript Family
     
-    \*\*\*\*JavaScript Family
-    
-    1.  Javascript
+    2.  Javascript
     
             (use-package js
               :demand t
@@ -2156,7 +2122,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (js-ts-mode . rgr/javascript-typescript-common-mode-hook)
               (js-ts-mode . rgr/js-ts-mode-hook))
     
-    2.  Typescript
+    3.  Typescript
     
             (use-package typescript-ts-mode
               :demand t
@@ -2167,7 +2133,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
               (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
-18. Language Server Protocol (LSP), lsp-mode
+17. Language Server Protocol (LSP), lsp-mode
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2239,7 +2205,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         
                 (provide 'rgr/lsp)
 
-19. Serial Port
+18. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2265,7 +2231,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                           (interactive)
                           (selectSerialPortBuffer)))
 
-20. PlatformIO
+19. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2287,7 +2253,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-21. Python
+20. Python
 
     1.  ipython
     
@@ -2300,7 +2266,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               :config
               (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-22. Haskell
+21. Haskell
 
     1.  haskell-mode
     
@@ -2313,10 +2279,10 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (eval-after-load "haskell-mode"
                 '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
               (eval-after-load "haskell-cabal"
-                          '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
+                '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-23. lldb debugging in emacs
+22. lldb debugging in emacs
 
     1.  voltron
     
@@ -2326,7 +2292,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               ;; (breadcrumb-mode t)
               )
 
-24. C, c-mode
+23. C, c-mode
 
     1.  c-mode-common-hook
     
@@ -2354,13 +2320,13 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                        :map c-ts-mode-map
                        (("M-<return>" . rgr/c-complete-line))))
 
-25. cc,cpp, C++, cc-mode
+24. cc,cpp, C++, cc-mode
 
         (defun rgr/c++-mode-hook ()
           )
         (add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
 
-26. Linux tools
+25. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2370,13 +2336,13 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-27. Assembler
+26. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-28. Godot GDScript
+27. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
@@ -2399,7 +2365,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
           )
 
-29. Web,Symfony and Twig
+28. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2460,7 +2426,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
-30. elf-mode - view the symbol list in a binary
+29. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2470,7 +2436,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
           (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-31. provide
+30. provide
 
         (provide 'rgr/programming)
 
@@ -2583,7 +2549,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     <https://github.com/protesilaos/modus-themes>
     
         (use-package modus-themes
-          ;:disabled
+                                                ;:disabled
           :init
           ;; Add all your customizations prior to loading the themes
           (setq modus-themes-slanted-constructs t
@@ -2699,7 +2665,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf89ae1c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga616822) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2732,7 +2698,7 @@ to add to version control.
     fi
 
 
-<a id="orgf89ae1c"></a>
+<a id="orga616822"></a>
 
 ### Gnome protocol handler desktop file
 
@@ -2772,7 +2738,7 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
 
     #!/bin/bash
     if ! pidof "emacs"; then
-       emacsclient -n -c -a "" "$@"
+        emacsclient -n -c -a "" "$@"
     else
         emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
         if [ "$?" = 1 ]; then
