@@ -234,22 +234,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (switch-to-buffer (if (string= (buffer-name) n)
                                   (other-buffer) n))))
 
-2.  thing at point or region or input
-
-        (defun rgr/region-symbol-query()
-          "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that and deselect the region, else try symbol-at-point and finally fallback to input"
-          (let* ((w (if (or  (not current-prefix-arg) (not (listp current-prefix-arg)))
-                        (if(use-region-p)
-                            (let ((sel-text
-                                   (buffer-substring-no-properties
-                                    (mark)
-                                    (point))))
-                              sel-text)
-                          (thing-at-point 'symbol)) nil))
-                 (result (if w w (read-string "lookup:"))))
-            result))
-
-3.  read and write elisp vars to file
+2.  read and write elisp vars to file
 
         
         (defun rgr/elisp-write-var (f v)
@@ -262,7 +247,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (cl-assert (eq (point) (point-min)))
             (read (current-buffer))))
 
-4.  completing lines
+3.  completing lines
 
         (use-package emacs
           :init
@@ -294,7 +279,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           :bind
           ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
 
-5.  Lazy Language Learning, lazy-lang-learn
+4.  Lazy Language Learning, lazy-lang-learn
 
     My own hack for popping up text to learn
     
@@ -305,7 +290,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           ("<f12>" . lazy-lang-learn-translate)
           ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
-6.  provide
+5.  provide
 
         (provide 'rgr/utils)
 
@@ -800,7 +785,9 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ;; Minibuffer history
                  :map minibuffer-local-map
                  ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-                 ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+                 ("M-r" . consult-history)                ;; orig. previous-matching-history-element
+        
+                 ("M-y" . consult-yank-from-kill-ring))
         
           ;; Enable automatic preview at point in the *Completions* buffer. This is
           ;; relevant when you use the default completion UI.
@@ -1064,69 +1051,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
             ;; Enable recursive minibuffers
             (setq enable-recursive-minibuffers t)))
 
-6.  corfu
-
-        (use-package corfu
-          :disabled
-          ;; Optional customizations
-          :custom
-          ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-          (corfu-auto t)                 ;; Enable auto completion
-          (corfu-separator ?\s)          ;; Orderless field separator
-          ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-          ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-          (corfu-preview-current t)    ;; Disable current candidate preview
-          ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-          ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-          ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-        
-          ;; Enable Corfu only for certain modes.
-          ;; :hook ((prog-mode . corfu-mode)
-          ;;        (shell-mode . corfu-mode)
-          ;;        (eshell-mode . corfu-mode))
-        
-          ;; Recommended: Enable Corfu globally.
-          ;; This is recommended since Dabbrev can be used globally (M-/).
-          ;; See also `corfu-exclude-modes'.
-          :straight (:files (:defaults "extensions/*"))
-          :init
-          (use-package lsp-mode
-            :custom
-            (lsp-completion-provider :none) ;; we use Corfu!
-            :init
-            (defun my/lsp-mode-setup-completion ()
-              (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-                    '(orderless)))
-        
-            :hook
-            (lsp-completion-mode . my/lsp-mode-setup-completion))
-          :config
-          (use-package corfu-prescient :disabled)
-          (corfu-popupinfo-mode)
-          (global-corfu-mode)
-          :hook
-          (corfu-mode . (lambda()
-                          (setq-local completion-at-point-functions (delete 'tags-completion-at-point-function completion-at-point-functions))
-                          (setq-local completion-at-point-functions (delete 't completion-at-point-functions))
-                          )))
-        
-        
-          ;; A few more useful configurations...
-          (use-package emacs
-            :init
-            ;; TAB cycle if there are only few candidates
-            (setq completion-cycle-threshold 3)
-        
-            ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-            ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-            ;; (setq read-extended-command-predicate
-            ;;       #'command-completion-default-include-p)
-        
-            ;; Enable indentation+completion using the TAB key.
-            ;; `completion-at-point' is often bound to M-TAB.
-            (setq tab-always-indent 'complete))
-
-7.  vertico , vertical interactive completion
+6.  vertico , vertical interactive completion
 
     <https://github.com/minad/vertico>
     
@@ -1144,13 +1069,13 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :init
           (vertico-mode))
 
-8.  Abbrev Mode
+7.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
         (setq-default abbrev-mode 1)
 
-9.  provide
+8.  provide
 
         (provide 'rgr/completion)
 
@@ -1290,7 +1215,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org30a686a)
+    See `org-agenda-files` [org-agenda-files](#org3de57d0)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1327,26 +1252,41 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 ### library
 
-1.  copy at point
+1.  rgr/copy-region
 
-        (defun rgr/elisp-lookup-reference ()
-          "Elisp help at point"
+        (defun rgr/copy-region()
+          (let ((txt
+                 (if(use-region-p)
+                     (let((txt (buffer-substring-no-properties
+                                (mark)
+                                (point))))
+                       (deactivate-mark)
+                       txt)
+                   nil)))
+            txt))
+
+2.  rgr/thing-at-point-dwim : return something at point in order - region,url,filename,symbol then word
+
+        (defun rgr/thing-at-point-dwim()
+          "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that else... url,symbol,word."
+          (let* ((txt (if (or  (not current-prefix-arg) (not (listp current-prefix-arg))) ;; https://test.me
+                        (let ((txt (or (rgr/copy-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'symbol) (thing-at-point 'word) )))
+                          txt)))
+                    (txt (if txt txt (read-string "text:"))))
+                 txt))
+
+3.  rgr/copy-dwim
+
+        (defun rgr/copy-dwim ()
+          "work out what to kill-ring-save"
           (interactive)
-          (if (and nil (featurep 'helpful))
-              (helpful-at-point)
-            (let* ((sym (rgr/region-symbol-query))
-                   (sym (if (symbolp sym) sym (intern-soft sym))))
-              (when sym
-                (if (fboundp sym)
-                    (describe-function sym)
-                  (if (boundp sym)
-                      (describe-variable sym)
-                    (progn
-                      (let ((msg (format "No elisp help for '%s" sym)))
-                        (alert msg))
-                      (setq sym nil))))))))
+          (let ((s (rgr/thing-at-point-dwim)))
+            (when s
+              (message (format "'%s' saved to kill-ring" s))
+              (kill-new s))))
+        (global-set-key (kbd "M-w") 'rgr/copy-dwim)
 
-2.  web lookup/view
+4.  web lookup/view
 
     1.  eww
     
@@ -1410,7 +1350,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                     (when current-prefix-arg
                       ;;swap source and dest languages
                       (google-translate-swap-default-languages))
-                    (let  ((phrase (if phrase phrase (rgr/region-symbol-query))))
+                    (let  ((phrase (if phrase phrase (rgr/thing-at-point-dwim))))
                       (switch-to-buffer "*Google Translations*")
                       ;; need to make aminor mode and do this properly based on file - org-mode?
                       (local-set-key (kbd "<return>") (lambda() (interactive)
@@ -1451,7 +1391,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
         A bit of a dogs dinner.
 
-3.  Dictionary,Thesaurus
+5.  Dictionary,Thesaurus
 
     The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
     
@@ -1465,12 +1405,12 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (use-package mw-thesaurus)
           (defun rgr/dictionary-search(&optional w)
             (interactive)
-            (dictionary-search (if w w (rgr/region-symbol-query))))
+            (dictionary-search (if w w (rgr/thing-at-point-dwim))))
           :bind
           ("<f6>" . rgr/dictionary-search)
           ("S-<f6>" . mw-thesaurus-lookup-dwim))
 
-4.  GoldenDict - external lookup and reference
+6.  GoldenDict - external lookup and reference
 
     When using goldendict-dwim why not add your program to the wonderful [GoldenDict](http://goldendict.org/)? A call to [trans-shell](https://github.com/soimort/translate-shell) in the dictionary programs tab gives us google translate:-
     
@@ -1485,11 +1425,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                w)
             "lookup word at region, thing at point or prompt for something, in goldendict. Use a prefix to force prompting."
             (interactive)
-            (let ((w (if w w (rgr/region-symbol-query))))
+            (let ((w (if w w (rgr/thing-at-point-dwim))))
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-x G" . goldendict-dwim)))
 
-5.  Elisp
+7.  Elisp
 
     Use helpful if installed else built in
     
@@ -1498,7 +1438,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (interactive)
           (if (featurep 'helpful)
               (helpful-at-point)
-            (let* ((sym (rgr/region-symbol-query))
+            (let* ((sym (thing-at-point 'symbol))
                    (sym (if (symbolp sym) sym (intern-soft sym))))
               (when sym
                 (if (fboundp sym)
@@ -1514,7 +1454,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
-6.  emacs-devdocs-browser
+8.  emacs-devdocs-browser
 
     <https://github.com/blahgeek/emacs-devdocs-browser> :
     
@@ -1526,7 +1466,8 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :config
           (defun rgr/devdocs(&optional i)
             (interactive)
-            (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
+            (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
+         major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
                 (rgr/elisp-lookup-reference)
               (if current-prefix-arg
                   (call-interactively 'devdocs-browser-open-in)
@@ -1534,7 +1475,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :bind
           ("C-q" . rgr/devdocs))
 
-7.  Elfeed
+9.  Elfeed
 
     [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
     
@@ -1556,7 +1497,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     1.  elfeed-org
 
-8.  pdf-tools
+10. pdf-tools
 
     [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
     
@@ -1573,7 +1514,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-9.  impatient-showdow, markdown view live
+11. impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown.
     <https://github.com/jcs-elpa/impatient-showdown>
@@ -1581,7 +1522,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (use-package impatient-showdown
           :hook (markdown-mode . impatient-showdown-mode))
 
-10. provide
+12. provide
 
         (provide 'rgr/reference)
 
@@ -2665,7 +2606,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga616822) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdf62903) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2698,7 +2639,7 @@ to add to version control.
     fi
 
 
-<a id="orga616822"></a>
+<a id="orgdf62903"></a>
 
 ### Gnome protocol handler desktop file
 
