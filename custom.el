@@ -18,7 +18,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -118,9 +117,11 @@
  '(eldoc-box-only-multi-line t)
  '(eldoc-idle-delay 3)
  '(elfeed-feeds
-   '("https://stackoverflow.com/feeds/tag/c%2b%2b"
-     ("http://stackoverflow.com/feeds/tag/c%2b%2b" dev)
-     ("https://emacs.stackexchange.com/feeds" dev emacs mustread)
+   '("**** https://emacs.stackexchange.com/feeds"
+     ("https://emacs.stackexchange.com/feeds" javascript)
+     ("http://stackoverflow.com/feeds/tag/" python)
+     ("http://stackoverflow.com/feeds/tag/c%2b%2b")
+     ("https://emacs.stackexchange.com/feeds" emacs elisp)
      ("https://www.theguitarlesson.com/guitar-lesson-blog/feed")
      ("http://angelikasgerman.co.uk/blog/feed" german)
      ("https://feeds.megaphone.fm/somethingrhymeswithpurple" literature words)))

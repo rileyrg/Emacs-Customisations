@@ -140,10 +140,10 @@
   :hook ((mu4e-view-rendered . visual-line-mode)
          (mu4e-compose-mode . mu4e-smarter-compose)
          (mu4e-view-rendered .
-                              (lambda()
-                                ;; try to emulate some of the eww key-bindings
-                                (local-set-key (kbd "<tab>") 'shr-next-link)
-                                (local-set-key (kbd "<backtab>") 'shr-previous-link))))
+                             (lambda()
+                               ;; try to emulate some of the eww key-bindings
+                               (local-set-key (kbd "<tab>") 'shr-next-link)
+                               (local-set-key (kbd "<backtab>") 'shr-previous-link))))
   :bind	  (("C-c u".  'mu4e)
            (:map mu4e-main-mode-map
                  ("m" . mu4e-compose-new))

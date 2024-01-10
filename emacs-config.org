@@ -1,4 +1,4 @@
-q#+TITLE: Emacs configuration
+#+TITLE: Emacs configuration
 #+AUTHOR: rileyrg
 #+EMAIL: rileyrg at g mx dot de
 
@@ -1311,10 +1311,6 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     :custom
     (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
 #+end_src
-**** vertical completion
-#+begin_src  emacs-lisp
-  ;;(fido-vertical-mode t)
-#+end_src
 **** vertico , vertical interactive completion
 https://github.com/minad/vertico
 #+begin_src emacs-lisp
@@ -1545,6 +1541,25 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 :ID:       e74c6135-2abc-46db-844e-a2c638b00bae
 :END:
 
+**** copy at point
+#+begin_src  emacs-lisp
+  (defun rgr/elisp-lookup-reference ()
+    "Elisp help at point"
+    (interactive)
+    (if (and nil (featurep 'helpful))
+        (helpful-at-point)
+      (let* ((sym (rgr/region-symbol-query))
+             (sym (if (symbolp sym) sym (intern-soft sym))))
+        (when sym
+          (if (fboundp sym)
+              (describe-function sym)
+            (if (boundp sym)
+                (describe-variable sym)
+              (progn
+                (let ((msg (format "No elisp help for '%s" sym)))
+                  (alert msg))
+                (setq sym nil))))))))
+#+end_src
 **** web lookup/view
 
 ***** eww
@@ -1658,19 +1673,7 @@ This is a translation framework for emacs, and is flexible and powerful.
 :ID:       a32c8536-be64-43fe-b740-210f0d891f14
 :END:
 A bit of a dogs dinner.
-#+begin_src emacs-lisp
 
-  (defun sys-browser-lookup(w template)
-    (interactive)
-    (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (rgr/region-symbol-query)) template)))
-
-  (defun rgr/describe-symbol(w)
-    (interactive (cons (rgr/region-symbol-query) nil))
-    (let ((s (if (symbolp w) w (intern-soft w))))
-      (if s (describe-symbol s)
-        (message "No such symbol: %s" w))))
-
-#+end_src
 **** Dictionary,Thesaurus
 :PROPERTIES:
 :ID:       d6770b25-024f-45f4-b86f-7c98db38b34f
@@ -1680,6 +1683,9 @@ The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
   (use-package
     dictionary
     :commands (rgr/dictionary-search)
+    :custom
+    (dictionary-server "dict.org")
+    ;;(dictionary-server "localhost")
     :config
     (use-package mw-thesaurus)
     (defun rgr/dictionary-search(&optional w)
@@ -1687,7 +1693,7 @@ The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
       (dictionary-search (if w w (rgr/region-symbol-query))))
     :bind
     ("<f6>" . rgr/dictionary-search)
-    ("S-<f6>" . mw-thesaurus-lookup-at-point))
+    ("S-<f6>" . mw-thesaurus-lookup-dwim))
 #+end_src
 **** GoldenDict - external lookup and reference
 :PROPERTIES:
@@ -1719,21 +1725,7 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
 :ID:       f2e666e0-e5ee-460d-95d2-c4eac568db1e
 :END:
 
-***** quick help for function etc at point
-:PROPERTIES:
-:ID:       199187b3-1dca-46dc-a5de-3dd5e4843140
-:END:
-If an elisp object is there it brings up the internal docs:
-
-#+CAPTION: lookup using internal docs
-[[./images/lookup-internal-doc.png]]
-
-
-else it palms it off to goldendict.
-
-#+CAPTION: lookup using goldendict
-[[./images/lookup-goldendict.png]]
-
+Use helpful if installed else built in
 #+begin_src emacs-lisp
   (defun rgr/elisp-lookup-reference ()
     "Elisp help at point"
@@ -1754,7 +1746,7 @@ else it palms it off to goldendict.
 #+end_src
 ***** external info files
 #+begin_src emacs-lisp
-(add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+  (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 #+end_src
 **** emacs-devdocs-browser
 
@@ -1771,9 +1763,9 @@ Browse devdocs.io documents inside Emacs!
       (interactive)
       (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
           (rgr/elisp-lookup-reference)
-      (if current-prefix-arg
-          (call-interactively 'devdocs-browser-open-in)
-        (devdocs-browser-open))))
+        (if current-prefix-arg
+            (call-interactively 'devdocs-browser-open-in)
+          (devdocs-browser-open))))
     :bind
     ("C-q" . rgr/devdocs))
 #+end_src
@@ -2028,10 +2020,10 @@ https://github.com/jcs-elpa/impatient-showdown
     :hook ((mu4e-view-rendered . visual-line-mode)
            (mu4e-compose-mode . mu4e-smarter-compose)
            (mu4e-view-rendered .
-                                (lambda()
-                                  ;; try to emulate some of the eww key-bindings
-                                  (local-set-key (kbd "<tab>") 'shr-next-link)
-                                  (local-set-key (kbd "<backtab>") 'shr-previous-link))))
+                               (lambda()
+                                 ;; try to emulate some of the eww key-bindings
+                                 (local-set-key (kbd "<tab>") 'shr-next-link)
+                                 (local-set-key (kbd "<backtab>") 'shr-previous-link))))
     :bind	  (("C-c u".  'mu4e)
              (:map mu4e-main-mode-map
                    ("m" . mu4e-compose-new))
@@ -2255,7 +2247,7 @@ https://github.com/IvanMalison/org-projectile
     :demand t
     :init
     (defun rgr/flymake-hook()
-         (setq-local next-error-function 'flymake-goto-next-error))
+      (setq-local next-error-function 'flymake-goto-next-error))
     (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
     :bind
     ("M-n" . next-error)
@@ -2380,13 +2372,15 @@ Running emultaor from command line:
   ;;   )
 #+end_src
 **** Tree Sitter
-**** treesit-auto
+***** treesit-auto
 Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
 #+begin_src  emacs-lisp
   (use-package treesit-auto
     :custom
     (treesit-auto-install 'prompt)
+    (treesit-extra-load-path `(,(no-littering-expand-var-file-name "tree-sitter")))
     :config
+    (treesit-auto-add-to-auto-mode-alist 'all)
     (global-treesit-auto-mode))
 #+end_src
 ****JavaScript Family
@@ -2592,7 +2586,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     (eval-after-load "haskell-mode"
       '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
     (eval-after-load "haskell-cabal"
-                '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
+      '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
     (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 #+end_src
 **** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
@@ -2605,9 +2599,9 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     )
 #+end_src
 **** C, c-mode                                                            :c:
-  :PROPERTIES:
-  :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
-  :END:
+:PROPERTIES:
+:ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
+:END:
 ***** c-mode-common-hook
 #+begin_src emacs-lisp
   (use-package c-ts-mode
@@ -2961,7 +2955,7 @@ Display a poup containing docstring at point
 https://github.com/protesilaos/modus-themes
 #+begin_src emacs-lisp
   (use-package modus-themes
-    ;:disabled
+                                          ;:disabled
     :init
     ;; Add all your customizations prior to loading the themes
     (setq modus-themes-slanted-constructs t
@@ -3092,7 +3086,7 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
 #+begin_src bash :tangle bin/emacs-same-frame
   #!/bin/bash
   if ! pidof "emacs"; then
-     emacsclient -n -c -a "" "$@"
+      emacsclient -n -c -a "" "$@"
   else
       emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
       if [ "$?" = 1 ]; then

@@ -1,3 +1,20 @@
+(defun rgr/elisp-lookup-reference ()
+  "Elisp help at point"
+  (interactive)
+  (if (and nil (featurep 'helpful))
+      (helpful-at-point)
+    (let* ((sym (rgr/region-symbol-query))
+           (sym (if (symbolp sym) sym (intern-soft sym))))
+      (when sym
+        (if (fboundp sym)
+            (describe-function sym)
+          (if (boundp sym)
+              (describe-variable sym)
+            (progn
+              (let ((msg (format "No elisp help for '%s" sym)))
+                (alert msg))
+              (setq sym nil))))))))
+
 (use-package eww
   :config
   ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
@@ -88,19 +105,12 @@
   ("C-c t" . rgr/google-translate-query-translate)
   ("C-c b" . rgr/google-translate-in-history-buffer))
 
-(defun sys-browser-lookup(w template)
-  (interactive)
-  (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (rgr/region-symbol-query)) template)))
-
-(defun rgr/describe-symbol(w)
-  (interactive (cons (rgr/region-symbol-query) nil))
-  (let ((s (if (symbolp w) w (intern-soft w))))
-    (if s (describe-symbol s)
-      (message "No such symbol: %s" w))))
-
 (use-package
   dictionary
   :commands (rgr/dictionary-search)
+  :custom
+  (dictionary-server "dict.org")
+  ;;(dictionary-server "localhost")
   :config
   (use-package mw-thesaurus)
   (defun rgr/dictionary-search(&optional w)
@@ -108,7 +118,7 @@
     (dictionary-search (if w w (rgr/region-symbol-query))))
   :bind
   ("<f6>" . rgr/dictionary-search)
-  ("S-<f6>" . mw-thesaurus-lookup-at-point))
+  ("S-<f6>" . mw-thesaurus-lookup-dwim))
 
 (use-package
   goldendict
@@ -140,7 +150,7 @@
                 (alert msg))
               (setq sym nil))))))))
 
-(add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+(add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
 (use-package devdocs-browser
   :custom
@@ -150,9 +160,9 @@
     (interactive)
     (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
         (rgr/elisp-lookup-reference)
-    (if current-prefix-arg
-        (call-interactively 'devdocs-browser-open-in)
-      (devdocs-browser-open))))
+      (if current-prefix-arg
+          (call-interactively 'devdocs-browser-open-in)
+        (devdocs-browser-open))))
   :bind
   ("C-q" . rgr/devdocs))
 
