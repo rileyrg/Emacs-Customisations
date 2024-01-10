@@ -1,5 +1,5 @@
 (use-package modus-themes
-  ;:disabled
+                                        ;:disabled
   :init
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-slanted-constructs t

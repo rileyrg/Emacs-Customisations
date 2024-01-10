@@ -120,7 +120,7 @@
   :demand t
   :init
   (defun rgr/flymake-hook()
-       (setq-local next-error-function 'flymake-goto-next-error))
+    (setq-local next-error-function 'flymake-goto-next-error))
   (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
   :bind
   ("M-n" . next-error)
@@ -197,7 +197,9 @@
 (use-package treesit-auto
   :custom
   (treesit-auto-install 'prompt)
+  (treesit-extra-load-path `(,(no-littering-expand-var-file-name "tree-sitter")))
   :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
 (use-package js
@@ -285,7 +287,7 @@
   (eval-after-load "haskell-mode"
     '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
   (eval-after-load "haskell-cabal"
-              '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
+    '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
 (use-package lldb-voltron

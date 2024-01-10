@@ -108,8 +108,6 @@ invoke google translate on them. Stores history.
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
       (when (boundp 'native-comp-eln-load-path)
         (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
-    
-    
     ;;; early-init.el ends here
 
 
@@ -244,7 +242,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
                             (let ((sel-text
                                    (buffer-substring-no-properties
                                     (mark)
-                                    (point))))
+         (point))))
                               sel-text)
                           (thing-at-point 'symbol)) nil))
                  (result (if w w (read-string "lookup:"))))
@@ -1350,7 +1348,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orge311c5a)
+    See `org-agenda-files` [org-agenda-files](#orgd6bf8c1)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1491,17 +1489,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     3.  utility funcs
     
         A bit of a dogs dinner.
-        
-            
-            (defun sys-browser-lookup(w template)
-              (interactive)
-              (browse-url-xdg-open (replace-regexp-in-string "%S%" (if w w (rgr/region-symbol-query)) template)))
-            
-            (defun rgr/describe-symbol(w)
-              (interactive (cons (rgr/region-symbol-query) nil))
-              (let ((s (if (symbolp w) w (intern-soft w))))
-                (if s (describe-symbol s)
-                  (message "No such symbol: %s" w))))
 
 2.  Dictionary,Thesaurus
 
@@ -1540,36 +1527,28 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 4.  Elisp
 
-    1.  quick help for function etc at point
+    Use helpful if installed else built in
     
-        If an elisp object is there it brings up the internal docs:
-        
-        ![img](./images/lookup-internal-doc.png "lookup using internal docs")
-        
-        else it palms it off to goldendict.
-        
-        ![img](./images/lookup-goldendict.png "lookup using goldendict")
-        
-            (defun rgr/elisp-lookup-reference ()
-              "Elisp help at point"
-              (interactive)
-              (if (featurep 'helpful)
-                  (helpful-at-point)
-                (let* ((sym (rgr/region-symbol-query))
-                       (sym (if (symbolp sym) sym (intern-soft sym))))
-                  (when sym
-                    (if (fboundp sym)
-                        (describe-function sym)
-                      (if (boundp sym)
-                          (describe-variable sym)
-                        (progn
-                          (let ((msg (format "No elisp help for '%s" sym)))
-                            (alert msg))
-                          (setq sym nil))))))))
+        (defun rgr/elisp-lookup-reference ()
+          "Elisp help at point"
+          (interactive)
+          (if (featurep 'helpful)
+              (helpful-at-point)
+            (let* ((sym (rgr/region-symbol-query))
+                   (sym (if (symbolp sym) sym (intern-soft sym))))
+              (when sym
+                (if (fboundp sym)
+                    (describe-function sym)
+                  (if (boundp sym)
+                      (describe-variable sym)
+                    (progn
+                      (let ((msg (format "No elisp help for '%s" sym)))
+                        (alert msg))
+                      (setq sym nil))))))))
     
-    2.  external info files
+    1.  external info files
     
-            (add-to-list 'Info-directory-list (expand-file-name "info" user-emacs-directory)) ;; https://www.emacswiki.org/emacs/ExternalDocumentation
+            (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
 5.  emacs-devdocs-browser
 
@@ -2720,7 +2699,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc2fbc87) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf89ae1c) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2753,7 +2732,7 @@ to add to version control.
     fi
 
 
-<a id="orgc2fbc87"></a>
+<a id="orgf89ae1c"></a>
 
 ### Gnome protocol handler desktop file
 
