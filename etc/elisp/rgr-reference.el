@@ -1,19 +1,30 @@
-(defun rgr/elisp-lookup-reference ()
-  "Elisp help at point"
+(defun rgr/copy-region()
+  (let ((txt
+         (if(use-region-p)
+             (let((txt (buffer-substring-no-properties
+                        (mark)
+                        (point))))
+               (deactivate-mark)
+               txt)
+           nil)))
+    txt))
+
+(defun rgr/thing-at-point-dwim()
+  "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that else... url,symbol,word."
+  (let* ((txt (if (or  (not current-prefix-arg) (not (listp current-prefix-arg))) ;; https://test.me
+                (let ((txt (or (rgr/copy-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'symbol) (thing-at-point 'word) )))
+                  txt)))
+            (txt (if txt txt (read-string "text:"))))
+         txt))
+
+(defun rgr/copy-dwim ()
+  "work out what to kill-ring-save"
   (interactive)
-  (if (and nil (featurep 'helpful))
-      (helpful-at-point)
-    (let* ((sym (rgr/region-symbol-query))
-           (sym (if (symbolp sym) sym (intern-soft sym))))
-      (when sym
-        (if (fboundp sym)
-            (describe-function sym)
-          (if (boundp sym)
-              (describe-variable sym)
-            (progn
-              (let ((msg (format "No elisp help for '%s" sym)))
-                (alert msg))
-              (setq sym nil))))))))
+  (let ((s (rgr/thing-at-point-dwim)))
+    (when s
+      (message (format "'%s' saved to kill-ring" s))
+      (kill-new s))))
+(global-set-key (kbd "M-w") 'rgr/copy-dwim)
 
 (use-package eww
   :config
@@ -68,7 +79,7 @@
     (when current-prefix-arg
       ;;swap source and dest languages
       (google-translate-swap-default-languages))
-    (let  ((phrase (if phrase phrase (rgr/region-symbol-query))))
+    (let  ((phrase (if phrase phrase (rgr/thing-at-point-dwim))))
       (switch-to-buffer "*Google Translations*")
       ;; need to make aminor mode and do this properly based on file - org-mode?
       (local-set-key (kbd "<return>") (lambda() (interactive)
@@ -115,7 +126,7 @@
   (use-package mw-thesaurus)
   (defun rgr/dictionary-search(&optional w)
     (interactive)
-    (dictionary-search (if w w (rgr/region-symbol-query))))
+    (dictionary-search (if w w (rgr/thing-at-point-dwim))))
   :bind
   ("<f6>" . rgr/dictionary-search)
   ("S-<f6>" . mw-thesaurus-lookup-dwim))
@@ -129,7 +140,7 @@
        w)
     "lookup word at region, thing at point or prompt for something, in goldendict. Use a prefix to force prompting."
     (interactive)
-    (let ((w (if w w (rgr/region-symbol-query))))
+    (let ((w (if w w (rgr/thing-at-point-dwim))))
       (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
   :bind (("C-x G" . goldendict-dwim)))
 
@@ -138,7 +149,7 @@
   (interactive)
   (if (featurep 'helpful)
       (helpful-at-point)
-    (let* ((sym (rgr/region-symbol-query))
+    (let* ((sym (thing-at-point 'symbol))
            (sym (if (symbolp sym) sym (intern-soft sym))))
       (when sym
         (if (fboundp sym)
@@ -158,7 +169,8 @@
   :config
   (defun rgr/devdocs(&optional i)
     (interactive)
-    (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
+    (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
+ major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
         (rgr/elisp-lookup-reference)
       (if current-prefix-arg
           (call-interactively 'devdocs-browser-open-in)
