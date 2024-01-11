@@ -163,12 +163,16 @@ Load all files in certain directories.
 
 ## host specific
 
+:ID:       efe9afb5-3779-407d-a7a9-fd8968ea0f69
+
 Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/custom.el).
 
     (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
 
 
 ## Security
+
+Raw: [rgr/security](etc/elisp/rgr-security.el)
 
     (require 'rgr/security "rgr-security" 'NOERROR)
 
@@ -1215,7 +1219,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2aac8bb)
+    See `org-agenda-files` [org-agenda-files](#orga6a12ad)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1244,6 +1248,8 @@ My own hack for popping up text to learn
 ## rgr/kill-dwim
 
 let copy make some choices to make your life easier
+
+Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
 
     (require 'rgr/kill-dwim "rgr-kill-dwim" 'NOERROR)
 
@@ -1570,10 +1576,14 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 ## Email
 
+Raw: [rgr/email](etc/elisp/rgr-email.el)
+
     (require 'rgr/email "rgr-email" 'NOERROR)
 
 
 ### library
+
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-email.el" elisp-dir)
 
 1.  notmuch
 
@@ -1741,6 +1751,8 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 
 ## Programming Language related
+
+Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
     (require 'rgr/programming "rgr-programming" 'NOERROR)
 
@@ -2492,6 +2504,8 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 ## Themes
 
+Raw: [rgr/themes](etc/elisp/rgr-themes.el)
+
     (require 'rgr/themes "rgr-themes" 'NOERROR)
 
 
@@ -2618,7 +2632,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge640cb6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org768f991) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2651,7 +2665,7 @@ to add to version control.
     fi
 
 
-<a id="orge640cb6"></a>
+<a id="org768f991"></a>
 
 ### Gnome protocol handler desktop file
 

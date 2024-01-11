@@ -191,14 +191,21 @@ Load all files in certain directories.
   (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
 #+end_src
 ** host specific
+
 :PROPERTIES:
 :ID:       efe9afb5-3779-407d-a7a9-fd8968ea0f69
 :END:
+
 Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][custom file]].
+
 #+begin_src emacs-lisp
   (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
 #+end_src
+
 ** Security
+
+Raw: [[file+sys:etc/elisp/rgr-security.el][rgr/security]]
+
 #+begin_src emacs-lisp
   (require 'rgr/security "rgr-security" 'NOERROR)
 #+end_src
@@ -1395,6 +1402,8 @@ My own hack for popping up text to learn
 ** rgr/kill-dwim
 let copy make some choices to make your life easier
 
+Raw: [[file+sys:etc/elisp/rgr-kill-dwim.el][rgr/kill-dwim]]
+
 #+begin_src emacs-lisp
   (require 'rgr/kill-dwim "rgr-kill-dwim" 'NOERROR)
 #+end_src
@@ -1444,7 +1453,6 @@ let copy make some choices to make your life easier
 #+begin_src emacs-lisp
   (provide 'rgr/kill-dwim)
 #+end_src
-
 
 ** Reference/Lookup/Media
 :PROPERTIES:
@@ -1767,13 +1775,18 @@ https://github.com/jcs-elpa/impatient-showdown
 :PROPERTIES:
 :ID:       1db35463-e9e1-4c38-b21f-437d475184e4
 :END:
+
+Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
+
 #+begin_src emacs-lisp
   (require 'rgr/email "rgr-email" 'NOERROR)
 #+end_src
 *** library
+
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-email.el" elisp-dir)
 :END:
+
 **** notmuch
 #+begin_src  emacs-lisp
   (use-package notmuch
@@ -1946,6 +1959,8 @@ https://github.com/jcs-elpa/impatient-showdown
 :PROPERTIES:
 :ID:       7070b720-582e-451c-8eed-47ab61cdd130
 :END:
+
+Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 
 #+begin_src emacs-lisp
   (require 'rgr/programming "rgr-programming" 'NOERROR)
@@ -2845,9 +2860,13 @@ Display a poup containing docstring at point
 #+end_src
 
 ** Themes                                                            :themes:
+
+Raw: [[file+sys:etc/elisp/rgr-themes.el][rgr/themes]]
+
 #+begin_src emacs-lisp
   (require 'rgr/themes "rgr-themes" 'NOERROR)
 #+end_src
+
 *** library
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-themes.el" elisp-dir)
