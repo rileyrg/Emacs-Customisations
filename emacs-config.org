@@ -1391,6 +1391,61 @@ My own hack for popping up text to learn
     ("<f12>" . lazy-lang-learn-translate)
     ("S-<f12>" . lazy-lang-learn-translate-from-history))
 #+end_src
+
+** rgr/kill-dwim
+let copy make some choices to make your life easier
+
+#+begin_src emacs-lisp
+  (require 'rgr/kill-dwim "rgr-kill-dwim" 'NOERROR)
+#+end_src
+
+*** library
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-kill-dwim.el" elisp-dir)
+:END:
+
+#+begin_src  emacs-lisp
+
+  (use-package emacs
+
+    :config
+
+    (defun rgr/get-region()
+      "return string in region if selected and deactivate, else nil"
+
+      (if(use-region-p)
+          (let ((txt (buffer-substring-no-properties
+                      (mark)
+                      (point))))
+            (deactivate-mark)
+            txt)
+        nil))
+
+    (defun rgr/thing-at-point-dwim()
+      "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that else... url,filename,symbol,sexp,word in that order"
+      (if current-prefix-arg
+          (read-string "text:")
+        (or (rgr/get-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'symbol) (thing-at-point 'sexp) (thing-at-point 'word) )))
+
+    (defun rgr/kill-dwim ()
+      "work out what to pick up from point and stick in the kill ring"
+      (interactive)
+      (let ((s (rgr/thing-at-point-dwim)))
+        (when s
+          (message (format "'%s' saved to kill-ring" s))
+          (kill-new s))))
+
+    :bind
+    ( "M-w" .  rgr/kill-dwim))
+
+#+end_src
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'rgr/kill-dwim)
+#+end_src
+
+
 ** Reference/Lookup/Media
 :PROPERTIES:
 :ID:       959f68c3-8447-4eb8-aaa8-86f828859f49
@@ -1408,43 +1463,6 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-reference.el" elisp-dir)
 :ID:       e74c6135-2abc-46db-844e-a2c638b00bae
 :END:
-
-**** rgr/copy-region
-#+begin_src  emacs-lisp
-  (defun rgr/copy-region()
-    (let ((txt
-           (if(use-region-p)
-               (let((txt (buffer-substring-no-properties
-                          (mark)
-                          (point))))
-                 (deactivate-mark)
-                 txt)
-             nil)))
-      txt))
-#+end_src
-
-**** rgr/thing-at-point-dwim : return something at point in order - region,url,filename,symbol then word
-#+begin_src emacs-lisp
-  (defun rgr/thing-at-point-dwim()
-    "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that else... url,symbol,word."
-    (let* ((txt (if (or  (not current-prefix-arg) (not (listp current-prefix-arg))) ;; https://test.me
-                  (let ((txt (or (rgr/copy-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'symbol) (thing-at-point 'word) )))
-                    txt)))
-              (txt (if txt txt (read-string "text:"))))
-           txt))
-#+end_src
-
-**** rgr/copy-dwim
-#+begin_src  emacs-lisp
-  (defun rgr/copy-dwim ()
-    "work out what to kill-ring-save"
-    (interactive)
-    (let ((s (rgr/thing-at-point-dwim)))
-      (when s
-        (message (format "'%s' saved to kill-ring" s))
-        (kill-new s))))
-  (global-set-key (kbd "M-w") 'rgr/copy-dwim)
-#+end_src
 
 **** web lookup/view
 
@@ -1666,7 +1684,6 @@ Browse devdocs.io documents inside Emacs!
   (use-package elfeed
     :config
     (use-package elfeed-org
-      :ensure t
       :custom
       (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
       :config
@@ -1675,9 +1692,9 @@ Browse devdocs.io documents inside Emacs!
     :bind
     ( "C-c w" . elfeed)
     (:map elfeed-show-mode-map
-          ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
+          ("b" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
     (:map elfeed-search-mode-map
-          ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
+          ("b" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
 #+end_src
 ***** elfeed-org
 :PROPERTIES:

@@ -1,17 +1,17 @@
 * Blogs                                                              :elfeed:
-** Podcasts
+** Podcasts                                                        :podcasts:
 *** Literature                                                   :literature:
-**** https://feeds.megaphone.fm/somethingrhymeswithpurple             :words:
+**** https://feeds.megaphone.fm/somethingrhymeswithpurple
 ** German                                                            :german:
 *** http://angelikasgerman.co.uk/blog/feed
 ** Guitar                                                            :guitar:
 *** https://www.theguitarlesson.com/guitar-lesson-blog/feed
-* Software Development
+** Software Development                                                 :dev:
 ** Emacs                                                        :emacs:elisp:
-*** https://emacs.stackexchange.com/feeds
-** CPP                                                                  :cpp:
-*** http://stackoverflow.com/feeds/tag/c%2b%2b
-** Python                                                            :python:
-*** http://stackoverflow.com/feeds/tag/
+*** https://stackoverflow.com/feeds/tag?tagnames=emacs&sort=newest
 ** Javascript                                                    :javascript:
-*** https://stackexchange.com/feeds/tagsets/452389/javascript?sort=active
+*** https://stackoverflow.com/feeds/tag?tagnames=javascript&sort=newest
+** Git                                                                  :git:
+*** https://stackoverflow.com/feeds/tag?tagnames=git&sort=newest
+** React                                                 :react-native:react:
+*** https://stackoverflow.com/feeds/tag?tagnames=reactjs+react-native&sort=newest

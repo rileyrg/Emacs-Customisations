@@ -1,31 +1,3 @@
-(defun rgr/copy-region()
-  (let ((txt
-         (if(use-region-p)
-             (let((txt (buffer-substring-no-properties
-                        (mark)
-                        (point))))
-               (deactivate-mark)
-               txt)
-           nil)))
-    txt))
-
-(defun rgr/thing-at-point-dwim()
-  "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that else... url,symbol,word."
-  (let* ((txt (if (or  (not current-prefix-arg) (not (listp current-prefix-arg))) ;; https://test.me
-                (let ((txt (or (rgr/copy-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'symbol) (thing-at-point 'word) )))
-                  txt)))
-            (txt (if txt txt (read-string "text:"))))
-         txt))
-
-(defun rgr/copy-dwim ()
-  "work out what to kill-ring-save"
-  (interactive)
-  (let ((s (rgr/thing-at-point-dwim)))
-    (when s
-      (message (format "'%s' saved to kill-ring" s))
-      (kill-new s))))
-(global-set-key (kbd "M-w") 'rgr/copy-dwim)
-
 (use-package eww
   :config
   ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
@@ -181,7 +153,6 @@
 (use-package elfeed
   :config
   (use-package elfeed-org
-    :ensure t
     :custom
     (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
     :config
@@ -190,9 +161,9 @@
   :bind
   ( "C-c w" . elfeed)
   (:map elfeed-show-mode-map
-        ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
+        ("b" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
   (:map elfeed-search-mode-map
-        ("&" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
+        ("b" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
 
 
 
