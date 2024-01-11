@@ -7,7 +7,9 @@
   (defadvice eww (around rgr/eww-extern-advise activate)
     "Use `browse-url-generic if any part of URL is contained in `rgr/eww-external-launch-url-chunks"
     (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
-        (browse-url-generic url)
+        (progn
+          (call-process-shell-command "swaymsg workspace number 2" nil 0)
+          (browse-url-generic url))
       ad-do-it))
 
   :bind
@@ -161,9 +163,9 @@
   :bind
   ( "C-c w" . elfeed)
   (:map elfeed-show-mode-map
-        ("b" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
+        ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-show-visit t))))
   (:map elfeed-search-mode-map
-        ("b" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
+        ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-search-browse-url t)))))
 
 
 
