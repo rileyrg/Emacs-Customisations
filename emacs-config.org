@@ -1634,35 +1634,7 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
         (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
     :bind (("C-x G" . goldendict-dwim)))
 #+end_src
-**** Elisp
-:PROPERTIES:
-:ID:       f2e666e0-e5ee-460d-95d2-c4eac568db1e
-:END:
-
-Use helpful if installed else built in
-#+begin_src emacs-lisp
-  (defun rgr/elisp-lookup-reference ()
-    "Elisp help at point"
-    (interactive)
-    (if (featurep 'helpful)
-        (helpful-at-point)
-      (let* ((sym (thing-at-point 'symbol))
-             (sym (if (symbolp sym) sym (intern-soft sym))))
-        (when sym
-          (if (fboundp sym)
-              (describe-function sym)
-            (if (boundp sym)
-                (describe-variable sym)
-              (progn
-                (let ((msg (format "No elisp help for '%s" sym)))
-                  (alert msg))
-                (setq sym nil))))))))
-#+end_src
-***** external info files
-#+begin_src emacs-lisp
-  (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
-#+end_src
-**** emacs-devdocs-browser
+**** devdocs-browser
 
 https://github.com/blahgeek/emacs-devdocs-browser :
 
@@ -1674,10 +1646,11 @@ Browse devdocs.io documents inside Emacs!
     (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
     :config
     (defun rgr/devdocs(&optional i)
+          "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
       (interactive)
       (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
    major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-          (rgr/elisp-lookup-reference)
+          (rgr/emacs-lisp-help)
         (if current-prefix-arg
             (call-interactively 'devdocs-browser-open-in)
           (devdocs-browser-open))))
@@ -2738,6 +2711,37 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp.el" elisp-dir)
 :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
 :END:
+
+**** rgr/emacs-lisp-help
+:PROPERTIES:
+:ID:       f2e666e0-e5ee-460d-95d2-c4eac568db1e
+:END:
+Use helpful if installed else built in
+#+begin_src emacs-lisp
+  (defun rgr/emacs-lisp-help (&optional s)
+    "Elisp help at point. default to `helpful-at-point' if available, else `describe-function' or `describe-variable'."
+    (interactive)
+    (let* ((sym (or s (thing-at-point 'symbol)))
+           (sym (if (symbolp sym) sym (intern-soft sym))))
+      (when sym
+        (if (fboundp sym)
+            (if (featurep 'helpful)
+                (helpful-function sym)
+              (describe-function sym))
+          (if (boundp sym)
+              (if (featurep 'helpful)
+                  (helpful-variable)
+                (describe-variable sym))
+            (progn
+              (let ((msg (format "No elisp help for '%s" sym)))
+                (alert msg))
+              (setq sym nil)))))))
+#+end_src
+***** external info files
+#+begin_src emacs-lisp
+  (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
+#+end_src
+
 **** smartparens
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no

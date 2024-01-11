@@ -118,34 +118,16 @@
       (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
   :bind (("C-x G" . goldendict-dwim)))
 
-(defun rgr/elisp-lookup-reference ()
-  "Elisp help at point"
-  (interactive)
-  (if (featurep 'helpful)
-      (helpful-at-point)
-    (let* ((sym (thing-at-point 'symbol))
-           (sym (if (symbolp sym) sym (intern-soft sym))))
-      (when sym
-        (if (fboundp sym)
-            (describe-function sym)
-          (if (boundp sym)
-              (describe-variable sym)
-            (progn
-              (let ((msg (format "No elisp help for '%s" sym)))
-                (alert msg))
-              (setq sym nil))))))))
-
-(add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
-
 (use-package devdocs-browser
   :custom
   (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
   :config
   (defun rgr/devdocs(&optional i)
+        "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
     (interactive)
     (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
  major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-        (rgr/elisp-lookup-reference)
+        (rgr/emacs-lisp-help)
       (if current-prefix-arg
           (call-interactively 'devdocs-browser-open-in)
         (devdocs-browser-open))))
