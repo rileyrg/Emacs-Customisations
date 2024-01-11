@@ -1215,7 +1215,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org27e1a7d)
+    See `org-agenda-files` [org-agenda-files](#org2aac8bb)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1269,7 +1269,7 @@ let copy make some choices to make your life easier
       (defun rgr/thing-at-point-dwim()
         "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that else... url,filename,symbol,sexp,word in that order"
         (if current-prefix-arg
-            (read-string "text:")
+            (read-string "text:")  ;; https://github.com/rileyrg  /home/rgr/bin (message "hello world") kill-emacs format
           (or (rgr/get-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'symbol) (thing-at-point 'sexp) (thing-at-point 'word) )))
     
       (defun rgr/kill-dwim ()
@@ -2618,7 +2618,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2e4a16a) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge640cb6) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2651,7 +2651,7 @@ to add to version control.
     fi
 
 
-<a id="org2e4a16a"></a>
+<a id="orge640cb6"></a>
 
 ### Gnome protocol handler desktop file
 
