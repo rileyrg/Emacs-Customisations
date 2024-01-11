@@ -16,7 +16,7 @@
   (defun rgr/thing-at-point-dwim()
     "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that else... url,filename,symbol,sexp,word in that order"
     (if current-prefix-arg
-        (read-string "text:")
+        (read-string "text:")  ;; https://github.com/rileyrg  /home/rgr/bin (message "hello world") kill-emacs format
       (or (rgr/get-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'symbol) (thing-at-point 'sexp) (thing-at-point 'word) )))
 
   (defun rgr/kill-dwim ()
