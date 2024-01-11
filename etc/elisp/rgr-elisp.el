@@ -1,3 +1,24 @@
+(defun rgr/emacs-lisp-help (&optional s)
+  "Elisp help at point. default to `helpful-at-point' if available, else `describe-function' or `describe-variable'."
+  (interactive)
+  (let* ((sym (or s (thing-at-point 'symbol)))
+         (sym (if (symbolp sym) sym (intern-soft sym))))
+    (when sym
+      (if (fboundp sym)
+          (if (featurep 'helpful)
+              (helpful-function sym)
+            (describe-function sym))
+        (if (boundp sym)
+            (if (featurep 'helpful)
+                (helpful-variable)
+              (describe-variable sym))
+          (progn
+            (let ((msg (format "No elisp help for '%s" sym)))
+              (alert msg))
+            (setq sym nil)))))))
+
+(add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
+
 (defun rgr/elisp-edit-mode()
   "return non nil if this buffer edits elisp"
   (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))

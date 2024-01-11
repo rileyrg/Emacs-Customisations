@@ -1219,7 +1219,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org15da4e4)
+    See `org-agenda-files` [org-agenda-files](#orge9ba6fa)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1450,32 +1450,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-x G" . goldendict-dwim)))
 
-4.  Elisp
-
-    Use helpful if installed else built in
-    
-        (defun rgr/elisp-lookup-reference ()
-          "Elisp help at point"
-          (interactive)
-          (if (featurep 'helpful)
-              (helpful-at-point)
-            (let* ((sym (thing-at-point 'symbol))
-                   (sym (if (symbolp sym) sym (intern-soft sym))))
-              (when sym
-                (if (fboundp sym)
-                    (describe-function sym)
-                  (if (boundp sym)
-                      (describe-variable sym)
-                    (progn
-                      (let ((msg (format "No elisp help for '%s" sym)))
-                        (alert msg))
-                      (setq sym nil))))))))
-    
-    1.  external info files
-    
-            (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
-
-5.  emacs-devdocs-browser
+4.  devdocs-browser
 
     <https://github.com/blahgeek/emacs-devdocs-browser> :
     
@@ -1486,17 +1461,18 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
           :config
           (defun rgr/devdocs(&optional i)
+                "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
             (interactive)
             (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
          major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-                (rgr/elisp-lookup-reference)
+                (rgr/emacs-lisp-help)
               (if current-prefix-arg
                   (call-interactively 'devdocs-browser-open-in)
                 (devdocs-browser-open))))
           :bind
           ("C-q" . rgr/devdocs))
 
-6.  Elfeed
+5.  Elfeed
 
     [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
     
@@ -1517,7 +1493,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     1.  elfeed-org
 
-7.  pdf-tools
+6.  pdf-tools
 
     [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
     
@@ -1534,7 +1510,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-8.  impatient-showdow, markdown view live
+7.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown.
     <https://github.com/jcs-elpa/impatient-showdown>
@@ -1542,7 +1518,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (use-package impatient-showdown
           :hook (markdown-mode . impatient-showdown-mode))
 
-9.  provide
+8.  provide
 
         (provide 'rgr/reference)
 
@@ -2418,13 +2394,40 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 ### library
 
-1.  smartparens
+1.  rgr/emacs-lisp-help
+
+    Use helpful if installed else built in
+    
+        (defun rgr/emacs-lisp-help (&optional s)
+          "Elisp help at point. default to `helpful-at-point' if available, else `describe-function' or `describe-variable'."
+          (interactive)
+          (let* ((sym (or s (thing-at-point 'symbol)))
+                 (sym (if (symbolp sym) sym (intern-soft sym))))
+            (when sym
+              (if (fboundp sym)
+                  (if (featurep 'helpful)
+                      (helpful-function sym)
+                    (describe-function sym))
+                (if (boundp sym)
+                    (if (featurep 'helpful)
+                        (helpful-variable)
+                      (describe-variable sym))
+                  (progn
+                    (let ((msg (format "No elisp help for '%s" sym)))
+                      (alert msg))
+                    (setq sym nil)))))))
+    
+    1.  external info files
+    
+            (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
+
+2.  smartparens
 
         (use-package smartparens
           :hook
           ((emacs-lisp-mode . smartparens-mode)))
 
-2.  electric-pair-mode
+3.  electric-pair-mode
 
     [auto insert closing brackets](emacs#Matching)
     
@@ -2432,23 +2435,23 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :hook
           ((emacs-lisp-mode . electric-pair-mode)))
 
-3.  elisp checks
+4.  elisp checks
 
         (defun rgr/elisp-edit-mode()
           "return non nil if this buffer edits elisp"
           (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 
-4.  linting
+5.  linting
 
     [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
     
         (use-package package-lint)
 
-5.  helpful, enriched elisp help
+6.  helpful, enriched elisp help
 
         (use-package helpful)
 
-6.  elisp popup context help
+7.  elisp popup context help
 
     Display a poup containing docstring at point
     
@@ -2462,7 +2465,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           ("M-<f2>" . el-docstring-sap-display)
           ("M-<f1>" . el-docstring-sap-mode))
 
-7.  Elisp debugging
+8.  Elisp debugging
 
         (use-package
           edebug-x
@@ -2478,7 +2481,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
             (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
           )
 
-8.  Formatting
+9.  Formatting
 
         (use-package
           elisp-format
@@ -2486,7 +2489,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           (:map emacs-lisp-mode-map
                 ("C-c f" . elisp-format-region)))
 
-9.  popup query symbol
+10. popup query symbol
 
         (use-package popup
           :config
@@ -2499,7 +2502,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :bind
           (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 
-10. provide
+11. provide
 
         (provide 'rgr/elisp)
 
@@ -2634,7 +2637,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6cfaa65) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org026c53a) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2667,7 +2670,7 @@ to add to version control.
     fi
 
 
-<a id="org6cfaa65"></a>
+<a id="org026c53a"></a>
 
 ### Gnome protocol handler desktop file
 
