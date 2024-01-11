@@ -1219,7 +1219,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga6a12ad)
+    See `org-agenda-files` [org-agenda-files](#org15da4e4)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1319,7 +1319,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (defadvice eww (around rgr/eww-extern-advise activate)
                 "Use `browse-url-generic if any part of URL is contained in `rgr/eww-external-launch-url-chunks"
                 (if (string-match-p (regexp-opt rgr/eww-external-launch-url-chunks) url)
-                    (browse-url-generic url)
+                    (progn
+                      (call-process-shell-command "swaymsg workspace number 2" nil 0)
+                      (browse-url-generic url))
                   ad-do-it))
             
               :bind
@@ -1509,9 +1511,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :bind
           ( "C-c w" . elfeed)
           (:map elfeed-show-mode-map
-                ("b" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-show-visit t))))
+                ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-show-visit t))))
           (:map elfeed-search-mode-map
-                ("b" . (lambda()(interactive)(message "opening in eternal browser")(elfeed-search-browse-url t)))))
+                ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-search-browse-url t)))))
     
     1.  elfeed-org
 
@@ -2632,7 +2634,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org768f991) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6cfaa65) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2665,7 +2667,7 @@ to add to version control.
     fi
 
 
-<a id="org768f991"></a>
+<a id="org6cfaa65"></a>
 
 ### Gnome protocol handler desktop file
 
