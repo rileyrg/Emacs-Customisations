@@ -18,6 +18,7 @@
         ( "&" . (lambda()
                   (interactive
                    (alert "Launching external browser")
+                   (call-process-shell-command "swaymsg workspace number 2" nil 0)
                    (eww-browse-with-external-browser))))))
 
 (use-package go-translate

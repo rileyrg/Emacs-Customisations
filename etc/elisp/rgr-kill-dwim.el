@@ -1,5 +1,9 @@
 (use-package emacs
 
+  :init
+
+  (defalias 'kill-ring-save 'rgr/kill-dwim)
+
   :config
 
   (defun rgr/get-region()
@@ -27,7 +31,8 @@
         (message (format "'%s' saved to kill-ring" s))
         (kill-new s))))
 
-  :bind
-  ( "M-w" .  rgr/kill-dwim))
+  )
+  ;; :bind
+  ;; ( "M-w" .  rgr/kill-dwim))
 
 (provide 'rgr/kill-dwim)
