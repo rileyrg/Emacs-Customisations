@@ -1417,6 +1417,10 @@ Raw: [[file+sys:etc/elisp/rgr-kill-dwim.el][rgr/kill-dwim]]
 
   (use-package emacs
 
+    :init
+
+    (defalias 'kill-ring-save 'rgr/kill-dwim)
+
     :config
 
     (defun rgr/get-region()
@@ -1444,8 +1448,9 @@ Raw: [[file+sys:etc/elisp/rgr-kill-dwim.el][rgr/kill-dwim]]
           (message (format "'%s' saved to kill-ring" s))
           (kill-new s))))
 
-    :bind
-    ( "M-w" .  rgr/kill-dwim))
+    )
+    ;; :bind
+    ;; ( "M-w" .  rgr/kill-dwim))
 
 #+end_src
 
@@ -1497,6 +1502,7 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
           ( "&" . (lambda()
                     (interactive
                      (alert "Launching external browser")
+                     (call-process-shell-command "swaymsg workspace number 2" nil 0)
                      (eww-browse-with-external-browser))))))
 #+end_src
 
