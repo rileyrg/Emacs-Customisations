@@ -1219,7 +1219,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgbbcc72e)
+    See `org-agenda-files` [org-agenda-files](#org046fdd5)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1328,15 +1328,19 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                       (call-process-shell-command "swaymsg workspace number 2" nil 0)
                       (browse-url-generic url))
                   ad-do-it))
-            
-              :bind
-              ("C-c o" . 'eww)
-              (:map eww-mode-map
-                    ( "&" . (lambda()
-                              (interactive
-                               (alert "Launching external browser")
-                               (call-process-shell-command "swaymsg workspace number 2" nil 0)
-                               (eww-browse-with-external-browser))))))
+              (defun rgr/eww-after-render ()
+                 ;;move point line to top
+                (dotimes (_ 2)
+                  (recenter-top-bottom)))
+            :hook (eww-after-render . rgr/eww-after-render)
+            :bind
+            ("C-c o" . 'eww)
+            (:map eww-mode-map
+                  ( "&" . (lambda()
+                            (interactive
+                             (alert "Launching external browser")
+                             (call-process-shell-command "swaymsg workspace number 2" nil 0)
+                             (eww-browse-with-external-browser))))))
     
     2.  go-translate
     
@@ -2643,7 +2647,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org14deada) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2f20e84) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2676,7 +2680,7 @@ to add to version control.
     fi
 
 
-<a id="org14deada"></a>
+<a id="org2f20e84"></a>
 
 ### Gnome protocol handler desktop file
 
