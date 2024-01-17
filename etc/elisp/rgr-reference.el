@@ -15,15 +15,17 @@
      ;;move point line to top
     (dotimes (_ 2)
       (recenter-top-bottom)))
+  (defun rgr/eww-launch-external-browser-from-buffer()
+    (interactive)
+    (alert "Launching external browser")
+    (call-process-shell-command "swaymsg workspace number 2" nil 0)
+    (eww-browse-with-external-browser)
+    (quit-window))
 :hook (eww-after-render . rgr/eww-after-render)
 :bind
 ("C-c o" . 'eww)
 (:map eww-mode-map
-      ( "&" . (lambda()
-                (interactive
-                 (alert "Launching external browser")
-                 (call-process-shell-command "swaymsg workspace number 2" nil 0)
-                 (eww-browse-with-external-browser))))))
+      ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 
 (use-package go-translate
   ;;:disabled
