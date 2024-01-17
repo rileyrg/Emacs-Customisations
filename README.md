@@ -316,20 +316,24 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         (recentf-mode)
         ;; (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
         ;; (save-place-mode)
-        (desktop-save-mode)
-        (midnight-mode)
-        (add-hook 'desktop-save-hook 'clean-buffer-list)
         
+        ;; ;;
         (defun rgr/startup-hook ()
-          (let ((fname (get-register ?L)))
-            (when (and fname (file-exists-p fname))
-              (find-file fname))))
+          (setq desktop-restore-forces-onscreen nil)
+          (desktop-save-mode 1)
+          (midnight-mode)
+          (add-hook 'desktop-save-hook 'clean-buffer-list)
+          (desktop-read))
         
-        (defun rgr/remember-last-buffer (f)
-          (when buffer-file-name
-            (set-register ?L (buffer-file-name))))
+        ;; (let ((fname (get-register ?L)))
+        ;;   (when (and fname (file-exists-p fname))
+        ;;     (find-file fname))))
         
-        (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+        ;; (defun rgr/remember-last-buffer (f)
+        ;;   (when buffer-file-name
+        ;;     (set-register ?L (buffer-file-name))))
+        
+        ;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
         
         (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
@@ -1219,7 +1223,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org8516403)
+    See `org-agenda-files` [org-agenda-files](#org7d25cc2)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2648,7 +2652,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org604ef52) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0c7f6fb) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2681,7 +2685,7 @@ to add to version control.
     fi
 
 
-<a id="org604ef52"></a>
+<a id="org0c7f6fb"></a>
 
 ### Gnome protocol handler desktop file
 

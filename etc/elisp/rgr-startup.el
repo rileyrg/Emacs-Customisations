@@ -1,20 +1,24 @@
 (recentf-mode)
 ;; (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
 ;; (save-place-mode)
-(desktop-save-mode)
-(midnight-mode)
-(add-hook 'desktop-save-hook 'clean-buffer-list)
 
+;; ;;
 (defun rgr/startup-hook ()
-  (let ((fname (get-register ?L)))
-    (when (and fname (file-exists-p fname))
-      (find-file fname))))
+  (setq desktop-restore-forces-onscreen nil)
+  (desktop-save-mode 1)
+  (midnight-mode)
+  (add-hook 'desktop-save-hook 'clean-buffer-list)
+  (desktop-read))
 
-(defun rgr/remember-last-buffer (f)
-  (when buffer-file-name
-    (set-register ?L (buffer-file-name))))
+;; (let ((fname (get-register ?L)))
+;;   (when (and fname (file-exists-p fname))
+;;     (find-file fname))))
 
-(add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+;; (defun rgr/remember-last-buffer (f)
+;;   (when buffer-file-name
+;;     (set-register ?L (buffer-file-name))))
+
+;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
 
 (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
