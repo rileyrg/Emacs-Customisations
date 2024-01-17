@@ -11,15 +11,19 @@
           (call-process-shell-command "swaymsg workspace number 2" nil 0)
           (browse-url-generic url))
       ad-do-it))
-
-  :bind
-  ("C-c o" . 'eww)
-  (:map eww-mode-map
-        ( "&" . (lambda()
-                  (interactive
-                   (alert "Launching external browser")
-                   (call-process-shell-command "swaymsg workspace number 2" nil 0)
-                   (eww-browse-with-external-browser))))))
+  (defun rgr/eww-after-render ()
+     ;;move point line to top
+    (dotimes (_ 2)
+      (recenter-top-bottom)))
+:hook (eww-after-render . rgr/eww-after-render)
+:bind
+("C-c o" . 'eww)
+(:map eww-mode-map
+      ( "&" . (lambda()
+                (interactive
+                 (alert "Launching external browser")
+                 (call-process-shell-command "swaymsg workspace number 2" nil 0)
+                 (eww-browse-with-external-browser))))))
 
 (use-package go-translate
   ;;:disabled
