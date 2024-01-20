@@ -434,8 +434,8 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
     
             (use-package ace-window
-              :init
-              (defalias 'other-window 'ace-window)
+              ;; :init
+              ;; (defalias 'other-window 'ace-window)
               :bind
               ("M-o" . other-window)
               ("C-x o" . ace-window)
@@ -1223,7 +1223,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org7d25cc2)
+    See `org-agenda-files` [org-agenda-files](#org0ec098d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1262,16 +1262,12 @@ Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
 
     
     (use-package emacs
-    
       :init
-    
       (defalias 'kill-ring-save 'rgr/kill-dwim)
     
       :config
-    
       (defun rgr/get-region()
         "return string in region if selected and deactivate, else nil"
-    
         (if(use-region-p)
             (let ((txt (buffer-substring-no-properties
                         (mark)
@@ -1281,22 +1277,18 @@ Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
           nil))
     
       (defun rgr/thing-at-point-dwim()
-        "if a prefix argument (4)(C-u) read from input, else if we have a region select then return that else... url,filename,symbol,sexp,word in that order"
-        (if current-prefix-arg
-            (read-string "text:")  ;; https://github.com/rileyrg  /home/rgr/bin (message "hello world") kill-emacs format
-          (or (rgr/get-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'symbol) (thing-at-point 'sexp) (thing-at-point 'word) )))
+        (or (rgr/get-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'symbol) (thing-at-point 'sexp) (thing-at-point 'word) ))
     
       (defun rgr/kill-dwim ()
         "work out what to pick up from point and stick in the kill ring"
         (interactive)
         (let ((s (rgr/thing-at-point-dwim)))
+          (message s)
+          "if a prefix argument (4)(C-u) allow edit / read from input"
+          (if current-prefix-arg
+              (setq s (read-string "text:" s)))
           (when s
-            (message (format "'%s' saved to kill-ring" s))
-            (kill-new s))))
-    
-      )
-      ;; :bind
-      ;; ( "M-w" .  rgr/kill-dwim))
+            (kill-new s)))))
 
 1.  provide
 
@@ -2652,7 +2644,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0c7f6fb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb7f8a6e) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2685,7 +2677,7 @@ to add to version control.
     fi
 
 
-<a id="org0c7f6fb"></a>
+<a id="orgb7f8a6e"></a>
 
 ### Gnome protocol handler desktop file
 
