@@ -56,8 +56,8 @@
 (use-package posframe)
 
 (use-package ace-window
-  :init
-  (defalias 'other-window 'ace-window)
+  ;; :init
+  ;; (defalias 'other-window 'ace-window)
   :bind
   ("M-o" . other-window)
   ("C-x o" . ace-window)
