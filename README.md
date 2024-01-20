@@ -1223,7 +1223,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org87bdc73)
+    See `org-agenda-files` [org-agenda-files](#org6355900)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1609,7 +1609,7 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
           ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
           ( mu4e-decryption-policy 'ask )
           ( mu4e-hide-index-messages t )
-          ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
+          ( mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu")) )
           ( mu4e-update-interval nil )
           ( mu4e-use-fancy-chars t )
           ( mu4e-view-prefer-html nil )
@@ -1706,6 +1706,11 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
               (alert "refreshing mu4e indexes"))
             (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
         
+          (defun rgr/mu4e-default-context()
+            (interactive)
+            (mu4e)
+            (mu4e-context-switch nil "bGmail"))
+        
           (add-to-list 'mu4e-view-actions
                        '("ViewInBrowser" . mu4e-action-view-in-browser) t)
           (add-to-list 'mu4e-view-actions
@@ -1720,12 +1725,13 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
                                        ;; try to emulate some of the eww key-bindings
                                        (local-set-key (kbd "<tab>") 'shr-next-link)
                                        (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-          :bind	  (("C-c u".  (lambda()(mu4e)(mu4e-context-switch nil "bGmail")))
+          :bind	  (("C-c u" .  rgr/mu4e-default-context)
                    (:map mu4e-main-mode-map
                          ("m" . mu4e-compose-new))
                    (:map mu4e-main-mode-map
                          ("g" . rgr/mu4e-refresh))
                    (:map mu4e-headers-mode-map
+                         ("v" . mu4e-view-action)
                          ("C-c u" . mu4e-headers-mark-all-unread-read))))
         ;;:map mu4e-view-mode-map
         ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
@@ -2644,7 +2650,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfb00fb0) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8afc035) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2677,7 +2683,7 @@ to add to version control.
     fi
 
 
-<a id="orgfb00fb0"></a>
+<a id="org8afc035"></a>
 
 ### Gnome protocol handler desktop file
 
