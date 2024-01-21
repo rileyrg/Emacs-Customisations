@@ -1,46 +1,3 @@
-(use-package
-  which-key
-  :demand t
-  :config (which-key-mode))
-
-(use-package yasnippet
-  :config
-  (use-package yasnippet-snippets)
-  :init
-  (yas-global-mode))
-
-(setq-default abbrev-mode 1)
-(defadvice expand-abbrev (after my-expand-abbrev activate)
-  ;; if there was an expansion
-  (if ad-return-value
-      ;; start idle timer to ensure insertion of abbrev activator
-      ;; character (e.g. space) is finished
-      (run-with-idle-timer 0 nil
-                           (lambda ()
-                             ;; if there is the string "@@" in the
-                             ;; expansion then move cursor there and
-                             ;; delete the string
-                             (let ((cursor "%CHANGEME%"))
-                               (when (search-backward  cursor last-abbrev-location t)
-                                 (goto-char  last-abbrev-location)
-                                 (search-forward cursor)
-                                 (backward-word)
-                                 (highlight-symbol-at-point)
-                                 (delete-char (length cursor))
-                                 ))))))
-
-(use-package company
-  :disabled
-  :config
-  (use-package company-box
-    :config
-    (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
-    :hook (company-mode . company-box-mode))
-  :hook
-  (prog-mode . company-mode)
-  :bind( :map company-mode-map
-         ("<tab>" .  company-indent-or-complete-common)))
-
 (use-package corfu
   ;; Optional customizations
   :custom
@@ -121,6 +78,49 @@
   ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
   ;;(add-to-list 'completion-at-point-functions #'cape-line)
 )
+
+(use-package
+  which-key
+  :demand t
+  :config (which-key-mode))
+
+(use-package yasnippet
+  :config
+  (use-package yasnippet-snippets)
+  :init
+  (yas-global-mode))
+
+(setq-default abbrev-mode 1)
+(defadvice expand-abbrev (after my-expand-abbrev activate)
+  ;; if there was an expansion
+  (if ad-return-value
+      ;; start idle timer to ensure insertion of abbrev activator
+      ;; character (e.g. space) is finished
+      (run-with-idle-timer 0 nil
+                           (lambda ()
+                             ;; if there is the string "@@" in the
+                             ;; expansion then move cursor there and
+                             ;; delete the string
+                             (let ((cursor "%CHANGEME%"))
+                               (when (search-backward  cursor last-abbrev-location t)
+                                 (goto-char  last-abbrev-location)
+                                 (search-forward cursor)
+                                 (backward-word)
+                                 (highlight-symbol-at-point)
+                                 (delete-char (length cursor))
+                                 ))))))
+
+(use-package company
+  ;;:disabled
+  :config
+  (use-package company-box
+    :config
+    (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
+    :hook (company-mode . company-box-mode))
+  :hook
+  (prog-mode . company-mode)
+  :bind( :map company-mode-map
+         ("<tab>" .  company-indent-or-complete-common)))
 
 (use-package orderless
   :init

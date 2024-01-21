@@ -1092,6 +1092,101 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" elisp-dir)
 :END:
+
+
+**** corfu
+
+#+begin_src emacs-lisp
+  (use-package corfu
+    ;; Optional customizations
+    :custom
+    ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+    (corfu-auto t)                 ;; Enable auto completion
+    (corfu-popupinfo-mode t)
+    ;; (corfu-separator ?\s)          ;; Orderless field separator
+    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+    ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+    ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+    ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+
+    ;; Enable Corfu only for certain modes.
+    ;; :hook ((prog-mode . corfu-mode)
+    ;;        (shell-mode . corfu-mode)
+    ;;        (eshell-mode . corfu-mode))
+
+    ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
+    ;; be used globally (M-/).  See also the customization variable
+    ;; `global-corfu-modes' to exclude certain modes.
+    :init
+    (global-corfu-mode))
+
+
+  ;; A few more useful configurations...
+  (use-package emacs
+    :init
+    ;; TAB cycle if there are only few candidates
+    (setq completion-cycle-threshold 3)
+
+    ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+    ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+    ;; (setq read-extended-command-predicate
+    ;;       #'command-completion-default-include-p)
+
+    ;; Enable indentation+completion using the TAB key.
+    ;; `completion-at-point' is often bound to M-TAB.
+    (setq tab-always-indent 'complete))
+#+end_src
+
+***** Cape capf extensions
+
+https://github.com/minad/cape
+
+#+begin_src emacs-lisp
+  ;; Add extensions
+  (use-package cape
+    ;; Bind dedicated completion commands
+    ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+    :bind (("C-c p p" . completion-at-point) ;; capf
+           ("C-c p t" . complete-tag)        ;; etags
+           ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+           ("C-c p h" . cape-history)
+           ("C-c p f" . cape-file)
+           ("C-c p k" . cape-keyword)
+           ("C-c p s" . cape-elisp-symbol)
+           ("C-c p e" . cape-elisp-block)
+           ("C-c p a" . cape-abbrev)
+           ("C-c p l" . cape-line)
+           ("C-c p w" . cape-dict)
+           ("C-c p :" . cape-emoji)
+           ("C-c p \\" . cape-tex)
+           ("C-c p _" . cape-tex)
+           ("C-c p ^" . cape-tex)
+           ("C-c p &" . cape-sgml)
+           ("C-c p r" . cape-rfc1345))
+    :init
+    ;; Add to the global default value of `completion-at-point-functions' which is
+    ;; used by `completion-at-point'.  The order of the functions matters, the
+    ;; first function returning a result wins.  Note that the list of buffer-local
+    ;; completion functions takes precedence over the global list.
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+    ;;(add-to-list 'completion-at-point-functions #'cape-history)
+    ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+    ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+    ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+    ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+    ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+    ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+    ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
+    ;;(add-to-list 'completion-at-point-functions #'cape-line)
+  )
+
+#+end_src
+
+
 **** Which Key                                                    :which:key:
 :PROPERTIES:
 :END:
@@ -1140,7 +1235,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 **** company
 #+begin_src emacs-lisp
   (use-package company
-    :disabled
+    ;;:disabled
     :config
     (use-package company-box
       :config
@@ -1151,99 +1246,6 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     :bind( :map company-mode-map
            ("<tab>" .  company-indent-or-complete-common)))
 #+end_src
-**** corfu
-#+begin_src emacs-lisp
-  (use-package corfu
-    ;; Optional customizations
-    :custom
-    ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    (corfu-auto t)                 ;; Enable auto completion
-    (corfu-popupinfo-mode t)
-    ;; (corfu-separator ?\s)          ;; Orderless field separator
-    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-    ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-    ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-    ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-
-    ;; Enable Corfu only for certain modes.
-    ;; :hook ((prog-mode . corfu-mode)
-    ;;        (shell-mode . corfu-mode)
-    ;;        (eshell-mode . corfu-mode))
-
-    ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
-    ;; be used globally (M-/).  See also the customization variable
-    ;; `global-corfu-modes' to exclude certain modes.
-    :init
-    (global-corfu-mode))
-
-
-  ;; A few more useful configurations...
-  (use-package emacs
-    :init
-    ;; TAB cycle if there are only few candidates
-    (setq completion-cycle-threshold 3)
-
-    ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-    ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-    ;; (setq read-extended-command-predicate
-    ;;       #'command-completion-default-include-p)
-
-    ;; Enable indentation+completion using the TAB key.
-    ;; `completion-at-point' is often bound to M-TAB.
-    (setq tab-always-indent 'complete))
-#+end_src
-
-
-***** Cape capf extensions
-
-Cape provides Completion At Point Extensions which can be used in combination with Corfu, Company or the default completion UI. The completion backends used by completion-at-point are so called completion-at-point-functions (Capfs).
-
-https://github.com/minad/cape
-
-#+begin_src emacs-lisp
-  ;; Add extensions
-  (use-package cape
-    ;; Bind dedicated completion commands
-    ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-    :bind (("C-c p p" . completion-at-point) ;; capf
-           ("C-c p t" . complete-tag)        ;; etags
-           ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-           ("C-c p h" . cape-history)
-           ("C-c p f" . cape-file)
-           ("C-c p k" . cape-keyword)
-           ("C-c p s" . cape-elisp-symbol)
-           ("C-c p e" . cape-elisp-block)
-           ("C-c p a" . cape-abbrev)
-           ("C-c p l" . cape-line)
-           ("C-c p w" . cape-dict)
-           ("C-c p :" . cape-emoji)
-           ("C-c p \\" . cape-tex)
-           ("C-c p _" . cape-tex)
-           ("C-c p ^" . cape-tex)
-           ("C-c p &" . cape-sgml)
-           ("C-c p r" . cape-rfc1345))
-    :init
-    ;; Add to the global default value of `completion-at-point-functions' which is
-    ;; used by `completion-at-point'.  The order of the functions matters, the
-    ;; first function returning a result wins.  Note that the list of buffer-local
-    ;; completion functions takes precedence over the global list.
-    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-    (add-to-list 'completion-at-point-functions #'cape-file)
-    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-    ;;(add-to-list 'completion-at-point-functions #'cape-history)
-    ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-    ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-    ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-    ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-    ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-    ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-    ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
-    ;;(add-to-list 'completion-at-point-functions #'cape-line)
-  )
-#+end_src
-
 **** [[https://github.com/oantolin/orderless][Orderless]] provides an orderless completion style that divides the pattern into space-separated components :orderless:
 #+begin_src  emacs-lisp
   (use-package orderless
@@ -1588,18 +1590,18 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
       (condition-case err
           (dotimes (_ 2)
             (recenter-top-bottom))
-        (error nil)))
+          (error nil)))
     (defun rgr/eww-launch-external-browser-from-buffer()
       (interactive)
       (alert "Launching external browser")
       (call-process-shell-command "swaymsg workspace number 2" nil 0)
       (eww-browse-with-external-browser)
       (quit-window))
-  :hook (eww-after-render . rgr/eww-after-render)
-  :bind
-  ("C-c o" . 'eww)
-  (:map eww-mode-map
-        ( "&" . rgr/eww-launch-external-browser-from-buffer)))
+    :hook (eww-after-render . rgr/eww-after-render)
+    :bind
+    ("C-c o" . 'eww)
+    (:map eww-mode-map
+          ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 #+end_src
 
 ***** go-translate
@@ -1806,6 +1808,13 @@ Browse devdocs.io documents inside Emacs!
 #+begin_src bash
   sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 #+end_src
+**** impatient-showdow, markdown view live
+Preview markdown buffer live over HTTP using showdown.
+https://github.com/jcs-elpa/impatient-showdown
+#+begin_src emacs-lisp
+  (use-package impatient-showdown
+    :hook (markdown-mode . impatient-showdown-mode))
+#+end_src
 
 **** provide
 :PROPERTIES:
@@ -1830,7 +1839,6 @@ Browse devdocs.io documents inside Emacs!
                              ("integration" "integration/*")
                              (:exclude ".dir-locals.el" "*-tests.el")))
     :config
-    (mess
     (defun rgr/projectile-term()
       (interactive)
       (if (string-equal major-mode "eat-mode")
