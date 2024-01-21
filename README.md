@@ -988,6 +988,15 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;; be used globally (M-/).  See also the customization variable
           ;; `global-corfu-modes' to exclude certain modes.
           :init
+          (defun corfu-enable-in-minibuffer ()
+            "Enable Corfu in the minibuffer."
+            (when (local-variable-p 'completion-at-point-functions)
+              ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
+              (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
+                          corfu-popupinfo-delay nil)
+              (corfu-mode 1)))
+          (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
+        
           (global-corfu-mode))
         
         
@@ -1310,7 +1319,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgcdfb367)
+    See `org-agenda-files` [org-agenda-files](#orge8cbe13)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2739,7 +2748,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0219fa5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org89ab46f) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2772,7 +2781,7 @@ to add to version control.
     fi
 
 
-<a id="org0219fa5"></a>
+<a id="org89ab46f"></a>
 
 ### Gnome protocol handler desktop file
 
