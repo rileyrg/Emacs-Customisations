@@ -1,3 +1,5 @@
+(use-package gptel)
+
 (use-package eww
   :config
   ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.

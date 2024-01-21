@@ -1319,7 +1319,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orge8cbe13)
+    See `org-agenda-files` [org-agenda-files](#orga5ba40d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1401,6 +1401,30 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 
 ### library
+
+1.  chatgpt
+
+    1.  GPTel
+    
+        <https://github.com/karthink/gptel>
+        
+            (use-package gptel)
+        
+        1.  secret openAPI key
+        
+            &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
+            
+            hQEMA7IjL5SkHG4iAQf+N61j3/62smGNrhRPOrE3U8JMpJlcDf7d0gukqvXXYD3r
+            A0t7kLn3T4t0zfwDq/TvXRXhdB+IMkkB5vK+A4HGQv9jPuVGzoalYvzGlJpSGw2O
+            /Q6EHYmtms31r71LCFYMDg+8FsVFN+l43QRCOeFmJNv+paEbB0xH9xzrpaIqUQV3
+            LwBrriEfRo0PPwq3164HT/cjdzGLGLchSsBbfbXfAzN/JnN2olaHxiz+6kL+IWvZ
+            kI9IRBhOFnPigbQ+QXzni0JimSavFE/qTaPpiFIh+PUp8ETt2TcjarzrpLetk8lA
+            fIhRyWuu3+GTDuc5iASXGcGKHMusNE+xC20FNcwWDdKbAd2N2BRg2gwO/jzlm7Gc
+            l8/YEKMfbaubRX/hG2qOV8OnS+Io8cZx9cN3L7X6QbCzkW0KPwMt2O+CNYvKADFU
+            F4czehuTpGF0+QVLOpzgvOzPHZdbtiFiH47PdN/rXlHpwAX0cqhpe8WPAYBzNd22
+            DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
+            =UHS1
+            &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
 
 1.  web lookup/view
 
@@ -2748,7 +2772,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org89ab46f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7cbedfa) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2781,7 +2805,7 @@ to add to version control.
     fi
 
 
-<a id="org89ab46f"></a>
+<a id="org7cbedfa"></a>
 
 ### Gnome protocol handler desktop file
 
