@@ -39,7 +39,7 @@ int main(void)
     ("eml" "emacs-lisp" nil :count 6)
     ("es" "#+end_src" nil :count 3)
     ("mls" "ehll\\nthere\\nend" nil :count 1)
-    ("tem" "#+TITLE: %CHANGEME%
+    ("otem" "#+TITLE: %CHANGEME%
 #+AUTHOR: rileyrg
 #+EMAIL: rileyrg at g m x dot de
 
@@ -54,4 +54,3 @@ int main(void)
 
 #+PROPERTY: header-args:bash :tangle-mode (identity #o755)" nil :count 3)
    ))
-
