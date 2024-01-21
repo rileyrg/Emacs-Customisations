@@ -1120,6 +1120,15 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     ;; be used globally (M-/).  See also the customization variable
     ;; `global-corfu-modes' to exclude certain modes.
     :init
+    (defun corfu-enable-in-minibuffer ()
+      "Enable Corfu in the minibuffer."
+      (when (local-variable-p 'completion-at-point-functions)
+        ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
+        (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
+                    corfu-popupinfo-delay nil)
+        (corfu-mode 1)))
+    (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
+
     (global-corfu-mode))
 
 
