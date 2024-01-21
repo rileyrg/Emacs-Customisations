@@ -1009,7 +1009,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 4.  company
 
         (use-package company
-          ;;:disabled
+          :disabled
           :config
           (use-package company-box
             :config
@@ -1020,7 +1020,96 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :bind( :map company-mode-map
                  ("<tab>" .  company-indent-or-complete-common)))
 
-5.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
+5.  corfu
+
+        (use-package corfu
+          ;; Optional customizations
+          :custom
+          ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+          (corfu-auto t)                 ;; Enable auto completion
+          (corfu-popupinfo-mode t)
+          ;; (corfu-separator ?\s)          ;; Orderless field separator
+          ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+          ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+          ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+          ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+          ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+          ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+        
+          ;; Enable Corfu only for certain modes.
+          ;; :hook ((prog-mode . corfu-mode)
+          ;;        (shell-mode . corfu-mode)
+          ;;        (eshell-mode . corfu-mode))
+        
+          ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
+          ;; be used globally (M-/).  See also the customization variable
+          ;; `global-corfu-modes' to exclude certain modes.
+          :init
+          (global-corfu-mode))
+        
+        
+        ;; A few more useful configurations...
+        (use-package emacs
+          :init
+          ;; TAB cycle if there are only few candidates
+          (setq completion-cycle-threshold 3)
+        
+          ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+          ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+          ;; (setq read-extended-command-predicate
+          ;;       #'command-completion-default-include-p)
+        
+          ;; Enable indentation+completion using the TAB key.
+          ;; `completion-at-point' is often bound to M-TAB.
+          (setq tab-always-indent 'complete))
+    
+    1.  Cape capf extensions
+    
+        Cape provides Completion At Point Extensions which can be used in combination with Corfu, Company or the default completion UI. The completion backends used by completion-at-point are so called completion-at-point-functions (Capfs).
+        
+        <https://github.com/minad/cape>
+        
+            ;; Add extensions
+            (use-package cape
+              ;; Bind dedicated completion commands
+              ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+              :bind (("C-c p p" . completion-at-point) ;; capf
+                     ("C-c p t" . complete-tag)        ;; etags
+                     ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+                     ("C-c p h" . cape-history)
+                     ("C-c p f" . cape-file)
+                     ("C-c p k" . cape-keyword)
+                     ("C-c p s" . cape-elisp-symbol)
+                     ("C-c p e" . cape-elisp-block)
+                     ("C-c p a" . cape-abbrev)
+                     ("C-c p l" . cape-line)
+                     ("C-c p w" . cape-dict)
+                     ("C-c p :" . cape-emoji)
+                     ("C-c p \\" . cape-tex)
+                     ("C-c p _" . cape-tex)
+                     ("C-c p ^" . cape-tex)
+                     ("C-c p &" . cape-sgml)
+                     ("C-c p r" . cape-rfc1345))
+              :init
+              ;; Add to the global default value of `completion-at-point-functions' which is
+              ;; used by `completion-at-point'.  The order of the functions matters, the
+              ;; first function returning a result wins.  Note that the list of buffer-local
+              ;; completion functions takes precedence over the global list.
+              (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+              (add-to-list 'completion-at-point-functions #'cape-file)
+              (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+              ;;(add-to-list 'completion-at-point-functions #'cape-history)
+              ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+              ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+              ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+              ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+              ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+              ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+              ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
+              ;;(add-to-list 'completion-at-point-functions #'cape-line)
+            )
+
+6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
         (use-package orderless
           :init
@@ -1059,7 +1148,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
             ;; Enable recursive minibuffers
             (setq enable-recursive-minibuffers t)))
 
-6.  vertico , vertical interactive completion
+7.  vertico , vertical interactive completion
 
     <https://github.com/minad/vertico>
     
@@ -1077,13 +1166,13 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :init
           (vertico-mode))
 
-7.  Abbrev Mode
+8.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
         (setq-default abbrev-mode 1)
 
-8.  provide
+9.  provide
 
         (provide 'rgr/completion)
 
@@ -1223,7 +1312,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org6355900)
+    See `org-agenda-files` [org-agenda-files](#org4321c77)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1324,9 +1413,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                       (browse-url-generic url))
                   ad-do-it))
               (defun rgr/eww-after-render ()
-                 ;;move point line to top
-                (dotimes (_ 2)
-                  (recenter-top-bottom)))
+                ;;move point line to top
+                (condition-case err
+                    (dotimes (_ 2)
+                      (recenter-top-bottom))
+                  (error nil)))
               (defun rgr/eww-launch-external-browser-from-buffer()
                 (interactive)
                 (alert "Launching external browser")
@@ -1517,15 +1608,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-7.  impatient-showdow, markdown view live
-
-    Preview markdown buffer live over HTTP using showdown.
-    <https://github.com/jcs-elpa/impatient-showdown>
-    
-        (use-package impatient-showdown
-          :hook (markdown-mode . impatient-showdown-mode))
-
-8.  provide
+7.  provide
 
         (provide 'rgr/reference)
 
@@ -1548,6 +1631,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                                ("integration" "integration/*")
                                (:exclude ".dir-locals.el" "*-tests.el")))
       :config
+      (mess
       (defun rgr/projectile-term()
         (interactive)
         (if (string-equal major-mode "eat-mode")
@@ -2650,7 +2734,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8afc035) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf617788) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2683,7 +2767,7 @@ to add to version control.
     fi
 
 
-<a id="org8afc035"></a>
+<a id="orgf617788"></a>
 
 ### Gnome protocol handler desktop file
 

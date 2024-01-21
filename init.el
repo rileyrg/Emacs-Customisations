@@ -60,6 +60,7 @@
                            ("integration" "integration/*")
                            (:exclude ".dir-locals.el" "*-tests.el")))
   :config
+  (mess
   (defun rgr/projectile-term()
     (interactive)
     (if (string-equal major-mode "eat-mode")

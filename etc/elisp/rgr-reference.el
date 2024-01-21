@@ -12,9 +12,11 @@
           (browse-url-generic url))
       ad-do-it))
   (defun rgr/eww-after-render ()
-     ;;move point line to top
-    (dotimes (_ 2)
-      (recenter-top-bottom)))
+    ;;move point line to top
+    (condition-case err
+        (dotimes (_ 2)
+          (recenter-top-bottom))
+      (error nil)))
   (defun rgr/eww-launch-external-browser-from-buffer()
     (interactive)
     (alert "Launching external browser")
@@ -166,8 +168,5 @@
                                            ))
   (use-package org-pdftools
     :hook (org-mode . org-pdftools-setup-link)))
-
-(use-package impatient-showdown
-  :hook (markdown-mode . impatient-showdown-mode))
 
 (provide 'rgr/reference)
