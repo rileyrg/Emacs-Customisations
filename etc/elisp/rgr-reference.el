@@ -16,18 +16,18 @@
     (condition-case err
         (dotimes (_ 2)
           (recenter-top-bottom))
-      (error nil)))
+        (error nil)))
   (defun rgr/eww-launch-external-browser-from-buffer()
     (interactive)
     (alert "Launching external browser")
     (call-process-shell-command "swaymsg workspace number 2" nil 0)
     (eww-browse-with-external-browser)
     (quit-window))
-:hook (eww-after-render . rgr/eww-after-render)
-:bind
-("C-c o" . 'eww)
-(:map eww-mode-map
-      ( "&" . rgr/eww-launch-external-browser-from-buffer)))
+  :hook (eww-after-render . rgr/eww-after-render)
+  :bind
+  ("C-c o" . 'eww)
+  (:map eww-mode-map
+        ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 
 (use-package go-translate
   ;;:disabled
@@ -168,5 +168,8 @@
                                            ))
   (use-package org-pdftools
     :hook (org-mode . org-pdftools-setup-link)))
+
+(use-package impatient-showdown
+  :hook (markdown-mode . impatient-showdown-mode))
 
 (provide 'rgr/reference)

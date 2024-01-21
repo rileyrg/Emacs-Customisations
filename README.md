@@ -963,64 +963,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
 ### library
 
-1.  Which Key
-
-    [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
-    
-        (use-package
-          which-key
-          :demand t
-          :config (which-key-mode))
-
-2.  Yasnippet
-
-    [YASnippet](https://github.com/joaotavora/yasnippet)  is a template system for Emacs.
-    
-        (use-package yasnippet
-          :config
-          (use-package yasnippet-snippets)
-          :init
-          (yas-global-mode))
-
-3.  Abbrev Mode
-
-    [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
-    
-        (setq-default abbrev-mode 1)
-        (defadvice expand-abbrev (after my-expand-abbrev activate)
-          ;; if there was an expansion
-          (if ad-return-value
-              ;; start idle timer to ensure insertion of abbrev activator
-              ;; character (e.g. space) is finished
-              (run-with-idle-timer 0 nil
-                                   (lambda ()
-                                     ;; if there is the string "@@" in the
-                                     ;; expansion then move cursor there and
-                                     ;; delete the string
-                                     (let ((cursor "%CHANGEME%"))
-                                       (when (search-backward  cursor last-abbrev-location t)
-                                         (goto-char  last-abbrev-location)
-                                         (search-forward cursor)
-                                         (backward-word)
-                                         (highlight-symbol-at-point)
-                                         (delete-char (length cursor))
-                                         ))))))
-
-4.  company
-
-        (use-package company
-          :disabled
-          :config
-          (use-package company-box
-            :config
-            (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
-            :hook (company-mode . company-box-mode))
-          :hook
-          (prog-mode . company-mode)
-          :bind( :map company-mode-map
-                 ("<tab>" .  company-indent-or-complete-common)))
-
-5.  corfu
+1.  corfu
 
         (use-package corfu
           ;; Optional customizations
@@ -1065,8 +1008,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     
     1.  Cape capf extensions
     
-        Cape provides Completion At Point Extensions which can be used in combination with Corfu, Company or the default completion UI. The completion backends used by completion-at-point are so called completion-at-point-functions (Capfs).
-        
         <https://github.com/minad/cape>
         
             ;; Add extensions
@@ -1108,6 +1049,63 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
               ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
               ;;(add-to-list 'completion-at-point-functions #'cape-line)
             )
+
+2.  Which Key
+
+    [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
+    
+        (use-package
+          which-key
+          :demand t
+          :config (which-key-mode))
+
+3.  Yasnippet
+
+    [YASnippet](https://github.com/joaotavora/yasnippet)  is a template system for Emacs.
+    
+        (use-package yasnippet
+          :config
+          (use-package yasnippet-snippets)
+          :init
+          (yas-global-mode))
+
+4.  Abbrev Mode
+
+    [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
+    
+        (setq-default abbrev-mode 1)
+        (defadvice expand-abbrev (after my-expand-abbrev activate)
+          ;; if there was an expansion
+          (if ad-return-value
+              ;; start idle timer to ensure insertion of abbrev activator
+              ;; character (e.g. space) is finished
+              (run-with-idle-timer 0 nil
+                                   (lambda ()
+                                     ;; if there is the string "@@" in the
+                                     ;; expansion then move cursor there and
+                                     ;; delete the string
+                                     (let ((cursor "%CHANGEME%"))
+                                       (when (search-backward  cursor last-abbrev-location t)
+                                         (goto-char  last-abbrev-location)
+                                         (search-forward cursor)
+                                         (backward-word)
+                                         (highlight-symbol-at-point)
+                                         (delete-char (length cursor))
+                                         ))))))
+
+5.  company
+
+        (use-package company
+          ;;:disabled
+          :config
+          (use-package company-box
+            :config
+            (setf (alist-get 'internal-border-width company-box-doc-frame-parameters) 1)
+            :hook (company-mode . company-box-mode))
+          :hook
+          (prog-mode . company-mode)
+          :bind( :map company-mode-map
+                 ("<tab>" .  company-indent-or-complete-common)))
 
 6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
 
@@ -1312,7 +1310,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org4321c77)
+    See `org-agenda-files` [org-agenda-files](#orgcdfb367)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1417,18 +1415,18 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (condition-case err
                     (dotimes (_ 2)
                       (recenter-top-bottom))
-                  (error nil)))
+                    (error nil)))
               (defun rgr/eww-launch-external-browser-from-buffer()
                 (interactive)
                 (alert "Launching external browser")
                 (call-process-shell-command "swaymsg workspace number 2" nil 0)
                 (eww-browse-with-external-browser)
                 (quit-window))
-            :hook (eww-after-render . rgr/eww-after-render)
-            :bind
-            ("C-c o" . 'eww)
-            (:map eww-mode-map
-                  ( "&" . rgr/eww-launch-external-browser-from-buffer)))
+              :hook (eww-after-render . rgr/eww-after-render)
+              :bind
+              ("C-c o" . 'eww)
+              (:map eww-mode-map
+                    ( "&" . rgr/eww-launch-external-browser-from-buffer)))
     
     2.  go-translate
     
@@ -1608,7 +1606,15 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-7.  provide
+7.  impatient-showdow, markdown view live
+
+    Preview markdown buffer live over HTTP using showdown.
+    <https://github.com/jcs-elpa/impatient-showdown>
+    
+        (use-package impatient-showdown
+          :hook (markdown-mode . impatient-showdown-mode))
+
+8.  provide
 
         (provide 'rgr/reference)
 
@@ -1631,7 +1637,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                                ("integration" "integration/*")
                                (:exclude ".dir-locals.el" "*-tests.el")))
       :config
-      (mess
       (defun rgr/projectile-term()
         (interactive)
         (if (string-equal major-mode "eat-mode")
@@ -2734,7 +2739,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf617788) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0219fa5) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2767,7 +2772,7 @@ to add to version control.
     fi
 
 
-<a id="orgf617788"></a>
+<a id="org0219fa5"></a>
 
 ### Gnome protocol handler desktop file
 
