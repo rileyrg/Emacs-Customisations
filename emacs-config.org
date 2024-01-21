@@ -1577,6 +1577,30 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 :ID:       e74c6135-2abc-46db-844e-a2c638b00bae
 :END:
 
+***** chatgpt
+
+****** GPTel
+https://github.com/karthink/gptel
+
+#+begin_src  emacs-lisp
+  (use-package gptel)
+#+end_src
+
+******* secret openAPI key :crypt:
+-----BEGIN PGP MESSAGE-----
+
+hQEMA7IjL5SkHG4iAQf+N61j3/62smGNrhRPOrE3U8JMpJlcDf7d0gukqvXXYD3r
+A0t7kLn3T4t0zfwDq/TvXRXhdB+IMkkB5vK+A4HGQv9jPuVGzoalYvzGlJpSGw2O
+/Q6EHYmtms31r71LCFYMDg+8FsVFN+l43QRCOeFmJNv+paEbB0xH9xzrpaIqUQV3
+LwBrriEfRo0PPwq3164HT/cjdzGLGLchSsBbfbXfAzN/JnN2olaHxiz+6kL+IWvZ
+kI9IRBhOFnPigbQ+QXzni0JimSavFE/qTaPpiFIh+PUp8ETt2TcjarzrpLetk8lA
+fIhRyWuu3+GTDuc5iASXGcGKHMusNE+xC20FNcwWDdKbAd2N2BRg2gwO/jzlm7Gc
+l8/YEKMfbaubRX/hG2qOV8OnS+Io8cZx9cN3L7X6QbCzkW0KPwMt2O+CNYvKADFU
+F4czehuTpGF0+QVLOpzgvOzPHZdbtiFiH47PdN/rXlHpwAX0cqhpe8WPAYBzNd22
+DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
+=UHS1
+-----END PGP MESSAGE-----
+
 **** web lookup/view
 
 ***** eww
