@@ -1583,7 +1583,9 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 https://github.com/karthink/gptel
 
 #+begin_src  emacs-lisp
-  (use-package gptel)
+  (use-package gptel
+    :bind
+    ("C-c q" . #'gptel-send))
 #+end_src
 
 ******* secret openAPI key :crypt:
@@ -1600,6 +1602,21 @@ F4czehuTpGF0+QVLOpzgvOzPHZdbtiFiH47PdN/rXlHpwAX0cqhpe8WPAYBzNd22
 DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
 =UHS1
 -----END PGP MESSAGE-----
+
+****** Ellama
+
+https://github.com/s-kostyaev/ellama
+https://github.com/s-kostyaev/ellama
+https://ollama.ai/library/zephyr
+
+  #+begin_src  emacs-lisp
+    (use-package ellama
+      :custom
+      (ellama-sessions-directory (no-littering-expand-var-file-name "ellama-sessions"))
+      :init
+      (setopt ellama-language "German")
+      (require 'llm-ollama))
+#+end_src
 
 **** web lookup/view
 
