@@ -1,4 +1,13 @@
-(use-package gptel)
+(use-package gptel
+  :bind
+  ("C-c q" . #'gptel-send))
+
+(use-package ellama
+  :custom
+  (ellama-sessions-directory (no-littering-expand-var-file-name "ellama-sessions"))
+  :init
+  (setopt ellama-language "German")
+  (require 'llm-ollama))
 
 (use-package eww
   :config
