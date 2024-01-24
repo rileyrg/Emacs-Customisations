@@ -72,7 +72,7 @@
          ;; Isearch integration
          ("M-s e" . consult-isearch-history)
          :map org-mode-map
-          ("M-s o" . consult-org-heading)
+         ("M-s o" . consult-org-heading)
          :map isearch-mode-map
          ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
          ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string

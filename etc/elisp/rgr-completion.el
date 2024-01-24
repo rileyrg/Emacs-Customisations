@@ -50,6 +50,7 @@
 
 ;; Add extensions
 (use-package cape
+  :demand t
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
   :bind (("C-c p p" . completion-at-point) ;; capf
@@ -86,7 +87,7 @@
   ;;(add-to-list 'completion-at-point-functions #'cape-dict)
   ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
   ;;(add-to-list 'completion-at-point-functions #'cape-line)
-)
+  )
 
 (use-package
   which-key

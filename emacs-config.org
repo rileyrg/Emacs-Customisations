@@ -69,23 +69,6 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
   (setq max-specpdl-size 13000)
 #+end_src
 
-*** debug init utility function
-#+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
-  ;; look for a debug init file and load, trigger the debugger
-  (defun debug-init (&optional fname)
-    (let* ((fname (if fname fname "debug-init.el"))
-           (debug-init (expand-file-name fname user-emacs-directory)))
-      (if (file-exists-p debug-init)
-          (progn
-            (message "A debug-init, %s, was found, so loading." debug-init)
-            (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
-              (load-file debug-init)
-              (if rgr/debug-init-debugger
-                  (debug)
-                (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
-        (message "No debug initfile, %s, found so ignoring" debug-init))))
-#+end_src
-
 *** straight.el package management
 :PROPERTIES:
 :ID:       0ae9fe79-ab41-42ed-82d4-859b21576392
@@ -129,9 +112,9 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (make-backup-files t)
     :init
     (setq backup-directory-alist
-      `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+          `(("." . ,(no-littering-expand-var-file-name "backup/"))))
     (setq auto-save-file-name-transforms
-      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
     (when (boundp 'native-comp-eln-load-path)
       (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
@@ -146,7 +129,20 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
   (load custom-file 'noerror)
 #+end_src
 **  debug init
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
+  ;; look for a debug init file and load, trigger the debugger
+  (defun debug-init (&optional fname)
+    (let* ((fname (if fname fname "debug-init.el"))
+           (debug-init (expand-file-name fname user-emacs-directory)))
+      (if (file-exists-p debug-init)
+          (progn
+            (message "A debug-init, %s, was found, so loading." debug-init)
+            (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
+              (load-file debug-init)
+              (if rgr/debug-init-debugger
+                  (debug)
+                (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
+        (message "No debug initfile, %s, found so ignoring" debug-init))))
   (debug-init)
 #+end_src
 * config
@@ -700,12 +696,12 @@ https://github.com/iqbalansari/emacs-emojify
 https://github.com/magnars/multiple-cursors.emacs-lisp
 #+begin_src  emacs-lisp
   (use-package multiple-cursors
-   :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
-         ("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
-         ("C-c C->" . mc/mark-all-like-this)
-         ("C-c C-SPC" . mc/edit-lines)
-         ))
+    :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+           ("C->" . mc/mark-next-like-this)
+           ("C-<" . mc/mark-previous-like-this)
+           ("C-c C->" . mc/mark-all-like-this)
+           ("C-c C-SPC" . mc/edit-lines)
+           ))
 #+end_src
 **** Folding/Hide Show
 :PROPERTIES:
@@ -898,7 +894,7 @@ Consult]] Provides various commands based on the Emacs completion function compl
            ;; Isearch integration
            ("M-s e" . consult-isearch-history)
            :map org-mode-map
-            ("M-s o" . consult-org-heading)
+           ("M-s o" . consult-org-heading)
            :map isearch-mode-map
            ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
            ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
@@ -1155,6 +1151,7 @@ https://github.com/minad/cape
 #+begin_src emacs-lisp
   ;; Add extensions
   (use-package cape
+    :demand t
     ;; Bind dedicated completion commands
     ;; Alternative prefix keys: C-c p, M-p, M-+, ...
     :bind (("C-c p p" . completion-at-point) ;; capf
@@ -1191,7 +1188,7 @@ https://github.com/minad/cape
     ;;(add-to-list 'completion-at-point-functions #'cape-dict)
     ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
     ;;(add-to-list 'completion-at-point-functions #'cape-line)
-  )
+    )
 
 #+end_src
 
@@ -1379,7 +1376,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 #+end_src
 ***** org-contrib
 #+begin_src  emacs-lisp
-      (use-package org-contrib)
+  (use-package org-contrib)
 #+end_src
 ***** org-id
 :PROPERTIES:
@@ -1609,13 +1606,13 @@ https://github.com/s-kostyaev/ellama
 https://github.com/s-kostyaev/ellama
 https://ollama.ai/library/zephyr
 
-  #+begin_src  emacs-lisp
-    (use-package ellama
-      :custom
-      (ellama-sessions-directory (no-littering-expand-var-file-name "ellama-sessions"))
-      :init
-      (setopt ellama-language "German")
-      (require 'llm-ollama))
+#+begin_src  emacs-lisp
+  (use-package ellama
+    :custom
+    (ellama-sessions-directory (no-littering-expand-var-file-name "ellama-sessions"))
+    :init
+    (setopt ellama-language "German")
+    (require 'llm-ollama))
 #+end_src
 
 **** web lookup/view
@@ -1640,7 +1637,7 @@ https://ollama.ai/library/zephyr
       (condition-case err
           (dotimes (_ 2)
             (recenter-top-bottom))
-          (error nil)))
+        (error nil)))
     (defun rgr/eww-launch-external-browser-from-buffer()
       (interactive)
       (alert "Launching external browser")
@@ -1800,10 +1797,10 @@ Browse devdocs.io documents inside Emacs!
     (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
     :config
     (defun rgr/devdocs(&optional i)
-          "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
+      "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
       (interactive)
       (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
-   major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
+                                                       major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
           (rgr/emacs-lisp-help)
         (if current-prefix-arg
             (call-interactively 'devdocs-browser-open-in)
@@ -2975,20 +2972,34 @@ Display a poup containing docstring at point
 :PROPERTIES:
 :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
 :END:
+***** edebug
 #+begin_src emacs-lisp
-  (use-package
-    edebug-x
-    :demand t
-    :init
+  (use-package edebug-x
+    :custom
+    (debugger-stack-frame-as-list t)
+    :config
     (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
     ;;(edebug-trace nil)
     :config
-    (require 'edebug)
-    (defun instrumentForDebugging()
-      "use the universal prefix arg (C-u) to remove instrumentation"
-      (interactive)
-      (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
-    )
+    (defun instrumentForDebugging() "use the universal prefix arg (C-u) to remove instrumentation" (interactive)
+           (if current-prefix-arg (eval-defun nil)
+             (eval-defun 0))))
+#+end_src
+***** display value at point in edebug
+#+begin_src  emacs-lisp
+  (defun rgr/edebug-point()
+    "message display the vale of the symbol at point"
+    (let((tap (thing-at-point 'symbol)))
+      (if tap
+          (let((sym (if (symbolp tap) tap (intern-soft tap))))
+            (condition-case nil
+                  (message "%s: %s" sym (edebug-eval  sym))
+              (error nil))))))
+  (defun rgr/edebug-mode-hook()
+    "add a call to display the value at point when debugging with edebug"
+    (add-hook 'post-command-hook #'rgr/edebug-point nil
+              :local))
+  (add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 #+end_src
 
 #+RESULTS:

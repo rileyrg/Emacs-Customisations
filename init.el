@@ -1,8 +1,6 @@
 (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
 (load custom-file 'noerror)
 
-(debug-init)
-
 ;; look for a debug init file and load, trigger the debugger
 (debug-init "debug-init-straight.el")
 

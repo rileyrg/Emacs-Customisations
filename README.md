@@ -44,23 +44,6 @@ invoke google translate on them. Stores history.
     (setq max-specpdl-size 13000)
 
 
-### debug init utility function
-
-    ;; look for a debug init file and load, trigger the debugger
-    (defun debug-init (&optional fname)
-      (let* ((fname (if fname fname "debug-init.el"))
-             (debug-init (expand-file-name fname user-emacs-directory)))
-        (if (file-exists-p debug-init)
-            (progn
-              (message "A debug-init, %s, was found, so loading." debug-init)
-              (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
-                (load-file debug-init)
-                (if rgr/debug-init-debugger
-                    (debug)
-                  (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
-          (message "No debug initfile, %s, found so ignoring" debug-init))))
-
-
 ### straight.el package management
 
 [straight.el](https://github.com/raxod502/straight.el#features): next-generation, purely functional package manager for the Emacs hacker.
@@ -102,9 +85,9 @@ invoke google translate on them. Stores history.
       (make-backup-files t)
       :init
       (setq backup-directory-alist
-        `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+            `(("." . ,(no-littering-expand-var-file-name "backup/"))))
       (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
       (when (boundp 'native-comp-eln-load-path)
         (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
     
@@ -120,6 +103,19 @@ invoke google translate on them. Stores history.
 
 ## debug init
 
+    ;; look for a debug init file and load, trigger the debugger
+    (defun debug-init (&optional fname)
+      (let* ((fname (if fname fname "debug-init.el"))
+             (debug-init (expand-file-name fname user-emacs-directory)))
+        (if (file-exists-p debug-init)
+            (progn
+              (message "A debug-init, %s, was found, so loading." debug-init)
+              (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
+                (load-file debug-init)
+                (if rgr/debug-init-debugger
+                    (debug)
+                  (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
+          (message "No debug initfile, %s, found so ignoring" debug-init))))
     (debug-init)
 
 
@@ -613,12 +609,12 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         <https://github.com/magnars/multiple-cursors.emacs-lisp>
         
             (use-package multiple-cursors
-             :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
-                   ("C->" . mc/mark-next-like-this)
-                   ("C-<" . mc/mark-previous-like-this)
-                   ("C-c C->" . mc/mark-all-like-this)
-                   ("C-c C-SPC" . mc/edit-lines)
-                   ))
+              :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
+                     ("C->" . mc/mark-next-like-this)
+                     ("C-<" . mc/mark-previous-like-this)
+                     ("C-c C->" . mc/mark-all-like-this)
+                     ("C-c C-SPC" . mc/edit-lines)
+                     ))
 
 16. Folding/Hide Show
 
@@ -784,7 +780,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ;; Isearch integration
                  ("M-s e" . consult-isearch-history)
                  :map org-mode-map
-                  ("M-s o" . consult-org-heading)
+                 ("M-s o" . consult-org-heading)
                  :map isearch-mode-map
                  ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
                  ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
@@ -1021,6 +1017,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
         
             ;; Add extensions
             (use-package cape
+              :demand t
               ;; Bind dedicated completion commands
               ;; Alternative prefix keys: C-c p, M-p, M-+, ...
               :bind (("C-c p p" . completion-at-point) ;; capf
@@ -1057,7 +1054,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
               ;;(add-to-list 'completion-at-point-functions #'cape-dict)
               ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
               ;;(add-to-list 'completion-at-point-functions #'cape-line)
-            )
+              )
 
 2.  Which Key
 
@@ -1319,7 +1316,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga8162e1)
+    See `org-agenda-files` [org-agenda-files](#orgd1c7650)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1463,7 +1460,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (condition-case err
                     (dotimes (_ 2)
                       (recenter-top-bottom))
-                    (error nil)))
+                  (error nil)))
               (defun rgr/eww-launch-external-browser-from-buffer()
                 (interactive)
                 (alert "Launching external browser")
@@ -1605,10 +1602,10 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
           :config
           (defun rgr/devdocs(&optional i)
-                "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
+            "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
             (interactive)
             (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
-         major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
+                                                             major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
                 (rgr/emacs-lisp-help)
               (if current-prefix-arg
                   (call-interactively 'devdocs-browser-open-in)
@@ -2617,19 +2614,34 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 8.  Elisp debugging
 
-        (use-package
-          edebug-x
-          :demand t
-          :init
-          (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
-          ;;(edebug-trace nil)
-          :config
-          (require 'edebug)
-          (defun instrumentForDebugging()
-            "use the universal prefix arg (C-u) to remove instrumentation"
-            (interactive)
-            (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
-          )
+    1.  edebug
+    
+            (use-package edebug-x
+              :custom
+              (debugger-stack-frame-as-list t)
+              :config
+              (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
+              ;;(edebug-trace nil)
+              :config
+              (defun instrumentForDebugging() "use the universal prefix arg (C-u) to remove instrumentation" (interactive)
+                     (if current-prefix-arg (eval-defun nil)
+                       (eval-defun 0))))
+    
+    2.  display value at point in edebug
+    
+            (defun rgr/edebug-point()
+              "message display the vale of the symbol at point"
+              (let((tap (thing-at-point 'symbol)))
+                (if tap
+                    (let((sym (if (symbolp tap) tap (intern-soft tap))))
+                      (condition-case nil
+                            (message "%s: %s" sym (edebug-eval  sym))
+                        (error nil))))))
+            (defun rgr/edebug-mode-hook()
+              "add a call to display the value at point when debugging with edebug"
+              (add-hook 'post-command-hook #'rgr/edebug-point nil
+                        :local))
+            (add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 
 9.  Formatting
 
@@ -2787,7 +2799,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbdfb536) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3562506) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2820,7 +2832,7 @@ to add to version control.
     fi
 
 
-<a id="orgbdfb536"></a>
+<a id="org3562506"></a>
 
 ### Gnome protocol handler desktop file
 
