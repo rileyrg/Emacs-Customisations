@@ -48,18 +48,23 @@
          (if current-prefix-arg (eval-defun nil)
            (eval-defun 0))))
 
+(defun rgr/edebug-display-var (sym v)
+  (message "%s: %s" sym v))
+
 (defun rgr/edebug-point()
   "message display the vale of the symbol at point"
   (let((tap (thing-at-point 'symbol)))
     (if tap
         (let((sym (if (symbolp tap) tap (intern-soft tap))))
           (condition-case nil
-                (message "%s: %s" sym (edebug-eval  sym))
+                (rgr/edebug-display-var sym (edebug-eval  sym))
             (error nil))))))
+
 (defun rgr/edebug-mode-hook()
   "add a call to display the value at point when debugging with edebug"
   (add-hook 'post-command-hook #'rgr/edebug-point nil
             :local))
+
 (add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 
 (use-package
