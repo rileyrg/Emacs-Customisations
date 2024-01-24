@@ -37,19 +37,30 @@
   ("M-<f2>" . el-docstring-sap-display)
   ("M-<f1>" . el-docstring-sap-mode))
 
-(use-package
-  edebug-x
-  :demand t
-  :init
+(use-package edebug-x
+  :custom
+  (debugger-stack-frame-as-list t)
+  :config
   (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
   ;;(edebug-trace nil)
   :config
-  (require 'edebug)
-  (defun instrumentForDebugging()
-    "use the universal prefix arg (C-u) to remove instrumentation"
-    (interactive)
-    (if current-prefix-arg (eval-defun nil) (eval-defun 0)))
-  )
+  (defun instrumentForDebugging() "use the universal prefix arg (C-u) to remove instrumentation" (interactive)
+         (if current-prefix-arg (eval-defun nil)
+           (eval-defun 0))))
+
+(defun rgr/edebug-point()
+  "message display the vale of the symbol at point"
+  (let((tap (thing-at-point 'symbol)))
+    (if tap
+        (let((sym (if (symbolp tap) tap (intern-soft tap))))
+          (condition-case nil
+                (message "%s: %s" sym (edebug-eval  sym))
+            (error nil))))))
+(defun rgr/edebug-mode-hook()
+  "add a call to display the value at point when debugging with edebug"
+  (add-hook 'post-command-hook #'rgr/edebug-point nil
+            :local))
+(add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 
 (use-package
   elisp-format

@@ -27,7 +27,7 @@
     (condition-case err
         (dotimes (_ 2)
           (recenter-top-bottom))
-        (error nil)))
+      (error nil)))
   (defun rgr/eww-launch-external-browser-from-buffer()
     (interactive)
     (alert "Launching external browser")
@@ -143,10 +143,10 @@
   (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
   :config
   (defun rgr/devdocs(&optional i)
-        "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
+    "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
     (interactive)
     (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
- major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
+                                                     major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
         (rgr/emacs-lisp-help)
       (if current-prefix-arg
           (call-interactively 'devdocs-browser-open-in)
