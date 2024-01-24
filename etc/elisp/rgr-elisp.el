@@ -48,22 +48,28 @@
          (if current-prefix-arg (eval-defun nil)
            (eval-defun 0))))
 
-(defun rgr/edebug-display-var (sym v)
-  (message "%s: %s" sym v))
+;; bit more convoluted than it needs to be
+;; but I fancied using thing-at-point
+(defun rgr/edebug-display-thing-at-point()
+  (let ((tap (thing-at-point 'var)))
+    (if tap
+        (message "%s: %s" (nth 0 tap) (nth 1 tap)))))
 
-(defun rgr/edebug-point()
+(defun rgr/edebug-thing-at-point()
   "message display the vale of the symbol at point"
   (let((tap (thing-at-point 'symbol)))
     (if tap
         (let((sym (if (symbolp tap) tap (intern-soft tap))))
           (condition-case nil
-                (rgr/edebug-display-var sym (edebug-eval  sym))
+              (list sym (edebug-eval  sym))
             (error nil))))))
 
 (defun rgr/edebug-mode-hook()
+  (setq-local thing-at-point-provider-alist
+              (append thing-at-point-provider-alist
+                      '((var . rgr/edebug-thing-at-point))))
   "add a call to display the value at point when debugging with edebug"
-  (add-hook 'post-command-hook #'rgr/edebug-point nil
-            :local))
+  (add-hook 'post-command-hook #'rgr/edebug-display-thing-at-point nil :local))
 
 (add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 
