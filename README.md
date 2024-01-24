@@ -1316,7 +1316,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org5dd8a3d)
+    See `org-agenda-files` [org-agenda-files](#orgaff824d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1355,8 +1355,8 @@ Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
 
     
     (use-package emacs
-      :init
-      (defalias 'kill-ring-save 'rgr/kill-dwim)
+      ;;:init
+      ;;(defalias 'kill-ring-save 'rgr/kill-dwim)
     
       :config
       (defun rgr/get-region()
@@ -1376,12 +1376,17 @@ Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
         "work out what to pick up from point and stick in the kill ring"
         (interactive)
         (let ((s (rgr/thing-at-point-dwim)))
-          (message s)
+          (condition-case nil
+              (message s)
+            (error nil))
           "if a prefix argument (4)(C-u) allow edit / read from input"
           (if current-prefix-arg
               (setq s (read-string "text:" s)))
           (when s
-            (kill-new s)))))
+            (kill-new s))))
+    
+      :bind
+      ("M-w" . #'rgr/kill-dwim))
 
 1.  provide
 
@@ -2804,7 +2809,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb76d201) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8457357) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2837,7 +2842,7 @@ to add to version control.
     fi
 
 
-<a id="orgb76d201"></a>
+<a id="org8457357"></a>
 
 ### Gnome protocol handler desktop file
 
