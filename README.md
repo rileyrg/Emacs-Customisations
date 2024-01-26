@@ -224,7 +224,15 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
 ### library
 
-1.  toggle buffer
+1.  screencast gifs
+
+    Not working with wayland
+    
+        (use-package gif-screencast
+          :custom
+          (gif-screencast-output-directory "~/tmp"))
+
+2.  toggle buffer
 
         (defun rgr/toggle-buffer(n)
           "jump to or from buffer named n else default to *Messages*"
@@ -234,7 +242,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (switch-to-buffer (if (string= (buffer-name) n)
                                   (other-buffer) n))))
 
-2.  read and write elisp vars to file
+3.  read and write elisp vars to file
 
         
         (defun rgr/elisp-write-var (f v)
@@ -247,7 +255,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (cl-assert (eq (point) (point-min)))
             (read (current-buffer))))
 
-3.  completing lines
+4.  completing lines
 
         (use-package emacs
           :init
@@ -279,7 +287,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           :bind
           ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
 
-4.  Lazy Language Learning, lazy-lang-learn
+5.  Lazy Language Learning, lazy-lang-learn
 
     My own hack for popping up text to learn
     
@@ -290,7 +298,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           ("<f12>" . lazy-lang-learn-translate)
           ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
-5.  provide
+6.  provide
 
         (provide 'rgr/utils)
 
@@ -1316,7 +1324,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgaff824d)
+    See `org-agenda-files` [org-agenda-files](#org6aa15b2)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2634,22 +2642,29 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     
     2.  display value at point in edebug
     
-            (defun rgr/edebug-display-var (sym v)
-              (message "%s: %s" sym v))
             
-            (defun rgr/edebug-point()
+            ;; bit more convoluted than it needs to be
+            ;; but I fancied using thing-at-point
+            (defun rgr/edebug-display-thing-at-point()
+              (let ((tap (thing-at-point 'var)))
+                (if tap
+                    (message "%s: %s" (nth 0 tap) (nth 1 tap)))))
+            
+            (defun rgr/edebug-thing-at-point()
               "message display the vale of the symbol at point"
               (let((tap (thing-at-point 'symbol)))
                 (if tap
                     (let((sym (if (symbolp tap) tap (intern-soft tap))))
                       (condition-case nil
-                            (rgr/edebug-display-var sym (edebug-eval  sym))
+                          (list sym (edebug-eval  sym))
                         (error nil))))))
             
             (defun rgr/edebug-mode-hook()
+              (setq-local thing-at-point-provider-alist
+                          (append thing-at-point-provider-alist
+                                  '((var . rgr/edebug-thing-at-point))))
               "add a call to display the value at point when debugging with edebug"
-              (add-hook 'post-command-hook #'rgr/edebug-point nil
-                        :local))
+              (add-hook 'post-command-hook #'rgr/edebug-display-thing-at-point nil :local))
             
             (add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 
@@ -2809,7 +2824,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8457357) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org43da791) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2842,7 +2857,7 @@ to add to version control.
     fi
 
 
-<a id="org8457357"></a>
+<a id="org43da791"></a>
 
 ### Gnome protocol handler desktop file
 
