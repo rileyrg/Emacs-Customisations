@@ -269,6 +269,15 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
 :END:
 
+**** screencast gifs
+Not working with wayland
+#+begin_src  emacs-lisp
+  (use-package gif-screencast
+    :custom
+    (gif-screencast-output-directory "~/tmp"))
+#+end_src
+
+
 **** toggle buffer
 :PROPERTIES:
 :ID:       cf781280-b126-402f-9700-c061a385bf81

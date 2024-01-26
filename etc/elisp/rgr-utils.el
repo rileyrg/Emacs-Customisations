@@ -1,3 +1,7 @@
+(use-package gif-screencast
+  :custom
+  (gif-screencast-output-directory "~/tmp"))
+
 (defun rgr/toggle-buffer(n)
   "jump to or from buffer named n else default to *Messages*"
   (interactive "bbuffer:")
