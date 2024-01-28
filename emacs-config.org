@@ -1252,7 +1252,7 @@ https://github.com/minad/cape
 **** company
 #+begin_src emacs-lisp
   (use-package company
-    ;;:disabled
+    :disabled
     :config
     (use-package company-box
       :config

@@ -1112,7 +1112,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 5.  company
 
         (use-package company
-          ;;:disabled
+          :disabled
           :config
           (use-package company-box
             :config
@@ -1326,7 +1326,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org38e15b9)
+    See `org-agenda-files` [org-agenda-files](#orgc8787f7)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2826,7 +2826,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org824a322) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7293c08) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2859,7 +2859,7 @@ to add to version control.
     fi
 
 
-<a id="org824a322"></a>
+<a id="org7293c08"></a>
 
 ### Gnome protocol handler desktop file
 

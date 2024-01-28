@@ -121,7 +121,7 @@
                                  ))))))
 
 (use-package company
-  ;;:disabled
+  :disabled
   :config
   (use-package company-box
     :config
