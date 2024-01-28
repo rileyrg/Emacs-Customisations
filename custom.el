@@ -18,7 +18,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -48,7 +47,6 @@
  '(compilation-message-face 'default)
  '(confirm-kill-processes nil)
  '(confirm-nonexistent-file-or-buffer nil)
- '(corfu-popupinfo-mode t nil nil "Customized with use-package corfu")
  '(cua-keep-region-after-copy nil)
  '(cursor-type 'box)
  '(custom-safe-themes
