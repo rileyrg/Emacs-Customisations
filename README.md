@@ -1326,7 +1326,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgc8787f7)
+    See `org-agenda-files` [org-agenda-files](#org6718f9b)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1364,39 +1364,42 @@ Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
 ### library
 
     
-     (use-package emacs
-       :init
-       (setq thing-at-point-provider-alist (append thing-at-point-provider-alist
-               '((kill-dwim . rgr/thing-at-point-kill-dwim))))
+    (use-package emacs
+      :init
+      (setq thing-at-point-provider-alist (append thing-at-point-provider-alist
+                                                  '((rgr/tap-kdwim . rgr/tap-kill-dwim)
+                                                    (rgr/tap-region . rgr/get-region))))
     
-     :config
-     (defun rgr/get-region()
-       "return string in region if selected and deactivate, else nil"
-       (if(use-region-p)
-           (let ((txt (buffer-substring-no-properties
-                       (mark)
-                       (point))))
-             (deactivate-mark)
-             txt)
-         nil))
+      :config
+      (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email symbol sexp word line)
+        "`thing-at-point' candidates for killing")
     
-     (defun rgr/thing-at-point-kill-dwim()
-       (or (rgr/get-region) (thing-at-point 'url) (thing-at-point 'filename) (thing-at-point 'email) (thing-at-point 'symbol) (thing-at-point 'sexp) (thing-at-point 'word) ))
+      (defun rgr/get-region()
+        "return string in region if selected and deactivate, else nil"
+        (if(use-region-p)
+            (let ((txt (buffer-substring-no-properties
+                        (mark)
+                        (point))))
+              (deactivate-mark)
+              txt)
+          nil))
     
-     (defun rgr/kill-dwim ()
-       "work out what to pick up from point and stick in the kill ring"
-       (interactive)
-       (let ((s (thing-at-point 'kill-dwim)))
-         (condition-case nil
-             (message s)
-           (error nil))
-         "if a prefix argument (4)(C-u) allow edit / read from input"
-         (if current-prefix-arg
-             (setq s (read-string "text:" s)))
-         (when s
-           (kill-new s))))
-    :bind
-     ("M-w" . #'rgr/kill-dwim))
+      (defun rgr/tap-kill-dwim()
+        (catch 'found
+          (mapcar (lambda(x)
+                    (let ((v (thing-at-point x)))
+                      (when v (throw 'found v)))) rgr/kill-dwim-tap-symbols)))
+    
+      (defun rgr/kill-dwim ()
+        "work out what to pick up from point and stick in the kill ring"
+        (interactive)
+        (let ((s (thing-at-point 'rgr/tap-kdwim)))
+          (if current-prefix-arg
+              (setq s (read-string "text:" s)))
+          (when s
+            (kill-new s))))
+      :bind
+      ("M-w" . #'rgr/kill-dwim))
 
 1.  provide
 
@@ -2826,7 +2829,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7293c08) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0b12c27) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2859,7 +2862,7 @@ to add to version control.
     fi
 
 
-<a id="org7293c08"></a>
+<a id="org0b12c27"></a>
 
 ### Gnome protocol handler desktop file
 
