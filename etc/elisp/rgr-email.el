@@ -20,7 +20,7 @@
                                               (expand-file-name "~/bin/mu") 'ok-if-exists)))
   :commands (mu4e mu4e-update-index)
   :custom
-  ( mail-user-agent 'mu4e-user-agent )
+  ( mayil-user-agent 'mu4e-user-agent )
   ( mail-user-agent 'mu4e-user-agent )
   ( message-send-mail-function 'smtpmail-send-it )
   ( mu4e-attachment-dir "~/Downloads" )
@@ -33,7 +33,7 @@
   ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
   ( mu4e-decryption-policy 'ask )
   ( mu4e-hide-index-messages t )
-  ( mu4e-mu-binary (expand-file-name "mu/mu" (straight--repos-dir "mu")) )
+  ( mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu")) )
   ( mu4e-update-interval nil )
   ( mu4e-use-fancy-chars t )
   ( mu4e-view-prefer-html nil )
@@ -130,6 +130,11 @@
       (alert "refreshing mu4e indexes"))
     (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
 
+  (defun rgr/mu4e-default-context()
+    (interactive)
+    (mu4e)
+    (mu4e-context-switch nil "bGmail"))
+
   (add-to-list 'mu4e-view-actions
                '("ViewInBrowser" . mu4e-action-view-in-browser) t)
   (add-to-list 'mu4e-view-actions
@@ -144,12 +149,13 @@
                                ;; try to emulate some of the eww key-bindings
                                (local-set-key (kbd "<tab>") 'shr-next-link)
                                (local-set-key (kbd "<backtab>") 'shr-previous-link))))
-  :bind	  (("C-c u".  'mu4e)
+  :bind	  (("C-c u" .  rgr/mu4e-default-context)
            (:map mu4e-main-mode-map
                  ("m" . mu4e-compose-new))
            (:map mu4e-main-mode-map
                  ("g" . rgr/mu4e-refresh))
            (:map mu4e-headers-mode-map
+                 ("v" . mu4e-view-action)
                  ("C-c u" . mu4e-headers-mark-all-unread-read))))
 ;;:map mu4e-view-mode-map
 ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))

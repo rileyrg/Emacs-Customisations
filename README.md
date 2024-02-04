@@ -1326,7 +1326,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga362aa0)
+    See `org-agenda-files` [org-agenda-files](#org3a11bcc)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1338,6 +1338,61 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
         ~/development/education/lessons/python/coreyschafer
         ~/development/education/lessons/python/python-lernen.de
         ~/development/education/lessons/elisp
+
+
+## LaTeX
+
+Need to install dvipng, texlive, texlive-latex-extra
+
+Raw: [rgr/latex](etc/elisp/rgr-latex.el)
+
+    (require 'rgr/latex "rgr-latex" 'NOERROR)
+
+
+### library
+
+1.  texLive
+
+        (use-package emacs
+          :custom
+          (TeX-auto-save t)
+          (TeX-parse-self t)
+          (TeX-master nil)
+          (TeX-PDF-mode t)
+          (org-preview-latex-default-process 'dvipng)
+          :hook
+          (TeX-mode .
+                         (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
+          (LaTeX-mode . turn-on-reftex)
+          (LaTeX-mode . visual-line-mode)
+          (LaTeX-mode . flyspell-mode)
+          (LaTeX-mode . LaTeX-math-mode))
+    
+    1.  latex test
+    
+        \documentclass{article}
+        \usepackage[chorded]{songs}
+        \noversenumbers
+        begin{document}
+        \songsection{Worship Songs}
+        begin{songs}{}
+        \beginsong{Doxology}[by={Louis Bourgeois and Thomas Ken},
+        sr={Revelation 5:13},
+        cr={Public domain.}]
+        \beginverse
+        \\[G]Praise God, \\[D]from \\[Em]Whom \\[Bm]all \\[Em]bless\\[D]ings \\[G]flow;
+        \\[G]Praise Him, all \\[D]crea\\[Em]tures \\[C]here \\[G]be\\[D]low;
+        \\[Em]Praise \\[D]Him \\[G]a\\[D]bove, \\[G]ye \\[C]heav’n\\[D]ly \\[Em]host;
+        \\[G]Praise Fa\\[Em]ther, \\[D]Son, \\[Am]and \\[G/B G/C]Ho\\[D]ly \\[G]Ghost.
+        \\[C]A\\[G]men.
+        \endverse
+        \endsong
+        \end{songs}
+        \end{document}
+
+2.  provide
+
+        (provide 'rgr/latex)
 
 
 ## Lazy Language Learning, lazy-lang-learn
@@ -1685,73 +1740,43 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 ## Shells and Terminals
 
+lookup and reference uilities and config
 
-### EAT
+Raw: [rgr/shells](etc/elisp/rgr-shells.el)
 
-[Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
-
-    (use-package
-      eat
-      :straight (:type git
-                       :host codeberg
-                       :repo "akib/emacs-eat"
-                       :files ("*.el" ("term" "term/*.el") "*.texi"
-                               "*.ti" ("terminfo/e" "terminfo/e/*")
-                               ("terminfo/65" "terminfo/65/*")
-                               ("integration" "integration/*")
-                               (:exclude ".dir-locals.el" "*-tests.el")))
-      :config
-      (defun rgr/projectile-term()
-        (interactive)
-        (if (string-equal major-mode "eat-mode")
-            (previous-buffer)
-          (let ((default-directory (projectile-project-root)))
-            (eat))))
-    
-      :bind
-      ("M-g v" . #'rgr/projectile-term))
-
-
-## LaTeX
-
-Raw: [rgr/latex](etc/elisp/rgr-latex.el)
-
-    (require 'rgr/latex "rgr-latex" 'NOERROR)
+    (require 'rgr/shells "rgr-shells" 'NOERROR)
 
 
 ### library
 
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-latex.el" elisp-dir)
+1.  EAT
 
-    (use-package auctex
-      :demand t
-      :init
-      (add-to-list 'org-babel-load-languages '(latex . t))
-      :custom
-      (TeX-auto-save t)
-      (TeX-parse-self t)
-      (TeX-master nil)
-      (TeX-PDF-mode t)
-      (reftex-plug-into-AUCTeX t)
-      :hook
-      (TeX-mode .
-                     (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
-      (LaTeX-mode . turn-on-reftex)
-      (LaTeX-mode . visual-line-mode)
-      (LaTeX-mode . flyspell-mode)
-      (LaTeX-mode . LaTeX-math-mode))
-
-1.  test
-
-        \documentclass[12pt]{article}
-        \begin{document}
-        Hello world!
-        $Hello world!$ %math mode
-        \end{document}
+    [Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
+    
+        (use-package
+          eat
+          :straight (:type git
+                           :host codeberg
+                           :repo "akib/emacs-eat"
+                           :files ("*.el" ("term" "term/*.el") "*.texi"
+                                   "*.ti" ("terminfo/e" "terminfo/e/*")
+                                   ("terminfo/65" "terminfo/65/*")
+                                   ("integration" "integration/*")
+                                   (:exclude ".dir-locals.el" "*-tests.el")))
+          :config
+          (defun rgr/projectile-term()
+            (interactive)
+            (if (string-equal major-mode "eat-mode")
+                (previous-buffer)
+              (let ((default-directory (projectile-project-root)))
+                (eat))))
+        
+          :bind
+          ("M-g v" . #'rgr/projectile-term))
 
 2.  provide
 
-        (provide 'rgr/latex)
+        (provide 'rgr/shells)
 
 
 ## Email
@@ -1762,8 +1787,6 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
 
 
 ### library
-
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-email.el" elisp-dir)
 
 1.  notmuch
 
@@ -1791,7 +1814,7 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
                                                       (expand-file-name "~/bin/mu") 'ok-if-exists)))
           :commands (mu4e mu4e-update-index)
           :custom
-          ( mail-user-agent 'mu4e-user-agent )
+          ( mayil-user-agent 'mu4e-user-agent )
           ( mail-user-agent 'mu4e-user-agent )
           ( message-send-mail-function 'smtpmail-send-it )
           ( mu4e-attachment-dir "~/Downloads" )
@@ -2872,7 +2895,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3336c29) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org225849d) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2905,7 +2928,7 @@ to add to version control.
     fi
 
 
-<a id="org3336c29"></a>
+<a id="org225849d"></a>
 
 ### Gnome protocol handler desktop file
 
