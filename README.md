@@ -1326,7 +1326,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org3a11bcc)
+    See `org-agenda-files` [org-agenda-files](#org2dd69ff)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1344,16 +1344,18 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 Need to install dvipng, texlive, texlive-latex-extra
 
-Raw: [rgr/latex](etc/elisp/rgr-latex.el)
+Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
 
-    (require 'rgr/latex "rgr-latex" 'NOERROR)
+    (require 'rgr/typesetting "rgr-typesetting" 'NOERROR)
 
 
 ### library
 
-1.  texLive
+1.  auctex
 
-        (use-package emacs
+        (use-package auctex
+          ;; :init
+          ;; (use-package org-auctex)
           :custom
           (TeX-auto-save t)
           (TeX-parse-self t)
@@ -1367,32 +1369,22 @@ Raw: [rgr/latex](etc/elisp/rgr-latex.el)
           (LaTeX-mode . visual-line-mode)
           (LaTeX-mode . flyspell-mode)
           (LaTeX-mode . LaTeX-math-mode))
-    
-    1.  latex test
-    
-        \documentclass{article}
-        \usepackage[chorded]{songs}
-        \noversenumbers
-        begin{document}
-        \songsection{Worship Songs}
-        begin{songs}{}
-        \beginsong{Doxology}[by={Louis Bourgeois and Thomas Ken},
-        sr={Revelation 5:13},
-        cr={Public domain.}]
-        \beginverse
-        \\[G]Praise God, \\[D]from \\[Em]Whom \\[Bm]all \\[Em]bless\\[D]ings \\[G]flow;
-        \\[G]Praise Him, all \\[D]crea\\[Em]tures \\[C]here \\[G]be\\[D]low;
-        \\[Em]Praise \\[D]Him \\[G]a\\[D]bove, \\[G]ye \\[C]heav’n\\[D]ly \\[Em]host;
-        \\[G]Praise Fa\\[Em]ther, \\[D]Son, \\[Am]and \\[G/B G/C]Ho\\[D]ly \\[G]Ghost.
-        \\[C]A\\[G]men.
-        \endverse
-        \endsong
-        \end{songs}
-        \end{document}
 
-2.  provide
+2.  lilypond
 
-        (provide 'rgr/latex)
+    <https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support>
+    NOT WORKING
+    
+        (use-package lilyponf
+          :disabled)
+    
+    1.  example
+    
+        [Chorded](../Documents/Guitar/org-files/guitar.md)
+
+3.  provide
+
+        (provide 'rgr/typesetting)
 
 
 ## Lazy Language Learning, lazy-lang-learn
@@ -2895,7 +2887,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org225849d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8c2e140) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2928,7 +2920,7 @@ to add to version control.
     fi
 
 
-<a id="org225849d"></a>
+<a id="org8c2e140"></a>
 
 ### Gnome protocol handler desktop file
 
