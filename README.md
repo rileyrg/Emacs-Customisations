@@ -975,7 +975,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;; Optional customizations
           :custom
           ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-          (corfu-auto t)                 ;; Enable auto completion
+          (corfu-auto nil)                 ;; Enable auto completion
           (corfu-popupinfo-mode t)
           ;; (corfu-separator ?\s)          ;; Orderless field separator
           ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
@@ -1061,7 +1061,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
               ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
               ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
               ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-              ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+              (add-to-list 'completion-at-point-functions #'cape-dict)
               ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
               ;;(add-to-list 'completion-at-point-functions #'cape-line)
               )
@@ -1326,7 +1326,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org6718f9b)
+    See `org-agenda-files` [org-agenda-files](#org4ef0cd6)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1397,6 +1397,7 @@ Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
           (if current-prefix-arg
               (setq s (read-string "text:" s)))
           (when s
+            (message "%s" s)
             (kill-new s))))
       :bind
       ("M-w" . #'rgr/kill-dwim))
@@ -1677,7 +1678,15 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (use-package impatient-showdown
           :hook (markdown-mode . impatient-showdown-mode))
 
-8.  provide
+8.  Latex
+
+        (use-package auctex
+          :init
+           (add-to-list 'org-babel-load-languages '(latex . t))
+          :hook
+          (LaTeX-mode . 'turn-on-reftex))
+
+9.  provide
 
         (provide 'rgr/reference)
 
@@ -2158,7 +2167,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 15. Dart/Flutter
 
-    Running emultaor from command line:
+    Running emulator from command line:
     
         emulator -avd Pixel_6_Pro_API_33
     
@@ -2829,7 +2838,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0b12c27) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org154887e) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2862,7 +2871,7 @@ to add to version control.
     fi
 
 
-<a id="org0b12c27"></a>
+<a id="org154887e"></a>
 
 ### Gnome protocol handler desktop file
 

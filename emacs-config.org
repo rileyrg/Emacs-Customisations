@@ -1108,7 +1108,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    (corfu-auto t)                 ;; Enable auto completion
+    (corfu-auto nil)                 ;; Enable auto completion
     (corfu-popupinfo-mode t)
     ;; (corfu-separator ?\s)          ;; Orderless field separator
     ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
@@ -1196,7 +1196,7 @@ https://github.com/minad/cape
     ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
     ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
     ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-    ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+    (add-to-list 'completion-at-point-functions #'cape-dict)
     ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
     ;;(add-to-list 'completion-at-point-functions #'cape-line)
     )
@@ -1882,7 +1882,14 @@ https://github.com/jcs-elpa/impatient-showdown
   (use-package impatient-showdown
     :hook (markdown-mode . impatient-showdown-mode))
 #+end_src
-
+**** Latex
+#+begin_src  emacs-lisp
+  (use-package auctex
+    :init
+     (add-to-list 'org-babel-load-languages '(latex . t))
+    :hook
+    (LaTeX-mode . 'turn-on-reftex))
+#+end_src
 **** provide
 :PROPERTIES:
 :ID:       05027204-7ce4-42a5-aebe-a4a495a9f2a3
@@ -2401,7 +2408,7 @@ I prefer this to [[https://github.com/emacsorphanage/git-gutter][git-gutter.el]]
 #+end_src
 
 **** Dart/Flutter
-Running emultaor from command line:
+Running emulator from command line:
 
 #+begin_src bash
   emulator -avd Pixel_6_Pro_API_33
