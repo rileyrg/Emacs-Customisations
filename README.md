@@ -1326,7 +1326,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2dd69ff)
+    See `org-agenda-files` [org-agenda-files](#org322af82)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1373,10 +1373,8 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
 2.  lilypond
 
     <https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support>
-    NOT WORKING
     
-        (use-package lilyponf
-          :disabled)
+        (use-package lilypond)
     
     1.  example
     
@@ -2887,7 +2885,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8c2e140) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge95950a) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2920,7 +2918,7 @@ to add to version control.
     fi
 
 
-<a id="org8c2e140"></a>
+<a id="orge95950a"></a>
 
 ### Gnome protocol handler desktop file
 

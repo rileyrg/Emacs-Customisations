@@ -15,7 +15,6 @@
   (LaTeX-mode . flyspell-mode)
   (LaTeX-mode . LaTeX-math-mode))
 
-(use-package lilyponf
-  :disabled)
+(use-package lilypond)
 
 (provide 'rgr/typesetting)

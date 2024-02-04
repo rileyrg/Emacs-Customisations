@@ -1539,10 +1539,8 @@ Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
 
 **** lilypond
 https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
-NOT WORKING
 #+begin_src  emacs-lisp
-  (use-package lilyponf
-    :disabled)
+  (use-package lilypond)
 #+end_src
 
 ***** example
