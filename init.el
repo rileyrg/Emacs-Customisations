@@ -68,6 +68,28 @@
   :bind
   ("M-g v" . #'rgr/projectile-term))
 
+(require 'rgr/latex "rgr-latex" 'NOERROR)
+
+(use-package auctex
+  :demand t
+  :init
+  (add-to-list 'org-babel-load-languages '(latex . t))
+  :custom
+  (TeX-auto-save t)
+  (TeX-parse-self t)
+  (TeX-master nil)
+  (TeX-PDF-mode t)
+  (reftex-plug-into-AUCTeX t)
+  :hook
+  (TeX-mode .
+                 (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
+  (LaTeX-mode . turn-on-reftex)
+  (LaTeX-mode . visual-line-mode)
+  (LaTeX-mode . flyspell-mode)
+  (LaTeX-mode . LaTeX-math-mode))
+
+(provide 'rgr/latex)
+
 (require 'rgr/email "rgr-email" 'NOERROR)
 
 (use-package notmuch

@@ -1882,14 +1882,6 @@ https://github.com/jcs-elpa/impatient-showdown
   (use-package impatient-showdown
     :hook (markdown-mode . impatient-showdown-mode))
 #+end_src
-**** Latex
-#+begin_src  emacs-lisp
-  (use-package auctex
-    :init
-     (add-to-list 'org-babel-load-languages '(latex . t))
-    :hook
-    (LaTeX-mode . 'turn-on-reftex))
-#+end_src
 **** provide
 :PROPERTIES:
 :ID:       05027204-7ce4-42a5-aebe-a4a495a9f2a3
@@ -1923,6 +1915,52 @@ https://github.com/jcs-elpa/impatient-showdown
     :bind
     ("M-g v" . #'rgr/projectile-term))
 #+end_src
+** LaTeX
+
+Raw: [[file+sys:etc/elisp/rgr-latex.el][rgr/latex]]
+
+#+begin_src emacs-lisp
+  (require 'rgr/latex "rgr-latex" 'NOERROR)
+#+end_src
+*** library
+
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-latex.el" elisp-dir)
+:END:
+
+#+begin_src  emacs-lisp
+  (use-package auctex
+    :demand t
+    :init
+    (add-to-list 'org-babel-load-languages '(latex . t))
+    :custom
+    (TeX-auto-save t)
+    (TeX-parse-self t)
+    (TeX-master nil)
+    (TeX-PDF-mode t)
+    (reftex-plug-into-AUCTeX t)
+    :hook
+    (TeX-mode .
+                   (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
+    (LaTeX-mode . turn-on-reftex)
+    (LaTeX-mode . visual-line-mode)
+    (LaTeX-mode . flyspell-mode)
+    (LaTeX-mode . LaTeX-math-mode))
+#+end_src
+**** test
+#+begin_src  latex
+\documentclass[12pt]{article}
+\begin{document}
+Hello world!
+$Hello world!$ %math mode
+\end{document}
+#+end_src
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'rgr/latex)
+#+end_src
+
 
 ** Email
 :PROPERTIES:
