@@ -18,7 +18,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "/home/rgr/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -237,7 +236,8 @@
  '(org-agenda-skip-scheduled-if-done t)
  '(org-agenda-start-on-weekday 0 nil nil "Customized with use-package org")
  '(org-babel-load-languages
-   '((emacs-lisp . t)
+   '((latex . t)
+     (emacs-lisp . t)
      (python . t)
      (shell . t)
      (css . t)
