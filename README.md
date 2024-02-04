@@ -1326,7 +1326,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org4ef0cd6)
+    See `org-agenda-files` [org-agenda-files](#orga362aa0)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1678,15 +1678,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
         (use-package impatient-showdown
           :hook (markdown-mode . impatient-showdown-mode))
 
-8.  Latex
-
-        (use-package auctex
-          :init
-           (add-to-list 'org-babel-load-languages '(latex . t))
-          :hook
-          (LaTeX-mode . 'turn-on-reftex))
-
-9.  provide
+8.  provide
 
         (provide 'rgr/reference)
 
@@ -1718,6 +1710,48 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
       :bind
       ("M-g v" . #'rgr/projectile-term))
+
+
+## LaTeX
+
+Raw: [rgr/latex](etc/elisp/rgr-latex.el)
+
+    (require 'rgr/latex "rgr-latex" 'NOERROR)
+
+
+### library
+
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-latex.el" elisp-dir)
+
+    (use-package auctex
+      :demand t
+      :init
+      (add-to-list 'org-babel-load-languages '(latex . t))
+      :custom
+      (TeX-auto-save t)
+      (TeX-parse-self t)
+      (TeX-master nil)
+      (TeX-PDF-mode t)
+      (reftex-plug-into-AUCTeX t)
+      :hook
+      (TeX-mode .
+                     (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
+      (LaTeX-mode . turn-on-reftex)
+      (LaTeX-mode . visual-line-mode)
+      (LaTeX-mode . flyspell-mode)
+      (LaTeX-mode . LaTeX-math-mode))
+
+1.  test
+
+        \documentclass[12pt]{article}
+        \begin{document}
+        Hello world!
+        $Hello world!$ %math mode
+        \end{document}
+
+2.  provide
+
+        (provide 'rgr/latex)
 
 
 ## Email
@@ -2838,7 +2872,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org154887e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3336c29) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2871,7 +2905,7 @@ to add to version control.
     fi
 
 
-<a id="org154887e"></a>
+<a id="org3336c29"></a>
 
 ### Gnome protocol handler desktop file
 

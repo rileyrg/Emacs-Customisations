@@ -183,10 +183,4 @@
 (use-package impatient-showdown
   :hook (markdown-mode . impatient-showdown-mode))
 
-(use-package auctex
-  :init
-   (add-to-list 'org-babel-load-languages '(latex . t))
-  :hook
-  (LaTeX-mode . 'turn-on-reftex))
-
 (provide 'rgr/reference)
