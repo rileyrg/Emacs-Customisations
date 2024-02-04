@@ -1506,20 +1506,22 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 
 Need to install dvipng, texlive, texlive-latex-extra
 
-Raw: [[file+sys:etc/elisp/rgr-latex.el][rgr/latex]]
+Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
 
 #+begin_src emacs-lisp
-  (require 'rgr/latex "rgr-latex" 'NOERROR)
+  (require 'rgr/typesetting "rgr-typesetting" 'NOERROR)
 #+end_src
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-latex.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-typesetting.el" elisp-dir)
 :END:
 
-**** texLive
+**** auctex
 #+begin_src  emacs-lisp
-  (use-package emacs
+  (use-package auctex
+    ;; :init
+    ;; (use-package org-auctex)
     :custom
     (TeX-auto-save t)
     (TeX-parse-self t)
@@ -1534,29 +1536,21 @@ Raw: [[file+sys:etc/elisp/rgr-latex.el][rgr/latex]]
     (LaTeX-mode . flyspell-mode)
     (LaTeX-mode . LaTeX-math-mode))
 #+end_src
-***** latex test
-\documentclass{article}
-\usepackage[chorded]{songs}
-\noversenumbers
-begin{document}
-\songsection{Worship Songs}
-begin{songs}{}
-\beginsong{Doxology}[by={Louis Bourgeois and Thomas Ken},
-sr={Revelation 5:13},
-cr={Public domain.}]
-\beginverse
-\[G]Praise God, \[D]from \[Em]Whom \[Bm]all \[Em]bless\[D]ings \[G]flow;
-\[G]Praise Him, all \[D]crea\[Em]tures \[C]here \[G]be\[D]low;
-\[Em]Praise \[D]Him \[G]a\[D]bove, \[G]ye \[C]heav’n\[D]ly \[Em]host;
-\[G]Praise Fa\[Em]ther, \[D]Son, \[Am]and \[G/B G/C]Ho\[D]ly \[G]Ghost.
-\[C]A\[G]men.
-\endverse
-\endsong
-\end{songs}
-\end{document}
+
+**** lilypond
+https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
+NOT WORKING
+#+begin_src  emacs-lisp
+  (use-package lilyponf
+    :disabled)
+#+end_src
+
+***** example
+[[id:88f71d40-2697-48c2-8849-7553ea581cff][Chorded]]
+
 **** provide
 #+begin_src emacs-lisp
-  (provide 'rgr/latex)
+  (provide 'rgr/typesetting)
 #+end_src
 ** Lazy Language Learning, lazy-lang-learn
 My own hack for popping up text to learn

@@ -1,4 +1,6 @@
-(use-package emacs
+(use-package auctex
+  ;; :init
+  ;; (use-package org-auctex)
   :custom
   (TeX-auto-save t)
   (TeX-parse-self t)
@@ -13,4 +15,7 @@
   (LaTeX-mode . flyspell-mode)
   (LaTeX-mode . LaTeX-math-mode))
 
-(provide 'rgr/latex)
+(use-package lilyponf
+  :disabled)
+
+(provide 'rgr/typesetting)

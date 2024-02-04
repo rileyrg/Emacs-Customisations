@@ -36,7 +36,7 @@
 
 (require 'rgr/org "rgr-org" 'NOERROR)
 
-(require 'rgr/latex "rgr-latex" 'NOERROR)
+(require 'rgr/typesetting "rgr-typesetting" 'NOERROR)
 
 (use-package lazy-lang-learn
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
