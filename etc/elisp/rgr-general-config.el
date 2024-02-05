@@ -46,6 +46,7 @@
       (kill-current-buffer)))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :bind
+  ("C-x C-q" . view-mode)
   ("C-x k" . rgr/kill-current-buffer)
   ("M-0" . delete-window)
   ("M-1" . delete-other-windows)
