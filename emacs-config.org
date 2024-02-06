@@ -879,7 +879,7 @@ Consult]] Provides various commands based on the Emacs completion function compl
            ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
            ;; Custom M-# bindings for fast register access
            ("M-#" . consult-register-load)
-           ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+           ("M-'" . consult-register-store)          ;; orig. abbrev
            ("C-M-#" . consult-register)
            ;; Other custom bindings
            ("M-y" . consult-yank-pop)                ;; orig. yank-pop
@@ -1521,21 +1521,29 @@ Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
 **** auctex
 #+begin_src  emacs-lisp
   (use-package auctex
-    ;; :init
-    ;; (use-package org-auctex)
+    :init
+    (require 'ox-latex)
+    (use-package lsp-latex)
     :custom
     (TeX-auto-save t)
     (TeX-parse-self t)
     (TeX-master nil)
     (TeX-PDF-mode t)
     (org-preview-latex-default-process 'dvipng)
+    :config
+    (defun rgr/latex-mode-hook()
+      ;; buggy as this then gets savd to the global abbrevs
+      (load-file (no-littering-expand-etc-file-name "abbrev/latex-songbook-chords.el"))
+      (setq abbrevs-changed nil)
+      (turn-on-reftex)
+      (visual-line-mode)
+      (LaTeX-math-mode)
+      (flyspell-mode)
+      (lsp-deferred))
+
     :hook
     (TeX-mode .
-                   (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
-    (LaTeX-mode . turn-on-reftex)
-    (LaTeX-mode . visual-line-mode)
-    (LaTeX-mode . flyspell-mode)
-    (LaTeX-mode . LaTeX-math-mode))
+              (lambda () (rgr/latex-mode-hook)(TeX-fold-mode 1)))); Automatically activate TeX-fold-mode.
 #+end_src
 
 **** lilypond
@@ -1929,6 +1937,7 @@ Preview markdown buffer live over HTTP using showdown.
 https://github.com/jcs-elpa/impatient-showdown
 #+begin_src emacs-lisp
   (use-package impatient-showdown
+    :disabled
     :hook (markdown-mode . impatient-showdown-mode))
 #+end_src
 **** provide
