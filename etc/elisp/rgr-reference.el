@@ -181,6 +181,7 @@
     :hook (org-mode . org-pdftools-setup-link)))
 
 (use-package impatient-showdown
+  :disabled
   :hook (markdown-mode . impatient-showdown-mode))
 
 (provide 'rgr/reference)

@@ -5,7 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(Man-notify-method 'bully)
  '(TeX-macro-global
-   '("~/texlive/2013" "~/texlive/2013/texmf-dist/bibtex/bst/" "~/texlive/2013/texmf-dist/tex/" "~/texlive/texmf-local/tex/"))
+   '("/var/lib/texmf/tex/" "/usr/share/texlive/texmf-dist/tex/" "/usr/share/texlive/texmf-dist/bibtex/bst/" "/usr/share/texmf/tex/" "~/texmf"))
+ '(abbrev-file-name "/home/rgr/.emacs.d/etc/abbrev/abbrev.el")
  '(ag-arguments '("--smart-case" "--stats" "--multiline" "-U"))
  '(ag-ignore-list '("value" "cache" "log" "data"))
  '(alert-default-style 'libnotify nil nil "Customized with use-package alert")
@@ -18,7 +19,6 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/var/bmkp/current-bookmark.el.gpg" nil nil "Customized with use-package bookmark+")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)
@@ -387,6 +387,7 @@
  '(rgr/eww-external-launch-url-chunks '("youtube" "babeljs" "icons" "udemy" "execjs"))
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
+ '(save-abbrevs 'silently)
  '(save-interprogram-paste-before-kill t)
  '(scroll-bar-mode nil)
  '(scroll-conservatively 10000)

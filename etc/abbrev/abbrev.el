@@ -30,19 +30,22 @@ int main(void)
     ("upg" "(use-package )" nil :count 1)
    ))
 
+(define-abbrev-table 'latex-mode-abbrev-table
+  '(
+    ("Bmch" "\\gtab{Bm}{021202}" nil :count 0)
+    ("Dch" "\\gtab{E}{022100}" nil :count 0)
+    ("Emch" "\\gtab{Em}{022000}" nil :count 1)
+    ("Gch" "\\gtab{G}{320033}" nil :count 1)
+   ))
+
 (define-abbrev-table 'org-mode-abbrev-table
   '(
-    ("bmch" "\\gtab{Bm}{021202}" nil :count 0)
     ("bs" "#+begin_src " nil :count 3)
     ("bsb" "#+begin_src bash " nil :count 1)
     ("bse" "#+begin_src emacs-lisp" nil :count 3)
-    ("dch" "\\gtab{D}{xx0323}" nil :count 1)
-    ("ech" "\\gtab{E}{022100}" nil :count 0)
     ("el" "emacs-lisp" nil :count 1)
-    ("emch" "\\gtab{Em}{022000}" nil :count 1)
     ("eml" "emacs-lisp" nil :count 6)
     ("es" "#+end_src" nil :count 3)
-    ("gch" "\\gtab{G}{320033}" nil :count 1)
     ("mls" "ehll\\nthere\\nend" nil :count 1)
     ("otem" "#+TITLE: %CHANGEME%
 #+AUTHOR: rileyrg

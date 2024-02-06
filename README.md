@@ -764,7 +764,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
                  ;; Custom M-# bindings for fast register access
                  ("M-#" . consult-register-load)
-                 ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+                 ("M-'" . consult-register-store)          ;; orig. abbrev
                  ("C-M-#" . consult-register)
                  ;; Other custom bindings
                  ("M-y" . consult-yank-pop)                ;; orig. yank-pop
@@ -1327,7 +1327,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org196b61b)
+    See `org-agenda-files` [org-agenda-files](#org0a154c9)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1355,21 +1355,29 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
 1.  auctex
 
         (use-package auctex
-          ;; :init
-          ;; (use-package org-auctex)
+          :init
+          (require 'ox-latex)
+          (use-package lsp-latex)
           :custom
           (TeX-auto-save t)
           (TeX-parse-self t)
           (TeX-master nil)
           (TeX-PDF-mode t)
           (org-preview-latex-default-process 'dvipng)
+          :config
+          (defun rgr/latex-mode-hook()
+            ;; buggy as this then gets savd to the global abbrevs
+            (load-file (no-littering-expand-etc-file-name "abbrev/latex-songbook-chords.el"))
+            (setq abbrevs-changed nil)
+            (turn-on-reftex)
+            (visual-line-mode)
+            (LaTeX-math-mode)
+            (flyspell-mode)
+            (lsp-deferred))
+        
           :hook
           (TeX-mode .
-                         (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
-          (LaTeX-mode . turn-on-reftex)
-          (LaTeX-mode . visual-line-mode)
-          (LaTeX-mode . flyspell-mode)
-          (LaTeX-mode . LaTeX-math-mode))
+                    (lambda () (rgr/latex-mode-hook)(TeX-fold-mode 1)))); Automatically activate TeX-fold-mode.
 
 2.  lilypond
 
@@ -1722,6 +1730,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     <https://github.com/jcs-elpa/impatient-showdown>
     
         (use-package impatient-showdown
+          :disabled
           :hook (markdown-mode . impatient-showdown-mode))
 
 8.  provide
@@ -2838,7 +2847,8 @@ to add to version control.
     !var/bmkp/current-bookmark.el
     !var/bmkp/current-bookmark.el.gpg
     
-    !etc/abbrev.el
+    !etc/abbrev
+    !etc/abbrev/*
     
     !etc/early-load
     !etc/early-load/*
@@ -2886,7 +2896,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd388e12) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga9aa37d) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2919,7 +2929,7 @@ to add to version control.
     fi
 
 
-<a id="orgd388e12"></a>
+<a id="orga9aa37d"></a>
 
 ### Gnome protocol handler desktop file
 

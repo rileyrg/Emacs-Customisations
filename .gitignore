@@ -23,7 +23,8 @@
 !var/bmkp/current-bookmark.el
 !var/bmkp/current-bookmark.el.gpg
 
-!etc/abbrev.el
+!etc/abbrev
+!etc/abbrev/*
 
 !etc/early-load
 !etc/early-load/*
