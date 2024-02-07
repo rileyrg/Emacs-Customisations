@@ -30,6 +30,11 @@ int main(void)
     ("upg" "(use-package )" nil :count 1)
    ))
 
+(define-abbrev-table 'global-abbrev-table
+  '(
+    ("ltx" "LaTeX" nil :count 0)
+   ))
+
 (define-abbrev-table 'latex-mode-abbrev-table
   '(
     ("Bmch" "\\gtab{Bm}{021202}" nil :count 0)
