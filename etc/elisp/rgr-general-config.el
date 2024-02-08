@@ -147,8 +147,9 @@
                ("s" . tab-bar-switch-to-tab))))
 
 (use-package bookmark+
+  :demand
   :custom
-  (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
+  (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el"))
   :bind
   ("C-x x <right>" . bmkp-next-bookmark)
   ("C-x x <left>" . bmkp-previous-bookmark))
