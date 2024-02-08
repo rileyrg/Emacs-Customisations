@@ -665,16 +665,13 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
 :PROPERTIES:
 :ID:       02489c8b-1ce3-407e-a800-2b92f94827b9
 :END:
-:LOGBOOK:
-- State "CANCELLED"  from              [2021-06-30 Wed 19:02]
-- State "CANCELLED"  from              [2021-06-30 Wed 08:05]
-:END:
 #+begin_src emacs-lisp
   (use-package bookmark+
-    ;;:disabled
     :custom
     (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el.gpg"))
-    :demand)
+    :bind
+    ("C-x x <right>" . bmkp-next-bookmark)
+    ("C-x x <left>" . bmkp-previous-bookmark))
 #+end_src
 **** emjois
 https://github.com/iqbalansari/emacs-emojify
