@@ -19,9 +19,10 @@
 
 !etc
 !var
+!var/secrets
+!var/secrets/bmkp
+!var/secrets/bmkp/**
 
-!var/bmkp
-!var/bmkp/current-bookmark.el
 
 !etc/abbrev
 !etc/abbrev/*
