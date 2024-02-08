@@ -149,7 +149,8 @@
 (use-package bookmark+
   :demand
   :custom
-  (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "bmkp/current-bookmark.el"))
+  (bmkp-last-as-first-bookmark-file (no-littering-expand-var-file-name "secrets/bmkp/current-bookmark.el"))
+  (bmkp-bmenu-commands-file (no-littering-expand-var-file-name "secrets/bmkp/bmenu-commands.el"))
   :bind
   ("C-x x <right>" . bmkp-next-bookmark)
   ("C-x x <left>" . bmkp-previous-bookmark))
