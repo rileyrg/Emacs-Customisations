@@ -1,1 +1,1 @@
-var/bmkp/** filter=git-crypt diff=git-crypt
+var/secrets/** filter=git-crypt diff=git-crypt
