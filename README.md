@@ -658,9 +658,21 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     
     \#+end\_src
 
-17. flyspell
+17. jinx : the enchanted spell checker
 
+        (use-package jinx
+          :hook (emacs-startup . global-jinx-mode)
+          :bind (("M-$" . jinx-correct)
+                 ("C-M-$" . jinx-languages)))
+
+18. flyspell
+
+    supereded by [jinx : the enchanted spell checker](#org4f6190c)
+    
+    :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
+    
         (use-package flyspell
+          :disabled
           :config
           (defun flyspell-check-next-highlighted-word ()
             "Custom fnction to spell check next highlighted word"
@@ -678,14 +690,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           ;; (prog-mode .  (flyspell-prog-mode))
           )
 
-18. rg, ripgrep
+19. rg, ripgrep
 
     rg is pretty quick
     
         (use-package
           ripgrep)
 
-19. provide
+20. provide
 
         (provide 'rgr/general-config)
 
@@ -1332,7 +1344,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org621d69c)
+    See `org-agenda-files` [org-agenda-files](#org3420168)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1388,7 +1400,9 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
 
     <https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support>
     
-        (use-package lilypond)
+        (use-package
+          lilypond
+          :disabled)
     
     1.  example
     
@@ -2848,9 +2862,10 @@ to add to version control.
     
     !etc
     !var
+    !var/secrets
+    !var/secrets/bmkp
+    !var/secrets/bmkp/**
     
-    !var/bmkp
-    !var/bmkp/current-bookmark.el
     
     !etc/abbrev
     !etc/abbrev/*
@@ -2901,7 +2916,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1d464b5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org79444b0) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2934,7 +2949,7 @@ to add to version control.
     fi
 
 
-<a id="org1d464b5"></a>
+<a id="org79444b0"></a>
 
 ### Gnome protocol handler desktop file
 

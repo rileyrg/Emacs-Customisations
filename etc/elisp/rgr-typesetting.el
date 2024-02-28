@@ -23,6 +23,8 @@
   (TeX-mode .
             (lambda () (rgr/latex-mode-hook)(TeX-fold-mode 1)))); Automatically activate TeX-fold-mode.
 
-(use-package lilypond)
+(use-package
+  lilypond
+  :disabled)
 
 (provide 'rgr/typesetting)

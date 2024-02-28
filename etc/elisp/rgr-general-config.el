@@ -205,7 +205,13 @@
   :bind ( "C-+" . toggle-hiding)
   ("C-\\" . toggle-selective-display))
 
+(use-package jinx
+  :hook (emacs-startup . global-jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)))
+
 (use-package flyspell
+  :disabled
   :config
   (defun flyspell-check-next-highlighted-word ()
     "Custom fnction to spell check next highlighted word"

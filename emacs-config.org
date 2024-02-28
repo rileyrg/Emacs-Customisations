@@ -745,12 +745,24 @@ https://github.com/magnars/multiple-cursors.emacs-lisp
 #+end_src
 
 #+end_src
+**** jinx : the enchanted spell checker
+:PROPERTIES:
+:ID:       3e64582f-bf01-4ac1-8afb-7c4c51410be0
+:END:
+#+begin_src  emacs-lisp
+(use-package jinx
+  :hook (emacs-startup . global-jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)))
+#+end_src
 **** flyspell                                                :flyspell:spell:
+supereded by [[id:3e64582f-bf01-4ac1-8afb-7c4c51410be0][jinx : the enchanted spell checker]]
 :PROPERTIES:
 :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
 :END:
 #+begin_src emacs-lisp
   (use-package flyspell
+    :disabled
     :config
     (defun flyspell-check-next-highlighted-word ()
       "Custom fnction to spell check next highlighted word"
@@ -1550,7 +1562,9 @@ Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
 **** lilypond
 https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
 #+begin_src  emacs-lisp
-  (use-package lilypond)
+  (use-package
+    lilypond
+    :disabled)
 #+end_src
 
 ***** example
@@ -3302,3 +3316,7 @@ Set up a zshrc alias so that "emacs" actually invokes emacs client. In my .zshrc
       fi
   fi
 #+end_src
+
+# Local Variables:
+# jinx-languages: "en"
+# End:
