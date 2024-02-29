@@ -111,6 +111,10 @@
                '(pascal
                  "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 
+(use-package php-mode
+  :hook
+  (php-mode . (lambda()(lsp-deferred))))
+
 (use-package yaml-mode)
 
 (use-package json-reformat)

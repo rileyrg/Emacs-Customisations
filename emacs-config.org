@@ -2381,7 +2381,12 @@ https://github.com/IvanMalison/org-projectile
                  '(pascal
                    "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 #+end_src
-
+**** PHP
+#+begin_src  emacs-lisp
+  (use-package php-mode
+    :hook
+    (php-mode . (lambda()(lsp-deferred))))
+#+end_src
 **** JSON, YAML Configuration files                                    :json:
 :PROPERTIES:
 :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2

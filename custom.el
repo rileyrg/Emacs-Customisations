@@ -268,6 +268,7 @@
  '(org-catch-invisible-edits 'error nil nil "Customized with use-package org")
  '(org-clock-into-drawer t nil nil "Customized with use-package org")
  '(org-clock-persist 'history nil nil "Customized with use-package org")
+ '(org-clock-sound "~/.emacs.d/ping.mp3")
  '(org-clock-task-overrun-text "*LATE*")
  '(org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
  '(org-confirm-babel-evaluate nil nil nil "Customized with use-package org")
