@@ -153,6 +153,14 @@
     )
   )
 
+(use-package consult-omni
+  :straight (consult-omni :type git :host github :repo "armindarvish/consult-omni" :files (:defaults "sources/*.el"))
+  :after consult
+  :config
+(require 'consult-omni-sources)
+(require 'consult-omni-wikipedia)
+  )
+
 (use-package consult-dash
   :straight (consult-dash :local-repo "~/development/projects/emacs/consult-dash" :type git :host codeberg :repo "ravi/consult-dash" )
   :bind (("M-s d" . consult-dash))

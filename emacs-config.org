@@ -1000,6 +1000,19 @@ Consult]] Provides various commands based on the Emacs completion function compl
       )
     )
 #+end_src
+***** consult-omni
+https://github.com/armindarvish/consult-omni
+consult-omni is a package for getting search results from one or several custom sources (web search engines, AI assistants, elfeed database, org notes, local files, desktop applications, mail servers, …) directly in Emacs minibuffer.
+
+#+begin_src  emacs-lisp
+  (use-package consult-omni
+    :straight (consult-omni :type git :host github :repo "armindarvish/consult-omni" :files (:defaults "sources/*.el"))
+    :after consult
+    :config
+  (require 'consult-omni-sources)
+  (require 'consult-omni-wikipedia)
+    )
+#+end_src
 
 ***** consult-dash
 #+begin_src  emacs-lisp
@@ -1379,6 +1392,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
     (org-clock-idle-time 10)
     (org-babel-default-header-args:python
      '((:results  . "output")))
+    (org-export-with-broken-links t)
     (org-refile-use-outline-path 'file)
     (org-outline-path-complete-in-steps nil)
     :config
@@ -2797,8 +2811,9 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 :END:
 #+begin_src emacs-lisp
   (defun rgr/c++-mode-hook ()
+    (message "cpp mode hook")
     )
-  (add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
+  (add-hook 'c++-ts-mode-hook 'rgr/c++-mode-hook)
 #+end_src
 **** Linux tools
 :PROPERTIES:

@@ -325,8 +325,9 @@
            (("M-<return>" . rgr/c-complete-line))))
 
 (defun rgr/c++-mode-hook ()
+  (message "cpp mode hook")
   )
-(add-hook 'c++-ts-mode-hook 'rgr/cc++-mode-hook)
+(add-hook 'c++-ts-mode-hook 'rgr/c++-mode-hook)
 
 (use-package logview
   :demand t
