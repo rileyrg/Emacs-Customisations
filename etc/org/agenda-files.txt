@@ -8,3 +8,4 @@
 ~/development/projects/emacs/lazy-lang-learn
 ~/development/education/lessons/elisp
 ~/development/Udemy/reactNativeCourse/rn-starter
+~/development/Udemy/reactcompleteguide
