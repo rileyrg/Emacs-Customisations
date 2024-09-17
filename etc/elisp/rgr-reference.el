@@ -140,7 +140,9 @@
 
 (use-package devdocs-browser
   :custom
-  (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
+  (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
+  (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
+  (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
   :config
   (defun rgr/devdocs(&optional i)
     "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
