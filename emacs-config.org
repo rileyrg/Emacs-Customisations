@@ -380,7 +380,6 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 :ID:       ee7aaad4-5f12-4e5e-b7d7-91ed4296b129
 :END:
 **** persistence  and history
-I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
 #+begin_src emacs-lisp
 
   (recentf-mode)
@@ -395,6 +394,7 @@ I use a persistent register to remember the last file buffer and to resore it on
     (add-hook 'desktop-save-hook 'clean-buffer-list)
     (desktop-read))
 
+  ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
   ;; (let ((fname (get-register ?L)))
   ;;   (when (and fname (file-exists-p fname))
   ;;     (find-file fname))))
