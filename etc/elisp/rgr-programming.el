@@ -187,10 +187,8 @@
     :hook   (dart-mode . (lambda()
                            (flutter-test-mode))))
   :config
-  (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
   (use-package lsp-dart :after lsp)
   (defun rgr/init-dart-buffer()
-    ;;(setq-local dash-docs-docsets '("Dart"))
     (lsp-deferred) )
   :hook   (dart-mode . rgr/init-dart-buffer ))
 
@@ -212,7 +210,7 @@
   (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
   (defun rgr/javascript-typescript-common-mode-hook ()
     (electric-pair-mode 1)
-    (setq-local devdocs-browser-active-docs '("react" "react_native" "javascript" "css" "html"))
+    (setq-local devdocs-current-docs '("react" "react_native" "javascript" "typescript" "css" "html"))
     (setq-local rgr/complete-line-function 'rgr/complete-c-line)
     (lsp-deferred)
     )
@@ -388,7 +386,6 @@
   :demand t
   :config
   (defun rgr/web-mode-hook()
-    ;;(setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
     )
   (add-hook 'web-mode-hook 'rgr/web-mode-hook)
   ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))

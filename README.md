@@ -316,8 +316,6 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 1.  persistence  and history
 
-    I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
-    
         
         (recentf-mode)
         ;; (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
@@ -331,6 +329,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
           (add-hook 'desktop-save-hook 'clean-buffer-list)
           (desktop-read))
         
+        ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
         ;; (let ((fname (get-register ?L)))
         ;;   (when (and fname (file-exists-p fname))
         ;;     (find-file fname))))
@@ -667,7 +666,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 18. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#orgc44cfa6)
+    supereded by [jinx : the enchanted spell checker](#orgc7248e4)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -762,30 +761,32 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     
     :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
     
+          ;; Example configuration for Consult
         ;; Example configuration for Consult
         (use-package consult
-          ;; Replace bindings. Lazily loaded due by `use-package'.
-          :bind (;; C-c bindings (mode-specific-map)
+          ;; Replace bindings. Lazily loaded by `use-package'.
+          :bind (;; C-c bindings in `mode-specific-map'
                  ("C-c M-x" . consult-mode-command)
                  ("C-c h" . consult-history)
                  ("C-c k" . consult-kmacro)
                  ("C-c m" . consult-man)
                  ("C-c i" . consult-info)
                  ([remap Info-search] . consult-info)
-                 ;; C-x bindings (ctl-x-map)
+                 ;; C-x bindings in `ctl-x-map'
                  ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
                  ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
                  ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
                  ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+                 ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
                  ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
                  ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
                  ;; Custom M-# bindings for fast register access
                  ("M-#" . consult-register-load)
-                 ("M-'" . consult-register-store)          ;; orig. abbrev
+                 ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
                  ("C-M-#" . consult-register)
                  ;; Other custom bindings
                  ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-                 ;; M-g bindings (goto-map)
+                 ;; M-g bindings in `goto-map'
                  ("M-g e" . consult-compile-error)
                  ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
                  ("M-g g" . consult-goto-line)             ;; orig. goto-line
@@ -795,11 +796,11 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ("M-g k" . consult-global-mark)
                  ("M-g i" . consult-imenu)
                  ("M-g I" . consult-imenu-multi)
-                 ;; M-s bindings (search-map)
-                 ("M-s d" . consult-find)
-                 ("M-s D" . consult-locate)
-                 ("M-s G" . consult-grep)
-                 ("M-s g" . consult-git-grep)
+                 ;; M-s bindings in `search-map'
+                 ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+                 ("M-s c" . consult-locate)
+                 ("M-s g" . consult-grep)
+                 ("M-s G" . consult-git-grep)
                  ("M-s r" . consult-ripgrep)
                  ("M-s l" . consult-line)
                  ("M-s L" . consult-line-multi)
@@ -807,8 +808,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ("M-s u" . consult-focus-lines)
                  ;; Isearch integration
                  ("M-s e" . consult-isearch-history)
-                 :map org-mode-map
-                 ("M-s o" . consult-org-heading)
                  :map isearch-mode-map
                  ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
                  ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
@@ -817,9 +816,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ;; Minibuffer history
                  :map minibuffer-local-map
                  ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-                 ("M-r" . consult-history)                ;; orig. previous-matching-history-element
-        
-                 ("M-y" . consult-yank-from-kill-ring))
+                 ("M-r" . consult-history))                ;; orig. previous-matching-history-element
         
           ;; Enable automatic preview at point in the *Completions* buffer. This is
           ;; relevant when you use the default completion UI.
@@ -868,26 +865,8 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
         
           ;; Optionally make narrowing help available in the minibuffer.
           ;; You may want to use `embark-prefix-help-command' or which-key instead.
-          ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-        
-          ;; By default `consult-project-function' uses `project-root' from project.el.
-          ;; Optionally configure a different project root function.
-          ;;;; 1. project.el (the default)
-          ;; (setq consult-project-function #'consult--default-project--function)
-          ;;;; 2. vc.el (vc-root-dir)
-          ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
-          ;;;; 3. locate-dominating-file
-          ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-          ;;;; 4. projectile.el (projectile-project-root)
-          ;; (autoload 'projectile-project-root "projectile")
-          ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
-          ;;;; 5. No project support
-          ;; (setq consult-project-function nil)
-          :config
-          (use-package company-prescient
-            :disabled
-            )
-          )
+          ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
+        )
     
     1.  consult-omni
     
@@ -901,15 +880,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (require 'consult-omni-sources)
             (require 'consult-omni-wikipedia)
               )
-    
-    2.  consult-dash
-    
-            (use-package consult-dash
-              :straight (consult-dash :local-repo "~/development/projects/emacs/consult-dash" :type git :host codeberg :repo "ravi/consult-dash" )
-              :bind (("M-s d" . consult-dash))
-              :config
-              ;; Use the symbol at point as initial search term
-              (consult-customize consult-dash :initial (thing-at-point 'symbol)))
 
 4.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
 
@@ -1358,7 +1328,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org12c0f09)
+    See `org-agenda-files` [org-agenda-files](#orga60907c)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1703,7 +1673,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
         (use-package devdocs-browser
           :custom
-          (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser"))
+          (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
+          (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
+          (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
           :config
           (defun rgr/devdocs(&optional i)
             "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
@@ -1711,11 +1683,10 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
                                                              major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
                 (rgr/emacs-lisp-help)
-              (if current-prefix-arg
-                  (call-interactively 'devdocs-browser-open-in)
-                (devdocs-browser-open))))
+              (devdocs-lookup)))
           :bind
-          ("C-q" . rgr/devdocs))
+          ("C-q" . devdocs-browser-open))
+          ;;("C-q" . rgr/devdocs))
 
 5.  Elfeed
 
@@ -2285,10 +2256,8 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             :hook   (dart-mode . (lambda()
                                    (flutter-test-mode))))
           :config
-          (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
           (use-package lsp-dart :after lsp)
           (defun rgr/init-dart-buffer()
-            ;;(setq-local dash-docs-docsets '("Dart"))
             (lsp-deferred) )
           :hook   (dart-mode . rgr/init-dart-buffer ))
     
@@ -2322,7 +2291,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
               (defun rgr/javascript-typescript-common-mode-hook ()
                 (electric-pair-mode 1)
-                (setq-local devdocs-browser-active-docs '("react" "react_native" "javascript" "css" "html"))
+                (setq-local devdocs-current-docs '("react" "react_native" "javascript" "typescript" "css" "html"))
                 (setq-local rgr/complete-line-function 'rgr/complete-c-line)
                 (lsp-deferred)
                 )
@@ -2624,7 +2593,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :demand t
                   :config
                   (defun rgr/web-mode-hook()
-                    ;;(setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
                     )
                   (add-hook 'web-mode-hook 'rgr/web-mode-hook)
                   ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
@@ -2935,7 +2903,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc6d1d42) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org546e651) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2968,7 +2936,7 @@ to add to version control.
     fi
 
 
-<a id="orgc6d1d42"></a>
+<a id="org546e651"></a>
 
 ### Gnome protocol handler desktop file
 

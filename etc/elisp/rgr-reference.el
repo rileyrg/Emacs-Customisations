@@ -150,11 +150,10 @@
     (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
                                                      major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
         (rgr/emacs-lisp-help)
-      (if current-prefix-arg
-          (call-interactively 'devdocs-browser-open-in)
-        (devdocs-browser-open))))
+      (devdocs-lookup)))
   :bind
-  ("C-q" . rgr/devdocs))
+  ("C-q" . devdocs-browser-open))
+  ;;("C-q" . rgr/devdocs))
 
 (use-package elfeed
   :config

@@ -873,30 +873,32 @@ Consult]] Provides various commands based on the Emacs completion function compl
 :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
 :END:
 #+begin_src emacs-lisp
+    ;; Example configuration for Consult
   ;; Example configuration for Consult
   (use-package consult
-    ;; Replace bindings. Lazily loaded due by `use-package'.
-    :bind (;; C-c bindings (mode-specific-map)
+    ;; Replace bindings. Lazily loaded by `use-package'.
+    :bind (;; C-c bindings in `mode-specific-map'
            ("C-c M-x" . consult-mode-command)
            ("C-c h" . consult-history)
            ("C-c k" . consult-kmacro)
            ("C-c m" . consult-man)
            ("C-c i" . consult-info)
            ([remap Info-search] . consult-info)
-           ;; C-x bindings (ctl-x-map)
+           ;; C-x bindings in `ctl-x-map'
            ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
            ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
            ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
            ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+           ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
            ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
            ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
            ;; Custom M-# bindings for fast register access
            ("M-#" . consult-register-load)
-           ("M-'" . consult-register-store)          ;; orig. abbrev
+           ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
            ("C-M-#" . consult-register)
            ;; Other custom bindings
            ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-           ;; M-g bindings (goto-map)
+           ;; M-g bindings in `goto-map'
            ("M-g e" . consult-compile-error)
            ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
            ("M-g g" . consult-goto-line)             ;; orig. goto-line
@@ -906,11 +908,11 @@ Consult]] Provides various commands based on the Emacs completion function compl
            ("M-g k" . consult-global-mark)
            ("M-g i" . consult-imenu)
            ("M-g I" . consult-imenu-multi)
-           ;; M-s bindings (search-map)
-           ("M-s d" . consult-find)
-           ("M-s D" . consult-locate)
-           ("M-s G" . consult-grep)
-           ("M-s g" . consult-git-grep)
+           ;; M-s bindings in `search-map'
+           ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+           ("M-s c" . consult-locate)
+           ("M-s g" . consult-grep)
+           ("M-s G" . consult-git-grep)
            ("M-s r" . consult-ripgrep)
            ("M-s l" . consult-line)
            ("M-s L" . consult-line-multi)
@@ -918,8 +920,6 @@ Consult]] Provides various commands based on the Emacs completion function compl
            ("M-s u" . consult-focus-lines)
            ;; Isearch integration
            ("M-s e" . consult-isearch-history)
-           :map org-mode-map
-           ("M-s o" . consult-org-heading)
            :map isearch-mode-map
            ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
            ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
@@ -928,9 +928,7 @@ Consult]] Provides various commands based on the Emacs completion function compl
            ;; Minibuffer history
            :map minibuffer-local-map
            ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-           ("M-r" . consult-history)                ;; orig. previous-matching-history-element
-
-           ("M-y" . consult-yank-from-kill-ring))
+           ("M-r" . consult-history))                ;; orig. previous-matching-history-element
 
     ;; Enable automatic preview at point in the *Completions* buffer. This is
     ;; relevant when you use the default completion UI.
@@ -979,26 +977,8 @@ Consult]] Provides various commands based on the Emacs completion function compl
 
     ;; Optionally make narrowing help available in the minibuffer.
     ;; You may want to use `embark-prefix-help-command' or which-key instead.
-    ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-
-    ;; By default `consult-project-function' uses `project-root' from project.el.
-    ;; Optionally configure a different project root function.
-    ;;;; 1. project.el (the default)
-    ;; (setq consult-project-function #'consult--default-project--function)
-    ;;;; 2. vc.el (vc-root-dir)
-    ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
-    ;;;; 3. locate-dominating-file
-    ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-    ;;;; 4. projectile.el (projectile-project-root)
-    ;; (autoload 'projectile-project-root "projectile")
-    ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
-    ;;;; 5. No project support
-    ;; (setq consult-project-function nil)
-    :config
-    (use-package company-prescient
-      :disabled
-      )
-    )
+    ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
+  )
 #+end_src
 ***** consult-omni
 https://github.com/armindarvish/consult-omni
@@ -1012,16 +992,6 @@ consult-omni is a package for getting search results from one or several custom 
   (require 'consult-omni-sources)
   (require 'consult-omni-wikipedia)
     )
-#+end_src
-
-***** consult-dash
-#+begin_src  emacs-lisp
-  (use-package consult-dash
-    :straight (consult-dash :local-repo "~/development/projects/emacs/consult-dash" :type git :host codeberg :repo "ravi/consult-dash" )
-    :bind (("M-s d" . consult-dash))
-    :config
-    ;; Use the symbol at point as initial search term
-    (consult-customize consult-dash :initial (thing-at-point 'symbol)))
 #+end_src
 
 **** [[https://github.com/oantolin/embark][Embark]] Emacs Mini-Buffer Actions Rooted in Keymaps
@@ -1910,11 +1880,10 @@ Browse devdocs.io documents inside Emacs!
       (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
                                                        major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
           (rgr/emacs-lisp-help)
-        (if current-prefix-arg
-            (call-interactively 'devdocs-browser-open-in)
-          (devdocs-browser-open))))
+        (devdocs-lookup)))
     :bind
-    ("C-q" . rgr/devdocs))
+    ("C-q" . devdocs-browser-open))
+    ;;("C-q" . rgr/devdocs))
 #+end_src
 
 **** Elfeed
@@ -2536,10 +2505,8 @@ Running emulator from command line:
       :hook   (dart-mode . (lambda()
                              (flutter-test-mode))))
     :config
-    (add-to-list 'devdocs-browser-major-mode-docs-alist '(dart-mode "dart"))
     (use-package lsp-dart :after lsp)
     (defun rgr/init-dart-buffer()
-      ;;(setq-local dash-docs-docsets '("Dart"))
       (lsp-deferred) )
     :hook   (dart-mode . rgr/init-dart-buffer ))
 
@@ -2574,7 +2541,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
     (defun rgr/javascript-typescript-common-mode-hook ()
       (electric-pair-mode 1)
-      (setq-local devdocs-browser-active-docs '("react" "react_native" "javascript" "css" "html"))
+      (setq-local devdocs-current-docs '("react" "react_native" "javascript" "typescript" "css" "html"))
       (setq-local rgr/complete-line-function 'rgr/complete-c-line)
       (lsp-deferred)
       )
@@ -2876,15 +2843,6 @@ This [[https://github.com/GDQuest/emacs-gdscript-mode][package]] adds support fo
 :PROPERTIES:
 :ID:       0d8f29bf-bbd2-4387-a8fa-e2907704dc82
 :END:
-****** DONE put dash docset in here!
-CLOSED: [2020-03-08 So 23:36] DEADLINE: <2020-03-07 Sa> SCHEDULED: <2020-03-06 Fr>
-:PROPERTIES:
-:ID:       fc1fca41-5417-484d-ae16-5f6dcc2e4fa7
-:END:
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2020-03-08 So 23:36]
-- State "TODO"       from              [2020-03-06 Fr 03:55]
-:END:
 
 ***** Symfony
 :PROPERTIES:
@@ -2949,7 +2907,6 @@ We can trigger it using a .dir-locals.el
     :demand t
     :config
     (defun rgr/web-mode-hook()
-      ;;(setq-local dash-docs-docsets '("Twig" "CSS" "HTML"))
       )
     (add-hook 'web-mode-hook 'rgr/web-mode-hook)
     ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))

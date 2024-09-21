@@ -10,6 +10,7 @@
   (add-hook 'desktop-save-hook 'clean-buffer-list)
   (desktop-read))
 
+;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
 ;; (let ((fname (get-register ?L)))
 ;;   (when (and fname (file-exists-p fname))
 ;;     (find-file fname))))
