@@ -666,7 +666,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 18. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#orgc7248e4)
+    supereded by [jinx : the enchanted spell checker](#org842a4c7)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1328,7 +1328,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga60907c)
+    See `org-agenda-files` [org-agenda-files](#org6866d8a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1764,17 +1764,7 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
                                    "*.ti" ("terminfo/e" "terminfo/e/*")
                                    ("terminfo/65" "terminfo/65/*")
                                    ("integration" "integration/*")
-                                   (:exclude ".dir-locals.el" "*-tests.el")))
-          :config
-          (defun rgr/projectile-term()
-            (interactive)
-            (if (string-equal major-mode "eat-mode")
-                (previous-buffer)
-              (let ((default-directory (projectile-project-root)))
-                (eat))))
-        
-          :bind
-          ("M-g v" . #'rgr/projectile-term))
+                                   (:exclude ".dir-locals.el" "*-tests.el"))))
 
 2.  provide
 
@@ -2084,11 +2074,19 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :demand
               :config
               (projectile-mode +1)
+              (defun rgr/projectile-term()
+                (interactive)
+                (if (string-equal major-mode "eat-mode")
+                    (previous-buffer)
+                  (let ((default-directory (projectile-project-root)))
+                    (eat))))
               :bind
+              ("M-g v" . #'rgr/projectile-term)
               (:map projectile-mode-map
                     (("C-x p" . projectile-command-map)))
               (:map projectile-command-map
-                    (( "b" . consult-project-buffer))))
+                    (( "b" . consult-project-buffer)
+                     ("t" . #'rgr/projectile-term))))
         
         1.  projectile npm support
         
@@ -2291,7 +2289,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
               (defun rgr/javascript-typescript-common-mode-hook ()
                 (electric-pair-mode 1)
-                (setq-local devdocs-current-docs '("react" "react_native" "javascript" "typescript" "css" "html"))
                 (setq-local rgr/complete-line-function 'rgr/complete-c-line)
                 (lsp-deferred)
                 )
@@ -2903,7 +2900,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org546e651) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge04a514) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2936,7 +2933,7 @@ to add to version control.
     fi
 
 
-<a id="org546e651"></a>
+<a id="orge04a514"></a>
 
 ### Gnome protocol handler desktop file
 

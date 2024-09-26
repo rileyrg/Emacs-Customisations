@@ -77,11 +77,19 @@
   :demand
   :config
   (projectile-mode +1)
+  (defun rgr/projectile-term()
+    (interactive)
+    (if (string-equal major-mode "eat-mode")
+        (previous-buffer)
+      (let ((default-directory (projectile-project-root)))
+        (eat))))
   :bind
+  ("M-g v" . #'rgr/projectile-term)
   (:map projectile-mode-map
         (("C-x p" . projectile-command-map)))
   (:map projectile-command-map
-        (( "b" . consult-project-buffer))))
+        (( "b" . consult-project-buffer)
+         ("t" . #'rgr/projectile-term))))
 
 (projectile-register-project-type 'npm '("package.json")
                                   :project-file "package.json"
