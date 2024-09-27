@@ -2198,6 +2198,10 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
     :hook
     (prog-mode . indent-bars-mode))
 #+end_src
+**** JSON
+#+begin_src  emacs-lisp
+  (use-package json-mode)
+#+end_src
 **** Treemacs
 :PROPERTIES:
 :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516

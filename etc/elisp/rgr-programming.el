@@ -7,6 +7,8 @@
   :hook
   (prog-mode . indent-bars-mode))
 
+(use-package json-mode)
+
 (use-package
   treemacs
   :init
