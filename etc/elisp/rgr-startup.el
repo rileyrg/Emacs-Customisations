@@ -1,14 +1,15 @@
 (recentf-mode)
-;; (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
-;; (save-place-mode)
+(savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
+(save-place-mode)
 
 ;; ;;
 (defun rgr/startup-hook ()
-  (setq desktop-restore-forces-onscreen nil)
-  (desktop-save-mode 1)
-  (midnight-mode)
-  (add-hook 'desktop-save-hook 'clean-buffer-list)
-  (desktop-read))
+  ;; (setq desktop-restore-forces-onscreen nil)
+  ;; (desktop-save-mode 1)
+  ;; (midnight-mode)
+  ;; (add-hook 'desktop-save-hook 'clean-buffer-list)
+  ;; (desktop-read)
+  )
 
 ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
 ;; (let ((fname (get-register ?L)))

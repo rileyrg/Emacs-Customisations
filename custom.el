@@ -64,8 +64,8 @@
    "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/vscode/webfreak.debug")
  '(dap-internal-terminal 'dap-internal-terminal-auto)
  '(dap-print-io t)
- '(dap-ui-controls-mode t)
- '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0" t)
+ '(dap-ui-controls-mode t nil (dap-ui))
+ '(dap-utils-extension-path "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0")
  '(delete-active-region 'kill)
  '(delete-old-versions t)
  '(delete-selection-mode t)
@@ -101,8 +101,6 @@
  '(eldoc-idle-delay 3)
  '(elpy-formatter 'autopep8)
  '(elscreen-display-tab nil)
- '(enable-local-eval t)
- '(enable-local-variables :all)
  '(enable-recursive-minibuffers t)
  '(epa-file-cache-passphrase-for-symmetric-encryption nil)
  '(erc-autojoin-channels-alist
@@ -170,6 +168,7 @@
  '(flycheck-checkers
    '(intl_translation lsp ada-gnat asciidoctor asciidoc awk-gawk bazel-build-buildifier bazel-module-buildifier bazel-starlark-buildifier bazel-workspace-buildifier c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint cuda-nvcc cwl d-dmd dockerfile-hadolint elixir-credo emacs-lisp emacs-lisp-checkdoc ember-template erlang-rebar3 erlang eruby-erubis eruby-ruumba fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-staticcheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-standard json-jsonlint json-python-json json-jq jsonnet less less-stylelint llvm-llc lua-luacheck lua markdown-markdownlint-cli markdown-mdl nix nix-linter opam perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc protobuf-prototool pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile python-pyright python-mypy r-lintr racket rpm-rpmlint rst-sphinx rst ruby-rubocop ruby-standard ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust rust-clippy scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tcl-nagelfar terraform terraform-tflint tex-chktex tex-lacheck texinfo textlint typescript-tslint verilog-verilator vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby yaml-yamllint))
  '(gdb-display-io-nopopup t)
+ '(gdb-many-windows t)
  '(gdb-show-main t)
  '(gdscript-docs-local-path
    "/home/rgr/Documents/Programming/Godot/www/docs.godotengine.org/en/stable")
@@ -369,6 +368,21 @@
  '(rgr/eww-external-launch-url-chunks '("youtube" "babeljs" "icons" "udemy" "i3wm" "execjs"))
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
+ '(safe-local-variable-values
+   '((eval setq-local org-confirm-babel-evaluate nil)
+     (eval progn
+           (when
+               (file-exists-p ".boilerplate")
+             (setq boilerplate
+                   (with-temp-buffer
+                     (insert-file-contents ".boilerplate")
+                     (buffer-string)))
+             (setq fname
+                   (buffer-file-name))))
+     (eval dap-register-debug-template "cpptools::Run Configuration"
+           (list :type "cppdbg" :request "launch" :name "cpptools::Run Configuration" :MIMode "gdb" :program "${workspaceFolder}/hello-world" :cwd "${workspaceFolder}"))
+     (eval dap-register-debug-template "cpptools::Run Configuration"
+           (list :type "cppdbg" :request "launch" :name "cpptools::Run Configuration" :MIMode "gdb" :target "${workspaceFolder}/hello-world" :cwd "${workspaceFolder}"))))
  '(save-abbrevs 'silently)
  '(save-interprogram-paste-before-kill t)
  '(scroll-bar-mode nil)

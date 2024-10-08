@@ -383,16 +383,17 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 #+begin_src emacs-lisp
 
   (recentf-mode)
-  ;; (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
-  ;; (save-place-mode)
+  (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
+  (save-place-mode)
 
   ;; ;;
   (defun rgr/startup-hook ()
-    (setq desktop-restore-forces-onscreen nil)
-    (desktop-save-mode 1)
-    (midnight-mode)
-    (add-hook 'desktop-save-hook 'clean-buffer-list)
-    (desktop-read))
+    ;; (setq desktop-restore-forces-onscreen nil)
+    ;; (desktop-save-mode 1)
+    ;; (midnight-mode)
+    ;; (add-hook 'desktop-save-hook 'clean-buffer-list)
+    ;; (desktop-read)
+    )
 
   ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
   ;; (let ((fname (get-register ?L)))
@@ -2591,10 +2592,22 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
     (setq lsp-keymap-prefix "C-l")
     (setq gc-cons-threshold (* 100 1024 1024)
           read-process-output-max (* 1024 1024))
-    :config
     (use-package lsp-ui
       :init
+      (use-package dap-mode
+        :bind (:map dap-mode-map
+                    (("<f8>" . dap-next)
+                     ("S-<f8>" . dap-continue)
+                     ("<f7>" . dap-step-in)
+                     ("S-<f7>" . dap-step-out)
+                     ("M-<f8>" . dap-debug)
+                     ("C-<f8>" . dap-disconnect)
+                     ))
+        :init
+        (require 'dap-cpptools)
+        (dap-cpptools-setup))
       (defun rgr/lsp-ui-mode-hook()
+        (dap-mode t)
         )
       :custom
       (lsp-ui-doc-mode 1)
@@ -2603,23 +2616,10 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
       :hook
       (lsp-ui-mode . rgr/lsp-ui-mode-hook))
     (use-package lsp-treemacs
-      :disabled ;; probelms with dap
       :custom
       (lsp-treemacs-sync-mode t)
       :commands lsp-treemacs-errors-list)
 
-    (use-package dap-mode
-      :disabled
-      :bind (:map dap-mode-map
-                  (("<f8>" . dap-next)
-                   ("S-<f8>" . dap-continue)
-                   ("<f7>" . dap-step-in)
-                   ("S-<f7>" . dap-step-out)
-                   ("M-<f8>" . dap-debug)
-                   ("C-<f8>" . dap-disconnect)
-                   ))
-      :config
-      (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands (lsp lsp-deferred))
@@ -2755,11 +2755,14 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :config
 
     (defun rgr/c-ts-mode-hook ()
+      (message "rgr/c-ts-mode-hook")
+      (rgr/c-ts-mode-common-hook)
       )
 
     (defun rgr/c-ts-mode-common-hook ()
       ;;(eglot-ensure)
-      (lsp-deferred)
+      (message "rgr/c-ts-mode-common-hook")
+      (lsp)
       ;;(if (fboundp 'indent-bars-mode)
       ;;  (indent-bars-mode))
       (if(featurep 'platformio-mode)

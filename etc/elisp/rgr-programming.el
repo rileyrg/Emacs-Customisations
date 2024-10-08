@@ -311,11 +311,14 @@
   :config
 
   (defun rgr/c-ts-mode-hook ()
+    (message "rgr/c-ts-mode-hook")
+    (rgr/c-ts-mode-common-hook)
     )
 
   (defun rgr/c-ts-mode-common-hook ()
     ;;(eglot-ensure)
-    (lsp-deferred)
+    (message "rgr/c-ts-mode-common-hook")
+    (lsp)
     ;;(if (fboundp 'indent-bars-mode)
     ;;  (indent-bars-mode))
     (if(featurep 'platformio-mode)

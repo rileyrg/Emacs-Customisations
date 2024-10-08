@@ -318,16 +318,17 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
         
         (recentf-mode)
-        ;; (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
-        ;; (save-place-mode)
+        (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
+        (save-place-mode)
         
         ;; ;;
         (defun rgr/startup-hook ()
-          (setq desktop-restore-forces-onscreen nil)
-          (desktop-save-mode 1)
-          (midnight-mode)
-          (add-hook 'desktop-save-hook 'clean-buffer-list)
-          (desktop-read))
+          ;; (setq desktop-restore-forces-onscreen nil)
+          ;; (desktop-save-mode 1)
+          ;; (midnight-mode)
+          ;; (add-hook 'desktop-save-hook 'clean-buffer-list)
+          ;; (desktop-read)
+          )
         
         ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
         ;; (let ((fname (get-register ?L)))
@@ -666,7 +667,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 18. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#orgd48a30f)
+    supereded by [jinx : the enchanted spell checker](#org205933d)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1328,7 +1329,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org35697ad)
+    See `org-agenda-files` [org-agenda-files](#org2ac2bf7)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2333,10 +2334,22 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (setq lsp-keymap-prefix "C-l")
                   (setq gc-cons-threshold (* 100 1024 1024)
                         read-process-output-max (* 1024 1024))
-                  :config
                   (use-package lsp-ui
                     :init
+                    (use-package dap-mode
+                      :bind (:map dap-mode-map
+                                  (("<f8>" . dap-next)
+                                   ("S-<f8>" . dap-continue)
+                                   ("<f7>" . dap-step-in)
+                                   ("S-<f7>" . dap-step-out)
+                                   ("M-<f8>" . dap-debug)
+                                   ("C-<f8>" . dap-disconnect)
+                                   ))
+                      :init
+                      (require 'dap-cpptools)
+                      (dap-cpptools-setup))
                     (defun rgr/lsp-ui-mode-hook()
+                      (dap-mode t)
                       )
                     :custom
                     (lsp-ui-doc-mode 1)
@@ -2345,23 +2358,10 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                     :hook
                     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
                   (use-package lsp-treemacs
-                    :disabled ;; probelms with dap
                     :custom
                     (lsp-treemacs-sync-mode t)
                     :commands lsp-treemacs-errors-list)
                 
-                  (use-package dap-mode
-                    :disabled
-                    :bind (:map dap-mode-map
-                                (("<f8>" . dap-next)
-                                 ("S-<f8>" . dap-continue)
-                                 ("<f7>" . dap-step-in)
-                                 ("S-<f7>" . dap-step-out)
-                                 ("M-<f8>" . dap-debug)
-                                 ("C-<f8>" . dap-disconnect)
-                                 ))
-                    :config
-                    (setq dap-auto-configure-features (delete 'tooltip dap-auto-configure-features)))
                   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
                          (lsp-mode . lsp-enable-which-key-integration))
                   :commands (lsp lsp-deferred))
@@ -2481,11 +2481,14 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :config
             
               (defun rgr/c-ts-mode-hook ()
+                (message "rgr/c-ts-mode-hook")
+                (rgr/c-ts-mode-common-hook)
                 )
             
               (defun rgr/c-ts-mode-common-hook ()
                 ;;(eglot-ensure)
-                (lsp-deferred)
+                (message "rgr/c-ts-mode-common-hook")
+                (lsp)
                 ;;(if (fboundp 'indent-bars-mode)
                 ;;  (indent-bars-mode))
                 (if(featurep 'platformio-mode)
@@ -2904,7 +2907,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgdc3692f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcf583f5) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2937,7 +2940,7 @@ to add to version control.
     fi
 
 
-<a id="orgdc3692f"></a>
+<a id="orgcf583f5"></a>
 
 ### Gnome protocol handler desktop file
 
