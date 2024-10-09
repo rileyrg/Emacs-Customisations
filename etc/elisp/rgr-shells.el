@@ -1,5 +1,6 @@
-(use-package
-  eat
+(use-package  eat
+  :custom
+  (eat-kill-buffer-on-exit t)
   :straight (:type git
                    :host codeberg
                    :repo "akib/emacs-eat"
@@ -8,5 +9,7 @@
                            ("terminfo/65" "terminfo/65/*")
                            ("integration" "integration/*")
                            (:exclude ".dir-locals.el" "*-tests.el"))))
+
+(use-package  vterm)
 
 (provide 'rgr/shells)

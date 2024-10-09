@@ -27,6 +27,8 @@
 
   (global-hl-line-mode t)
 
+  ;; https://github.com/rolandwalker/browse-url-dwim
+  ;; Context-sensitive external browse URL or Internet search from Emacs.
   (use-package
     browse-url-dwim
     :config

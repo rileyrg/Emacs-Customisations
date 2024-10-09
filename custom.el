@@ -95,6 +95,7 @@
    '(("\\*Symfony Web Server\\*.*" display-buffer-no-window)
      (popwin:display-buffer-condition popwin:display-buffer-action)))
  '(display-time-mode t)
+ '(eat-exit-hook nil)
  '(eglot-extend-to-xref t)
  '(el-docstring-sap--display-func 'el-docstring-sap--quick-peek)
  '(eldoc-box-only-multi-line t)

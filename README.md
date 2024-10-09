@@ -318,28 +318,27 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
         
         (recentf-mode)
-        (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
+        (savehist-mode)
         (save-place-mode)
         
-        ;; ;;
+        ;; ;; desktop mode is a PITA
         (defun rgr/startup-hook ()
           ;; (setq desktop-restore-forces-onscreen nil)
           ;; (desktop-save-mode 1)
           ;; (midnight-mode)
           ;; (add-hook 'desktop-save-hook 'clean-buffer-list)
           ;; (desktop-read)
-          )
+          ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
+          (let ((fname (get-register ?L)))
+            (when (and fname (file-exists-p fname))
+              (find-file fname)))
         
-        ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
-        ;; (let ((fname (get-register ?L)))
-        ;;   (when (and fname (file-exists-p fname))
-        ;;     (find-file fname))))
         
-        ;; (defun rgr/remember-last-buffer (f)
-        ;;   (when buffer-file-name
-        ;;     (set-register ?L (buffer-file-name))))
+          (defun rgr/remember-last-buffer (f)
+            (when buffer-file-name
+              (set-register ?L (buffer-file-name))))
         
-        ;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+          (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer))
         
         (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
@@ -402,6 +401,8 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         
           (global-hl-line-mode t)
         
+          ;; https://github.com/rolandwalker/browse-url-dwim
+          ;; Context-sensitive external browse URL or Internet search from Emacs.
           (use-package
             browse-url-dwim
             :config
@@ -667,7 +668,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 18. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org205933d)
+    supereded by [jinx : the enchanted spell checker](#orgf8d599e)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1329,7 +1330,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2ac2bf7)
+    See `org-agenda-files` [org-agenda-files](#org05fdf4c)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1756,8 +1757,9 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
 
     [Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
     
-        (use-package
-          eat
+        (use-package  eat
+          :custom
+          (eat-kill-buffer-on-exit t)
           :straight (:type git
                            :host codeberg
                            :repo "akib/emacs-eat"
@@ -1767,7 +1769,11 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
                                    ("integration" "integration/*")
                                    (:exclude ".dir-locals.el" "*-tests.el"))))
 
-2.  provide
+2.  VTERM
+
+        (use-package  vterm)
+
+3.  provide
 
         (provide 'rgr/shells)
 
@@ -2907,7 +2913,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcf583f5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd68a465) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2940,7 +2946,7 @@ to add to version control.
     fi
 
 
-<a id="orgcf583f5"></a>
+<a id="orgd68a465"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -1,26 +1,25 @@
 (recentf-mode)
-(savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
+(savehist-mode)
 (save-place-mode)
 
-;; ;;
+;; ;; desktop mode is a PITA
 (defun rgr/startup-hook ()
   ;; (setq desktop-restore-forces-onscreen nil)
   ;; (desktop-save-mode 1)
   ;; (midnight-mode)
   ;; (add-hook 'desktop-save-hook 'clean-buffer-list)
   ;; (desktop-read)
-  )
+  ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
+  (let ((fname (get-register ?L)))
+    (when (and fname (file-exists-p fname))
+      (find-file fname)))
 
-;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
-;; (let ((fname (get-register ?L)))
-;;   (when (and fname (file-exists-p fname))
-;;     (find-file fname))))
 
-;; (defun rgr/remember-last-buffer (f)
-;;   (when buffer-file-name
-;;     (set-register ?L (buffer-file-name))))
+  (defun rgr/remember-last-buffer (f)
+    (when buffer-file-name
+      (set-register ?L (buffer-file-name))))
 
-;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+  (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer))
 
 (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 

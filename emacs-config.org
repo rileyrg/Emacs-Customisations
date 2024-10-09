@@ -383,28 +383,27 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 #+begin_src emacs-lisp
 
   (recentf-mode)
-  (savehist-mode) ;; (el-docstring-sap--history projectile-project-command-history global-mark-ring kill-ring search-ring regexp-search-ring register-alist)
+  (savehist-mode)
   (save-place-mode)
 
-  ;; ;;
+  ;; ;; desktop mode is a PITA
   (defun rgr/startup-hook ()
     ;; (setq desktop-restore-forces-onscreen nil)
     ;; (desktop-save-mode 1)
     ;; (midnight-mode)
     ;; (add-hook 'desktop-save-hook 'clean-buffer-list)
     ;; (desktop-read)
-    )
+    ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
+    (let ((fname (get-register ?L)))
+      (when (and fname (file-exists-p fname))
+        (find-file fname)))
 
-  ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
-  ;; (let ((fname (get-register ?L)))
-  ;;   (when (and fname (file-exists-p fname))
-  ;;     (find-file fname))))
 
-  ;; (defun rgr/remember-last-buffer (f)
-  ;;   (when buffer-file-name
-  ;;     (set-register ?L (buffer-file-name))))
+    (defun rgr/remember-last-buffer (f)
+      (when buffer-file-name
+        (set-register ?L (buffer-file-name))))
 
-  ;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+    (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer))
 
   (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 #+end_src
@@ -471,6 +470,8 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
 
     (global-hl-line-mode t)
 
+    ;; https://github.com/rolandwalker/browse-url-dwim
+    ;; Context-sensitive external browse URL or Internet search from Emacs.
     (use-package
       browse-url-dwim
       :config
@@ -1967,8 +1968,9 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
 **** EAT
 [[https://codeberg.org/akib/emacs-eat][Emulate A Terminal]], in a region, in a buffer and in Eshell
 #+begin_src  emacs-lisp
-  (use-package
-    eat
+  (use-package  eat
+    :custom
+    (eat-kill-buffer-on-exit t)
     :straight (:type git
                      :host codeberg
                      :repo "akib/emacs-eat"
@@ -1977,6 +1979,10 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
                              ("terminfo/65" "terminfo/65/*")
                              ("integration" "integration/*")
                              (:exclude ".dir-locals.el" "*-tests.el"))))
+#+end_src
+**** VTERM
+#+begin_src  emacs-lisp
+  (use-package  vterm)
 #+end_src
 **** provide
 #+begin_src emacs-lisp
