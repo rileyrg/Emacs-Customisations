@@ -87,6 +87,7 @@
   (golden-ratio-mode 1))
 
 (use-package beacon
+  :disabled t
   :custom
   (beacon-blink-delay 1)
   (beacon-size 10)
@@ -95,6 +96,20 @@
   (beacon-blink-when-point-moves-vertically 8)
   :config
   (beacon-mode 1))
+
+(use-package pulsar
+  :custom
+  (pulsar-pulse t)
+  (pulsar-delay 0.7)
+  (pulsar-iterations 30)
+  (pulsar-face 'pulsar-yellow)
+  (pulsar-highlight-face 'pulsar-green)
+  :init
+  (add-hook 'minibuffer-setup-hook #'pulsar-pulse-line)
+  (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
+  (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
+  :config
+  (pulsar-global-mode 1))
 
 (straight-use-package
  '(blackout :host github :repo "raxod502/blackout"))

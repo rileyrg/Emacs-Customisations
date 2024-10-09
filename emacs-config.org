@@ -562,6 +562,7 @@ Zoom into current buffer
 visual feedback as to cursor position
 #+begin_src emacs-lisp
   (use-package beacon
+    :disabled t
     :custom
     (beacon-blink-delay 1)
     (beacon-size 10)
@@ -570,6 +571,25 @@ visual feedback as to cursor position
     (beacon-blink-when-point-moves-vertically 8)
     :config
     (beacon-mode 1))
+
+#+end_src
+**** pulsar                                                          :pulsar:
+visual feedback as to cursor position
+https://protesilaos.com/emacs/pulsar
+#+begin_src emacs-lisp
+  (use-package pulsar
+    :custom
+    (pulsar-pulse t)
+    (pulsar-delay 0.7)
+    (pulsar-iterations 30)
+    (pulsar-face 'pulsar-yellow)
+    (pulsar-highlight-face 'pulsar-green)
+    :init
+    (add-hook 'minibuffer-setup-hook #'pulsar-pulse-line)
+    (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
+    (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
+    :config
+    (pulsar-global-mode 1))
 
 #+end_src
 **** blackout modeline                                             :blackout:

@@ -486,6 +486,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     visual feedback as to cursor position
     
         (use-package beacon
+          :disabled t
           :custom
           (beacon-blink-delay 1)
           (beacon-size 10)
@@ -495,21 +496,40 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :config
           (beacon-mode 1))
 
-6.  blackout modeline
+6.  pulsar
+
+    visual feedback as to cursor position
+    <https://protesilaos.com/emacs/pulsar>
+    
+        (use-package pulsar
+          :custom
+          (pulsar-pulse t)
+          (pulsar-delay 0.7)
+          (pulsar-iterations 30)
+          (pulsar-face 'pulsar-yellow)
+          (pulsar-highlight-face 'pulsar-green)
+          :init
+          (add-hook 'minibuffer-setup-hook #'pulsar-pulse-line)
+          (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
+          (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
+          :config
+          (pulsar-global-mode 1))
+
+7.  blackout modeline
 
     Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
     
         (straight-use-package
          '(blackout :host github :repo "raxod502/blackout"))
 
-7.  boxquote
+8.  boxquote
 
         (use-package boxquote
           :straight (:branch "main")
           :bind
           ("C-S-r" . boxquote-region))
 
-8.  volatile-highlights
+9.  volatile-highlights
 
     brings visual feedback to some operations by highlighting portions relating to the operations.
     
@@ -518,14 +538,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :disabled
           :init (volatile-highlights-mode 1))
 
-9.  web pasting
+10. web pasting
 
         (use-package
           dpaste
           :init
           :bind ("C-c y" . dpaste-region-or-buffer))
 
-10. Accessibility
+11. Accessibility
 
     1.  fonts
     
@@ -542,7 +562,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :bind
               ( "<C-f7>" . 'darkroom-mode))
 
-11. Ansi colour
+12. Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
     
@@ -550,7 +570,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
         (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-12. Tabs
+13. Tabs
 
         
         (defun consult-buffer-other-tab ()
@@ -580,7 +600,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                        ("c" . tab-bar-new-tab)
                        ("s" . tab-bar-switch-to-tab))))
 
-13. bookmarks
+14. bookmarks
 
     1.  bookmark+
     
@@ -595,7 +615,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               ("C-x x <right>" . bmkp-next-bookmark)
               ("C-x x <left>" . bmkp-previous-bookmark))
 
-14. emjois
+15. emjois
 
     <https://github.com/iqbalansari/emacs-emojify>
     
@@ -603,7 +623,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :init
           (global-emojify-mode))
 
-15. Cursor/Region related
+16. Cursor/Region related
 
         (defun centreCursorLineOn()
           "set properties to keep current line approx at centre of screen height. Useful for debugging."
@@ -633,7 +653,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                      ("C-c C-SPC" . mc/edit-lines)
                      ))
 
-16. Folding/Hide Show
+17. Folding/Hide Show
 
     [hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
     
@@ -659,16 +679,16 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     
     \#+end\_src
 
-17. jinx : the enchanted spell checker
+18. jinx : the enchanted spell checker
 
         (use-package jinx
           :hook (emacs-startup . global-jinx-mode)
           :bind (("M-$" . jinx-correct)
                  ("C-M-$" . jinx-languages)))
 
-18. flyspell
+19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#orgf8d599e)
+    supereded by [jinx : the enchanted spell checker](#org2c2c8df)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -691,14 +711,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           ;; (prog-mode .  (flyspell-prog-mode))
           )
 
-19. rg, ripgrep
+20. rg, ripgrep
 
     rg is pretty quick
     
         (use-package
           ripgrep)
 
-20. provide
+21. provide
 
         (provide 'rgr/general-config)
 
@@ -1330,7 +1350,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org05fdf4c)
+    See `org-agenda-files` [org-agenda-files](#org73fad56)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2913,7 +2933,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd68a465) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org85b54dd) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2946,7 +2966,7 @@ to add to version control.
     fi
 
 
-<a id="orgd68a465"></a>
+<a id="org85b54dd"></a>
 
 ### Gnome protocol handler desktop file
 
