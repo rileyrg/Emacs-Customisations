@@ -1,19 +1,16 @@
-(recentf-mode)
-(savehist-mode)
-(save-place-mode)
+;; (recentf-mode)
+;; (savehist-mode)
+;; (save-place-mode)
+(desktop-save-mode 1)
+(midnight-mode t)
 
-;; ;; desktop mode is a PITA
 (defun rgr/startup-hook ()
   ;; (setq desktop-restore-forces-onscreen nil)
-  ;; (desktop-save-mode 1)
-  ;; (midnight-mode)
-  ;; (add-hook 'desktop-save-hook 'clean-buffer-list)
-  ;; (desktop-read)
+  ;; (require ' midnight)
   ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
   (let ((fname (get-register ?L)))
     (when (and fname (file-exists-p fname))
       (find-file fname)))
-
 
   (defun rgr/remember-last-buffer (f)
     (when buffer-file-name

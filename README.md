@@ -317,22 +317,19 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 1.  persistence  and history
 
         
-        (recentf-mode)
-        (savehist-mode)
-        (save-place-mode)
+        ;; (recentf-mode)
+        ;; (savehist-mode)
+        ;; (save-place-mode)
+        (desktop-save-mode 1)
+        (midnight-mode t)
         
-        ;; ;; desktop mode is a PITA
         (defun rgr/startup-hook ()
           ;; (setq desktop-restore-forces-onscreen nil)
-          ;; (desktop-save-mode 1)
-          ;; (midnight-mode)
-          ;; (add-hook 'desktop-save-hook 'clean-buffer-list)
-          ;; (desktop-read)
+          ;; (require ' midnight)
           ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
           (let ((fname (get-register ?L)))
             (when (and fname (file-exists-p fname))
               (find-file fname)))
-        
         
           (defun rgr/remember-last-buffer (f)
             (when buffer-file-name
@@ -688,7 +685,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org2c2c8df)
+    supereded by [jinx : the enchanted spell checker](#org948d980)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1350,7 +1347,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org73fad56)
+    See `org-agenda-files` [org-agenda-files](#org68033fa)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2933,7 +2930,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org85b54dd) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org85d9016) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2966,7 +2963,7 @@ to add to version control.
     fi
 
 
-<a id="org85b54dd"></a>
+<a id="org85d9016"></a>
 
 ### Gnome protocol handler desktop file
 

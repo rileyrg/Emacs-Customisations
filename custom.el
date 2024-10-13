@@ -5,7 +5,9 @@
  ;; If there is more than one, they won't work right.
  '(Man-notify-method 'bully)
  '(TeX-macro-global
-   '("/var/lib/texmf/tex/" "/usr/share/texlive/texmf-dist/tex/" "/usr/share/texlive/texmf-dist/bibtex/bst/" "/usr/share/texmf/tex/" "~/texmf"))
+   '("/var/lib/texmf/tex/" "/usr/share/texlive/texmf-dist/tex/"
+     "/usr/share/texlive/texmf-dist/bibtex/bst/"
+     "/usr/share/texmf/tex/" "~/texmf"))
  '(abbrev-file-name "/home/rgr/.emacs.d/etc/abbrev/abbrev.el")
  '(ag-arguments '("--smart-case" "--stats" "--multiline" "-U"))
  '(ag-ignore-list '("value" "cache" "log" "data"))
@@ -26,11 +28,8 @@
  '(browse-url-generic-program "google-chrome")
  '(browse-url-secondary-browser-function 'browse-url-firefox)
  '(c-default-style
-   '((c-mode . "k&r")
-     (c++-mode . "k&r")
-     (java-mode . "java")
-     (awk-mode . "awk")
-     (other . "gnu")))
+   '((c-mode . "k&r") (c++-mode . "k&r") (java-mode . "java")
+     (awk-mode . "awk") (other . "gnu")))
  '(c-tab-always-indent t)
  '(calendar-mark-diary-entries-flag t)
  '(calendar-view-diary-initially-flag t)
@@ -41,25 +40,54 @@
  '(ccls-sem-highlight-method 'overlay)
  '(centaur-tabs-cycle-scope 'tabs)
  '(clang-format-style "LLVM")
+ '(clean-buffer-list-delay-general 1)
  '(company-box-doc-no-wrap t)
  '(company-tooltip-maximum-width 64)
  '(compilation-ask-about-save nil)
  '(compilation-error-regexp-alist
-   '(bash-xset-x dotnet-warning dotnet-error msbuild-warning msbuild-error xbuild-warning xbuild-error dotnet-testfail typescript-nglint-warning typescript-nglint-error typescript-tslint typescript-tsc-pretty typescript-tsc absoft ada aix ant bash borland python-tracebacks-and-caml cmake cmake-info comma cucumber msft edg-1 edg-2 epc ftnchek gradle-kotlin iar ibm irix java jikes-file maven jikes-line clang-include gcc-include ruby-Test::Unit gmake gnu lcc makepp mips-1 mips-2 omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line))
+   '(bash-xset-x dotnet-warning dotnet-error msbuild-warning
+                 msbuild-error xbuild-warning xbuild-error
+                 dotnet-testfail typescript-nglint-warning
+                 typescript-nglint-error typescript-tslint
+                 typescript-tsc-pretty typescript-tsc absoft ada aix
+                 ant bash borland python-tracebacks-and-caml cmake
+                 cmake-info comma cucumber msft edg-1 edg-2 epc
+                 ftnchek gradle-kotlin iar ibm irix java jikes-file
+                 maven jikes-line clang-include gcc-include
+                 ruby-Test::Unit gmake gnu lcc makepp mips-1 mips-2
+                 omake oracle perl php rxp sparc-pascal-file
+                 sparc-pascal-line sparc-pascal-example sun sun-ada
+                 watcom 4bsd gcov-file gcov-header gcov-nomark
+                 gcov-called-line gcov-never-called perl--Pod::Checker
+                 perl--Test perl--Test2 perl--Test::Harness weblint
+                 guile-file guile-line))
  '(compilation-message-face 'default)
  '(confirm-kill-processes nil)
  '(confirm-nonexistent-file-or-buffer nil)
  '(cua-keep-region-after-copy nil)
  '(cursor-type 'box)
  '(custom-safe-themes
-   '("d6da24347c813d1635a217d396cf1e3be26484fd4d05be153f3bd2b293d2a0b5" "0568a5426239e65aab5e7c48fa1abde81130a87ddf7f942613bf5e13bf79686b" "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" "076ee9f2c64746aac7994b697eb7dbde23ac22988d41ef31b714fc6478fee224" "8ca8fbaeaeff06ac803d7c42de1430b9765d22a439efc45b5ac572c2d9d09b16" "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a" "972d69a06b8f6e5d43fb83ff59417511f09ba1a1783aab5e22c0e9cbd25ad458" "d234fa6da0282c254f00d534079374d1c6f3c3e600075bc65fe661fdd1947792" "7d6861c031212fca9b4a963ced6230be2aa3139570b85ea5e77619b1fd0351ad" "9b39b25c3a23b1be6e99a3648b91ebaf2a7efdde236e3472aa95f1708ec61d4f" "3f1dcd824a683e0ab194b3a1daac18a923eed4dba5269eecb050c718ab4d5a26" default))
+   '("d6da24347c813d1635a217d396cf1e3be26484fd4d05be153f3bd2b293d2a0b5"
+     "0568a5426239e65aab5e7c48fa1abde81130a87ddf7f942613bf5e13bf79686b"
+     "2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f"
+     "076ee9f2c64746aac7994b697eb7dbde23ac22988d41ef31b714fc6478fee224"
+     "8ca8fbaeaeff06ac803d7c42de1430b9765d22a439efc45b5ac572c2d9d09b16"
+     "7b3ce93a17ce4fc6389bba8ecb9fee9a1e4e01027a5f3532cc47d160fe303d5a"
+     "972d69a06b8f6e5d43fb83ff59417511f09ba1a1783aab5e22c0e9cbd25ad458"
+     "d234fa6da0282c254f00d534079374d1c6f3c3e600075bc65fe661fdd1947792"
+     "7d6861c031212fca9b4a963ced6230be2aa3139570b85ea5e77619b1fd0351ad"
+     "9b39b25c3a23b1be6e99a3648b91ebaf2a7efdde236e3472aa95f1708ec61d4f"
+     "3f1dcd824a683e0ab194b3a1daac18a923eed4dba5269eecb050c718ab4d5a26"
+     default))
  '(dap-chrome-debug-program
-   '("node" "/home/rgr/.emacs.d/var/dap/extensions/vscode/msjsdiag.debugger-for-chrome/out/src/chromeDebug.js"))
+   '("node"
+     "/home/rgr/.emacs.d/var/dap/extensions/vscode/msjsdiag.debugger-for-chrome/out/src/chromeDebug.js"))
  '(dap-default-terminal-kind "external")
  '(dap-external-terminal
    '("alacritty" "-t" "{display}" "-e" "zsh" "-c" "exec {command}"))
  '(dap-gdb-lldb-debug-program
-   '("node" "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/out/src/lldb.js"))
+   '("node"
+     "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/out/src/lldb.js"))
  '(dap-gdb-lldb-path
    "/home/rgr/.vscode/extensions/webfreak.debug-0.25.0/vscode/webfreak.debug")
  '(dap-internal-terminal 'dap-internal-terminal-auto)
@@ -70,21 +98,21 @@
  '(delete-old-versions t)
  '(delete-selection-mode t)
  '(desktop-globals-to-save
-   '(desktop-missing-file-warning tags-file-name tags-table-list search-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
+   '(desktop-missing-file-warning tags-file-name tags-table-list
+                                  search-ring regexp-search-ring
+                                  register-alist file-name-history
+                                  extended-command-history
+                                  minibuffer-history))
+ '(desktop-lazy-idle-delay 10000)
  '(desktop-load-locked-desktop t)
  '(desktop-locals-to-save nil)
  '(desktop-restore-eager 3)
  '(desktop-save t)
  '(devdocs-browser-major-mode-docs-alist
-   '((c++-mode "cpp")
-     (c-mode "c")
-     (typescript-mode "typescript")
-     (javascript-mode "javascript")
-     (go-mode "go")
-     (python-mode "Python")
-     (emacs-lisp-mode "elisp")
-     (rust-mode "rust")
-     (cmake-mode "CMake")))
+   '((c++-mode "cpp") (c-mode "c") (typescript-mode "typescript")
+     (javascript-mode "javascript") (go-mode "go")
+     (python-mode "Python") (emacs-lisp-mode "elisp")
+     (rust-mode "rust") (cmake-mode "CMake")))
  '(diary-file "~/.diary")
  '(diary-list-include-blanks t)
  '(diary-mark-entries-hook '(diary-mark-included-diary-files))
@@ -106,12 +134,14 @@
  '(epa-file-cache-passphrase-for-symmetric-encryption nil)
  '(erc-autojoin-channels-alist
    '(("irc.freenode.net" "#debian")
-     ("irc.libera.chat" "#openocd" "#C++" "#c++" "#c++-basic" "#ardour" "#debian" "#sway" "#emacs" "#linux")
+     ("irc.libera.chat" "#openocd" "#C++" "#c++" "#c++-basic"
+      "#ardour" "#debian" "#sway" "#emacs" "#linux")
      ("irc.oftc.net" "#llvm" "#c++")))
  '(erc-autojoin-delay 1)
  '(erc-autojoin-domain-only nil)
  '(erc-autojoin-mode t)
  '(erc-autojoin-timing 'ident)
+ '(erc-buffer-display 'bury)
  '(erc-fill-column 128)
  '(erc-fill-function 'erc-fill-static)
  '(erc-fill-mode t)
@@ -121,7 +151,7 @@
  '(erc-hide-timestamps nil)
  '(erc-input-line-position nil)
  '(erc-insert-timestamp-function 'erc-insert-timestamp-left)
- '(erc-join-buffer 'bury)
+ '(erc-interactive-display 'window-noselect)
  '(erc-kill-buffer-on-part t)
  '(erc-kill-queries-on-quit t)
  '(erc-kill-server-buffer-on-quit t)
@@ -129,7 +159,9 @@
  '(erc-max-buffer-size 20000)
  '(erc-minibuffer-notice nil)
  '(erc-modules
-   '(autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands readonly ring stamp track))
+   '(autojoin button completion fill irccontrols list match menu
+              move-to-prompt netsplit networks noncommands readonly
+              ring stamp track))
  '(erc-nick-uniquifier "_DUP")
  '(erc-notice-highlight-type 'prefix)
  '(erc-notifications-mode t)
@@ -137,12 +169,11 @@
  '(erc-prompt "#>")
  '(erc-prompt-for-nickserv-password nil)
  '(erc-prompt-for-password nil)
- '(erc-query-display 'window-noselect)
  '(erc-scrolltobottom-mode nil)
  '(erc-server-auto-reconnect t)
  '(erc-server-reconnect-attempts t)
  '(erc-stamp-mode t)
- '(erc-startup-file-list nil t)
+ '(erc-startup-file-list nil)
  '(erc-system-name nil)
  '(erc-timestamp-format "[%T]")
  '(erc-timestamp-format-right nil)
@@ -150,7 +181,8 @@
  '(erc-track-enable-keybindings nil)
  '(erc-track-exclude '("324" "332" "333" "353" "329"))
  '(erc-track-exclude-types
-   '("JOIN" "NICK" "PART" "QUIT" "MODE" "324" "329" "332" "333" "353" "477"))
+   '("JOIN" "NICK" "PART" "QUIT" "MODE" "324" "329" "332" "333" "353"
+     "477"))
  '(erc-truncate-buffer-on-save t)
  '(erc-try-new-nick-p t)
  '(erc-user-mode nil)
@@ -167,7 +199,42 @@
  '(fci-rule-color "#14151E" t)
  '(fill-column 256)
  '(flycheck-checkers
-   '(intl_translation lsp ada-gnat asciidoctor asciidoc awk-gawk bazel-build-buildifier bazel-module-buildifier bazel-starlark-buildifier bazel-workspace-buildifier c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint cuda-nvcc cwl d-dmd dockerfile-hadolint elixir-credo emacs-lisp emacs-lisp-checkdoc ember-template erlang-rebar3 erlang eruby-erubis eruby-ruumba fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-staticcheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-standard json-jsonlint json-python-json json-jq jsonnet less less-stylelint llvm-llc lua-luacheck lua markdown-markdownlint-cli markdown-mdl nix nix-linter opam perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc protobuf-prototool pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile python-pyright python-mypy r-lintr racket rpm-rpmlint rst-sphinx rst ruby-rubocop ruby-standard ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust rust-clippy scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tcl-nagelfar terraform terraform-tflint tex-chktex tex-lacheck texinfo textlint typescript-tslint verilog-verilator vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby yaml-yamllint))
+   '(intl_translation lsp ada-gnat asciidoctor asciidoc awk-gawk
+                      bazel-build-buildifier bazel-module-buildifier
+                      bazel-starlark-buildifier
+                      bazel-workspace-buildifier c/c++-clang c/c++-gcc
+                      c/c++-cppcheck cfengine chef-foodcritic coffee
+                      coffee-coffeelint coq css-csslint css-stylelint
+                      cuda-nvcc cwl d-dmd dockerfile-hadolint
+                      elixir-credo emacs-lisp emacs-lisp-checkdoc
+                      ember-template erlang-rebar3 erlang eruby-erubis
+                      eruby-ruumba fortran-gfortran go-gofmt go-golint
+                      go-vet go-build go-test go-errcheck go-unconvert
+                      go-staticcheck groovy haml handlebars
+                      haskell-stack-ghc haskell-ghc haskell-hlint
+                      html-tidy javascript-eslint javascript-jshint
+                      javascript-standard json-jsonlint
+                      json-python-json json-jq jsonnet less
+                      less-stylelint llvm-llc lua-luacheck lua
+                      markdown-markdownlint-cli markdown-mdl nix
+                      nix-linter opam perl perl-perlcritic php
+                      php-phpmd php-phpcs processing proselint
+                      protobuf-protoc protobuf-prototool pug
+                      puppet-parser puppet-lint python-flake8
+                      python-pylint python-pycompile python-pyright
+                      python-mypy r-lintr racket rpm-rpmlint
+                      rst-sphinx rst ruby-rubocop ruby-standard
+                      ruby-reek ruby-rubylint ruby ruby-jruby
+                      rust-cargo rust rust-clippy scala
+                      scala-scalastyle scheme-chicken scss-lint
+                      scss-stylelint sass/scss-sass-lint sass scss
+                      sh-bash sh-posix-dash sh-posix-bash sh-zsh
+                      sh-shellcheck slim slim-lint sql-sqlint
+                      systemd-analyze tcl-nagelfar terraform
+                      terraform-tflint tex-chktex tex-lacheck texinfo
+                      textlint typescript-tslint verilog-verilator
+                      vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml
+                      yaml-ruby yaml-yamllint))
  '(gdb-display-io-nopopup t)
  '(gdb-many-windows t)
  '(gdb-show-main t)
@@ -180,7 +247,8 @@
  '(google-translate-default-source-language "de")
  '(google-translate-default-target-language "en")
  '(grep-find-ignored-directories
-   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "var" "cache"))
+   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN"
+     "_darcs" "{arch}" "var" "cache"))
  '(gud-tooltip-modes
    '(gud-mode c-mode c++-mode fortran-mode python-mode emacs-lisp-mode))
  '(haskell-process-auto-import-loaded-modules t)
@@ -209,39 +277,37 @@
  '(mu4e-search-threads nil nil nil "Customized with use-package mu4e")
  '(org-M-RET-may-split-line nil nil nil "Customized with use-package org")
  '(org-agenda-custom-commands
-   '(("n" "Agenda and all TODOs"
-      ((agenda "" nil)
-       (alltodo "" nil))
-      nil)))
+   '(("n" "Agenda and all TODOs" ((agenda "" nil) (alltodo "" nil)) nil)))
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-scheduled-if-deadline-is-shown t nil nil "Customized with use-package org")
  '(org-agenda-skip-scheduled-if-done t)
  '(org-agenda-start-on-weekday 0 nil nil "Customized with use-package org")
  '(org-babel-load-languages
-   '((latex . t)
-     (emacs-lisp . t)
-     (python . t)
-     (shell . t)
-     (css . t)
+   '((latex . t) (emacs-lisp . t) (python . t) (shell . t) (css . t)
      (makefile . t)))
  '(org-capture-templates
    '(("p" "Project Todo" entry
-      #'#[0 "\304\305\306\307\310\311\12!\312\313!\206\26\0r\312\314!q\210\13)\"\315\300\316\12\317\301&\11!\207"
-            ["* TODO %?\12" nil org-project-capture-strategy default-directory occ-capture-edit-at-marker make-instance occ-context :category org-project-capture-category-from-file org-project-capture-strategy-get-backend org-capture-get :original-file :original-buffer :template :strategy :options]
-            11]
+      #'#[0
+          "\304\305\306\307\310\311\12!\312\313!\206\26\0r\312\314!q\210\13)\"\315\300\316\12\317\301&\11!\207"
+          ["* TODO %?\12" nil org-project-capture-strategy
+           default-directory occ-capture-edit-at-marker make-instance
+           occ-context :category
+           org-project-capture-category-from-file
+           org-project-capture-strategy-get-backend org-capture-get
+           :original-file :original-buffer :template :strategy
+           :options]
+          11]
       "* TODO %?\12")
-     ("t" "Todo" entry
-      (file+headline "refile.org" "Tasks To Refile")
+     ("t" "Todo" entry (file+headline "refile.org" "Tasks To Refile")
       "* TODO %?\12:PROPERTIES:\12:DateCreated: %T\12:END:\12")
      ("n" "Quick note to refile later" entry
       (file+headline "refile.org" "Notes To Refile")
       "* %?\12        :PROPERTIES:\12        :DateCreated: %T\12        :END:\12%i\12%a")
-     ("k" "keep" entry
-      (file "keep.org")
+     ("k" "keep" entry (file "keep.org")
       "* %? :crypt:\12        :PROPERTIES:\12        :DateCreated: %T\12        :END:\12%i\12%a")
-     ("j" "journal" entry
-      (file+olp+datetree "journal.org")
-      "* %^{Title}\12        :PROPERTIES:\12        :DateCreated: %T\12        :END:" :empty-lines 1)
+     ("j" "journal" entry (file+olp+datetree "journal.org")
+      "* %^{Title}\12        :PROPERTIES:\12        :DateCreated: %T\12        :END:"
+      :empty-lines 1)
      ("o" "Orders" entry
       (file "~/.emacs.d/var/org/orgfiles/orders.org")
       "* WAITING %^{Order name} :order:\12SCHEDULED: %^{Delivery Date}t\12:PROPERTIES:\12:DateCreated: %T\12:END:")))
@@ -264,85 +330,44 @@
  '(org-log-done 'time nil nil "Customized with use-package org")
  '(org-log-into-drawer t nil nil "Customized with use-package org")
  '(org-modules
-   '(org-crypt ol-docview ol-eww ol-info ol-irc ol-mhe ol-rmail ol-w3m ol-eshell ol-bookmark ol-elisp-symbol ol-man))
+   '(org-crypt ol-docview ol-eww ol-info ol-irc ol-mhe ol-rmail ol-w3m
+               ol-eshell ol-bookmark ol-elisp-symbol ol-man))
  '(org-project-capture-projects-file "TODO.org")
  '(org-refile-allow-creating-parent-nodes 'confirm nil nil "Customized with use-package org")
  '(org-refile-targets
-   '((org-agenda-files :tag . "refile")
-     (org-agenda-files :maxlevel . 16)) nil nil "Customized with use-package org")
+   '((org-agenda-files :tag . "refile") (org-agenda-files :maxlevel . 16)) nil nil "Customized with use-package org")
  '(org-return-follows-link t)
  '(org-reverse-note-order t nil nil "Customized with use-package org")
  '(org-src-window-setup 'current-window)
  '(org-structure-template-alist
-   '(("py" . "src python")
-     ("el" . "src emacs-lisp")
-     ("sh" . "src shell")
-     ("ba" . "src bash")
-     ("a" . "export ascii")
-     ("c" . "center")
-     ("C" . "comment")
-     ("e" . "example")
-     ("E" . "export")
-     ("h" . "export html")
-     ("l" . "export latex")
-     ("q" . "quote")
-     ("s" . "src")
-     ("v" . "verse")))
+   '(("py" . "src python") ("el" . "src emacs-lisp") ("sh" . "src shell")
+     ("ba" . "src bash") ("a" . "export ascii") ("c" . "center")
+     ("C" . "comment") ("e" . "example") ("E" . "export")
+     ("h" . "export html") ("l" . "export latex") ("q" . "quote")
+     ("s" . "src") ("v" . "verse")))
  '(org-tab-follows-link t)
  '(org-tag-alist
-   '((:startgroup)
-     (#("@caravan" 0 8
-        (face nil))
-      . 99)
-     ("@shamrock" . 32)
-     ("@home" . 104)
-     ("@dublin" . 100)
-     (:endgroup)
-     (:startgroup)
-     ("online" . 111)
-     ("offline" . 79)
-     (:endgroup)
-     (:startgroup)
-     ("personal" . 112)
-     (:endgroup)
-     ("electronics" . 69)
-     ("emacs" . 101)
-     ("fitness" . 102)
-     ("gardening" . 103)
-     ("toread" . 114)
-     ("idea" . 97)
-     ("programming" . 80)
-     (#("shopping" 0 8
-        (face nil))
-      . 115)
-     ("bill" . 98)))
+   '((:startgroup) (#("@caravan" 0 8 (face nil)) . 99) ("@shamrock" . 32)
+     ("@home" . 104) ("@dublin" . 100) (:endgroup) (:startgroup)
+     ("online" . 111) ("offline" . 79) (:endgroup) (:startgroup)
+     ("personal" . 112) (:endgroup) ("electronics" . 69)
+     ("emacs" . 101) ("fitness" . 102) ("gardening" . 103)
+     ("toread" . 114) ("idea" . 97) ("programming" . 80)
+     (#("shopping" 0 8 (face nil)) . 115) ("bill" . 98)))
  '(org-tag-persistent-alist '(("noexport" . 110) ("trash" . 116) ("refile" . 114)) nil nil "Customized with use-package org")
  '(org-tags-exclude-from-inheritance '("PROJECT" "DEFAULTCLOCKTASK" "crypt") nil nil "Customized with use-package org")
  '(org-todo-keywords
    '((sequence "TODO(t!)" "STARTED(s!)" "|" "DONE(d!/!)")
-     (sequence "WAITING(w@/!)" "SOMEDAY(S!)" "OPEN(O@)" "|" "CANCELLED(c@/!)")
-     (sequence "QUOTE(q!)" "QUOTED(Q!)" "|" "APPROVED(A@)" "EXPIRED(E@)" "REJECTED(R@)")))
+     (sequence "WAITING(w@/!)" "SOMEDAY(S!)" "OPEN(O@)" "|"
+               "CANCELLED(c@/!)")
+     (sequence "QUOTE(q!)" "QUOTED(Q!)" "|" "APPROVED(A@)"
+               "EXPIRED(E@)" "REJECTED(R@)")))
  '(org-todo-state-tags-triggers
-   '(("CANCELLED"
-      ("CANCELLED" . t))
-     ("WAITING"
-      ("WAITING" . t)
-      ("NEXT"))
-     ("SOMEDAY"
-      ("WAITING" . t))
-     (done
-      ("NEXT")
-      ("WAITING"))
-     ("TODO"
-      ("WAITING")
-      ("CANCELLED")
-      ("NEXT"))
-     ("STARTED"
-      ("WAITING"))
-     ("DONE"
-      ("WAITING")
-      ("CANCELLED")
-      ("NEXT"))))
+   '(("CANCELLED" ("CANCELLED" . t)) ("WAITING" ("WAITING" . t) ("NEXT"))
+     ("SOMEDAY" ("WAITING" . t)) (done ("NEXT") ("WAITING"))
+     ("TODO" ("WAITING") ("CANCELLED") ("NEXT"))
+     ("STARTED" ("WAITING"))
+     ("DONE" ("WAITING") ("CANCELLED") ("NEXT"))))
  '(org-use-property-inheritance t)
  '(persp-mode-prefix-key "\30P")
  '(php-manual-url "http://www.php.net")
@@ -352,7 +377,17 @@
  '(pos-tip-background-color "#FFFACE")
  '(pos-tip-foreground-color "#272822")
  '(projectile-project-root-files
-   '(".projectile" ".project" "dune-project" "pubspec.yaml" "info.rkt" "Cargo.toml" "stack.yaml" "DESCRIPTION" "Eldev" "Cask" "shard.yml" "Gemfile" ".bloop" "deps.edn" "build.boot" "project.clj" "build.sc" "build.sbt" "application.properties" "gradlew" "build.gradle" "pom.xml" "poetry.lock" "Pipfile" "tox.ini" "setup.py" "requirements.txt" "manage.py" "angular.json" "package.json" "gulpfile.js" "Gruntfile.js" "mix.exs" "rebar.config" "composer.json" "CMakeLists.txt" "Makefile" "debian/control" "WORKSPACE" "default.nix" "meson.build" "SConstruct" "GTAGS" "TAGS" "configure.ac" "configure.in" "cscope.out"))
+   '(".projectile" ".project" "dune-project" "pubspec.yaml" "info.rkt"
+     "Cargo.toml" "stack.yaml" "DESCRIPTION" "Eldev" "Cask"
+     "shard.yml" "Gemfile" ".bloop" "deps.edn" "build.boot"
+     "project.clj" "build.sc" "build.sbt" "application.properties"
+     "gradlew" "build.gradle" "pom.xml" "poetry.lock" "Pipfile"
+     "tox.ini" "setup.py" "requirements.txt" "manage.py"
+     "angular.json" "package.json" "gulpfile.js" "Gruntfile.js"
+     "mix.exs" "rebar.config" "composer.json" "CMakeLists.txt"
+     "Makefile" "debian/control" "WORKSPACE" "default.nix"
+     "meson.build" "SConstruct" "GTAGS" "TAGS" "configure.ac"
+     "configure.in" "cscope.out"))
  '(ps-font-size '(12 . 12))
  '(ps-lpr-switches '("-o Duplex=DuplexNoTumble"))
  '(ps-paper-type 'a4)
@@ -372,18 +407,22 @@
  '(safe-local-variable-values
    '((eval setq-local org-confirm-babel-evaluate nil)
      (eval progn
-           (when
-               (file-exists-p ".boilerplate")
+           (when (file-exists-p ".boilerplate")
              (setq boilerplate
                    (with-temp-buffer
                      (insert-file-contents ".boilerplate")
                      (buffer-string)))
-             (setq fname
-                   (buffer-file-name))))
+             (setq fname (buffer-file-name))))
      (eval dap-register-debug-template "cpptools::Run Configuration"
-           (list :type "cppdbg" :request "launch" :name "cpptools::Run Configuration" :MIMode "gdb" :program "${workspaceFolder}/hello-world" :cwd "${workspaceFolder}"))
+           (list :type "cppdbg" :request "launch" :name
+                 "cpptools::Run Configuration" :MIMode "gdb" :program
+                 "${workspaceFolder}/hello-world" :cwd
+                 "${workspaceFolder}"))
      (eval dap-register-debug-template "cpptools::Run Configuration"
-           (list :type "cppdbg" :request "launch" :name "cpptools::Run Configuration" :MIMode "gdb" :target "${workspaceFolder}/hello-world" :cwd "${workspaceFolder}"))))
+           (list :type "cppdbg" :request "launch" :name
+                 "cpptools::Run Configuration" :MIMode "gdb" :target
+                 "${workspaceFolder}/hello-world" :cwd
+                 "${workspaceFolder}"))))
  '(save-abbrevs 'silently)
  '(save-interprogram-paste-before-kill t)
  '(scroll-bar-mode nil)
