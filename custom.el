@@ -106,7 +106,7 @@
  '(desktop-lazy-idle-delay 10000)
  '(desktop-load-locked-desktop t)
  '(desktop-locals-to-save nil)
- '(desktop-restore-eager 3)
+ '(desktop-restore-eager 8)
  '(desktop-save t)
  '(devdocs-browser-major-mode-docs-alist
    '((c++-mode "cpp") (c-mode "c") (typescript-mode "typescript")

@@ -86,7 +86,7 @@
       (let ((default-directory (projectile-project-root)))
         (eat))))
   :bind
-  ("M-g v" . #'rgr/projectile-term)
+  ("M-g t" . #'rgr/projectile-term)
   (:map projectile-mode-map
         (("C-x p" . projectile-command-map)))
   (:map projectile-command-map
