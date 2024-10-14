@@ -1,6 +1,8 @@
 (use-package  eat
   :custom
   (eat-kill-buffer-on-exit t)
+  :bind
+  ("M-g t" . #'eat)
   :straight (:type git
                    :host codeberg
                    :repo "akib/emacs-eat"

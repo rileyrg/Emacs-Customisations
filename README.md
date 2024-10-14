@@ -685,7 +685,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#orgf5ad9fe)
+    supereded by [jinx : the enchanted spell checker](#org24ea91e)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1347,7 +1347,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org5c225c6)
+    See `org-agenda-files` [org-agenda-files](#orgf0d3a1a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1777,6 +1777,8 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
         (use-package  eat
           :custom
           (eat-kill-buffer-on-exit t)
+          :bind
+          ("M-g t" . #'eat)
           :straight (:type git
                            :host codeberg
                            :repo "akib/emacs-eat"
@@ -2107,9 +2109,10 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 (if (string-equal major-mode "eat-mode")
                     (previous-buffer)
                   (let ((default-directory (projectile-project-root)))
+                    (split-window-below)
+                    (other-window 1)
                     (eat))))
               :bind
-              ("M-g t" . #'rgr/projectile-term)
               (:map projectile-mode-map
                     (("C-x p" . projectile-command-map)))
               (:map projectile-command-map
@@ -2930,7 +2933,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd6c7804) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge197f56) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2963,7 +2966,7 @@ to add to version control.
     fi
 
 
-<a id="orgd6c7804"></a>
+<a id="orge197f56"></a>
 
 ### Gnome protocol handler desktop file
 

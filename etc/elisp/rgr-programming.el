@@ -84,9 +84,10 @@
     (if (string-equal major-mode "eat-mode")
         (previous-buffer)
       (let ((default-directory (projectile-project-root)))
+        (split-window-below)
+        (other-window 1)
         (eat))))
   :bind
-  ("M-g t" . #'rgr/projectile-term)
   (:map projectile-mode-map
         (("C-x p" . projectile-command-map)))
   (:map projectile-command-map

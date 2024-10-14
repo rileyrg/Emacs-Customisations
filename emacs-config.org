@@ -1988,6 +1988,8 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
   (use-package  eat
     :custom
     (eat-kill-buffer-on-exit t)
+    :bind
+    ("M-g t" . #'eat)
     :straight (:type git
                      :host codeberg
                      :repo "akib/emacs-eat"
@@ -2332,23 +2334,24 @@ https://github.com/emacsmirror/rmsbolt
 **** Project Management                                             :project:
 ***** projectile                                                 :projectile:
 #+begin_src emacs-lisp
-    (use-package projectile
-      :demand
-      :config
-      (projectile-mode +1)
-      (defun rgr/projectile-term()
-        (interactive)
-        (if (string-equal major-mode "eat-mode")
-            (previous-buffer)
-          (let ((default-directory (projectile-project-root)))
-            (eat))))
-      :bind
-      ("M-g t" . #'rgr/projectile-term)
-      (:map projectile-mode-map
-            (("C-x p" . projectile-command-map)))
-      (:map projectile-command-map
-            (( "b" . consult-project-buffer)
-             ("t" . #'rgr/projectile-term))))
+  (use-package projectile
+    :demand
+    :config
+    (projectile-mode +1)
+    (defun rgr/projectile-term()
+      (interactive)
+      (if (string-equal major-mode "eat-mode")
+          (previous-buffer)
+        (let ((default-directory (projectile-project-root)))
+          (split-window-below)
+          (other-window 1)
+          (eat))))
+    :bind
+    (:map projectile-mode-map
+          (("C-x p" . projectile-command-map)))
+    (:map projectile-command-map
+          (( "b" . consult-project-buffer)
+           ("t" . #'rgr/projectile-term))))
 #+end_src
 ****** projectile npm support
 #+begin_src  emacs-lisp
