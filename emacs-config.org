@@ -475,6 +475,7 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
       (browse-url-dwim-mode))
 
     (use-package alert)
+    (require 'rgr-chat)
 
     ;; display dir name when core name clashes
     (require 'uniquify)
@@ -489,6 +490,7 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
     (add-hook 'before-save-hook 'delete-trailing-whitespace)
     :bind
     ("C-x C-q" . view-mode)
+    ("C-c e" . rgr/erc-start)
     ("C-x C-b" . ibuffer)
     ("C-x C-i" . imenu)
     ("C-x k" . rgr/kill-current-buffer)
@@ -496,7 +498,7 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
     ("M-1" . delete-other-windows)
     ("S-<f1>" . describe-face)
     ( "M-m"  . manual-entry)
-    ("S-<f10>" . 'menu-bar-open))
+    ("S-<f10>" . menu-bar-open))
 
 #+end_src
 **** posframe                                                      :posframe:
@@ -2675,6 +2677,53 @@ https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (provide 'rgr/lsp)
 #+end_src
+
+
+
+**** Chat
+:PROPERTIES:
+:END:
+
+Chat SW
+
+Raw: [[file+sys:etc/elisp/rgr-chat.el][rgr/chat]]
+#+begin_src emacs-lisp
+  (require 'rgr/chat "rgr-chat" 'NOERROR)
+#+end_src
+
+***** library
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-chat.el" elisp-dir)
+:END:
+
+****** erc
+:PROPERTIES:
+:END:
+#+begin_src  emacs-lisp
+
+  (use-package erc :demand t
+    :config
+    (defun rgr/erc-switch-to-channel(&optional channel)
+      (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
+        (switch-to-buffer (current-buffer))))
+
+    (defun rgr/erc-start()
+      (interactive)
+      (unless(get-buffer "libera.chat:6697")
+        (progn
+          (erc-tls :server "irc.libera.chat" :port 6697 :nick "rgr")
+          (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel)))))
+
+
+#+end_src
+
+#+begin_src emacs-lisp
+  (provide 'rgr/chat)
+#+end_src
+
+
+
+
 **** Serial Port
 :PROPERTIES:
 :END:

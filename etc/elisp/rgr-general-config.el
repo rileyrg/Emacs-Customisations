@@ -35,6 +35,7 @@
     (browse-url-dwim-mode))
 
   (use-package alert)
+  (require 'rgr-chat)
 
   ;; display dir name when core name clashes
   (require 'uniquify)
@@ -49,6 +50,7 @@
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :bind
   ("C-x C-q" . view-mode)
+  ("C-c e" . rgr/erc-start)
   ("C-x C-b" . ibuffer)
   ("C-x C-i" . imenu)
   ("C-x k" . rgr/kill-current-buffer)
@@ -56,7 +58,7 @@
   ("M-1" . delete-other-windows)
   ("S-<f1>" . describe-face)
   ( "M-m"  . manual-entry)
-  ("S-<f10>" . 'menu-bar-open))
+  ("S-<f10>" . menu-bar-open))
 
 (use-package posframe)
 
