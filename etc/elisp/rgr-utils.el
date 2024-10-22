@@ -26,7 +26,7 @@
   :init
   (setq rgr/complete-line-function 'rgr/newline-below)
   :config
-  (defun rgr/complete-c-line()
+  (defun rgr/c-complete-line()
     (interactive)
     (end-of-line)
     (delete-trailing-whitespace)

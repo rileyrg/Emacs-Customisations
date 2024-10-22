@@ -316,7 +316,7 @@ Not working with wayland
     :init
     (setq rgr/complete-line-function 'rgr/newline-below)
     :config
-    (defun rgr/complete-c-line()
+    (defun rgr/c-complete-line()
       (interactive)
       (end-of-line)
       (delete-trailing-whitespace)
@@ -382,10 +382,10 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 **** persistence  and history
 #+begin_src emacs-lisp
 
-  ;; (recentf-mode)
+  (recentf-mode)
   ;; (savehist-mode)
   ;; (save-place-mode)
-  (desktop-save-mode 1)
+  (desktop-save-mode t)
   (midnight-mode t)
 
   (defun rgr/startup-hook ()
@@ -586,7 +586,8 @@ https://protesilaos.com/emacs/pulsar
     (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
     (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
     :config
-    (pulsar-global-mode 1))
+    (
+     pulsar-global-mode 1))
 
 #+end_src
 **** blackout modeline                                             :blackout:
@@ -2771,37 +2772,43 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     ;; (breadcrumb-mode t)
     )
 #+end_src
-**** C, c-mode                                                            :c:
+**** rust
+#+begin_src emacs-lisp
+  (use-package rust-ts-mode
+    :config
+    (defun rgr/rust-ts-mode-hook ()
+      (message "rgr/rust-ts-mode-hook")
+      (lsp)
+      (if (featurep 'yasnippet)
+          (yas-minor-mode)))
+    :hook
+    (rust-ts-mode . rgr/rust-ts-mode-hook)
+    :bind  ( :map rust-ts-mode-map
+             (("M-<return>" . rgr/c-complete-line))))
+#+end_src
+**** C                                                                    :c:
 :PROPERTIES:
 :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
 :END:
 ***** c-mode-common-hook
+
 #+begin_src emacs-lisp
   (use-package c-ts-mode
     :config
-
-    (defun rgr/c-ts-mode-hook ()
-      (message "rgr/c-ts-mode-hook")
-      (rgr/c-ts-mode-common-hook)
-      )
-
     (defun rgr/c-ts-mode-common-hook ()
       ;;(eglot-ensure)
       (message "rgr/c-ts-mode-common-hook")
       (lsp)
-      ;;(if (fboundp 'indent-bars-mode)
-      ;;  (indent-bars-mode))
-      (if(featurep 'platformio-mode)
-          (platformio-conditionally-enable))
+      ;; (if(featurep 'platformio-mode)
+      ;;     (platformio-conditionally-enable))
       (if (featurep 'yasnippet)
           (yas-minor-mode)))
 
     :hook
-    (c-mode-common . rgr/c-ts-mode-common-hook)
-    (c-ts-mode . rgr/c-ts-mode-hook)
-    :bind  ( :map c++-ts-mode-map
+    (c-ts-mode . rgr/c-ts-mode-common-hook)
+    :bind  ( :map c-ts-mode-map
              (("M-<return>" . rgr/c-complete-line))
-             :map c-ts-mode-map
+             :map c++-ts-mode-map
              (("M-<return>" . rgr/c-complete-line))))
 #+end_src
 **** cc,cpp, C++, cc-mode                                               :cpp:
@@ -2809,10 +2816,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b
 :END:
 #+begin_src emacs-lisp
-  (defun rgr/c++-mode-hook ()
-    (message "cpp mode hook")
-    )
-  (add-hook 'c++-ts-mode-hook 'rgr/c++-mode-hook)
+  (add-hook 'c++-ts-mode-hook 'rgr/c-ts-common-mode-hook)
 #+end_src
 **** Linux tools
 :PROPERTIES:

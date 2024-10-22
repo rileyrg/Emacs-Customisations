@@ -1,7 +1,7 @@
-;; (recentf-mode)
+(recentf-mode)
 ;; (savehist-mode)
 ;; (save-place-mode)
-(desktop-save-mode 1)
+(desktop-save-mode t)
 (midnight-mode t)
 
 (defun rgr/startup-hook ()

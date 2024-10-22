@@ -308,37 +308,37 @@
   ;; (breadcrumb-mode t)
   )
 
+(use-package rust-ts-mode
+  :config
+  (defun rgr/rust-ts-mode-hook ()
+    (message "rgr/rust-ts-mode-hook")
+    (lsp)
+    (if (featurep 'yasnippet)
+        (yas-minor-mode)))
+  :hook
+  (rust-ts-mode . rgr/rust-ts-mode-hook)
+  :bind  ( :map rust-ts-mode-map
+           (("M-<return>" . rgr/c-complete-line))))
+
 (use-package c-ts-mode
   :config
-
-  (defun rgr/c-ts-mode-hook ()
-    (message "rgr/c-ts-mode-hook")
-    (rgr/c-ts-mode-common-hook)
-    )
-
   (defun rgr/c-ts-mode-common-hook ()
     ;;(eglot-ensure)
     (message "rgr/c-ts-mode-common-hook")
     (lsp)
-    ;;(if (fboundp 'indent-bars-mode)
-    ;;  (indent-bars-mode))
-    (if(featurep 'platformio-mode)
-        (platformio-conditionally-enable))
+    ;; (if(featurep 'platformio-mode)
+    ;;     (platformio-conditionally-enable))
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
 
   :hook
-  (c-mode-common . rgr/c-ts-mode-common-hook)
-  (c-ts-mode . rgr/c-ts-mode-hook)
-  :bind  ( :map c++-ts-mode-map
+  (c-ts-mode . rgr/c-ts-mode-common-hook)
+  :bind  ( :map c-ts-mode-map
            (("M-<return>" . rgr/c-complete-line))
-           :map c-ts-mode-map
+           :map c++-ts-mode-map
            (("M-<return>" . rgr/c-complete-line))))
 
-(defun rgr/c++-mode-hook ()
-  (message "cpp mode hook")
-  )
-(add-hook 'c++-ts-mode-hook 'rgr/c++-mode-hook)
+(add-hook 'c++-ts-mode-hook 'rgr/c-ts-common-mode-hook)
 
 (use-package logview
   :demand t

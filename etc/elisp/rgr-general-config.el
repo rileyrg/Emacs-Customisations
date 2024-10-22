@@ -109,7 +109,8 @@
   (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
   (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
   :config
-  (pulsar-global-mode 1))
+  (
+   pulsar-global-mode 1))
 
 (straight-use-package
  '(blackout :host github :repo "raxod502/blackout"))

@@ -270,6 +270,7 @@
  '(lsp-tcp-connection-timeout 5)
  '(lsp-ui-doc-delay 1)
  '(lsp-ui-doc-show-with-cursor t)
+ '(lsp-ui-doc-use-webkit t)
  '(magit-bury-buffer-function 'magit-restore-window-configuration)
  '(max-lisp-eval-depth 32000)
  '(mu4e-compose-signature '(concat "" "https://github.com/rileyrg?tab=repositories"))
@@ -388,6 +389,7 @@
      "Makefile" "debian/control" "WORKSPACE" "default.nix"
      "meson.build" "SConstruct" "GTAGS" "TAGS" "configure.ac"
      "configure.in" "cscope.out"))
+ '(projectile-run-use-comint-mode t)
  '(ps-font-size '(12 . 12))
  '(ps-lpr-switches '("-o Duplex=DuplexNoTumble"))
  '(ps-paper-type 'a4)
