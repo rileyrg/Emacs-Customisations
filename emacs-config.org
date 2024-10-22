@@ -2778,7 +2778,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :config
     (defun rgr/rust-ts-mode-hook ()
       (message "rgr/rust-ts-mode-hook")
-      (lsp)
+      (lsp-deferred)
       (if (featurep 'yasnippet)
           (yas-minor-mode)))
     :hook
@@ -2798,7 +2798,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     (defun rgr/c-ts-mode-common-hook ()
       ;;(eglot-ensure)
       (message "rgr/c-ts-mode-common-hook")
-      (lsp)
+      (lsp-deferred)
       ;; (if(featurep 'platformio-mode)
       ;;     (platformio-conditionally-enable))
       (if (featurep 'yasnippet)

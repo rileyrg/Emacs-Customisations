@@ -312,7 +312,7 @@
   :config
   (defun rgr/rust-ts-mode-hook ()
     (message "rgr/rust-ts-mode-hook")
-    (lsp)
+    (lsp-deferred)
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
   :hook
@@ -325,7 +325,7 @@
   (defun rgr/c-ts-mode-common-hook ()
     ;;(eglot-ensure)
     (message "rgr/c-ts-mode-common-hook")
-    (lsp)
+    (lsp-deferred)
     ;; (if(featurep 'platformio-mode)
     ;;     (platformio-conditionally-enable))
     (if (featurep 'yasnippet)

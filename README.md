@@ -263,7 +263,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           :init
           (setq rgr/complete-line-function 'rgr/newline-below)
           :config
-          (defun rgr/complete-c-line()
+          (defun rgr/c-complete-line()
             (interactive)
             (end-of-line)
             (delete-trailing-whitespace)
@@ -317,10 +317,10 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 1.  persistence  and history
 
         
-        ;; (recentf-mode)
+        (recentf-mode)
         ;; (savehist-mode)
         ;; (save-place-mode)
-        (desktop-save-mode 1)
+        (desktop-save-mode t)
         (midnight-mode t)
         
         (defun rgr/startup-hook ()
@@ -510,7 +510,8 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
           (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
           :config
-          (pulsar-global-mode 1))
+          (
+           pulsar-global-mode 1))
 
 7.  blackout modeline
 
@@ -685,7 +686,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org24ea91e)
+    supereded by [jinx : the enchanted spell checker](#orga99c6b5)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1347,7 +1348,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgf0d3a1a)
+    See `org-agenda-files` [org-agenda-files](#org87b11b9)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2499,45 +2500,47 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               ;; (breadcrumb-mode t)
               )
 
-25. C, c-mode
+25. rust
+
+        (use-package rust-ts-mode
+          :config
+          (defun rgr/rust-ts-mode-hook ()
+            (message "rgr/rust-ts-mode-hook")
+            (lsp-deferred)
+            (if (featurep 'yasnippet)
+                (yas-minor-mode)))
+          :hook
+          (rust-ts-mode . rgr/rust-ts-mode-hook)
+          :bind  ( :map rust-ts-mode-map
+                   (("M-<return>" . rgr/c-complete-line))))
+
+26. C
 
     1.  c-mode-common-hook
     
             (use-package c-ts-mode
               :config
-            
-              (defun rgr/c-ts-mode-hook ()
-                (message "rgr/c-ts-mode-hook")
-                (rgr/c-ts-mode-common-hook)
-                )
-            
               (defun rgr/c-ts-mode-common-hook ()
                 ;;(eglot-ensure)
                 (message "rgr/c-ts-mode-common-hook")
-                (lsp)
-                ;;(if (fboundp 'indent-bars-mode)
-                ;;  (indent-bars-mode))
-                (if(featurep 'platformio-mode)
-                    (platformio-conditionally-enable))
+                (lsp-deferred)
+                ;; (if(featurep 'platformio-mode)
+                ;;     (platformio-conditionally-enable))
                 (if (featurep 'yasnippet)
                     (yas-minor-mode)))
             
               :hook
-              (c-mode-common . rgr/c-ts-mode-common-hook)
-              (c-ts-mode . rgr/c-ts-mode-hook)
-              :bind  ( :map c++-ts-mode-map
+              (c-ts-mode . rgr/c-ts-mode-common-hook)
+              :bind  ( :map c-ts-mode-map
                        (("M-<return>" . rgr/c-complete-line))
-                       :map c-ts-mode-map
+                       :map c++-ts-mode-map
                        (("M-<return>" . rgr/c-complete-line))))
 
-26. cc,cpp, C++, cc-mode
+27. cc,cpp, C++, cc-mode
 
-        (defun rgr/c++-mode-hook ()
-          (message "cpp mode hook")
-          )
-        (add-hook 'c++-ts-mode-hook 'rgr/c++-mode-hook)
+        (add-hook 'c++-ts-mode-hook 'rgr/c-ts-common-mode-hook)
 
-27. Linux tools
+28. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2547,13 +2550,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-28. Assembler
+29. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-29. Godot GDScript
+30. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
@@ -2576,7 +2579,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
           )
 
-30. Web,Symfony and Twig
+31. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2636,7 +2639,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
-31. elf-mode - view the symbol list in a binary
+32. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2646,7 +2649,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
           (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-32. provide
+33. provide
 
         (provide 'rgr/programming)
 
@@ -2933,7 +2936,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge197f56) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org55667f7) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2966,7 +2969,7 @@ to add to version control.
     fi
 
 
-<a id="orge197f56"></a>
+<a id="org55667f7"></a>
 
 ### Gnome protocol handler desktop file
 
