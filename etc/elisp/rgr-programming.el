@@ -310,17 +310,19 @@
   ;; (breadcrumb-mode t)
   )
 
-(use-package rust-ts-mode
+(use-package rust-mode
+  :ensure t
+  :init
+  (setq rust-mode-treesitter-derive t)
   :config
-  (defun rgr/rust-ts-mode-hook ()
-    (message "rgr/rust-ts-mode-hook")
+  (defun rgr/rust-mode-hook ()
+    (message "rgr/rust-mode-hook")
+    (setq indent-tabs-mode nil)
     (lsp-deferred)
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
   :hook
-  (rust-ts-mode . rgr/rust-ts-mode-hook)
-  :bind  ( :map rust-ts-mode-map
-           (("M-<return>" . rgr/c-complete-line))))
+  (rust-ts-mode . rgr/rust-mode-hook))
 
 (use-package c-ts-mode
   :config

@@ -47,13 +47,14 @@
           (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
           (delete-window))
       (kill-current-buffer)))
+  
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :bind
   ("C-x C-q" . view-mode)
   ("C-c e" . rgr/erc-start)
   ("C-x C-b" . ibuffer)
   ("C-x C-i" . imenu)
-  ("C-x k" . rgr/kill-current-buffer)
+  ("C-x k" . kill-current-buffer)
   ("M-0" . delete-window)
   ("M-1" . delete-other-windows)
   ("S-<f1>" . describe-face)

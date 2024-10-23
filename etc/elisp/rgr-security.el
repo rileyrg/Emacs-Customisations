@@ -12,10 +12,6 @@
         (funcall secret)
       secret)))
 
-(use-package auth-source-1password
-  :config
-  (auth-source-1password-enable))
-
 (use-package pass)
 
 (provide 'rgr/security)

@@ -196,13 +196,7 @@ Raw: [rgr/security](etc/elisp/rgr-security.el)
                 (funcall secret)
               secret)))
 
-2.  1password
-
-        (use-package auth-source-1password
-          :config
-          (auth-source-1password-enable))
-
-3.  Pass
+2.  Pass
 
     Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     
@@ -210,7 +204,7 @@ Raw: [rgr/security](etc/elisp/rgr-security.el)
     
         (use-package pass)
 
-4.  provide
+3.  provide
 
         (provide 'rgr/security)
 
@@ -418,13 +412,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                   (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
                   (delete-window))
               (kill-current-buffer)))
+        
           (add-hook 'before-save-hook 'delete-trailing-whitespace)
           :bind
           ("C-x C-q" . view-mode)
           ("C-c e" . rgr/erc-start)
           ("C-x C-b" . ibuffer)
           ("C-x C-i" . imenu)
-          ("C-x k" . rgr/kill-current-buffer)
+          ("C-x k" . kill-current-buffer)
           ("M-0" . delete-window)
           ("M-1" . delete-other-windows)
           ("S-<f1>" . describe-face)
@@ -690,7 +685,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org47d674f)
+    supereded by [jinx : the enchanted spell checker](#org3570b2c)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1352,7 +1347,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org8e4557b)
+    See `org-agenda-files` [org-agenda-files](#orga66a1f1)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2430,7 +2425,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         1.  erc
         
                 
-                (use-package erc :demand t
+                (use-package erc
                   :config
                   (defun rgr/erc-switch-to-channel(&optional channel)
                     (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
@@ -2440,9 +2435,19 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                     (interactive)
                     (unless(get-buffer "libera.chat:6697")
                       (progn
-                        (erc-tls :server "irc.libera.chat" :port 6697 :nick "rgr")
-                        (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel)))))
-            
+                        (erc-tls :server "irc.libera.chat" :port 6697)
+                        (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
+                
+                  (defun rgr/erc-quit()
+                    (interactive)
+                    (erc-quit-server "bye"))
+                
+                  :bind
+                   (:map erc-mode-map
+                          (("C-c C-q" . rgr/erc-quit))))
+        
+        2.  provide
+        
                 (provide 'rgr/chat)
 
 21. Serial Port
@@ -2534,17 +2539,20 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 26. rust
 
-        (use-package rust-ts-mode
+        
+        (use-package rust-mode
+          :ensure t
+          :init
+          (setq rust-mode-treesitter-derive t)
           :config
-          (defun rgr/rust-ts-mode-hook ()
-            (message "rgr/rust-ts-mode-hook")
+          (defun rgr/rust-mode-hook ()
+            (message "rgr/rust-mode-hook")
+            (setq indent-tabs-mode nil)
             (lsp-deferred)
             (if (featurep 'yasnippet)
                 (yas-minor-mode)))
           :hook
-          (rust-ts-mode . rgr/rust-ts-mode-hook)
-          :bind  ( :map rust-ts-mode-map
-                   (("M-<return>" . rgr/c-complete-line))))
+          (rust-ts-mode . rgr/rust-mode-hook))
 
 27. C
 
@@ -2968,7 +2976,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5f07730) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgefccbc7) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3001,7 +3009,7 @@ to add to version control.
     fi
 
 
-<a id="org5f07730"></a>
+<a id="orgefccbc7"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -233,12 +233,6 @@ example:
           (funcall secret)
         secret)))
 #+end_src
-**** 1password
-#+begin_src  emacs-lisp
-  (use-package auth-source-1password
-    :config
-    (auth-source-1password-enable))
-#+end_src
 
 **** Pass
 Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
@@ -487,13 +481,14 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
             (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
             (delete-window))
         (kill-current-buffer)))
+    
     (add-hook 'before-save-hook 'delete-trailing-whitespace)
     :bind
     ("C-x C-q" . view-mode)
     ("C-c e" . rgr/erc-start)
     ("C-x C-b" . ibuffer)
     ("C-x C-i" . imenu)
-    ("C-x k" . rgr/kill-current-buffer)
+    ("C-x k" . kill-current-buffer)
     ("M-0" . delete-window)
     ("M-1" . delete-other-windows)
     ("S-<f1>" . describe-face)
@@ -2701,7 +2696,7 @@ Raw: [[file+sys:etc/elisp/rgr-chat.el][rgr/chat]]
 :END:
 #+begin_src  emacs-lisp
 
-  (use-package erc :demand t
+  (use-package erc
     :config
     (defun rgr/erc-switch-to-channel(&optional channel)
       (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
@@ -2711,17 +2706,23 @@ Raw: [[file+sys:etc/elisp/rgr-chat.el][rgr/chat]]
       (interactive)
       (unless(get-buffer "libera.chat:6697")
         (progn
-          (erc-tls :server "irc.libera.chat" :port 6697 :nick "rgr")
-          (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel)))))
-
+          (erc-tls :server "irc.libera.chat" :port 6697)
+          (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
+    
+    (defun rgr/erc-quit()
+      (interactive)
+      (erc-quit-server "bye"))
+    
+    :bind
+     (:map erc-mode-map
+            (("C-c C-q" . rgr/erc-quit))))
 
 #+end_src
 
+****** provide
 #+begin_src emacs-lisp
   (provide 'rgr/chat)
 #+end_src
-
-
 
 
 **** Serial Port
@@ -2825,17 +2826,21 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 #+end_src
 **** rust
 #+begin_src emacs-lisp
-  (use-package rust-ts-mode
+
+  (use-package rust-mode
+    :ensure t
+    :init
+    (setq rust-mode-treesitter-derive t)
     :config
-    (defun rgr/rust-ts-mode-hook ()
-      (message "rgr/rust-ts-mode-hook")
+    (defun rgr/rust-mode-hook ()
+      (message "rgr/rust-mode-hook")
+      (setq indent-tabs-mode nil)
       (lsp-deferred)
       (if (featurep 'yasnippet)
           (yas-minor-mode)))
     :hook
-    (rust-ts-mode . rgr/rust-ts-mode-hook)
-    :bind  ( :map rust-ts-mode-map
-             (("M-<return>" . rgr/c-complete-line))))
+    (rust-ts-mode . rgr/rust-mode-hook))
+
 #+end_src
 **** C                                                                    :c:
 :PROPERTIES:
