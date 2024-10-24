@@ -919,7 +919,7 @@ Consult]] Provides various commands based on the Emacs completion function compl
            ("M-y" . consult-yank-pop)                ;; orig. yank-pop
            ;; M-g bindings in `goto-map'
            ("M-g e" . consult-compile-error)
-           ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+           ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
            ("M-g g" . consult-goto-line)             ;; orig. goto-line
            ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
            ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -2417,6 +2417,17 @@ https://github.com/IvanMalison/org-projectile
   (use-package json-reformat)
   (use-package hydra)
 #+end_src
+**** FlyCheck
+#+begin_src  emacs-lisp
+  (use-package flycheck
+    :disabled t
+    :ensure t
+    :config
+    (use-package flycheck-pos-tip
+      :config
+      (flycheck-pos-tip-mode))
+    (add-hook 'after-init-hook #'global-flycheck-mode))
+#+end_src
 
 **** Flymake
 #+begin_src  emacs-lisp
@@ -2426,20 +2437,26 @@ https://github.com/IvanMalison/org-projectile
     (defun rgr/flymake-hook()
       (setq-local next-error-function 'flymake-goto-next-error))
     (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
+    :config
+    (use-package flymake-diagnostic-at-point
+      :after flymake
+      :config
+      (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
     :bind
     ("M-n" . next-error)
     ("M-p" . previous-error))
 #+end_src
-***** diagnostic-at-point
-#+begin_src emacs-lisp
-  (use-package flymake-diagnostic-at-point
-    :after flymake
-    :config
-    (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
-#+end_src
 ***** shellcheck
 #+begin_src emacs-lisp
+
+  (use-package flycheck-bashate
+    :disabled t
+    :after (flycheck)
+    :config
+    (flycheck-bashate-setup))
+
   (use-package flymake-shellcheck
+    :disabled t
     :commands flymake-shellcheck-load
     :init
     (defun rgr/sh-mode-hook()
@@ -2633,12 +2650,16 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
         (require 'dap-cpptools)
         (dap-cpptools-setup))
       (defun rgr/lsp-ui-mode-hook()
+        (message "rgr/lsp-ui-mode-hook")
         (dap-mode t)
-        )
+        (when buffer-file-name
+          (setq-local buffer-save-without-query t))
+        (add-hook 'before-save-hook 'lsp-format-buffer nil t))
       :custom
       (lsp-ui-doc-mode 1)
       :bind (:map lsp-ui-mode-map
-                  ("M-." . #'lsp-find-definition))
+                  ("M-." . #'lsp-find-definition)
+                  ("C-x C-i" . lsp-ui-imenu))
       :hook
       (lsp-ui-mode . rgr/lsp-ui-mode-hook))
     (use-package lsp-treemacs
@@ -2711,7 +2732,7 @@ Raw: [[file+sys:etc/elisp/rgr-chat.el][rgr/chat]]
     
     (defun rgr/erc-quit()
       (interactive)
-      (erc-quit-server "bye"))
+      (erc-quit-server ""))
     
     :bind
      (:map erc-mode-map
@@ -2831,16 +2852,31 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :ensure t
     :init
     (setq rust-mode-treesitter-derive t)
+
     :config
+    
+    (use-package rustic
+      :ensure t
+      :after (rust-mode)
+      :preface
+      (fset #'flycheck-mode #'ignore)
+      :init
+      (remove-hook 'rustic-mode-hook 'flymake-mode-off)
+      :custom
+      (rustic-cargo-use-last-stored-arguments t)
+
+      :config
+      (setq rustic-format-on-save t))
+    
     (defun rgr/rust-mode-hook ()
       (message "rgr/rust-mode-hook")
       (setq indent-tabs-mode nil)
-      (lsp-deferred)
+      (prettify-symbols-mode)
+      ;; (lsp-deferred)
       (if (featurep 'yasnippet)
           (yas-minor-mode)))
     :hook
     (rust-ts-mode . rgr/rust-mode-hook))
-
 #+end_src
 **** C                                                                    :c:
 :PROPERTIES:

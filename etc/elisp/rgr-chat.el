@@ -13,7 +13,7 @@
   
   (defun rgr/erc-quit()
     (interactive)
-    (erc-quit-server "bye"))
+    (erc-quit-server ""))
   
   :bind
    (:map erc-mode-map

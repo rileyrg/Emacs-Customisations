@@ -131,22 +131,38 @@
 (use-package json-reformat)
 (use-package hydra)
 
+(use-package flycheck
+  :disabled t
+  :ensure t
+  :config
+  (use-package flycheck-pos-tip
+    :config
+    (flycheck-pos-tip-mode))
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+
 (use-package flymake
   :demand t
   :init
   (defun rgr/flymake-hook()
     (setq-local next-error-function 'flymake-goto-next-error))
   (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
+  :config
+  (use-package flymake-diagnostic-at-point
+    :after flymake
+    :config
+    (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
   :bind
   ("M-n" . next-error)
   ("M-p" . previous-error))
 
-(use-package flymake-diagnostic-at-point
-  :after flymake
+(use-package flycheck-bashate
+  :disabled t
+  :after (flycheck)
   :config
-  (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+  (flycheck-bashate-setup))
 
 (use-package flymake-shellcheck
+  :disabled t
   :commands flymake-shellcheck-load
   :init
   (defun rgr/sh-mode-hook()
@@ -314,11 +330,27 @@
   :ensure t
   :init
   (setq rust-mode-treesitter-derive t)
+
   :config
+  
+  (use-package rustic
+    :ensure t
+    :after (rust-mode)
+    :preface
+    (fset #'flycheck-mode #'ignore)
+    :init
+    (remove-hook 'rustic-mode-hook 'flymake-mode-off)
+    :custom
+    (rustic-cargo-use-last-stored-arguments t)
+
+    :config
+    (setq rustic-format-on-save t))
+  
   (defun rgr/rust-mode-hook ()
     (message "rgr/rust-mode-hook")
     (setq indent-tabs-mode nil)
-    (lsp-deferred)
+    (prettify-symbols-mode)
+    ;; (lsp-deferred)
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
   :hook

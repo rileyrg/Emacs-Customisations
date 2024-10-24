@@ -20,12 +20,16 @@
       (require 'dap-cpptools)
       (dap-cpptools-setup))
     (defun rgr/lsp-ui-mode-hook()
+      (message "rgr/lsp-ui-mode-hook")
       (dap-mode t)
-      )
+      (when buffer-file-name
+        (setq-local buffer-save-without-query t))
+      (add-hook 'before-save-hook 'lsp-format-buffer nil t))
     :custom
     (lsp-ui-doc-mode 1)
     :bind (:map lsp-ui-mode-map
-                ("M-." . #'lsp-find-definition))
+                ("M-." . #'lsp-find-definition)
+                ("C-x C-i" . lsp-ui-imenu))
     :hook
     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
   (use-package lsp-treemacs
