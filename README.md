@@ -312,10 +312,10 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
         
         (recentf-mode)
-        ;; (savehist-mode)
-        ;; (save-place-mode)
-        (desktop-save-mode t)
-        (midnight-mode t)
+        (savehist-mode)
+        (save-place-mode)
+        ;;(desktop-save-mode t)
+        ;;(midnight-mode t)
         
         (defun rgr/startup-hook ()
           ;; (setq desktop-restore-forces-onscreen nil)
@@ -685,7 +685,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#orgabc5564)
+    supereded by [jinx : the enchanted spell checker](#org158e932)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1347,7 +1347,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org698869b)
+    See `org-agenda-files` [org-agenda-files](#org17d1e64)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2373,13 +2373,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 (use-package lsp-mode
                   ;;:disabled
                   :init
-                  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-                  (setq lsp-keymap-prefix "C-l")
                   (setq gc-cons-threshold (* 100 1024 1024)
                         read-process-output-max (* 1024 1024))
                   (use-package lsp-ui
+                    ;;:disabled t
                     :init
                     (use-package dap-mode
+                      ;;:disabled t
                       :bind (:map dap-mode-map
                                   (("<f8>" . dap-next)
                                    ("S-<f8>" . dap-continue)
@@ -2393,19 +2393,21 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                       (dap-cpptools-setup))
                     (defun rgr/lsp-ui-mode-hook()
                       (message "rgr/lsp-ui-mode-hook")
-                      (dap-mode t)
+                      ;;(dap-mode t)
                       (when buffer-file-name
                         (setq-local buffer-save-without-query t))
-                      (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+                      ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
+                      )
                     :custom
                     (lsp-ui-doc-mode 1)
                     :bind (:map lsp-ui-mode-map
+                                ("<f1>" . #'lsp-ui-doc-mode)
                                 ("M-." . #'lsp-find-definition)
                                 ("C-x C-i" . lsp-ui-imenu))
                     :hook
                     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
                   (use-package lsp-treemacs
-                    :custom
+                    :config
                     (lsp-treemacs-sync-mode t)
                     :commands lsp-treemacs-errors-list)
                 
@@ -2561,6 +2563,8 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 27. rust
 
         (use-package rust-mode
+          :init
+          (setq rust-format-on-save t)
           :config
           (use-package cargo
             :hook
@@ -2997,7 +3001,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org77be8fa) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgaffe9f1) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3030,7 +3034,7 @@ to add to version control.
     fi
 
 
-<a id="org77be8fa"></a>
+<a id="orgaffe9f1"></a>
 
 ### Gnome protocol handler desktop file
 

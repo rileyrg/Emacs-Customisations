@@ -1,13 +1,13 @@
 (use-package lsp-mode
   ;;:disabled
   :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-l")
   (setq gc-cons-threshold (* 100 1024 1024)
         read-process-output-max (* 1024 1024))
   (use-package lsp-ui
+    ;;:disabled t
     :init
     (use-package dap-mode
+      ;;:disabled t
       :bind (:map dap-mode-map
                   (("<f8>" . dap-next)
                    ("S-<f8>" . dap-continue)
@@ -21,19 +21,21 @@
       (dap-cpptools-setup))
     (defun rgr/lsp-ui-mode-hook()
       (message "rgr/lsp-ui-mode-hook")
-      (dap-mode t)
+      ;;(dap-mode t)
       (when buffer-file-name
         (setq-local buffer-save-without-query t))
-      (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+      ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
+      )
     :custom
     (lsp-ui-doc-mode 1)
     :bind (:map lsp-ui-mode-map
+                ("<f1>" . #'lsp-ui-doc-mode)
                 ("M-." . #'lsp-find-definition)
                 ("C-x C-i" . lsp-ui-imenu))
     :hook
     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
   (use-package lsp-treemacs
-    :custom
+    :config
     (lsp-treemacs-sync-mode t)
     :commands lsp-treemacs-errors-list)
 

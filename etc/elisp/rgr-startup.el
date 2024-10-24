@@ -1,8 +1,8 @@
 (recentf-mode)
-;; (savehist-mode)
-;; (save-place-mode)
-(desktop-save-mode t)
-(midnight-mode t)
+(savehist-mode)
+(save-place-mode)
+;;(desktop-save-mode t)
+;;(midnight-mode t)
 
 (defun rgr/startup-hook ()
   ;; (setq desktop-restore-forces-onscreen nil)
