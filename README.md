@@ -602,12 +602,6 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     1.  bookmark+
     
             (use-package bookmark+
-              :demand
-              :custom
-              (bookmark-default-file (no-littering-expand-var-file-name "secrets/bmkp/current-bookmark.el"))
-              ;; (bmkp-last-bookmark-file (no-littering-expand-var-file-name "secrets/bmkp/current-bookmark.el"))
-              ;; (bmkp-current-bookmark-file (no-littering-expand-var-file-name "secrets/bmkp/current-bookmark.el"))
-              ;; (bmkp-bmenu-commands-file (no-littering-expand-var-file-name "secrets/bmkp/bmenu-commands.el"))
               :bind
               ("C-x x <right>" . bmkp-next-bookmark)
               ("C-x x <left>" . bmkp-previous-bookmark))
@@ -685,7 +679,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org158e932)
+    supereded by [jinx : the enchanted spell checker](#org290cd02)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1347,7 +1341,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org17d1e64)
+    See `org-agenda-files` [org-agenda-files](#org92d0141)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -3001,7 +2995,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgaffe9f1) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9849420) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3034,7 +3028,7 @@ to add to version control.
     fi
 
 
-<a id="orgaffe9f1"></a>
+<a id="org9849420"></a>
 
 ### Gnome protocol handler desktop file
 

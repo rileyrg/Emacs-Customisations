@@ -10,11 +10,11 @@
       (progn
         (erc-tls :server "irc.libera.chat" :port 6697)
         (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
-  
+
   (defun rgr/erc-quit()
     (interactive)
     (erc-quit-server ""))
-  
+
   :bind
    (:map erc-mode-map
           (("C-c C-q" . rgr/erc-quit))))

@@ -47,7 +47,7 @@
           (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
           (delete-window))
       (kill-current-buffer)))
-  
+
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :bind
   ("C-x C-q" . view-mode)
@@ -170,12 +170,6 @@
                ("s" . tab-bar-switch-to-tab))))
 
 (use-package bookmark+
-  :demand
-  :custom
-  (bookmark-default-file (no-littering-expand-var-file-name "secrets/bmkp/current-bookmark.el"))
-  ;; (bmkp-last-bookmark-file (no-littering-expand-var-file-name "secrets/bmkp/current-bookmark.el"))
-  ;; (bmkp-current-bookmark-file (no-littering-expand-var-file-name "secrets/bmkp/current-bookmark.el"))
-  ;; (bmkp-bmenu-commands-file (no-littering-expand-var-file-name "secrets/bmkp/bmenu-commands.el"))
   :bind
   ("C-x x <right>" . bmkp-next-bookmark)
   ("C-x x <left>" . bmkp-previous-bookmark))
