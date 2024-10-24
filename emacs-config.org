@@ -469,7 +469,6 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
       (browse-url-dwim-mode))
 
     (use-package alert)
-    (require 'rgr-chat)
 
     ;; display dir name when core name clashes
     (require 'uniquify)
@@ -2692,8 +2691,6 @@ https://github.com/joaotavora/eglot
 
 
 **** Chat
-:PROPERTIES:
-:END:
 
 Chat SW
 
@@ -2737,7 +2734,7 @@ Raw: [[file+sys:etc/elisp/rgr-chat.el][rgr/chat]]
 
 ****** provide
 #+begin_src emacs-lisp
-  (provide 'rgr/chat)
+    (provide 'rgr/chat)
 #+end_src
 
 

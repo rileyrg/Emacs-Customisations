@@ -35,7 +35,6 @@
     (browse-url-dwim-mode))
 
   (use-package alert)
-  (require 'rgr-chat)
 
   ;; display dir name when core name clashes
   (require 'uniquify)
