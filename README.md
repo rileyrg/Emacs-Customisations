@@ -685,7 +685,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#orgdd8df13)
+    supereded by [jinx : the enchanted spell checker](#orgabc5564)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -807,7 +807,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
                  ("M-y" . consult-yank-pop)                ;; orig. yank-pop
                  ;; M-g bindings in `goto-map'
                  ("M-g e" . consult-compile-error)
-                 ("M-g f" . consult-flycheck)               ;; Alternative: consult-flymake
+                 ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
                  ("M-g g" . consult-goto-line)             ;; orig. goto-line
                  ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
                  ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -1347,7 +1347,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgf2ef99b)
+    See `org-agenda-files` [org-agenda-files](#org698869b)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2177,6 +2177,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 15. FlyCheck
 
         (use-package flycheck
+          :disabled t
           :ensure t
           :config
           (use-package flycheck-pos-tip
@@ -2559,29 +2560,16 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 27. rust
 
-        
         (use-package rust-mode
-          :ensure t
-          :init
-          (setq rust-mode-treesitter-derive t)
-        
           :config
-        
-          (use-package rustic
-            :ensure t
-            :after (rust-mode)
-        
-            :custom
-            (rustic-cargo-use-last-stored-arguments t)
-        
-            :config
-            (setq rustic-format-on-save t))
-        
+          (use-package cargo
+            :hook
+            (rust-ts-mode . cargo-minor-mode))
           (defun rgr/rust-mode-hook ()
             (message "rgr/rust-mode-hook")
             (setq indent-tabs-mode nil)
             (prettify-symbols-mode)
-            ;; (lsp-deferred)
+            (lsp-deferred)
             (if (featurep 'yasnippet)
                 (yas-minor-mode)))
           :hook
@@ -3009,7 +2997,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc8e0302) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org77be8fa) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3042,7 +3030,7 @@ to add to version control.
     fi
 
 
-<a id="orgc8e0302"></a>
+<a id="org77be8fa"></a>
 
 ### Gnome protocol handler desktop file
 

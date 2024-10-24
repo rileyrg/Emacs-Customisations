@@ -232,6 +232,7 @@
                       textlint typescript-tslint verilog-verilator
                       vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml
                       yaml-ruby yaml-yamllint))
+ '(flycheck-disabled-checkers '(rust-mode))
  '(gdb-display-io-nopopup t)
  '(gdb-many-windows t)
  '(gdb-show-main t)
@@ -264,6 +265,7 @@
  '(ispell-silently-savep t)
  '(kept-new-versions 20)
  '(large-file-warning-threshold nil)
+ '(lsp-diagnostics-provider :flymake)
  '(lsp-tcp-connection-timeout 5)
  '(lsp-ui-doc-delay 1)
  '(lsp-ui-doc-show-with-cursor t)

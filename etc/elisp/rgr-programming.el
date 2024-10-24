@@ -327,30 +327,15 @@
   )
 
 (use-package rust-mode
-  :ensure t
-  :init
-  (setq rust-mode-treesitter-derive t)
-
   :config
-  
-  (use-package rustic
-    :ensure t
-    :after (rust-mode)
-    :preface
-    (fset #'flycheck-mode #'ignore)
-    :init
-    (remove-hook 'rustic-mode-hook 'flymake-mode-off)
-    :custom
-    (rustic-cargo-use-last-stored-arguments t)
-
-    :config
-    (setq rustic-format-on-save t))
-  
+  (use-package cargo
+    :hook
+    (rust-ts-mode . cargo-minor-mode))
   (defun rgr/rust-mode-hook ()
     (message "rgr/rust-mode-hook")
     (setq indent-tabs-mode nil)
     (prettify-symbols-mode)
-    ;; (lsp-deferred)
+    (lsp-deferred)
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
   :hook
