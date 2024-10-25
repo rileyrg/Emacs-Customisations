@@ -169,6 +169,7 @@
                ("s" . tab-bar-switch-to-tab))))
 
 (use-package bookmark+
+  :demand t
   :bind
   ("C-x x <right>" . bmkp-next-bookmark)
   ("C-x x <left>" . bmkp-previous-bookmark))

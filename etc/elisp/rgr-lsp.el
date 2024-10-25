@@ -22,6 +22,7 @@
     (defun rgr/lsp-ui-mode-hook()
       (message "rgr/lsp-ui-mode-hook")
       ;;(dap-mode t)
+      (lsp-ui-doc-frame-mode -1)
       (when buffer-file-name
         (setq-local buffer-save-without-query t))
       ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
@@ -29,8 +30,10 @@
     :custom
     (lsp-ui-doc-mode 1)
     :bind (:map lsp-ui-mode-map
-                ("<f1>" . #'lsp-ui-doc-mode)
-                ("M-." . #'lsp-find-definition)
+                ("C-h ." . lsp-ui-doc-focus-frame)
+                ("C-h d" . lsp-ui-doc-mode)
+                ("C-h f" . lsp-ui-doc-show)
+                ("M-." . lsp-find-definition)
                 ("C-x C-i" . lsp-ui-imenu))
     :hook
     (lsp-ui-mode . rgr/lsp-ui-mode-hook))
@@ -38,7 +41,6 @@
     :config
     (lsp-treemacs-sync-mode t)
     :commands lsp-treemacs-errors-list)
-
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
