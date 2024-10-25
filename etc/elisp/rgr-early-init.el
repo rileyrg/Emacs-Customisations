@@ -20,4 +20,6 @@
 
 (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
 
+(straight-use-package 'org)
+
 (provide 'rgr/early-init)

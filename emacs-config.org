@@ -118,6 +118,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (when (boundp 'native-comp-eln-load-path)
       (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
+    (straight-use-package 'org)
 
   ;;; early-init.el ends here
 
@@ -1366,8 +1367,6 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 :END:
 #+begin_src emacs-lisp
   (use-package org
-    :demand t
-    ;;:straight (:type built-in)
     :custom
     (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
     (org-fontify-done-headline t)
@@ -2032,7 +2031,7 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
 :END:
 #+begin_src emacs-lisp
   (use-package mu4e
-    ;;:disabled
+    :disabled
     :straight ( :host github
                 :branch "release/1.10"
                 :repo "djcb/mu"
