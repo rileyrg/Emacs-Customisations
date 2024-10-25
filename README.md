@@ -91,6 +91,7 @@ invoke google translate on them. Stores history.
       (when (boundp 'native-comp-eln-load-path)
         (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
     
+      (straight-use-package 'org)
     
     ;;; early-init.el ends here
 
@@ -679,7 +680,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#orgeb564af)
+    supereded by [jinx : the enchanted spell checker](#orgddc1a92)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1219,8 +1220,6 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 1.  Org Mode, org-mode
 
         (use-package org
-          :demand t
-          ;;:straight (:type built-in)
           :custom
           (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
           (org-fontify-done-headline t)
@@ -1341,7 +1340,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgb0cd5df)
+    See `org-agenda-files` [org-agenda-files](#org376429f)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2997,7 +2996,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org03a070f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1ddef02) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3030,7 +3029,7 @@ to add to version control.
     fi
 
 
-<a id="org03a070f"></a>
+<a id="org1ddef02"></a>
 
 ### Gnome protocol handler desktop file
 

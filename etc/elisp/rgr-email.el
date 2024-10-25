@@ -8,7 +8,7 @@
   )
 
 (use-package mu4e
-  :disabled
+  ;;:disabled
   :straight ( :host github
               :branch "release/1.10"
               :repo "djcb/mu"

@@ -2031,7 +2031,7 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
 :END:
 #+begin_src emacs-lisp
   (use-package mu4e
-    :disabled
+    ;;:disabled
     :straight ( :host github
                 :branch "release/1.10"
                 :repo "djcb/mu"
