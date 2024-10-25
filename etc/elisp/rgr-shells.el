@@ -1,8 +1,13 @@
 (use-package  eat
   :custom
   (eat-kill-buffer-on-exit t)
+  :config
+  (defun rgr/eat()
+      (interactive)
+      (split-window)
+      (eat))
   :bind
-  ("M-g t" . #'eat)
+  ("M-g t" . rgr/eat)
   :straight (:type git
                    :host codeberg
                    :repo "akib/emacs-eat"
