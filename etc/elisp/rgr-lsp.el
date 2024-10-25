@@ -22,7 +22,7 @@
     (defun rgr/lsp-ui-mode-hook()
       (message "rgr/lsp-ui-mode-hook")
       ;;(dap-mode t)
-      (lsp-ui-doc-frame-mode -1)
+      (lsp-ui-doc-mode -1)
       (when buffer-file-name
         (setq-local buffer-save-without-query t))
       ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
@@ -32,7 +32,7 @@
     :bind (:map lsp-ui-mode-map
                 ("C-h ." . lsp-ui-doc-focus-frame)
                 ("C-h d" . lsp-ui-doc-mode)
-                ("C-h f" . lsp-ui-doc-show)
+                ("C-h f" . lsp-ui-doc-glance)
                 ("M-." . lsp-find-definition)
                 ("C-x C-i" . lsp-ui-imenu))
     :hook
