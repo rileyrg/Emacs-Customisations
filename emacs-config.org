@@ -335,7 +335,8 @@ Not working with wayland
       (end-of-line)
       (newline-and-indent))
     :bind
-    ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
+    ("<C-return>" . (lambda()(interactive)(rgr/newline-below)))
+    ("<M-return>" . (lambda()(interactive)(rgr/c-complete-line))))
 
 #+end_src
 
@@ -1116,6 +1117,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 
 #+begin_src emacs-lisp
   (use-package corfu
+    :disabled
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -1263,7 +1265,7 @@ https://github.com/minad/cape
 **** company
 #+begin_src emacs-lisp
   (use-package company
-    :disabled
+    ;;:disabled
     :config
     (use-package company-box
       :config
@@ -2635,7 +2637,7 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
       ;;:disabled t
       :init
       (use-package dap-mode
-        ;;:disabled t
+        :disabled t
         :bind (:map dap-mode-map
                     (("<f8>" . dap-next)
                      ("S-<f8>" . dap-continue)
@@ -2717,6 +2719,7 @@ Raw: [[file+sys:etc/elisp/rgr-chat.el][rgr/chat]]
 #+begin_src  emacs-lisp
 
   (use-package erc
+    :demand
     :config
     (defun rgr/erc-switch-to-channel(&optional channel)
       (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
@@ -2850,11 +2853,9 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :init
     (setq rust-format-on-save t)
     :config
-    (use-package cargo
-      :hook
-      (rust-ts-mode . cargo-minor-mode))
     (defun rgr/rust-mode-hook ()
       (message "rgr/rust-mode-hook")
+      ;;(cargo-minor-mode)
       (setq indent-tabs-mode nil)
       (prettify-symbols-mode)
       (lsp-deferred)
@@ -2862,6 +2863,13 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
           (yas-minor-mode)))
     :hook
     (rust-ts-mode . rgr/rust-mode-hook))
+
+  (use-package cargo-mode
+    :hook
+    (rust-ts-mode . cargo-minor-mode)
+    :config
+    (setq compilation-scroll-output t))
+
 #+end_src
 **** C                                                                    :c:
 :PROPERTIES:

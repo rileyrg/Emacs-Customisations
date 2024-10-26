@@ -330,11 +330,9 @@
   :init
   (setq rust-format-on-save t)
   :config
-  (use-package cargo
-    :hook
-    (rust-ts-mode . cargo-minor-mode))
   (defun rgr/rust-mode-hook ()
     (message "rgr/rust-mode-hook")
+    ;;(cargo-minor-mode)
     (setq indent-tabs-mode nil)
     (prettify-symbols-mode)
     (lsp-deferred)
@@ -342,6 +340,12 @@
         (yas-minor-mode)))
   :hook
   (rust-ts-mode . rgr/rust-mode-hook))
+
+(use-package cargo-mode
+  :hook
+  (rust-ts-mode . cargo-minor-mode)
+  :config
+  (setq compilation-scroll-output t))
 
 (use-package c-ts-mode
   :config

@@ -282,7 +282,8 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (end-of-line)
             (newline-and-indent))
           :bind
-          ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
+          ("<C-return>" . (lambda()(interactive)(rgr/newline-below)))
+          ("<M-return>" . (lambda()(interactive)(rgr/c-complete-line))))
 
 5.  Lazy Language Learning, lazy-lang-learn
 
@@ -680,7 +681,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org0d7e93a)
+    supereded by [jinx : the enchanted spell checker](#org8017949)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -987,6 +988,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 1.  corfu
 
         (use-package corfu
+          :disabled
           ;; Optional customizations
           :custom
           ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -1127,7 +1129,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 5.  company
 
         (use-package company
-          :disabled
+          ;;:disabled
           :config
           (use-package company-box
             :config
@@ -1340,7 +1342,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org3e0d3ce)
+    See `org-agenda-files` [org-agenda-files](#orgbbc9c65)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2377,7 +2379,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                     ;;:disabled t
                     :init
                     (use-package dap-mode
-                      ;;:disabled t
+                      :disabled t
                       :bind (:map dap-mode-map
                                   (("<f8>" . dap-next)
                                    ("S-<f8>" . dap-continue)
@@ -2449,6 +2451,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         
                 
                 (use-package erc
+                  :demand
                   :config
                   (defun rgr/erc-switch-to-channel(&optional channel)
                     (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
@@ -2566,11 +2569,9 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :init
           (setq rust-format-on-save t)
           :config
-          (use-package cargo
-            :hook
-            (rust-ts-mode . cargo-minor-mode))
           (defun rgr/rust-mode-hook ()
             (message "rgr/rust-mode-hook")
+            ;;(cargo-minor-mode)
             (setq indent-tabs-mode nil)
             (prettify-symbols-mode)
             (lsp-deferred)
@@ -2578,6 +2579,12 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 (yas-minor-mode)))
           :hook
           (rust-ts-mode . rgr/rust-mode-hook))
+        
+        (use-package cargo-mode
+          :hook
+          (rust-ts-mode . cargo-minor-mode)
+          :config
+          (setq compilation-scroll-output t))
 
 28. C
 
@@ -3001,7 +3008,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org31ca015) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc229104) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3034,7 +3041,7 @@ to add to version control.
     fi
 
 
-<a id="org31ca015"></a>
+<a id="orgc229104"></a>
 
 ### Gnome protocol handler desktop file
 

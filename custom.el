@@ -110,11 +110,6 @@
  '(desktop-locals-to-save nil)
  '(desktop-restore-eager 8)
  '(desktop-save t)
- '(devdocs-browser-major-mode-docs-alist
-   '((c++-mode "cpp") (c-mode "c") (typescript-mode "typescript")
-     (javascript-mode "javascript") (go-mode "go")
-     (python-mode "Python") (emacs-lisp-mode "elisp")
-     (rust-mode "rust") (cmake-mode "CMake")))
  '(diary-file "~/.diary")
  '(diary-list-include-blanks t)
  '(diary-mark-entries-hook '(diary-mark-included-diary-files))

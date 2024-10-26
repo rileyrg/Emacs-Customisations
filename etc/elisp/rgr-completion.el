@@ -1,4 +1,5 @@
 (use-package corfu
+  :disabled
   ;; Optional customizations
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -121,7 +122,7 @@
                                  ))))))
 
 (use-package company
-  :disabled
+  ;;:disabled
   :config
   (use-package company-box
     :config

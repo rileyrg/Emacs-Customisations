@@ -1,4 +1,5 @@
 (use-package erc
+  :demand
   :config
   (defun rgr/erc-switch-to-channel(&optional channel)
     (when (string= (or channel "#emacs") (buffer-name (current-buffer)))

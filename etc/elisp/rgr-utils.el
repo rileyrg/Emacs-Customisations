@@ -50,7 +50,8 @@
     (end-of-line)
     (newline-and-indent))
   :bind
-  ("<C-return>" . (lambda()(interactive)(funcall rgr/complete-line-function))))
+  ("<C-return>" . (lambda()(interactive)(rgr/newline-below)))
+  ("<M-return>" . (lambda()(interactive)(rgr/c-complete-line))))
 
 (use-package lazy-lang-learn
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )

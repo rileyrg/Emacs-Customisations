@@ -7,7 +7,7 @@
     ;;:disabled t
     :init
     (use-package dap-mode
-      ;;:disabled t
+      :disabled t
       :bind (:map dap-mode-map
                   (("<f8>" . dap-next)
                    ("S-<f8>" . dap-continue)
