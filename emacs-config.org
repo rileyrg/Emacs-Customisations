@@ -388,9 +388,10 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
     ;; (setq desktop-restore-forces-onscreen nil)
     ;; (require ' midnight)
     ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
-    (let ((fname (get-register ?L)))
-      (when (and fname (file-exists-p fname))
-        (find-file fname)))
+    ;; (let ((fname (get-register ?L)))
+    ;;   (when (and fname (file-exists-p fname))
+    ;;     (find-file fname)))
+    (consult-bookmark "current")
 
     (defun rgr/remember-last-buffer (f)
       (when buffer-file-name
