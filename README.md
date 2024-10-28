@@ -319,20 +319,23 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         ;;(desktop-save-mode t)
         ;;(midnight-mode t)
         
+        (defun rgr/save-current-file-to-register ()
+          "Save current file to register."
+          ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
+          (interactive)
+          (let ((reg (register-read-with-preview "File name to register: ")))
+            (set-register reg `(file . ,(buffer-file-name)))))
+        
         (defun rgr/startup-hook ()
-          ;; (setq desktop-restore-forces-onscreen nil)
-          ;; (require ' midnight)
-          ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
-          ;; (let ((fname (get-register ?L)))
-          ;;   (when (and fname (file-exists-p fname))
-          ;;     (find-file fname)))
-          (consult-bookmark "current")
+          (bookmark-maybe-load-default-file)
+          (bookmark-jump "current"))
         
-          (defun rgr/remember-last-buffer (f)
-            (when buffer-file-name
-              (set-register ?L (buffer-file-name))))
+        (defun rgr/remember-last-buffer ()
+          (when buffer-file-name
+            (bookmark-set "current")))
         
-          (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer))
+        ;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+        (add-hook 'kill-emacs-hook  #'rgr/remember-last-buffer)
         
         (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
@@ -682,7 +685,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org6dca89c)
+    supereded by [jinx : the enchanted spell checker](#orgd47c6f3)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1343,7 +1346,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgf53d86c)
+    See `org-agenda-files` [org-agenda-files](#org4e272aa)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -3009,7 +3012,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org53c3edd) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5db00c0) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3042,7 +3045,7 @@ to add to version control.
     fi
 
 
-<a id="org53c3edd"></a>
+<a id="org5db00c0"></a>
 
 ### Gnome protocol handler desktop file
 

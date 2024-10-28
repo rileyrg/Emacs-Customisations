@@ -4,20 +4,23 @@
 ;;(desktop-save-mode t)
 ;;(midnight-mode t)
 
+(defun rgr/save-current-file-to-register ()
+  "Save current file to register."
+  ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
+  (interactive)
+  (let ((reg (register-read-with-preview "File name to register: ")))
+    (set-register reg `(file . ,(buffer-file-name)))))
+
 (defun rgr/startup-hook ()
-  ;; (setq desktop-restore-forces-onscreen nil)
-  ;; (require ' midnight)
-  ;; I use a persistent register to remember the last file buffer and to resore it on emacs daemon restart when a frame appears.
-  ;; (let ((fname (get-register ?L)))
-  ;;   (when (and fname (file-exists-p fname))
-  ;;     (find-file fname)))
-  (consult-bookmark "current")
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "current"))
 
-  (defun rgr/remember-last-buffer (f)
-    (when buffer-file-name
-      (set-register ?L (buffer-file-name))))
+(defun rgr/remember-last-buffer ()
+  (when buffer-file-name
+    (bookmark-set "current")))
 
-  (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer))
+;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
+(add-hook 'kill-emacs-hook  #'rgr/remember-last-buffer)
 
 (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
 
