@@ -24,34 +24,32 @@
 
 (use-package emacs
   :init
-  (setq rgr/complete-line-function 'rgr/newline-below)
+  (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
   :config
-  (defun rgr/c-complete-line()
+
+  (defun rgr/complete-line()
     (interactive)
+    (funcall rgr/complete-line-f))
+
+  (defun rgr/c-complete-line()
     (end-of-line)
     (delete-trailing-whitespace)
     (unless (eql ?\; (char-before (point-at-eol)))
-      (progn (insert ";")))
-    (if current-prefix-arg
-        (newline-and-indent)
-      (progn
-        (next-line)
-        (beginning-of-visual-line))))
+      (insert ";"))
+    (newline-and-indent))
 
   (defun rgr/insert-previous-line()
-    (interactive)
     (previous-line)
     (end-of-line)
     (newline-and-indent)
     (insert (string-trim (current-kill 0))))
 
   (defun rgr/newline-below()
-    (interactive)
     (end-of-line)
     (newline-and-indent))
+
   :bind
-  ("<C-return>" . (lambda()(interactive)(rgr/newline-below)))
-  ("<M-return>" . (lambda()(interactive)(rgr/c-complete-line))))
+  ("<C-S-return>" . rgr/complete-line))
 
 (use-package lazy-lang-learn
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )

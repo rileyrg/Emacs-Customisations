@@ -256,34 +256,32 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
         (use-package emacs
           :init
-          (setq rgr/complete-line-function 'rgr/newline-below)
+          (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
           :config
-          (defun rgr/c-complete-line()
+        
+          (defun rgr/complete-line()
             (interactive)
+            (funcall rgr/complete-line-f))
+        
+          (defun rgr/c-complete-line()
             (end-of-line)
             (delete-trailing-whitespace)
             (unless (eql ?\; (char-before (point-at-eol)))
-              (progn (insert ";")))
-            (if current-prefix-arg
-                (newline-and-indent)
-              (progn
-                (next-line)
-                (beginning-of-visual-line))))
+              (insert ";"))
+            (newline-and-indent))
         
           (defun rgr/insert-previous-line()
-            (interactive)
             (previous-line)
             (end-of-line)
             (newline-and-indent)
             (insert (string-trim (current-kill 0))))
         
           (defun rgr/newline-below()
-            (interactive)
             (end-of-line)
             (newline-and-indent))
+        
           :bind
-          ("<C-return>" . (lambda()(interactive)(rgr/newline-below)))
-          ("<M-return>" . (lambda()(interactive)(rgr/c-complete-line))))
+          ("<C-S-return>" . rgr/complete-line))
 
 5.  Lazy Language Learning, lazy-lang-learn
 
@@ -685,7 +683,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#orgd47c6f3)
+    supereded by [jinx : the enchanted spell checker](#org88388ba)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1346,7 +1344,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org4e272aa)
+    See `org-agenda-files` [org-agenda-files](#org1845640)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1683,7 +1681,13 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-x G" . goldendict-dwim)))
 
-4.  devdocs-browser
+4.  dash-docs
+
+        (use-package dash-docs
+          :custom
+          (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs")))
+
+5.  devdocs-browser
 
     <https://github.com/blahgeek/emacs-devdocs-browser> :
     
@@ -1706,7 +1710,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           ("C-q" . devdocs-browser-open))
           ;;("C-q" . rgr/devdocs))
 
-5.  Elfeed
+6.  Elfeed
 
     [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
     
@@ -1727,7 +1731,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     1.  elfeed-org
 
-6.  pdf-tools
+7.  pdf-tools
 
     [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
     
@@ -1744,7 +1748,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-7.  impatient-showdow, markdown view live
+8.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown.
     <https://github.com/jcs-elpa/impatient-showdown>
@@ -1753,7 +1757,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :disabled
           :hook (markdown-mode . impatient-showdown-mode))
 
-8.  provide
+9.  provide
 
         (provide 'rgr/reference)
 
@@ -2341,7 +2345,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
               (defun rgr/javascript-typescript-common-mode-hook ()
                 (electric-pair-mode 1)
-                (setq-local rgr/complete-line-function 'rgr/complete-c-line)
+                (setq-local rgr/complete-line-f 'rgr/complete-c-line)
                 (lsp-deferred)
                 )
               :config
@@ -2572,9 +2576,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         (use-package rust-mode
           :init
           (setq rust-format-on-save t)
+          (add-to-list 'rgr/eww-external-launch-url-chunks "rust")
           :config
           (defun rgr/rust-mode-hook ()
             (message "rgr/rust-mode-hook")
+            (setq-local rgr/complete-line-f 'rgr/c-complete-line)
             ;;(cargo-minor-mode)
             (setq indent-tabs-mode nil)
             (prettify-symbols-mode)
@@ -2597,20 +2603,15 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package c-ts-mode
               :config
               (defun rgr/c-ts-mode-common-hook ()
-                ;;(eglot-ensure)
+                (setq-local rgr/complete-line-f 'rgr/c-complete-line)
                 (message "rgr/c-ts-mode-common-hook")
                 (lsp-deferred)
                 ;; (if(featurep 'platformio-mode)
                 ;;     (platformio-conditionally-enable))
                 (if (featurep 'yasnippet)
                     (yas-minor-mode)))
-            
               :hook
-              (c-ts-mode . rgr/c-ts-mode-common-hook)
-              :bind  ( :map c-ts-mode-map
-                       (("M-<return>" . rgr/c-complete-line))
-                       :map c++-ts-mode-map
-                       (("M-<return>" . rgr/c-complete-line))))
+              (c-ts-mode . rgr/c-ts-mode-common-hook))
 
 29. cc,cpp, C++, cc-mode
 
@@ -3012,7 +3013,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5db00c0) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga5f1d22) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3045,7 +3046,7 @@ to add to version control.
     fi
 
 
-<a id="org5db00c0"></a>
+<a id="orga5f1d22"></a>
 
 ### Gnome protocol handler desktop file
 

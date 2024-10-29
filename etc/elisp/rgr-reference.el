@@ -138,6 +138,10 @@
       (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
   :bind (("C-x G" . goldendict-dwim)))
 
+(use-package dash-docs
+  :custom
+  (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs")))
+
 (use-package devdocs-browser
   :custom
   (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))

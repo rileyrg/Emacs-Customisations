@@ -309,34 +309,32 @@ Not working with wayland
 #+begin_src  emacs-lisp
   (use-package emacs
     :init
-    (setq rgr/complete-line-function 'rgr/newline-below)
+    (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
     :config
-    (defun rgr/c-complete-line()
+
+    (defun rgr/complete-line()
       (interactive)
+      (funcall rgr/complete-line-f))
+
+    (defun rgr/c-complete-line()
       (end-of-line)
       (delete-trailing-whitespace)
       (unless (eql ?\; (char-before (point-at-eol)))
-        (progn (insert ";")))
-      (if current-prefix-arg
-          (newline-and-indent)
-        (progn
-          (next-line)
-          (beginning-of-visual-line))))
+        (insert ";"))
+      (newline-and-indent))
 
     (defun rgr/insert-previous-line()
-      (interactive)
       (previous-line)
       (end-of-line)
       (newline-and-indent)
       (insert (string-trim (current-kill 0))))
 
     (defun rgr/newline-below()
-      (interactive)
       (end-of-line)
       (newline-and-indent))
+
     :bind
-    ("<C-return>" . (lambda()(interactive)(rgr/newline-below)))
-    ("<M-return>" . (lambda()(interactive)(rgr/c-complete-line))))
+    ("<C-S-return>" . rgr/complete-line))
 
 #+end_src
 
@@ -1879,6 +1877,12 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
         (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
     :bind (("C-x G" . goldendict-dwim)))
 #+end_src
+**** dash-docs
+#+begin_src  emacs-lisp
+  (use-package dash-docs
+    :custom
+    (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs")))
+#+end_src
 **** devdocs-browser
 
 https://github.com/blahgeek/emacs-devdocs-browser :
@@ -2591,7 +2595,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
     (defun rgr/javascript-typescript-common-mode-hook ()
       (electric-pair-mode 1)
-      (setq-local rgr/complete-line-function 'rgr/complete-c-line)
+      (setq-local rgr/complete-line-f 'rgr/complete-c-line)
       (lsp-deferred)
       )
     :config
@@ -2856,9 +2860,11 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   (use-package rust-mode
     :init
     (setq rust-format-on-save t)
+    (add-to-list 'rgr/eww-external-launch-url-chunks "rust")
     :config
     (defun rgr/rust-mode-hook ()
       (message "rgr/rust-mode-hook")
+      (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       ;;(cargo-minor-mode)
       (setq indent-tabs-mode nil)
       (prettify-symbols-mode)
@@ -2885,20 +2891,15 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   (use-package c-ts-mode
     :config
     (defun rgr/c-ts-mode-common-hook ()
-      ;;(eglot-ensure)
+      (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       (message "rgr/c-ts-mode-common-hook")
       (lsp-deferred)
       ;; (if(featurep 'platformio-mode)
       ;;     (platformio-conditionally-enable))
       (if (featurep 'yasnippet)
           (yas-minor-mode)))
-
     :hook
-    (c-ts-mode . rgr/c-ts-mode-common-hook)
-    :bind  ( :map c-ts-mode-map
-             (("M-<return>" . rgr/c-complete-line))
-             :map c++-ts-mode-map
-             (("M-<return>" . rgr/c-complete-line))))
+    (c-ts-mode . rgr/c-ts-mode-common-hook))
 #+end_src
 **** cc,cpp, C++, cc-mode                                               :cpp:
 :PROPERTIES:

@@ -237,7 +237,7 @@
   (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
   (defun rgr/javascript-typescript-common-mode-hook ()
     (electric-pair-mode 1)
-    (setq-local rgr/complete-line-function 'rgr/complete-c-line)
+    (setq-local rgr/complete-line-f 'rgr/complete-c-line)
     (lsp-deferred)
     )
   :config
@@ -329,9 +329,11 @@
 (use-package rust-mode
   :init
   (setq rust-format-on-save t)
+  (add-to-list 'rgr/eww-external-launch-url-chunks "rust")
   :config
   (defun rgr/rust-mode-hook ()
     (message "rgr/rust-mode-hook")
+    (setq-local rgr/complete-line-f 'rgr/c-complete-line)
     ;;(cargo-minor-mode)
     (setq indent-tabs-mode nil)
     (prettify-symbols-mode)
@@ -350,20 +352,15 @@
 (use-package c-ts-mode
   :config
   (defun rgr/c-ts-mode-common-hook ()
-    ;;(eglot-ensure)
+    (setq-local rgr/complete-line-f 'rgr/c-complete-line)
     (message "rgr/c-ts-mode-common-hook")
     (lsp-deferred)
     ;; (if(featurep 'platformio-mode)
     ;;     (platformio-conditionally-enable))
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
-
   :hook
-  (c-ts-mode . rgr/c-ts-mode-common-hook)
-  :bind  ( :map c-ts-mode-map
-           (("M-<return>" . rgr/c-complete-line))
-           :map c++-ts-mode-map
-           (("M-<return>" . rgr/c-complete-line))))
+  (c-ts-mode . rgr/c-ts-mode-common-hook))
 
 (add-hook 'c++-ts-mode-hook 'rgr/c-ts-common-mode-hook)
 
