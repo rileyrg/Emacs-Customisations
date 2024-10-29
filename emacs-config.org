@@ -2228,6 +2228,54 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
   (provide 'rgr/email)
 #+end_src
 
+** Chat
+
+Chat SW
+
+Raw: [[file+sys:etc/elisp/rgr-chat.el][rgr/chat]]
+#+begin_src emacs-lisp
+  (require 'rgr/chat "rgr-chat" 'NOERROR)
+#+end_src
+
+*** library
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-chat.el" elisp-dir)
+:END:
+
+**** erc
+:PROPERTIES:
+:END:
+#+begin_src  emacs-lisp
+
+  (use-package erc
+    :demand
+    :config
+    (defun rgr/erc-switch-to-channel(&optional channel)
+      (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
+        (switch-to-buffer (current-buffer))))
+
+    (defun rgr/erc-start()
+      (interactive)
+      (unless(get-buffer "libera.chat:6697")
+        (progn
+          (erc-tls :server "irc.libera.chat" :port 6697)
+          (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
+
+    (defun rgr/erc-quit()
+      (interactive)
+      (erc-quit-server ""))
+
+    :bind
+     (:map erc-mode-map
+            (("C-c C-q" . rgr/erc-quit))))
+
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+    (provide 'rgr/chat)
+#+end_src
+
+
 ** Programming Language related                                 :programming:
 :PROPERTIES:
 :ID:       7070b720-582e-451c-8eed-47ab61cdd130
@@ -2641,6 +2689,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
     (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 #+end_src
+
 **** Language Server Protocol (LSP), lsp-mode                           :lsp:
 :PROPERTIES:
 :END:
@@ -2728,56 +2777,6 @@ https://github.com/joaotavora/eglot
 ****** provide
 #+begin_src emacs-lisp
   (provide 'rgr/lsp)
-#+end_src
-
-
-
-**** Chat
-
-Chat SW
-
-Raw: [[file+sys:etc/elisp/rgr-chat.el][rgr/chat]]
-#+begin_src emacs-lisp
-  (require 'rgr/chat "rgr-chat" 'NOERROR)
-#+end_src
-
-***** library
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-chat.el" elisp-dir)
-:END:
-
-****** erc
-:PROPERTIES:
-:END:
-#+begin_src  emacs-lisp
-
-  (use-package erc
-    :demand
-    :config
-    (defun rgr/erc-switch-to-channel(&optional channel)
-      (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
-        (switch-to-buffer (current-buffer))))
-
-    (defun rgr/erc-start()
-      (interactive)
-      (unless(get-buffer "libera.chat:6697")
-        (progn
-          (erc-tls :server "irc.libera.chat" :port 6697)
-          (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
-
-    (defun rgr/erc-quit()
-      (interactive)
-      (erc-quit-server ""))
-
-    :bind
-     (:map erc-mode-map
-            (("C-c C-q" . rgr/erc-quit))))
-
-#+end_src
-
-****** provide
-#+begin_src emacs-lisp
-    (provide 'rgr/chat)
 #+end_src
 
 

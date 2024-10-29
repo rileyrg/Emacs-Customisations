@@ -53,6 +53,8 @@
 
 (require 'rgr/email "rgr-email" 'NOERROR)
 
+(require 'rgr/chat "rgr-chat" 'NOERROR)
+
 (require 'rgr/programming "rgr-programming" 'NOERROR)
 
 (require 'rgr/elisp (expand-file-name "rgr-elisp" elisp-dir))

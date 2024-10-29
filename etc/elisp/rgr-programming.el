@@ -258,8 +258,6 @@
 
 (require 'rgr/lsp "rgr-lsp" 'NOERROR)
 
-(require 'rgr/chat "rgr-chat" 'NOERROR)
-
 (defgroup rgr/serial-ports nil
   "serial port customization"
   :group 'rgr)
