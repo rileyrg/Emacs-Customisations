@@ -327,12 +327,12 @@
 (use-package rust-mode
   :init
   (setq rust-format-on-save t)
-  (defcustom rgr/rust-browser-doc-url "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" "used to format variable `rgr/browser-doc-url'")
+  (defcustom rgr/rust-browser-doc-url (concat (format "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" (getenv "HOME")) "%s") "used to format variable `rgr/browser-doc-url'")
   :config
   (add-to-list 'rgr/eww-external-launch-url-chunks "doc/rust")
   (defun rgr/rust-mode-hook ()
     (message "rgr/rust-mode-hook")
-    (setq-local rgr/browser-doc-url (concat (format rgr/rust-browser-doc-url (getenv "HOME")) "%s"))
+    (setq-local rgr/browser-doc-url rgr/rust-browser-doc-url)
     (setq-local rgr/complete-line-f 'rgr/c-complete-line)
     (setq indent-tabs-mode nil)
     (prettify-symbols-mode)

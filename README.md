@@ -683,7 +683,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org1729bb6)
+    supereded by [jinx : the enchanted spell checker](#org1702cdb)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1344,7 +1344,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgfbf8f00)
+    See `org-agenda-files` [org-agenda-files](#orgd930fc3)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2010,6 +2010,47 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
         (provide 'rgr/email)
 
 
+## Chat
+
+Chat SW
+
+Raw: [rgr/chat](etc/elisp/rgr-chat.el)
+
+    (require 'rgr/chat "rgr-chat" 'NOERROR)
+
+
+### library
+
+1.  erc
+
+        
+        (use-package erc
+          :demand
+          :config
+          (defun rgr/erc-switch-to-channel(&optional channel)
+            (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
+              (switch-to-buffer (current-buffer))))
+        
+          (defun rgr/erc-start()
+            (interactive)
+            (unless(get-buffer "libera.chat:6697")
+              (progn
+                (erc-tls :server "irc.libera.chat" :port 6697)
+                (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
+        
+          (defun rgr/erc-quit()
+            (interactive)
+            (erc-quit-server ""))
+        
+          :bind
+           (:map erc-mode-map
+                  (("C-c C-q" . rgr/erc-quit))))
+
+2.  provide
+
+        (provide 'rgr/chat)
+
+
 ## Programming Language related
 
 Raw: [rgr/programming](etc/elisp/rgr-programming.el)
@@ -2470,46 +2511,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         
                 (provide 'rgr/lsp)
 
-21. Chat
-
-    Chat SW
-    
-    Raw: [rgr/chat](etc/elisp/rgr-chat.el)
-    
-        (require 'rgr/chat "rgr-chat" 'NOERROR)
-    
-    1.  library
-    
-        1.  erc
-        
-                
-                (use-package erc
-                  :demand
-                  :config
-                  (defun rgr/erc-switch-to-channel(&optional channel)
-                    (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
-                      (switch-to-buffer (current-buffer))))
-                
-                  (defun rgr/erc-start()
-                    (interactive)
-                    (unless(get-buffer "libera.chat:6697")
-                      (progn
-                        (erc-tls :server "irc.libera.chat" :port 6697)
-                        (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
-                
-                  (defun rgr/erc-quit()
-                    (interactive)
-                    (erc-quit-server ""))
-                
-                  :bind
-                   (:map erc-mode-map
-                          (("C-c C-q" . rgr/erc-quit))))
-        
-        2.  provide
-        
-                (provide 'rgr/chat)
-
-22. Serial Port
+21. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2535,7 +2537,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                           (interactive)
                           (selectSerialPortBuffer)))
 
-23. PlatformIO
+22. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2557,7 +2559,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-24. Python
+23. Python
 
     1.  ipython
     
@@ -2570,7 +2572,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :config
               (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-25. Haskell
+24. Haskell
 
     1.  haskell-mode
     
@@ -2586,7 +2588,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-26. lldb debugging in emacs
+25. lldb debugging in emacs
 
     1.  voltron
     
@@ -2596,17 +2598,17 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               ;; (breadcrumb-mode t)
               )
 
-27. rust
+26. rust
 
         (use-package rust-mode
           :init
           (setq rust-format-on-save t)
-          (defcustom rgr/rust-browser-doc-url "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" "used to format variable `rgr/browser-doc-url'")
+          (defcustom rgr/rust-browser-doc-url (concat (format "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" (getenv "HOME")) "%s") "used to format variable `rgr/browser-doc-url'")
           :config
           (add-to-list 'rgr/eww-external-launch-url-chunks "doc/rust")
           (defun rgr/rust-mode-hook ()
             (message "rgr/rust-mode-hook")
-            (setq-local rgr/browser-doc-url (concat (format rgr/rust-browser-doc-url (getenv "HOME")) "%s"))
+            (setq-local rgr/browser-doc-url rgr/rust-browser-doc-url)
             (setq-local rgr/complete-line-f 'rgr/c-complete-line)
             (setq indent-tabs-mode nil)
             (prettify-symbols-mode)
@@ -2625,7 +2627,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (setq compilation-scroll-output t))
 
-28. C
+27. C
 
     1.  c-mode-common-hook
     
@@ -2642,11 +2644,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :hook
               (c-ts-mode . rgr/c-ts-mode-common-hook))
 
-29. cc,cpp, C++, cc-mode
+28. cc,cpp, C++, cc-mode
 
         (add-hook 'c++-ts-mode-hook 'rgr/c-ts-common-mode-hook)
 
-30. Linux tools
+29. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2656,13 +2658,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-31. Assembler
+30. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-32. Godot GDScript
+31. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
@@ -2685,7 +2687,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
           )
 
-33. Web,Symfony and Twig
+32. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2745,7 +2747,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
-34. elf-mode - view the symbol list in a binary
+33. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2755,7 +2757,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
           (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-35. provide
+34. provide
 
         (provide 'rgr/programming)
 
@@ -3042,7 +3044,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0a3dcb3) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga9b4cf6) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3075,7 +3077,7 @@ to add to version control.
     fi
 
 
-<a id="org0a3dcb3"></a>
+<a id="orga9b4cf6"></a>
 
 ### Gnome protocol handler desktop file
 
