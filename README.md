@@ -683,7 +683,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org88388ba)
+    supereded by [jinx : the enchanted spell checker](#org1729bb6)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1344,7 +1344,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org1845640)
+    See `org-agenda-files` [org-agenda-files](#orgfbf8f00)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1442,7 +1442,7 @@ Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
                                                     (rgr/tap-region . rgr/get-region))))
     
       :config
-      (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email symbol sexp word line)
+      (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email word symbol sexp line)
         "`thing-at-point' candidates for killing")
     
       (defun rgr/get-region()
@@ -1469,9 +1469,10 @@ Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
               (setq s (read-string "text:" s)))
           (when s
             (message "%s" s)
-            (kill-new s))))
-      :bind
-      ("M-w" . #'rgr/kill-dwim))
+            (kill-new s))
+          s))
+        :bind
+        ("M-w" . rgr/kill-dwim))
 
 1.  provide
 
@@ -1643,7 +1644,20 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
         A bit of a dogs dinner.
 
-2.  Dictionary,Thesaurus
+2.  use browser for docs
+
+        (use-package emacs
+          :init
+          (defvar rgr/browser-doc-url "https://www.google.com/?search=%s" "format url variable used for function `rgr/browser-doc-search'")
+        
+          (defun rgr/browser-doc-search(&optional sym)
+            "call function `browse-url' with a url variabe `rgr/browser-doc-url' formatted with variable `sym'"
+            (interactive)
+            (let ((thing (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim))))
+              (message "thing to search is %s" thing)
+              (browse-url (format rgr/browser-doc-url thing)))))
+
+3.  Dictionary,Thesaurus
 
     The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
     
@@ -1662,7 +1676,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           ("<f6>" . rgr/dictionary-search)
           ("S-<f6>" . mw-thesaurus-lookup-dwim))
 
-3.  GoldenDict - external lookup and reference
+4.  GoldenDict - external lookup and reference
 
     When using goldendict-dwim why not add your program to the wonderful [GoldenDict](http://goldendict.org/)? A call to [trans-shell](https://github.com/soimort/translate-shell) in the dictionary programs tab gives us google translate:-
     
@@ -1681,13 +1695,25 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-x G" . goldendict-dwim)))
 
-4.  dash-docs
+5.  dash-docs
 
+    I'm not sure if this works unless you pay now.
+    
         (use-package dash-docs
+          :disabled t
           :custom
-          (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs")))
+          (dash-docs-common-docsets dash-docs-common-docsets)
+          (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs"))
+          :config
+          (defun rgr/dash-search(&optional s)
+            (interactive)
+            (let ((sym (if s s (thing-at-point 'symbol))))
+              (message "dash docs search %s" sym)
+              (dash-docs-search sym)))
+          :bind
+          ("C-S-a" . rgr/dash-search ))
 
-5.  devdocs-browser
+6.  devdocs-browser
 
     <https://github.com/blahgeek/emacs-devdocs-browser> :
     
@@ -1699,18 +1725,17 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
           (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
           :config
-          (defun rgr/devdocs(&optional i)
+          (defun rgr/devdocs()
             "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
             (interactive)
             (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
                                                              major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
                 (rgr/emacs-lisp-help)
-              (devdocs-lookup)))
+              (devdocs-browser-open)))
           :bind
-          ("C-q" . devdocs-browser-open))
-          ;;("C-q" . rgr/devdocs))
+          ("C-q" . rgr/devdocs))
 
-6.  Elfeed
+7.  Elfeed
 
     [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
     
@@ -1731,7 +1756,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     1.  elfeed-org
 
-7.  pdf-tools
+8.  pdf-tools
 
     [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
     
@@ -1748,7 +1773,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-8.  impatient-showdow, markdown view live
+9.  impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown.
     <https://github.com/jcs-elpa/impatient-showdown>
@@ -1757,7 +1782,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :disabled
           :hook (markdown-mode . impatient-showdown-mode))
 
-9.  provide
+10. provide
 
         (provide 'rgr/reference)
 
@@ -2576,19 +2601,23 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         (use-package rust-mode
           :init
           (setq rust-format-on-save t)
-          (add-to-list 'rgr/eww-external-launch-url-chunks "rust")
+          (defcustom rgr/rust-browser-doc-url "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" "used to format variable `rgr/browser-doc-url'")
           :config
+          (add-to-list 'rgr/eww-external-launch-url-chunks "doc/rust")
           (defun rgr/rust-mode-hook ()
             (message "rgr/rust-mode-hook")
+            (setq-local rgr/browser-doc-url (concat (format rgr/rust-browser-doc-url (getenv "HOME")) "%s"))
             (setq-local rgr/complete-line-f 'rgr/c-complete-line)
-            ;;(cargo-minor-mode)
             (setq indent-tabs-mode nil)
             (prettify-symbols-mode)
             (lsp-deferred)
             (if (featurep 'yasnippet)
                 (yas-minor-mode)))
           :hook
-          (rust-ts-mode . rgr/rust-mode-hook))
+          (rust-ts-mode . rgr/rust-mode-hook)
+          :bind
+          (:map rust-ts-mode-map
+                ("C-q" . rgr/browser-doc-search)))
         
         (use-package cargo-mode
           :hook
@@ -3013,7 +3042,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga5f1d22) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0a3dcb3) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3046,7 +3075,7 @@ to add to version control.
     fi
 
 
-<a id="orga5f1d22"></a>
+<a id="org0a3dcb3"></a>
 
 ### Gnome protocol handler desktop file
 

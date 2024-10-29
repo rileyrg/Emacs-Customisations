@@ -1610,7 +1610,7 @@ Raw: [[file+sys:etc/elisp/rgr-kill-dwim.el][rgr/kill-dwim]]
                                                   (rgr/tap-region . rgr/get-region))))
 
     :config
-    (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email symbol sexp word line)
+    (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email word symbol sexp line)
       "`thing-at-point' candidates for killing")
 
     (defun rgr/get-region()
@@ -1637,9 +1637,10 @@ Raw: [[file+sys:etc/elisp/rgr-kill-dwim.el][rgr/kill-dwim]]
             (setq s (read-string "text:" s)))
         (when s
           (message "%s" s)
-          (kill-new s))))
-    :bind
-    ("M-w" . #'rgr/kill-dwim))
+          (kill-new s))
+        s))
+      :bind
+      ("M-w" . rgr/kill-dwim))
 
 #+end_src
 
@@ -1831,6 +1832,20 @@ This is a translation framework for emacs, and is flexible and powerful.
 :END:
 A bit of a dogs dinner.
 
+**** use browser for docs
+#+begin_src  emacs-lisp
+  (use-package emacs
+    :init
+    (defvar rgr/browser-doc-url "https://www.google.com/?search=%s" "format url variable used for function `rgr/browser-doc-search'")
+
+    (defun rgr/browser-doc-search(&optional sym)
+      "call function `browse-url' with a url variabe `rgr/browser-doc-url' formatted with variable `sym'"
+      (interactive)
+      (let ((thing (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim))))
+        (message "thing to search is %s" thing)
+        (browse-url (format rgr/browser-doc-url thing)))))
+#+end_src
+
 **** Dictionary,Thesaurus
 :PROPERTIES:
 :ID:       d6770b25-024f-45f4-b86f-7c98db38b34f
@@ -1878,10 +1893,21 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
     :bind (("C-x G" . goldendict-dwim)))
 #+end_src
 **** dash-docs
+I'm not sure if this works unless you pay now.
 #+begin_src  emacs-lisp
   (use-package dash-docs
+    :disabled t
     :custom
-    (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs")))
+    (dash-docs-common-docsets dash-docs-common-docsets)
+    (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs"))
+    :config
+    (defun rgr/dash-search(&optional s)
+      (interactive)
+      (let ((sym (if s s (thing-at-point 'symbol))))
+        (message "dash docs search %s" sym)
+        (dash-docs-search sym)))
+    :bind
+    ("C-S-a" . rgr/dash-search ))
 #+end_src
 **** devdocs-browser
 
@@ -1896,16 +1922,15 @@ Browse devdocs.io documents inside Emacs!
     (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
     (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
     :config
-    (defun rgr/devdocs(&optional i)
+    (defun rgr/devdocs()
       "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
       (interactive)
       (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
                                                        major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
           (rgr/emacs-lisp-help)
-        (devdocs-lookup)))
+        (devdocs-browser-open)))
     :bind
-    ("C-q" . devdocs-browser-open))
-    ;;("C-q" . rgr/devdocs))
+    ("C-q" . rgr/devdocs))
 #+end_src
 
 **** Elfeed
@@ -2860,19 +2885,23 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   (use-package rust-mode
     :init
     (setq rust-format-on-save t)
-    (add-to-list 'rgr/eww-external-launch-url-chunks "rust")
+    (defcustom rgr/rust-browser-doc-url "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" "used to format variable `rgr/browser-doc-url'")
     :config
+    (add-to-list 'rgr/eww-external-launch-url-chunks "doc/rust")
     (defun rgr/rust-mode-hook ()
       (message "rgr/rust-mode-hook")
+      (setq-local rgr/browser-doc-url (concat (format rgr/rust-browser-doc-url (getenv "HOME")) "%s"))
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
-      ;;(cargo-minor-mode)
       (setq indent-tabs-mode nil)
       (prettify-symbols-mode)
       (lsp-deferred)
       (if (featurep 'yasnippet)
           (yas-minor-mode)))
     :hook
-    (rust-ts-mode . rgr/rust-mode-hook))
+    (rust-ts-mode . rgr/rust-mode-hook)
+    :bind
+    (:map rust-ts-mode-map
+          ("C-q" . rgr/browser-doc-search)))
 
   (use-package cargo-mode
     :hook

@@ -329,19 +329,23 @@
 (use-package rust-mode
   :init
   (setq rust-format-on-save t)
-  (add-to-list 'rgr/eww-external-launch-url-chunks "rust")
+  (defcustom rgr/rust-browser-doc-url "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" "used to format variable `rgr/browser-doc-url'")
   :config
+  (add-to-list 'rgr/eww-external-launch-url-chunks "doc/rust")
   (defun rgr/rust-mode-hook ()
     (message "rgr/rust-mode-hook")
+    (setq-local rgr/browser-doc-url (concat (format rgr/rust-browser-doc-url (getenv "HOME")) "%s"))
     (setq-local rgr/complete-line-f 'rgr/c-complete-line)
-    ;;(cargo-minor-mode)
     (setq indent-tabs-mode nil)
     (prettify-symbols-mode)
     (lsp-deferred)
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
   :hook
-  (rust-ts-mode . rgr/rust-mode-hook))
+  (rust-ts-mode . rgr/rust-mode-hook)
+  :bind
+  (:map rust-ts-mode-map
+        ("C-q" . rgr/browser-doc-search)))
 
 (use-package cargo-mode
   :hook

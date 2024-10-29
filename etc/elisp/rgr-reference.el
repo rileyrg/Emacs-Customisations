@@ -110,6 +110,17 @@
   ("C-c t" . rgr/google-translate-query-translate)
   ("C-c b" . rgr/google-translate-in-history-buffer))
 
+(use-package emacs
+  :init
+  (defvar rgr/browser-doc-url "https://www.google.com/?search=%s" "format url variable used for function `rgr/browser-doc-search'")
+
+  (defun rgr/browser-doc-search(&optional sym)
+    "call function `browse-url' with a url variabe `rgr/browser-doc-url' formatted with variable `sym'"
+    (interactive)
+    (let ((thing (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim))))
+      (message "thing to search is %s" thing)
+      (browse-url (format rgr/browser-doc-url thing)))))
+
 (use-package
   dictionary
   :commands (rgr/dictionary-search)
@@ -139,8 +150,18 @@
   :bind (("C-x G" . goldendict-dwim)))
 
 (use-package dash-docs
+  :disabled t
   :custom
-  (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs")))
+  (dash-docs-common-docsets dash-docs-common-docsets)
+  (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs"))
+  :config
+  (defun rgr/dash-search(&optional s)
+    (interactive)
+    (let ((sym (if s s (thing-at-point 'symbol))))
+      (message "dash docs search %s" sym)
+      (dash-docs-search sym)))
+  :bind
+  ("C-S-a" . rgr/dash-search ))
 
 (use-package devdocs-browser
   :custom
@@ -148,16 +169,15 @@
   (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
   (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
   :config
-  (defun rgr/devdocs(&optional i)
+  (defun rgr/devdocs()
     "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
     (interactive)
     (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
                                                      major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
         (rgr/emacs-lisp-help)
-      (devdocs-lookup)))
+      (devdocs-browser-open)))
   :bind
-  ("C-q" . devdocs-browser-open))
-  ;;("C-q" . rgr/devdocs))
+  ("C-q" . rgr/devdocs))
 
 (use-package elfeed
   :config

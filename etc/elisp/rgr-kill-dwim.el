@@ -5,7 +5,7 @@
                                                 (rgr/tap-region . rgr/get-region))))
 
   :config
-  (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email symbol sexp word line)
+  (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email word symbol sexp line)
     "`thing-at-point' candidates for killing")
 
   (defun rgr/get-region()
@@ -32,8 +32,9 @@
           (setq s (read-string "text:" s)))
       (when s
         (message "%s" s)
-        (kill-new s))))
-  :bind
-  ("M-w" . #'rgr/kill-dwim))
+        (kill-new s))
+      s))
+    :bind
+    ("M-w" . rgr/kill-dwim))
 
 (provide 'rgr/kill-dwim)
