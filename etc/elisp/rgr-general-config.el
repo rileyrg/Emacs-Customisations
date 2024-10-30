@@ -45,7 +45,8 @@
         (progn
           (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
           (delete-window))
-      (kill-current-buffer)))
+      (kill-current-buffer)
+      (delete-window)))
 
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :bind
@@ -53,7 +54,7 @@
   ("C-c e" . rgr/erc-start)
   ("C-x C-b" . ibuffer)
   ("C-x C-i" . imenu)
-  ("C-x k" . kill-current-buffer)
+  ("C-x k" . rgr/kill-current-buffer)
   ("M-0" . delete-window)
   ("M-1" . delete-other-windows)
   ("S-<f1>" . describe-face)
