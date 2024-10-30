@@ -684,7 +684,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org467b4d0)
+    supereded by [jinx : the enchanted spell checker](#org79469ce)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1345,7 +1345,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org8b2eeee)
+    See `org-agenda-files` [org-agenda-files](#org6d71b70)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2479,7 +2479,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                     :bind (:map lsp-ui-mode-map
                                 ("C-h ." . lsp-ui-doc-focus-frame)
                                 ("C-h d" . lsp-ui-doc-mode)
-                                ("C-h f" . lsp-ui-doc-glance)
+                                ("C-h g" . lsp-ui-doc-glance)
                                 ("M-." . lsp-find-definition)
                                 ("C-x C-i" . lsp-ui-imenu))
                     :hook
@@ -2601,32 +2601,35 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 26. rust
 
+        
         (use-package rust-mode
+          :ensure t
           :init
-          (setq rust-format-on-save t)
           (defcustom rgr/rust-browser-doc-url (concat (format "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" (getenv "HOME")) "%s") "used to format variable `rgr/browser-doc-url'")
+          (setq rust-mode-treesitter-derive t))
+        
+        (use-package rustic
+          :ensure t
+          :after (rust-mode)
+          :custom
+          (rustic-cargo-use-last-stored-arguments t)
           :config
+          (setq rustic-format-on-save t)
           (add-to-list 'rgr/eww-external-launch-url-chunks "doc/rust")
+          (message "eww set rust")
           (defun rgr/rust-mode-hook ()
             (message "rgr/rust-mode-hook")
             (setq-local rgr/browser-doc-url rgr/rust-browser-doc-url)
             (setq-local rgr/complete-line-f 'rgr/c-complete-line)
             (setq indent-tabs-mode nil)
             (prettify-symbols-mode)
-            (lsp-deferred)
             (if (featurep 'yasnippet)
                 (yas-minor-mode)))
           :hook
-          (rust-ts-mode . rgr/rust-mode-hook)
+          (rustic-mode . rgr/rust-mode-hook)
           :bind
-          (:map rust-ts-mode-map
+          (:map rustic-mode-map
                 ("C-q" . rgr/browser-doc-search)))
-        
-        (use-package cargo-mode
-          :hook
-          (rust-ts-mode . cargo-minor-mode)
-          :config
-          (setq compilation-scroll-output t))
 
 27. C
 
@@ -3045,7 +3048,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb6f2c9f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbc517f4) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3078,7 +3081,7 @@ to add to version control.
     fi
 
 
-<a id="orgb6f2c9f"></a>
+<a id="orgbc517f4"></a>
 
 ### Gnome protocol handler desktop file
 

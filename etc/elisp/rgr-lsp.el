@@ -32,7 +32,7 @@
     :bind (:map lsp-ui-mode-map
                 ("C-h ." . lsp-ui-doc-focus-frame)
                 ("C-h d" . lsp-ui-doc-mode)
-                ("C-h f" . lsp-ui-doc-glance)
+                ("C-h g" . lsp-ui-doc-glance)
                 ("M-." . lsp-find-definition)
                 ("C-x C-i" . lsp-ui-imenu))
     :hook

@@ -325,31 +325,33 @@
   )
 
 (use-package rust-mode
+  :ensure t
   :init
-  (setq rust-format-on-save t)
   (defcustom rgr/rust-browser-doc-url (concat (format "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" (getenv "HOME")) "%s") "used to format variable `rgr/browser-doc-url'")
+  (setq rust-mode-treesitter-derive t))
+
+(use-package rustic
+  :ensure t
+  :after (rust-mode)
+  :custom
+  (rustic-cargo-use-last-stored-arguments t)
   :config
+  (setq rustic-format-on-save t)
   (add-to-list 'rgr/eww-external-launch-url-chunks "doc/rust")
+  (message "eww set rust")
   (defun rgr/rust-mode-hook ()
     (message "rgr/rust-mode-hook")
     (setq-local rgr/browser-doc-url rgr/rust-browser-doc-url)
     (setq-local rgr/complete-line-f 'rgr/c-complete-line)
     (setq indent-tabs-mode nil)
     (prettify-symbols-mode)
-    (lsp-deferred)
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
   :hook
-  (rust-ts-mode . rgr/rust-mode-hook)
+  (rustic-mode . rgr/rust-mode-hook)
   :bind
-  (:map rust-ts-mode-map
+  (:map rustic-mode-map
         ("C-q" . rgr/browser-doc-search)))
-
-(use-package cargo-mode
-  :hook
-  (rust-ts-mode . cargo-minor-mode)
-  :config
-  (setq compilation-scroll-output t))
 
 (use-package c-ts-mode
   :config
