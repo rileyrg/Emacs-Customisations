@@ -112,14 +112,15 @@
 
 (use-package emacs
   :init
-  (defvar rgr/browser-doc-url "https://www.google.com/?search=%s" "format url variable used for function `rgr/browser-doc-search'")
-
+  (defcustom rgr/browser-doc-url "https://www.google.com/search?q=%s" "format url variable used for function `rgr/browser-doc-search'")
   (defun rgr/browser-doc-search(&optional sym)
-    "call function `browse-url' with a url variabe `rgr/browser-doc-url' formatted with variable `sym'"
-    (interactive)
-    (let ((thing (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim))))
-      (message "thing to search is %s" thing)
-      (browse-url (format rgr/browser-doc-url thing)))))
+    "call function `browse-url' with a url variable `rgr/browser-doc-url' formatted with variable `sym'"
+    (interactive
+     (list
+      (let((sym (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim) )))
+        (read-string (format "search(%s):" sym)
+                     nil nil sym))))
+     (browse-url (format rgr/browser-doc-url sym))))
 
 (use-package
   dictionary

@@ -10,7 +10,7 @@
             (describe-function sym))
         (if (boundp sym)
             (if (featurep 'helpful)
-                (helpful-variable)
+                (helpful-variable sym)
               (describe-variable sym))
           (progn
             (let ((msg (format "No elisp help for '%s" sym)))

@@ -684,7 +684,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org79469ce)
+    supereded by [jinx : the enchanted spell checker](#org75d9cc2)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1345,7 +1345,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org6d71b70)
+    See `org-agenda-files` [org-agenda-files](#org5279b0b)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1443,7 +1443,7 @@ Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
                                                     (rgr/tap-region . rgr/get-region))))
     
       :config
-      (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email word symbol sexp line)
+      (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email symbol sexp word line)
         "`thing-at-point' candidates for killing")
     
       (defun rgr/get-region()
@@ -1649,14 +1649,15 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
         (use-package emacs
           :init
-          (defvar rgr/browser-doc-url "https://www.google.com/?search=%s" "format url variable used for function `rgr/browser-doc-search'")
-        
+          (defcustom rgr/browser-doc-url "https://www.google.com/search?q=%s" "format url variable used for function `rgr/browser-doc-search'")
           (defun rgr/browser-doc-search(&optional sym)
-            "call function `browse-url' with a url variabe `rgr/browser-doc-url' formatted with variable `sym'"
-            (interactive)
-            (let ((thing (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim))))
-              (message "thing to search is %s" thing)
-              (browse-url (format rgr/browser-doc-url thing)))))
+            "call function `browse-url' with a url variable `rgr/browser-doc-url' formatted with variable `sym'"
+            (interactive
+             (list
+              (let((sym (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim) )))
+                (read-string (format "search(%s):" sym)
+                             nil nil sym))))
+             (browse-url (format rgr/browser-doc-url sym))))
 
 3.  Dictionary,Thesaurus
 
@@ -2616,7 +2617,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (setq rustic-format-on-save t)
           (add-to-list 'rgr/eww-external-launch-url-chunks "doc/rust")
-          (message "eww set rust")
           (defun rgr/rust-mode-hook ()
             (message "rgr/rust-mode-hook")
             (setq-local rgr/browser-doc-url rgr/rust-browser-doc-url)
@@ -2792,7 +2792,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                     (describe-function sym))
                 (if (boundp sym)
                     (if (featurep 'helpful)
-                        (helpful-variable)
+                        (helpful-variable sym)
                       (describe-variable sym))
                   (progn
                     (let ((msg (format "No elisp help for '%s" sym)))
@@ -3048,7 +3048,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbc517f4) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org032cf7c) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3081,7 +3081,7 @@ to add to version control.
     fi
 
 
-<a id="orgbc517f4"></a>
+<a id="org032cf7c"></a>
 
 ### Gnome protocol handler desktop file
 

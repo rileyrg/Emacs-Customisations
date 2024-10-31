@@ -338,7 +338,6 @@
   :config
   (setq rustic-format-on-save t)
   (add-to-list 'rgr/eww-external-launch-url-chunks "doc/rust")
-  (message "eww set rust")
   (defun rgr/rust-mode-hook ()
     (message "rgr/rust-mode-hook")
     (setq-local rgr/browser-doc-url rgr/rust-browser-doc-url)
