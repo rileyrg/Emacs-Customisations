@@ -1,3 +1,8 @@
+(use-package rgr-kill-dwim
+  :straight (rgr-kill-dwim :local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" )
+  :bind
+  ("M-w" . rgr/kill-dwim))
+
 (defun rgr/emacs-lisp-help (&optional s)
   "Elisp help at point. default to `helpful-at-point' if available, else `describe-function' or `describe-variable'."
   (interactive)
@@ -40,13 +45,15 @@
 (use-package edebug-x
   :custom
   (debugger-stack-frame-as-list t)
-  :config
-  (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
   ;;(edebug-trace nil)
   :config
-  (defun instrumentForDebugging() "use the universal prefix arg (C-u) to remove instrumentation" (interactive)
+  (defun rgr/instrumentForDebugging() "use the universal prefix arg (C-u) to remove instrumentation"
+         (interactive)
          (if current-prefix-arg (eval-defun nil)
-           (eval-defun 0))))
+           (eval-defun 0)))
+  :bind
+  ("C-S-<f9>" . toggle-debug-on-error)
+  ("C-<f9>" . rgr/instrumentForDebugging))
 
 ;; bit more convoluted than it needs to be
 ;; but I fancied using thing-at-point

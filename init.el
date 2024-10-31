@@ -45,8 +45,6 @@
   ("<f12>" . lazy-lang-learn-translate)
   ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
-(require 'rgr/kill-dwim "rgr-kill-dwim" 'NOERROR)
-
 (require 'rgr/reference "rgr-reference" 'NOERROR)
 
 (require 'rgr/shells "rgr-shells" 'NOERROR)

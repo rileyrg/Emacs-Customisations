@@ -684,7 +684,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org75d9cc2)
+    supereded by [jinx : the enchanted spell checker](#org6ce83a0)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1345,7 +1345,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org5279b0b)
+    See `org-agenda-files` [org-agenda-files](#orgcaaa98b)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1424,62 +1424,6 @@ My own hack for popping up text to learn
       ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
 
-## rgr/kill-dwim
-
-let copy make some choices to make your life easier
-
-Raw: [rgr/kill-dwim](etc/elisp/rgr-kill-dwim.el)
-
-    (require 'rgr/kill-dwim "rgr-kill-dwim" 'NOERROR)
-
-
-### library
-
-    
-    (use-package emacs
-      :init
-      (setq thing-at-point-provider-alist (append thing-at-point-provider-alist
-                                                  '((rgr/tap-kdwim . rgr/tap-kill-dwim)
-                                                    (rgr/tap-region . rgr/get-region))))
-    
-      :config
-      (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email symbol sexp word line)
-        "`thing-at-point' candidates for killing")
-    
-      (defun rgr/get-region()
-        "return string in region if selected and deactivate, else nil"
-        (if(use-region-p)
-            (let ((txt (buffer-substring-no-properties
-                        (mark)
-                        (point))))
-              (deactivate-mark)
-              txt)
-          nil))
-    
-      (defun rgr/tap-kill-dwim()
-        (catch 'found
-          (mapcar (lambda(x)
-                    (let ((v (thing-at-point x)))
-                      (when v (throw 'found v)))) rgr/kill-dwim-tap-symbols)))
-    
-      (defun rgr/kill-dwim ()
-        "work out what to pick up from point and stick in the kill ring"
-        (interactive)
-        (let ((s (thing-at-point 'rgr/tap-kdwim)))
-          (if current-prefix-arg
-              (setq s (read-string "text:" s)))
-          (when s
-            (message "%s" s)
-            (kill-new s))
-          s))
-        :bind
-        ("M-w" . rgr/kill-dwim))
-
-1.  provide
-
-        (provide 'rgr/kill-dwim)
-
-
 ## Reference/Lookup/Media
 
 lookup and reference uilities and config
@@ -1490,6 +1434,8 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 
 ### library
+
+**\***
 
 1.  chatgpt
 
@@ -1516,21 +1462,21 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
             =UHS1
             &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
-    
-    2.  Ellama
-    
-        <https://github.com/s-kostyaev/ellama>
-        <https://github.com/s-kostyaev/ellama>
-        <https://ollama.ai/library/zephyr>
-        
-            (use-package ellama
-              :custom
-              (ellama-sessions-directory (no-littering-expand-var-file-name "ellama-sessions"))
-              :init
-              (setopt ellama-language "German")
-              (require 'llm-ollama))
 
-1.  web lookup/view
+2.  Ellama
+
+    <https://github.com/s-kostyaev/ellama>
+    <https://github.com/s-kostyaev/ellama>
+    <https://ollama.ai/library/zephyr>
+    
+        (use-package ellama
+          :custom
+          (ellama-sessions-directory (no-littering-expand-var-file-name "ellama-sessions"))
+          :init
+          (setopt ellama-language "German")
+          (require 'llm-ollama))
+
+3.  web lookup/view
 
     1.  eww
     
@@ -1645,7 +1591,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
         A bit of a dogs dinner.
 
-2.  use browser for docs
+4.  use browser for docs
 
         (use-package emacs
           :init
@@ -1659,7 +1605,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                              nil nil sym))))
              (browse-url (format rgr/browser-doc-url sym))))
 
-3.  Dictionary,Thesaurus
+5.  Dictionary,Thesaurus
 
     The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
     
@@ -1678,7 +1624,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           ("<f6>" . rgr/dictionary-search)
           ("S-<f6>" . mw-thesaurus-lookup-dwim))
 
-4.  GoldenDict - external lookup and reference
+6.  GoldenDict - external lookup and reference
 
     When using goldendict-dwim why not add your program to the wonderful [GoldenDict](http://goldendict.org/)? A call to [trans-shell](https://github.com/soimort/translate-shell) in the dictionary programs tab gives us google translate:-
     
@@ -1697,7 +1643,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-x G" . goldendict-dwim)))
 
-5.  dash-docs
+7.  dash-docs
 
     I'm not sure if this works unless you pay now.
     
@@ -1715,7 +1661,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :bind
           ("C-S-a" . rgr/dash-search ))
 
-6.  devdocs-browser
+8.  devdocs-browser
 
     <https://github.com/blahgeek/emacs-devdocs-browser> :
     
@@ -1737,7 +1683,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :bind
           ("C-q" . rgr/devdocs))
 
-7.  Elfeed
+9.  Elfeed
 
     [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
     
@@ -1758,7 +1704,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     1.  elfeed-org
 
-8.  pdf-tools
+10. pdf-tools
 
     [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
     
@@ -1775,7 +1721,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-9.  impatient-showdow, markdown view live
+11. impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown.
     <https://github.com/jcs-elpa/impatient-showdown>
@@ -1784,7 +1730,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :disabled
           :hook (markdown-mode . impatient-showdown-mode))
 
-10. provide
+12. provide
 
         (provide 'rgr/reference)
 
@@ -2776,7 +2722,14 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 ### library
 
-1.  rgr/emacs-lisp-help
+1.  rgr/kill-dwim
+
+        (use-package rgr-kill-dwim
+          :straight (rgr-kill-dwim :local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" )
+          :bind
+          ("M-w" . rgr/kill-dwim))
+
+2.  rgr/emacs-lisp-help
 
     Use helpful if installed else built in
     
@@ -2803,13 +2756,13 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     
             (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
-2.  smartparens
+3.  smartparens
 
         (use-package smartparens
           :hook
           ((emacs-lisp-mode . smartparens-mode)))
 
-3.  electric-pair-mode
+4.  electric-pair-mode
 
     [auto insert closing brackets](info:emacs#Matching)
     
@@ -2817,23 +2770,23 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :hook
           ((emacs-lisp-mode . electric-pair-mode)))
 
-4.  elisp checks
+5.  elisp checks
 
         (defun rgr/elisp-edit-mode()
           "return non nil if this buffer edits elisp"
           (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 
-5.  linting
+6.  linting
 
     [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
     
         (use-package package-lint)
 
-6.  helpful, enriched elisp help
+7.  helpful, enriched elisp help
 
         (use-package helpful)
 
-7.  elisp popup context help
+8.  elisp popup context help
 
     Display a poup containing docstring at point
     
@@ -2847,20 +2800,22 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           ("M-<f2>" . el-docstring-sap-display)
           ("M-<f1>" . el-docstring-sap-mode))
 
-8.  Elisp debugging
+9.  Elisp debugging
 
     1.  edebug
     
             (use-package edebug-x
               :custom
               (debugger-stack-frame-as-list t)
-              :config
-              (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
               ;;(edebug-trace nil)
               :config
-              (defun instrumentForDebugging() "use the universal prefix arg (C-u) to remove instrumentation" (interactive)
+              (defun rgr/instrumentForDebugging() "use the universal prefix arg (C-u) to remove instrumentation"
+                     (interactive)
                      (if current-prefix-arg (eval-defun nil)
-                       (eval-defun 0))))
+                       (eval-defun 0)))
+              :bind
+              ("C-S-<f9>" . toggle-debug-on-error)
+              ("C-<f9>" . rgr/instrumentForDebugging))
     
     2.  display value at point in edebug
     
@@ -2890,7 +2845,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
             
             (add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 
-9.  Formatting
+10. Formatting
 
         (use-package
           elisp-format
@@ -2898,7 +2853,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           (:map emacs-lisp-mode-map
                 ("C-c f" . elisp-format-region)))
 
-10. popup query symbol
+11. popup query symbol
 
         (use-package popup
           :config
@@ -2911,7 +2866,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :bind
           (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 
-11. provide
+12. provide
 
         (provide 'rgr/elisp)
 
@@ -3048,7 +3003,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org032cf7c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc0afd0c) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3081,7 +3036,7 @@ to add to version control.
     fi
 
 
-<a id="org032cf7c"></a>
+<a id="orgc0afd0c"></a>
 
 ### Gnome protocol handler desktop file
 

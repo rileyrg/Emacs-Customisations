@@ -1588,68 +1588,6 @@ My own hack for popping up text to learn
     ("S-<f12>" . lazy-lang-learn-translate-from-history))
 #+end_src
 
-** rgr/kill-dwim
-let copy make some choices to make your life easier
-
-Raw: [[file+sys:etc/elisp/rgr-kill-dwim.el][rgr/kill-dwim]]
-
-#+begin_src emacs-lisp
-  (require 'rgr/kill-dwim "rgr-kill-dwim" 'NOERROR)
-#+end_src
-
-*** library
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-kill-dwim.el" elisp-dir)
-:END:
-
-#+begin_src  emacs-lisp
-
-  (use-package emacs
-    :init
-    (setq thing-at-point-provider-alist (append thing-at-point-provider-alist
-                                                '((rgr/tap-kdwim . rgr/tap-kill-dwim)
-                                                  (rgr/tap-region . rgr/get-region))))
-
-    :config
-    (defcustom rgr/kill-dwim-tap-symbols '(rgr/tap-region url filename email symbol sexp word line)
-      "`thing-at-point' candidates for killing")
-
-    (defun rgr/get-region()
-      "return string in region if selected and deactivate, else nil"
-      (if(use-region-p)
-          (let ((txt (buffer-substring-no-properties
-                      (mark)
-                      (point))))
-            (deactivate-mark)
-            txt)
-        nil))
-
-    (defun rgr/tap-kill-dwim()
-      (catch 'found
-        (mapcar (lambda(x)
-                  (let ((v (thing-at-point x)))
-                    (when v (throw 'found v)))) rgr/kill-dwim-tap-symbols)))
-
-    (defun rgr/kill-dwim ()
-      "work out what to pick up from point and stick in the kill ring"
-      (interactive)
-      (let ((s (thing-at-point 'rgr/tap-kdwim)))
-        (if current-prefix-arg
-            (setq s (read-string "text:" s)))
-        (when s
-          (message "%s" s)
-          (kill-new s))
-        s))
-      :bind
-      ("M-w" . rgr/kill-dwim))
-
-#+end_src
-
-**** provide
-#+begin_src emacs-lisp
-  (provide 'rgr/kill-dwim)
-#+end_src
-
 ** Reference/Lookup/Media
 :PROPERTIES:
 :ID:       959f68c3-8447-4eb8-aaa8-86f828859f49
@@ -1668,9 +1606,11 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 :ID:       e74c6135-2abc-46db-844e-a2c638b00bae
 :END:
 
-***** chatgpt
+***
 
-****** GPTel
+**** chatgpt
+
+***** GPTel
 https://github.com/karthink/gptel
 
 #+begin_src  emacs-lisp
@@ -1679,7 +1619,7 @@ https://github.com/karthink/gptel
     ("C-c q" . #'gptel-send))
 #+end_src
 
-******* secret openAPI key :crypt:
+****** secret openAPI key                                             :crypt:
 -----BEGIN PGP MESSAGE-----
 
 hQEMA7IjL5SkHG4iAQf+N61j3/62smGNrhRPOrE3U8JMpJlcDf7d0gukqvXXYD3r
@@ -1694,7 +1634,7 @@ DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
 =UHS1
 -----END PGP MESSAGE-----
 
-****** Ellama
+**** Ellama
 
 https://github.com/s-kostyaev/ellama
 https://github.com/s-kostyaev/ellama
@@ -3111,6 +3051,14 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
 :END:
 
+**** rgr/kill-dwim
+#+begin_src emacs-lisp
+  (use-package rgr-kill-dwim
+    :straight (rgr-kill-dwim :local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" )
+    :bind
+    ("M-w" . rgr/kill-dwim))
+#+end_src
+
 **** rgr/emacs-lisp-help
 :PROPERTIES:
 :ID:       f2e666e0-e5ee-460d-95d2-c4eac568db1e
@@ -3219,13 +3167,15 @@ Display a poup containing docstring at point
   (use-package edebug-x
     :custom
     (debugger-stack-frame-as-list t)
-    :config
-    (global-set-key (kbd "C-S-<f9>") 'toggle-debug-on-error)
     ;;(edebug-trace nil)
     :config
-    (defun instrumentForDebugging() "use the universal prefix arg (C-u) to remove instrumentation" (interactive)
+    (defun rgr/instrumentForDebugging() "use the universal prefix arg (C-u) to remove instrumentation"
+           (interactive)
            (if current-prefix-arg (eval-defun nil)
-             (eval-defun 0))))
+             (eval-defun 0)))
+    :bind
+    ("C-S-<f9>" . toggle-debug-on-error)
+    ("C-<f9>" . rgr/instrumentForDebugging))
 #+end_src
 ***** display value at point in edebug
 #+begin_src  emacs-lisp
