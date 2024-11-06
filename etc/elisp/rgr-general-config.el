@@ -8,6 +8,13 @@
   (show-paren-mode 1)
   (winner-mode 1)
 
+  (use-package repeat
+    ;;When Repeat mode is enabled, certain commands bound to multi-key
+    ;;sequences can be repeated by typing a single key, after typing the
+    ;;full key sequence once.
+    :config
+    (repeat-mode))
+
   (global-auto-revert-mode 1)
   ;; Also auto refresh dired, but be quiet about it
   (setq global-auto-revert-non-file-buffers t)

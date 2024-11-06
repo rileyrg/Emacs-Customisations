@@ -6,19 +6,6 @@
   (use-package lsp-ui
     ;;:disabled t
     :init
-    (use-package dap-mode
-      :disabled t
-      :bind (:map dap-mode-map
-                  (("<f8>" . dap-next)
-                   ("S-<f8>" . dap-continue)
-                   ("<f7>" . dap-step-in)
-                   ("S-<f7>" . dap-step-out)
-                   ("M-<f8>" . dap-debug)
-                   ("C-<f8>" . dap-disconnect)
-                   ))
-      :init
-      (require 'dap-cpptools)
-      (dap-cpptools-setup))
     (defun rgr/lsp-ui-mode-hook()
       (message "rgr/lsp-ui-mode-hook")
       ;;(dap-mode t)
@@ -27,6 +14,45 @@
         (setq-local buffer-save-without-query t))
       ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
       )
+    (use-package dape
+      :preface
+      ;; By default dape shares the same keybinding prefix as `gud'
+      ;; If you do not want to use any prefix, set it to nil.
+      (setq dape-key-prefix "\C-x\C-a")
+
+      :hook
+      ;; Save breakpoints on quit
+      ((kill-emacs . dape-breakpoint-save)
+       ;; Load breakpoints on startup
+       (after-init . dape-breakpoint-load))
+
+      :config
+      ;; Turn on global bindings for setting breakpoints with mouse
+      (dape-breakpoint-global-mode)
+
+      ;; Info buffers to the right
+      ;; (setq dape-buffer-window-arrangement 'right)
+
+      ;; Info buffers like gud (gdb-mi)
+      (setq dape-buffer-window-arrangement 'gud)
+      (setq dape-info-hide-mode-line nil)
+
+      ;; Pulse source line (performance hit)
+      ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
+
+      ;; Showing inlay hints
+      (setq dape-inlay-hints t)
+
+      ;; Save buffers on startup, useful for interpreted languages
+      ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
+
+      ;; Kill compile buffer on build success
+      (add-hook 'dape-compile-hook 'kill-buffer)
+
+      ;; Projectile users
+      (setq dape-cwd-fn 'projectile-project-root)
+      )
+
     :custom
     (lsp-ui-doc-mode 1)
     :bind (:map lsp-ui-mode-map
@@ -44,6 +70,8 @@
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
+
+
 
 (use-package eglot
   :disabled

@@ -4,6 +4,7 @@
 ;;(desktop-save-mode t)
 ;;(midnight-mode t)
 
+
 (defun rgr/save-current-file-to-register ()
   "Save current file to register."
   ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file

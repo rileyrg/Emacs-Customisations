@@ -317,6 +317,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         ;;(desktop-save-mode t)
         ;;(midnight-mode t)
         
+        
         (defun rgr/save-current-file-to-register ()
           "Save current file to register."
           ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
@@ -376,6 +377,13 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (menu-bar-mode -1)
           (show-paren-mode 1)
           (winner-mode 1)
+        
+          (use-package repeat
+            ;;When Repeat mode is enabled, certain commands bound to multi-key
+            ;;sequences can be repeated by typing a single key, after typing the
+            ;;full key sequence once.
+            :config
+            (repeat-mode))
         
           (global-auto-revert-mode 1)
           ;; Also auto refresh dired, but be quiet about it
@@ -684,7 +692,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org6ce83a0)
+    supereded by [jinx : the enchanted spell checker](#org8ad8517)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1345,7 +1353,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgcaaa98b)
+    See `org-agenda-files` [org-agenda-files](#org2b7ce81)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2400,19 +2408,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (use-package lsp-ui
                     ;;:disabled t
                     :init
-                    (use-package dap-mode
-                      :disabled t
-                      :bind (:map dap-mode-map
-                                  (("<f8>" . dap-next)
-                                   ("S-<f8>" . dap-continue)
-                                   ("<f7>" . dap-step-in)
-                                   ("S-<f7>" . dap-step-out)
-                                   ("M-<f8>" . dap-debug)
-                                   ("C-<f8>" . dap-disconnect)
-                                   ))
-                      :init
-                      (require 'dap-cpptools)
-                      (dap-cpptools-setup))
                     (defun rgr/lsp-ui-mode-hook()
                       (message "rgr/lsp-ui-mode-hook")
                       ;;(dap-mode t)
@@ -2421,6 +2416,45 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                         (setq-local buffer-save-without-query t))
                       ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
                       )
+                    (use-package dape
+                      :preface
+                      ;; By default dape shares the same keybinding prefix as `gud'
+                      ;; If you do not want to use any prefix, set it to nil.
+                      (setq dape-key-prefix "\C-x\C-a")
+                
+                      :hook
+                      ;; Save breakpoints on quit
+                      ((kill-emacs . dape-breakpoint-save)
+                       ;; Load breakpoints on startup
+                       (after-init . dape-breakpoint-load))
+                
+                      :config
+                      ;; Turn on global bindings for setting breakpoints with mouse
+                      (dape-breakpoint-global-mode)
+                
+                      ;; Info buffers to the right
+                      ;; (setq dape-buffer-window-arrangement 'right)
+                
+                      ;; Info buffers like gud (gdb-mi)
+                      (setq dape-buffer-window-arrangement 'gud)
+                      (setq dape-info-hide-mode-line nil)
+                
+                      ;; Pulse source line (performance hit)
+                      ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
+                
+                      ;; Showing inlay hints
+                      (setq dape-inlay-hints t)
+                
+                      ;; Save buffers on startup, useful for interpreted languages
+                      ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
+                
+                      ;; Kill compile buffer on build success
+                      (add-hook 'dape-compile-hook 'kill-buffer)
+                
+                      ;; Projectile users
+                      (setq dape-cwd-fn 'projectile-project-root)
+                      )
+                
                     :custom
                     (lsp-ui-doc-mode 1)
                     :bind (:map lsp-ui-mode-map
@@ -2439,7 +2473,9 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                          (lsp-mode . lsp-enable-which-key-integration))
                   :commands (lsp lsp-deferred))
         
-        2.  eglot
+        2.  dape
+        
+        3.  eglot
         
             Emacs lsp client
             <https://github.com/joaotavora/eglot>
@@ -2455,7 +2491,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (:map eglot-mode-map
                         ("<C-return>" . eglot-code-actions)))
         
-        3.  provide
+        4.  provide
         
                 (provide 'rgr/lsp)
 
@@ -2596,7 +2632,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 28. cc,cpp, C++, cc-mode
 
-        (add-hook 'c++-ts-mode-hook 'rgr/c-ts-common-mode-hook)
+        (add-hook 'c++-ts-mode-hook 'rgr/c-ts-mode-common-hook)
 
 29. Linux tools
 
@@ -3003,7 +3039,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc0afd0c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfe84877) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3036,7 +3072,7 @@ to add to version control.
     fi
 
 
-<a id="orgc0afd0c"></a>
+<a id="orgfe84877"></a>
 
 ### Gnome protocol handler desktop file
 

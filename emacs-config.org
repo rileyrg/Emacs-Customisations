@@ -382,6 +382,7 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
   ;;(desktop-save-mode t)
   ;;(midnight-mode t)
 
+
   (defun rgr/save-current-file-to-register ()
     "Save current file to register."
     ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
@@ -445,6 +446,13 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
     (menu-bar-mode -1)
     (show-paren-mode 1)
     (winner-mode 1)
+
+    (use-package repeat
+      ;;When Repeat mode is enabled, certain commands bound to multi-key
+      ;;sequences can be repeated by typing a single key, after typing the
+      ;;full key sequence once.
+      :config
+      (repeat-mode))
 
     (global-auto-revert-mode 1)
     ;; Also auto refresh dired, but be quiet about it
@@ -2660,19 +2668,6 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
     (use-package lsp-ui
       ;;:disabled t
       :init
-      (use-package dap-mode
-        :disabled t
-        :bind (:map dap-mode-map
-                    (("<f8>" . dap-next)
-                     ("S-<f8>" . dap-continue)
-                     ("<f7>" . dap-step-in)
-                     ("S-<f7>" . dap-step-out)
-                     ("M-<f8>" . dap-debug)
-                     ("C-<f8>" . dap-disconnect)
-                     ))
-        :init
-        (require 'dap-cpptools)
-        (dap-cpptools-setup))
       (defun rgr/lsp-ui-mode-hook()
         (message "rgr/lsp-ui-mode-hook")
         ;;(dap-mode t)
@@ -2681,6 +2676,45 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
           (setq-local buffer-save-without-query t))
         ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
         )
+      (use-package dape
+        :preface
+        ;; By default dape shares the same keybinding prefix as `gud'
+        ;; If you do not want to use any prefix, set it to nil.
+        (setq dape-key-prefix "\C-x\C-a")
+
+        :hook
+        ;; Save breakpoints on quit
+        ((kill-emacs . dape-breakpoint-save)
+         ;; Load breakpoints on startup
+         (after-init . dape-breakpoint-load))
+
+        :config
+        ;; Turn on global bindings for setting breakpoints with mouse
+        (dape-breakpoint-global-mode)
+
+        ;; Info buffers to the right
+        ;; (setq dape-buffer-window-arrangement 'right)
+
+        ;; Info buffers like gud (gdb-mi)
+        (setq dape-buffer-window-arrangement 'gud)
+        (setq dape-info-hide-mode-line nil)
+
+        ;; Pulse source line (performance hit)
+        ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
+
+        ;; Showing inlay hints
+        (setq dape-inlay-hints t)
+
+        ;; Save buffers on startup, useful for interpreted languages
+        ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
+
+        ;; Kill compile buffer on build success
+        (add-hook 'dape-compile-hook 'kill-buffer)
+
+        ;; Projectile users
+        (setq dape-cwd-fn 'projectile-project-root)
+        )
+
       :custom
       (lsp-ui-doc-mode 1)
       :bind (:map lsp-ui-mode-map
@@ -2698,6 +2732,10 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands (lsp lsp-deferred))
+#+end_src
+
+****** dape
+#+begin_src  emacs-lisp
 #+end_src
 
 ****** eglot
@@ -2878,7 +2916,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 :ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b
 :END:
 #+begin_src emacs-lisp
-  (add-hook 'c++-ts-mode-hook 'rgr/c-ts-common-mode-hook)
+  (add-hook 'c++-ts-mode-hook 'rgr/c-ts-mode-common-hook)
 #+end_src
 **** Linux tools
 :PROPERTIES:

@@ -365,7 +365,7 @@
   :hook
   (c-ts-mode . rgr/c-ts-mode-common-hook))
 
-(add-hook 'c++-ts-mode-hook 'rgr/c-ts-common-mode-hook)
+(add-hook 'c++-ts-mode-hook 'rgr/c-ts-mode-common-hook)
 
 (use-package logview
   :demand t
