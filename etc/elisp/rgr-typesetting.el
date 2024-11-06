@@ -1,7 +1,7 @@
 (use-package auctex
   :init
   (require 'ox-latex)
-  (use-package lsp-latex)
+  ;;(use-package lsp-latex)
   :custom
   (TeX-auto-save t)
   (TeX-parse-self t)
@@ -17,7 +17,7 @@
     (visual-line-mode)
     (LaTeX-math-mode)
     (flyspell-mode)
-    (lsp-deferred))
+    (eglot-ensure))
 
   :hook
   (TeX-mode .

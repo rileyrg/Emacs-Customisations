@@ -588,9 +588,9 @@ https://protesilaos.com/emacs/pulsar
   (use-package pulsar
     :custom
     (pulsar-pulse t)
-    (pulsar-delay 0.7)
-    (pulsar-iterations 30)
-    (pulsar-face 'pulsar-yellow)
+    (pulsar-delay 0.2)
+    (pulsar-iterations 15)
+    (pulsar-face 'isearch)
     (pulsar-highlight-face 'pulsar-green)
     :init
     (add-hook 'minibuffer-setup-hook #'pulsar-pulse-line)
@@ -1545,7 +1545,7 @@ Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
   (use-package auctex
     :init
     (require 'ox-latex)
-    (use-package lsp-latex)
+    ;;(use-package lsp-latex)
     :custom
     (TeX-auto-save t)
     (TeX-parse-self t)
@@ -1561,7 +1561,7 @@ Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
       (visual-line-mode)
       (LaTeX-math-mode)
       (flyspell-mode)
-      (lsp-deferred))
+      (eglot-ensure))
 
     :hook
     (TeX-mode .
@@ -2242,6 +2242,22 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-programming.el" elisp-dir)
 :END:
 
+**** eldoc
+
+#+begin_src  emacs-lisp
+  (use-package eldoc
+    :custom
+    (eldoc-idle-delay 1.5)
+    ;;(eldoc-echo-area-prefer-doc-buffer t)
+    ;;(eldoc-echo-area-use-multiline-p nil)
+    :config
+    (use-package eldoc-box
+      :hook
+      (eldoc-mode . eldoc-box-hover-at-point-mode)
+      :bind
+      ("C-h ." . eldoc-box-help-at-point)))
+#+end_src
+
 **** compilation
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-r") 'recompile)
@@ -2258,6 +2274,7 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 **** JSON
 #+begin_src  emacs-lisp
   (use-package json-mode)
+  (use-package jsonrpc :demand t)
 #+end_src
 **** Treemacs
 :PROPERTIES:
@@ -2430,7 +2447,7 @@ https://github.com/IvanMalison/org-projectile
 #+begin_src  emacs-lisp
   (use-package php-mode
     :hook
-    (php-mode . (lambda()(lsp-deferred))))
+    (php-mode . (lambda()(eglot-ensure))))
 #+end_src
 **** JSON, YAML Configuration files                                    :json:
 :PROPERTIES:
@@ -2582,9 +2599,8 @@ Running emulator from command line:
       :hook   (dart-mode . (lambda()
                              (flutter-test-mode))))
     :config
-    (use-package lsp-dart :after lsp)
     (defun rgr/init-dart-buffer()
-      (lsp-deferred) )
+      (eglot-ensure) )
     :hook   (dart-mode . rgr/init-dart-buffer ))
 
 #+end_src
@@ -2619,7 +2635,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (defun rgr/javascript-typescript-common-mode-hook ()
       (electric-pair-mode 1)
       (setq-local rgr/complete-line-f 'rgr/complete-c-line)
-      (lsp-deferred)
+      (eglot-ensure)
       )
     :config
     (defun rgr/js-ts-mode-hook ()
@@ -2640,7 +2656,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 #+end_src
 
-**** Language Server Protocol (LSP), lsp-mode                           :lsp:
+**** Language Server Protocol (LSP)                           :lsp:
 :PROPERTIES:
 :END:
 [[https://github.com/emacs-lsp][Emacs-lsp]] : Language Server Protocol client for Emacs
@@ -2656,103 +2672,53 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 :END:
 
 ****** lsp
-:PROPERTIES:
-:ID:       9f1c1bb0-e5e0-4589-a42c-828bd44646ba
-:END:
-#+begin_src  emacs-lisp
-  (use-package lsp-mode
-    ;;:disabled
-    :init
-    (setq gc-cons-threshold (* 100 1024 1024)
-          read-process-output-max (* 1024 1024))
-    (use-package lsp-ui
-      ;;:disabled t
-      :init
-      (defun rgr/lsp-ui-mode-hook()
-        (message "rgr/lsp-ui-mode-hook")
-        ;;(dap-mode t)
-        (lsp-ui-doc-mode -1)
-        (when buffer-file-name
-          (setq-local buffer-save-without-query t))
-        ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
-        )
-      (use-package dape
-        :preface
-        ;; By default dape shares the same keybinding prefix as `gud'
-        ;; If you do not want to use any prefix, set it to nil.
-        (setq dape-key-prefix "\C-x\C-a")
 
-        :hook
-        ;; Save breakpoints on quit
-        ((kill-emacs . dape-breakpoint-save)
-         ;; Load breakpoints on startup
-         (after-init . dape-breakpoint-load))
-
-        :config
-        ;; Turn on global bindings for setting breakpoints with mouse
-        (dape-breakpoint-global-mode)
-
-        ;; Info buffers to the right
-        ;; (setq dape-buffer-window-arrangement 'right)
-
-        ;; Info buffers like gud (gdb-mi)
-        (setq dape-buffer-window-arrangement 'gud)
-        (setq dape-info-hide-mode-line nil)
-
-        ;; Pulse source line (performance hit)
-        ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
-
-        ;; Showing inlay hints
-        (setq dape-inlay-hints t)
-
-        ;; Save buffers on startup, useful for interpreted languages
-        ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
-
-        ;; Kill compile buffer on build success
-        (add-hook 'dape-compile-hook 'kill-buffer)
-
-        ;; Projectile users
-        (setq dape-cwd-fn 'projectile-project-root)
-        )
-
-      :custom
-      (lsp-ui-doc-mode 1)
-      :bind (:map lsp-ui-mode-map
-                  ("C-h ." . lsp-ui-doc-focus-frame)
-                  ("C-h d" . lsp-ui-doc-mode)
-                  ("C-h g" . lsp-ui-doc-glance)
-                  ("M-." . lsp-find-definition)
-                  ("C-x C-i" . lsp-ui-imenu))
-      :hook
-      (lsp-ui-mode . rgr/lsp-ui-mode-hook))
-    (use-package lsp-treemacs
-      :config
-      (lsp-treemacs-sync-mode t)
-      :commands lsp-treemacs-errors-list)
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-           (lsp-mode . lsp-enable-which-key-integration))
-    :commands (lsp lsp-deferred))
-#+end_src
-
-****** dape
-#+begin_src  emacs-lisp
-#+end_src
+I've removed lsp-mode in favour of eglot. There's little to no contest : eglot and dape are the way to go with emacs.
 
 ****** eglot
 Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
-    :disabled
+    :disabled t
+    :demand t
     ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
-    ;; :config
-    ;; (use-package eldoc-box)
-    ;; :hook
-    ;; (prog-mode . eldoc-box-hover-at-point-mode)
+    :custom
+    (eglot--mode-line-format nil)
+    :hook
+    (eglot-managed-mode  . eldoc-box-hover-mode)
     :bind
     (:map eglot-mode-map
           ("<C-return>" . eglot-code-actions)))
 #+end_src
+
+****** dape
+#+begin_src  emacs-lisp
+  (use-package dape
+    :demand t
+    :preface
+    ;; By default dape shares the same keybinding prefix as `gud'
+    ;; If you do not want to use any prefix, set it to nil.
+    (setq dape-key-prefix "\C-x\C-a")
+
+    :custom
+    (dape-default-breakpoints-file (no-littering-expand-var-file-name  "dape/dape-breakpoints"))
+    (dape-buffer-window-arrangement 'right)
+    (dape-info-hide-mode-line nil)
+    (dape-inlay-hints t)
+    (dape-cwd-fn 'projectile-project-root)
+    :hook
+    ;; Save breakpoints on quit
+    ((kill-emacs . dape-breakpoint-save)
+     (after-init . dape-breakpoint-load)
+     (dape-display-source . pulsar-pulse-line)
+     (dape-compile .  kill-buffer))
+
+    :config
+    ;; Turn on global bindings for setting breakpoints with mouse
+    (dape-breakpoint-global-mode))
+#+end_src
+
 
 ****** provide
 #+begin_src emacs-lisp
@@ -2903,7 +2869,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     (defun rgr/c-ts-mode-common-hook ()
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       (message "rgr/c-ts-mode-common-hook")
-      (lsp-deferred)
+      (eglot-ensure)
       ;; (if(featurep 'platformio-mode)
       ;;     (platformio-conditionally-enable))
       (if (featurep 'yasnippet)

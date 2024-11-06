@@ -123,8 +123,6 @@
  '(eat-exit-hook nil)
  '(eglot-extend-to-xref t)
  '(el-docstring-sap--display-func 'el-docstring-sap--quick-peek)
- '(eldoc-box-only-multi-line t)
- '(eldoc-idle-delay 3)
  '(elpy-formatter 'autopep8)
  '(elscreen-display-tab nil)
  '(enable-recursive-minibuffers t)

@@ -112,9 +112,9 @@
 (use-package pulsar
   :custom
   (pulsar-pulse t)
-  (pulsar-delay 0.7)
-  (pulsar-iterations 30)
-  (pulsar-face 'pulsar-yellow)
+  (pulsar-delay 0.2)
+  (pulsar-iterations 15)
+  (pulsar-face 'isearch)
   (pulsar-highlight-face 'pulsar-green)
   :init
   (add-hook 'minibuffer-setup-hook #'pulsar-pulse-line)

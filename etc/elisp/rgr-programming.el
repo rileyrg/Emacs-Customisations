@@ -1,3 +1,15 @@
+(use-package eldoc
+  :custom
+  (eldoc-idle-delay 1.5)
+  ;;(eldoc-echo-area-prefer-doc-buffer t)
+  ;;(eldoc-echo-area-use-multiline-p nil)
+  :config
+  (use-package eldoc-box
+    :hook
+    (eldoc-mode . eldoc-box-hover-at-point-mode)
+    :bind
+    ("C-h ." . eldoc-box-help-at-point)))
+
 (global-set-key (kbd "C-c C-r") 'recompile)
 
 (use-package indent-bars
@@ -8,6 +20,7 @@
   (prog-mode . indent-bars-mode))
 
 (use-package json-mode)
+(use-package jsonrpc :demand t)
 
 (use-package
   treemacs
@@ -124,7 +137,7 @@
 
 (use-package php-mode
   :hook
-  (php-mode . (lambda()(lsp-deferred))))
+  (php-mode . (lambda()(eglot-ensure))))
 
 (use-package yaml-mode)
 
@@ -214,9 +227,8 @@
     :hook   (dart-mode . (lambda()
                            (flutter-test-mode))))
   :config
-  (use-package lsp-dart :after lsp)
   (defun rgr/init-dart-buffer()
-    (lsp-deferred) )
+    (eglot-ensure) )
   :hook   (dart-mode . rgr/init-dart-buffer ))
 
 ;; (use-package emacs
@@ -238,7 +250,7 @@
   (defun rgr/javascript-typescript-common-mode-hook ()
     (electric-pair-mode 1)
     (setq-local rgr/complete-line-f 'rgr/complete-c-line)
-    (lsp-deferred)
+    (eglot-ensure)
     )
   :config
   (defun rgr/js-ts-mode-hook ()
@@ -357,7 +369,7 @@
   (defun rgr/c-ts-mode-common-hook ()
     (setq-local rgr/complete-line-f 'rgr/c-complete-line)
     (message "rgr/c-ts-mode-common-hook")
-    (lsp-deferred)
+    (eglot-ensure)
     ;; (if(featurep 'platformio-mode)
     ;;     (platformio-conditionally-enable))
     (if (featurep 'yasnippet)

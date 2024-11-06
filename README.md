@@ -512,9 +512,9 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (use-package pulsar
           :custom
           (pulsar-pulse t)
-          (pulsar-delay 0.7)
-          (pulsar-iterations 30)
-          (pulsar-face 'pulsar-yellow)
+          (pulsar-delay 0.2)
+          (pulsar-iterations 15)
+          (pulsar-face 'isearch)
           (pulsar-highlight-face 'pulsar-green)
           :init
           (add-hook 'minibuffer-setup-hook #'pulsar-pulse-line)
@@ -692,7 +692,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org8ad8517)
+    supereded by [jinx : the enchanted spell checker](#org23a9a98)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1353,7 +1353,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2b7ce81)
+    See `org-agenda-files` [org-agenda-files](#org107261f)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1383,7 +1383,7 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
         (use-package auctex
           :init
           (require 'ox-latex)
-          (use-package lsp-latex)
+          ;;(use-package lsp-latex)
           :custom
           (TeX-auto-save t)
           (TeX-parse-self t)
@@ -1399,7 +1399,7 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
             (visual-line-mode)
             (LaTeX-math-mode)
             (flyspell-mode)
-            (lsp-deferred))
+            (eglot-ensure))
         
           :hook
           (TeX-mode .
@@ -2016,11 +2016,25 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 ### library
 
-1.  compilation
+1.  eldoc
+
+        (use-package eldoc
+          :custom
+          (eldoc-idle-delay 3)
+          ;;(eldoc-echo-area-prefer-doc-buffer t)
+          ;;(eldoc-echo-area-use-multiline-p nil)
+          :config
+          (use-package eldoc-box
+            :hook
+            (eldoc-mode . eldoc-box-hover-at-point-mode)
+            :bind
+            ("C-h ." . eldoc-box-help-at-point)))
+
+2.  compilation
 
         (global-set-key (kbd "C-c C-r") 'recompile)
 
-2.  indent bars
+3.  indent bars
 
         (use-package indent-bars
           :disabled
@@ -2029,11 +2043,12 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :hook
           (prog-mode . indent-bars-mode))
 
-3.  JSON
+4.  JSON
 
         (use-package json-mode)
+        (use-package jsonrpc :demand t)
 
-4.  Treemacs
+5.  Treemacs
 
         (use-package
           treemacs
@@ -2052,13 +2067,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (:map treemacs-mode-map
                 ("<right>" . treemacs-peek)))
 
-5.  duplicate thing
+6.  duplicate thing
 
         (use-package duplicate-thing
           :bind
           ("C-S-d" . 'duplicate-thing))
 
-6.  Breadcrumbs
+7.  Breadcrumbs
 
     <https://github.com/joaotavora/breadcrumb>
     
@@ -2100,23 +2115,23 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (parrot-mode)
               (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
-7.  prog-mode hack
+8.  prog-mode hack
 
         (unless (fboundp 'prog-mode)
           (defalias 'prog-mode 'fundamental-mode))
 
-8.  undo tree
+9.  undo tree
 
         (use-package undo-tree
           :init
           (global-undo-tree-mode))
 
-9.  Show Line numbers
+10. Show Line numbers
 
         (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
         (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
 
-10. code format
+11. code format
 
         ;; auto-format different source code files extremely intelligently
         ;; https://github.com/radian-software/apheleia
@@ -2126,7 +2141,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (apheleia-global-mode +1))
 
-11. Project Management
+12. Project Management
 
     1.  projectile
     
@@ -2174,7 +2189,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
                   :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
 
-12. BASH
+13. BASH
 
     1.  Navigating Bash set -x output
     
@@ -2187,13 +2202,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                            '(pascal
                              "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 
-13. PHP
+14. PHP
 
         (use-package php-mode
           :hook
-          (php-mode . (lambda()(lsp-deferred))))
+          (php-mode . (lambda()(eglot-ensure))))
 
-14. JSON, YAML Configuration files
+15. JSON, YAML Configuration files
 
     1.  YAML
     
@@ -2204,7 +2219,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package json-reformat)
             (use-package hydra)
 
-15. FlyCheck
+16. FlyCheck
 
         (use-package flycheck
           :disabled t
@@ -2215,7 +2230,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (flycheck-pos-tip-mode))
           (add-hook 'after-init-hook #'global-flycheck-mode))
 
-16. Flymake
+17. Flymake
 
         (use-package flymake
           :demand t
@@ -2250,7 +2265,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 (flymake-mode +1))
               :hook (sh-mode . rgr/sh-mode-hook))
 
-17. Version Control
+18. Version Control
 
     1.  It's [Magit](Https://github.com/magit/magit)! A Git porcelain inside Emacs
     
@@ -2306,7 +2321,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :bind
                   ("C-x v ="  . diff-hl-show-hunk))
 
-18. Dart/Flutter
+19. Dart/Flutter
 
     Running emulator from command line:
     
@@ -2332,9 +2347,8 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             :hook   (dart-mode . (lambda()
                                    (flutter-test-mode))))
           :config
-          (use-package lsp-dart :after lsp)
           (defun rgr/init-dart-buffer()
-            (lsp-deferred) )
+            (eglot-ensure) )
           :hook   (dart-mode . rgr/init-dart-buffer ))
     
     1.  Java
@@ -2343,7 +2357,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             ;;   :hook (java-mode . eglot-ensure)
             ;;   )
 
-19. Tree Sitter
+20. Tree Sitter
 
     1.  treesit-auto
     
@@ -2368,7 +2382,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (defun rgr/javascript-typescript-common-mode-hook ()
                 (electric-pair-mode 1)
                 (setq-local rgr/complete-line-f 'rgr/complete-c-line)
-                (lsp-deferred)
+                (eglot-ensure)
                 )
               :config
               (defun rgr/js-ts-mode-hook ()
@@ -2388,7 +2402,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
               (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
-20. Language Server Protocol (LSP), lsp-mode
+21. Language Server Protocol (LSP)
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2400,102 +2414,56 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     
         1.  lsp
         
-                (use-package lsp-mode
-                  ;;:disabled
-                  :init
-                  (setq gc-cons-threshold (* 100 1024 1024)
-                        read-process-output-max (* 1024 1024))
-                  (use-package lsp-ui
-                    ;;:disabled t
-                    :init
-                    (defun rgr/lsp-ui-mode-hook()
-                      (message "rgr/lsp-ui-mode-hook")
-                      ;;(dap-mode t)
-                      (lsp-ui-doc-mode -1)
-                      (when buffer-file-name
-                        (setq-local buffer-save-without-query t))
-                      ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
-                      )
-                    (use-package dape
-                      :preface
-                      ;; By default dape shares the same keybinding prefix as `gud'
-                      ;; If you do not want to use any prefix, set it to nil.
-                      (setq dape-key-prefix "\C-x\C-a")
-                
-                      :hook
-                      ;; Save breakpoints on quit
-                      ((kill-emacs . dape-breakpoint-save)
-                       ;; Load breakpoints on startup
-                       (after-init . dape-breakpoint-load))
-                
-                      :config
-                      ;; Turn on global bindings for setting breakpoints with mouse
-                      (dape-breakpoint-global-mode)
-                
-                      ;; Info buffers to the right
-                      ;; (setq dape-buffer-window-arrangement 'right)
-                
-                      ;; Info buffers like gud (gdb-mi)
-                      (setq dape-buffer-window-arrangement 'gud)
-                      (setq dape-info-hide-mode-line nil)
-                
-                      ;; Pulse source line (performance hit)
-                      ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
-                
-                      ;; Showing inlay hints
-                      (setq dape-inlay-hints t)
-                
-                      ;; Save buffers on startup, useful for interpreted languages
-                      ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
-                
-                      ;; Kill compile buffer on build success
-                      (add-hook 'dape-compile-hook 'kill-buffer)
-                
-                      ;; Projectile users
-                      (setq dape-cwd-fn 'projectile-project-root)
-                      )
-                
-                    :custom
-                    (lsp-ui-doc-mode 1)
-                    :bind (:map lsp-ui-mode-map
-                                ("C-h ." . lsp-ui-doc-focus-frame)
-                                ("C-h d" . lsp-ui-doc-mode)
-                                ("C-h g" . lsp-ui-doc-glance)
-                                ("M-." . lsp-find-definition)
-                                ("C-x C-i" . lsp-ui-imenu))
-                    :hook
-                    (lsp-ui-mode . rgr/lsp-ui-mode-hook))
-                  (use-package lsp-treemacs
-                    :config
-                    (lsp-treemacs-sync-mode t)
-                    :commands lsp-treemacs-errors-list)
-                  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-                         (lsp-mode . lsp-enable-which-key-integration))
-                  :commands (lsp lsp-deferred))
+            I've removed lsp-mode in favour of eglot. There's little to no contest : eglot and dape are the way to go with emacs.
         
-        2.  dape
-        
-        3.  eglot
+        2.  eglot
         
             Emacs lsp client
             <https://github.com/joaotavora/eglot>
             
                 (use-package eglot
-                  :disabled
+                  :disabled t
+                  :demand t
                   ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
-                  ;; :config
-                  ;; (use-package eldoc-box)
-                  ;; :hook
-                  ;; (prog-mode . eldoc-box-hover-at-point-mode)
+                  :custom
+                  (eglot--mode-line-format nil)
+                  :hook
+                  (eglot-managed-mode  . eldoc-box-hover-mode)
                   :bind
                   (:map eglot-mode-map
                         ("<C-return>" . eglot-code-actions)))
+        
+        3.  dape
+        
+                (use-package dape
+                  :demand t
+                  :preface
+                  ;; By default dape shares the same keybinding prefix as `gud'
+                  ;; If you do not want to use any prefix, set it to nil.
+                  (setq dape-key-prefix "\C-x\C-a")
+                
+                  :custom
+                  (dape-default-breakpoints-file (no-littering-expand-var-file-name  "dape/dape-breakpoints"))
+                  (dape-buffer-window-arrangement 'right)
+                  (dape-info-hide-mode-line nil)
+                  (dape-inlay-hints t)
+                  (dape-cwd-fn 'projectile-project-root)
+                  :hook
+                  ;; Save breakpoints on quit
+                  ((kill-emacs . dape-breakpoint-save)
+                   (after-init . dape-breakpoint-load)
+                   (dape-display-source . pulsar-pulse-line)
+                   (dape-compile .  kill-buffer))
+                
+                  :config
+                  ;; Turn on global bindings for setting breakpoints with mouse
+                  (dape-breakpoint-global-mode))
         
         4.  provide
         
                 (provide 'rgr/lsp)
 
-21. Serial Port
+22. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2521,7 +2489,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                           (interactive)
                           (selectSerialPortBuffer)))
 
-22. PlatformIO
+23. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2543,7 +2511,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-23. Python
+24. Python
 
     1.  ipython
     
@@ -2556,7 +2524,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :config
               (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-24. Haskell
+25. Haskell
 
     1.  haskell-mode
     
@@ -2572,7 +2540,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-25. lldb debugging in emacs
+26. lldb debugging in emacs
 
     1.  voltron
     
@@ -2582,7 +2550,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               ;; (breadcrumb-mode t)
               )
 
-26. rust
+27. rust
 
         
         (use-package rust-mode
@@ -2613,7 +2581,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (:map rustic-mode-map
                 ("C-q" . rgr/browser-doc-search)))
 
-27. C
+28. C
 
     1.  c-mode-common-hook
     
@@ -2622,7 +2590,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (defun rgr/c-ts-mode-common-hook ()
                 (setq-local rgr/complete-line-f 'rgr/c-complete-line)
                 (message "rgr/c-ts-mode-common-hook")
-                (lsp-deferred)
+                (eglot-ensure)
                 ;; (if(featurep 'platformio-mode)
                 ;;     (platformio-conditionally-enable))
                 (if (featurep 'yasnippet)
@@ -2630,11 +2598,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :hook
               (c-ts-mode . rgr/c-ts-mode-common-hook))
 
-28. cc,cpp, C++, cc-mode
+29. cc,cpp, C++, cc-mode
 
         (add-hook 'c++-ts-mode-hook 'rgr/c-ts-mode-common-hook)
 
-29. Linux tools
+30. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2644,13 +2612,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-30. Assembler
+31. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-31. Godot GDScript
+32. Godot GDScript
 
     This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
     
@@ -2673,7 +2641,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
           )
 
-32. Web,Symfony and Twig
+33. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2733,7 +2701,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
-33. elf-mode - view the symbol list in a binary
+34. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2743,7 +2711,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
           (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-34. provide
+35. provide
 
         (provide 'rgr/programming)
 
@@ -3039,7 +3007,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfe84877) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6338870) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3072,7 +3040,7 @@ to add to version control.
     fi
 
 
-<a id="orgfe84877"></a>
+<a id="org6338870"></a>
 
 ### Gnome protocol handler desktop file
 
