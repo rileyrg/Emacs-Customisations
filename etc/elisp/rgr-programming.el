@@ -1,12 +1,12 @@
 (use-package eldoc
   :custom
-  (eldoc-idle-delay 1.5)
+  (eldoc-idle-delay 15)
   ;;(eldoc-echo-area-prefer-doc-buffer t)
   ;;(eldoc-echo-area-use-multiline-p nil)
   :config
   (use-package eldoc-box
     :hook
-    (eldoc-mode . eldoc-box-hover-at-point-mode)
+    (eldoc-mode . eldoc-box-hover-mode)
     :bind
     ("C-h ." . eldoc-box-help-at-point)))
 

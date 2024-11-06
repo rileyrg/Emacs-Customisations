@@ -692,7 +692,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 19. flyspell
 
-    supereded by [jinx : the enchanted spell checker](#org23a9a98)
+    supereded by [jinx : the enchanted spell checker](#org4ea83c0)
     
     :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
     
@@ -1353,7 +1353,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org107261f)
+    See `org-agenda-files` [org-agenda-files](#orgfa2bbbd)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2020,13 +2020,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
         (use-package eldoc
           :custom
-          (eldoc-idle-delay 3)
+          (eldoc-idle-delay 15)
           ;;(eldoc-echo-area-prefer-doc-buffer t)
           ;;(eldoc-echo-area-use-multiline-p nil)
           :config
           (use-package eldoc-box
             :hook
-            (eldoc-mode . eldoc-box-hover-at-point-mode)
+            (eldoc-mode . eldoc-box-hover-mode)
             :bind
             ("C-h ." . eldoc-box-help-at-point)))
 
@@ -3007,7 +3007,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6338870) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org38fc679) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3040,7 +3040,7 @@ to add to version control.
     fi
 
 
-<a id="org6338870"></a>
+<a id="org38fc679"></a>
 
 ### Gnome protocol handler desktop file
 
