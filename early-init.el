@@ -44,7 +44,7 @@
   (when (boundp 'native-comp-eln-load-path)
     (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
-  (straight-use-package 'org)
+(straight-use-package 'org)
 
 ;;; early-init.el ends here
 

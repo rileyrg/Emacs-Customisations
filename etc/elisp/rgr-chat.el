@@ -17,7 +17,7 @@
     (erc-quit-server ""))
 
   :bind
-   (:map erc-mode-map
-          (("C-c C-q" . rgr/erc-quit))))
+  (:map erc-mode-map
+        (("C-c C-q" . rgr/erc-quit))))
 
 (provide 'rgr/chat)

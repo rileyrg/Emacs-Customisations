@@ -120,7 +120,7 @@
       (let((sym (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim) )))
         (read-string (format "search(%s):" sym)
                      nil nil sym))))
-     (browse-url (format rgr/browser-doc-url sym))))
+    (browse-url (format rgr/browser-doc-url sym))))
 
 (use-package
   dictionary

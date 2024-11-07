@@ -91,7 +91,7 @@ invoke google translate on them. Stores history.
       (when (boundp 'native-comp-eln-load-path)
         (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
     
-      (straight-use-package 'org)
+    (straight-use-package 'org)
     
     ;;; early-init.el ends here
 
@@ -687,42 +687,17 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
         (use-package jinx
           :hook (emacs-startup . global-jinx-mode)
-          :bind (("M-$" . jinx-correct)
-                 ("C-M-$" . jinx-languages)))
+          :bind (("<f8>" . jinx-correct)
+                 ("C-<f8>" . jinx-languages)))
 
-19. flyspell
-
-    supereded by [jinx : the enchanted spell checker](#org4ea83c0)
-    
-    :ID:       9f285553-52e6-41f2-aa76-386ef9abe279
-    
-        (use-package flyspell
-          :disabled
-          :config
-          (defun flyspell-check-next-highlighted-word ()
-            "Custom fnction to spell check next highlighted word"
-            (interactive)
-            (flyspell-goto-next-error)
-            (ispell-word)
-            )
-        
-          :bind (("C-<f8>" . flyspell-mode)
-                 ("S-<f8>" . flyspell-check-previous-highlighted-word)
-                 ("C-S-<f8>" . flyspell-buffer)
-                 ("M-<f8>" . flyspell-word)
-                 )
-          ;; :hook
-          ;; (prog-mode .  (flyspell-prog-mode))
-          )
-
-20. rg, ripgrep
+19. rg, ripgrep
 
     rg is pretty quick
     
         (use-package
           ripgrep)
 
-21. provide
+20. provide
 
         (provide 'rgr/general-config)
 
@@ -787,7 +762,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     
     :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
     
-          ;; Example configuration for Consult
+        ;; Example configuration for Consult
         ;; Example configuration for Consult
         (use-package consult
           ;; Replace bindings. Lazily loaded by `use-package'.
@@ -892,58 +867,9 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; Optionally make narrowing help available in the minibuffer.
           ;; You may want to use `embark-prefix-help-command' or which-key instead.
           ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
-        )
-    
-    1.  consult-omni
-    
-        <https://github.com/armindarvish/consult-omni>
-        consult-omni is a package for getting search results from one or several custom sources (web search engines, AI assistants, elfeed database, org notes, local files, desktop applications, mail servers, …) directly in Emacs minibuffer.
-        
-            (use-package consult-omni
-              :straight (consult-omni :type git :host github :repo "armindarvish/consult-omni" :files (:defaults "sources/*.el"))
-              :after consult
-              :config
-            (require 'consult-omni-sources)
-            (require 'consult-omni-wikipedia)
-              )
+          )
 
-4.  [Embark](https://github.com/oantolin/embark) Emacs Mini-Buffer Actions Rooted in Keymaps
-
-        (use-package embark
-          :ensure t
-        
-          :bind
-          (("C-." . embark-act)         ;; pick some comfortable binding
-           ("C-;" . embark-dwim)        ;; good alternative: M-.
-           ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-        
-          :init
-        
-          ;; Optionally replace the key help with a completing-read interface
-          (setq prefix-help-command #'embark-prefix-help-command)
-        
-          ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
-          ;; strategy, if you want to see the documentation from multiple providers.
-          ;;(add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
-          ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
-        
-          :config
-        
-          ;; Hide the mode line of the Embark live/completions buffers
-          (add-to-list 'display-buffer-alist
-                       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                         nil
-                         (window-parameters (mode-line-format . none)))))
-    
-    1.  embark-consult
-    
-            ;; Consult users will also want the embark-consult package.
-            (use-package embark-consult
-              :ensure t ; only need to install it, embark loads it after consult if found
-              :hook
-              (embark-collect-mode . consult-preview-at-point-mode))
-
-5.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+4.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
     
@@ -965,7 +891,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; package.
           (marginalia-mode))
 
-6.  all-the-icons
+5.  all-the-icons
 
     Remember to run **all-the-icons-install-fonts**.
     
@@ -980,7 +906,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
           :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
 
-7.  provide
+6.  provide
 
         (provide 'rgr/minibuffer)
 
@@ -999,21 +925,17 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 1.  corfu
 
         (use-package corfu
-          :disabled
           ;; Optional customizations
           :custom
           ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-          (corfu-auto nil)                 ;; Enable auto completion
-          (corfu-popupinfo-mode t)
-          ;; (corfu-separator ?\s)          ;; Orderless field separator
-          ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-          ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-          ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+          (corfu-auto t)                 ;; Enable auto completion
+          (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+          (corfu-quit-no-match t)      ;; Never quit, even if there is no match
+          (corfu-preview-current t)    ;; Disable current candidate preview
           ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
           ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-          ;; (corfu-scroll-margin 5)        ;; Use scroll margin
         
-          ;; Enable Corfu only for certain modes.
+          ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
           ;; :hook ((prog-mode . corfu-mode)
           ;;        (shell-mode . corfu-mode)
           ;;        (eshell-mode . corfu-mode))
@@ -1021,78 +943,87 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
           ;; be used globally (M-/).  See also the customization variable
           ;; `global-corfu-modes' to exclude certain modes.
+          :config
+          ;; Optionally use the `orderless' completion style.
+          (use-package orderless
+            :custom
+            ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
+            ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+            (completion-styles '(orderless basic))
+            (completion-category-defaults nil)
+            (completion-category-overrides '((file (styles partial-completion)))))
           :init
-          (defun corfu-enable-in-minibuffer ()
-            "Enable Corfu in the minibuffer."
-            (when (local-variable-p 'completion-at-point-functions)
-              ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
-              (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
-                          corfu-popupinfo-delay nil)
-              (corfu-mode 1)))
-          (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
-        
-          (global-corfu-mode))
-        
+          (global-corfu-mode)
+          (corfu-popupinfo-mode))
         
         ;; A few more useful configurations...
         (use-package emacs
-          :init
+          :custom
           ;; TAB cycle if there are only few candidates
-          (setq completion-cycle-threshold 3)
-        
-          ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-          ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-          ;; (setq read-extended-command-predicate
-          ;;       #'command-completion-default-include-p)
+          ;; (completion-cycle-threshold 3)
         
           ;; Enable indentation+completion using the TAB key.
           ;; `completion-at-point' is often bound to M-TAB.
-          (setq tab-always-indent 'complete))
-    
-    1.  Cape capf extensions
-    
-        <https://github.com/minad/cape>
+          (tab-always-indent 'complete)
         
-            ;; Add extensions
-            (use-package cape
-              :demand t
-              ;; Bind dedicated completion commands
-              ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-              :bind (("C-c p p" . completion-at-point) ;; capf
-                     ("C-c p t" . complete-tag)        ;; etags
-                     ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-                     ("C-c p h" . cape-history)
-                     ("C-c p f" . cape-file)
-                     ("C-c p k" . cape-keyword)
-                     ("C-c p s" . cape-elisp-symbol)
-                     ("C-c p e" . cape-elisp-block)
-                     ("C-c p a" . cape-abbrev)
-                     ("C-c p l" . cape-line)
-                     ("C-c p w" . cape-dict)
-                     ("C-c p :" . cape-emoji)
-                     ("C-c p \\" . cape-tex)
-                     ("C-c p _" . cape-tex)
-                     ("C-c p ^" . cape-tex)
-                     ("C-c p &" . cape-sgml)
-                     ("C-c p r" . cape-rfc1345))
-              :init
-              ;; Add to the global default value of `completion-at-point-functions' which is
-              ;; used by `completion-at-point'.  The order of the functions matters, the
-              ;; first function returning a result wins.  Note that the list of buffer-local
-              ;; completion functions takes precedence over the global list.
-              (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-              (add-to-list 'completion-at-point-functions #'cape-file)
-              (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-              ;;(add-to-list 'completion-at-point-functions #'cape-history)
-              ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-              ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-              ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-              ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-              ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-              (add-to-list 'completion-at-point-functions #'cape-dict)
-              ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
-              ;;(add-to-list 'completion-at-point-functions #'cape-line)
-              )
+          ;; Emacs 30 and newer: Disable Ispell completion function.
+          ;; Try `cape-dict' as an alternative.
+          (text-mode-ispell-word-completion nil)
+        
+          ;; Hide commands in M-x which do not apply to the current mode.  Corfu
+          ;; commands are hidden, since they are not used via M-x. This setting is
+          ;; useful beyond Corfu.
+          (read-extended-command-predicate #'command-completion-default-include-p))
+        
+        ;; Optionally use the `orderless' completion style.
+        (use-package orderless
+          :custom
+          ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
+          ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+          (completion-styles '(orderless basic))
+          (completion-category-defaults nil)
+          (completion-category-overrides '((file (styles partial-completion)))))
+        
+        
+        ;; Use Dabbrev with Corfu!
+        (use-package dabbrev
+          ;; Swap M-/ and C-M-/
+          :bind (("M-/" . dabbrev-completion)
+                 ("C-M-/" . dabbrev-expand))
+          :config
+          (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
+          ;; Since 29.1, use `dabbrev-ignored-buffer-regexps' on older.
+          (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
+          (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
+          (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
+        
+        ;; Enable Corfu completion UI
+        ;; See the Corfu README for more configuration tips.
+        (use-package corfu
+          :init
+          (global-corfu-mode))
+        
+        ;; Add extensions
+        (use-package cape
+          ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
+          ;; Press C-c p ? to for help.
+          :bind ("C-c p" . cape-prefix-map) ;; Alternative keys: M-p, M-+, ...
+          ;; Alternatively bind Cape commands individually.
+          ;; :bind (("C-c p d" . cape-dabbrev)
+          ;;        ("C-c p h" . cape-history)
+          ;;        ("C-c p f" . cape-file)
+          ;;        ...)
+          :init
+          ;; Add to the global default value of `completion-at-point-functions' which is
+          ;; used by `completion-at-point'.  The order of the functions matters, the
+          ;; first function returning a result wins.  Note that the list of buffer-local
+          ;; completion functions takes precedence over the global list.
+          (add-hook 'completion-at-point-functions #'cape-dabbrev)
+          (add-hook 'completion-at-point-functions #'cape-file)
+          (add-hook 'completion-at-point-functions #'cape-elisp-block)
+          ;; (add-hook 'completion-at-point-functions #'cape-history)
+          ;; ...
+        )
 
 2.  Which Key
 
@@ -1140,7 +1071,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 5.  company
 
         (use-package company
-          ;;:disabled
+          :disabled t
           :config
           (use-package company-box
             :config
@@ -1151,46 +1082,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :bind( :map company-mode-map
                  ("<tab>" .  company-indent-or-complete-common)))
 
-6.  [Orderless](https://github.com/oantolin/orderless) provides an orderless completion style that divides the pattern into space-separated components
-
-        (use-package orderless
-          :init
-          ;; Tune the global completion style settings to your liking!
-          ;; This affects the minibuffer and non-lsp completion at point.
-          (setq completion-styles '(
-                                    orderless
-                                    ;;partial-completion
-                                    basic)
-                completion-category-defaults nil
-                completion-category-overrides nil);;'((file (styles partial-completion))))
-          ;; A few more useful configurations...
-          (use-package emacs
-            :init
-            ;; Add prompt indicator to `completing-read-multiple'.
-            ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
-            (defun crm-indicator (args)
-              (cons (format "[CRM%s] %s"
-                            (replace-regexp-in-string
-                             "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                             crm-separator)
-                            (car args))
-                    (cdr args)))
-            (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-        
-            ;; Do not allow the cursor in the minibuffer prompt
-            (setq minibuffer-prompt-properties
-                  '(read-only t cursor-intangible t face minibuffer-prompt))
-            (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-        
-            ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-            ;; Vertico commands are hidden in normal buffers.
-            ;; (setq read-extended-command-predicate
-            ;;       #'command-completion-default-include-p)
-        
-            ;; Enable recursive minibuffers
-            (setq enable-recursive-minibuffers t)))
-
-7.  vertico , vertical interactive completion
+6.  vertico , vertical interactive completion
 
     <https://github.com/minad/vertico>
     
@@ -1208,13 +1100,13 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :init
           (vertico-mode))
 
-8.  Abbrev Mode
+7.  Abbrev Mode
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
         (setq-default abbrev-mode 1)
 
-9.  provide
+8.  provide
 
         (provide 'rgr/completion)
 
@@ -1353,7 +1245,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgfa2bbbd)
+    See `org-agenda-files` [org-agenda-files](#org9b2cd07)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1611,7 +1503,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (let((sym (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim) )))
                 (read-string (format "search(%s):" sym)
                              nil nil sym))))
-             (browse-url (format rgr/browser-doc-url sym))))
+            (browse-url (format rgr/browser-doc-url sym))))
 
 5.  Dictionary,Thesaurus
 
@@ -1763,9 +1655,9 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
           (eat-kill-buffer-on-exit t)
           :config
           (defun rgr/eat()
-              (interactive)
-              (split-window)
-              (eat))
+            (interactive)
+            (split-window)
+            (eat))
           :bind
           ("M-g t" . rgr/eat)
           :straight (:type git
@@ -1999,8 +1891,8 @@ Raw: [rgr/chat](etc/elisp/rgr-chat.el)
             (erc-quit-server ""))
         
           :bind
-           (:map erc-mode-map
-                  (("C-c C-q" . rgr/erc-quit))))
+          (:map erc-mode-map
+                (("C-c C-q" . rgr/erc-quit))))
 
 2.  provide
 
@@ -2019,20 +1911,24 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 1.  eldoc
 
         (use-package eldoc
+          :demand t
           :custom
-          (eldoc-idle-delay 15)
+          (eldoc-idle-delay 5)
           ;;(eldoc-echo-area-prefer-doc-buffer t)
           ;;(eldoc-echo-area-use-multiline-p nil)
           :config
           (use-package eldoc-box
-            :hook
-            (eldoc-mode . eldoc-box-hover-mode)
+            :demand t
             :bind
             ("C-h ." . eldoc-box-help-at-point)))
 
 2.  compilation
 
         (global-set-key (kbd "C-c C-r") 'recompile)
+        (global-set-key (kbd "<f9>")
+          '(lambda () (interactive)
+              (condition-case nil (next-error)
+                 (error (next-error 1 t)))))
 
 3.  indent bars
 
@@ -2046,7 +1942,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 4.  JSON
 
         (use-package json-mode)
-        (use-package jsonrpc :demand t)
+        (use-package jsonrpc)
 
 5.  Treemacs
 
@@ -2055,7 +1951,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :init
           (add-to-list 'image-types 'svg)
           :custom
-          (treemacs-follow-after-init t)
+          (treemacs-follow-after-init t) ; hello
           :config
           (treemacs-follow-mode +1)
           (treemacs-fringe-indicator-mode)
@@ -2422,9 +2318,10 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             <https://github.com/joaotavora/eglot>
             
                 (use-package eglot
-                  :disabled t
                   :demand t
                   ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
+                  :init
+                  (add-hook 'after-save-hook 'eglot-format-buffer)
                   :custom
                   (eglot--mode-line-format nil)
                   :hook
@@ -3007,7 +2904,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org38fc679) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd3b1ff6) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -3040,7 +2937,7 @@ to add to version control.
     fi
 
 
-<a id="org38fc679"></a>
+<a id="orgd3b1ff6"></a>
 
 ### Gnome protocol handler desktop file
 
