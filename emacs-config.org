@@ -2139,7 +2139,7 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
     (use-package eldoc-box
       :demand t
       :bind
-      ("C-h ." . eldoc-box-help-at-point)))
+      ("C-." . eldoc-box-help-at-point)))
 #+end_src
 
 **** compilation
@@ -2798,32 +2798,6 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 #+begin_src emacs-lisp
   (use-package strace-mode)
 #+end_src
-**** Godot GDScript                                                   :godot:
-:PROPERTIES:
-:ID:       19daf0bd-1652-4638-9d72-50f0b8af1586
-:END:
-This [[https://github.com/GDQuest/emacs-gdscript-mode][package]] adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
-#+begin_src emacs-lisp
-  (use-package gdscript-mode
-    :straight (gdscript-mode
-               :type git
-               :host github
-               :repo "rileyrg/emacs-gdscript-mode")
-    :init
-    (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
-      "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
-      (if (string-equal major-mode "gdscript-mode")
-          (let ((json-data (nth 0 args)))
-            (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
-                     (not (gethash "id" json-data nil))
-                     (not (gethash "method" json-data nil)))
-                nil ; (message "Method not found")
-              (apply original-function args)))
-        (apply original-function args)))
-    (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
-    )
-#+end_src
-
 **** Web,Symfony and Twig
 :PROPERTIES:
 :ID:       5c88e4a3-3af1-42e4-81ec-913b4fa88853

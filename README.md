@@ -1245,7 +1245,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org9b2cd07)
+    See `org-agenda-files` [org-agenda-files](#org4244b82)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1920,7 +1920,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (use-package eldoc-box
             :demand t
             :bind
-            ("C-h ." . eldoc-box-help-at-point)))
+            ("C-." . eldoc-box-help-at-point)))
 
 2.  compilation
 
@@ -2515,30 +2515,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     
             (use-package strace-mode)
 
-32. Godot GDScript
-
-    This [package](https://github.com/GDQuest/emacs-gdscript-mode) adds support for the GDScript programming language from the Godot game engine in Emacs. It gives syntax highlighting and indentations
-    
-        (use-package gdscript-mode
-          :straight (gdscript-mode
-                     :type git
-                     :host github
-                     :repo "rileyrg/emacs-gdscript-mode")
-          :init
-          (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
-            "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
-            (if (string-equal major-mode "gdscript-mode")
-                (let ((json-data (nth 0 args)))
-                  (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
-                           (not (gethash "id" json-data nil))
-                           (not (gethash "method" json-data nil)))
-                      nil ; (message "Method not found")
-                    (apply original-function args)))
-              (apply original-function args)))
-          (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
-          )
-
-33. Web,Symfony and Twig
+32. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2598,7 +2575,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
-34. elf-mode - view the symbol list in a binary
+33. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2608,7 +2585,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
           (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-35. provide
+34. provide
 
         (provide 'rgr/programming)
 
@@ -2904,7 +2881,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd3b1ff6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4200dc5) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2937,7 +2914,7 @@ to add to version control.
     fi
 
 
-<a id="orgd3b1ff6"></a>
+<a id="org4200dc5"></a>
 
 ### Gnome protocol handler desktop file
 

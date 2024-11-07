@@ -8,7 +8,7 @@
   (use-package eldoc-box
     :demand t
     :bind
-    ("C-h ." . eldoc-box-help-at-point)))
+    ("C-." . eldoc-box-help-at-point)))
 
 (global-set-key (kbd "C-c C-r") 'recompile)
 (global-set-key (kbd "<f9>")
@@ -390,25 +390,6 @@
   (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
 (use-package strace-mode)
-
-(use-package gdscript-mode
-  :straight (gdscript-mode
-             :type git
-             :host github
-             :repo "rileyrg/emacs-gdscript-mode")
-  :init
-  (defun franco/godot-gdscript-lsp-ignore-error (original-function &rest args)
-    "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
-    (if (string-equal major-mode "gdscript-mode")
-        (let ((json-data (nth 0 args)))
-          (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
-                   (not (gethash "id" json-data nil))
-                   (not (gethash "method" json-data nil)))
-              nil ; (message "Method not found")
-            (apply original-function args)))
-      (apply original-function args)))
-  (advice-add #'lsp--get-message-type :around #'franco/godot-gdscript-lsp-ignore-error)
-  )
 
 (defgroup rgr/symfony nil
   "Symfony Development"
