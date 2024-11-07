@@ -5,8 +5,6 @@
   (add-hook 'after-save-hook 'eglot-format-buffer)
   :custom
   (eglot--mode-line-format nil)
-  :hook
-  (eglot-managed-mode  . eldoc-box-hover-mode)
   :bind
   (:map eglot-mode-map
         ("<C-return>" . eglot-code-actions)))

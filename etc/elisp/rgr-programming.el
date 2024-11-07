@@ -1,12 +1,15 @@
 (use-package eldoc
   :demand t
   :custom
-  (eldoc-idle-delay 5)
-  ;;(eldoc-echo-area-prefer-doc-buffer t)
-  ;;(eldoc-echo-area-use-multiline-p nil)
-  :config
+  (eldoc-idle-delay 1)
+  (eldoc-echo-area-prefer-doc-buffer t)
+  (eldoc-echo-area-use-multiline-p nil)
+  :init
+  (global-eldoc-mode)
   (use-package eldoc-box
     :demand t
+    :hook
+    (eglot-managed-mode . eldoc-box-hover-at-point-mode)
     :bind
     ("C-." . eldoc-box-help-at-point)))
 
@@ -24,7 +27,6 @@
   (prog-mode . indent-bars-mode))
 
 (use-package json-mode)
-(use-package jsonrpc)
 
 (use-package
   treemacs
