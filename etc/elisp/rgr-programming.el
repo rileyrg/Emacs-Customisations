@@ -193,12 +193,11 @@
   magit
   :init
   (use-package magit-filenotify)
-  (use-package transient
-    :straight (transient :type git :host github :repo "magit/transient"))
-  :bind
-  ("C-x g" . magit-status)
   :hook
-  (magit-status-mode . magit-filenotify-mode))
+  (magit-status-mode . magit-filenotify-mode)
+  (git-commit-post-finish . magit)
+  :bind
+  ("C-x g" . magit-status))
 
 (straight-use-package 'sqlite3)
 (use-package forge
