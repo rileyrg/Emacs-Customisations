@@ -775,37 +775,14 @@ https://github.com/magnars/multiple-cursors.emacs-lisp
 :PROPERTIES:
 :ID:       3e64582f-bf01-4ac1-8afb-7c4c51410be0
 :END:
+
 #+begin_src  emacs-lisp
 (use-package jinx
   :hook (emacs-startup . global-jinx-mode)
-  :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)))
+  :bind (("<f8>" . jinx-correct)
+         ("C-<f8>" . jinx-languages)))
 #+end_src
-**** flyspell                                                :flyspell:spell:
-supereded by [[id:3e64582f-bf01-4ac1-8afb-7c4c51410be0][jinx : the enchanted spell checker]]
-:PROPERTIES:
-:ID:       9f285553-52e6-41f2-aa76-386ef9abe279
-:END:
-#+begin_src emacs-lisp
-  (use-package flyspell
-    :disabled
-    :config
-    (defun flyspell-check-next-highlighted-word ()
-      "Custom fnction to spell check next highlighted word"
-      (interactive)
-      (flyspell-goto-next-error)
-      (ispell-word)
-      )
 
-    :bind (("C-<f8>" . flyspell-mode)
-           ("S-<f8>" . flyspell-check-previous-highlighted-word)
-           ("C-S-<f8>" . flyspell-buffer)
-           ("M-<f8>" . flyspell-word)
-           )
-    ;; :hook
-    ;; (prog-mode .  (flyspell-prog-mode))
-    )
-#+end_src
 **** rg, ripgrep
 :PROPERTIES:
 :ID:       994cd90f-bba4-4a3d-87f1-6cb9faba1270
@@ -2246,14 +2223,14 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 
 #+begin_src  emacs-lisp
   (use-package eldoc
+    :demand t
     :custom
-    (eldoc-idle-delay 15)
+    (eldoc-idle-delay 5)
     ;;(eldoc-echo-area-prefer-doc-buffer t)
     ;;(eldoc-echo-area-use-multiline-p nil)
     :config
     (use-package eldoc-box
-      :hook
-      (eldoc-mode . eldoc-box-hover-mode)
+      :demand t
       :bind
       ("C-h ." . eldoc-box-help-at-point)))
 #+end_src
@@ -2261,6 +2238,10 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 **** compilation
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-r") 'recompile)
+  (global-set-key (kbd "<f9>")
+    '(lambda () (interactive)
+        (condition-case nil (next-error)
+           (error (next-error 1 t)))))
 #+end_src
 **** indent bars
 #+begin_src  emacs-lisp
@@ -2274,7 +2255,7 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 **** JSON
 #+begin_src  emacs-lisp
   (use-package json-mode)
-  (use-package jsonrpc :demand t)
+  (use-package jsonrpc)
 #+end_src
 **** Treemacs
 :PROPERTIES:
@@ -2286,7 +2267,7 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
     :init
     (add-to-list 'image-types 'svg)
     :custom
-    (treemacs-follow-after-init t)
+    (treemacs-follow-after-init t) ; hello
     :config
     (treemacs-follow-mode +1)
     (treemacs-fringe-indicator-mode)
@@ -2680,9 +2661,10 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
-    :disabled t
     :demand t
     ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
+    :init
+    (add-hook 'after-save-hook 'eglot-format-buffer)
     :custom
     (eglot--mode-line-format nil)
     :hook

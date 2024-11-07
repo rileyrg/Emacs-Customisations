@@ -1,7 +1,8 @@
 (use-package eglot
-  :disabled t
   :demand t
   ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
+  :init
+  (add-hook 'after-save-hook 'eglot-format-buffer)
   :custom
   (eglot--mode-line-format nil)
   :hook

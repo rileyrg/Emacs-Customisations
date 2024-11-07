@@ -1,16 +1,20 @@
 (use-package eldoc
+  :demand t
   :custom
-  (eldoc-idle-delay 15)
+  (eldoc-idle-delay 5)
   ;;(eldoc-echo-area-prefer-doc-buffer t)
   ;;(eldoc-echo-area-use-multiline-p nil)
   :config
   (use-package eldoc-box
-    :hook
-    (eldoc-mode . eldoc-box-hover-mode)
+    :demand t
     :bind
     ("C-h ." . eldoc-box-help-at-point)))
 
 (global-set-key (kbd "C-c C-r") 'recompile)
+(global-set-key (kbd "<f9>")
+  '(lambda () (interactive)
+      (condition-case nil (next-error)
+         (error (next-error 1 t)))))
 
 (use-package indent-bars
   :disabled
@@ -20,14 +24,14 @@
   (prog-mode . indent-bars-mode))
 
 (use-package json-mode)
-(use-package jsonrpc :demand t)
+(use-package jsonrpc)
 
 (use-package
   treemacs
   :init
   (add-to-list 'image-types 'svg)
   :custom
-  (treemacs-follow-after-init t)
+  (treemacs-follow-after-init t) ; hello
   :config
   (treemacs-follow-mode +1)
   (treemacs-fringe-indicator-mode)

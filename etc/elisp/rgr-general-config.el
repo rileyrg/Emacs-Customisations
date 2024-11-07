@@ -232,27 +232,8 @@
 
 (use-package jinx
   :hook (emacs-startup . global-jinx-mode)
-  :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)))
-
-(use-package flyspell
-  :disabled
-  :config
-  (defun flyspell-check-next-highlighted-word ()
-    "Custom fnction to spell check next highlighted word"
-    (interactive)
-    (flyspell-goto-next-error)
-    (ispell-word)
-    )
-
-  :bind (("C-<f8>" . flyspell-mode)
-         ("S-<f8>" . flyspell-check-previous-highlighted-word)
-         ("C-S-<f8>" . flyspell-buffer)
-         ("M-<f8>" . flyspell-word)
-         )
-  ;; :hook
-  ;; (prog-mode .  (flyspell-prog-mode))
-  )
+  :bind (("<f8>" . jinx-correct)
+         ("C-<f8>" . jinx-languages)))
 
 (use-package
   ripgrep)
