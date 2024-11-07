@@ -9,7 +9,7 @@
   (use-package eldoc-box
     :demand t
     :hook
-    (eglot-managed-mode . eldoc-box-hover-at-point-mode)
+    (eldoc-mode . eldoc-box-hover-at-point-mode)
     :bind
     ("C-." . eldoc-box-help-at-point)))
 

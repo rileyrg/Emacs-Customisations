@@ -119,7 +119,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
       (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
   (straight-use-package 'org)
-  (straight-use-package '(project :type built-in ))
+  (straight-use-package 'project)
   (straight-use-package 'flymake)
 #+end_src
 
@@ -2132,7 +2132,7 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
     (use-package eldoc-box
       :demand t
       :hook
-      (eglot-managed-mode . eldoc-box-hover-at-point-mode)
+      (eldoc-mode . eldoc-box-hover-at-point-mode)
       :bind
       ("C-." . eldoc-box-help-at-point)))
 #+end_src

@@ -1,11 +1,11 @@
 
 :tanat
 
-"29.4"
+"30.0.92"
 
-#s(hash-table size 145 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("straight" ("2024-11-07 23:01:58" ("emacs") (:type git :host github :repo "radian-software/straight.el" :files ("straight*.el") :branch "master" :package "straight" :local-repo "straight.el")) "org-elpa" ("2024-11-07 23:01:58" nil (:local-repo nil :package "org-elpa" :type git)) "melpa" ("2024-11-07 23:01:58" nil (:type git :host github :repo "melpa/melpa" :build nil :package "melpa" :local-repo "melpa")) "gnu-elpa-mirror" ("2024-11-07 23:01:58" nil (:type git :host github :repo "emacs-straight/gnu-elpa-mirror" :build nil :package "gnu-elpa-mirror" :local-repo "gnu-elpa-mirror")) "nongnu-elpa" ("2024-11-07 23:01:58" nil (:type git :repo "https://git.savannah.gnu.org/git/emacs/nongnu.git" :depth (full single-branch) :local-repo "nongnu-elpa" :build nil :package "nongnu-elpa")) "el-get" ("2024-11-07 23:01:58" nil (:type git :host github :repo "dimitri/el-get" :build nil :files (:defaults "methods" ("recipes" "recipes/el-get.rcp") "el-get-pkg.el") :flavor melpa :package "el-get" :local-repo "el-get")) "emacsmirror-mirror" ("2024-11-07 23:01:58" nil (:type git :host github :repo "emacs-straight/emacsmirror-mirror" :build nil :package "emacsmirror-mirror" :local-repo "emacsmirror-mirror")) "no-littering" ("2024-11-07 23:01:58" ("emacs" "compat") (:type git :flavor melpa :host github :repo "emacscollective/no-littering" :package "no-littering" :local-repo "no-littering")) "compat" ("2024-11-07 23:01:58" ("emacs" "seq") (:type git :host github :repo "emacs-straight/compat" :files ("*" (:exclude ".git")) :package "compat" :local-repo "compat")) "seq" ("2024-11-07 23:01:58" nil (:type git :host github :repo "emacs-straight/seq" :files ("*" (:exclude ".git")) :package "seq" :local-repo "seq")) "org" ("2024-11-07 23:01:58" ("emacs") (:type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git" :local-repo "org" :depth full :pre-build (straight-recipes-org-elpa--build) :build (:not autoloads) :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*")) :package "org")) "flymake" ("2024-11-07 23:01:58" ("emacs" "eldoc" "project") (:type git :host github :repo "emacs-straight/flymake" :files ("*" (:exclude ".git")) :package "flymake" :local-repo "flymake")) "eldoc" ("2024-11-07 23:01:58" ("emacs") (:type git :host github :repo "emacs-straight/eldoc" :files ("*" (:exclude ".git")) :package "eldoc" :local-repo "eldoc")) "pass" ("2024-11-07 23:01:59" ("emacs" "password-store" "password-store-otp" "f") (:type git :flavor melpa :host github :repo "NicolasPetton/pass" :package "pass" :local-repo "pass")) "password-store" ("2024-11-07 23:01:59" ("emacs" "with-editor") (:type git :flavor melpa :files ("contrib/emacs/*.el" "password-store-pkg.el") :host github :repo "zx2c4/password-store" :package "password-store" :local-repo "password-store")) "with-editor" ("2024-11-07 23:01:59" ("emacs" "compat") (:type git :flavor melpa :host github :repo "magit/with-editor" :package "with-editor" :local-repo "with-editor")) "password-store-otp" ("2024-11-07 23:01:59" ("emacs" "s" "password-store") (:type git :flavor melpa :host github :repo "volrath/password-store-otp.el" :package "password-store-otp" :local-repo "password-store-otp.el")) "s" ("2024-11-07 23:01:59" nil (:type git :flavor melpa :host github :repo "magnars/s.el" :package "s" :local-repo "s.el")) "f" ("2024-11-07 23:01:59" ("emacs" "s" "dash") (:type git :flavor melpa :host github :repo "rejeep/f.el" :package "f" :local-repo "f.el")) "dash" ("2024-11-07 23:01:59" ("emacs") (:type git :flavor melpa :files ("dash.el" "dash.texi" "dash-pkg.el") :host github :repo "magnars/dash.el" :package "dash" :local-repo "dash.el")) "lazy-lang-learn" ("2024-11-07 23:01:59" ("emacs" "google-translate" "alert") (:local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" :package "lazy-lang-learn")) "google-translate" ("2024-11-07 23:01:59" ("emacs" "popup") (:type git :flavor melpa :host github :repo "atykhonov/google-translate" :package "google-translate" :local-repo "google-translate")) "popup" ("2024-11-07 23:01:59" ("emacs") (:type git :flavor melpa :host github :repo "auto-complete/popup-el" :package "popup" :local-repo "popup-el")) "alert" ("2024-11-07 23:01:59" ("gntp" "log4e" "cl-lib") (:type git :flavor melpa :host github :repo "jwiegley/alert" :package "alert" :local-repo "alert")) "gntp" ("2024-11-07 23:01:59" nil (:type git :flavor melpa :host github :repo "tekai/gntp.el" :package "gntp" :local-repo "gntp.el")) "log4e" ("2024-11-07 23:01:59" nil (:type git :flavor melpa :host github :repo "aki2o/log4e" :package "log4e" :local-repo "log4e")) "browse-url-dwim" ("2024-11-07 23:01:59" ("string-utils") (:type git :flavor melpa :host github :repo "rolandwalker/browse-url-dwim" :package "browse-url-dwim" :local-repo "browse-url-dwim")) "string-utils" ("2024-11-07 23:01:59" ("list-utils") (:type git :flavor melpa :host github :repo "rolandwalker/string-utils" :package "string-utils" :local-repo "string-utils")) "list-utils" ("2024-11-07 23:01:59" nil (:type git :flavor melpa :host github :repo "rolandwalker/list-utils" :package "list-utils" :local-repo "list-utils")) "posframe" ("2024-11-07 23:01:59" ("emacs") (:type git :flavor melpa :host github :repo "tumashu/posframe" :package "posframe" :local-repo "posframe")) "ace-window" ("2024-11-07 23:01:59" ("avy") (:type git :flavor melpa :host github :repo "abo-abo/ace-window" :package "ace-window" :local-repo "ace-window")) "avy" ("2024-11-07 23:01:59" ("emacs" "cl-lib") (:type git :flavor melpa :host github :repo "abo-abo/avy" :package "avy" :local-repo "avy")) "ace-link" ("2024-11-07 23:01:59" ("avy") (:type git :flavor melpa :host github :repo "abo-abo/ace-link" :package "ace-link" :local-repo "ace-link")) "ace-jump-mode" ("2024-11-07 23:01:59" nil (:type git :flavor melpa :host github :repo "winterTTr/ace-jump-mode" :package "ace-jump-mode" :local-repo "ace-jump-mode")) "golden-ratio" ("2024-11-07 23:01:59" nil (:type git :flavor melpa :host github :repo "roman/golden-ratio.el" :package "golden-ratio" :local-repo "golden-ratio.el")) "pulsar" ("2024-11-07 23:01:59" ("emacs") (:type git :host github :repo "emacs-straight/pulsar" :files ("*" (:exclude ".git")) :package "pulsar" :local-repo "pulsar")) "blackout" ("2024-11-07 23:01:59" ("emacs") (:host github :repo "raxod502/blackout" :flavor melpa :package "blackout" :type git :local-repo "blackout")) "boxquote" ("2024-11-07 23:01:59" ("cl-lib") (:branch "main" :flavor melpa :repo "davep/boxquote.el" :host github :package "boxquote" :type git :local-repo "boxquote.el")) "dpaste" ("2024-11-07 23:01:59" nil (:type git :flavor melpa :host github :repo "gregnewman/dpaste.el" :package "dpaste" :local-repo "dpaste.el")) "darkroom" ("2024-11-07 23:01:59" ("cl-lib") (:type git :host github :repo "emacs-straight/darkroom" :files ("*" (:exclude ".git")) :package "darkroom" :local-repo "darkroom")) "bookmark+" ("2024-11-07 23:01:59" nil (:type git :host github :repo "emacsmirror/bookmark-plus" :files (:defaults) :package "bookmark+" :local-repo "bookmark-plus")) "emojify" ("2024-11-07 23:01:59" ("seq" "ht" "emacs") (:type git :flavor melpa :files (:defaults "data" "images" "emojify-pkg.el") :host github :repo "iqbalansari/emacs-emojify" :package "emojify" :local-repo "emacs-emojify")) "ht" ("2024-11-07 23:01:59" ("dash") (:type git :flavor melpa :host github :repo "Wilfred/ht.el" :package "ht" :local-repo "ht.el")) "multiple-cursors" ("2024-11-07 23:02:00" ("cl-lib") (:type git :flavor melpa :host github :repo "magnars/multiple-cursors.el" :package "multiple-cursors" :local-repo "multiple-cursors.el")) "jinx" ("2024-11-07 23:02:00" ("emacs" "compat") (:type git :flavor melpa :files (:defaults "jinx-mod.c" "emacs-module.h" "jinx-pkg.el") :host github :repo "minad/jinx" :package "jinx" :local-repo "jinx")) "ripgrep" ("2024-11-07 23:02:00" nil (:type git :flavor melpa :files ("ripgrep.el" "ripgrep-pkg.el") :host github :repo "nlamirault/ripgrep.el" :package "ripgrep" :local-repo "ripgrep.el")) "sudo-edit" ("2024-11-07 23:02:00" ("emacs" "cl-lib") (:type git :flavor melpa :host github :repo "nflath/sudo-edit" :package "sudo-edit" :local-repo "sudo-edit")) "prescient" ("2024-11-07 23:02:00" ("emacs") (:type git :flavor melpa :files ("prescient.el" "prescient-pkg.el") :host github :repo "radian-software/prescient.el" :package "prescient" :local-repo "prescient.el")) "consult" ("2024-11-07 23:02:00" ("emacs" "compat") (:type git :flavor melpa :host github :repo "minad/consult" :package "consult" :local-repo "consult")) "marginalia" ("2024-11-07 23:02:00" ("emacs" "compat") (:type git :flavor melpa :host github :repo "minad/marginalia" :package "marginalia" :local-repo "marginalia")) "all-the-icons" ("2024-11-07 23:02:00" ("emacs") (:type git :flavor melpa :files (:defaults "data" "all-the-icons-pkg.el") :host github :repo "domtronn/all-the-icons.el" :package "all-the-icons" :local-repo "all-the-icons.el")) "all-the-icons-completion" ("2024-11-07 23:02:00" ("emacs" "all-the-icons") (:type git :flavor melpa :host github :repo "iyefrat/all-the-icons-completion" :package "all-the-icons-completion" :local-repo "all-the-icons-completion")) "all-the-icons-dired" ("2024-11-07 23:02:00" ("emacs" "all-the-icons") (:type git :flavor melpa :host github :repo "wyuenho/all-the-icons-dired" :package "all-the-icons-dired" :local-repo "all-the-icons-dired")) "corfu" ("2024-11-07 23:02:00" ("emacs" "compat") (:type git :flavor melpa :files (:defaults "extensions/corfu-*.el" "corfu-pkg.el") :host github :repo "minad/corfu" :package "corfu" :local-repo "corfu")) "orderless" ("2024-11-07 23:02:00" ("emacs" "compat") (:type git :flavor melpa :host github :repo "oantolin/orderless" :package "orderless" :local-repo "orderless")) "cape" ("2024-11-07 23:02:00" ("emacs" "compat") (:type git :flavor melpa :host github :repo "minad/cape" :package "cape" :local-repo "cape")) "which-key" ("2024-11-07 23:02:00" ("emacs") (:type git :flavor melpa :host github :repo "justbur/emacs-which-key" :package "which-key" :local-repo "emacs-which-key")) "yasnippet" ("2024-11-07 23:02:00" ("cl-lib" "emacs") (:type git :flavor melpa :files ("yasnippet.el" "snippets" "yasnippet-pkg.el") :host github :repo "joaotavora/yasnippet" :package "yasnippet" :local-repo "yasnippet")) "yasnippet-snippets" ("2024-11-07 23:02:00" ("yasnippet") (:type git :flavor melpa :files ("*.el" "snippets" ".nosearch" "yasnippet-snippets-pkg.el") :host github :repo "AndreaCrotti/yasnippet-snippets" :package "yasnippet-snippets" :local-repo "yasnippet-snippets")) "vertico" ("2024-11-07 23:02:00" ("emacs" "compat") (:type git :flavor melpa :files (:defaults "extensions/vertico-*.el" "vertico-pkg.el") :host github :repo "minad/vertico" :package "vertico" :local-repo "vertico")) "org-contrib" ("2024-11-07 23:02:00" ("emacs" "org") (:type git :includes (ob-csharp ob-eukleides ob-fomus ob-julia ob-mathomatic ob-oz ob-stata ob-tcl ob-vbnet ol-bookmark ol-elisp-symbol ol-git-link ol-man ol-mew ol-vm ol-wl org-annotate-file org-bibtex-extras org-checklist org-choose org-collector org-contribdir org-depend org-effectiveness org-eldoc org-eval org-eval-light org-expiry org-interactive-query org-invoice org-learn org-license org-mac-iCal org-mairix org-panel org-registry org-screen org-screenshot org-secretary org-static-mathjax org-sudoku orgtbl-sqlinsert org-toc org-track org-wikinodes ox-bibtex ox-confluence ox-deck ox-extra ox-freemind ox-groff ox-koma-letter ox-s5 ox-taskjuggler) :repo "https://git.sr.ht/~bzg/org-contrib" :files (:defaults "lisp/*.el") :package "org-contrib" :local-repo "org-contrib")) "ob-async" ("2024-11-07 23:02:00" ("async" "org" "emacs" "dash") (:type git :flavor melpa :host github :repo "astahlman/ob-async" :package "ob-async" :local-repo "ob-async")) "async" ("2024-11-07 23:02:00" ("emacs") (:type git :flavor melpa :host github :repo "jwiegley/emacs-async" :package "async" :local-repo "emacs-async")) "org-super-agenda" ("2024-11-07 23:02:00" ("emacs" "compat" "s" "dash" "org" "ht" "ts") (:type git :flavor melpa :host github :repo "alphapapa/org-super-agenda" :package "org-super-agenda" :local-repo "org-super-agenda")) "ts" ("2024-11-07 23:02:00" ("emacs" "dash" "s") (:type git :flavor melpa :host github :repo "alphapapa/ts.el" :package "ts" :local-repo "ts.el")) "ox-gfm" ("2024-11-07 23:02:01" nil (:type git :flavor melpa :host github :repo "larstvei/ox-gfm" :package "ox-gfm" :local-repo "ox-gfm")) "gptel" ("2024-11-07 23:02:01" ("emacs" "transient" "compat") (:type git :flavor melpa :host github :repo "karthink/gptel" :package "gptel" :local-repo "gptel")) "transient" ("2024-11-07 23:02:01" ("emacs" "compat" "seq") (:type git :flavor melpa :host github :repo "magit/transient" :package "transient" :local-repo "transient")) "ellama" ("2024-11-07 23:02:01" ("emacs" "llm" "spinner" "transient" "compat") (:type git :flavor melpa :host github :repo "s-kostyaev/ellama" :package "ellama" :local-repo "ellama")) "llm" ("2024-11-07 23:02:01" ("emacs" "plz" "plz-event-source" "plz-media-type") (:type git :host github :repo "emacs-straight/llm" :files ("*" (:exclude ".git")) :package "llm" :local-repo "llm")) "plz" ("2024-11-07 23:02:01" ("emacs") (:type git :host github :repo "emacs-straight/plz" :files ("*" (:exclude ".git")) :package "plz" :local-repo "plz")) "plz-event-source" ("2024-11-07 23:02:01" ("emacs" "plz-media-type") (:type git :host github :repo "emacs-straight/plz-event-source" :files ("*" (:exclude ".git")) :package "plz-event-source" :local-repo "plz-event-source")) "plz-media-type" ("2024-11-07 23:02:01" ("emacs" "plz") (:type git :host github :repo "emacs-straight/plz-media-type" :files ("*" (:exclude ".git")) :package "plz-media-type" :local-repo "plz-media-type")) "spinner" ("2024-11-07 23:02:01" ("emacs") (:type git :host github :repo "emacs-straight/spinner" :files ("*" (:exclude ".git")) :package "spinner" :local-repo "spinner")) "go-translate" ("2024-11-07 23:02:01" ("emacs") (:type git :flavor melpa :host github :repo "lorniu/go-translate" :package "go-translate" :local-repo "go-translate")) "dictionary" ("2024-11-07 23:02:01" ("connection" "link") (:type git :flavor melpa :files ("dictionary.el" "dictionary-pkg.el") :host github :repo "myrkr/dictionary-el" :package "dictionary" :local-repo "dictionary-el")) "connection" ("2024-11-07 23:02:01" nil (:flavor melpa :files ("connection.el" "connection-pkg.el") :package "connection" :local-repo "dictionary-el" :type git :repo "myrkr/dictionary-el" :host github)) "link" ("2024-11-07 23:02:01" nil (:flavor melpa :files ("link.el" "link-pkg.el") :package "link" :local-repo "dictionary-el" :type git :repo "myrkr/dictionary-el" :host github)) "goldendict" ("2024-11-07 23:02:01" ("emacs" "cl-lib") (:type git :host github :repo "emacsmirror/goldendict" :package "goldendict" :local-repo "goldendict")) "devdocs-browser" ("2024-11-07 23:02:01" ("emacs") (:type git :flavor melpa :host github :repo "blahgeek/emacs-devdocs-browser" :package "devdocs-browser" :local-repo "emacs-devdocs-browser")) "elfeed" ("2024-11-07 23:02:01" ("emacs") (:type git :flavor melpa :files (:defaults "README.md" "elfeed-pkg.el") :host github :repo "skeeto/elfeed" :package "elfeed" :local-repo "elfeed")) "pdf-tools" ("2024-11-07 23:02:01" ("emacs" "tablist" "let-alist") (:type git :flavor melpa :files (:defaults "README" ("build" "Makefile") ("build" "server") "pdf-tools-pkg.el") :host github :repo "vedang/pdf-tools" :package "pdf-tools" :local-repo "pdf-tools")) "tablist" ("2024-11-07 23:02:01" ("emacs") (:type git :flavor melpa :host github :repo "emacsorphanage/tablist" :package "tablist" :local-repo "tablist")) "let-alist" ("2024-11-07 23:02:01" ("emacs") (:type git :host github :repo "emacs-straight/let-alist" :files ("*" (:exclude ".git")) :package "let-alist" :local-repo "let-alist")) "eat" ("2024-11-07 23:02:01" ("emacs" "compat") (:type git :host codeberg :repo "akib/emacs-eat" :files ("*.el" ("term" "term/*.el") "*.texi" "*.ti" ("terminfo/e" "terminfo/e/*") ("terminfo/65" "terminfo/65/*") ("integration" "integration/*") (:exclude ".dir-locals.el" "*-tests.el")) :package "eat" :local-repo "emacs-eat")) "vterm" ("2024-11-07 23:02:01" ("emacs") (:type git :flavor melpa :files ("CMakeLists.txt" "elisp.c" "elisp.h" "emacs-module.h" "etc" "utf8.c" "utf8.h" "vterm.el" "vterm-module.c" "vterm-module.h" "vterm-pkg.el") :host github :repo "akermu/emacs-libvterm" :package "vterm" :local-repo "emacs-libvterm")) "notmuch" ("2024-11-07 23:02:01" nil (:type git :flavor melpa :files ("emacs/*.el" "emacs/*.svg" "notmuch-pkg.el") :repo "https://git.notmuchmail.org/git/notmuch" :package "notmuch" :local-repo "notmuch")) "mu4e" ("2024-11-07 23:02:01" nil (:host github :branch "release/1.10" :repo "djcb/mu" :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info") :main "mu4e/mu4e.el" :pre-build (("./autogen.sh") ("ninja" "-C" "build") (make-symbolic-link (expand-file-name "./build/mu/mu") (expand-file-name "~/bin/mu") 'ok-if-exists)) :package "mu4e" :type git :local-repo "mu")) "erc" ("2024-11-07 23:02:01" ("emacs" "compat") (:type git :host github :repo "emacs-straight/erc" :files ("*" (:exclude ".git")) :package "erc" :local-repo "erc")) "eldoc-box" ("2024-11-07 23:02:01" ("emacs") (:type git :flavor melpa :host github :repo "casouri/eldoc-box" :package "eldoc-box" :local-repo "eldoc-box")) "json-mode" ("2024-11-07 23:02:01" ("json-snatcher" "emacs") (:type git :flavor melpa :host github :repo "json-emacs/json-mode" :package "json-mode" :local-repo "json-mode")) "json-snatcher" ("2024-11-07 23:02:01" ("emacs") (:type git :flavor melpa :host github :repo "Sterlingg/json-snatcher" :package "json-snatcher" :local-repo "json-snatcher")) "jsonrpc" ("2024-11-07 23:02:02" ("emacs") (:type git :host github :repo "emacs-straight/jsonrpc" :files ("*" (:exclude ".git")) :package "jsonrpc" :local-repo "jsonrpc")) "treemacs" ("2024-11-07 23:02:02" ("emacs" "cl-lib" "dash" "s" "ace-window" "pfuture" "hydra" "ht" "cfrs") (:type git :flavor melpa :files (:defaults "Changelog.org" "icons" "src/elisp/treemacs*.el" "src/scripts/treemacs*.py" (:exclude "src/extra/*") "treemacs-pkg.el") :host github :repo "Alexander-Miller/treemacs" :package "treemacs" :local-repo "treemacs")) "pfuture" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "Alexander-Miller/pfuture" :package "pfuture" :local-repo "pfuture")) "hydra" ("2024-11-07 23:02:02" ("cl-lib" "lv") (:type git :flavor melpa :files (:defaults (:exclude "lv.el") "hydra-pkg.el") :host github :repo "abo-abo/hydra" :package "hydra" :local-repo "hydra")) "lv" ("2024-11-07 23:02:02" nil (:flavor melpa :files ("lv.el" "lv-pkg.el") :package "lv" :local-repo "hydra" :type git :repo "abo-abo/hydra" :host github)) "cfrs" ("2024-11-07 23:02:02" ("emacs" "dash" "s" "posframe") (:type git :flavor melpa :host github :repo "Alexander-Miller/cfrs" :package "cfrs" :local-repo "cfrs")) "duplicate-thing" ("2024-11-07 23:02:02" nil (:type git :flavor melpa :host github :repo "ongaeshi/duplicate-thing" :package "duplicate-thing" :local-repo "duplicate-thing")) "breadcrumb" ("2024-11-07 23:02:02" ("emacs" "project") (:local-repo "~/development/projects/emacs/breadcrumb" :files ("*" (:exclude ".git")) :repo "emacs-straight/breadcrumb" :host github :package "breadcrumb" :type git)) "parrot" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :files (:defaults "img" "parrot-pkg.el") :host github :repo "dp12/parrot" :package "parrot" :local-repo "parrot")) "php-mode" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "emacs-php/php-mode" :package "php-mode" :local-repo "php-mode")) "yaml-mode" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "yoshiki/yaml-mode" :package "yaml-mode" :local-repo "yaml-mode")) "json-reformat" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "gongo/json-reformat" :package "json-reformat" :local-repo "json-reformat")) "flymake-diagnostic-at-point" ("2024-11-07 23:02:02" ("emacs" "popup") (:type git :flavor melpa :host github :repo "meqif/flymake-diagnostic-at-point" :package "flymake-diagnostic-at-point" :local-repo "flymake-diagnostic-at-point")) "magit" ("2024-11-07 23:02:02" ("emacs" "compat" "dash" "magit-section" "seq" "transient" "with-editor") (:type git :flavor melpa :files ("lisp/magit*.el" "lisp/git-*.el" "docs/magit.texi" "docs/AUTHORS.md" "LICENSE" "magit-pkg.el" (:exclude "lisp/magit-section.el") "magit-pkg.el") :host github :repo "magit/magit" :package "magit" :local-repo "magit")) "magit-section" ("2024-11-07 23:02:02" ("emacs" "compat" "dash" "seq") (:flavor melpa :files ("lisp/magit-section.el" "docs/magit-section.texi" "magit-section-pkg.el" "magit-section-pkg.el") :package "magit-section" :local-repo "magit" :type git :repo "magit/magit" :host github)) "magit-filenotify" ("2024-11-07 23:02:02" ("magit" "emacs") (:type git :flavor melpa :host github :repo "ruediger/magit-filenotify" :package "magit-filenotify" :local-repo "magit-filenotify")) "sqlite3" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :files (:defaults "Makefile" "consts.c" "emacs-module.h" "sqlite3-api.c" "sqlite3-pkg.el") :host github :repo "pekingduck/emacs-sqlite3-api" :package "sqlite3" :local-repo "emacs-sqlite3-api")) "diff-hl" ("2024-11-07 23:02:02" ("cl-lib" "emacs") (:type git :flavor melpa :host github :repo "dgutov/diff-hl" :package "diff-hl" :local-repo "diff-hl")) "treesit-auto" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "renzmann/treesit-auto" :package "treesit-auto" :local-repo "treesit-auto")) "eglot" ("2024-11-07 23:02:02" ("emacs" "compat" "eldoc" "external-completion" "flymake" "jsonrpc" "project" "seq" "track-changes" "xref") (:type git :host github :repo "emacs-straight/eglot" :files ("*" (:exclude ".git")) :package "eglot" :local-repo "eglot")) "external-completion" ("2024-11-07 23:02:02" nil (:type git :host github :repo "emacs-straight/external-completion" :files ("*" (:exclude ".git")) :package "external-completion" :local-repo "external-completion")) "track-changes" ("2024-11-07 23:02:02" ("emacs") (:type git :host github :repo "emacs-straight/track-changes" :files ("*" (:exclude ".git")) :package "track-changes" :local-repo "track-changes")) "xref" ("2024-11-07 23:02:02" ("emacs") (:type git :host github :repo "emacs-straight/xref" :files ("*" (:exclude ".git")) :package "xref" :local-repo "xref")) "dape" ("2024-11-07 23:02:02" ("emacs" "jsonrpc") (:type git :host github :repo "emacs-straight/dape" :files ("*" (:exclude ".git")) :package "dape" :local-repo "dape")) "auto-virtualenv" ("2024-11-07 23:02:02" ("cl-lib") (:type git :flavor melpa :host github :repo "marcwebbie/auto-virtualenv" :package "auto-virtualenv" :local-repo "auto-virtualenv")) "lldb-voltron" ("2024-11-07 23:02:02" nil (:local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" :package "lldb-voltron")) "rust-mode" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "rust-lang/rust-mode" :package "rust-mode" :local-repo "rust-mode")) "rustic" ("2024-11-07 23:02:02" ("emacs" "rust-mode" "dash" "f" "let-alist" "markdown-mode" "project" "s" "spinner" "xterm-color" "flycheck") (:type git :flavor melpa :host github :repo "emacs-rustic/rustic" :package "rustic" :local-repo "rustic")) "markdown-mode" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "jrblevin/markdown-mode" :package "markdown-mode" :local-repo "markdown-mode")) "xterm-color" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "atomontage/xterm-color" :package "xterm-color" :local-repo "xterm-color")) "flycheck" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "flycheck/flycheck" :package "flycheck" :local-repo "flycheck")) "logview" ("2024-11-07 23:02:02" ("emacs" "datetime" "extmap") (:type git :flavor melpa :host github :repo "doublep/logview" :package "logview" :local-repo "logview")) "datetime" ("2024-11-07 23:02:02" ("emacs" "extmap") (:type git :flavor melpa :files (:defaults "*.extmap" "datetime-pkg.el") :host github :repo "doublep/datetime" :package "datetime" :local-repo "datetime")) "extmap" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "doublep/extmap" :package "extmap" :local-repo "extmap")) "strace-mode" ("2024-11-07 23:02:02" nil (:type git :flavor melpa :host github :repo "pkmoore/strace-mode" :package "strace-mode" :local-repo "strace-mode")) "elf-mode" ("2024-11-07 23:02:02" ("emacs") (:type git :flavor melpa :host github :repo "abo-abo/elf-mode" :package "elf-mode" :local-repo "elf-mode")) "rgr-kill-dwim" ("2024-11-07 23:02:02" nil (:local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" :package "rgr-kill-dwim")) "package-lint" ("2024-11-07 23:02:02" ("emacs" "let-alist") (:type git :flavor melpa :files (:defaults "data" (:exclude "*flymake.el") "package-lint-pkg.el") :host github :repo "purcell/package-lint" :package "package-lint" :local-repo "package-lint")) "helpful" ("2024-11-07 23:02:03" ("emacs" "dash" "s" "f" "elisp-refs") (:type git :flavor melpa :host github :repo "Wilfred/helpful" :package "helpful" :local-repo "helpful")) "elisp-refs" ("2024-11-07 23:02:03" ("dash" "s") (:type git :flavor melpa :files (:defaults (:exclude "elisp-refs-bench.el") "elisp-refs-pkg.el") :host github :repo "Wilfred/elisp-refs" :package "elisp-refs" :local-repo "elisp-refs")) "el-docstring-sap" ("2024-11-07 23:02:03" ("emacs" "posframe") (:local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" :package "el-docstring-sap")) "quick-peek" ("2024-11-07 23:02:03" ("emacs") (:type git :flavor melpa :host github :repo "cpitclaudel/quick-peek" :package "quick-peek" :local-repo "quick-peek")) "edebug-x" ("2024-11-07 23:02:03" nil (:type git :flavor melpa :host github :repo "ScottyB/edebug-x" :package "edebug-x" :local-repo "edebug-x")) "elisp-format" ("2024-11-07 23:02:03" nil (:type git :flavor melpa :host github :repo "Yuki-Inoue/elisp-format" :package "elisp-format" :local-repo "elisp-format")) "modus-themes" ("2024-11-07 23:02:03" ("emacs") (:type git :flavor melpa :host github :repo "protesilaos/modus-themes" :package "modus-themes" :local-repo "modus-themes"))))
+#s(hash-table test equal data ("org-elpa" ("2024-11-07 23:43:14" nil (:local-repo nil :package "org-elpa" :type git)) "melpa" ("2024-11-07 23:43:15" nil (:type git :host github :repo "melpa/melpa" :build nil :package "melpa" :local-repo "melpa")) "gnu-elpa-mirror" ("2024-11-07 23:43:15" nil (:type git :host github :repo "emacs-straight/gnu-elpa-mirror" :build nil :package "gnu-elpa-mirror" :local-repo "gnu-elpa-mirror")) "nongnu-elpa" ("2024-11-07 23:43:15" nil (:type git :repo "https://git.savannah.gnu.org/git/emacs/nongnu.git" :depth (full single-branch) :local-repo "nongnu-elpa" :build nil :package "nongnu-elpa")) "el-get" ("2024-11-07 23:43:15" nil (:type git :host github :repo "dimitri/el-get" :build nil :files (:defaults "methods" ("recipes" "recipes/el-get.rcp") "el-get-pkg.el") :flavor melpa :package "el-get" :local-repo "el-get")) "emacsmirror-mirror" ("2024-11-07 23:43:15" nil (:type git :host github :repo "emacs-straight/emacsmirror-mirror" :build nil :package "emacsmirror-mirror" :local-repo "emacsmirror-mirror")) "straight" ("2024-11-07 23:43:15" ("emacs") (:type git :host github :repo "radian-software/straight.el" :files ("straight*.el") :branch "master" :package "straight" :local-repo "straight.el")) "no-littering" ("2024-11-07 23:43:15" ("emacs" "compat") (:type git :flavor melpa :host github :repo "emacscollective/no-littering" :package "no-littering" :local-repo "no-littering")) "compat" ("2024-11-07 23:43:15" ("emacs" "seq") (:type git :host github :repo "emacs-straight/compat" :files ("*" (:exclude ".git")) :package "compat" :local-repo "compat")) "seq" ("2024-11-07 23:43:15" nil (:type git :host github :repo "emacs-straight/seq" :files ("*" (:exclude ".git")) :package "seq" :local-repo "seq")) "org" ("2024-11-07 23:43:15" ("emacs") (:type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git" :local-repo "org" :depth full :pre-build (straight-recipes-org-elpa--build) :build (:not autoloads) :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*")) :package "org")) "flymake" ("2024-11-07 23:43:15" ("emacs" "eldoc" "project") (:type git :host github :repo "emacs-straight/flymake" :files ("*" (:exclude ".git")) :package "flymake" :local-repo "flymake")) "eldoc" ("2024-11-07 23:43:15" ("emacs") (:type git :host github :repo "emacs-straight/eldoc" :files ("*" (:exclude ".git")) :package "eldoc" :local-repo "eldoc")) "pass" ("2024-11-07 23:43:16" ("emacs" "password-store" "password-store-otp" "f") (:type git :flavor melpa :host github :repo "NicolasPetton/pass" :package "pass" :local-repo "pass")) "password-store" ("2024-11-07 23:43:16" ("emacs" "with-editor") (:type git :flavor melpa :files ("contrib/emacs/*.el" "password-store-pkg.el") :host github :repo "zx2c4/password-store" :package "password-store" :local-repo "password-store")) "with-editor" ("2024-11-07 23:43:16" ("emacs" "compat") (:type git :flavor melpa :host github :repo "magit/with-editor" :package "with-editor" :local-repo "with-editor")) "password-store-otp" ("2024-11-07 23:43:16" ("emacs" "s" "password-store") (:type git :flavor melpa :host github :repo "volrath/password-store-otp.el" :package "password-store-otp" :local-repo "password-store-otp.el")) "s" ("2024-11-07 23:43:16" nil (:type git :flavor melpa :host github :repo "magnars/s.el" :package "s" :local-repo "s.el")) "f" ("2024-11-07 23:43:16" ("emacs" "s" "dash") (:type git :flavor melpa :host github :repo "rejeep/f.el" :package "f" :local-repo "f.el")) "dash" ("2024-11-07 23:43:16" ("emacs") (:type git :flavor melpa :files ("dash.el" "dash.texi" "dash-pkg.el") :host github :repo "magnars/dash.el" :package "dash" :local-repo "dash.el")) "lazy-lang-learn" ("2024-11-07 23:43:16" ("emacs" "google-translate" "alert") (:local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" :package "lazy-lang-learn")) "google-translate" ("2024-11-07 23:43:16" ("emacs" "popup") (:type git :flavor melpa :host github :repo "atykhonov/google-translate" :package "google-translate" :local-repo "google-translate")) "popup" ("2024-11-07 23:43:16" ("emacs") (:type git :flavor melpa :host github :repo "auto-complete/popup-el" :package "popup" :local-repo "popup-el")) "alert" ("2024-11-07 23:43:16" ("gntp" "log4e" "cl-lib") (:type git :flavor melpa :host github :repo "jwiegley/alert" :package "alert" :local-repo "alert")) "gntp" ("2024-11-07 23:43:16" nil (:type git :flavor melpa :host github :repo "tekai/gntp.el" :package "gntp" :local-repo "gntp.el")) "log4e" ("2024-11-07 23:43:16" nil (:type git :flavor melpa :host github :repo "aki2o/log4e" :package "log4e" :local-repo "log4e")) "browse-url-dwim" ("2024-11-07 23:43:16" ("string-utils") (:type git :flavor melpa :host github :repo "rolandwalker/browse-url-dwim" :package "browse-url-dwim" :local-repo "browse-url-dwim")) "string-utils" ("2024-11-07 23:43:16" ("list-utils") (:type git :flavor melpa :host github :repo "rolandwalker/string-utils" :package "string-utils" :local-repo "string-utils")) "list-utils" ("2024-11-07 23:43:16" nil (:type git :flavor melpa :host github :repo "rolandwalker/list-utils" :package "list-utils" :local-repo "list-utils")) "posframe" ("2024-11-07 23:43:16" ("emacs") (:type git :flavor melpa :host github :repo "tumashu/posframe" :package "posframe" :local-repo "posframe")) "ace-window" ("2024-11-07 23:43:17" ("avy") (:type git :flavor melpa :host github :repo "abo-abo/ace-window" :package "ace-window" :local-repo "ace-window")) "avy" ("2024-11-07 23:43:17" ("emacs" "cl-lib") (:type git :flavor melpa :host github :repo "abo-abo/avy" :package "avy" :local-repo "avy")) "ace-link" ("2024-11-07 23:43:17" ("avy") (:type git :flavor melpa :host github :repo "abo-abo/ace-link" :package "ace-link" :local-repo "ace-link")) "ace-jump-mode" ("2024-11-07 23:43:17" nil (:type git :flavor melpa :host github :repo "winterTTr/ace-jump-mode" :package "ace-jump-mode" :local-repo "ace-jump-mode")) "golden-ratio" ("2024-11-07 23:43:17" nil (:type git :flavor melpa :host github :repo "roman/golden-ratio.el" :package "golden-ratio" :local-repo "golden-ratio.el")) "pulsar" ("2024-11-07 23:43:17" ("emacs") (:type git :host github :repo "emacs-straight/pulsar" :files ("*" (:exclude ".git")) :package "pulsar" :local-repo "pulsar")) "blackout" ("2024-11-07 23:43:17" ("emacs") (:host github :repo "raxod502/blackout" :flavor melpa :package "blackout" :type git :local-repo "blackout")) "boxquote" ("2024-11-07 23:43:17" ("cl-lib") (:branch "main" :flavor melpa :repo "davep/boxquote.el" :host github :package "boxquote" :type git :local-repo "boxquote.el")) "dpaste" ("2024-11-07 23:43:17" nil (:type git :flavor melpa :host github :repo "gregnewman/dpaste.el" :package "dpaste" :local-repo "dpaste.el")) "darkroom" ("2024-11-07 23:43:17" ("cl-lib") (:type git :host github :repo "emacs-straight/darkroom" :files ("*" (:exclude ".git")) :package "darkroom" :local-repo "darkroom")) "bookmark+" ("2024-11-07 23:43:17" nil (:type git :host github :repo "emacsmirror/bookmark-plus" :files (:defaults) :package "bookmark+" :local-repo "bookmark-plus")) "emojify" ("2024-11-07 23:43:17" ("seq" "ht" "emacs") (:type git :flavor melpa :files (:defaults "data" "images" "emojify-pkg.el") :host github :repo "iqbalansari/emacs-emojify" :package "emojify" :local-repo "emacs-emojify")) "ht" ("2024-11-07 23:43:17" ("dash") (:type git :flavor melpa :host github :repo "Wilfred/ht.el" :package "ht" :local-repo "ht.el")) "multiple-cursors" ("2024-11-07 23:43:17" ("cl-lib") (:type git :flavor melpa :host github :repo "magnars/multiple-cursors.el" :package "multiple-cursors" :local-repo "multiple-cursors.el")) "jinx" ("2024-11-07 23:43:17" ("emacs" "compat") (:type git :flavor melpa :files (:defaults "jinx-mod.c" "emacs-module.h" "jinx-pkg.el") :host github :repo "minad/jinx" :package "jinx" :local-repo "jinx")) "ripgrep" ("2024-11-07 23:43:17" nil (:type git :flavor melpa :files ("ripgrep.el" "ripgrep-pkg.el") :host github :repo "nlamirault/ripgrep.el" :package "ripgrep" :local-repo "ripgrep.el")) "sudo-edit" ("2024-11-07 23:43:17" ("emacs" "cl-lib") (:type git :flavor melpa :host github :repo "nflath/sudo-edit" :package "sudo-edit" :local-repo "sudo-edit")) "prescient" ("2024-11-07 23:43:17" ("emacs") (:type git :flavor melpa :files ("prescient.el" "prescient-pkg.el") :host github :repo "radian-software/prescient.el" :package "prescient" :local-repo "prescient.el")) "consult" ("2024-11-07 23:43:17" ("emacs" "compat") (:type git :flavor melpa :host github :repo "minad/consult" :package "consult" :local-repo "consult")) "marginalia" ("2024-11-07 23:43:17" ("emacs" "compat") (:type git :flavor melpa :host github :repo "minad/marginalia" :package "marginalia" :local-repo "marginalia")) "all-the-icons" ("2024-11-07 23:43:17" ("emacs") (:type git :flavor melpa :files (:defaults "data" "all-the-icons-pkg.el") :host github :repo "domtronn/all-the-icons.el" :package "all-the-icons" :local-repo "all-the-icons.el")) "all-the-icons-completion" ("2024-11-07 23:43:18" ("emacs" "all-the-icons") (:type git :flavor melpa :host github :repo "iyefrat/all-the-icons-completion" :package "all-the-icons-completion" :local-repo "all-the-icons-completion")) "all-the-icons-dired" ("2024-11-07 23:43:18" ("emacs" "all-the-icons") (:type git :flavor melpa :host github :repo "wyuenho/all-the-icons-dired" :package "all-the-icons-dired" :local-repo "all-the-icons-dired")) "corfu" ("2024-11-07 23:43:18" ("emacs" "compat") (:type git :flavor melpa :files (:defaults "extensions/corfu-*.el" "corfu-pkg.el") :host github :repo "minad/corfu" :package "corfu" :local-repo "corfu")) "orderless" ("2024-11-07 23:43:18" ("emacs" "compat") (:type git :flavor melpa :host github :repo "oantolin/orderless" :package "orderless" :local-repo "orderless")) "cape" ("2024-11-07 23:43:18" ("emacs" "compat") (:type git :flavor melpa :host github :repo "minad/cape" :package "cape" :local-repo "cape")) "which-key" ("2024-11-07 23:43:18" ("emacs") (:type git :flavor melpa :host github :repo "justbur/emacs-which-key" :package "which-key" :local-repo "emacs-which-key")) "yasnippet" ("2024-11-07 23:43:18" ("cl-lib" "emacs") (:type git :flavor melpa :files ("yasnippet.el" "snippets" "yasnippet-pkg.el") :host github :repo "joaotavora/yasnippet" :package "yasnippet" :local-repo "yasnippet")) "yasnippet-snippets" ("2024-11-07 23:43:18" ("yasnippet") (:type git :flavor melpa :files ("*.el" "snippets" ".nosearch" "yasnippet-snippets-pkg.el") :host github :repo "AndreaCrotti/yasnippet-snippets" :package "yasnippet-snippets" :local-repo "yasnippet-snippets")) "vertico" ("2024-11-07 23:43:18" ("emacs" "compat") (:type git :flavor melpa :files (:defaults "extensions/vertico-*.el" "vertico-pkg.el") :host github :repo "minad/vertico" :package "vertico" :local-repo "vertico")) "org-contrib" ("2024-11-07 23:43:18" ("emacs" "org") (:type git :includes (ob-csharp ob-eukleides ob-fomus ob-julia ob-mathomatic ob-oz ob-stata ob-tcl ob-vbnet ol-bookmark ol-elisp-symbol ol-git-link ol-man ol-mew ol-vm ol-wl org-annotate-file org-bibtex-extras org-checklist org-choose org-collector org-contribdir org-depend org-effectiveness org-eldoc org-eval org-eval-light org-expiry org-interactive-query org-invoice org-learn org-license org-mac-iCal org-mairix org-panel org-registry org-screen org-screenshot org-secretary org-static-mathjax org-sudoku orgtbl-sqlinsert org-toc org-track org-wikinodes ox-bibtex ox-confluence ox-deck ox-extra ox-freemind ox-groff ox-koma-letter ox-s5 ox-taskjuggler) :repo "https://git.sr.ht/~bzg/org-contrib" :files (:defaults "lisp/*.el") :package "org-contrib" :local-repo "org-contrib")) "ob-async" ("2024-11-07 23:43:18" ("async" "org" "emacs" "dash") (:type git :flavor melpa :host github :repo "astahlman/ob-async" :package "ob-async" :local-repo "ob-async")) "async" ("2024-11-07 23:43:18" ("emacs") (:type git :flavor melpa :host github :repo "jwiegley/emacs-async" :package "async" :local-repo "emacs-async")) "org-super-agenda" ("2024-11-07 23:43:18" ("emacs" "compat" "s" "dash" "org" "ht" "ts") (:type git :flavor melpa :host github :repo "alphapapa/org-super-agenda" :package "org-super-agenda" :local-repo "org-super-agenda")) "ts" ("2024-11-07 23:43:18" ("emacs" "dash" "s") (:type git :flavor melpa :host github :repo "alphapapa/ts.el" :package "ts" :local-repo "ts.el")) "ox-gfm" ("2024-11-07 23:43:18" nil (:type git :flavor melpa :host github :repo "larstvei/ox-gfm" :package "ox-gfm" :local-repo "ox-gfm")) "gptel" ("2024-11-07 23:43:19" ("emacs" "transient" "compat") (:type git :flavor melpa :host github :repo "karthink/gptel" :package "gptel" :local-repo "gptel")) "transient" ("2024-11-07 23:43:19" ("emacs" "compat" "seq") (:type git :flavor melpa :host github :repo "magit/transient" :package "transient" :local-repo "transient")) "ellama" ("2024-11-07 23:43:19" ("emacs" "llm" "spinner" "transient" "compat") (:type git :flavor melpa :host github :repo "s-kostyaev/ellama" :package "ellama" :local-repo "ellama")) "llm" ("2024-11-07 23:43:19" ("emacs" "plz" "plz-event-source" "plz-media-type") (:type git :host github :repo "emacs-straight/llm" :files ("*" (:exclude ".git")) :package "llm" :local-repo "llm")) "plz" ("2024-11-07 23:43:19" ("emacs") (:type git :host github :repo "emacs-straight/plz" :files ("*" (:exclude ".git")) :package "plz" :local-repo "plz")) "plz-event-source" ("2024-11-07 23:43:19" ("emacs" "plz-media-type") (:type git :host github :repo "emacs-straight/plz-event-source" :files ("*" (:exclude ".git")) :package "plz-event-source" :local-repo "plz-event-source")) "plz-media-type" ("2024-11-07 23:43:19" ("emacs" "plz") (:type git :host github :repo "emacs-straight/plz-media-type" :files ("*" (:exclude ".git")) :package "plz-media-type" :local-repo "plz-media-type")) "spinner" ("2024-11-07 23:43:19" ("emacs") (:type git :host github :repo "emacs-straight/spinner" :files ("*" (:exclude ".git")) :package "spinner" :local-repo "spinner")) "go-translate" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :host github :repo "lorniu/go-translate" :package "go-translate" :local-repo "go-translate")) "dictionary" ("2024-11-07 23:43:19" ("connection" "link") (:type git :flavor melpa :files ("dictionary.el" "dictionary-pkg.el") :host github :repo "myrkr/dictionary-el" :package "dictionary" :local-repo "dictionary-el")) "connection" ("2024-11-07 23:43:19" nil (:flavor melpa :files ("connection.el" "connection-pkg.el") :package "connection" :local-repo "dictionary-el" :type git :repo "myrkr/dictionary-el" :host github)) "link" ("2024-11-07 23:43:19" nil (:flavor melpa :files ("link.el" "link-pkg.el") :package "link" :local-repo "dictionary-el" :type git :repo "myrkr/dictionary-el" :host github)) "goldendict" ("2024-11-07 23:43:19" ("emacs" "cl-lib") (:type git :host github :repo "emacsmirror/goldendict" :package "goldendict" :local-repo "goldendict")) "devdocs-browser" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :host github :repo "blahgeek/emacs-devdocs-browser" :package "devdocs-browser" :local-repo "emacs-devdocs-browser")) "elfeed" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :files (:defaults "README.md" "elfeed-pkg.el") :host github :repo "skeeto/elfeed" :package "elfeed" :local-repo "elfeed")) "pdf-tools" ("2024-11-07 23:43:19" ("emacs" "tablist" "let-alist") (:type git :flavor melpa :files (:defaults "README" ("build" "Makefile") ("build" "server") "pdf-tools-pkg.el") :host github :repo "vedang/pdf-tools" :package "pdf-tools" :local-repo "pdf-tools")) "tablist" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :host github :repo "emacsorphanage/tablist" :package "tablist" :local-repo "tablist")) "let-alist" ("2024-11-07 23:43:19" ("emacs") (:type git :host github :repo "emacs-straight/let-alist" :files ("*" (:exclude ".git")) :package "let-alist" :local-repo "let-alist")) "eat" ("2024-11-07 23:43:19" ("emacs" "compat") (:type git :host codeberg :repo "akib/emacs-eat" :files ("*.el" ("term" "term/*.el") "*.texi" "*.ti" ("terminfo/e" "terminfo/e/*") ("terminfo/65" "terminfo/65/*") ("integration" "integration/*") (:exclude ".dir-locals.el" "*-tests.el")) :package "eat" :local-repo "emacs-eat")) "vterm" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :files ("CMakeLists.txt" "elisp.c" "elisp.h" "emacs-module.h" "etc" "utf8.c" "utf8.h" "vterm.el" "vterm-module.c" "vterm-module.h" "vterm-pkg.el") :host github :repo "akermu/emacs-libvterm" :package "vterm" :local-repo "emacs-libvterm")) "notmuch" ("2024-11-07 23:43:19" nil (:type git :flavor melpa :files ("emacs/*.el" "emacs/*.svg" "notmuch-pkg.el") :repo "https://git.notmuchmail.org/git/notmuch" :package "notmuch" :local-repo "notmuch")) "mu4e" ("2024-11-07 23:43:19" nil (:host github :branch "release/1.10" :repo "djcb/mu" :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info") :main "mu4e/mu4e.el" :pre-build (("./autogen.sh") ("ninja" "-C" "build") (make-symbolic-link (expand-file-name "./build/mu/mu") (expand-file-name "~/bin/mu") 'ok-if-exists)) :package "mu4e" :type git :local-repo "mu")) "erc" ("2024-11-07 23:43:19" ("emacs" "compat") (:type git :host github :repo "emacs-straight/erc" :files ("*" (:exclude ".git")) :package "erc" :local-repo "erc")) "eldoc-box" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :host github :repo "casouri/eldoc-box" :package "eldoc-box" :local-repo "eldoc-box")) "json-mode" ("2024-11-07 23:43:19" ("json-snatcher" "emacs") (:type git :flavor melpa :host github :repo "json-emacs/json-mode" :package "json-mode" :local-repo "json-mode")) "json-snatcher" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :host github :repo "Sterlingg/json-snatcher" :package "json-snatcher" :local-repo "json-snatcher")) "jsonrpc" ("2024-11-07 23:43:19" ("emacs") (:type git :host github :repo "emacs-straight/jsonrpc" :files ("*" (:exclude ".git")) :package "jsonrpc" :local-repo "jsonrpc")) "treemacs" ("2024-11-07 23:43:19" ("emacs" "cl-lib" "dash" "s" "ace-window" "pfuture" "hydra" "ht" "cfrs") (:type git :flavor melpa :files (:defaults "Changelog.org" "icons" "src/elisp/treemacs*.el" "src/scripts/treemacs*.py" (:exclude "src/extra/*") "treemacs-pkg.el") :host github :repo "Alexander-Miller/treemacs" :package "treemacs" :local-repo "treemacs")) "pfuture" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :host github :repo "Alexander-Miller/pfuture" :package "pfuture" :local-repo "pfuture")) "hydra" ("2024-11-07 23:43:19" ("cl-lib" "lv") (:type git :flavor melpa :files (:defaults (:exclude "lv.el") "hydra-pkg.el") :host github :repo "abo-abo/hydra" :package "hydra" :local-repo "hydra")) "lv" ("2024-11-07 23:43:19" nil (:flavor melpa :files ("lv.el" "lv-pkg.el") :package "lv" :local-repo "hydra" :type git :repo "abo-abo/hydra" :host github)) "cfrs" ("2024-11-07 23:43:19" ("emacs" "dash" "s" "posframe") (:type git :flavor melpa :host github :repo "Alexander-Miller/cfrs" :package "cfrs" :local-repo "cfrs")) "duplicate-thing" ("2024-11-07 23:43:19" nil (:type git :flavor melpa :host github :repo "ongaeshi/duplicate-thing" :package "duplicate-thing" :local-repo "duplicate-thing")) "breadcrumb" ("2024-11-07 23:43:19" ("emacs" "project") (:local-repo "~/development/projects/emacs/breadcrumb" :files ("*" (:exclude ".git")) :repo "emacs-straight/breadcrumb" :host github :package "breadcrumb" :type git)) "parrot" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :files (:defaults "img" "parrot-pkg.el") :host github :repo "dp12/parrot" :package "parrot" :local-repo "parrot")) "php-mode" ("2024-11-07 23:43:19" ("emacs") (:type git :flavor melpa :host github :repo "emacs-php/php-mode" :package "php-mode" :local-repo "php-mode")) "yaml-mode" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :host github :repo "yoshiki/yaml-mode" :package "yaml-mode" :local-repo "yaml-mode")) "json-reformat" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :host github :repo "gongo/json-reformat" :package "json-reformat" :local-repo "json-reformat")) "flymake-diagnostic-at-point" ("2024-11-07 23:43:20" ("emacs" "popup") (:type git :flavor melpa :host github :repo "meqif/flymake-diagnostic-at-point" :package "flymake-diagnostic-at-point" :local-repo "flymake-diagnostic-at-point")) "magit" ("2024-11-07 23:43:20" ("emacs" "compat" "dash" "magit-section" "seq" "transient" "with-editor") (:type git :flavor melpa :files ("lisp/magit*.el" "lisp/git-*.el" "docs/magit.texi" "docs/AUTHORS.md" "LICENSE" "magit-pkg.el" (:exclude "lisp/magit-section.el") "magit-pkg.el") :host github :repo "magit/magit" :package "magit" :local-repo "magit")) "magit-section" ("2024-11-07 23:43:20" ("emacs" "compat" "dash" "seq") (:flavor melpa :files ("lisp/magit-section.el" "docs/magit-section.texi" "magit-section-pkg.el" "magit-section-pkg.el") :package "magit-section" :local-repo "magit" :type git :repo "magit/magit" :host github)) "magit-filenotify" ("2024-11-07 23:43:20" ("magit" "emacs") (:type git :flavor melpa :host github :repo "ruediger/magit-filenotify" :package "magit-filenotify" :local-repo "magit-filenotify")) "sqlite3" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :files (:defaults "Makefile" "consts.c" "emacs-module.h" "sqlite3-api.c" "sqlite3-pkg.el") :host github :repo "pekingduck/emacs-sqlite3-api" :package "sqlite3" :local-repo "emacs-sqlite3-api")) "diff-hl" ("2024-11-07 23:43:20" ("cl-lib" "emacs") (:type git :flavor melpa :host github :repo "dgutov/diff-hl" :package "diff-hl" :local-repo "diff-hl")) "treesit-auto" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :host github :repo "renzmann/treesit-auto" :package "treesit-auto" :local-repo "treesit-auto")) "eglot" ("2024-11-07 23:43:20" ("emacs" "compat" "eldoc" "external-completion" "flymake" "jsonrpc" "project" "seq" "track-changes" "xref") (:type git :host github :repo "emacs-straight/eglot" :files ("*" (:exclude ".git")) :package "eglot" :local-repo "eglot")) "external-completion" ("2024-11-07 23:43:20" nil (:type git :host github :repo "emacs-straight/external-completion" :files ("*" (:exclude ".git")) :package "external-completion" :local-repo "external-completion")) "track-changes" ("2024-11-07 23:43:20" ("emacs") (:type git :host github :repo "emacs-straight/track-changes" :files ("*" (:exclude ".git")) :package "track-changes" :local-repo "track-changes")) "xref" ("2024-11-07 23:43:15" ("emacs") (:type git :host github :repo "emacs-straight/xref" :files ("*" (:exclude ".git")) :package "xref" :local-repo "xref")) "dape" ("2024-11-07 23:43:20" ("emacs" "jsonrpc") (:type git :host github :repo "emacs-straight/dape" :files ("*" (:exclude ".git")) :package "dape" :local-repo "dape")) "auto-virtualenv" ("2024-11-07 23:43:20" ("cl-lib") (:type git :flavor melpa :host github :repo "marcwebbie/auto-virtualenv" :package "auto-virtualenv" :local-repo "auto-virtualenv")) "lldb-voltron" ("2024-11-07 23:43:20" nil (:local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" :package "lldb-voltron")) "rust-mode" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :host github :repo "rust-lang/rust-mode" :package "rust-mode" :local-repo "rust-mode")) "rustic" ("2024-11-07 23:43:20" ("emacs" "rust-mode" "dash" "f" "let-alist" "markdown-mode" "project" "s" "spinner" "xterm-color" "flycheck") (:type git :flavor melpa :host github :repo "emacs-rustic/rustic" :package "rustic" :local-repo "rustic")) "markdown-mode" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :host github :repo "jrblevin/markdown-mode" :package "markdown-mode" :local-repo "markdown-mode")) "xterm-color" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :host github :repo "atomontage/xterm-color" :package "xterm-color" :local-repo "xterm-color")) "flycheck" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :host github :repo "flycheck/flycheck" :package "flycheck" :local-repo "flycheck")) "logview" ("2024-11-07 23:43:20" ("emacs" "datetime" "extmap") (:type git :flavor melpa :host github :repo "doublep/logview" :package "logview" :local-repo "logview")) "datetime" ("2024-11-07 23:43:20" ("emacs" "extmap") (:type git :flavor melpa :files (:defaults "*.extmap" "datetime-pkg.el") :host github :repo "doublep/datetime" :package "datetime" :local-repo "datetime")) "extmap" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :host github :repo "doublep/extmap" :package "extmap" :local-repo "extmap")) "strace-mode" ("2024-11-07 23:43:20" nil (:type git :flavor melpa :host github :repo "pkmoore/strace-mode" :package "strace-mode" :local-repo "strace-mode")) "elf-mode" ("2024-11-07 23:43:20" ("emacs") (:type git :flavor melpa :host github :repo "abo-abo/elf-mode" :package "elf-mode" :local-repo "elf-mode")) "rgr-kill-dwim" ("2024-11-07 23:43:20" nil (:local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" :package "rgr-kill-dwim")) "package-lint" ("2024-11-07 23:43:20" ("emacs" "let-alist") (:type git :flavor melpa :files (:defaults "data" (:exclude "*flymake.el") "package-lint-pkg.el") :host github :repo "purcell/package-lint" :package "package-lint" :local-repo "package-lint")) "helpful" ("2024-11-07 23:43:21" ("emacs" "dash" "s" "f" "elisp-refs") (:type git :flavor melpa :host github :repo "Wilfred/helpful" :package "helpful" :local-repo "helpful")) "elisp-refs" ("2024-11-07 23:43:21" ("dash" "s") (:type git :flavor melpa :files (:defaults (:exclude "elisp-refs-bench.el") "elisp-refs-pkg.el") :host github :repo "Wilfred/elisp-refs" :package "elisp-refs" :local-repo "elisp-refs")) "el-docstring-sap" ("2024-11-07 23:43:21" ("emacs" "posframe") (:local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" :package "el-docstring-sap")) "quick-peek" ("2024-11-07 23:43:21" ("emacs") (:type git :flavor melpa :host github :repo "cpitclaudel/quick-peek" :package "quick-peek" :local-repo "quick-peek")) "edebug-x" ("2024-11-07 23:43:21" nil (:type git :flavor melpa :host github :repo "ScottyB/edebug-x" :package "edebug-x" :local-repo "edebug-x")) "elisp-format" ("2024-11-07 23:43:21" nil (:type git :flavor melpa :host github :repo "Yuki-Inoue/elisp-format" :package "elisp-format" :local-repo "elisp-format")) "modus-themes" ("2024-11-07 23:43:21" ("emacs") (:type git :flavor melpa :host github :repo "protesilaos/modus-themes" :package "modus-themes" :local-repo "modus-themes")) "project" ("2024-11-07 23:43:15" ("emacs" "xref") (:type git :host github :repo "emacs-straight/project" :files ("*" (:exclude ".git")) :package "project" :local-repo "project"))))
 
-#s(hash-table size 145 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("straight" ((straight-autoloads straight-ert-print-hack straight-x straight) (autoload 'straight-remove-unused-repos "straight" "Remove unused repositories from the repos and build directories.
+#s(hash-table test equal data ("straight" ((straight-autoloads straight-ert-print-hack straight-x straight) (autoload 'straight-remove-unused-repos "straight" "Remove unused repositories from the repos and build directories.
 A repo is considered \"unused\" if it was not explicitly requested via
 `straight-use-package' during the current Emacs session.
 If FORCE is non-nil do not prompt before deleting repos.
@@ -440,19 +440,19 @@ displays the first line of that variable's doc string.  Otherwise
 it displays the argument list of the function called in the
 expression point is on.
 
-This is a minor mode.  If called interactively, toggle the `Eldoc
-mode' mode.  If the prefix argument is positive, enable the mode,
-and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Eldoc mode'
+mode.  If the prefix argument is positive, enable the mode, and if it is
+zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `eldoc-mode'.
+evaluate the variable `eldoc-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'global-eldoc-mode 'globalized-minor-mode t) (defcustom global-eldoc-mode t "Non-nil if Global Eldoc mode is enabled.
 See the `global-eldoc-mode' command
@@ -548,19 +548,19 @@ suitable for the current buffer.  The commands
 `flymake-reporting-backends' summarize the situation, as does the
 special *Flymake log* buffer.
 
-This is a minor mode.  If called interactively, toggle the
-`Flymake mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Flymake
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `flymake-mode'.
+evaluate the variable `flymake-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'flymake-mode-on "flymake" "Turn Flymake mode on.") (autoload 'flymake-mode-off "flymake" "Turn Flymake mode off.") (register-definition-prefixes "flymake" '("flymake-")) (provide 'flymake-autoloads)) "with-editor" ((with-editor with-editor-autoloads) (autoload 'with-editor-export-editor "with-editor" "Teach subsequent commands to use current Emacs instance as editor.
 
@@ -591,18 +591,18 @@ which also allows the use of another variable instead of
 
 This is a global minor mode.  If called interactively, toggle the
 `Shell-Command-With-Editor mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='shell-command-with-editor-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'with-editor-async-shell-command "with-editor" "Like `async-shell-command' but with `$EDITOR' set.
 
@@ -704,19 +704,19 @@ additionally fontifies Dash macro calls.
 See also `dash-fontify-mode-lighter' and
 `global-dash-fontify-mode'.
 
-This is a minor mode.  If called interactively, toggle the
-`Dash-Fontify mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Dash-Fontify
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `dash-fontify-mode'.
+evaluate the variable `dash-fontify-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'global-dash-fontify-mode 'globalized-minor-mode t) (defvar global-dash-fontify-mode nil "Non-nil if Global Dash-Fontify mode is enabled.
 See the `global-dash-fontify-mode' command
@@ -898,18 +898,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `lazy-lang-learn-mode'.") (custom-autoload 'lazy-lang-learn-mode "lazy-lang-learn" nil) (autoload 'lazy-lang-learn-mode "lazy-lang-learn" "A global minor-mode to periodically fetch something to learn using `lazy-lang-learn-new'.
 
 This is a global minor mode.  If called interactively, toggle the
-`Lazy-Lang-Learn mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Lazy-Lang-Learn mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='lazy-lang-learn-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "lazy-lang-learn" '("lazy-lang-learn--")) (provide 'lazy-lang-learn-autoloads)) "list-utils" ((list-utils-autoloads list-utils) (let ((loads (get 'list-utils 'custom-loads))) (if (member '"list-utils" loads) nil (put 'list-utils 'custom-loads (cons '"list-utils" loads)) (put 'extensions 'custom-loads (cons 'list-utils (get 'extensions 'custom-loads))))) (require 'cl-macs) (cl-defstruct tconc head tail) (autoload 'tconc-list "list-utils" "Efficiently append LIST to TC.
 
@@ -1493,18 +1493,18 @@ argument is omitted or nil, and toggles the mode if the argument
 is 'toggle.
 
 This is a global minor mode.  If called interactively, toggle the
-`Browse-Url-Dwim mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Browse-Url-Dwim mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='browse-url-dwim-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'browse-url-dwim "browse-url-dwim" "Opens a URL in an external browser.
 
@@ -1925,19 +1925,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `ace-window-display-mode'.") (custom-autoload 'ace-window-display-mode "ace-window" nil) (autoload 'ace-window-display-mode "ace-window" "Minor mode for showing the ace window key in the mode line.
 
 This is a global minor mode.  If called interactively, toggle the
-`Ace-Window-Display mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Ace-Window-Display mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='ace-window-display-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "ace-window" '("ace-window-mode" "aw-")) (defvar ace-window-posframe-mode nil "Non-nil if Ace-Window-Posframe mode is enabled.
 See the `ace-window-posframe-mode' command
@@ -1947,19 +1946,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `ace-window-posframe-mode'.") (custom-autoload 'ace-window-posframe-mode "ace-window-posframe" nil) (autoload 'ace-window-posframe-mode "ace-window-posframe" "Minor mode for showing the ace window key with child frames.
 
 This is a global minor mode.  If called interactively, toggle the
-`Ace-Window-Posframe mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Ace-Window-Posframe mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='ace-window-posframe-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "ace-window-posframe" '("ace-window-posframe-" "aw-")) (provide 'ace-window-autoloads)) "ace-link" ((ace-link-autoloads ace-link) (autoload 'ace-link "ace-link" "Call the ace link function for the current `major-mode'" t) (autoload 'ace-link-info "ace-link" "Open a visible link in an `Info-mode' buffer." t) (autoload 'ace-link-help "ace-link" "Open a visible link in a `help-mode' buffer." t) (autoload 'ace-link-man "ace-link" "Open a visible link in a `man' buffer." t) (autoload 'ace-link-woman "ace-link" "Open a visible link in a `woman-mode' buffer." t) (autoload 'ace-link-eww "ace-link" "Open a visible link in an `eww-mode' buffer.
 If EXTERNAL is single prefix, browse the URL using
@@ -2012,18 +2010,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `golden-ratio-mode'.") (custom-autoload 'golden-ratio-mode "golden-ratio" nil) (autoload 'golden-ratio-mode "golden-ratio" "Enable automatic window resizing with golden ratio.
 
 This is a global minor mode.  If called interactively, toggle the
-`Golden-Ratio mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Golden-Ratio mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='golden-ratio-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "golden-ratio" '("golden-ratio-")) (provide 'golden-ratio-autoloads)) "pulsar" ((pulsar pulsar-pkg pulsar-autoloads) (autoload 'pulsar-pulse-line "pulsar" "Temporarily highlight the current line.
 When `pulsar-pulse' is non-nil (the default) make the highlight
@@ -2141,36 +2139,35 @@ view. The buffer margins are set so that text is centered on
 screen. Text size is increased (display engine allowing) by
 `darkroom-text-scale-increase'.
 
-This is a minor mode.  If called interactively, toggle the
-`Darkroom mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Darkroom
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `darkroom-mode'.
+evaluate the variable `darkroom-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'darkroom-tentative-mode "darkroom" "Enters `darkroom-mode' when all other windows are deleted.
 
 This is a minor mode.  If called interactively, toggle the
-`DarkRoom-Tentative mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`DarkRoom-Tentative mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `darkroom-tentative-mode'.
+evaluate the variable `darkroom-tentative-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "darkroom" '("darkroom-")) (provide 'darkroom-autoloads)) "bookmark+" ((bookmark+-1 bookmark+-lit bookmark+ bookmark+-mac bookmark+-key bookmark+-bmu bookmark+-chg bookmark+-doc bookmark+-autoloads) (autoload 'bmkp-version-number "bookmark+") (autoload 'bmkp-version "bookmark+") (autoload 'bookmark-bmenu-buffer "bookmark+") (autoload 'bookmark-plus "bookmark+") (autoload 'bmkp-bmenu-buffer "bookmark+") (register-definition-prefixes "bookmark+" '("bookmark-")) (autoload 'bmkp-autofile-access-invokes-bookmark-flag "bookmark+") (autoload 'bmkp-autofile-filecache "bookmark+") (autoload 'bmkp-automatic-bookmark-min-distance "bookmark+") (autoload 'bmkp-automatic-bookmark-mode "bookmark+") (autoload 'bmkp-automatic-bookmark-mode-delay "bookmark+") (autoload 'bmkp-automatic-bookmark-mode-lighter "bookmark+") (autoload 'bmkp-automatic-bookmark-set-function "bookmark+") (autoload 'bmkp-autoname-bookmark-function "bookmark+") (autoload 'bmkp-autoname-format "bookmark+") (autoload 'bmkp-autotemp-bookmark-predicates "bookmark+") (autoload 'bmkp-bookmark-name-length-max "bookmark+") (autoload 'bmkp-count-multi-mods-as-one-flag "bookmark+") (autoload 'bmkp-crosshairs-flag "bookmark+") (autoload 'bmkp-default-bookmark-name "bookmark+") (autoload 'bmkp-default-handlers-for-file-types "bookmark+") (autoload 'bmkp-desktop-default-directory "bookmark+") (autoload 'bmkp-desktop-jump-save-before-flag "bookmark+") (autoload 'bmkp-desktop-no-save-vars "bookmark+") (autoload 'bmkp-annotation-modes-inherit-from "bookmark+") (autoload 'bmkp-handle-region-function "bookmark+") (autoload 'bmkp-info-sort-ignores-directories-flag "bookmark+") (autoload 'bmkp-incremental-filter-delay "bookmark+") (autoload 'bmkp-menu-popup-max-length "bookmark+") (autoload 'bmkp-new-bookmark-default-names "bookmark+") (autoload 'bmkp-other-window-pop-to-flag "bookmark+") (autoload 'bmkp-prompt-for-tags-flag "bookmark+") (autoload 'bmkp-properties-to-keep "bookmark+") (autoload 'bmkp-region-search-size "bookmark+") (autoload 'bmkp-save-new-location-flag "bookmark+") (autoload 'bmkp-sequence-jump-display-function "bookmark+") (autoload 'bmkp-show-end-of-region-flag "bookmark+") (autoload 'bmkp-sort-comparer "bookmark+") (autoload 'bmkp-su-or-sudo-regexp "bookmark+") (autoload 'bmkp-tags-for-completion "bookmark+") (autoload 'bmkp-temporary-bookmarking-mode-hook "bookmark+") (autoload 'bmkp-this-file/buffer-cycle-sort-comparer "bookmark+") (autoload 'bmkp-guess-default-handler-for-file-flag "bookmark+") (autoload 'bmkp-read-bookmark-file-hook "bookmark+") (autoload 'bmkp-temporary-bookmarking-mode-lighter "bookmark+") (autoload 'bmkp-use-region "bookmark+") (autoload 'bmkp-w3m-allow-multiple-buffers-flag "bookmark+") (autoload 'bmkp-write-bookmark-file-hook "bookmark+") (defvar Info-bookmark-use-only-node-not-file-flag t "Non-nil means an Info bookmark uses only the node name.
 The recorded Info file name is ignored.  This means use only manuals
@@ -2190,19 +2187,19 @@ STYLES is the styles emoji styles that should be used, see `emojify-emoji-styles
 
 (fn STYLES)") (autoload 'emojify-mode "emojify" "Emojify mode
 
-This is a minor mode.  If called interactively, toggle the
-`Emojify mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Emojify
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `emojify-mode'.
+evaluate the variable `emojify-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'global-emojify-mode 'globalized-minor-mode t) (defvar global-emojify-mode nil "Non-nil if Global Emojify mode is enabled.
 See the `global-emojify-mode' command
@@ -2223,19 +2220,18 @@ See `emojify-mode' for more information on Emojify mode.
 (fn &optional ARG)" t) (autoload 'emojify-mode-line-mode "emojify" "Emojify mode line
 
 This is a minor mode.  If called interactively, toggle the
-`Emojify-Mode-Line mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Emojify-Mode-Line mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `emojify-mode-line-mode'.
+evaluate the variable `emojify-mode-line-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'global-emojify-mode-line-mode 'globalized-minor-mode t) (defvar global-emojify-mode-line-mode nil "Non-nil if Global Emojify-Mode-Line mode is enabled.
 See the `global-emojify-mode-line-mode' command
@@ -2277,18 +2273,18 @@ mode. To leave this mode press <return> or \"C-g\"
 
 This is a minor mode.  If called interactively, toggle the
 `Mc-Hide-Unmatched-Lines mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `mc-hide-unmatched-lines-mode'.
+evaluate the variable `mc-hide-unmatched-lines-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "mc-hide-unmatched-lines-mode" '("hum/")) (autoload 'mc/mark-next-like-this "mc-mark-more" "Find and mark the next part of the buffer matching the currently active region
 If no region is active add a cursor on the next line
@@ -2414,19 +2410,18 @@ which action is being undone.
 (fn ID)") (autoload 'multiple-cursors-mode "multiple-cursors-core" "Mode while multiple cursors are active.
 
 This is a minor mode.  If called interactively, toggle the
-`Multiple-Cursors mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Multiple-Cursors mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `multiple-cursors-mode'.
+evaluate the variable `multiple-cursors-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "multiple-cursors-core" '("deactivate-cursor-after-undo" "mc--" "mc/" "unsupported-cmd")) (autoload 'set-rectangular-region-anchor "rectangular-region-mode" "Anchors the rectangular region at point.
 
@@ -2435,19 +2430,18 @@ rectangular region. It is an exceedingly quick way of adding
 multiple cursors to multiple lines." t) (autoload 'rectangular-region-mode "rectangular-region-mode" "A mode for creating a rectangular region to edit
 
 This is a minor mode.  If called interactively, toggle the
-`Rectangular-Region mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Rectangular-Region mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `rectangular-region-mode'.
+evaluate the variable `rectangular-region-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "rectangular-region-mode" '("rectangular-region-mode" "rrm/")) (provide 'multiple-cursors-autoloads)) "jinx" ((jinx jinx-autoloads) (put 'jinx-languages 'safe-local-variable #'stringp) (put 'jinx-local-words 'safe-local-variable #'stringp) (put 'jinx-mode 'safe-local-variable #'not) (autoload 'jinx-languages "jinx" "Set languages locally or globally to LANGS.
 LANGS should be one or more language codes as a string, separated
@@ -2479,19 +2473,19 @@ This command dispatches to the following commands:
 
 (fn &optional ARG)" t) (autoload 'jinx-mode "jinx" "Enchanted Spell Checker.
 
-This is a minor mode.  If called interactively, toggle the `Jinx
-mode' mode.  If the prefix argument is positive, enable the mode,
-and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Jinx mode'
+mode.  If the prefix argument is positive, enable the mode, and if it is
+zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `jinx-mode'.
+evaluate the variable `jinx-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'global-jinx-mode 'globalized-minor-mode t) (defvar global-jinx-mode nil "Non-nil if Global Jinx mode is enabled.
 See the `global-jinx-mode' command
@@ -2521,19 +2515,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `sudo-edit-indicator-mode'.") (custom-autoload 'sudo-edit-indicator-mode "sudo-edit" nil) (autoload 'sudo-edit-indicator-mode "sudo-edit" "Indicates editing as root by displaying a message in the header line.
 
 This is a global minor mode.  If called interactively, toggle the
-`Sudo-Edit-Indicator mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Sudo-Edit-Indicator mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='sudo-edit-indicator-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'sudo-edit "sudo-edit" "Edit currently visited file as another user, by default `sudo-edit-user'.
 
@@ -2910,18 +2903,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `marginalia-mode'.") (custom-autoload 'marginalia-mode "marginalia" nil) (autoload 'marginalia-mode "marginalia" "Annotate completion candidates with richer information.
 
 This is a global minor mode.  If called interactively, toggle the
-`Marginalia mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Marginalia mode' mode.  If the prefix argument is positive, enable the
+mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='marginalia-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'marginalia-cycle "marginalia" "Cycle between annotators in `marginalia-annotator-registry'." t) (function-put 'marginalia-cycle 'completion-predicate #'(lambda (&rest _) (> (minibuffer-depth) 1))) (register-definition-prefixes "marginalia" '("marginalia-")) (provide 'marginalia-autoloads)) "all-the-icons" ((all-the-icons-autoloads all-the-icons-faces all-the-icons) (autoload 'all-the-icons-icon-for-dir "all-the-icons" "Get the formatted icon for DIR.
 ARG-OVERRIDES should be a plist containining `:height',
@@ -2962,51 +2955,50 @@ or call the function `all-the-icons-completion-mode'.") (custom-autoload 'all-th
 
 This is a global minor mode.  If called interactively, toggle the
 `All-The-Icons-Completion mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='all-the-icons-completion-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "all-the-icons-completion" '("all-the-icons-completion-completion-metadata-get")) (provide 'all-the-icons-completion-autoloads)) "all-the-icons-dired" ((all-the-icons-dired all-the-icons-dired-autoloads) (autoload 'all-the-icons-dired-mode "all-the-icons-dired" "Display all-the-icons icon for each file in a Dired buffer.
 
 This is a minor mode.  If called interactively, toggle the
-`All-The-Icons-Dired mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`All-The-Icons-Dired mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `all-the-icons-dired-mode'.
+evaluate the variable `all-the-icons-dired-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "all-the-icons-dired" '("all-the-icons-dired-")) (provide 'all-the-icons-dired-autoloads)) "corfu" ((corfu-info corfu-indexed corfu-history corfu-popupinfo corfu-echo corfu corfu-quick corfu-autoloads) (autoload 'corfu-mode "corfu" "COmpletion in Region FUnction.
 
-This is a minor mode.  If called interactively, toggle the `Corfu
-mode' mode.  If the prefix argument is positive, enable the mode,
-and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Corfu mode'
+mode.  If the prefix argument is positive, enable the mode, and if it is
+zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `corfu-mode'.
+evaluate the variable `corfu-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'global-corfu-mode 'globalized-minor-mode t) (defvar global-corfu-mode nil "Non-nil if Global Corfu mode is enabled.
 See the `global-corfu-mode' command
@@ -3029,18 +3021,18 @@ See the `corfu-echo-mode' command
 for a description of this minor mode.") (custom-autoload 'corfu-echo-mode "corfu-echo" nil) (autoload 'corfu-echo-mode "corfu-echo" "Show candidate documentation in echo area.
 
 This is a global minor mode.  If called interactively, toggle the
-`Corfu-Echo mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Corfu-Echo mode' mode.  If the prefix argument is positive, enable the
+mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='corfu-echo-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "corfu-echo" '("corfu-echo-")) (defvar corfu-history-mode nil "Non-nil if Corfu-History mode is enabled.
 See the `corfu-history-mode' command
@@ -3050,36 +3042,36 @@ either customize it (see the info node `Easy Customization')
 or call the function `corfu-history-mode'.") (custom-autoload 'corfu-history-mode "corfu-history" nil) (autoload 'corfu-history-mode "corfu-history" "Update Corfu history and sort completions by history.
 
 This is a global minor mode.  If called interactively, toggle the
-`Corfu-History mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Corfu-History mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='corfu-history-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "corfu-history" '("corfu-history")) (defvar corfu-indexed-mode nil "Non-nil if Corfu-Indexed mode is enabled.
 See the `corfu-indexed-mode' command
 for a description of this minor mode.") (custom-autoload 'corfu-indexed-mode "corfu-indexed" nil) (autoload 'corfu-indexed-mode "corfu-indexed" "Prefix candidates with indices.
 
 This is a global minor mode.  If called interactively, toggle the
-`Corfu-Indexed mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Corfu-Indexed mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='corfu-indexed-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "corfu-indexed" '("corfu-indexed-")) (autoload 'corfu-info-documentation "corfu-info" "Show documentation of current candidate.
 If called with a prefix ARG, the buffer is persistent.
@@ -3092,18 +3084,18 @@ See the `corfu-popupinfo-mode' command
 for a description of this minor mode.") (custom-autoload 'corfu-popupinfo-mode "corfu-popupinfo" nil) (autoload 'corfu-popupinfo-mode "corfu-popupinfo" "Corfu info popup minor mode.
 
 This is a global minor mode.  If called interactively, toggle the
-`Corfu-Popupinfo mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Corfu-Popupinfo mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='corfu-popupinfo-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "corfu-popupinfo" '("corfu-popupinfo-")) (autoload 'corfu-quick-jump "corfu-quick" "Jump to candidate using quick keys." t) (autoload 'corfu-quick-insert "corfu-quick" "Insert candidate using quick keys." t) (autoload 'corfu-quick-complete "corfu-quick" "Complete candidate using quick keys." t) (register-definition-prefixes "corfu-quick" '("corfu-quick")) (provide 'corfu-autoloads)) "orderless" ((orderless-kwd orderless orderless-autoloads) (autoload 'orderless-all-completions "orderless" "Split STRING into components and find entries TABLE matching all.
 The predicate PRED is used to constrain the entries in TABLE.  The
@@ -3253,18 +3245,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `which-key-mode'.") (custom-autoload 'which-key-mode "which-key" nil) (autoload 'which-key-mode "which-key" "Toggle `which-key-mode'.
 
 This is a global minor mode.  If called interactively, toggle the
-`Which-Key mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Which-Key mode' mode.  If the prefix argument is positive, enable the
+mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='which-key-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'which-key-setup-side-window-right "which-key" "Set up side-window on right." t) (autoload 'which-key-setup-side-window-right-bottom "which-key" "Set up side-window on right if space allows.
 Otherwise, use bottom." t) (autoload 'which-key-setup-side-window-bottom "which-key" "Set up side-window that opens on bottom." t) (autoload 'which-key-setup-minibuffer "which-key" "Set up minibuffer display.
@@ -3368,19 +3360,19 @@ Negative prefix argument turns off the mode.
 Key bindings:
 \\{yas-minor-mode-map}
 
-This is a minor mode.  If called interactively, toggle the `yas
-minor mode' mode.  If the prefix argument is positive, enable the
-mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `yas minor
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `yas-minor-mode'.
+evaluate the variable `yas-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'yas-global-mode 'globalized-minor-mode t) (defvar yas-global-mode nil "Non-nil if Yas-Global mode is enabled.
 See the `yas-global-mode' command
@@ -3406,18 +3398,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `vertico-mode'.") (custom-autoload 'vertico-mode "vertico" nil) (autoload 'vertico-mode "vertico" "VERTical Interactive COmpletion.
 
 This is a global minor mode.  If called interactively, toggle the
-`Vertico mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
+`Vertico mode' mode.  If the prefix argument is positive, enable the
+mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='vertico-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "vertico" '("vertico-")) (defvar vertico-buffer-mode nil "Non-nil if Vertico-Buffer mode is enabled.
 See the `vertico-buffer-mode' command
@@ -3427,18 +3419,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `vertico-buffer-mode'.") (custom-autoload 'vertico-buffer-mode "vertico-buffer" nil) (autoload 'vertico-buffer-mode "vertico-buffer" "Display Vertico like a regular buffer in a large window.
 
 This is a global minor mode.  If called interactively, toggle the
-`Vertico-Buffer mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Vertico-Buffer mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='vertico-buffer-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "vertico-buffer" '("vertico-buffer-")) (autoload 'vertico-directory-enter "vertico-directory" "Enter directory or exit completion with current candidate.
 Exit with current input if prefix ARG is given.
@@ -3457,18 +3449,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `vertico-flat-mode'.") (custom-autoload 'vertico-flat-mode "vertico-flat" nil) (autoload 'vertico-flat-mode "vertico-flat" "Flat, horizontal display for Vertico.
 
 This is a global minor mode.  If called interactively, toggle the
-`Vertico-Flat mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Vertico-Flat mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='vertico-flat-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "vertico-flat" '("vertico-flat-")) (defvar vertico-grid-mode nil "Non-nil if Vertico-Grid mode is enabled.
 See the `vertico-grid-mode' command
@@ -3478,54 +3470,54 @@ either customize it (see the info node `Easy Customization')
 or call the function `vertico-grid-mode'.") (custom-autoload 'vertico-grid-mode "vertico-grid" nil) (autoload 'vertico-grid-mode "vertico-grid" "Grid display for Vertico.
 
 This is a global minor mode.  If called interactively, toggle the
-`Vertico-Grid mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Vertico-Grid mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='vertico-grid-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "vertico-grid" '("vertico-grid-")) (defvar vertico-indexed-mode nil "Non-nil if Vertico-Indexed mode is enabled.
 See the `vertico-indexed-mode' command
 for a description of this minor mode.") (custom-autoload 'vertico-indexed-mode "vertico-indexed" nil) (autoload 'vertico-indexed-mode "vertico-indexed" "Prefix candidates with indices.
 
 This is a global minor mode.  If called interactively, toggle the
-`Vertico-Indexed mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Vertico-Indexed mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='vertico-indexed-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "vertico-indexed" '("vertico-indexed-")) (defvar vertico-mouse-mode nil "Non-nil if Vertico-Mouse mode is enabled.
 See the `vertico-mouse-mode' command
 for a description of this minor mode.") (custom-autoload 'vertico-mouse-mode "vertico-mouse" nil) (autoload 'vertico-mouse-mode "vertico-mouse" "Mouse support for Vertico.
 
 This is a global minor mode.  If called interactively, toggle the
-`Vertico-Mouse mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Vertico-Mouse mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='vertico-mouse-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "vertico-mouse" '("vertico-mouse-")) (defvar vertico-multiform-mode nil "Non-nil if Vertico-Multiform mode is enabled.
 See the `vertico-multiform-mode' command
@@ -3535,19 +3527,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `vertico-multiform-mode'.") (custom-autoload 'vertico-multiform-mode "vertico-multiform" nil) (autoload 'vertico-multiform-mode "vertico-multiform" "Configure Vertico in various forms per command.
 
 This is a global minor mode.  If called interactively, toggle the
-`Vertico-Multiform mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Vertico-Multiform mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='vertico-multiform-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "vertico-multiform" '("vertico-multiform-")) (autoload 'vertico-quick-jump "vertico-quick" "Jump to candidate using quick keys." t) (autoload 'vertico-quick-exit "vertico-quick" "Exit with candidate using quick keys." t) (autoload 'vertico-quick-insert "vertico-quick" "Insert candidate using quick keys." t) (register-definition-prefixes "vertico-quick" '("vertico-quick")) (autoload 'vertico-repeat-save "vertico-repeat" "Save Vertico session for `vertico-repeat'.
 This function must be registered as `minibuffer-setup-hook'.") (autoload 'vertico-repeat-next "vertico-repeat" "Repeat Nth next Vertico completion session.
@@ -3571,18 +3562,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `vertico-reverse-mode'.") (custom-autoload 'vertico-reverse-mode "vertico-reverse" nil) (autoload 'vertico-reverse-mode "vertico-reverse" "Reverse the Vertico display.
 
 This is a global minor mode.  If called interactively, toggle the
-`Vertico-Reverse mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Vertico-Reverse mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='vertico-reverse-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "vertico-reverse" '("vertico-reverse-map")) (autoload 'vertico-suspend "vertico-suspend" "Suspend the current completion session.
 If the command is invoked from within the Vertico minibuffer, the
@@ -3596,19 +3587,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `vertico-unobtrusive-mode'.") (custom-autoload 'vertico-unobtrusive-mode "vertico-unobtrusive" nil) (autoload 'vertico-unobtrusive-mode "vertico-unobtrusive" "Unobtrusive display for Vertico.
 
 This is a global minor mode.  If called interactively, toggle the
-`Vertico-Unobtrusive mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Vertico-Unobtrusive mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='vertico-unobtrusive-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "vertico-unobtrusive" '("vertico-unobtrusive--restore")) (provide 'vertico-autoloads)) "org-contrib" ((ox-bibtex org-depend ol-mew org-checklist ol-wl ol-bookmark ob-hledger org-screen ox-extra ol-git-link ob-mathomatic org-panel ob-oz ob-io ob-fomus ob-vala org-wikinodes org-license org-mairix ob-csharp org-contribdir org-learn ob-stata ox-freemind ob-abc org-collector ol-elisp-symbol org-bibtex-extras org-registry org-expiry org-annotate-file ob-ebnf orgtbl-sqlinsert ob-eukleides org-eldoc org-secretary ob-shen ox-groff org-invoice ob-vbnet org-sudoku org-effectiveness ol-vm ob-J org-toc org-screenshot org-contrib ox-confluence ox-s5 org-interactive-query ob-picolisp org-choose org-contrib-autoloads org-mac-iCal ox-deck ob-ledger ob-tcl ob-mscgen) (register-definition-prefixes "ob-J" '("obj-" "org-babel-")) (register-definition-prefixes "ob-abc" '("org-babel-")) (register-definition-prefixes "ob-csharp" '("org-babel-")) (register-definition-prefixes "ob-ebnf" '("org-babel-")) (register-definition-prefixes "ob-eukleides" '("org-")) (register-definition-prefixes "ob-fomus" '("org-babel-")) (register-definition-prefixes "ob-hledger" '("org-babel-")) (register-definition-prefixes "ob-io" '("org-babel-")) (register-definition-prefixes "ob-ledger" '("org-babel-")) (register-definition-prefixes "ob-mathomatic" '("org-babel-")) (register-definition-prefixes "ob-mscgen" '("org-babel-")) (register-definition-prefixes "ob-oz" '("org-babel-" "oz-send-string-expression")) (register-definition-prefixes "ob-picolisp" '("org-babel-")) (register-definition-prefixes "ob-shen" '("org-babel-")) (register-definition-prefixes "ob-stata" '("org-babel-")) (register-definition-prefixes "ob-tcl" '("org-babel-")) (register-definition-prefixes "ob-vala" '("org-babel-")) (register-definition-prefixes "ob-vbnet" '("org-babel-")) (register-definition-prefixes "ol-bookmark" '("org-bookmark-")) (register-definition-prefixes "ol-elisp-symbol" '("org-elisp-symbol-")) (register-definition-prefixes "ol-git-link" '("org-git")) (register-definition-prefixes "ol-mew" '("org-mew-")) (register-definition-prefixes "ol-vm" '("org-vm-")) (register-definition-prefixes "ol-wl" '("org-wl-")) (autoload 'org-annotate-file "org-annotate-file" "Visit `org-annotate-file-storage-file` and add a new annotation section.
 The annotation is opened at the new section which will be referencing
@@ -3769,19 +3759,18 @@ Async compilation of packages can be controlled by
 `async-bytecomp-allowed-packages'.
 
 This is a global minor mode.  If called interactively, toggle the
-`Async-Bytecomp-Package mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Async-Bytecomp-Package mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='async-bytecomp-package-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'async-byte-compile-file "async-bytecomp" "Byte compile Lisp code FILE asynchronously.
 
@@ -3795,18 +3784,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `dired-async-mode'.") (custom-autoload 'dired-async-mode "dired-async" nil) (autoload 'dired-async-mode "dired-async" "Do dired actions asynchronously.
 
 This is a global minor mode.  If called interactively, toggle the
-`Dired-Async mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Dired-Async mode' mode.  If the prefix argument is positive, enable the
+mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='dired-async-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'dired-async-do-copy "dired-async" "Run ‘dired-do-copy’ asynchronously.
 
@@ -3935,19 +3924,19 @@ See info node `(transient)Modifying Existing Transients'.
 
 (fn PREFIX LOC)") (function-put 'transient-remove-suffix 'lisp-indent-function 'defun) (register-definition-prefixes "transient" '("find-function-advised-original" "transient")) (provide 'transient-autoloads)) "gptel" ((gptel-org gptel-gemini gptel-openai gptel-curl gptel-ollama gptel gptel-privategpt gptel-context gptel-kagi gptel-autoloads gptel-rewrite gptel-anthropic gptel-transient) (autoload 'gptel-mode "gptel" "Minor mode for interacting with LLMs.
 
-This is a minor mode.  If called interactively, toggle the `GPTel
-mode' mode.  If the prefix argument is positive, enable the mode,
-and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `GPTel mode'
+mode.  If the prefix argument is positive, enable the mode, and if it is
+zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `gptel-mode'.
+evaluate the variable `gptel-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'gptel-send "gptel" "Submit this prompt to the current LLM backend.
 
@@ -4510,19 +4499,19 @@ search buffer or show a concrete entry.
 
 (fn RECORD)") (register-definition-prefixes "elfeed-show" '("elfeed-")) (register-definition-prefixes "xml-query" '("xml-query")) (provide 'elfeed-autoloads)) "tablist" ((tablist-filter tablist-autoloads tablist) (autoload 'tablist-minor-mode "tablist" "Toggle tablist minor mode.
 
-This is a minor mode.  If called interactively, toggle the
-`Tablist minor mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Tablist
+minor mode' mode.  If the prefix argument is positive, enable the mode,
+and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `tablist-minor-mode'.
+evaluate the variable `tablist-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'tablist-mode "tablist" "
 
@@ -4566,19 +4555,19 @@ the following form evaluates to nil:
 
 \\{pdf-annot-minor-mode-map}
 
-This is a minor mode.  If called interactively, toggle the
-`Pdf-Annot minor mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Pdf-Annot
+minor mode' mode.  If the prefix argument is positive, enable the mode,
+and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-annot-minor-mode'.
+evaluate the variable `pdf-annot-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "pdf-annot" '("pdf-annot-")) (register-definition-prefixes "pdf-cache" '("boundingbox" "define-pdf-cache-function" "page" "pdf-cache-" "textregions")) (register-definition-prefixes "pdf-dev" '("pdf-dev-")) (autoload 'pdf-history-minor-mode "pdf-history" "Keep a history of previously visited pages.
 
@@ -4588,20 +4577,19 @@ may be navigated with the following keys.
 
 \\{pdf-history-minor-mode-map}
 
-This is a minor mode.  If called interactively, toggle the
-`Pdf-History minor mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+This is a minor mode.  If called interactively, toggle the `Pdf-History
+minor mode' mode.  If the prefix argument is positive, enable the mode,
+and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-history-minor-mode'.
+evaluate the variable `pdf-history-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "pdf-history" '("pdf-history-")) (register-definition-prefixes "pdf-info" '("pdf-info-")) (autoload 'pdf-isearch-minor-mode "pdf-isearch" "Isearch mode for PDF buffer.
 
@@ -4633,20 +4621,19 @@ that not every isearch command work as expected.
 
 \\{pdf-isearch-active-mode-map}
 
-This is a minor mode.  If called interactively, toggle the
-`Pdf-Isearch minor mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+This is a minor mode.  If called interactively, toggle the `Pdf-Isearch
+minor mode' mode.  If the prefix argument is positive, enable the mode,
+and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-isearch-minor-mode'.
+evaluate the variable `pdf-isearch-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "pdf-isearch" '("pdf-isearch-")) (autoload 'pdf-links-minor-mode "pdf-links" "Handle links in PDF documents.\\<pdf-links-minor-mode-map>
 
@@ -4657,19 +4644,19 @@ links via \\[pdf-links-isearch-link].
 
 \\{pdf-links-minor-mode-map}
 
-This is a minor mode.  If called interactively, toggle the
-`Pdf-Links minor mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Pdf-Links
+minor mode' mode.  If the prefix argument is positive, enable the mode,
+and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-links-minor-mode'.
+evaluate the variable `pdf-links-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'pdf-links-action-perform "pdf-links" "Follow LINK, depending on its type.
 
@@ -4694,72 +4681,72 @@ see.
 
 (fn &optional NO-QUERY-P SKIP-DEPENDENCIES-P NO-ERROR-P FORCE-DEPENDENCIES-P)") (register-definition-prefixes "pdf-loader" '("pdf-loader--")) (register-definition-prefixes "pdf-macs" '("pdf-view-")) (autoload 'pdf-misc-minor-mode "pdf-misc" "FIXME:  Not documented.
 
-This is a minor mode.  If called interactively, toggle the
-`Pdf-Misc minor mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Pdf-Misc
+minor mode' mode.  If the prefix argument is positive, enable the mode,
+and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-misc-minor-mode'.
+evaluate the variable `pdf-misc-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'pdf-misc-size-indication-minor-mode "pdf-misc" "Provide a working size indication in the mode-line.
 
 This is a minor mode.  If called interactively, toggle the
-`Pdf-Misc-Size-Indication minor mode' mode.  If the prefix
-argument is positive, enable the mode, and if it is zero or
-negative, disable the mode.
+`Pdf-Misc-Size-Indication minor mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-misc-size-indication-minor-mode'.
+evaluate the variable `pdf-misc-size-indication-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'pdf-misc-menu-bar-minor-mode "pdf-misc" "Display a PDF Tools menu in the menu-bar.
 
 This is a minor mode.  If called interactively, toggle the
 `Pdf-Misc-Menu-Bar minor mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-misc-menu-bar-minor-mode'.
+evaluate the variable `pdf-misc-menu-bar-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'pdf-misc-context-menu-minor-mode "pdf-misc" "Provide a right-click context menu in PDF buffers.
 
 \\{pdf-misc-context-menu-minor-mode-map}
 
 This is a minor mode.  If called interactively, toggle the
-`Pdf-Misc-Context-Menu minor mode' mode.  If the prefix argument
-is positive, enable the mode, and if it is zero or negative,
-disable the mode.
+`Pdf-Misc-Context-Menu minor mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-misc-context-menu-minor-mode'.
+evaluate the variable `pdf-misc-context-menu-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "pdf-misc" '("pdf-misc-")) (autoload 'pdf-occur "pdf-occur" "List lines matching STRING or PCRE.
 
@@ -4784,19 +4771,18 @@ This global minor mode enables (or disables)
 in all current and future ibuffer/dired buffer.
 
 This is a global minor mode.  If called interactively, toggle the
-`Pdf-Occur-Global minor mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Pdf-Occur-Global minor mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='pdf-occur-global-minor-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'pdf-occur-ibuffer-minor-mode "pdf-occur" "Hack into ibuffer's do-occur binding.
 
@@ -4807,18 +4793,18 @@ and otherwise fallback to `ibuffer-do-occur'.
 
 This is a minor mode.  If called interactively, toggle the
 `Pdf-Occur-Ibuffer minor mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-occur-ibuffer-minor-mode'.
+evaluate the variable `pdf-occur-ibuffer-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'pdf-occur-dired-minor-mode "pdf-occur" "Hack into dired's `dired-do-search' binding.
 
@@ -4828,19 +4814,18 @@ version of `occur', if all marked buffer's are in `pdf-view-mode'
 and otherwise fallback to `dired-do-search'.
 
 This is a minor mode.  If called interactively, toggle the
-`Pdf-Occur-Dired minor mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Pdf-Occur-Dired minor mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-occur-dired-minor-mode'.
+evaluate the variable `pdf-occur-dired-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "pdf-occur" '("pdf-occur-")) (autoload 'pdf-outline-minor-mode "pdf-outline" "Display an outline of a PDF document.
 
@@ -4850,20 +4835,19 @@ buffer.
 
 \\{pdf-outline-minor-mode-map}
 
-This is a minor mode.  If called interactively, toggle the
-`Pdf-Outline minor mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+This is a minor mode.  If called interactively, toggle the `Pdf-Outline
+minor mode' mode.  If the prefix argument is positive, enable the mode,
+and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-outline-minor-mode'.
+evaluate the variable `pdf-outline-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'pdf-outline "pdf-outline" "Display an PDF outline of BUFFER.
 
@@ -4888,19 +4872,19 @@ function displays the PDF page corresponding to the current
 position in the TeX buffer.  This function only works together
 with AUCTeX.
 
-This is a minor mode.  If called interactively, toggle the
-`Pdf-Sync minor mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Pdf-Sync
+minor mode' mode.  If the prefix argument is positive, enable the mode,
+and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `pdf-sync-minor-mode'.
+evaluate the variable `pdf-sync-minor-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "pdf-sync" '("pdf-sync-")) (defvar pdf-tools-handle-upgrades t "Whether PDF Tools should handle upgrading itself.") (custom-autoload 'pdf-tools-handle-upgrades "pdf-tools" t) (autoload 'pdf-tools-install "pdf-tools" "Install PDF-Tools in all current and future PDF buffers.
 
@@ -4951,18 +4935,18 @@ or call the function `pdf-virtual-global-minor-mode'.") (custom-autoload 'pdf-vi
 
 This is a global minor mode.  If called interactively, toggle the
 `Pdf-Virtual-Global minor mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='pdf-virtual-global-minor-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'pdf-virtual-buffer-create "pdf-virtual" "
 
@@ -5007,18 +4991,18 @@ either customize it (see the info node `Easy Customization')
 or call the function `eat-eshell-mode'.") (custom-autoload 'eat-eshell-mode "eat" nil) (autoload 'eat-eshell-mode "eat" "Toggle Eat terminal emulation in Eshell.
 
 This is a global minor mode.  If called interactively, toggle the
-`Eat-Eshell mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Eat-Eshell mode' mode.  If the prefix argument is positive, enable the
+mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='eat-eshell-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (defvar eat-eshell-visual-command-mode nil "Non-nil if Eat-Eshell-Visual-Command mode is enabled.
 See the `eat-eshell-visual-command-mode' command
@@ -5029,18 +5013,18 @@ or call the function `eat-eshell-visual-command-mode'.") (custom-autoload 'eat-e
 
 This is a global minor mode.  If called interactively, toggle the
 `Eat-Eshell-Visual-Command mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='eat-eshell-visual-command-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'eat-project "eat" "Start Eat in the current project's root directory.
 
@@ -5310,18 +5294,18 @@ server name and search for a match in `erc-networks-alist'.") (make-obsolete 'er
 The default position of childframe is upper corner.
 
 This is a minor mode.  If called interactively, toggle the
-`Eldoc-Box-Hover mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Eldoc-Box-Hover mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `eldoc-box-hover-mode'.
+evaluate the variable `eldoc-box-hover-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'eldoc-box-hover-at-point-mode "eldoc-box" "A convenient minor mode to display doc at point.
 
@@ -5329,18 +5313,18 @@ You can use \\[keyboard-quit] to hide the doc.
 
 This is a minor mode.  If called interactively, toggle the
 `Eldoc-Box-Hover-At-Point mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `eldoc-box-hover-at-point-mode'.
+evaluate the variable `eldoc-box-hover-at-point-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "eldoc-box" '("eldoc-box-")) (provide 'eldoc-box-autoloads)) "json-snatcher" ((json-snatcher-autoloads json-snatcher) (autoload 'jsons-print-path "json-snatcher" "Print the path to the JSON value under point, and save it in the kill ring." t) (register-definition-prefixes "json-snatcher" '("jsons-")) (provide 'json-snatcher-autoloads)) "json-mode" ((json-mode json-mode-autoloads) (defconst json-mode-standard-file-ext '(".json" ".jsonld") "List of JSON file extensions.") (defsubst json-mode--update-auto-mode (filenames) "Update the `json-mode' entry of `auto-mode-alist'.
 
@@ -5555,18 +5539,18 @@ Does not require `treemacs-git-mode' to be active.
 
 This is a global minor mode.  If called interactively, toggle the
 `Treemacs-Git-Commit-Diff mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='treemacs-git-commit-diff-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "treemacs-git-commit-diff-mode" '("treemacs--")) (defvar treemacs-indicate-top-scroll-mode nil "Non-nil if Treemacs-Indicate-Top-Scroll mode is enabled.
 See the `treemacs-indicate-top-scroll-mode' command
@@ -5586,19 +5570,19 @@ This mode makes use of `treemacs-user-header-line-format' - and thus
 these options.
 
 This is a global minor mode.  If called interactively, toggle the
-`Treemacs-Indicate-Top-Scroll mode' mode.  If the prefix argument
-is positive, enable the mode, and if it is zero or negative,
-disable the mode.
+`Treemacs-Indicate-Top-Scroll mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='treemacs-indicate-top-scroll-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "treemacs-header-line" '("treemacs-")) (autoload 'treemacs-common-helpful-hydra "treemacs-hydras" "Summon a helpful hydra to show you the treemacs keymap.
 
@@ -5711,18 +5695,18 @@ The peeked window can be scrolled using
 `treemacs-next/previous-page-other-window'
 
 This is a global minor mode.  If called interactively, toggle the
-`Treemacs-Peek mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Treemacs-Peek mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='treemacs-peek-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "treemacs-peek-mode" '("treemacs--")) (register-definition-prefixes "treemacs-persistence" '("treemacs-")) (defvar treemacs-project-follow-mode nil "Non-nil if Treemacs-Project-Follow mode is enabled.
 See the `treemacs-project-follow-mode' command
@@ -5753,18 +5737,18 @@ This mode requires at least Emacs version 27 since it relies on
 
 This is a global minor mode.  If called interactively, toggle the
 `Treemacs-Project-Follow mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='treemacs-project-follow-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "treemacs-project-follow-mode" '("treemacs--")) (register-definition-prefixes "treemacs-rendering" '("treemacs-")) (register-definition-prefixes "treemacs-scope" '("treemacs-")) (autoload 'treemacs--flatten&sort-imenu-index "treemacs-tag-follow-mode" "Flatten current file's imenu index and sort it by tag position.
 The tags are sorted into the order in which they appear, regardless of section
@@ -5796,19 +5780,18 @@ short time and giving the appearance of the tag follow action lasting much
 longer than it really does.
 
 This is a global minor mode.  If called interactively, toggle the
-`Treemacs-Tag-Follow mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Treemacs-Tag-Follow mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='treemacs-tag-follow-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "treemacs-tag-follow-mode" '("treemacs--")) (autoload 'treemacs--expand-file-node "treemacs-tags" "Open tag items for file BTN.
 Recursively open all tags below BTN when RECURSIVE is non-nil.
@@ -5846,35 +5829,34 @@ If it doesn't have active mark, it will select current line and duplicate it.
 (fn N)" t) (register-definition-prefixes "duplicate-thing" '("duplicate-thing-")) (provide 'duplicate-thing-autoloads)) "breadcrumb" ((breadcrumb breadcrumb-pkg breadcrumb-autoloads) (autoload 'breadcrumb-imenu-crumbs "breadcrumb" "Describe point inside the Imenu tree of current file.") (autoload 'breadcrumb-project-crumbs "breadcrumb" "Describing the current file inside project.") (autoload 'breadcrumb-local-mode "breadcrumb" "Header lines with breadcrumbs.
 
 This is a minor mode.  If called interactively, toggle the
-`Breadcrumb-Local mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Breadcrumb-Local mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `breadcrumb-local-mode'.
+evaluate the variable `breadcrumb-local-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'breadcrumb-mode 'globalized-minor-mode t) (defvar breadcrumb-mode nil "Non-nil if Breadcrumb mode is enabled.
 See the `breadcrumb-mode' command
 for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
-or call the function `breadcrumb-mode'.") (custom-autoload 'breadcrumb-mode "breadcrumb" nil) (autoload 'breadcrumb-mode "breadcrumb" "Toggle Bc-Local mode in all buffers.
+or call the function `breadcrumb-mode'.") (custom-autoload 'breadcrumb-mode "breadcrumb" nil) (autoload 'breadcrumb-mode "breadcrumb" "Toggle Breadcrumb-Local mode in all buffers.
 With prefix ARG, enable Breadcrumb mode if ARG is positive; otherwise, disable it.
 
 If called from Lisp, toggle the mode if ARG is `toggle'.
 Enable the mode if ARG is nil, omitted, or is a positive number.
 Disable the mode if ARG is a negative number.
 
-Bc-Local mode is enabled in all buffers where `bc--turn-on-local-mode-on-behalf-of-global-mode' would do it.
+Breadcrumb-Local mode is enabled in all buffers where `breadcrumb--turn-on-local-mode-on-behalf-of-global-mode' would do it.
 
-See `bc-local-mode' for more information on Bc-Local mode.
+See `breadcrumb-local-mode' for more information on Breadcrumb-Local mode.
 
 (fn &optional ARG)" t) (autoload 'breadcrumb-jump "breadcrumb" "Like \\[execute-extended-command] `imenu', but breadcrumb-powered." t) (register-definition-prefixes "breadcrumb" '("breadcrumb-")) (provide 'breadcrumb-autoloads)) "parrot" ((parrot-autoloads parrot parrot-rotate) (defvar parrot-mode nil "Non-nil if Parrot mode is enabled.
 See the `parrot-mode' command
@@ -5886,18 +5868,18 @@ or call the function `parrot-mode'.") (custom-autoload 'parrot-mode "parrot" nil
 You can customize this minor mode, see option `parrot-mode'.
 
 This is a global minor mode.  If called interactively, toggle the
-`Parrot mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
+`Parrot mode' mode.  If the prefix argument is positive, enable the
+mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='parrot-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "parrot" '("parrot-")) (register-definition-prefixes "parrot-rotate" '("parrot-rotate-" "pulse-flag")) (provide 'parrot-autoloads)) "php-mode" ((php-complete php-defs php-mode-autoloads php php-local-manual php-ide php-align php-mode-debug php-face php-flymake php-ide-phpactor php-format php-project php-mode) (let ((loads (get 'php 'custom-loads))) (if (member '"php" loads) nil (put 'php 'custom-loads (cons '"php" loads)) (put 'languages 'custom-loads (cons 'php (get 'languages 'custom-loads))))) (autoload 'php-base-mode "php" "Generic major mode for editing PHP.
 
@@ -5917,19 +5899,19 @@ When `DOCUMENT-ROOT' is NIL, the document root is obtained from `ROUTER-OR-DIR'.
 
 (fn &optional FILE)" t) (register-definition-prefixes "php" '("php-")) (autoload 'php-align-setup "php-align" "Setup alignment configuration for PHP code.") (autoload 'php-align-mode "php-align" "Alignment lines for PHP script.
 
-This is a minor mode.  If called interactively, toggle the
-`Php-Align mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Php-Align
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `php-align-mode'.
+evaluate the variable `php-align-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "php-align" '("php-align-")) (let ((loads (get 'php-complete 'custom-loads))) (if (member '"php-complete" loads) nil (put 'php-complete 'custom-loads (cons '"php-complete" loads)) (put 'php-mode 'custom-loads (cons 'php-complete (get 'php-mode 'custom-loads))))) (defvar php-complete-function-modules '(bcmath core gmp libxml intl mbstring pcntl posix sodium xml xmlwriter) "Module names for function names completion.") (custom-autoload 'php-complete-function-modules "php-complete" t) (put 'php-complete-function-modules 'safe-local-variable (lambda (value) (and (listp value) (cl-loop for v in values always (assq v php-defs-functions-alist))))) (autoload 'php-complete-complete-function "php-complete" "Complete PHP keyword at point.
 
@@ -5942,18 +5924,18 @@ See `flymake-diagnostic-functions' about REPORT-FN and ARGS parameters.
 (fn REPORT-FN &rest ARGS)") (register-definition-prefixes "php-flymake" '("php-flymake-")) (autoload 'php-format-this-buffer-file "php-format" "Apply format this buffer file." t) (autoload 'php-format-project "php-format" "Apply format this buffer file." t) (autoload 'php-format-on-after-save-hook "php-format" "Apply format on after save hook.") (autoload 'php-format-auto-mode "php-format" "Automatically apply formatting when saving an edited file.
 
 This is a minor mode.  If called interactively, toggle the
-`Php-Format-Auto mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Php-Format-Auto mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `php-format-auto-mode'.
+evaluate the variable `php-format-auto-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "php-format" '("php-format-")) (defvar php-ide-features nil "A set of PHP-IDE features symbol.") (custom-autoload 'php-ide-features "php-ide" t) (put 'php-ide-features 'safe-local-variable (lambda (v) (cl-loop for feature in (if (listp v) v (list v)) always (symbolp feature)))) (defvar php-ide-eglot-executable nil "Command name or path to the command of Eglot LSP executable.") (custom-autoload 'php-ide-eglot-executable "php-ide" t) (put 'php-ide-eglot-executable 'safe-local-variable (lambda (v) (cond ((stringp v) (file-exists-p v)) ((listp v) (cl-every #'stringp v)) ((assq v php-ide-lsp-command-alist))))) (autoload 'php-ide-eglot-server-program "php-ide" "Return a list of command to execute LSP Server.") (defvar php-ide-mode-functions nil "Hook functions called when before activating or deactivating PHP-IDE.
 Notice that two arguments (FEATURE ACTIVATE) are given.
@@ -5961,19 +5943,19 @@ Notice that two arguments (FEATURE ACTIVATE) are given.
 FEATURE: A symbol, like \\='lsp-mode.
 ACTIVATE: T is given when activeting, NIL when deactivating PHP-IDE.") (custom-autoload 'php-ide-mode-functions "php-ide" t) (put 'php-ide-mode-functions 'safe-local-variable (lambda (functions) (and (listp functions) (cl-every #'functionp functions)))) (autoload 'php-ide-mode "php-ide" "Minor mode for integrate IDE-like tools.
 
-This is a minor mode.  If called interactively, toggle the
-`Php-Ide mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Php-Ide
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `php-ide-mode'.
+evaluate the variable `php-ide-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'php-ide-turn-on "php-ide" "Turn on PHP IDE-FEATURES and execute `php-ide-mode'.") (register-definition-prefixes "php-ide" '("php-ide-")) (autoload 'php-ide-phpactor-activate "php-ide-phpactor" "Activate PHP-IDE using phpactor.el." t) (autoload 'php-ide-phpactor-deactivate "php-ide-phpactor" "Dectivate PHP-IDE using phpactor.el." t) (register-definition-prefixes "php-ide-phpactor" '("php-ide-phpactor-")) (autoload 'php-local-manual-search "php-local-manual" "Search the local PHP documentation (i.e. in `php-manual-path') for
 the word at point.  The function returns t if the requested documentation
@@ -7345,18 +7327,18 @@ if you want finer control over when the wip refs are updated;
 but that is discouraged.
 
 This is a global minor mode.  If called interactively, toggle the
-`Magit-Wip mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Magit-Wip mode' mode.  If the prefix argument is positive, enable the
+mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='magit-wip-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'magit-wip-after-save-mode 'globalized-minor-mode t) (defvar magit-wip-after-save-mode nil "Non-nil if Magit-Wip-After-Save mode is enabled.
 See the `magit-wip-after-save-mode' command
@@ -7386,19 +7368,18 @@ in the worktree and the other contains snapshots of the entries
 in the index.
 
 This is a global minor mode.  If called interactively, toggle the
-`Magit-Wip-After-Apply mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Magit-Wip-After-Apply mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='magit-wip-after-apply-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (defvar magit-wip-before-change-mode nil "Non-nil if Magit-Wip-Before-Change mode is enabled.
 See the `magit-wip-before-change-mode' command
@@ -7416,18 +7397,18 @@ command which is about to be called are committed.
 
 This is a global minor mode.  If called interactively, toggle the
 `Magit-Wip-Before-Change mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='magit-wip-before-change-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'magit-wip-commit-initial-backup "magit-wip" "Before saving, commit current file to a worktree wip ref.
 
@@ -7451,35 +7432,34 @@ a Git repository.") (register-definition-prefixes "magit-wip" '("magit-")) (auto
 (fn WORKTREE PATH)" t) (register-definition-prefixes "magit-worktree" '("magit-")) (provide 'magit-autoloads)) "magit-filenotify" ((magit-filenotify-autoloads magit-filenotify) (autoload 'magit-filenotify-mode "magit-filenotify" "Refresh status buffer if source tree changes.
 
 This is a minor mode.  If called interactively, toggle the
-`Magit-Filenotify mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Magit-Filenotify mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `magit-filenotify-mode'.
+evaluate the variable `magit-filenotify-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "magit-filenotify" '("magit-filenotify-")) (provide 'magit-filenotify-autoloads)) "sqlite3" ((sqlite3-autoloads sqlite3) (register-definition-prefixes "sqlite3" '("sqlite3-api-build-command")) (provide 'sqlite3-autoloads)) "diff-hl" ((diff-hl-flydiff diff-hl-show-hunk diff-hl-dired diff-hl diff-hl-show-hunk-posframe diff-hl-inline-popup diff-hl-autoloads diff-hl-margin diff-hl-amend) (autoload 'diff-hl-mode "diff-hl" "Toggle VC diff highlighting.
 
-This is a minor mode.  If called interactively, toggle the
-`Diff-Hl mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Diff-Hl
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `diff-hl-mode'.
+evaluate the variable `diff-hl-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'turn-on-diff-hl-mode "diff-hl" "Turn on `diff-hl-mode' or `diff-hl-dir-mode' in a buffer if appropriate.") (autoload 'diff-hl--global-turn-on "diff-hl" "Call `turn-on-diff-hl-mode' if the current major mode is applicable.") (autoload 'diff-hl-set-reference-rev "diff-hl" "Set the reference revision globally to REV.
 When called interactively, REV read with completion.
@@ -7523,18 +7503,18 @@ and most importantly, \"amending\" the most recent one.
 Currently only supports Git, Mercurial and Bazaar.
 
 This is a minor mode.  If called interactively, toggle the
-`Diff-Hl-Amend mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Diff-Hl-Amend mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `diff-hl-amend-mode'.
+evaluate the variable `diff-hl-amend-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'global-diff-hl-amend-mode 'globalized-minor-mode t) (defvar global-diff-hl-amend-mode nil "Non-nil if Global Diff-Hl-Amend mode is enabled.
 See the `global-diff-hl-amend-mode' command
@@ -7555,18 +7535,18 @@ See `diff-hl-amend-mode' for more information on Diff-Hl-Amend mode.
 (fn &optional ARG)" t) (register-definition-prefixes "diff-hl-amend" '("diff-hl-amend-setup" "turn-on-diff-hl-amend-mode")) (autoload 'diff-hl-dired-mode "diff-hl-dired" "Toggle VC diff highlighting on the side of a Dired window.
 
 This is a minor mode.  If called interactively, toggle the
-`Diff-Hl-Dired mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Diff-Hl-Dired mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `diff-hl-dired-mode'.
+evaluate the variable `diff-hl-dired-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'diff-hl-dired-mode-unless-remote "diff-hl-dired") (register-definition-prefixes "diff-hl-dired" '("diff-hl-dired-")) (defvar diff-hl-flydiff-mode nil "Non-nil if Diff-Hl-Flydiff mode is enabled.
 See the `diff-hl-flydiff-mode' command
@@ -7578,18 +7558,18 @@ or call the function `diff-hl-flydiff-mode'.") (custom-autoload 'diff-hl-flydiff
 This is a global minor mode.  It alters how `diff-hl-mode' works.
 
 This is a global minor mode.  If called interactively, toggle the
-`Diff-Hl-Flydiff mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Diff-Hl-Flydiff mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='diff-hl-flydiff-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "diff-hl-flydiff" '("diff-hl-flydiff")) (autoload 'diff-hl-inline-popup-hide "diff-hl-inline-popup" "Hide the current inline popup." t) (autoload 'diff-hl-inline-popup-show "diff-hl-inline-popup" "Create a phantom overlay to show the inline popup, with some
 content LINES, and a HEADER and a FOOTER, at POINT.  KEYMAP is
@@ -7604,37 +7584,36 @@ either customize it (see the info node `Easy Customization')
 or call the function `diff-hl-margin-mode'.") (custom-autoload 'diff-hl-margin-mode "diff-hl-margin" nil) (autoload 'diff-hl-margin-mode "diff-hl-margin" "Toggle displaying `diff-hl-mode' highlights on the margin.
 
 This is a global minor mode.  If called interactively, toggle the
-`Diff-Hl-Margin mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+`Diff-Hl-Margin mode' mode.  If the prefix argument is positive, enable
+the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='diff-hl-margin-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (autoload 'diff-hl-margin-local-mode "diff-hl-margin" "Toggle displaying `diff-hl-mode' highlights on the margin locally.
 
 You probably shouldn't use this function directly.
 
 This is a minor mode.  If called interactively, toggle the
-`Diff-Hl-Margin-Local mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Diff-Hl-Margin-Local mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `diff-hl-margin-local-mode'.
+evaluate the variable `diff-hl-margin-local-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "diff-hl-margin" '("diff-hl-")) (autoload 'diff-hl-show-hunk-inline-popup "diff-hl-show-hunk" "Implementation to show the hunk in a inline popup.
 BUFFER is a buffer with the hunk.
@@ -7651,18 +7630,18 @@ customizable.  It can be also invoked with the command
 
 This is a minor mode.  If called interactively, toggle the
 `Diff-Hl-Show-Hunk-Mouse mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `diff-hl-show-hunk-mouse-mode'.
+evaluate the variable `diff-hl-show-hunk-mouse-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (put 'global-diff-hl-show-hunk-mouse-mode 'globalized-minor-mode t) (defvar global-diff-hl-show-hunk-mouse-mode nil "Non-nil if Global Diff-Hl-Show-Hunk-Mouse mode is enabled.
 See the `global-diff-hl-show-hunk-mouse-mode' command
@@ -7818,19 +7797,18 @@ Use SKIP-COMPILE to skip compilation.
 (fn)" t) (autoload 'markdown-live-preview-mode "markdown-mode" "Toggle native previewing on save for a specific markdown file.
 
 This is a minor mode.  If called interactively, toggle the
-`Markdown-Live-Preview mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Markdown-Live-Preview mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `markdown-live-preview-mode'.
+evaluate the variable `markdown-live-preview-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "markdown-mode" '("defun-markdown-" "gfm-" "markdown")) (provide 'markdown-mode-autoloads)) "xterm-color" ((xterm-color-autoloads xterm-color) (autoload 'xterm-color-filter-strip "xterm-color" "Translate ANSI color sequences in STRING into text properties.
 Return new STRING with text properties applied.
@@ -8226,19 +8204,19 @@ If NOCONFIRM is non-nil, install all dependencies without prompting user.
 
 (fn &optional NO-DL NOCONFIRM)" t) (autoload 'rustic-doc-mode "rustic-doc" "Convert rust html docs to .org, and browse the converted docs.
 
-This is a minor mode.  If called interactively, toggle the
-`Rustic-Doc mode' mode.  If the prefix argument is positive,
-enable the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Rustic-Doc
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `rustic-doc-mode'.
+evaluate the variable `rustic-doc-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "rustic-doc" '("rustic-doc-")) (autoload 'rustic-cargo-expand "rustic-expand" "Run 'cargo expand'.
 
@@ -8354,19 +8332,18 @@ See also `helpful-callable' and `helpful-variable'.
 (fn &optional SYM)" t) (autoload 'el-docstring-sap-select-display-func "el-docstring-sap" "Select a `el-docstring-sap-mode' display function from `el-docstring-sap--display-funcs'." t) (autoload 'el-docstring-sap-mode "el-docstring-sap" "minor-mode to popup help for the elisp symbol at point.
 
 This is a minor mode.  If called interactively, toggle the
-`El-Docstring-Sap mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`El-Docstring-Sap mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `el-docstring-sap-mode'.
+evaluate the variable `el-docstring-sap-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (register-definition-prefixes "el-docstring-sap" '("el-docstring-sap--")) (provide 'el-docstring-sap-autoloads)) "quick-peek" ((quick-peek-autoloads quick-peek) (autoload 'quick-peek-overlay-at "quick-peek" "Find overlay for line at POS.
 
@@ -8389,19 +8366,19 @@ This removes all breakpoints in this function." t) (autoload 'edebug-x-show-data
 Frame is split into two vertically showing the tabluated buffers
 for each." t) (autoload 'edebug-x-show-breakpoints "edebug-x" "Display breakpoints in a tabulated list buffer." t) (autoload 'edebug-x-show-instrumented "edebug-x" "Display instrumented functions in a tabluated list buffer." t) (autoload 'edebug-x-mode "edebug-x" "A minor mode that makes it easier to use Edebug
 
-This is a minor mode.  If called interactively, toggle the
-`Edebug-X mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Edebug-X
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `edebug-x-mode'.
+evaluate the variable `edebug-x-mode'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t) (add-hook 'emacs-lisp-mode-hook 'edebug-x-mode) (register-definition-prefixes "edebug-x" '("edebug-x-" "instrumented" "list-edebug-x-")) (provide 'edebug-x-autoloads)) "elisp-format" ((elisp-format elisp-format-autoloads) (autoload 'elisp-format-region "elisp-format" "Format current region or buffer.
 This function will format region from START to END.
@@ -8450,10 +8427,187 @@ Those are stored in `modus-themes-faces' and
 Optional OVERRIDES are appended to PALETTE, overriding
 corresponding entries.
 
-(fn NAME PALETTE &optional OVERRIDES)" nil t) (function-put 'modus-themes-theme 'lisp-indent-function 0) (when load-file-name (let ((dir (file-name-directory load-file-name))) (unless (equal dir (expand-file-name "themes/" data-directory)) (add-to-list 'custom-theme-load-path dir)))) (register-definition-prefixes "modus-themes" '("modus-themes-")) (provide 'modus-themes-autoloads))))
+(fn NAME PALETTE &optional OVERRIDES)" nil t) (function-put 'modus-themes-theme 'lisp-indent-function 0) (when load-file-name (let ((dir (file-name-directory load-file-name))) (unless (equal dir (expand-file-name "themes/" data-directory)) (add-to-list 'custom-theme-load-path dir)))) (register-definition-prefixes "modus-themes" '("modus-themes-")) (provide 'modus-themes-autoloads)) "project" ((project-autoloads project project-pkg) (autoload 'project-current "project" "Return the project instance in DIRECTORY, defaulting to `default-directory'.
 
-#s(hash-table size 65 test eq rehash-size 1.5 rehash-threshold 0.8125 data (org-elpa #s(hash-table size 217 test equal rehash-size 1.5 rehash-threshold 0.8125 data (version 15 "melpa" nil "gnu-elpa-mirror" nil "nongnu-elpa" nil "el-get" nil "emacsmirror-mirror" nil "straight" nil "notifications" nil "no-littering" nil "compat" nil "seq" nil "org" (org :type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git" :local-repo "org" :depth full :pre-build (straight-recipes-org-elpa--build) :build (:not autoloads) :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*"))) "project" nil "flymake" nil "eldoc" nil "pass" nil "password-store" nil "with-editor" nil "password-store-otp" nil "s" nil "f" nil "dash" nil "lazy-lang-learn" nil "google-translate" nil "popup" nil "alert" nil "gntp" nil "log4e" nil "cl-lib" nil "repeat" nil "browse-url-dwim" nil "string-utils" nil "list-utils" nil "posframe" nil "ace-window" nil "avy" nil "ace-link" nil "ace-jump-mode" nil "golden-ratio" nil "pulsar" nil "blackout" nil "boxquote" nil "dpaste" nil "darkroom" nil "tab-bar" nil "bookmark+" nil "emojify" nil "ht" nil "multiple-cursors" nil "hideshow" nil "jinx" nil "ripgrep" nil "sudo-edit" nil "ffap" nil "prescient" nil "consult" nil "marginalia" nil "all-the-icons" nil "all-the-icons-completion" nil "all-the-icons-dired" nil "corfu" nil "orderless" nil "dabbrev" nil "cape" nil "which-key" nil "yasnippet" nil "yasnippet-snippets" nil "vertico" nil "org-contrib" (org-contrib :type git :includes (ob-csharp ob-eukleides ob-fomus ob-julia ob-mathomatic ob-oz ob-stata ob-tcl ob-vbnet ol-bookmark ol-elisp-symbol ol-git-link ol-man ol-mew ol-vm ol-wl org-annotate-file org-bibtex-extras org-checklist org-choose org-collector org-contribdir org-depend org-effectiveness org-eldoc org-eval org-eval-light org-expiry org-interactive-query org-invoice org-learn org-license org-mac-iCal org-mairix org-panel org-registry org-screen org-screenshot org-secretary org-static-mathjax org-sudoku orgtbl-sqlinsert org-toc org-track org-wikinodes ox-bibtex ox-confluence ox-deck ox-extra ox-freemind ox-groff ox-koma-letter ox-s5 ox-taskjuggler) :repo "https://git.sr.ht/~bzg/org-contrib" :files (:defaults "lisp/*.el")) "ob-async" nil "async" nil "org-super-agenda" nil "ts" nil "ox-gfm" nil "gptel" nil "transient" nil "ellama" nil "llm" nil "plz" nil "plz-event-source" nil "plz-media-type" nil "spinner" nil "eww" nil "go-translate" nil "dictionary" nil "connection" nil "link" nil "goldendict" nil "devdocs-browser" nil "elfeed" nil "pdf-tools" nil "tablist" nil "let-alist" nil "eat" nil "vterm" nil "notmuch" nil "mu4e" nil "erc" nil "eldoc-box" nil "json-mode" nil "json-snatcher" nil "jsonrpc" nil "treemacs" nil "pfuture" nil "hydra" nil "lv" nil "cfrs" nil "duplicate-thing" nil "breadcrumb" nil "parrot" nil "compile" nil "php-mode" nil "yaml-mode" nil "json-reformat" nil "flymake-diagnostic-at-point" nil "magit" nil "magit-section" nil "magit-filenotify" nil "sqlite3" nil "diff-hl" nil "treesit-auto" nil "js" nil "typescript-ts-mode" nil "eglot" nil "external-completion" nil "track-changes" nil "xref" nil "dape" nil "auto-virtualenv" nil "lldb-voltron" nil "rust-mode" nil "rustic" nil "markdown-mode" nil "xterm-color" nil "flycheck" nil "c-ts-mode" nil "logview" nil "datetime" nil "extmap" nil "strace-mode" nil "elf-mode" nil "rgr-kill-dwim" nil "package-lint" nil "helpful" nil "elisp-refs" nil "el-docstring-sap" nil "quick-peek" nil "edebug-x" nil "elisp-format" nil "modus-themes" nil)) melpa #s(hash-table size 217 test equal rehash-size 1.5 rehash-threshold 0.8125 data (version 2 "gnu-elpa-mirror" nil "nongnu-elpa" nil "el-get" (el-get :type git :flavor melpa :files (:defaults "methods" ("recipes" "recipes/el-get.rcp") "el-get-pkg.el") :host github :repo "dimitri/el-get") "emacsmirror-mirror" nil "straight" nil "notifications" nil "no-littering" (no-littering :type git :flavor melpa :host github :repo "emacscollective/no-littering") "compat" nil "seq" nil "project" nil "flymake" nil "eldoc" nil "pass" (pass :type git :flavor melpa :host github :repo "NicolasPetton/pass") "password-store" (password-store :type git :flavor melpa :files ("contrib/emacs/*.el" "password-store-pkg.el") :host github :repo "zx2c4/password-store") "with-editor" (with-editor :type git :flavor melpa :host github :repo "magit/with-editor") "password-store-otp" (password-store-otp :type git :flavor melpa :host github :repo "volrath/password-store-otp.el") "s" (s :type git :flavor melpa :host github :repo "magnars/s.el") "f" (f :type git :flavor melpa :host github :repo "rejeep/f.el") "dash" (dash :type git :flavor melpa :files ("dash.el" "dash.texi" "dash-pkg.el") :host github :repo "magnars/dash.el") "lazy-lang-learn" nil "google-translate" (google-translate :type git :flavor melpa :host github :repo "atykhonov/google-translate") "popup" (popup :type git :flavor melpa :host github :repo "auto-complete/popup-el") "alert" (alert :type git :flavor melpa :host github :repo "jwiegley/alert") "gntp" (gntp :type git :flavor melpa :host github :repo "tekai/gntp.el") "log4e" (log4e :type git :flavor melpa :host github :repo "aki2o/log4e") "cl-lib" nil "repeat" nil "browse-url-dwim" (browse-url-dwim :type git :flavor melpa :host github :repo "rolandwalker/browse-url-dwim") "string-utils" (string-utils :type git :flavor melpa :host github :repo "rolandwalker/string-utils") "list-utils" (list-utils :type git :flavor melpa :host github :repo "rolandwalker/list-utils") "posframe" (posframe :type git :flavor melpa :host github :repo "tumashu/posframe") "ace-window" (ace-window :type git :flavor melpa :host github :repo "abo-abo/ace-window") "avy" (avy :type git :flavor melpa :host github :repo "abo-abo/avy") "ace-link" (ace-link :type git :flavor melpa :host github :repo "abo-abo/ace-link") "ace-jump-mode" (ace-jump-mode :type git :flavor melpa :host github :repo "winterTTr/ace-jump-mode") "golden-ratio" (golden-ratio :type git :flavor melpa :host github :repo "roman/golden-ratio.el") "pulsar" nil "blackout" (blackout :type git :flavor melpa :host github :repo "radian-software/blackout") "boxquote" (boxquote :type git :flavor melpa :host github :repo "davep/boxquote.el") "dpaste" (dpaste :type git :flavor melpa :host github :repo "gregnewman/dpaste.el") "darkroom" nil "tab-bar" nil "bookmark+" nil "emojify" (emojify :type git :flavor melpa :files (:defaults "data" "images" "emojify-pkg.el") :host github :repo "iqbalansari/emacs-emojify") "ht" (ht :type git :flavor melpa :host github :repo "Wilfred/ht.el") "multiple-cursors" (multiple-cursors :type git :flavor melpa :host github :repo "magnars/multiple-cursors.el") "hideshow" nil "jinx" (jinx :type git :flavor melpa :files (:defaults "jinx-mod.c" "emacs-module.h" "jinx-pkg.el") :host github :repo "minad/jinx") "ripgrep" (ripgrep :type git :flavor melpa :files ("ripgrep.el" "ripgrep-pkg.el") :host github :repo "nlamirault/ripgrep.el") "sudo-edit" (sudo-edit :type git :flavor melpa :host github :repo "nflath/sudo-edit") "ffap" nil "prescient" (prescient :type git :flavor melpa :files ("prescient.el" "prescient-pkg.el") :host github :repo "radian-software/prescient.el") "consult" (consult :type git :flavor melpa :host github :repo "minad/consult") "marginalia" (marginalia :type git :flavor melpa :host github :repo "minad/marginalia") "all-the-icons" (all-the-icons :type git :flavor melpa :files (:defaults "data" "all-the-icons-pkg.el") :host github :repo "domtronn/all-the-icons.el") "all-the-icons-completion" (all-the-icons-completion :type git :flavor melpa :host github :repo "iyefrat/all-the-icons-completion") "all-the-icons-dired" (all-the-icons-dired :type git :flavor melpa :host github :repo "wyuenho/all-the-icons-dired") "corfu" (corfu :type git :flavor melpa :files (:defaults "extensions/corfu-*.el" "corfu-pkg.el") :host github :repo "minad/corfu") "orderless" (orderless :type git :flavor melpa :host github :repo "oantolin/orderless") "dabbrev" nil "cape" (cape :type git :flavor melpa :host github :repo "minad/cape") "which-key" (which-key :type git :flavor melpa :host github :repo "justbur/emacs-which-key") "yasnippet" (yasnippet :type git :flavor melpa :files ("yasnippet.el" "snippets" "yasnippet-pkg.el") :host github :repo "joaotavora/yasnippet") "yasnippet-snippets" (yasnippet-snippets :type git :flavor melpa :files ("*.el" "snippets" ".nosearch" "yasnippet-snippets-pkg.el") :host github :repo "AndreaCrotti/yasnippet-snippets") "vertico" (vertico :type git :flavor melpa :files (:defaults "extensions/vertico-*.el" "vertico-pkg.el") :host github :repo "minad/vertico") "ob-async" (ob-async :type git :flavor melpa :host github :repo "astahlman/ob-async") "async" (async :type git :flavor melpa :host github :repo "jwiegley/emacs-async") "org-super-agenda" (org-super-agenda :type git :flavor melpa :host github :repo "alphapapa/org-super-agenda") "ts" (ts :type git :flavor melpa :host github :repo "alphapapa/ts.el") "ox-gfm" (ox-gfm :type git :flavor melpa :host github :repo "larstvei/ox-gfm") "gptel" (gptel :type git :flavor melpa :host github :repo "karthink/gptel") "transient" (transient :type git :flavor melpa :host github :repo "magit/transient") "ellama" (ellama :type git :flavor melpa :host github :repo "s-kostyaev/ellama") "llm" nil "plz" nil "plz-event-source" nil "plz-media-type" nil "spinner" nil "eww" nil "go-translate" (go-translate :type git :flavor melpa :host github :repo "lorniu/go-translate") "dictionary" (dictionary :type git :flavor melpa :files ("dictionary.el" "dictionary-pkg.el") :host github :repo "myrkr/dictionary-el") "connection" (connection :type git :flavor melpa :files ("connection.el" "connection-pkg.el") :host github :repo "myrkr/dictionary-el") "link" (link :type git :flavor melpa :files ("link.el" "link-pkg.el") :host github :repo "myrkr/dictionary-el") "goldendict" nil "devdocs-browser" (devdocs-browser :type git :flavor melpa :host github :repo "blahgeek/emacs-devdocs-browser") "elfeed" (elfeed :type git :flavor melpa :files (:defaults "README.md" "elfeed-pkg.el") :host github :repo "skeeto/elfeed") "pdf-tools" (pdf-tools :type git :flavor melpa :files (:defaults "README" ("build" "Makefile") ("build" "server") "pdf-tools-pkg.el") :host github :repo "vedang/pdf-tools") "tablist" (tablist :type git :flavor melpa :host github :repo "emacsorphanage/tablist") "let-alist" nil "eat" nil "vterm" (vterm :type git :flavor melpa :files ("CMakeLists.txt" "elisp.c" "elisp.h" "emacs-module.h" "etc" "utf8.c" "utf8.h" "vterm.el" "vterm-module.c" "vterm-module.h" "vterm-pkg.el") :host github :repo "akermu/emacs-libvterm") "notmuch" (notmuch :type git :flavor melpa :files ("emacs/*.el" "emacs/*.svg" "notmuch-pkg.el") :repo "https://git.notmuchmail.org/git/notmuch") "mu4e" nil "erc" nil "eldoc-box" (eldoc-box :type git :flavor melpa :host github :repo "casouri/eldoc-box") "json-mode" (json-mode :type git :flavor melpa :host github :repo "json-emacs/json-mode") "json-snatcher" (json-snatcher :type git :flavor melpa :host github :repo "Sterlingg/json-snatcher") "jsonrpc" nil "treemacs" (treemacs :type git :flavor melpa :files (:defaults "Changelog.org" "icons" "src/elisp/treemacs*.el" "src/scripts/treemacs*.py" (:exclude "src/extra/*") "treemacs-pkg.el") :host github :repo "Alexander-Miller/treemacs") "pfuture" (pfuture :type git :flavor melpa :host github :repo "Alexander-Miller/pfuture") "hydra" (hydra :type git :flavor melpa :files (:defaults (:exclude "lv.el") "hydra-pkg.el") :host github :repo "abo-abo/hydra") "lv" (lv :type git :flavor melpa :files ("lv.el" "lv-pkg.el") :host github :repo "abo-abo/hydra") "cfrs" (cfrs :type git :flavor melpa :host github :repo "Alexander-Miller/cfrs") "duplicate-thing" (duplicate-thing :type git :flavor melpa :host github :repo "ongaeshi/duplicate-thing") "breadcrumb" nil "parrot" (parrot :type git :flavor melpa :files (:defaults "img" "parrot-pkg.el") :host github :repo "dp12/parrot") "compile" nil "php-mode" (php-mode :type git :flavor melpa :host github :repo "emacs-php/php-mode") "yaml-mode" (yaml-mode :type git :flavor melpa :host github :repo "yoshiki/yaml-mode") "json-reformat" (json-reformat :type git :flavor melpa :host github :repo "gongo/json-reformat") "flymake-diagnostic-at-point" (flymake-diagnostic-at-point :type git :flavor melpa :host github :repo "meqif/flymake-diagnostic-at-point") "magit" (magit :type git :flavor melpa :files ("lisp/magit*.el" "lisp/git-*.el" "docs/magit.texi" "docs/AUTHORS.md" "LICENSE" "magit-pkg.el" (:exclude "lisp/magit-section.el") "magit-pkg.el") :host github :repo "magit/magit") "magit-section" (magit-section :type git :flavor melpa :files ("lisp/magit-section.el" "docs/magit-section.texi" "magit-section-pkg.el" "magit-section-pkg.el") :host github :repo "magit/magit") "magit-filenotify" (magit-filenotify :type git :flavor melpa :host github :repo "ruediger/magit-filenotify") "sqlite3" (sqlite3 :type git :flavor melpa :files (:defaults "Makefile" "consts.c" "emacs-module.h" "sqlite3-api.c" "sqlite3-pkg.el") :host github :repo "pekingduck/emacs-sqlite3-api") "diff-hl" (diff-hl :type git :flavor melpa :host github :repo "dgutov/diff-hl") "treesit-auto" (treesit-auto :type git :flavor melpa :host github :repo "renzmann/treesit-auto") "js" nil "typescript-ts-mode" nil "eglot" nil "external-completion" nil "track-changes" nil "xref" nil "dape" nil "auto-virtualenv" (auto-virtualenv :type git :flavor melpa :host github :repo "marcwebbie/auto-virtualenv") "lldb-voltron" nil "rust-mode" (rust-mode :type git :flavor melpa :host github :repo "rust-lang/rust-mode") "rustic" (rustic :type git :flavor melpa :host github :repo "emacs-rustic/rustic") "markdown-mode" (markdown-mode :type git :flavor melpa :host github :repo "jrblevin/markdown-mode") "xterm-color" (xterm-color :type git :flavor melpa :host github :repo "atomontage/xterm-color") "flycheck" (flycheck :type git :flavor melpa :host github :repo "flycheck/flycheck") "c-ts-mode" nil "logview" (logview :type git :flavor melpa :host github :repo "doublep/logview") "datetime" (datetime :type git :flavor melpa :files (:defaults "*.extmap" "datetime-pkg.el") :host github :repo "doublep/datetime") "extmap" (extmap :type git :flavor melpa :host github :repo "doublep/extmap") "strace-mode" (strace-mode :type git :flavor melpa :host github :repo "pkmoore/strace-mode") "elf-mode" (elf-mode :type git :flavor melpa :host github :repo "abo-abo/elf-mode") "rgr-kill-dwim" nil "package-lint" (package-lint :type git :flavor melpa :files (:defaults "data" (:exclude "*flymake.el") "package-lint-pkg.el") :host github :repo "purcell/package-lint") "helpful" (helpful :type git :flavor melpa :host github :repo "Wilfred/helpful") "elisp-refs" (elisp-refs :type git :flavor melpa :files (:defaults (:exclude "elisp-refs-bench.el") "elisp-refs-pkg.el") :host github :repo "Wilfred/elisp-refs") "el-docstring-sap" nil "quick-peek" (quick-peek :type git :flavor melpa :host github :repo "cpitclaudel/quick-peek") "edebug-x" (edebug-x :type git :flavor melpa :host github :repo "ScottyB/edebug-x") "elisp-format" (elisp-format :type git :flavor melpa :host github :repo "Yuki-Inoue/elisp-format") "modus-themes" (modus-themes :type git :flavor melpa :host github :repo "protesilaos/modus-themes"))) gnu-elpa-mirror #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data (version 3 "nongnu-elpa" nil "emacsmirror-mirror" nil "straight" nil "notifications" nil "compat" (compat :type git :host github :repo "emacs-straight/compat" :files ("*" (:exclude ".git"))) "seq" (seq :type git :host github :repo "emacs-straight/seq" :files ("*" (:exclude ".git"))) "project" (project :type git :host github :repo "emacs-straight/project" :files ("*" (:exclude ".git"))) "flymake" (flymake :type git :host github :repo "emacs-straight/flymake" :files ("*" (:exclude ".git"))) "eldoc" (eldoc :type git :host github :repo "emacs-straight/eldoc" :files ("*" (:exclude ".git"))) "lazy-lang-learn" nil "cl-lib" nil "repeat" nil "pulsar" (pulsar :type git :host github :repo "emacs-straight/pulsar" :files ("*" (:exclude ".git"))) "darkroom" (darkroom :type git :host github :repo "emacs-straight/darkroom" :files ("*" (:exclude ".git"))) "tab-bar" nil "bookmark+" nil "hideshow" nil "ffap" nil "dabbrev" nil "llm" (llm :type git :host github :repo "emacs-straight/llm" :files ("*" (:exclude ".git"))) "plz" (plz :type git :host github :repo "emacs-straight/plz" :files ("*" (:exclude ".git"))) "plz-event-source" (plz-event-source :type git :host github :repo "emacs-straight/plz-event-source" :files ("*" (:exclude ".git"))) "plz-media-type" (plz-media-type :type git :host github :repo "emacs-straight/plz-media-type" :files ("*" (:exclude ".git"))) "spinner" (spinner :type git :host github :repo "emacs-straight/spinner" :files ("*" (:exclude ".git"))) "eww" nil "goldendict" nil "let-alist" (let-alist :type git :host github :repo "emacs-straight/let-alist" :files ("*" (:exclude ".git"))) "eat" nil "mu4e" nil "erc" (erc :type git :host github :repo "emacs-straight/erc" :files ("*" (:exclude ".git"))) "jsonrpc" (jsonrpc :type git :host github :repo "emacs-straight/jsonrpc" :files ("*" (:exclude ".git"))) "breadcrumb" (breadcrumb :type git :host github :repo "emacs-straight/breadcrumb" :files ("*" (:exclude ".git"))) "compile" nil "js" nil "typescript-ts-mode" nil "eglot" (eglot :type git :host github :repo "emacs-straight/eglot" :files ("*" (:exclude ".git"))) "external-completion" (external-completion :type git :host github :repo "emacs-straight/external-completion" :files ("*" (:exclude ".git"))) "track-changes" (track-changes :type git :host github :repo "emacs-straight/track-changes" :files ("*" (:exclude ".git"))) "xref" (xref :type git :host github :repo "emacs-straight/xref" :files ("*" (:exclude ".git"))) "dape" (dape :type git :host github :repo "emacs-straight/dape" :files ("*" (:exclude ".git"))) "lldb-voltron" nil "c-ts-mode" nil "rgr-kill-dwim" nil "el-docstring-sap" nil)) nongnu-elpa #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data (version 4 "emacsmirror-mirror" nil "straight" nil "notifications" nil "lazy-lang-learn" nil "cl-lib" nil "repeat" nil "tab-bar" nil "bookmark+" nil "hideshow" nil "ffap" nil "dabbrev" nil "eww" nil "goldendict" nil "eat" (eat :repo "https://codeberg.org/akib/emacs-eat") "mu4e" nil "compile" nil "js" nil "typescript-ts-mode" nil "lldb-voltron" nil "c-ts-mode" nil "rgr-kill-dwim" nil "el-docstring-sap" nil)) el-get #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data (version 2 "emacsmirror-mirror" nil "straight" nil "notifications" nil "lazy-lang-learn" nil "cl-lib" nil "repeat" nil "tab-bar" nil "bookmark+" `(bookmark+ :type git :host github :repo "emacsmirror/bookmark-plus" :files (:defaults)) "hideshow" nil "ffap" nil "dabbrev" nil "eww" nil "goldendict" nil "mu4e" `(mu4e :type git :host github :repo "djcb/mu" :pre-build ,(cl-letf (((symbol-function #'el-get-package-directory) (lambda (package) (straight--repos-dir (format "%S" package)))) (el-get-install-info (straight--el-get-install-info)) (el-get-emacs (straight--emacs-path)) (el-get-dir (straight--repos-dir))) (pcase system-type (_ `(("./autogen.sh") ("make"))))) :files (:defaults "build/mu4e")) "compile" nil "js" nil "typescript-ts-mode" nil "lldb-voltron" nil "c-ts-mode" nil "rgr-kill-dwim" nil "el-docstring-sap" nil)) emacsmirror-mirror #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data (version 2 "straight" (straight :type git :host github :repo "emacsmirror/straight") "notifications" nil "lazy-lang-learn" nil "cl-lib" nil "repeat" nil "tab-bar" nil "hideshow" nil "ffap" nil "dabbrev" nil "eww" nil "goldendict" (goldendict :type git :host github :repo "emacsmirror/goldendict") "compile" nil "js" nil "typescript-ts-mode" nil "lldb-voltron" nil "c-ts-mode" nil "rgr-kill-dwim" nil "el-docstring-sap" nil))))
+When no project is found in that directory, the result depends on
+the value of MAYBE-PROMPT: if it is nil or omitted, return nil,
+else prompt the user for the project to use.  To prompt for a
+project, call the function specified by `project-prompter', which
+returns the directory in which to look for the project.  If no
+project is found in that directory, return a \"transient\"
+project instance.  When MAYBE-PROMPT is a string, it's passed to the
+prompter function as an argument.
 
-("modus-themes" "elisp-format" "edebug-x" "quick-peek" "el-docstring-sap" "elisp-refs" "helpful" "package-lint" "rgr-kill-dwim" "elf-mode" "strace-mode" "extmap" "datetime" "logview" "c-ts-mode" "flycheck" "xterm-color" "markdown-mode" "rustic" "rust-mode" "lldb-voltron" "auto-virtualenv" "dape" "xref" "track-changes" "external-completion" "eglot" "typescript-ts-mode" "js" "treesit-auto" "diff-hl" "sqlite3" "magit-filenotify" "magit-section" "magit" "flymake-diagnostic-at-point" "json-reformat" "yaml-mode" "php-mode" "compile" "parrot" "breadcrumb" "duplicate-thing" "cfrs" "lv" "hydra" "pfuture" "treemacs" "jsonrpc" "json-snatcher" "json-mode" "eldoc-box" "erc" "mu4e" "notmuch" "vterm" "eat" "let-alist" "tablist" "pdf-tools" "elfeed" "devdocs-browser" "goldendict" "link" "connection" "dictionary" "go-translate" "eww" "spinner" "plz-media-type" "plz-event-source" "plz" "llm" "ellama" "transient" "gptel" "ox-gfm" "ts" "org-super-agenda" "async" "ob-async" "org-contrib" "vertico" "yasnippet-snippets" "yasnippet" "which-key" "cape" "dabbrev" "orderless" "corfu" "all-the-icons-dired" "all-the-icons-completion" "all-the-icons" "marginalia" "consult" "prescient" "ffap" "sudo-edit" "ripgrep" "jinx" "hideshow" "multiple-cursors" "ht" "emojify" "bookmark+" "tab-bar" "darkroom" "dpaste" "boxquote" "blackout" "pulsar" "golden-ratio" "ace-jump-mode" "ace-link" "avy" "ace-window" "posframe" "list-utils" "string-utils" "browse-url-dwim" "repeat" "cl-lib" "log4e" "gntp" "alert" "popup" "google-translate" "lazy-lang-learn" "dash" "f" "s" "password-store-otp" "with-editor" "password-store" "pass" "eldoc" "flymake" "project" "org" "seq" "compat" "no-littering" "notifications" "emacs" "straight" "emacsmirror-mirror" "el-get" "nongnu-elpa" "gnu-elpa-mirror" "melpa" "org-elpa")
+The \"transient\" project instance is a special kind of value
+which denotes a project rooted in that directory and includes all
+the files under the directory except for those that match entries
+in `vc-directory-exclusion-list' or `grep-find-ignored-files'.
+
+See the doc string of `project-find-functions' for the general form
+of the project instance object.
+
+(fn &optional MAYBE-PROMPT DIRECTORY)") (put 'project-vc-ignores 'safe-local-variable (lambda (val) (and (listp val) (not (memq nil (mapcar #'stringp val)))))) (put 'project-vc-merge-submodules 'safe-local-variable #'booleanp) (put 'project-vc-include-untracked 'safe-local-variable #'booleanp) (put 'project-vc-name 'safe-local-variable #'stringp) (put 'project-vc-extra-root-markers 'safe-local-variable (lambda (val) (and (listp val) (not (memq nil (mapcar #'stringp val)))))) (defvar project-prefix-map (let ((map (make-sparse-keymap))) (define-key map "!" 'project-shell-command) (define-key map "&" 'project-async-shell-command) (define-key map "f" 'project-find-file) (define-key map "F" 'project-or-external-find-file) (define-key map "b" 'project-switch-to-buffer) (define-key map "s" 'project-shell) (define-key map "d" 'project-find-dir) (define-key map "D" 'project-dired) (define-key map "v" 'project-vc-dir) (define-key map "c" 'project-compile) (define-key map "e" 'project-eshell) (define-key map "k" 'project-kill-buffers) (define-key map "p" 'project-switch-project) (define-key map "g" 'project-find-regexp) (define-key map "G" 'project-or-external-find-regexp) (define-key map "r" 'project-query-replace-regexp) (define-key map "x" 'project-execute-extended-command) (define-key map "o" 'project-any-command) (define-key map "" 'project-list-buffers) map) "Keymap for project commands.") (define-key ctl-x-map "p" project-prefix-map) (autoload 'project-other-window-command "project" "Run project command, displaying resultant buffer in another window.
+
+The following commands are available:
+
+\\{project-prefix-map}
+\\{project-other-window-map}" t) (define-key ctl-x-4-map "p" #'project-other-window-command) (autoload 'project-other-frame-command "project" "Run project command, displaying resultant buffer in another frame.
+
+The following commands are available:
+
+\\{project-prefix-map}
+\\{project-other-frame-map}" t) (define-key ctl-x-5-map "p" #'project-other-frame-command) (autoload 'project-other-tab-command "project" "Run project command, displaying resultant buffer in a new tab.
+
+The following commands are available:
+
+\\{project-prefix-map}" t) (when (bound-and-true-p tab-prefix-map) (define-key tab-prefix-map "p" #'project-other-tab-command)) (autoload 'project-find-regexp "project" "Find all matches for REGEXP in the current project's roots.
+With \\[universal-argument] prefix, you can specify the directory
+to search in, and the file name pattern to search for.  The
+pattern may use abbreviations defined in `grep-files-aliases',
+e.g. entering `ch' is equivalent to `*.[ch]'.  As whitespace
+triggers completion when entering a pattern, including it
+requires quoting, e.g. `\\[quoted-insert]<space>'.
+
+(fn REGEXP)" t) (autoload 'project-or-external-find-regexp "project" "Find all matches for REGEXP in the project roots or external roots.
+
+(fn REGEXP)" t) (autoload 'project-root-find-file "project" "Edit file FILENAME.
+
+Interactively, prompt for FILENAME, defaulting to the root directory of
+the current project.
+
+(fn FILENAME)" t) (function-put 'project-root-find-file 'interactive-only 'find-file) (autoload 'project-find-file "project" "Visit a file (with completion) in the current project.
+
+The filename at point (determined by `thing-at-point'), if any,
+is available as part of \"future history\".  If none, the current
+buffer's file name is used.
+
+If INCLUDE-ALL is non-nil, or with prefix argument when called
+interactively, include all files under the project root, except
+for VCS directories listed in `vc-directory-exclusion-list'.
+
+(fn &optional INCLUDE-ALL)" t) (autoload 'project-or-external-find-file "project" "Visit a file (with completion) in the current project or external roots.
+
+The filename at point (determined by `thing-at-point'), if any,
+is available as part of \"future history\".  If none, the current
+buffer's file name is used.
+
+If INCLUDE-ALL is non-nil, or with prefix argument when called
+interactively, include all files under the project root, except
+for VCS directories listed in `vc-directory-exclusion-list'.
+
+(fn &optional INCLUDE-ALL)" t) (autoload 'project-find-dir "project" "Start Dired in a directory inside the current project.
+
+The current buffer's `default-directory' is available as part of
+\"future history\"." t) (autoload 'project-dired "project" "Start Dired in the current project's root." t) (autoload 'project-vc-dir "project" "Run VC-Dir in the current project's root." t) (autoload 'project-shell "project" "Start an inferior shell in the current project's root directory.
+If a buffer already exists for running a shell in the project's root,
+switch to it.  Otherwise, create a new shell buffer.
+With \\[universal-argument] prefix arg, create a new inferior shell buffer even
+if one already exists." t) (autoload 'project-eshell "project" "Start Eshell in the current project's root directory.
+If a buffer already exists for running Eshell in the project's root,
+switch to it.  Otherwise, create a new Eshell buffer.
+With \\[universal-argument] prefix arg, create a new Eshell buffer even
+if one already exists." t) (autoload 'project-async-shell-command "project" "Run `async-shell-command' in the current project's root directory." t) (function-put 'project-async-shell-command 'interactive-only 'async-shell-command) (autoload 'project-shell-command "project" "Run `shell-command' in the current project's root directory." t) (function-put 'project-shell-command 'interactive-only 'shell-command) (autoload 'project-search "project" "Search for REGEXP in all the files of the project.
+Stops when a match is found.
+To continue searching for the next match, use the
+command \\[fileloop-continue].
+
+(fn REGEXP)" t) (autoload 'project-query-replace-regexp "project" "Query-replace REGEXP in all the files of the project.
+Stops when a match is found and prompts for whether to replace it.
+At that prompt, the user must type a character saying what to do
+with the match.  Type SPC or `y' to replace the match,
+DEL or `n' to skip and go to the next match.  For more directions,
+type \\[help-command] at that time.
+If you exit the `query-replace', you can later continue the
+`query-replace' loop using the command \\[fileloop-continue].
+
+(fn FROM TO)" t) (autoload 'project-compile "project" "Run `compile' in the project root." t) (function-put 'project-compile 'interactive-only 'compile) (autoload 'project-switch-to-buffer "project" "Display buffer BUFFER-OR-NAME in the selected window.
+When called interactively, prompts for a buffer belonging to the
+current project.  Two buffers belong to the same project if their
+project instances, as reported by `project-current' in each
+buffer, are identical.
+
+(fn BUFFER-OR-NAME)" t) (autoload 'project-display-buffer "project" "Display BUFFER-OR-NAME in some window, without selecting it.
+When called interactively, prompts for a buffer belonging to the
+current project.  Two buffers belong to the same project if their
+project instances, as reported by `project-current' in each
+buffer, are identical.
+
+This function uses `display-buffer' as a subroutine, which see
+for how it is determined where the buffer will be displayed.
+
+(fn BUFFER-OR-NAME)" t) (autoload 'project-display-buffer-other-frame "project" "Display BUFFER-OR-NAME preferably in another frame.
+When called interactively, prompts for a buffer belonging to the
+current project.  Two buffers belong to the same project if their
+project instances, as reported by `project-current' in each
+buffer, are identical.
+
+This function uses `display-buffer-other-frame' as a subroutine,
+which see for how it is determined where the buffer will be
+displayed.
+
+(fn BUFFER-OR-NAME)" t) (autoload 'project-list-buffers "project" "Display a list of project buffers.
+The list is displayed in a buffer named \"*Buffer List*\".
+
+By default, all project buffers are listed except those whose names
+start with a space (which are for internal use).  With prefix argument
+ARG, show only buffers that are visiting files.
+
+(fn &optional ARG)" t) (put 'project-kill-buffers-display-buffer-list 'safe-local-variable #'booleanp) (autoload 'project-kill-buffers "project" "Kill the buffers belonging to the current project.
+Two buffers belong to the same project if their project
+instances, as reported by `project-current' in each buffer, are
+identical.  Only the buffers that match a condition in
+`project-kill-buffer-conditions' will be killed.  If NO-CONFIRM
+is non-nil, the command will not ask the user for confirmation.
+NO-CONFIRM is always nil when the command is invoked
+interactively.
+
+If PROJECT is non-nil, kill buffers for that project instead.
+
+Also see the `project-kill-buffers-display-buffer-list' variable.
+
+(fn &optional NO-CONFIRM PROJECT)" t) (autoload 'project-remember-project "project" "Add project PR to the front of the project list.
+Save the result in `project-list-file' if the list of projects
+has changed, and NO-WRITE is nil.
+
+(fn PR &optional NO-WRITE)") (autoload 'project-forget-project "project" "Remove directory PROJECT-ROOT from the project list.
+PROJECT-ROOT is the root directory of a known project listed in
+the project list.
+
+(fn PROJECT-ROOT)" t) (autoload 'project-known-project-roots "project" "Return the list of root directories of all known projects.") (autoload 'project-execute-extended-command "project" "Execute an extended command in project root." t) (function-put 'project-execute-extended-command 'interactive-only 'command-execute) (autoload 'project-any-command "project" "Run the next command in the current project.
+
+If the command name starts with `project-', or its symbol has
+property `project-aware', it gets passed the project to use
+with the variable `project-current-directory-override'.
+Otherwise, `default-directory' is temporarily set to the current
+project's root.
+
+If OVERRIDING-MAP is non-nil, it will be used as
+`overriding-terminal-local-map' to provide shorter bindings
+from that map which will take priority over the global ones.
+
+(fn &optional OVERRIDING-MAP PROMPT-FORMAT)" t) (autoload 'project-prefix-or-any-command "project" "Run the next command in the current project.
+Works like `project-any-command', but also mixes in the shorter
+bindings from `project-prefix-map'." t) (autoload 'project-switch-project "project" "\"Switch\" to another project by running an Emacs command.
+The available commands are presented as a dispatch menu
+made from `project-switch-commands'.
+
+When called in a program, it will use the project corresponding
+to directory DIR.
+
+(fn DIR)" t) (autoload 'project-uniquify-dirname-transform "project" "Uniquify name of directory DIRNAME using `project-name', if in a project.
+
+If you set `uniquify-dirname-transform' to this function,
+slash-separated components from `project-name' will be appended to
+the buffer's directory name when buffers from two different projects
+would otherwise have the same name.
+
+(fn DIRNAME)") (defvar project-mode-line nil "Whether to show current project name and Project menu on the mode line.
+This feature requires the presence of the following item in
+`mode-line-format': `(project-mode-line project-mode-line-format)'; it
+is part of the default mode line beginning with Emacs 30.") (custom-autoload 'project-mode-line "project" t) (register-definition-prefixes "project" '("project-")) (provide 'project-autoloads))))
+
+#s(hash-table test eq data (org-elpa #s(hash-table test equal data (version 15 "melpa" nil "gnu-elpa-mirror" nil "nongnu-elpa" nil "el-get" nil "emacsmirror-mirror" nil "straight" nil "notifications" nil "no-littering" nil "compat" nil "seq" nil "org" (org :type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git" :local-repo "org" :depth full :pre-build (straight-recipes-org-elpa--build) :build (:not autoloads) :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*"))) "project" nil "flymake" nil "eldoc" nil "pass" nil "password-store" nil "with-editor" nil "password-store-otp" nil "s" nil "f" nil "dash" nil "lazy-lang-learn" nil "google-translate" nil "popup" nil "alert" nil "gntp" nil "log4e" nil "cl-lib" nil "repeat" nil "browse-url-dwim" nil "string-utils" nil "list-utils" nil "posframe" nil "ace-window" nil "avy" nil "ace-link" nil "ace-jump-mode" nil "golden-ratio" nil "pulsar" nil "blackout" nil "boxquote" nil "dpaste" nil "darkroom" nil "tab-bar" nil "bookmark+" nil "emojify" nil "ht" nil "multiple-cursors" nil "hideshow" nil "jinx" nil "ripgrep" nil "sudo-edit" nil "ffap" nil "prescient" nil "consult" nil "marginalia" nil "all-the-icons" nil "all-the-icons-completion" nil "all-the-icons-dired" nil "corfu" nil "orderless" nil "dabbrev" nil "cape" nil "which-key" nil "yasnippet" nil "yasnippet-snippets" nil "vertico" nil "org-contrib" (org-contrib :type git :includes (ob-csharp ob-eukleides ob-fomus ob-julia ob-mathomatic ob-oz ob-stata ob-tcl ob-vbnet ol-bookmark ol-elisp-symbol ol-git-link ol-man ol-mew ol-vm ol-wl org-annotate-file org-bibtex-extras org-checklist org-choose org-collector org-contribdir org-depend org-effectiveness org-eldoc org-eval org-eval-light org-expiry org-interactive-query org-invoice org-learn org-license org-mac-iCal org-mairix org-panel org-registry org-screen org-screenshot org-secretary org-static-mathjax org-sudoku orgtbl-sqlinsert org-toc org-track org-wikinodes ox-bibtex ox-confluence ox-deck ox-extra ox-freemind ox-groff ox-koma-letter ox-s5 ox-taskjuggler) :repo "https://git.sr.ht/~bzg/org-contrib" :files (:defaults "lisp/*.el")) "ob-async" nil "async" nil "org-super-agenda" nil "ts" nil "ox-gfm" nil "gptel" nil "transient" nil "ellama" nil "llm" nil "plz" nil "plz-event-source" nil "plz-media-type" nil "spinner" nil "eww" nil "go-translate" nil "dictionary" nil "connection" nil "link" nil "goldendict" nil "devdocs-browser" nil "elfeed" nil "pdf-tools" nil "tablist" nil "let-alist" nil "eat" nil "vterm" nil "notmuch" nil "mu4e" nil "erc" nil "eldoc-box" nil "json-mode" nil "json-snatcher" nil "jsonrpc" nil "treemacs" nil "pfuture" nil "hydra" nil "lv" nil "cfrs" nil "duplicate-thing" nil "breadcrumb" nil "parrot" nil "compile" nil "php-mode" nil "yaml-mode" nil "json-reformat" nil "flymake-diagnostic-at-point" nil "magit" nil "magit-section" nil "magit-filenotify" nil "sqlite3" nil "diff-hl" nil "treesit-auto" nil "js" nil "typescript-ts-mode" nil "eglot" nil "external-completion" nil "track-changes" nil "xref" nil "dape" nil "auto-virtualenv" nil "lldb-voltron" nil "rust-mode" nil "rustic" nil "markdown-mode" nil "xterm-color" nil "flycheck" nil "c-ts-mode" nil "logview" nil "datetime" nil "extmap" nil "strace-mode" nil "elf-mode" nil "rgr-kill-dwim" nil "package-lint" nil "helpful" nil "elisp-refs" nil "el-docstring-sap" nil "quick-peek" nil "edebug-x" nil "elisp-format" nil "modus-themes" nil)) melpa #s(hash-table test equal data (version 2 "gnu-elpa-mirror" nil "nongnu-elpa" nil "el-get" (el-get :type git :flavor melpa :files (:defaults "methods" ("recipes" "recipes/el-get.rcp") "el-get-pkg.el") :host github :repo "dimitri/el-get") "emacsmirror-mirror" nil "straight" nil "notifications" nil "no-littering" (no-littering :type git :flavor melpa :host github :repo "emacscollective/no-littering") "compat" nil "seq" nil "project" nil "flymake" nil "eldoc" nil "pass" (pass :type git :flavor melpa :host github :repo "NicolasPetton/pass") "password-store" (password-store :type git :flavor melpa :files ("contrib/emacs/*.el" "password-store-pkg.el") :host github :repo "zx2c4/password-store") "with-editor" (with-editor :type git :flavor melpa :host github :repo "magit/with-editor") "password-store-otp" (password-store-otp :type git :flavor melpa :host github :repo "volrath/password-store-otp.el") "s" (s :type git :flavor melpa :host github :repo "magnars/s.el") "f" (f :type git :flavor melpa :host github :repo "rejeep/f.el") "dash" (dash :type git :flavor melpa :files ("dash.el" "dash.texi" "dash-pkg.el") :host github :repo "magnars/dash.el") "lazy-lang-learn" nil "google-translate" (google-translate :type git :flavor melpa :host github :repo "atykhonov/google-translate") "popup" (popup :type git :flavor melpa :host github :repo "auto-complete/popup-el") "alert" (alert :type git :flavor melpa :host github :repo "jwiegley/alert") "gntp" (gntp :type git :flavor melpa :host github :repo "tekai/gntp.el") "log4e" (log4e :type git :flavor melpa :host github :repo "aki2o/log4e") "cl-lib" nil "repeat" nil "browse-url-dwim" (browse-url-dwim :type git :flavor melpa :host github :repo "rolandwalker/browse-url-dwim") "string-utils" (string-utils :type git :flavor melpa :host github :repo "rolandwalker/string-utils") "list-utils" (list-utils :type git :flavor melpa :host github :repo "rolandwalker/list-utils") "posframe" (posframe :type git :flavor melpa :host github :repo "tumashu/posframe") "ace-window" (ace-window :type git :flavor melpa :host github :repo "abo-abo/ace-window") "avy" (avy :type git :flavor melpa :host github :repo "abo-abo/avy") "ace-link" (ace-link :type git :flavor melpa :host github :repo "abo-abo/ace-link") "ace-jump-mode" (ace-jump-mode :type git :flavor melpa :host github :repo "winterTTr/ace-jump-mode") "golden-ratio" (golden-ratio :type git :flavor melpa :host github :repo "roman/golden-ratio.el") "pulsar" nil "blackout" (blackout :type git :flavor melpa :host github :repo "radian-software/blackout") "boxquote" (boxquote :type git :flavor melpa :host github :repo "davep/boxquote.el") "dpaste" (dpaste :type git :flavor melpa :host github :repo "gregnewman/dpaste.el") "darkroom" nil "tab-bar" nil "bookmark+" nil "emojify" (emojify :type git :flavor melpa :files (:defaults "data" "images" "emojify-pkg.el") :host github :repo "iqbalansari/emacs-emojify") "ht" (ht :type git :flavor melpa :host github :repo "Wilfred/ht.el") "multiple-cursors" (multiple-cursors :type git :flavor melpa :host github :repo "magnars/multiple-cursors.el") "hideshow" nil "jinx" (jinx :type git :flavor melpa :files (:defaults "jinx-mod.c" "emacs-module.h" "jinx-pkg.el") :host github :repo "minad/jinx") "ripgrep" (ripgrep :type git :flavor melpa :files ("ripgrep.el" "ripgrep-pkg.el") :host github :repo "nlamirault/ripgrep.el") "sudo-edit" (sudo-edit :type git :flavor melpa :host github :repo "nflath/sudo-edit") "ffap" nil "prescient" (prescient :type git :flavor melpa :files ("prescient.el" "prescient-pkg.el") :host github :repo "radian-software/prescient.el") "consult" (consult :type git :flavor melpa :host github :repo "minad/consult") "marginalia" (marginalia :type git :flavor melpa :host github :repo "minad/marginalia") "all-the-icons" (all-the-icons :type git :flavor melpa :files (:defaults "data" "all-the-icons-pkg.el") :host github :repo "domtronn/all-the-icons.el") "all-the-icons-completion" (all-the-icons-completion :type git :flavor melpa :host github :repo "iyefrat/all-the-icons-completion") "all-the-icons-dired" (all-the-icons-dired :type git :flavor melpa :host github :repo "wyuenho/all-the-icons-dired") "corfu" (corfu :type git :flavor melpa :files (:defaults "extensions/corfu-*.el" "corfu-pkg.el") :host github :repo "minad/corfu") "orderless" (orderless :type git :flavor melpa :host github :repo "oantolin/orderless") "dabbrev" nil "cape" (cape :type git :flavor melpa :host github :repo "minad/cape") "which-key" (which-key :type git :flavor melpa :host github :repo "justbur/emacs-which-key") "yasnippet" (yasnippet :type git :flavor melpa :files ("yasnippet.el" "snippets" "yasnippet-pkg.el") :host github :repo "joaotavora/yasnippet") "yasnippet-snippets" (yasnippet-snippets :type git :flavor melpa :files ("*.el" "snippets" ".nosearch" "yasnippet-snippets-pkg.el") :host github :repo "AndreaCrotti/yasnippet-snippets") "vertico" (vertico :type git :flavor melpa :files (:defaults "extensions/vertico-*.el" "vertico-pkg.el") :host github :repo "minad/vertico") "ob-async" (ob-async :type git :flavor melpa :host github :repo "astahlman/ob-async") "async" (async :type git :flavor melpa :host github :repo "jwiegley/emacs-async") "org-super-agenda" (org-super-agenda :type git :flavor melpa :host github :repo "alphapapa/org-super-agenda") "ts" (ts :type git :flavor melpa :host github :repo "alphapapa/ts.el") "ox-gfm" (ox-gfm :type git :flavor melpa :host github :repo "larstvei/ox-gfm") "gptel" (gptel :type git :flavor melpa :host github :repo "karthink/gptel") "transient" (transient :type git :flavor melpa :host github :repo "magit/transient") "ellama" (ellama :type git :flavor melpa :host github :repo "s-kostyaev/ellama") "llm" nil "plz" nil "plz-event-source" nil "plz-media-type" nil "spinner" nil "eww" nil "go-translate" (go-translate :type git :flavor melpa :host github :repo "lorniu/go-translate") "dictionary" (dictionary :type git :flavor melpa :files ("dictionary.el" "dictionary-pkg.el") :host github :repo "myrkr/dictionary-el") "connection" (connection :type git :flavor melpa :files ("connection.el" "connection-pkg.el") :host github :repo "myrkr/dictionary-el") "link" (link :type git :flavor melpa :files ("link.el" "link-pkg.el") :host github :repo "myrkr/dictionary-el") "goldendict" nil "devdocs-browser" (devdocs-browser :type git :flavor melpa :host github :repo "blahgeek/emacs-devdocs-browser") "elfeed" (elfeed :type git :flavor melpa :files (:defaults "README.md" "elfeed-pkg.el") :host github :repo "skeeto/elfeed") "pdf-tools" (pdf-tools :type git :flavor melpa :files (:defaults "README" ("build" "Makefile") ("build" "server") "pdf-tools-pkg.el") :host github :repo "vedang/pdf-tools") "tablist" (tablist :type git :flavor melpa :host github :repo "emacsorphanage/tablist") "let-alist" nil "eat" nil "vterm" (vterm :type git :flavor melpa :files ("CMakeLists.txt" "elisp.c" "elisp.h" "emacs-module.h" "etc" "utf8.c" "utf8.h" "vterm.el" "vterm-module.c" "vterm-module.h" "vterm-pkg.el") :host github :repo "akermu/emacs-libvterm") "notmuch" (notmuch :type git :flavor melpa :files ("emacs/*.el" "emacs/*.svg" "notmuch-pkg.el") :repo "https://git.notmuchmail.org/git/notmuch") "mu4e" nil "erc" nil "eldoc-box" (eldoc-box :type git :flavor melpa :host github :repo "casouri/eldoc-box") "json-mode" (json-mode :type git :flavor melpa :host github :repo "json-emacs/json-mode") "json-snatcher" (json-snatcher :type git :flavor melpa :host github :repo "Sterlingg/json-snatcher") "jsonrpc" nil "treemacs" (treemacs :type git :flavor melpa :files (:defaults "Changelog.org" "icons" "src/elisp/treemacs*.el" "src/scripts/treemacs*.py" (:exclude "src/extra/*") "treemacs-pkg.el") :host github :repo "Alexander-Miller/treemacs") "pfuture" (pfuture :type git :flavor melpa :host github :repo "Alexander-Miller/pfuture") "hydra" (hydra :type git :flavor melpa :files (:defaults (:exclude "lv.el") "hydra-pkg.el") :host github :repo "abo-abo/hydra") "lv" (lv :type git :flavor melpa :files ("lv.el" "lv-pkg.el") :host github :repo "abo-abo/hydra") "cfrs" (cfrs :type git :flavor melpa :host github :repo "Alexander-Miller/cfrs") "duplicate-thing" (duplicate-thing :type git :flavor melpa :host github :repo "ongaeshi/duplicate-thing") "breadcrumb" nil "parrot" (parrot :type git :flavor melpa :files (:defaults "img" "parrot-pkg.el") :host github :repo "dp12/parrot") "compile" nil "php-mode" (php-mode :type git :flavor melpa :host github :repo "emacs-php/php-mode") "yaml-mode" (yaml-mode :type git :flavor melpa :host github :repo "yoshiki/yaml-mode") "json-reformat" (json-reformat :type git :flavor melpa :host github :repo "gongo/json-reformat") "flymake-diagnostic-at-point" (flymake-diagnostic-at-point :type git :flavor melpa :host github :repo "meqif/flymake-diagnostic-at-point") "magit" (magit :type git :flavor melpa :files ("lisp/magit*.el" "lisp/git-*.el" "docs/magit.texi" "docs/AUTHORS.md" "LICENSE" "magit-pkg.el" (:exclude "lisp/magit-section.el") "magit-pkg.el") :host github :repo "magit/magit") "magit-section" (magit-section :type git :flavor melpa :files ("lisp/magit-section.el" "docs/magit-section.texi" "magit-section-pkg.el" "magit-section-pkg.el") :host github :repo "magit/magit") "magit-filenotify" (magit-filenotify :type git :flavor melpa :host github :repo "ruediger/magit-filenotify") "sqlite3" (sqlite3 :type git :flavor melpa :files (:defaults "Makefile" "consts.c" "emacs-module.h" "sqlite3-api.c" "sqlite3-pkg.el") :host github :repo "pekingduck/emacs-sqlite3-api") "diff-hl" (diff-hl :type git :flavor melpa :host github :repo "dgutov/diff-hl") "treesit-auto" (treesit-auto :type git :flavor melpa :host github :repo "renzmann/treesit-auto") "js" nil "typescript-ts-mode" nil "eglot" nil "external-completion" nil "track-changes" nil "xref" nil "dape" nil "auto-virtualenv" (auto-virtualenv :type git :flavor melpa :host github :repo "marcwebbie/auto-virtualenv") "lldb-voltron" nil "rust-mode" (rust-mode :type git :flavor melpa :host github :repo "rust-lang/rust-mode") "rustic" (rustic :type git :flavor melpa :host github :repo "emacs-rustic/rustic") "markdown-mode" (markdown-mode :type git :flavor melpa :host github :repo "jrblevin/markdown-mode") "xterm-color" (xterm-color :type git :flavor melpa :host github :repo "atomontage/xterm-color") "flycheck" (flycheck :type git :flavor melpa :host github :repo "flycheck/flycheck") "c-ts-mode" nil "logview" (logview :type git :flavor melpa :host github :repo "doublep/logview") "datetime" (datetime :type git :flavor melpa :files (:defaults "*.extmap" "datetime-pkg.el") :host github :repo "doublep/datetime") "extmap" (extmap :type git :flavor melpa :host github :repo "doublep/extmap") "strace-mode" (strace-mode :type git :flavor melpa :host github :repo "pkmoore/strace-mode") "elf-mode" (elf-mode :type git :flavor melpa :host github :repo "abo-abo/elf-mode") "rgr-kill-dwim" nil "package-lint" (package-lint :type git :flavor melpa :files (:defaults "data" (:exclude "*flymake.el") "package-lint-pkg.el") :host github :repo "purcell/package-lint") "helpful" (helpful :type git :flavor melpa :host github :repo "Wilfred/helpful") "elisp-refs" (elisp-refs :type git :flavor melpa :files (:defaults (:exclude "elisp-refs-bench.el") "elisp-refs-pkg.el") :host github :repo "Wilfred/elisp-refs") "el-docstring-sap" nil "quick-peek" (quick-peek :type git :flavor melpa :host github :repo "cpitclaudel/quick-peek") "edebug-x" (edebug-x :type git :flavor melpa :host github :repo "ScottyB/edebug-x") "elisp-format" (elisp-format :type git :flavor melpa :host github :repo "Yuki-Inoue/elisp-format") "modus-themes" (modus-themes :type git :flavor melpa :host github :repo "protesilaos/modus-themes"))) gnu-elpa-mirror #s(hash-table test equal data (version 3 "nongnu-elpa" nil "emacsmirror-mirror" nil "straight" nil "notifications" nil "compat" (compat :type git :host github :repo "emacs-straight/compat" :files ("*" (:exclude ".git"))) "seq" (seq :type git :host github :repo "emacs-straight/seq" :files ("*" (:exclude ".git"))) "project" (project :type git :host github :repo "emacs-straight/project" :files ("*" (:exclude ".git"))) "flymake" (flymake :type git :host github :repo "emacs-straight/flymake" :files ("*" (:exclude ".git"))) "eldoc" (eldoc :type git :host github :repo "emacs-straight/eldoc" :files ("*" (:exclude ".git"))) "lazy-lang-learn" nil "cl-lib" nil "repeat" nil "pulsar" (pulsar :type git :host github :repo "emacs-straight/pulsar" :files ("*" (:exclude ".git"))) "darkroom" (darkroom :type git :host github :repo "emacs-straight/darkroom" :files ("*" (:exclude ".git"))) "tab-bar" nil "bookmark+" nil "hideshow" nil "ffap" nil "dabbrev" nil "llm" (llm :type git :host github :repo "emacs-straight/llm" :files ("*" (:exclude ".git"))) "plz" (plz :type git :host github :repo "emacs-straight/plz" :files ("*" (:exclude ".git"))) "plz-event-source" (plz-event-source :type git :host github :repo "emacs-straight/plz-event-source" :files ("*" (:exclude ".git"))) "plz-media-type" (plz-media-type :type git :host github :repo "emacs-straight/plz-media-type" :files ("*" (:exclude ".git"))) "spinner" (spinner :type git :host github :repo "emacs-straight/spinner" :files ("*" (:exclude ".git"))) "eww" nil "goldendict" nil "let-alist" (let-alist :type git :host github :repo "emacs-straight/let-alist" :files ("*" (:exclude ".git"))) "eat" nil "mu4e" nil "erc" (erc :type git :host github :repo "emacs-straight/erc" :files ("*" (:exclude ".git"))) "jsonrpc" (jsonrpc :type git :host github :repo "emacs-straight/jsonrpc" :files ("*" (:exclude ".git"))) "breadcrumb" (breadcrumb :type git :host github :repo "emacs-straight/breadcrumb" :files ("*" (:exclude ".git"))) "compile" nil "js" nil "typescript-ts-mode" nil "eglot" (eglot :type git :host github :repo "emacs-straight/eglot" :files ("*" (:exclude ".git"))) "external-completion" (external-completion :type git :host github :repo "emacs-straight/external-completion" :files ("*" (:exclude ".git"))) "track-changes" (track-changes :type git :host github :repo "emacs-straight/track-changes" :files ("*" (:exclude ".git"))) "xref" (xref :type git :host github :repo "emacs-straight/xref" :files ("*" (:exclude ".git"))) "dape" (dape :type git :host github :repo "emacs-straight/dape" :files ("*" (:exclude ".git"))) "lldb-voltron" nil "c-ts-mode" nil "rgr-kill-dwim" nil "el-docstring-sap" nil)) nongnu-elpa #s(hash-table test equal data (version 4 "emacsmirror-mirror" nil "straight" nil "notifications" nil "lazy-lang-learn" nil "cl-lib" nil "repeat" nil "tab-bar" nil "bookmark+" nil "hideshow" nil "ffap" nil "dabbrev" nil "eww" nil "goldendict" nil "eat" (eat :repo "https://codeberg.org/akib/emacs-eat") "mu4e" nil "compile" nil "js" nil "typescript-ts-mode" nil "lldb-voltron" nil "c-ts-mode" nil "rgr-kill-dwim" nil "el-docstring-sap" nil)) el-get #s(hash-table test equal data (version 2 "emacsmirror-mirror" nil "straight" nil "notifications" nil "lazy-lang-learn" nil "cl-lib" nil "repeat" nil "tab-bar" nil "bookmark+" `(bookmark+ :type git :host github :repo "emacsmirror/bookmark-plus" :files (:defaults)) "hideshow" nil "ffap" nil "dabbrev" nil "eww" nil "goldendict" nil "mu4e" `(mu4e :type git :host github :repo "djcb/mu" :pre-build ,(cl-letf (((symbol-function #'el-get-package-directory) (lambda (package) (straight--repos-dir (format "%S" package)))) (el-get-install-info (straight--el-get-install-info)) (el-get-emacs (straight--emacs-path)) (el-get-dir (straight--repos-dir))) (pcase system-type (_ `(("./autogen.sh") ("make"))))) :files (:defaults "build/mu4e")) "compile" nil "js" nil "typescript-ts-mode" nil "lldb-voltron" nil "c-ts-mode" nil "rgr-kill-dwim" nil "el-docstring-sap" nil)) emacsmirror-mirror #s(hash-table test equal data (version 2 "straight" (straight :type git :host github :repo "emacsmirror/straight") "notifications" nil "lazy-lang-learn" nil "cl-lib" nil "repeat" nil "tab-bar" nil "hideshow" nil "ffap" nil "dabbrev" nil "eww" nil "goldendict" (goldendict :type git :host github :repo "emacsmirror/goldendict") "compile" nil "js" nil "typescript-ts-mode" nil "lldb-voltron" nil "c-ts-mode" nil "rgr-kill-dwim" nil "el-docstring-sap" nil))))
+
+("modus-themes" "elisp-format" "edebug-x" "quick-peek" "el-docstring-sap" "elisp-refs" "helpful" "package-lint" "rgr-kill-dwim" "elf-mode" "strace-mode" "extmap" "datetime" "logview" "c-ts-mode" "flycheck" "xterm-color" "markdown-mode" "rustic" "rust-mode" "lldb-voltron" "auto-virtualenv" "dape" "track-changes" "external-completion" "eglot" "typescript-ts-mode" "js" "treesit-auto" "diff-hl" "sqlite3" "magit-filenotify" "magit-section" "magit" "flymake-diagnostic-at-point" "json-reformat" "yaml-mode" "php-mode" "compile" "parrot" "breadcrumb" "duplicate-thing" "cfrs" "lv" "hydra" "pfuture" "treemacs" "jsonrpc" "json-snatcher" "json-mode" "eldoc-box" "erc" "mu4e" "notmuch" "vterm" "eat" "let-alist" "tablist" "pdf-tools" "elfeed" "devdocs-browser" "goldendict" "link" "connection" "dictionary" "go-translate" "eww" "spinner" "plz-media-type" "plz-event-source" "plz" "llm" "ellama" "transient" "gptel" "ox-gfm" "ts" "org-super-agenda" "async" "ob-async" "org-contrib" "vertico" "yasnippet-snippets" "yasnippet" "which-key" "cape" "dabbrev" "orderless" "corfu" "all-the-icons-dired" "all-the-icons-completion" "all-the-icons" "marginalia" "consult" "prescient" "ffap" "sudo-edit" "ripgrep" "jinx" "hideshow" "multiple-cursors" "ht" "emojify" "bookmark+" "tab-bar" "darkroom" "dpaste" "boxquote" "blackout" "pulsar" "golden-ratio" "ace-jump-mode" "ace-link" "avy" "ace-window" "posframe" "list-utils" "string-utils" "browse-url-dwim" "repeat" "cl-lib" "log4e" "gntp" "alert" "popup" "google-translate" "lazy-lang-learn" "dash" "f" "s" "password-store-otp" "with-editor" "password-store" "pass" "eldoc" "flymake" "xref" "project" "org" "seq" "compat" "no-littering" "notifications" "emacs" "straight" "emacsmirror-mirror" "el-get" "nongnu-elpa" "gnu-elpa-mirror" "melpa" "org-elpa")
 
 t
