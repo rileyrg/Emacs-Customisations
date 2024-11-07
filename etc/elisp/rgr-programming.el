@@ -40,7 +40,6 @@
   (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
   (use-package treemacs-magit)
-  (use-package treemacs-projectile)
   :bind
   ("M-9"   . 'treemacs-select-window)
   (:map treemacs-mode-map
@@ -95,43 +94,7 @@
   :config
   (apheleia-global-mode +1))
 
-(use-package projectile
-  :demand t
-  :config
-  (projectile-mode +1)
-  (defun rgr/projectile-term()
-    (interactive)
-    (if (string-equal major-mode "eat-mode")
-        (previous-buffer)
-      (let ((default-directory (projectile-project-root)))
-        (split-window-below)
-        (other-window 1)
-        (eat))))
-  :bind
-  (:map projectile-mode-map
-        (("C-x p" . projectile-command-map)))
-  (:map projectile-command-map
-        (( "b" . consult-project-buffer)
-         ("t" . #'rgr/projectile-term))))
-
-(when (featurep 'projectile) (projectile-register-project-type 'npm '("package.json")
-                                  :project-file "package.json"
-       			          :compile "npm install"
-       			          :test "npm test"
-       			          :run "alacritty --command tmux new-session -A -s 'npm projectile' 'npm start'"
-       			          :test-suffix ".spec"))
-
-(use-package org-project-capture
-  :demand
-  :custom
-  (org-project-capture-per-project-filepath "TODO.org")
-  :config
-  (use-package org-projectile :demand)
-  (setq org-project-capture-default-backend
-        (make-instance 'org-project-capture-projectile-backend))
-  (org-project-capture-per-project)
-  (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
-  :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
+(use-package project)
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
@@ -262,7 +225,7 @@
                   (selectSerialPortBuffer)))
 
 (use-package platformio-mode
-  :demand t
+  :disabled t
   :custom
 
   (platformio-mode-silent nil)

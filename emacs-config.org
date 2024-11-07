@@ -121,6 +121,8 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
   (straight-use-package 'org)
   (straight-use-package 'project)
   (straight-use-package 'flymake)
+  (with-eval-after-load 'projectile-autoloads
+  (debug))
   ;;; early-init.el ends here
 
 #+end_src
@@ -2187,7 +2189,6 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
     (treemacs-fringe-indicator-mode)
     (treemacs-git-mode 'deferred)
     (use-package treemacs-magit)
-    (use-package treemacs-projectile)
     :bind
     ("M-9"   . 'treemacs-select-window)
     (:map treemacs-mode-map
@@ -2275,50 +2276,8 @@ https://github.com/emacsmirror/rmsbolt
     (apheleia-global-mode +1))
 #+end_src
 **** Project Management                                             :project:
-***** projectile                                                 :projectile:
-#+begin_src emacs-lisp
-  (use-package projectile
-    :demand t
-    :config
-    (projectile-mode +1)
-    (defun rgr/projectile-term()
-      (interactive)
-      (if (string-equal major-mode "eat-mode")
-          (previous-buffer)
-        (let ((default-directory (projectile-project-root)))
-          (split-window-below)
-          (other-window 1)
-          (eat))))
-    :bind
-    (:map projectile-mode-map
-          (("C-x p" . projectile-command-map)))
-    (:map projectile-command-map
-          (( "b" . consult-project-buffer)
-           ("t" . #'rgr/projectile-term))))
-#+end_src
-****** projectile npm support
 #+begin_src  emacs-lisp
-  (when (featurep 'projectile) (projectile-register-project-type 'npm '("package.json")
-                                    :project-file "package.json"
-         			          :compile "npm install"
-         			          :test "npm test"
-         			          :run "alacritty --command tmux new-session -A -s 'npm projectile' 'npm start'"
-         			          :test-suffix ".spec"))
-#+end_src
-****** org-projectile
-https://github.com/IvanMalison/org-projectile
-#+begin_src  emacs-lisp
-  (use-package org-project-capture
-    :demand
-    :custom
-    (org-project-capture-per-project-filepath "TODO.org")
-    :config
-    (use-package org-projectile :demand)
-    (setq org-project-capture-default-backend
-          (make-instance 'org-project-capture-projectile-backend))
-    (org-project-capture-per-project)
-    (push (org-projectile-project-todo-entry) org-capture-templates) ;; this doesnt work. I had to exec it then save in custom
-    :bind (("C-c n p" . org-projectile-project-todo-completing-read)))
+  (use-package project)
 #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:
@@ -2555,7 +2514,7 @@ https://github.com/joaotavora/eglot
     (dape-buffer-window-arrangement 'right)
     (dape-info-hide-mode-line nil)
     (dape-inlay-hints t)
-    (dape-cwd-fn 'projectile-project-root)
+    ;;(dape-cwd-fn 'projectile-project-root)
     :hook
     ;; Save breakpoints on quit
     ((kill-emacs . dape-breakpoint-save)
@@ -2610,7 +2569,7 @@ https://github.com/joaotavora/eglot
 The build and install process id documented [[https://docs.platformio.org/en/latest/ide/emacs.html][here]].
 #+begin_src emacs-lisp
   (use-package platformio-mode
-    :demand t
+    :disabled t
     :custom
 
     (platformio-mode-silent nil)

@@ -21,7 +21,7 @@
   (dape-buffer-window-arrangement 'right)
   (dape-info-hide-mode-line nil)
   (dape-inlay-hints t)
-  (dape-cwd-fn 'projectile-project-root)
+  ;;(dape-cwd-fn 'projectile-project-root)
   :hook
   ;; Save breakpoints on quit
   ((kill-emacs . dape-breakpoint-save)

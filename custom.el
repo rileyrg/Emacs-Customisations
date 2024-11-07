@@ -339,19 +339,6 @@
  '(pomodoro-desktop-notification t)
  '(pos-tip-background-color "#FFFACE")
  '(pos-tip-foreground-color "#272822")
- '(projectile-project-root-files
-   '(".projectile" ".project" "dune-project" "pubspec.yaml" "info.rkt"
-     "Cargo.toml" "stack.yaml" "DESCRIPTION" "Eldev" "Cask"
-     "shard.yml" "Gemfile" ".bloop" "deps.edn" "build.boot"
-     "project.clj" "build.sc" "build.sbt" "application.properties"
-     "gradlew" "build.gradle" "pom.xml" "poetry.lock" "Pipfile"
-     "tox.ini" "setup.py" "requirements.txt" "manage.py"
-     "angular.json" "package.json" "gulpfile.js" "Gruntfile.js"
-     "mix.exs" "rebar.config" "composer.json" "CMakeLists.txt"
-     "Makefile" "debian/control" "WORKSPACE" "default.nix"
-     "meson.build" "SConstruct" "GTAGS" "TAGS" "configure.ac"
-     "configure.in" "cscope.out"))
- '(projectile-run-use-comint-mode t)
  '(ps-font-size '(12 . 12))
  '(ps-lpr-switches '("-o Duplex=DuplexNoTumble"))
  '(ps-paper-type 'a4)

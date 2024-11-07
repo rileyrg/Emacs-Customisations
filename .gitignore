@@ -66,3 +66,4 @@
 !straight
 !straight/versions
 !straight/versions/*
+!straight/build-cache.el
