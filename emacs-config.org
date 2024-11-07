@@ -121,10 +121,6 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
   (straight-use-package 'org)
   (straight-use-package 'project)
   (straight-use-package 'flymake)
-  (with-eval-after-load 'projectile-autoloads
-  (debug))
-  ;;; early-init.el ends here
-
 #+end_src
 
 ***

@@ -47,9 +47,6 @@
 (straight-use-package 'org)
 (straight-use-package 'project)
 (straight-use-package 'flymake)
-(with-eval-after-load 'projectile-autoloads
-(debug))
-;;; early-init.el ends here
 
 ;; look for a debug init file and load, trigger the debugger
 (defun debug-init (&optional fname)
