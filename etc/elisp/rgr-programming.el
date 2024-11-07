@@ -27,6 +27,7 @@
   (prog-mode . indent-bars-mode))
 
 (use-package json-mode)
+(use-package jsonrpc)
 
 (use-package
   treemacs
@@ -95,7 +96,7 @@
   (apheleia-global-mode +1))
 
 (use-package projectile
-  :demand
+  :demand t
   :config
   (projectile-mode +1)
   (defun rgr/projectile-term()
@@ -113,12 +114,12 @@
         (( "b" . consult-project-buffer)
          ("t" . #'rgr/projectile-term))))
 
-(projectile-register-project-type 'npm '("package.json")
+(when (featurep 'projectile) (projectile-register-project-type 'npm '("package.json")
                                   :project-file "package.json"
        			          :compile "npm install"
        			          :test "npm test"
        			          :run "alacritty --command tmux new-session -A -s 'npm projectile' 'npm start'"
-       			          :test-suffix ".spec")
+       			          :test-suffix ".spec"))
 
 (use-package org-project-capture
   :demand
@@ -150,15 +151,6 @@
 (use-package json-reformat)
 (use-package hydra)
 
-(use-package flycheck
-  :disabled t
-  :ensure t
-  :config
-  (use-package flycheck-pos-tip
-    :config
-    (flycheck-pos-tip-mode))
-  (add-hook 'after-init-hook #'global-flycheck-mode))
-
 (use-package flymake
   :demand t
   :init
@@ -173,12 +165,6 @@
   :bind
   ("M-n" . next-error)
   ("M-p" . previous-error))
-
-(use-package flycheck-bashate
-  :disabled t
-  :after (flycheck)
-  :config
-  (flycheck-bashate-setup))
 
 (use-package flymake-shellcheck
   :disabled t
@@ -211,30 +197,6 @@
   (magit-post-refresh . diff-hl-magit-post-refresh)
   :bind
   ("C-x v ="  . diff-hl-show-hunk))
-
-(use-package dart-mode
-  :disabled
-  :custom
-  (lsp-dart-flutter-widget-guides t)
-  :init
-  (use-package flutter
-    :after dart-mode
-    :custom
-    (flutter-sdk-path "~/bin/thirdparty/flutter")
-    :config
-    (use-package flutter-l10n-flycheck)
-    (setenv "JAVA_HOME" (concat (getenv "ANDROID_STUDIO_HOME") "/jbr"))
-    :bind (:map dart-mode-map
-                ("C-M-x" . (lambda()
-                             (interactive)
-                             (save-buffer)
-                             (flutter-run-or-hot-reload))))
-    :hook   (dart-mode . (lambda()
-                           (flutter-test-mode))))
-  :config
-  (defun rgr/init-dart-buffer()
-    (eglot-ensure) )
-  :hook   (dart-mode . rgr/init-dart-buffer ))
 
 ;; (use-package emacs
 ;;   :hook (java-mode . eglot-ensure)

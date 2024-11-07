@@ -1,10 +1,10 @@
 (use-package eglot
   :demand t
   ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
-  :init
-  (add-hook 'after-save-hook 'eglot-format-buffer)
   :custom
   (eglot--mode-line-format nil)
+  :hook
+  (after-save  . eglot-format-buffer)
   :bind
   (:map eglot-mode-map
         ("<C-return>" . eglot-code-actions)))

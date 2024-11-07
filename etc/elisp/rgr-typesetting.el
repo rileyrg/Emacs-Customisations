@@ -1,4 +1,5 @@
 (use-package auctex
+  :disabled t
   :init
   (require 'ox-latex)
   ;;(use-package lsp-latex)
