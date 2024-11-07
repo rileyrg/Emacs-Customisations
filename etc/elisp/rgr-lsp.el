@@ -1,5 +1,5 @@
 (use-package eglot
-  :demand t
+  :defer t
   ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
   :custom
   (eglot--mode-line-format nil)
@@ -10,7 +10,7 @@
         ("<C-return>" . eglot-code-actions)))
 
 (use-package dape
-  :demand t
+  :defer t
   :preface
   ;; By default dape shares the same keybinding prefix as `gud'
   ;; If you do not want to use any prefix, set it to nil.

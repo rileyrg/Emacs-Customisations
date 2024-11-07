@@ -53,19 +53,7 @@
   :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
 
 (use-package rmsbolt
-  :config
-  (defun rgr/rmsbolt-toggle()
-    (interactive)
-    (if rmsbolt-mode
-        (progn
-          (when (get-buffer
-                 rmsbolt-output-buffer)
-            (with-current-buffer rmsbolt-output-buffer
-              (kill-buffer-and-window)))
-          (rmsbolt-mode -1))
-      (progn
-        (rmsbolt-mode +1)
-        (rmsbolt-compile))))
+  :disabled t
   :bind
   (:map prog-mode-map
         ("C-c d" . rgr/rmsbolt-toggle)))

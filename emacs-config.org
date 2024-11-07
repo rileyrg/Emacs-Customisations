@@ -119,7 +119,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
       (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
   (straight-use-package 'org)
-  (straight-use-package 'project)
+  (straight-use-package '(project :type built-in ))
   (straight-use-package 'flymake)
 #+end_src
 
@@ -264,16 +264,6 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
 :END:
-
-**** screencast gifs
-Not working with wayland
-#+begin_src  emacs-lisp
-  (use-package gif-screencast
-    :custom
-    (gif-screencast-program "grim")
-    (gif-screencast-screenshot-directory "~/tmp")
-    (gif-screencast-output-directory "~/tmp"))
-#+end_src
 
 
 **** toggle buffer
@@ -2206,25 +2196,13 @@ https://github.com/joaotavora/breadcrumb
 ***** rmsbolt
 RMSbolt is a compiler output viewer in Emacs.
 https://github.com/emacsmirror/rmsbolt
+DISABLED : effing ssh key expired.
 #+begin_src emacs-lisp
   (use-package rmsbolt
-    :config
-    (defun rgr/rmsbolt-toggle()
-      (interactive)
-      (if rmsbolt-mode
-          (progn
-            (when (get-buffer
-                   rmsbolt-output-buffer)
-              (with-current-buffer rmsbolt-output-buffer
-                (kill-buffer-and-window)))
-            (rmsbolt-mode -1))
-        (progn
-          (rmsbolt-mode +1)
-          (rmsbolt-compile))))
+    :disabled t
     :bind
     (:map prog-mode-map
           ("C-c d" . rgr/rmsbolt-toggle)))
-
 #+end_src
 
 ***** parrot
@@ -2485,7 +2463,7 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
-    :demand t
+    :defer t
     ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
     :custom
     (eglot--mode-line-format nil)
@@ -2499,7 +2477,7 @@ https://github.com/joaotavora/eglot
 ****** dape
 #+begin_src  emacs-lisp
   (use-package dape
-    :demand t
+    :defer t
     :preface
     ;; By default dape shares the same keybinding prefix as `gud'
     ;; If you do not want to use any prefix, set it to nil.
