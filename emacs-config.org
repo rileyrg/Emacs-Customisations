@@ -382,15 +382,9 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
       (set-register reg `(file . ,(buffer-file-name)))))
 
   (defun rgr/startup-hook ()
-    (bookmark-maybe-load-default-file)
-    (bookmark-jump "current"))
+    (when (featurep 'recentf)
+      (recentf-open-most-recent-file 1)))
 
-  (defun rgr/remember-last-buffer ()
-    (when buffer-file-name
-      (bookmark-set "current")))
-
-  ;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
-  (add-hook 'kill-emacs-hook  #'rgr/remember-last-buffer)
 
   (if (daemonp)
       (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
@@ -2475,6 +2469,7 @@ https://github.com/joaotavora/eglot
 ****** dape
 #+begin_src  emacs-lisp
   (use-package dape
+    :demand t
     :preface
     ;; By default dape shares the same keybinding prefix as `gud'
     ;; If you do not want to use any prefix, set it to nil.
@@ -2495,6 +2490,7 @@ https://github.com/joaotavora/eglot
 
     :config
     ;; Turn on global bindings for setting breakpoints with mouse
+    (add-to-list 'recentf-exclude "dape-breakpoints")
     (dape-breakpoint-global-mode))
 #+end_src
 

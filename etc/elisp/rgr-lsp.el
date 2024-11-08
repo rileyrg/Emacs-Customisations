@@ -11,6 +11,7 @@
         ("<C-return>" . eglot-code-actions)))
 
 (use-package dape
+  :demand t
   :preface
   ;; By default dape shares the same keybinding prefix as `gud'
   ;; If you do not want to use any prefix, set it to nil.
@@ -31,6 +32,7 @@
 
   :config
   ;; Turn on global bindings for setting breakpoints with mouse
+  (add-to-list 'recentf-exclude "dape-breakpoints")
   (dape-breakpoint-global-mode))
 
 (provide 'rgr/lsp)

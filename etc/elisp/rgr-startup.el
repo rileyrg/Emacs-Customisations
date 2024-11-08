@@ -13,15 +13,9 @@
     (set-register reg `(file . ,(buffer-file-name)))))
 
 (defun rgr/startup-hook ()
-  (bookmark-maybe-load-default-file)
-  (bookmark-jump "current"))
+  (when (featurep 'recentf)
+    (recentf-open-most-recent-file 1)))
 
-(defun rgr/remember-last-buffer ()
-  (when buffer-file-name
-    (bookmark-set "current")))
-
-;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
-(add-hook 'kill-emacs-hook  #'rgr/remember-last-buffer)
 
 (if (daemonp)
     (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
