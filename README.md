@@ -932,9 +932,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;; be used globally (M-/).  See also the customization variable
           ;; `global-corfu-modes' to exclude certain modes.
           :config
-          ;;https://github.com/radian-software/prescient.el?tab=readme-ov-file#for-corfu
-          (use-package corfu-prescient)
-          ;; Optionally use the `orderless' completion style.
           (use-package orderless
             :custom
             ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
@@ -1236,7 +1233,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org63183f8)
+    See `org-agenda-files` [org-agenda-files](#org2b855cf)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2215,12 +2212,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             <https://github.com/joaotavora/eglot>
             
                 (use-package eglot
-                  :defer t
-                  ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
-                  :custom
-                  (eglot--mode-line-format nil)
-                  :hook
-                  (after-save  . eglot-format-buffer)
+                   :config
+                   (defun rgr/eglot-format-buffer()
+                     (when eglot--managed-mode
+                       (eglot-format-buffer)
+                       ))
+                   :hook
+                   (before-save . rgr/eglot-format-buffer)
                   :bind
                   (:map eglot-mode-map
                         ("<C-return>" . eglot-code-actions)))
@@ -2228,7 +2226,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         3.  dape
         
                 (use-package dape
-                  :defer t
                   :preface
                   ;; By default dape shares the same keybinding prefix as `gud'
                   ;; If you do not want to use any prefix, set it to nil.
@@ -2776,7 +2773,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf46fe37) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0c19328) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2809,7 +2806,7 @@ to add to version control.
     fi
 
 
-<a id="orgf46fe37"></a>
+<a id="org0c19328"></a>
 
 ### Gnome protocol handler desktop file
 

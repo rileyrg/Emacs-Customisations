@@ -2460,12 +2460,13 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
-    :defer t
-    ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
-    :custom
-    (eglot--mode-line-format nil)
-    :hook
-    (after-save  . eglot-format-buffer)
+     :config
+     (defun rgr/eglot-format-buffer()
+       (when eglot--managed-mode
+         (eglot-format-buffer)
+         ))
+     :hook
+     (before-save . rgr/eglot-format-buffer)
     :bind
     (:map eglot-mode-map
           ("<C-return>" . eglot-code-actions)))
@@ -2474,7 +2475,6 @@ https://github.com/joaotavora/eglot
 ****** dape
 #+begin_src  emacs-lisp
   (use-package dape
-    :defer t
     :preface
     ;; By default dape shares the same keybinding prefix as `gud'
     ;; If you do not want to use any prefix, set it to nil.

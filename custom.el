@@ -19,7 +19,7 @@
  '(bbdb-complete-name-allow-cycling t t)
  '(bbdb-file "~/.bbdb" t)
  '(blink-cursor-interval 0.2)
- '(bmkp-bmenu-commands-file "/home/rgr/.emacs.d/var/secrets/bmkp/bmenu-commands.el")
+ '(bmkp-bmenu-commands-file "/home/rgr/.emacs.d/var/secrets/bmkp/bmenu-commands.el" t)
  '(bmkp-last-as-first-bookmark-file nil)
  '(bookmark-default-file "~/.emacs.d/var/secrets/bmkp/current-bookmark.el")
  '(bookmark-save-flag 1)
