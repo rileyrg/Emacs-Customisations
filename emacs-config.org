@@ -392,7 +392,9 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
   ;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
   (add-hook 'kill-emacs-hook  #'rgr/remember-last-buffer)
 
-  (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+  (if (daemonp)
+      (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+    (add-hook 'after-init-hook #'rgr/startup-hook))
 #+end_src
 
 **** quitting emacs
@@ -689,6 +691,7 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
 :END:
 #+begin_src emacs-lisp
   (use-package bookmark+
+    :disabled t
     :demand t
     :bind
     ("C-x x <right>" . bmkp-next-bookmark)

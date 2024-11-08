@@ -23,7 +23,9 @@
 ;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
 (add-hook 'kill-emacs-hook  #'rgr/remember-last-buffer)
 
-(add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+  (add-hook 'after-init-hook #'rgr/startup-hook))
 
 (defun rgr/quit-or-close-emacs(&optional kill)
   (interactive)

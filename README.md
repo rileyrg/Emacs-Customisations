@@ -221,17 +221,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
 ### library
 
-1.  screencast gifs
-
-    Not working with wayland
-    
-        (use-package gif-screencast
-          :custom
-          (gif-screencast-program "grim")
-          (gif-screencast-screenshot-directory "~/tmp")
-          (gif-screencast-output-directory "~/tmp"))
-
-2.  toggle buffer
+1.  toggle buffer
 
         (defun rgr/toggle-buffer(n)
           "jump to or from buffer named n else default to *Messages*"
@@ -241,7 +231,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (switch-to-buffer (if (string= (buffer-name) n)
                                   (other-buffer) n))))
 
-3.  read and write elisp vars to file
+2.  read and write elisp vars to file
 
         
         (defun rgr/elisp-write-var (f v)
@@ -254,7 +244,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (cl-assert (eq (point) (point-min)))
             (read (current-buffer))))
 
-4.  completing lines
+3.  completing lines
 
         (use-package emacs
           :init
@@ -285,7 +275,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           :bind
           ("<C-S-return>" . rgr/complete-line))
 
-5.  Lazy Language Learning, lazy-lang-learn
+4.  Lazy Language Learning, lazy-lang-learn
 
     My own hack for popping up text to learn
     
@@ -296,7 +286,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           ("<f12>" . lazy-lang-learn-translate)
           ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
-6.  provide
+5.  provide
 
         (provide 'rgr/utils)
 
@@ -338,7 +328,9 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         ;; (add-hook 'window-buffer-change-functions #'rgr/remember-last-buffer)
         (add-hook 'kill-emacs-hook  #'rgr/remember-last-buffer)
         
-        (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+        (if (daemonp)
+            (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+          (add-hook 'after-init-hook #'rgr/startup-hook))
 
 2.  quitting emacs
 
@@ -616,6 +608,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     1.  bookmark+
     
             (use-package bookmark+
+              :disabled t
               :demand t
               :bind
               ("C-x x <right>" . bmkp-next-bookmark)
@@ -751,14 +744,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
               :bind
               ( "C-x C-f" . rgr/ffap))
 
-2.  [Prescient](https://github.com/raxod502/prescient.el) provides sorting and filtering.
-
-    Disabled as I cant get my head around it. It doesnt seem to do much thats important to me
-    that corfu and orderless and vertico do. Corfu and vertico already do recency ordering.
-    
-        (use-package prescient )
-
-3.  Consult
+2.  Consult
 
     Consult]] Provides various commands based on the Emacs completion function completing-read
     
@@ -871,7 +857,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
           )
 
-4.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
+3.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
     are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
     
@@ -893,7 +879,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; package.
           (marginalia-mode))
 
-5.  all-the-icons
+4.  all-the-icons
 
     Remember to run **all-the-icons-install-fonts**.
     
@@ -908,7 +894,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
             (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
           :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
 
-6.  provide
+5.  provide
 
         (provide 'rgr/minibuffer)
 
@@ -946,11 +932,14 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;; be used globally (M-/).  See also the customization variable
           ;; `global-corfu-modes' to exclude certain modes.
           :config
+          ;;https://github.com/radian-software/prescient.el?tab=readme-ov-file#for-corfu
+          (use-package corfu-prescient)
           ;; Optionally use the `orderless' completion style.
           (use-package orderless
             :custom
             ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
             ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+            (orderless-component-separator " +\\|[-/]")
             (completion-styles '(orderless basic))
             (completion-category-defaults nil)
             (completion-category-overrides '((file (styles partial-completion)))))
@@ -1247,7 +1236,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org3441334)
+    See `org-agenda-files` [org-agenda-files](#org63183f8)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1924,7 +1913,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (use-package eldoc-box
             :demand t
             :hook
-            (eglot-managed-mode . eldoc-box-hover-at-point-mode)
+            (eldoc-mode . eldoc-box-hover-at-point-mode)
             :bind
             ("C-." . eldoc-box-help-at-point)))
 
@@ -1985,21 +1974,10 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     
         RMSbolt is a compiler output viewer in Emacs.
         <https://github.com/emacsmirror/rmsbolt>
+        DISABLED : effing ssh key expired.
         
             (use-package rmsbolt
-              :config
-              (defun rgr/rmsbolt-toggle()
-                (interactive)
-                (if rmsbolt-mode
-                    (progn
-                      (when (get-buffer
-                             rmsbolt-output-buffer)
-                        (with-current-buffer rmsbolt-output-buffer
-                          (kill-buffer-and-window)))
-                      (rmsbolt-mode -1))
-                  (progn
-                    (rmsbolt-mode +1)
-                    (rmsbolt-compile))))
+              :disabled t
               :bind
               (:map prog-mode-map
                     ("C-c d" . rgr/rmsbolt-toggle)))
@@ -2237,7 +2215,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             <https://github.com/joaotavora/eglot>
             
                 (use-package eglot
-                  :demand t
+                  :defer t
                   ;;:straight `(eglot ,@(when (>= emacs-major-version 29) '(:type built-in)))
                   :custom
                   (eglot--mode-line-format nil)
@@ -2250,7 +2228,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         3.  dape
         
                 (use-package dape
-                  :demand t
+                  :defer t
                   :preface
                   ;; By default dape shares the same keybinding prefix as `gud'
                   ;; If you do not want to use any prefix, set it to nil.
@@ -2791,7 +2769,6 @@ to add to version control.
     !straight
     !straight/versions
     !straight/versions/*
-    !straight/build-cache.el
 
 
 ## Setting up emacs as a default editor using a dot desktop file and associated protocol handler
@@ -2799,7 +2776,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5f01479) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf46fe37) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2832,7 +2809,7 @@ to add to version control.
     fi
 
 
-<a id="org5f01479"></a>
+<a id="orgf46fe37"></a>
 
 ### Gnome protocol handler desktop file
 

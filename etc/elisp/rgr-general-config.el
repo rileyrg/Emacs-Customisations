@@ -177,6 +177,7 @@
                ("s" . tab-bar-switch-to-tab))))
 
 (use-package bookmark+
+  :disabled t
   :demand t
   :bind
   ("C-x x <right>" . bmkp-next-bookmark)
