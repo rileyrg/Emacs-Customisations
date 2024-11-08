@@ -176,6 +176,8 @@
                ("c" . tab-bar-new-tab)
                ("s" . tab-bar-switch-to-tab))))
 
+(add-to-list 'recentf-exclude "current-bookmark.el")
+
 (use-package bookmark+
   :disabled t
   :demand t

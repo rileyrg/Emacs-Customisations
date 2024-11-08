@@ -601,6 +601,10 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
     1.  bookmark+
     
+        Ive had to stop using this as the bookmark file is corrupted in emacs 30
+        
+        :ID:       02489c8b-1ce3-407e-a800-2b92f94827b9
+        
             (use-package bookmark+
               :disabled t
               :demand t
@@ -1227,7 +1231,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgf0c977e)
+    See `org-agenda-files` [org-agenda-files](#org489300c)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2242,6 +2246,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :config
                   ;; Turn on global bindings for setting breakpoints with mouse
                   (add-to-list 'recentf-exclude "dape-breakpoints")
+                  (add-to-list 'recentf-exclude "current-bookmark.el")
                   (dape-breakpoint-global-mode))
         
         4.  provide
@@ -2769,7 +2774,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org609f4bf) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbd828c5) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2802,7 +2807,7 @@ to add to version control.
     fi
 
 
-<a id="org609f4bf"></a>
+<a id="orgbd828c5"></a>
 
 ### Gnome protocol handler desktop file
 

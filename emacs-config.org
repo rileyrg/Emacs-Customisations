@@ -679,7 +679,11 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
                  ("s" . tab-bar-switch-to-tab))))
 #+end_src
 **** bookmarks
+#+begin_src  emacs-lisp
+      (add-to-list 'recentf-exclude "current-bookmark.el")
+#+end_src
 ***** bookmark+                                                        :bmkp:
+Ive had to stop using this as the bookmark file is corrupted in emacs 30
 :PROPERTIES:
 :ID:       02489c8b-1ce3-407e-a800-2b92f94827b9
 :END:
