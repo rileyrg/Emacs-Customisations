@@ -18,9 +18,6 @@
   ;; be used globally (M-/).  See also the customization variable
   ;; `global-corfu-modes' to exclude certain modes.
   :config
-  ;;https://github.com/radian-software/prescient.el?tab=readme-ov-file#for-corfu
-  (use-package corfu-prescient)
-  ;; Optionally use the `orderless' completion style.
   (use-package orderless
     :custom
     ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
