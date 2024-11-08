@@ -24,8 +24,6 @@
   :bind
   ( "C-x C-f" . rgr/ffap))
 
-(use-package prescient )
-
 ;; Example configuration for Consult
 ;; Example configuration for Consult
 (use-package consult

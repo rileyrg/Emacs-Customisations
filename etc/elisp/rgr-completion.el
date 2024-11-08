@@ -18,11 +18,14 @@
   ;; be used globally (M-/).  See also the customization variable
   ;; `global-corfu-modes' to exclude certain modes.
   :config
+  ;;https://github.com/radian-software/prescient.el?tab=readme-ov-file#for-corfu
+  (use-package corfu-prescient)
   ;; Optionally use the `orderless' completion style.
   (use-package orderless
     :custom
     ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
     ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+    (orderless-component-separator " +\\|[-/]")
     (completion-styles '(orderless basic))
     (completion-category-defaults nil)
     (completion-category-overrides '((file (styles partial-completion)))))
