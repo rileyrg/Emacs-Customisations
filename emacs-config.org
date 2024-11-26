@@ -970,6 +970,14 @@ Consult]] Provides various commands based on the Emacs completion function compl
     ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
     )
 #+end_src
+***** consult-xref-stack
+#+begin_src  emacs-lisp
+  (use-package consult-xref-stack
+  :straight
+  (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+  :bind
+  (("C-," . consult-xref-stack-backward)))
+#+end_src
 **** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] margin annotations for info on line
 are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
 :PROPERTIES:

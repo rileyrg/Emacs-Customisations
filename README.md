@@ -857,6 +857,14 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; You may want to use `embark-prefix-help-command' or which-key instead.
           ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
           )
+    
+    1.  consult-xref-stack
+    
+            (use-package consult-xref-stack
+            :straight
+            (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+            :bind
+            (("C-," . consult-xref-stack-backward)))
 
 3.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
@@ -1234,7 +1242,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org24e47a2)
+    See `org-agenda-files` [org-agenda-files](#org71dcc67)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2780,7 +2788,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbd884bd) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0f82833) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2813,7 +2821,7 @@ to add to version control.
     fi
 
 
-<a id="orgbd884bd"></a>
+<a id="org0f82833"></a>
 
 ### Gnome protocol handler desktop file
 
