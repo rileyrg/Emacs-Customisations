@@ -2204,10 +2204,17 @@ https://github.com/emacsmirror/rmsbolt
 DISABLED : effing ssh key expired.
 #+begin_src emacs-lisp
   (use-package rmsbolt
-    :disabled t
+    :init
+    (defun rgr/rmsbolt() (interactive)
+           (rmsbolt-mode))
     :bind
     (:map prog-mode-map
-          ("C-c d" . rgr/rmsbolt-toggle)))
+          ("C-c d" . rgr/rmsbolt)))
+
+#+end_src
+***** compiler-explorer
+#+begin_src  emacs-lisp
+  (use-package compiler-explorer)
 #+end_src
 
 ***** parrot

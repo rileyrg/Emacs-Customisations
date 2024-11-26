@@ -349,6 +349,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 105))))
+ '(compiler-explorer-cursor-entered ((t (:background "black" :foreground "orange red" :weight bold))))
  '(tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
  '(tab-bar-tab ((t (:inherit bold :background "black" :foreground "#ffffff" :box (:line-width (2 . -2) :color "orange")))))
  '(tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff")))))

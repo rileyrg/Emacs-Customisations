@@ -53,10 +53,14 @@
   :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
 
 (use-package rmsbolt
-  :disabled t
+  :init
+  (defun rgr/rmsbolt() (interactive)
+         (rmsbolt-mode))
   :bind
   (:map prog-mode-map
-        ("C-c d" . rgr/rmsbolt-toggle)))
+        ("C-c d" . rgr/rmsbolt)))
+
+(use-package compiler-explorer)
 
 (defun my/parrot-animate-when-compile-success (buffer result)
   (if (string-match "^finished" result)
