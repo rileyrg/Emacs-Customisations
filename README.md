@@ -599,6 +599,8 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 14. bookmarks
 
+        (add-to-list 'recentf-exclude "current-bookmark.el")
+    
     1.  bookmark+
     
         Ive had to stop using this as the bookmark file is corrupted in emacs 30
@@ -825,6 +827,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; Use Consult to select xref locations with preview
           (setq xref-show-xrefs-function #'consult-xref
                 xref-show-definitions-function #'consult-xref)
+        
         
           ;; Configure other variables and modes in the :config section,
           ;; after lazily loading the package.
@@ -1231,7 +1234,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org489300c)
+    See `org-agenda-files` [org-agenda-files](#org24e47a2)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1907,8 +1910,8 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (global-eldoc-mode)
           (use-package eldoc-box
             :demand t
-            :hook
-            (eldoc-mode . eldoc-box-hover-at-point-mode)
+            ;;:hook
+            ;; (eldoc-mode . eldoc-box-hover-at-point-mode)
             :bind
             ("C-." . eldoc-box-help-at-point)))
 
@@ -2061,7 +2064,10 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (use-package flymake-diagnostic-at-point
             :after flymake
             :config
-            (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+            (defun rgr/enable-flymake-hook()
+              (unless eglot--managed-mode
+                (flymake-diagnostic-at-point-mode)))
+            (add-hook 'flymake-mode-hook 'rgr/enable-flymake-hook))
           :bind
           ("M-n" . next-error)
           ("M-p" . previous-error))
@@ -2219,6 +2225,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                    (before-save . rgr/eglot-format-buffer)
                   :bind
                   (:map eglot-mode-map
+                        ("C-." . eldoc-box-eglot-help-at-point)
                         ("<C-return>" . eglot-code-actions)))
         
         3.  dape
@@ -2246,7 +2253,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :config
                   ;; Turn on global bindings for setting breakpoints with mouse
                   (add-to-list 'recentf-exclude "dape-breakpoints")
-                  (add-to-list 'recentf-exclude "current-bookmark.el")
                   (dape-breakpoint-global-mode))
         
         4.  provide
@@ -2774,7 +2780,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbd828c5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbd884bd) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2807,7 +2813,7 @@ to add to version control.
     fi
 
 
-<a id="orgbd828c5"></a>
+<a id="orgbd884bd"></a>
 
 ### Gnome protocol handler desktop file
 

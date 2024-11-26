@@ -8,6 +8,7 @@
    (before-save . rgr/eglot-format-buffer)
   :bind
   (:map eglot-mode-map
+        ("C-." . eldoc-box-eglot-help-at-point)
         ("<C-return>" . eglot-code-actions)))
 
 (use-package dape

@@ -940,6 +940,7 @@ Consult]] Provides various commands based on the Emacs completion function compl
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref)
 
+
     ;; Configure other variables and modes in the :config section,
     ;; after lazily loading the package.
     :config
@@ -2126,8 +2127,8 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
     (global-eldoc-mode)
     (use-package eldoc-box
       :demand t
-      :hook
-      (eldoc-mode . eldoc-box-hover-at-point-mode)
+      ;;:hook
+      ;; (eldoc-mode . eldoc-box-hover-at-point-mode)
       :bind
       ("C-." . eldoc-box-help-at-point)))
 #+end_src
@@ -2154,6 +2155,7 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
   (use-package json-mode)
   (use-package jsonrpc)
 #+end_src
+
 **** Treemacs
 :PROPERTIES:
 :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
@@ -2300,7 +2302,10 @@ DISABLED : effing ssh key expired.
     (use-package flymake-diagnostic-at-point
       :after flymake
       :config
-      (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+      (defun rgr/enable-flymake-hook()
+        (unless eglot--managed-mode
+          (flymake-diagnostic-at-point-mode)))
+      (add-hook 'flymake-mode-hook 'rgr/enable-flymake-hook))
     :bind
     ("M-n" . next-error)
     ("M-p" . previous-error))
@@ -2467,6 +2472,7 @@ https://github.com/joaotavora/eglot
      (before-save . rgr/eglot-format-buffer)
     :bind
     (:map eglot-mode-map
+          ("C-." . eldoc-box-eglot-help-at-point)
           ("<C-return>" . eglot-code-actions)))
 #+end_src
 

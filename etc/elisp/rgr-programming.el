@@ -8,8 +8,8 @@
   (global-eldoc-mode)
   (use-package eldoc-box
     :demand t
-    :hook
-    (eldoc-mode . eldoc-box-hover-at-point-mode)
+    ;;:hook
+    ;; (eldoc-mode . eldoc-box-hover-at-point-mode)
     :bind
     ("C-." . eldoc-box-help-at-point)))
 
@@ -112,7 +112,10 @@
   (use-package flymake-diagnostic-at-point
     :after flymake
     :config
-    (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+    (defun rgr/enable-flymake-hook()
+      (unless eglot--managed-mode
+        (flymake-diagnostic-at-point-mode)))
+    (add-hook 'flymake-mode-hook 'rgr/enable-flymake-hook))
   :bind
   ("M-n" . next-error)
   ("M-p" . previous-error))

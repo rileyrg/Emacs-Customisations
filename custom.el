@@ -273,7 +273,7 @@
  '(pomodoro-desktop-notification t)
  '(pos-tip-background-color "#FFFACE")
  '(pos-tip-foreground-color "#272822")
- '(project-vc-extra-root-markers '(".project"))
+ '(project-vc-extra-root-markers '(".project" ".projectile" "Makefile"))
  '(ps-font-size '(12 . 12))
  '(ps-lpr-switches '("-o Duplex=DuplexNoTumble"))
  '(ps-paper-type 'a4)
