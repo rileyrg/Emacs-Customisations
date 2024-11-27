@@ -18,7 +18,25 @@
             :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
             :build (:not compile))
   :init
-  (global-lsp-bridge-mode))
+  (global-lsp-bridge-mode)
+  (defun rgr/lsp-bridge-hook()
+    (message "in rgr/lsp-bridge-hook")
+    (when (featurep 'corfu)
+        (message "disabling corfu mode")
+        (corfu-mode -1)))
+  :custom
+  (lsp-bridge-enable-hover-diagnostic t)
+  :hook
+  (lsp-bridge-mode . rgr/lsp-bridge-hook)
+  :bind (
+   :map lsp-bridge-mode-map
+        ("C-." . lsp-bridge-popup-documentation)
+        ("C-M-." . lsp-bridge-show-documentation)
+        ("M-n" . lsp-bridge-diagnostic-jump-next)
+        ("M-p" . lsp-bridge-diagnostic-jump-prev)
+        ("M-." . lsp-bridge-find-def)
+        ("M-," . lsp-bridge-find-def-return)
+        ))
 
 (use-package dape
   :demand t

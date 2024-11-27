@@ -1,5 +1,5 @@
 (use-package corfu
-  :disabled t
+  ;;:disabled t
   ;; Optional customizations
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'

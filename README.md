@@ -922,7 +922,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 1.  corfu
 
         (use-package corfu
-          :disabled t
+          ;;:disabled t
           ;; Optional customizations
           :custom
           ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -1237,7 +1237,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgf7cac2f)
+    See `org-agenda-files` [org-agenda-files](#org57c0d94)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2236,12 +2236,32 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         
         3.  lsp-bridge
         
+            ;; <https://github.com/manateelazycat/lsp-bridge>
+            
                 (use-package lsp-bridge
                   :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
                             :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
                             :build (:not compile))
                   :init
-                  (global-lsp-bridge-mode))
+                  (global-lsp-bridge-mode)
+                  (defun rgr/lsp-bridge-hook()
+                    (message "in rgr/lsp-bridge-hook")
+                    (when (featurep 'corfu)
+                        (message "disabling corfu mode")
+                        (corfu-mode -1)))
+                  :custom
+                  (lsp-bridge-enable-hover-diagnostic t)
+                  :hook
+                  (lsp-bridge-mode . rgr/lsp-bridge-hook)
+                  :bind (
+                   :map lsp-bridge-mode-map
+                        ("C-." . lsp-bridge-popup-documentation)
+                        ("C-M-." . lsp-bridge-show-documentation)
+                        ("M-n" . lsp-bridge-diagnostic-jump-next)
+                        ("M-p" . lsp-bridge-diagnostic-jump-prev)
+                        ("M-." . lsp-bridge-find-def)
+                        ("M-," . lsp-bridge-find-def-return)
+                        ))
         
         4.  dape
         
@@ -2793,7 +2813,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8ee16a0) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8898134) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2826,7 +2846,7 @@ to add to version control.
     fi
 
 
-<a id="org8ee16a0"></a>
+<a id="org8898134"></a>
 
 ### Gnome protocol handler desktop file
 
