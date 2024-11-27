@@ -17,8 +17,7 @@
     (turn-on-reftex)
     (visual-line-mode)
     (LaTeX-math-mode)
-    (flyspell-mode)
-    (eglot-ensure))
+    (flyspell-mode))
 
   :hook
   (TeX-mode .

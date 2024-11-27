@@ -97,9 +97,7 @@
                '(pascal
                  "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 
-(use-package php-mode
-  :hook
-  (php-mode . (lambda()(eglot-ensure))))
+(use-package php-mode)
 
 (use-package yaml-mode)
 
@@ -157,7 +155,6 @@
   ("C-x v ="  . diff-hl-show-hunk))
 
 ;; (use-package emacs
-;;   :hook (java-mode . eglot-ensure)
 ;;   )
 
 (use-package treesit-auto
@@ -175,7 +172,6 @@
   (defun rgr/javascript-typescript-common-mode-hook ()
     (electric-pair-mode 1)
     (setq-local rgr/complete-line-f 'rgr/complete-c-line)
-    (eglot-ensure)
     )
   :config
   (defun rgr/js-ts-mode-hook ()
@@ -247,8 +243,6 @@
 (use-package haskell-mode
   :disabled t
   :config
-  ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
-  ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
   (eval-after-load "haskell-mode"
     '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
   (eval-after-load "haskell-cabal"
@@ -294,7 +288,6 @@
   (defun rgr/c-ts-mode-common-hook ()
     (setq-local rgr/complete-line-f 'rgr/c-complete-line)
     (message "rgr/c-ts-mode-common-hook")
-    (eglot-ensure)
     ;; (if(featurep 'platformio-mode)
     ;;     (platformio-conditionally-enable))
     (if (featurep 'yasnippet)

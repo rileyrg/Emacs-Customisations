@@ -1242,7 +1242,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orge1e89b3)
+    See `org-agenda-files` [org-agenda-files](#org2f00b46)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1288,8 +1288,7 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
             (turn-on-reftex)
             (visual-line-mode)
             (LaTeX-math-mode)
-            (flyspell-mode)
-            (eglot-ensure))
+            (flyspell-mode))
         
           :hook
           (TeX-mode .
@@ -2051,9 +2050,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 14. PHP
 
-        (use-package php-mode
-          :hook
-          (php-mode . (lambda()(eglot-ensure))))
+        (use-package php-mode)
 
 15. JSON, YAML Configuration files
 
@@ -2162,7 +2159,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     1.  Java
     
             ;; (use-package emacs
-            ;;   :hook (java-mode . eglot-ensure)
             ;;   )
 
 19. Tree Sitter
@@ -2190,7 +2186,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (defun rgr/javascript-typescript-common-mode-hook ()
                 (electric-pair-mode 1)
                 (setq-local rgr/complete-line-f 'rgr/complete-c-line)
-                (eglot-ensure)
                 )
               :config
               (defun rgr/js-ts-mode-hook ()
@@ -2230,6 +2225,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             <https://github.com/joaotavora/eglot>
             
                 (use-package eglot
+                  ;;:disabled t
                    :config
                    (defun rgr/eglot-format-buffer()
                      (when eglot--managed-mode
@@ -2237,6 +2233,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                        ))
                    :hook
                    (before-save . rgr/eglot-format-buffer)
+                   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
                   :bind
                   (:map eglot-mode-map
                         ("C-." . eldoc-box-eglot-help-at-point)
@@ -2342,8 +2339,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package haskell-mode
               :disabled t
               :config
-              ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
-              ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
               (eval-after-load "haskell-mode"
                 '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
               (eval-after-load "haskell-cabal"
@@ -2400,7 +2395,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (defun rgr/c-ts-mode-common-hook ()
                 (setq-local rgr/complete-line-f 'rgr/c-complete-line)
                 (message "rgr/c-ts-mode-common-hook")
-                (eglot-ensure)
                 ;; (if(featurep 'platformio-mode)
                 ;;     (platformio-conditionally-enable))
                 (if (featurep 'yasnippet)
@@ -2794,7 +2788,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf2a2f3e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org84654a9) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2827,7 +2821,7 @@ to add to version control.
     fi
 
 
-<a id="orgf2a2f3e"></a>
+<a id="org84654a9"></a>
 
 ### Gnome protocol handler desktop file
 

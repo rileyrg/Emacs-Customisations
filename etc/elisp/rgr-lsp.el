@@ -1,4 +1,5 @@
 (use-package eglot
+  ;;:disabled t
    :config
    (defun rgr/eglot-format-buffer()
      (when eglot--managed-mode
@@ -6,6 +7,7 @@
        ))
    :hook
    (before-save . rgr/eglot-format-buffer)
+   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
   :bind
   (:map eglot-mode-map
         ("C-." . eldoc-box-eglot-help-at-point)

@@ -1440,8 +1440,7 @@ Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
       (turn-on-reftex)
       (visual-line-mode)
       (LaTeX-math-mode)
-      (flyspell-mode)
-      (eglot-ensure))
+      (flyspell-mode))
 
     :hook
     (TeX-mode .
@@ -2285,9 +2284,7 @@ DISABLED : effing ssh key expired.
 #+end_src
 **** PHP
 #+begin_src  emacs-lisp
-  (use-package php-mode
-    :hook
-    (php-mode . (lambda()(eglot-ensure))))
+  (use-package php-mode)
 #+end_src
 **** JSON, YAML Configuration files                                    :json:
 :PROPERTIES:
@@ -2405,7 +2402,6 @@ Running emulator from command line:
 ***** Java                                                             :java:
 #+begin_src emacs-lisp
   ;; (use-package emacs
-  ;;   :hook (java-mode . eglot-ensure)
   ;;   )
 #+end_src
 **** Tree Sitter
@@ -2433,7 +2429,6 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (defun rgr/javascript-typescript-common-mode-hook ()
       (electric-pair-mode 1)
       (setq-local rgr/complete-line-f 'rgr/complete-c-line)
-      (eglot-ensure)
       )
     :config
     (defun rgr/js-ts-mode-hook ()
@@ -2478,6 +2473,7 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
+    ;;:disabled t
      :config
      (defun rgr/eglot-format-buffer()
        (when eglot--managed-mode
@@ -2485,6 +2481,7 @@ https://github.com/joaotavora/eglot
          ))
      :hook
      (before-save . rgr/eglot-format-buffer)
+     ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
     :bind
     (:map eglot-mode-map
           ("C-." . eldoc-box-eglot-help-at-point)
@@ -2608,8 +2605,6 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   (use-package haskell-mode
     :disabled t
     :config
-    ;;(add-hook 'haskell-mode-hook #'eglot-ensure)
-    ;;(add-hook 'haskell-literate-mode-hook #'eglot-ensure)
     (eval-after-load "haskell-mode"
       '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
     (eval-after-load "haskell-cabal"
@@ -2669,7 +2664,6 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     (defun rgr/c-ts-mode-common-hook ()
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       (message "rgr/c-ts-mode-common-hook")
-      (eglot-ensure)
       ;; (if(featurep 'platformio-mode)
       ;;     (platformio-conditionally-enable))
       (if (featurep 'yasnippet)
