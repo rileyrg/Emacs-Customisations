@@ -290,6 +290,7 @@
     (message "rgr/c-ts-mode-common-hook")
     ;; (if(featurep 'platformio-mode)
     ;;     (platformio-conditionally-enable))
+    (flymake-mode)
     (if (featurep 'yasnippet)
         (yas-minor-mode)))
   :hook

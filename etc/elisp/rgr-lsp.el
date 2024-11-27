@@ -1,5 +1,5 @@
 (use-package eglot
-  ;;:disabled t
+  :disabled t
    :config
    (defun rgr/eglot-format-buffer()
      (when eglot--managed-mode
@@ -12,6 +12,13 @@
   (:map eglot-mode-map
         ("C-." . eldoc-box-eglot-help-at-point)
         ("<C-return>" . eglot-code-actions)))
+
+(use-package lsp-bridge
+  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
+            :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+            :build (:not compile))
+  :init
+  (global-lsp-bridge-mode))
 
 (use-package dape
   :demand t

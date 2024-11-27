@@ -922,6 +922,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 1.  corfu
 
         (use-package corfu
+          :disabled t
           ;; Optional customizations
           :custom
           ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -993,12 +994,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
           (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
           (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
-        
-        ;; Enable Corfu completion UI
-        ;; See the Corfu README for more configuration tips.
-        (use-package corfu
-          :init
-          (global-corfu-mode))
         
         ;; Add extensions
         (use-package cape
@@ -1242,7 +1237,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2f00b46)
+    See `org-agenda-files` [org-agenda-files](#orgf7cac2f)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2225,7 +2220,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             <https://github.com/joaotavora/eglot>
             
                 (use-package eglot
-                  ;;:disabled t
+                  :disabled t
                    :config
                    (defun rgr/eglot-format-buffer()
                      (when eglot--managed-mode
@@ -2239,7 +2234,16 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                         ("C-." . eldoc-box-eglot-help-at-point)
                         ("<C-return>" . eglot-code-actions)))
         
-        3.  dape
+        3.  lsp-bridge
+        
+                (use-package lsp-bridge
+                  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
+                            :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+                            :build (:not compile))
+                  :init
+                  (global-lsp-bridge-mode))
+        
+        4.  dape
         
                 (use-package dape
                   :demand t
@@ -2266,7 +2270,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'recentf-exclude "dape-breakpoints")
                   (dape-breakpoint-global-mode))
         
-        4.  provide
+        5.  provide
         
                 (provide 'rgr/lsp)
 
@@ -2397,6 +2401,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 (message "rgr/c-ts-mode-common-hook")
                 ;; (if(featurep 'platformio-mode)
                 ;;     (platformio-conditionally-enable))
+                (flymake-mode)
                 (if (featurep 'yasnippet)
                     (yas-minor-mode)))
               :hook
@@ -2788,7 +2793,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org84654a9) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8ee16a0) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2821,7 +2826,7 @@ to add to version control.
     fi
 
 
-<a id="org84654a9"></a>
+<a id="org8ee16a0"></a>
 
 ### Gnome protocol handler desktop file
 
