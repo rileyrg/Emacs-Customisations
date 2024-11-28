@@ -10,8 +10,8 @@
 (use-package eldoc-box
   ;;:disabled t
   :after eldoc
-  ;;:hook
-  ;;(eldoc-mode . eldoc-box-hover-at-point-mode)
+  :hook
+  (eldoc-mode . eldoc-box-hover-at-point-mode)
   :bind
   ("C-." . eldoc-box-help-at-point))
 

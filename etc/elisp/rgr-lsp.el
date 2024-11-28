@@ -1,16 +1,29 @@
 (use-package eglot
   ;;:disabled t
-   :config
-   (defun rgr/eglot-format-buffer()
-     (when eglot--managed-mode
-       (eglot-format-buffer)
-       ))
-   :hook
-   (before-save . rgr/eglot-format-buffer)
-   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
+  :config
+  (defun rgr/eglot-format-buffer()
+    (when eglot--managed-mode
+      (eglot-format-buffer)
+      ))
+  (defun rgr/eglot-hook()
+    (setq-local rgr/orig-eldoc-documentation-functions eldoc-documentation-functions)
+    (setq-local rgr/eldoc-documentation-functions
+                (remove #'eglot-signature-eldoc-function (remove #'eglot-hover-eldoc-function  eldoc-documentation-functions)))
+    (setq-local eldoc-documentation-functions rgr/eldoc-documentation-functions))
+
+  (defun rgr/eldoc-box-help-at-point()
+    (interactive)
+    (setq-local eldoc-documentation-functions rgr/orig-eldoc-documentation-functions )
+    (eldoc-box-help-at-point)
+    (setq-local eldoc-documentation-functions
+          rgr/eldoc-documentation-functions))
+  :hook
+  (before-save . rgr/eglot-format-buffer)
+  (eglot-managed-mode . rgr/eglot-hook)
+  ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
   :bind
   (:map eglot-mode-map
-        ("C-." . eldoc-box-help-at-point)
+        ("C-." . rgr/eldoc-box-help-at-point)
         ("<C-return>" . eglot-code-actions)))
 
 (use-package eglot-booster
