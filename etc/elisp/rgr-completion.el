@@ -71,12 +71,6 @@
   (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
-;; Enable Corfu completion UI
-;; See the Corfu README for more configuration tips.
-(use-package corfu
-  :init
-  (global-corfu-mode))
-
 ;; Add extensions
 (use-package cape
   ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
