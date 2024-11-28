@@ -392,6 +392,35 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         
           (global-hl-line-mode t)
         
+          (use-package delsel
+            :ensure nil
+            :hook (after-init . delete-selection-mode))
+        
+          (defun prot/keyboard-quit-dwim ()
+            "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+        
+        The generic `keyboard-quit' does not do the expected thing when
+        the minibuffer is open.  Whereas we want it to close the
+        minibuffer, even without explicitly focusing it.
+        
+        The DWIM behaviour of this command is as follows:
+        
+        - When the region is active, disable it.
+        - When a minibuffer is open, but not focused, close the minibuffer.
+        - When the Completions buffer is selected, close it.
+        - In every other case use the regular `keyboard-quit'."
+            (interactive)
+            (cond
+             ((region-active-p)
+              (keyboard-quit))
+             ((derived-mode-p 'completion-list-mode)
+              (delete-completion-window))
+             ((> (minibuffer-depth) 0)
+              (abort-recursive-edit))
+             (t
+              (keyboard-quit))))
+        
+          (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
           ;; https://github.com/rolandwalker/browse-url-dwim
           ;; Context-sensitive external browse URL or Internet search from Emacs.
           (use-package
@@ -1236,7 +1265,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgaca9ca2)
+    See `org-agenda-files` [org-agenda-files](#org120cc9d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2791,7 +2820,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3a27553) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8318364) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2824,7 +2853,7 @@ to add to version control.
     fi
 
 
-<a id="org3a27553"></a>
+<a id="org8318364"></a>
 
 ### Gnome protocol handler desktop file
 
