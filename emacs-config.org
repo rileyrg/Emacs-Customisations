@@ -2482,6 +2482,15 @@ https://github.com/joaotavora/eglot
           ("<C-return>" . eglot-code-actions)))
 #+end_src
 
+****** eglot-booster
+
+#+begin_src  emacs-lisp
+  (use-package eglot-booster
+    :straight (:type git :host github :repo "jdtsmith/eglot-booster")
+    :after eglot
+    :config	(eglot-booster-mode))
+#+end_src
+
 ****** dape
 #+begin_src  emacs-lisp
   (use-package dape

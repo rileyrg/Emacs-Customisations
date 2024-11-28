@@ -13,6 +13,11 @@
         ("C-." . eldoc-box-eglot-help-at-point)
         ("<C-return>" . eglot-code-actions)))
 
+(use-package eglot-booster
+  :straight (:type git :host github :repo "jdtsmith/eglot-booster")
+  :after eglot
+  :config	(eglot-booster-mode))
+
 (use-package dape
   :demand t
   :preface
