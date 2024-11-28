@@ -8,12 +8,11 @@
   (global-eldoc-mode))
 
 (use-package eldoc-box
-  ;;:disabled t
+  :disabled t
   :after eldoc
-  :hook
-  (eldoc-mode . eldoc-box-hover-at-point-mode)
-  :bind
-  ("C-." . eldoc-box-help-at-point))
+  ;;:hook
+  ;;(eldoc-mode . eldoc-box-hover-at-point-mode)
+  )
 
 (global-set-key (kbd "C-c C-r") 'recompile)
 (global-set-key (kbd "<f9>")

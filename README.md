@@ -1236,7 +1236,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga06c5bc)
+    See `org-agenda-files` [org-agenda-files](#orgaca9ca2)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1911,12 +1911,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (global-eldoc-mode))
         
         (use-package eldoc-box
-          ;;:disabled t
+          :disabled t
           :after eldoc
           ;;:hook
           ;;(eldoc-mode . eldoc-box-hover-at-point-mode)
-          :bind
-          ("C-." . eldoc-box-help-at-point))
+          )
 
 2.  compilation
 
@@ -2219,17 +2218,20 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             
                 (use-package eglot
                   ;;:disabled t
-                   :config
-                   (defun rgr/eglot-format-buffer()
-                     (when eglot--managed-mode
-                       (eglot-format-buffer)
-                       ))
-                   :hook
-                   (before-save . rgr/eglot-format-buffer)
-                   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
+                  :config
+                  (defun rgr/eglot-format-buffer()
+                    (when eglot--managed-mode
+                      (eglot-format-buffer)
+                      ))
+                  (defun rgr/eglot-hook()
+                    (message "rgr/eglot hook"))
+                  :hook
+                  (before-save . rgr/eglot-format-buffer)
+                  (eglot-managed-mode . rgr/eglot-hook)
+                  ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
                   :bind
                   (:map eglot-mode-map
-                        ("C-." . eldoc-box-help-at-point)
+                        ("C-." . eldoc-doc-buffer)
                         ("<C-return>" . eglot-code-actions)))
             
             1.  eglot-booster
@@ -2789,7 +2791,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8497edc) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3a27553) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2822,7 +2824,7 @@ to add to version control.
     fi
 
 
-<a id="org8497edc"></a>
+<a id="org3a27553"></a>
 
 ### Gnome protocol handler desktop file
 
