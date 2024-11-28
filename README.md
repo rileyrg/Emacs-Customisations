@@ -1236,7 +1236,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org454ecea)
+    See `org-agenda-files` [org-agenda-files](#orga06c5bc)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1908,13 +1908,15 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (eldoc-echo-area-prefer-doc-buffer t)
           (eldoc-echo-area-use-multiline-p nil)
           :init
-          (global-eldoc-mode)
-          (use-package eldoc-box
-            :demand t
-            ;;:hook
-            ;; (eldoc-mode . eldoc-box-hover-at-point-mode)
-            :bind
-            ("C-." . eldoc-box-help-at-point)))
+          (global-eldoc-mode))
+        
+        (use-package eldoc-box
+          ;;:disabled t
+          :after eldoc
+          ;;:hook
+          ;;(eldoc-mode . eldoc-box-hover-at-point-mode)
+          :bind
+          ("C-." . eldoc-box-help-at-point))
 
 2.  compilation
 
@@ -2060,22 +2062,19 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 16. Flymake
 
         (use-package flymake
-          :init
-          (defun rgr/flymake-hook()
-            (setq-local next-error-function 'flymake-goto-next-error))
-          :hook (flymake-mode . rgr/flymake-hook)
+          ;;:init
+          ;; (defun rgr/flymake-hook()
+          ;;   (setq-local next-error-function 'flymake-goto-next-error))
+          ;; :hook (flymake-mode . rgr/flymake-hook)
           :bind
-          ("M-n" . next-error)
-          ("M-p" . previous-error))
+          ("M-n" . flymake-goto-next-error)
+          ("M-p" . flymake-goto-previous-error))
         
         (use-package flymake-diagnostic-at-point
+          :disabled t
           :after flymake
           :config
-          (defun rgr/flymake-diagnostic-hook()
-            ;;(unless eglot--managed-mode
-              (flymake-diagnostic-at-point-mode))
-          ;;)
-          :hook (flymake-mode . rgr/flymake-diagnostic-hook))
+          :hook (flymake-mode . flymake-diagnostic-at-point-mode))
     
     1.  shellcheck
     
@@ -2230,18 +2229,18 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                    ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
                   :bind
                   (:map eglot-mode-map
-                        ("C-." . eldoc-box-eglot-help-at-point)
+                        ("C-." . eldoc-box-help-at-point)
                         ("<C-return>" . eglot-code-actions)))
+            
+            1.  eglot-booster
+            
+                    (use-package eglot-booster
+                      ;;:disabled t
+                      :straight (:type git :host github :repo "jdtsmith/eglot-booster")
+                      :after eglot
+                      :config	(eglot-booster-mode))
         
-        3.  eglot-booster
-        
-                (use-package eglot-booster
-                  ;;:disabled t
-                  :straight (:type git :host github :repo "jdtsmith/eglot-booster")
-                  :after eglot
-                  :config	(eglot-booster-mode))
-        
-        4.  dape
+        3.  dape
         
                 (use-package dape
                   :demand t
@@ -2268,7 +2267,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'recentf-exclude "dape-breakpoints")
                   (dape-breakpoint-global-mode))
         
-        5.  provide
+        4.  provide
         
                 (provide 'rgr/lsp)
 
@@ -2790,7 +2789,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org622c54f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8497edc) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2823,7 +2822,7 @@ to add to version control.
     fi
 
 
-<a id="org622c54f"></a>
+<a id="org8497edc"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -5,13 +5,15 @@
   (eldoc-echo-area-prefer-doc-buffer t)
   (eldoc-echo-area-use-multiline-p nil)
   :init
-  (global-eldoc-mode)
-  (use-package eldoc-box
-    :demand t
-    ;;:hook
-    ;; (eldoc-mode . eldoc-box-hover-at-point-mode)
-    :bind
-    ("C-." . eldoc-box-help-at-point)))
+  (global-eldoc-mode))
+
+(use-package eldoc-box
+  ;;:disabled t
+  :after eldoc
+  ;;:hook
+  ;;(eldoc-mode . eldoc-box-hover-at-point-mode)
+  :bind
+  ("C-." . eldoc-box-help-at-point))
 
 (global-set-key (kbd "C-c C-r") 'recompile)
 (global-set-key (kbd "<f9>")
@@ -105,22 +107,19 @@
 (use-package hydra)
 
 (use-package flymake
-  :init
-  (defun rgr/flymake-hook()
-    (setq-local next-error-function 'flymake-goto-next-error))
-  :hook (flymake-mode . rgr/flymake-hook)
+  ;;:init
+  ;; (defun rgr/flymake-hook()
+  ;;   (setq-local next-error-function 'flymake-goto-next-error))
+  ;; :hook (flymake-mode . rgr/flymake-hook)
   :bind
-  ("M-n" . next-error)
-  ("M-p" . previous-error))
+  ("M-n" . flymake-goto-next-error)
+  ("M-p" . flymake-goto-previous-error))
 
 (use-package flymake-diagnostic-at-point
+  :disabled t
   :after flymake
   :config
-  (defun rgr/flymake-diagnostic-hook()
-    ;;(unless eglot--managed-mode
-      (flymake-diagnostic-at-point-mode))
-  ;;)
-  :hook (flymake-mode . rgr/flymake-diagnostic-hook))
+  :hook (flymake-mode . flymake-diagnostic-at-point-mode))
 
 (use-package flymake-shellcheck
   :disabled t

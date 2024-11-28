@@ -2125,13 +2125,15 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
     (eldoc-echo-area-prefer-doc-buffer t)
     (eldoc-echo-area-use-multiline-p nil)
     :init
-    (global-eldoc-mode)
-    (use-package eldoc-box
-      :demand t
-      ;;:hook
-      ;; (eldoc-mode . eldoc-box-hover-at-point-mode)
-      :bind
-      ("C-." . eldoc-box-help-at-point)))
+    (global-eldoc-mode))
+
+  (use-package eldoc-box
+    ;;:disabled t
+    :after eldoc
+    ;;:hook
+    ;;(eldoc-mode . eldoc-box-hover-at-point-mode)
+    :bind
+    ("C-." . eldoc-box-help-at-point))
 #+end_src
 
 **** compilation
@@ -2298,23 +2300,20 @@ DISABLED : effing ssh key expired.
 #+end_src
 **** Flymake
 #+begin_src  emacs-lisp
-    (use-package flymake
-      :init
-      (defun rgr/flymake-hook()
-        (setq-local next-error-function 'flymake-goto-next-error))
-      :hook (flymake-mode . rgr/flymake-hook)
-      :bind
-      ("M-n" . next-error)
-      ("M-p" . previous-error))
+  (use-package flymake
+    ;;:init
+    ;; (defun rgr/flymake-hook()
+    ;;   (setq-local next-error-function 'flymake-goto-next-error))
+    ;; :hook (flymake-mode . rgr/flymake-hook)
+    :bind
+    ("M-n" . flymake-goto-next-error)
+    ("M-p" . flymake-goto-previous-error))
 
-    (use-package flymake-diagnostic-at-point
-      :after flymake
-      :config
-      (defun rgr/flymake-diagnostic-hook()
-        ;;(unless eglot--managed-mode
-          (flymake-diagnostic-at-point-mode))
-      ;;)
-      :hook (flymake-mode . rgr/flymake-diagnostic-hook))
+  (use-package flymake-diagnostic-at-point
+    :disabled t
+    :after flymake
+    :config
+    :hook (flymake-mode . flymake-diagnostic-at-point-mode))
 
 #+end_src
 ***** shellcheck
@@ -2479,11 +2478,11 @@ https://github.com/joaotavora/eglot
      ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
     :bind
     (:map eglot-mode-map
-          ("C-." . eldoc-box-eglot-help-at-point)
+          ("C-." . eldoc-box-help-at-point)
           ("<C-return>" . eglot-code-actions)))
 #+end_src
 
-****** eglot-booster
+******* eglot-booster
 
 #+begin_src  emacs-lisp
   (use-package eglot-booster
