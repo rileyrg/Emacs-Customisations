@@ -994,12 +994,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
           (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
         
-        ;; Enable Corfu completion UI
-        ;; See the Corfu README for more configuration tips.
-        (use-package corfu
-          :init
-          (global-corfu-mode))
-        
         ;; Add extensions
         (use-package cape
           ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
@@ -1242,7 +1236,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2f00b46)
+    See `org-agenda-files` [org-agenda-files](#org454ecea)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2066,22 +2060,22 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 16. Flymake
 
         (use-package flymake
-          :demand t
           :init
           (defun rgr/flymake-hook()
             (setq-local next-error-function 'flymake-goto-next-error))
-          (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
-          :config
-          (use-package flymake-diagnostic-at-point
-            :after flymake
-            :config
-            (defun rgr/enable-flymake-hook()
-              (unless eglot--managed-mode
-                (flymake-diagnostic-at-point-mode)))
-            (add-hook 'flymake-mode-hook 'rgr/enable-flymake-hook))
+          :hook (flymake-mode . rgr/flymake-hook)
           :bind
           ("M-n" . next-error)
           ("M-p" . previous-error))
+        
+        (use-package flymake-diagnostic-at-point
+          :after flymake
+          :config
+          (defun rgr/flymake-diagnostic-hook()
+            ;;(unless eglot--managed-mode
+              (flymake-diagnostic-at-point-mode))
+          ;;)
+          :hook (flymake-mode . rgr/flymake-diagnostic-hook))
     
     1.  shellcheck
     
@@ -2239,7 +2233,15 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                         ("C-." . eldoc-box-eglot-help-at-point)
                         ("<C-return>" . eglot-code-actions)))
         
-        3.  dape
+        3.  eglot-booster
+        
+                (use-package eglot-booster
+                  ;;:disabled t
+                  :straight (:type git :host github :repo "jdtsmith/eglot-booster")
+                  :after eglot
+                  :config	(eglot-booster-mode))
+        
+        4.  dape
         
                 (use-package dape
                   :demand t
@@ -2266,7 +2268,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'recentf-exclude "dape-breakpoints")
                   (dape-breakpoint-global-mode))
         
-        4.  provide
+        5.  provide
         
                 (provide 'rgr/lsp)
 
@@ -2788,7 +2790,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org84654a9) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org622c54f) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2821,7 +2823,7 @@ to add to version control.
     fi
 
 
-<a id="org84654a9"></a>
+<a id="org622c54f"></a>
 
 ### Gnome protocol handler desktop file
 

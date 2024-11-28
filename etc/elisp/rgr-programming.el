@@ -105,22 +105,22 @@
 (use-package hydra)
 
 (use-package flymake
-  :demand t
   :init
   (defun rgr/flymake-hook()
     (setq-local next-error-function 'flymake-goto-next-error))
-  (add-hook 'flymake-mode-hook  #'rgr/flymake-hook)
-  :config
-  (use-package flymake-diagnostic-at-point
-    :after flymake
-    :config
-    (defun rgr/enable-flymake-hook()
-      (unless eglot--managed-mode
-        (flymake-diagnostic-at-point-mode)))
-    (add-hook 'flymake-mode-hook 'rgr/enable-flymake-hook))
+  :hook (flymake-mode . rgr/flymake-hook)
   :bind
   ("M-n" . next-error)
   ("M-p" . previous-error))
+
+(use-package flymake-diagnostic-at-point
+  :after flymake
+  :config
+  (defun rgr/flymake-diagnostic-hook()
+    ;;(unless eglot--managed-mode
+      (flymake-diagnostic-at-point-mode))
+  ;;)
+  :hook (flymake-mode . rgr/flymake-diagnostic-hook))
 
 (use-package flymake-shellcheck
   :disabled t
