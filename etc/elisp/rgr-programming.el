@@ -1,14 +1,19 @@
 (use-package eldoc
-  :demand t
   :custom
   (eldoc-idle-delay 1)
-   (eldoc-print-after-edit t)
-  ;;(eldoc-echo-area-prefer-doc-buffer t)
   (eldoc-echo-area-use-multiline-p nil)
+  :config
+  (use-package eldoc-box
+    :after eldoc)
+  (defun rgr/eldoc-mode-hook()
+    ;;(eldoc-box-hover-at-point-mode)
+    )
   :init
   (global-eldoc-mode)
-  (use-package eldoc-box
-    :after eldoc))
+  :hook
+  (eldoc-mode . rgr/eldoc-mode-hook)
+  :bind
+  ("C-." . eldoc-box-help-at-point))
 
 (global-set-key (kbd "C-c C-r") 'recompile)
 (global-set-key (kbd "<f9>")

@@ -1265,7 +1265,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgd4c30be)
+    See `org-agenda-files` [org-agenda-files](#org4b21b4d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1931,16 +1931,21 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 1.  eldoc
 
         (use-package eldoc
-          :demand t
           :custom
           (eldoc-idle-delay 1)
-           (eldoc-print-after-edit t)
-          ;;(eldoc-echo-area-prefer-doc-buffer t)
           (eldoc-echo-area-use-multiline-p nil)
+          :config
+          (use-package eldoc-box
+            :after eldoc)
+          (defun rgr/eldoc-mode-hook()
+            ;;(eldoc-box-hover-at-point-mode)
+            )
           :init
           (global-eldoc-mode)
-          (use-package eldoc-box
-            :after eldoc))
+          :hook
+          (eldoc-mode . rgr/eldoc-mode-hook)
+          :bind
+          ("C-." . eldoc-box-help-at-point))
 
 2.  compilation
 
@@ -2250,7 +2255,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                       ))
                   (defun rgr/eglot-hook()
                     (message "rgr/eglot hook")
-                    ;;(eldoc-box-hover-at-point-mode)
                     )
                   :hook
                   (before-save . rgr/eglot-format-buffer)
@@ -2258,7 +2262,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
                   :bind
                   (:map eglot-mode-map
-                        ("C-." . eldoc-box-help-at-point)
                         ("<C-return>" . eglot-code-actions)))
             
             1.  eglot-booster
@@ -2549,7 +2552,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
         (use-package sideline-flymake
           :hook (flymake-mode . sideline-mode)
           :init
-          (setq sideline-flymake-display-mode 'point) ; 'point to show errors only on point
+          (setq sideline-flymake-display-mode 'line) ; 'point to show errors only on point
                                                       ; 'line to show errors on the current line
           (setq sideline-backends-right '(sideline-flymake)))
 
@@ -2827,7 +2830,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd46b7bc) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org22c44db) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2860,7 +2863,7 @@ to add to version control.
     fi
 
 
-<a id="orgd46b7bc"></a>
+<a id="org22c44db"></a>
 
 ### Gnome protocol handler desktop file
 
