@@ -6,14 +6,16 @@
       (eglot-format-buffer)
       ))
   (defun rgr/eglot-hook()
-    (message "rgr/eglot hook"))
+    (message "rgr/eglot hook")
+    ;;(eldoc-box-hover-at-point-mode)
+    )
   :hook
   (before-save . rgr/eglot-format-buffer)
   (eglot-managed-mode . rgr/eglot-hook)
   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
   :bind
   (:map eglot-mode-map
-        ("C-." . eldoc-doc-buffer)
+        ("C-." . eldoc-box-help-at-point)
         ("<C-return>" . eglot-code-actions)))
 
 (use-package eglot-booster

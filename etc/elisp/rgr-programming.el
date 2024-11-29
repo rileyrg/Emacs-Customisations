@@ -2,17 +2,13 @@
   :demand t
   :custom
   (eldoc-idle-delay 1)
-  (eldoc-echo-area-prefer-doc-buffer t)
+   (eldoc-print-after-edit t)
+  ;;(eldoc-echo-area-prefer-doc-buffer t)
   (eldoc-echo-area-use-multiline-p nil)
   :init
-  (global-eldoc-mode))
-
-(use-package eldoc-box
-  :disabled t
-  :after eldoc
-  ;;:hook
-  ;;(eldoc-mode . eldoc-box-hover-at-point-mode)
-  )
+  (global-eldoc-mode)
+  (use-package eldoc-box
+    :after eldoc))
 
 (global-set-key (kbd "C-c C-r") 'recompile)
 (global-set-key (kbd "<f9>")
@@ -112,7 +108,7 @@
   ;; :hook (flymake-mode . rgr/flymake-hook)
   :bind
   ("M-n" . flymake-goto-next-error)
-  ("M-p" . flymake-goto-previous-error))
+  ("M-p" . flymake-goto-prev-error))
 
 (use-package flymake-diagnostic-at-point
   :disabled t

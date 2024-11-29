@@ -1265,7 +1265,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org120cc9d)
+    See `org-agenda-files` [org-agenda-files](#orgd4c30be)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1934,17 +1934,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :demand t
           :custom
           (eldoc-idle-delay 1)
-          (eldoc-echo-area-prefer-doc-buffer t)
+           (eldoc-print-after-edit t)
+          ;;(eldoc-echo-area-prefer-doc-buffer t)
           (eldoc-echo-area-use-multiline-p nil)
           :init
-          (global-eldoc-mode))
-        
-        (use-package eldoc-box
-          :disabled t
-          :after eldoc
-          ;;:hook
-          ;;(eldoc-mode . eldoc-box-hover-at-point-mode)
-          )
+          (global-eldoc-mode)
+          (use-package eldoc-box
+            :after eldoc))
 
 2.  compilation
 
@@ -2096,7 +2092,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           ;; :hook (flymake-mode . rgr/flymake-hook)
           :bind
           ("M-n" . flymake-goto-next-error)
-          ("M-p" . flymake-goto-previous-error))
+          ("M-p" . flymake-goto-prev-error))
         
         (use-package flymake-diagnostic-at-point
           :disabled t
@@ -2253,14 +2249,16 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                       (eglot-format-buffer)
                       ))
                   (defun rgr/eglot-hook()
-                    (message "rgr/eglot hook"))
+                    (message "rgr/eglot hook")
+                    ;;(eldoc-box-hover-at-point-mode)
+                    )
                   :hook
                   (before-save . rgr/eglot-format-buffer)
                   (eglot-managed-mode . rgr/eglot-hook)
                   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
                   :bind
                   (:map eglot-mode-map
-                        ("C-." . eldoc-doc-buffer)
+                        ("C-." . eldoc-box-help-at-point)
                         ("<C-return>" . eglot-code-actions)))
             
             1.  eglot-booster
@@ -2546,7 +2544,16 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :bind
           ("M-w" . rgr/kill-dwim))
 
-2.  rgr/emacs-lisp-help
+2.  sideline
+
+        (use-package sideline-flymake
+          :hook (flymake-mode . sideline-mode)
+          :init
+          (setq sideline-flymake-display-mode 'point) ; 'point to show errors only on point
+                                                      ; 'line to show errors on the current line
+          (setq sideline-backends-right '(sideline-flymake)))
+
+3.  rgr/emacs-lisp-help
 
     Use helpful if installed else built in
     
@@ -2573,13 +2580,13 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     
             (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
-3.  smartparens
+4.  smartparens
 
         (use-package smartparens
           :hook
           ((emacs-lisp-mode . smartparens-mode)))
 
-4.  electric-pair-mode
+5.  electric-pair-mode
 
     [auto insert closing brackets](info:emacs#Matching)
     
@@ -2587,23 +2594,23 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :hook
           ((emacs-lisp-mode . electric-pair-mode)))
 
-5.  elisp checks
+6.  elisp checks
 
         (defun rgr/elisp-edit-mode()
           "return non nil if this buffer edits elisp"
           (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 
-6.  linting
+7.  linting
 
     [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
     
         (use-package package-lint)
 
-7.  helpful, enriched elisp help
+8.  helpful, enriched elisp help
 
         (use-package helpful)
 
-8.  elisp popup context help
+9.  elisp popup context help
 
     Display a poup containing docstring at point
     
@@ -2617,7 +2624,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           ("M-<f2>" . el-docstring-sap-display)
           ("M-<f1>" . el-docstring-sap-mode))
 
-9.  Elisp debugging
+10. Elisp debugging
 
     1.  edebug
     
@@ -2662,7 +2669,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
             
             (add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 
-10. Formatting
+11. Formatting
 
         (use-package
           elisp-format
@@ -2670,7 +2677,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           (:map emacs-lisp-mode-map
                 ("C-c f" . elisp-format-region)))
 
-11. popup query symbol
+12. popup query symbol
 
         (use-package popup
           :config
@@ -2683,7 +2690,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :bind
           (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 
-12. provide
+13. provide
 
         (provide 'rgr/elisp)
 
@@ -2820,7 +2827,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8318364) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd46b7bc) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2853,7 +2860,7 @@ to add to version control.
     fi
 
 
-<a id="org8318364"></a>
+<a id="orgd46b7bc"></a>
 
 ### Gnome protocol handler desktop file
 

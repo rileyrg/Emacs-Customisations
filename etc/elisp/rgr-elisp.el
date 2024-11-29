@@ -3,6 +3,13 @@
   :bind
   ("M-w" . rgr/kill-dwim))
 
+(use-package sideline-flymake
+  :hook (flymake-mode . sideline-mode)
+  :init
+  (setq sideline-flymake-display-mode 'point) ; 'point to show errors only on point
+                                              ; 'line to show errors on the current line
+  (setq sideline-backends-right '(sideline-flymake)))
+
 (defun rgr/emacs-lisp-help (&optional s)
   "Elisp help at point. default to `helpful-at-point' if available, else `describe-function' or `describe-variable'."
   (interactive)
