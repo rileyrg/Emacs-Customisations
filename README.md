@@ -1265,7 +1265,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org4b21b4d)
+    See `org-agenda-files` [org-agenda-files](#org727d94d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2088,36 +2088,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package json-reformat)
             (use-package hydra)
 
-16. Flymake
-
-        (use-package flymake
-          ;;:init
-          ;; (defun rgr/flymake-hook()
-          ;;   (setq-local next-error-function 'flymake-goto-next-error))
-          ;; :hook (flymake-mode . rgr/flymake-hook)
-          :bind
-          ("M-n" . flymake-goto-next-error)
-          ("M-p" . flymake-goto-prev-error))
-        
-        (use-package flymake-diagnostic-at-point
-          :disabled t
-          :after flymake
-          :config
-          :hook (flymake-mode . flymake-diagnostic-at-point-mode))
-    
-    1.  shellcheck
-    
-            
-            (use-package flymake-shellcheck
-              :disabled t
-              :commands flymake-shellcheck-load
-              :init
-              (defun rgr/sh-mode-hook()
-                (flymake-shellcheck-load)
-                (flymake-mode +1))
-              :hook (sh-mode . rgr/sh-mode-hook))
-
-17. Version Control
+16. Version Control
 
     1.  It's [Magit](Https://github.com/magit/magit)! A Git porcelain inside Emacs
     
@@ -2172,7 +2143,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :bind
                   ("C-x v ="  . diff-hl-show-hunk))
 
-18. Dart/Flutter
+17. Dart/Flutter
 
     Running emulator from command line:
     
@@ -2183,7 +2154,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             ;; (use-package emacs
             ;;   )
 
-19. Tree Sitter
+18. Tree Sitter
 
     1.  treesit-auto
     
@@ -2227,7 +2198,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
               (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
-20. Language Server Protocol (LSP)
+19. Language Server Protocol (LSP)
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2303,7 +2274,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         
                 (provide 'rgr/lsp)
 
-21. Serial Port
+20. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2329,7 +2300,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                           (interactive)
                           (selectSerialPortBuffer)))
 
-22. PlatformIO
+21. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2351,7 +2322,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-23. Python
+22. Python
 
     1.  ipython
     
@@ -2364,7 +2335,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :config
               (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-24. Haskell
+23. Haskell
 
     1.  haskell-mode
     
@@ -2378,7 +2349,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-25. lldb debugging in emacs
+24. lldb debugging in emacs
 
     1.  voltron
     
@@ -2388,7 +2359,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               ;; (breadcrumb-mode t)
               )
 
-26. rust
+25. rust
 
         
         (use-package rust-mode
@@ -2419,7 +2390,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (:map rustic-mode-map
                 ("C-q" . rgr/browser-doc-search)))
 
-27. C
+26. C
 
     1.  c-mode-common-hook
     
@@ -2435,11 +2406,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :hook
               (c-ts-mode . rgr/c-ts-mode-common-hook))
 
-28. cc,cpp, C++, cc-mode
+27. cc,cpp, C++, cc-mode
 
         (add-hook 'c++-ts-mode-hook 'rgr/c-ts-mode-common-hook)
 
-29. Linux tools
+28. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2449,13 +2420,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-30. Assembler
+29. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-31. Web,Symfony and Twig
+30. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2515,7 +2486,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
-32. elf-mode - view the symbol list in a binary
+31. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2525,7 +2496,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
           (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-33. provide
+32. provide
 
         (provide 'rgr/programming)
 
@@ -2547,16 +2518,47 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :bind
           ("M-w" . rgr/kill-dwim))
 
-2.  sideline
+2.  Flymake
+
+        (use-package flymake
+          ;;:init
+          ;; (defun rgr/flymake-hook()
+          ;;   (setq-local next-error-function 'flymake-goto-next-error))
+          ;; :hook (flymake-mode . rgr/flymake-hook)
+          :bind
+          ("M-n" . flymake-goto-next-error)
+          ("M-p" . flymake-goto-prev-error))
+        
+        (use-package flymake-diagnostic-at-point
+          ;;:disabled t
+          :after flymake
+          :custom
+          (flymake-diagnostic-at-point-timer-delay 2.5)
+          :hook (flymake-mode . flymake-diagnostic-at-point-mode))
+    
+    1.  shellcheck
+    
+            
+            (use-package flymake-shellcheck
+              :disabled t
+              :commands flymake-shellcheck-load
+              :init
+              (defun rgr/sh-mode-hook()
+                (flymake-shellcheck-load)
+                (flymake-mode +1))
+              :hook (sh-mode . rgr/sh-mode-hook))
+
+3.  sideline
 
         (use-package sideline-flymake
+          :disabled t
           :hook (flymake-mode . sideline-mode)
           :init
           (setq sideline-flymake-display-mode 'line) ; 'point to show errors only on point
                                                       ; 'line to show errors on the current line
           (setq sideline-backends-right '(sideline-flymake)))
 
-3.  rgr/emacs-lisp-help
+4.  rgr/emacs-lisp-help
 
     Use helpful if installed else built in
     
@@ -2583,13 +2585,13 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     
             (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
-4.  smartparens
+5.  smartparens
 
         (use-package smartparens
           :hook
           ((emacs-lisp-mode . smartparens-mode)))
 
-5.  electric-pair-mode
+6.  electric-pair-mode
 
     [auto insert closing brackets](info:emacs#Matching)
     
@@ -2597,23 +2599,23 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :hook
           ((emacs-lisp-mode . electric-pair-mode)))
 
-6.  elisp checks
+7.  elisp checks
 
         (defun rgr/elisp-edit-mode()
           "return non nil if this buffer edits elisp"
           (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 
-7.  linting
+8.  linting
 
     [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
     
         (use-package package-lint)
 
-8.  helpful, enriched elisp help
+9.  helpful, enriched elisp help
 
         (use-package helpful)
 
-9.  elisp popup context help
+10. elisp popup context help
 
     Display a poup containing docstring at point
     
@@ -2627,7 +2629,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           ("M-<f2>" . el-docstring-sap-display)
           ("M-<f1>" . el-docstring-sap-mode))
 
-10. Elisp debugging
+11. Elisp debugging
 
     1.  edebug
     
@@ -2672,7 +2674,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
             
             (add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 
-11. Formatting
+12. Formatting
 
         (use-package
           elisp-format
@@ -2680,7 +2682,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           (:map emacs-lisp-mode-map
                 ("C-c f" . elisp-format-region)))
 
-12. popup query symbol
+13. popup query symbol
 
         (use-package popup
           :config
@@ -2693,7 +2695,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :bind
           (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 
-13. provide
+14. provide
 
         (provide 'rgr/elisp)
 
@@ -2830,7 +2832,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org22c44db) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0d46525) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2863,7 +2865,7 @@ to add to version control.
     fi
 
 
-<a id="org22c44db"></a>
+<a id="org0d46525"></a>
 
 ### Gnome protocol handler desktop file
 

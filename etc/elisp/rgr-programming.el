@@ -106,30 +106,6 @@
 (use-package json-reformat)
 (use-package hydra)
 
-(use-package flymake
-  ;;:init
-  ;; (defun rgr/flymake-hook()
-  ;;   (setq-local next-error-function 'flymake-goto-next-error))
-  ;; :hook (flymake-mode . rgr/flymake-hook)
-  :bind
-  ("M-n" . flymake-goto-next-error)
-  ("M-p" . flymake-goto-prev-error))
-
-(use-package flymake-diagnostic-at-point
-  :disabled t
-  :after flymake
-  :config
-  :hook (flymake-mode . flymake-diagnostic-at-point-mode))
-
-(use-package flymake-shellcheck
-  :disabled t
-  :commands flymake-shellcheck-load
-  :init
-  (defun rgr/sh-mode-hook()
-    (flymake-shellcheck-load)
-    (flymake-mode +1))
-  :hook (sh-mode . rgr/sh-mode-hook))
-
 (use-package
   magit
   :init
