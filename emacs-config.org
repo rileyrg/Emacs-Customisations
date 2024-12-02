@@ -2130,7 +2130,7 @@ rgr/compilation-persistent-buffer-chunks to ignore certain compilation buffers.
 #+begin_src  emacs-lisp
 
     (use-package compilation-hide
-    :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide" ))
+    :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
 
 #+end_src
 
@@ -2139,17 +2139,19 @@ RMSbolt is a compiler output viewer in Emacs.
 https://github.com/emacsmirror/rmsbolt
 #+begin_src emacs-lisp
   (use-package rmsbolt
+    :demand t
     :init
-    (defun rgr/rmsbolt() (interactive)
-           (rmsbolt-mode))
+    (defun rgr/rmsbolt()
+      (interactive)
+      (if (not rmsbolt-mode)
+          (rmsbolt)
+        (progn
+          (rmsbolt-mode -1)
+          (with-current-buffer  "*rmsbolt-output*"
+            (kill-buffer-and-window)))))
     :bind
     (:map prog-mode-map
           ("C-c d" . rgr/rmsbolt)))
- #+end_src
-
-***** compiler-explorer
-#+begin_src  emacs-lisp
-  (use-package compiler-explorer)
 #+end_src
 
 ***** parrot

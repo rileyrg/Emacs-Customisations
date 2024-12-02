@@ -1,15 +1,20 @@
 (use-package compilation-hide
-:straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide" ))
+:straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
 
 (use-package rmsbolt
+  :demand t
   :init
-  (defun rgr/rmsbolt() (interactive)
-         (rmsbolt-mode))
+  (defun rgr/rmsbolt()
+    (interactive)
+    (if (not rmsbolt-mode)
+        (rmsbolt)
+      (progn
+        (rmsbolt-mode -1)
+        (with-current-buffer  "*rmsbolt-output*"
+          (kill-buffer-and-window)))))
   :bind
   (:map prog-mode-map
         ("C-c d" . rgr/rmsbolt)))
-
-(use-package compiler-explorer)
 
 (use-package parrot
   :ensure t
