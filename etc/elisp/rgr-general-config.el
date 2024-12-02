@@ -122,22 +122,6 @@ The DWIM behaviour of this command is as follows:
   ("M-s c" . ace-jump-mode)
   )
 
-(use-package
-  golden-ratio
-  :init
-  (golden-ratio-mode 1))
-
-(use-package beacon
-  :disabled t
-  :custom
-  (beacon-blink-delay 1)
-  (beacon-size 10)
-  (beacon-color "orange" nil nil "Customized with use-package beacon")
-  (beacon-blink-when-point-moves-horizontally 32)
-  (beacon-blink-when-point-moves-vertically 8)
-  :config
-  (beacon-mode 1))
-
 (use-package pulsar
   :custom
   (pulsar-pulse t)

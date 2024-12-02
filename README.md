@@ -497,31 +497,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               ("M-s c" . ace-jump-mode)
               )
 
-4.  Golden Ratio
-
-    Zoom into current buffer
-    
-        (use-package
-          golden-ratio
-          :init
-          (golden-ratio-mode 1))
-
-5.  beacon
-
-    visual feedback as to cursor position
-    
-        (use-package beacon
-          :disabled t
-          :custom
-          (beacon-blink-delay 1)
-          (beacon-size 10)
-          (beacon-color "orange" nil nil "Customized with use-package beacon")
-          (beacon-blink-when-point-moves-horizontally 32)
-          (beacon-blink-when-point-moves-vertically 8)
-          :config
-          (beacon-mode 1))
-
-6.  pulsar
+4.  pulsar
 
     visual feedback as to cursor position
     <https://protesilaos.com/emacs/pulsar>
@@ -541,21 +517,21 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (
            pulsar-global-mode 1))
 
-7.  blackout modeline
+5.  blackout modeline
 
     Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
     
         (straight-use-package
          '(blackout :host github :repo "raxod502/blackout"))
 
-8.  boxquote
+6.  boxquote
 
         (use-package boxquote
           :straight (:branch "main")
           :bind
           ("C-S-r" . boxquote-region))
 
-9.  volatile-highlights
+7.  volatile-highlights
 
     brings visual feedback to some operations by highlighting portions relating to the operations.
     
@@ -564,14 +540,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :disabled
           :init (volatile-highlights-mode 1))
 
-10. web pasting
+8.  web pasting
 
         (use-package
           dpaste
           :init
           :bind ("C-c y" . dpaste-region-or-buffer))
 
-11. Accessibility
+9.  Accessibility
 
     1.  fonts
     
@@ -588,7 +564,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :bind
               ( "<C-f7>" . 'darkroom-mode))
 
-12. Ansi colour
+10. Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
     
@@ -596,7 +572,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
         (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-13. Tabs
+11. Tabs
 
         
         (defun consult-buffer-other-tab ()
@@ -626,7 +602,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                        ("c" . tab-bar-new-tab)
                        ("s" . tab-bar-switch-to-tab))))
 
-14. bookmarks
+12. bookmarks
 
         (add-to-list 'recentf-exclude "current-bookmark.el")
     
@@ -643,7 +619,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               ("C-x x <right>" . bmkp-next-bookmark)
               ("C-x x <left>" . bmkp-previous-bookmark))
 
-15. emjois
+13. emjois
 
     <https://github.com/iqbalansari/emacs-emojify>
     
@@ -651,7 +627,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :init
           (global-emojify-mode))
 
-16. Cursor/Region related
+14. Cursor/Region related
 
         (defun centreCursorLineOn()
           "set properties to keep current line approx at centre of screen height. Useful for debugging."
@@ -681,7 +657,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                      ("C-c C-SPC" . mc/edit-lines)
                      ))
 
-17. Folding/Hide Show
+15. Folding/Hide Show
 
     [hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
     
@@ -707,21 +683,21 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     
     \#+end\_src
 
-18. jinx : the enchanted spell checker
+16. jinx : the enchanted spell checker
 
         (use-package jinx
           :hook (emacs-startup . global-jinx-mode)
           :bind (("<f8>" . jinx-correct)
                  ("C-<f8>" . jinx-languages)))
 
-19. rg, ripgrep
+17. rg, ripgrep
 
     rg is pretty quick
     
         (use-package
           ripgrep)
 
-20. provide
+18. provide
 
         (provide 'rgr/general-config)
 
@@ -1265,7 +1241,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgac089a7)
+    See `org-agenda-files` [org-agenda-files](#orgea07b9a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1928,7 +1904,50 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 ### library
 
-1.  eldoc
+1.  compilation
+
+        
+        (add-hook 'compilation-start-hook 'compilation-started)
+        (add-hook 'compilation-finish-functions 'hide-compile-buffer-if-successful)
+        
+        (defcustom auto-hide-compile-buffer-delay 0
+          "Time in seconds before auto hiding compile buffer."
+          :group 'compilation
+          :type 'number
+          )
+        
+        (defun hide-compile-buffer-if-successful (buffer string)
+          (setq compilation-total-time (time-subtract nil compilation-start-time))
+          (setq time-str (concat " (Time: " (format-time-string "%s.%3N" compilation-total-time) "s)"))
+        
+          (if
+              (with-current-buffer buffer
+                (setq warnings (eval compilation-num-warnings-found))
+                (setq warnings-str (concat " (Warnings: " (number-to-string warnings) ")"))
+                (setq errors (eval compilation-num-errors-found))
+        
+                (if (eq errors 0) nil t)
+                )
+        
+              ;;If Errors then
+              (message (concat "Compiled with Errors" warnings-str time-str))
+        
+            ;;If Compiled Successfully or with Warnings then
+            (progn
+              (bury-buffer buffer)
+              (run-with-timer auto-hide-compile-buffer-delay nil 'delete-window (get-buffer-window buffer 'visible))
+              (message (concat "Compiled Successfully" warnings-str time-str))
+              )
+            )
+          )
+        
+        (make-variable-buffer-local 'compilation-start-time)
+        
+        (defun compilation-started (proc)
+          (setq compilation-start-time (current-time))
+          )
+
+2.  eldoc
 
         (use-package eldoc
           :custom
@@ -1947,7 +1966,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :bind
           ("C-." . eldoc-box-help-at-point))
 
-2.  compilation
+3.  compilation
 
         (global-set-key (kbd "C-c C-r") 'recompile)
         (global-set-key (kbd "<f9>")
@@ -1955,7 +1974,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (condition-case nil (next-error)
                  (error (next-error 1 t)))))
 
-3.  indent bars
+4.  indent bars
 
         (use-package indent-bars
           :disabled
@@ -1964,12 +1983,12 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :hook
           (prog-mode . indent-bars-mode))
 
-4.  JSON
+5.  JSON
 
         (use-package json-mode)
         (use-package jsonrpc)
 
-5.  Treemacs
+6.  Treemacs
 
         (use-package
           treemacs
@@ -1987,13 +2006,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (:map treemacs-mode-map
                 ("<right>" . treemacs-peek)))
 
-6.  duplicate thing
+7.  duplicate thing
 
         (use-package duplicate-thing
           :bind
           ("C-S-d" . 'duplicate-thing))
 
-7.  Breadcrumbs
+8.  Breadcrumbs
 
     <https://github.com/joaotavora/breadcrumb>
     
@@ -2030,23 +2049,23 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (parrot-mode)
               (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
-8.  prog-mode hack
+9.  prog-mode hack
 
         (unless (fboundp 'prog-mode)
           (defalias 'prog-mode 'fundamental-mode))
 
-9.  undo tree
+10. undo tree
 
         (use-package undo-tree
           :init
           (global-undo-tree-mode))
 
-10. Show Line numbers
+11. Show Line numbers
 
         (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
         (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
 
-11. code format
+12. code format
 
         ;; auto-format different source code files extremely intelligently
         ;; https://github.com/radian-software/apheleia
@@ -2056,11 +2075,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (apheleia-global-mode +1))
 
-12. Project Management
+13. Project Management
 
         (use-package project)
 
-13. BASH
+14. BASH
 
     1.  Navigating Bash set -x output
     
@@ -2073,11 +2092,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                            '(pascal
                              "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 
-14. PHP
+15. PHP
 
         (use-package php-mode)
 
-15. JSON, YAML Configuration files
+16. JSON, YAML Configuration files
 
     1.  YAML
     
@@ -2088,7 +2107,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package json-reformat)
             (use-package hydra)
 
-16. Version Control
+17. Version Control
 
     1.  It's [Magit](Https://github.com/magit/magit)! A Git porcelain inside Emacs
     
@@ -2143,7 +2162,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :bind
                   ("C-x v ="  . diff-hl-show-hunk))
 
-17. Dart/Flutter
+18. Dart/Flutter
 
     Running emulator from command line:
     
@@ -2154,7 +2173,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             ;; (use-package emacs
             ;;   )
 
-18. Tree Sitter
+19. Tree Sitter
 
     1.  treesit-auto
     
@@ -2198,7 +2217,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
               (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
-19. Language Server Protocol (LSP)
+20. Language Server Protocol (LSP)
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2208,11 +2227,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     
     1.  library
     
-        1.  lsp
-        
-            I've removed lsp-mode in favour of eglot. There's little to no contest : eglot and dape are the way to go with emacs.
-        
-        2.  eglot
+        1.  eglot
         
             Emacs lsp client
             <https://github.com/joaotavora/eglot>
@@ -2246,7 +2261,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                       :after eglot
                       :config	(eglot-booster-mode))
         
-        3.  dape
+        2.  dape
         
                 (use-package dape
                   :demand t
@@ -2271,13 +2286,17 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :config
                   ;; Turn on global bindings for setting breakpoints with mouse
                   (add-to-list 'recentf-exclude "dape-breakpoints")
-                  (dape-breakpoint-global-mode))
+                  (dape-breakpoint-global-mode)
+                  (add-hook 'dape-info-parent-mode-hook
+                            (defun dape--info-rescale ()
+                              (face-remap-add-relative 'default :height 0.8)))
+                  )
         
-        4.  provide
+        3.  provide
         
                 (provide 'rgr/lsp)
 
-20. Serial Port
+21. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2303,7 +2322,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                           (interactive)
                           (selectSerialPortBuffer)))
 
-21. PlatformIO
+22. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2325,7 +2344,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-22. Python
+23. Python
 
     1.  ipython
     
@@ -2338,7 +2357,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :config
               (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
 
-23. Haskell
+24. Haskell
 
     1.  haskell-mode
     
@@ -2352,7 +2371,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-24. lldb debugging in emacs
+25. lldb debugging in emacs
 
     1.  voltron
     
@@ -2362,7 +2381,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               ;; (breadcrumb-mode t)
               )
 
-25. rust
+26. rust
 
         
         (use-package rust-mode
@@ -2393,7 +2412,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (:map rustic-mode-map
                 ("C-q" . rgr/browser-doc-search)))
 
-26. C
+27. C
 
     1.  c-mode-common-hook
     
@@ -2409,11 +2428,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :hook
               (c-ts-mode . rgr/c-ts-mode-common-hook))
 
-27. cc,cpp, C++, cc-mode
+28. cc,cpp, C++, cc-mode
 
         (add-hook 'c++-ts-mode-hook 'rgr/c-ts-mode-common-hook)
 
-28. Linux tools
+29. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2423,13 +2442,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-29. Assembler
+30. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-30. Web,Symfony and Twig
+31. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2489,7 +2508,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
-31. elf-mode - view the symbol list in a binary
+32. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2499,7 +2518,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
           (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-32. provide
+33. provide
 
         (provide 'rgr/programming)
 
@@ -2816,7 +2835,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org70519f2) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc0cb085) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2849,7 +2868,7 @@ to add to version control.
     fi
 
 
-<a id="org70519f2"></a>
+<a id="orgc0cb085"></a>
 
 ### Gnome protocol handler desktop file
 
