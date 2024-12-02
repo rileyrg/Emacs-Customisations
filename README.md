@@ -1241,7 +1241,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org56b6fd3)
+    See `org-agenda-files` [org-agenda-files](#orgf442831)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1906,50 +1906,14 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 1.  compilation
 
-    1.  compile buffer vanish
+    1.  hide compile buffer
     
-        auto hide the **compilation** buffer after a successful compile.
-        <https://emacs.stackexchange.com/a/73673/9851>
+        auto hide the compilation buffer after a successful compile. customise
+        rgr/compilation-persistent-buffer-chunks to ignore certain compilation buffers.
         
             
-            (use-package emacs
-            
-              :init
-            
-              (defcustom auto-hide-compile-buffer-delay 0
-                "Time in seconds before auto hiding compile buffer."
-                :group 'compilation
-                :type 'number
-                )
-            
-              (make-variable-buffer-local 'compilation-start-time)
-            
-              (defun hide-compile-buffer-if-successful (buffer string)
-                (unless (string= (buffer-name buffer) "*rmsbolt-compilation*")
-                  (setq compilation-total-time (time-subtract nil compilation-start-time))
-                  (setq time-str (concat " (Time: " (format-time-string "%s.%3N" compilation-total-time) "s)"))
-            
-                  (if (with-current-buffer buffer
-                        (setq warnings (eval compilation-num-warnings-found))
-                        (setq warnings-str (concat " (Warnings: " (number-to-string warnings) ")"))
-                        (setq errors (eval compilation-num-errors-found))
-                        (if (eq errors 0) nil t))
-            
-                      ;;If Errors then
-                      (message (concat "Compiled with Errors" warnings-str time-str))
-            
-                    ;;If Compiled Successfully or with Warnings then
-                    (progn
-                      (bury-buffer buffer)
-                      (run-with-timer auto-hide-compile-buffer-delay nil 'delete-window (get-buffer-window buffer 'visible))
-                      (message (concat "Compiled Successfully" warnings-str time-str))))))
-            
-              (defun compilation-started (proc)
-                (setq compilation-start-time (current-time)))
-            
-              :hook
-              (compilation-start .  compilation-started)
-              (compilation-finish-functions . hide-compile-buffer-if-successful))
+            (use-package compilation-hide
+            :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide" ))
     
     2.  rmsbolt
     
@@ -2836,7 +2800,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfc676cc) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9bc3051) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2869,7 +2833,7 @@ to add to version control.
     fi
 
 
-<a id="orgfc676cc"></a>
+<a id="org9bc3051"></a>
 
 ### Gnome protocol handler desktop file
 

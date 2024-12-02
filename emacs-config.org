@@ -2123,51 +2123,15 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 
 **** compilation
 
-***** compile buffer vanish
-auto hide the *compilation* buffer after a successful compile.
-https://emacs.stackexchange.com/a/73673/9851
-
+***** hide compile buffer
+auto hide the compilation buffer after a successful compile. customise
+rgr/compilation-persistent-buffer-chunks to ignore certain compilation buffers.
 
 #+begin_src  emacs-lisp
 
-  (use-package emacs
+    (use-package compilation-hide
+    :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide" ))
 
-    :init
-
-    (defcustom auto-hide-compile-buffer-delay 0
-      "Time in seconds before auto hiding compile buffer."
-      :group 'compilation
-      :type 'number
-      )
-
-    (make-variable-buffer-local 'compilation-start-time)
-
-    (defun hide-compile-buffer-if-successful (buffer string)
-      (unless (string= (buffer-name buffer) "*rmsbolt-compilation*")
-        (setq compilation-total-time (time-subtract nil compilation-start-time))
-        (setq time-str (concat " (Time: " (format-time-string "%s.%3N" compilation-total-time) "s)"))
-
-        (if (with-current-buffer buffer
-              (setq warnings (eval compilation-num-warnings-found))
-              (setq warnings-str (concat " (Warnings: " (number-to-string warnings) ")"))
-              (setq errors (eval compilation-num-errors-found))
-              (if (eq errors 0) nil t))
-
-            ;;If Errors then
-            (message (concat "Compiled with Errors" warnings-str time-str))
-
-          ;;If Compiled Successfully or with Warnings then
-          (progn
-            (bury-buffer buffer)
-            (run-with-timer auto-hide-compile-buffer-delay nil 'delete-window (get-buffer-window buffer 'visible))
-            (message (concat "Compiled Successfully" warnings-str time-str))))))
-
-    (defun compilation-started (proc)
-      (setq compilation-start-time (current-time)))
-
-    :hook
-    (compilation-start .  compilation-started)
-    (compilation-finish-functions . hide-compile-buffer-if-successful))
 #+end_src
 
 ***** rmsbolt
@@ -2181,7 +2145,7 @@ https://github.com/emacsmirror/rmsbolt
     :bind
     (:map prog-mode-map
           ("C-c d" . rgr/rmsbolt)))
-#+end_src
+ #+end_src
 
 ***** compiler-explorer
 #+begin_src  emacs-lisp
@@ -2985,7 +2949,6 @@ Display a poup containing docstring at point
     :bind
     ("M-<f2>" . el-docstring-sap-display)
     ("M-<f1>" . el-docstring-sap-mode))
-
 #+end_src
 **** Elisp debugging
 :PROPERTIES:
