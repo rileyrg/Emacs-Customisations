@@ -6,6 +6,7 @@
 (use-package flymake
   :custom
   (flymake-show-diagnostics-at-end-of-line t)
+  (flymake-no-changes-timeout 1.5)
   :bind
   ("M-n" . flymake-goto-next-error)
   ("M-p" . flymake-goto-prev-error))

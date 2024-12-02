@@ -2465,23 +2465,26 @@ I've removed lsp-mode in favour of eglot. There's little to no contest : eglot a
 Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
-    (use-package eglot
-      ;;:disabled t
-      :config
-      (defun rgr/eglot-format-buffer()
-        (when eglot--managed-mode
-          (eglot-format-buffer)
-          ))
-      (defun rgr/eglot-hook()
-        (message "rgr/eglot hook")
-        )
-      :hook
-      (before-save . rgr/eglot-format-buffer)
-      (eglot-managed-mode . rgr/eglot-hook)
-      ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
-      :bind
-      (:map eglot-mode-map
-            ("<C-return>" . eglot-code-actions)))
+  (use-package eglot
+    ;;:disabled t
+    :custom
+    (eglot-send-changes-idle-time 3)
+    (eglot-ignored-server-capabilities '(:documentHighlightProvider))
+    :config
+    (defun rgr/eglot-format-buffer()
+      (when eglot--managed-mode
+        (eglot-format-buffer)
+        ))
+    (defun rgr/eglot-hook()
+      (message "rgr/eglot hook")
+      )
+    :hook
+    (before-save . rgr/eglot-format-buffer)
+    (eglot-managed-mode . rgr/eglot-hook)
+    ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
+    :bind
+    (:map eglot-mode-map
+          ("<C-return>" . eglot-code-actions)))
 #+end_src
 
 ******* eglot-booster
@@ -2842,6 +2845,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
   (use-package flymake
     :custom
     (flymake-show-diagnostics-at-end-of-line t)
+    (flymake-no-changes-timeout 1.5)
     :bind
     ("M-n" . flymake-goto-next-error)
     ("M-p" . flymake-goto-prev-error))

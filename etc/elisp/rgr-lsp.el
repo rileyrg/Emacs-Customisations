@@ -1,5 +1,8 @@
 (use-package eglot
   ;;:disabled t
+  :custom
+  (eglot-send-changes-idle-time 3)
+  (eglot-ignored-server-capabilities '(:documentHighlightProvider))
   :config
   (defun rgr/eglot-format-buffer()
     (when eglot--managed-mode

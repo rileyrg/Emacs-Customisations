@@ -1265,7 +1265,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgf82940f)
+    See `org-agenda-files` [org-agenda-files](#orgac089a7)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2219,6 +2219,9 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             
                 (use-package eglot
                   ;;:disabled t
+                  :custom
+                  (eglot-send-changes-idle-time 3)
+                  (eglot-ignored-server-capabilities '(:documentHighlightProvider))
                   :config
                   (defun rgr/eglot-format-buffer()
                     (when eglot--managed-mode
@@ -2523,13 +2526,13 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
         (use-package flymake
           :custom
           (flymake-show-diagnostics-at-end-of-line t)
+          (flymake-no-changes-timeout 1.5)
           :bind
           ("M-n" . flymake-goto-next-error)
           ("M-p" . flymake-goto-prev-error))
     
     1.  shellcheck
     
-            
             (use-package flymake-shellcheck
               :disabled t
               :commands flymake-shellcheck-load
@@ -2813,7 +2816,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org430ec60) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org70519f2) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2846,7 +2849,7 @@ to add to version control.
     fi
 
 
-<a id="org430ec60"></a>
+<a id="org70519f2"></a>
 
 ### Gnome protocol handler desktop file
 
