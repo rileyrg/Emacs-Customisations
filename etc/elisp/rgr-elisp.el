@@ -4,20 +4,11 @@
   ("M-w" . rgr/kill-dwim))
 
 (use-package flymake
-  ;;:init
-  ;; (defun rgr/flymake-hook()
-  ;;   (setq-local next-error-function 'flymake-goto-next-error))
-  ;; :hook (flymake-mode . rgr/flymake-hook)
+  :custom
+  (flymake-show-diagnostics-at-end-of-line t)
   :bind
   ("M-n" . flymake-goto-next-error)
   ("M-p" . flymake-goto-prev-error))
-
-(use-package flymake-diagnostic-at-point
-  ;;:disabled t
-  :after flymake
-  :custom
-  (flymake-diagnostic-at-point-timer-delay 2.5)
-  :hook (flymake-mode . flymake-diagnostic-at-point-mode))
 
 (use-package flymake-shellcheck
   :disabled t
@@ -27,14 +18,6 @@
     (flymake-shellcheck-load)
     (flymake-mode +1))
   :hook (sh-mode . rgr/sh-mode-hook))
-
-(use-package sideline-flymake
-  :disabled t
-  :hook (flymake-mode . sideline-mode)
-  :init
-  (setq sideline-flymake-display-mode 'line) ; 'point to show errors only on point
-                                              ; 'line to show errors on the current line
-  (setq sideline-backends-right '(sideline-flymake)))
 
 (defun rgr/emacs-lisp-help (&optional s)
   "Elisp help at point. default to `helpful-at-point' if available, else `describe-function' or `describe-variable'."

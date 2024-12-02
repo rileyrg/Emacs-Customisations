@@ -1265,7 +1265,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org727d94d)
+    See `org-agenda-files` [org-agenda-files](#orgf82940f)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2521,20 +2521,11 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 2.  Flymake
 
         (use-package flymake
-          ;;:init
-          ;; (defun rgr/flymake-hook()
-          ;;   (setq-local next-error-function 'flymake-goto-next-error))
-          ;; :hook (flymake-mode . rgr/flymake-hook)
+          :custom
+          (flymake-show-diagnostics-at-end-of-line t)
           :bind
           ("M-n" . flymake-goto-next-error)
           ("M-p" . flymake-goto-prev-error))
-        
-        (use-package flymake-diagnostic-at-point
-          ;;:disabled t
-          :after flymake
-          :custom
-          (flymake-diagnostic-at-point-timer-delay 2.5)
-          :hook (flymake-mode . flymake-diagnostic-at-point-mode))
     
     1.  shellcheck
     
@@ -2548,17 +2539,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                 (flymake-mode +1))
               :hook (sh-mode . rgr/sh-mode-hook))
 
-3.  sideline
-
-        (use-package sideline-flymake
-          :disabled t
-          :hook (flymake-mode . sideline-mode)
-          :init
-          (setq sideline-flymake-display-mode 'line) ; 'point to show errors only on point
-                                                      ; 'line to show errors on the current line
-          (setq sideline-backends-right '(sideline-flymake)))
-
-4.  rgr/emacs-lisp-help
+3.  rgr/emacs-lisp-help
 
     Use helpful if installed else built in
     
@@ -2585,13 +2566,13 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     
             (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
-5.  smartparens
+4.  smartparens
 
         (use-package smartparens
           :hook
           ((emacs-lisp-mode . smartparens-mode)))
 
-6.  electric-pair-mode
+5.  electric-pair-mode
 
     [auto insert closing brackets](info:emacs#Matching)
     
@@ -2599,23 +2580,23 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :hook
           ((emacs-lisp-mode . electric-pair-mode)))
 
-7.  elisp checks
+6.  elisp checks
 
         (defun rgr/elisp-edit-mode()
           "return non nil if this buffer edits elisp"
           (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 
-8.  linting
+7.  linting
 
     [package-lint](https://github.com/purcell/package-lint) provides a linter for the metadata in Emacs Lisp files which are intended to be packages. You can integrate it into your build process.
     
         (use-package package-lint)
 
-9.  helpful, enriched elisp help
+8.  helpful, enriched elisp help
 
         (use-package helpful)
 
-10. elisp popup context help
+9.  elisp popup context help
 
     Display a poup containing docstring at point
     
@@ -2629,7 +2610,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           ("M-<f2>" . el-docstring-sap-display)
           ("M-<f1>" . el-docstring-sap-mode))
 
-11. Elisp debugging
+10. Elisp debugging
 
     1.  edebug
     
@@ -2674,7 +2655,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
             
             (add-hook 'edebug-mode-hook  #'rgr/edebug-mode-hook)
 
-12. Formatting
+11. Formatting
 
         (use-package
           elisp-format
@@ -2682,7 +2663,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           (:map emacs-lisp-mode-map
                 ("C-c f" . elisp-format-region)))
 
-13. popup query symbol
+12. popup query symbol
 
         (use-package popup
           :config
@@ -2695,7 +2676,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
           :bind
           (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 
-14. provide
+13. provide
 
         (provide 'rgr/elisp)
 
@@ -2832,7 +2813,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0d46525) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org430ec60) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2865,7 +2846,7 @@ to add to version control.
     fi
 
 
-<a id="org0d46525"></a>
+<a id="org430ec60"></a>
 
 ### Gnome protocol handler desktop file
 
