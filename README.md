@@ -1241,7 +1241,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgea07b9a)
+    See `org-agenda-files` [org-agenda-files](#org56b6fd3)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1906,46 +1906,77 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 1.  compilation
 
+    1.  compile buffer vanish
+    
+        auto hide the **compilation** buffer after a successful compile.
+        <https://emacs.stackexchange.com/a/73673/9851>
         
-        (add-hook 'compilation-start-hook 'compilation-started)
-        (add-hook 'compilation-finish-functions 'hide-compile-buffer-if-successful)
-        
-        (defcustom auto-hide-compile-buffer-delay 0
-          "Time in seconds before auto hiding compile buffer."
-          :group 'compilation
-          :type 'number
-          )
-        
-        (defun hide-compile-buffer-if-successful (buffer string)
-          (setq compilation-total-time (time-subtract nil compilation-start-time))
-          (setq time-str (concat " (Time: " (format-time-string "%s.%3N" compilation-total-time) "s)"))
-        
-          (if
-              (with-current-buffer buffer
-                (setq warnings (eval compilation-num-warnings-found))
-                (setq warnings-str (concat " (Warnings: " (number-to-string warnings) ")"))
-                (setq errors (eval compilation-num-errors-found))
-        
-                (if (eq errors 0) nil t)
+            
+            (use-package emacs
+            
+              :init
+            
+              (defcustom auto-hide-compile-buffer-delay 0
+                "Time in seconds before auto hiding compile buffer."
+                :group 'compilation
+                :type 'number
                 )
+            
+              (make-variable-buffer-local 'compilation-start-time)
+            
+              (defun hide-compile-buffer-if-successful (buffer string)
+                (unless (string= (buffer-name buffer) "*rmsbolt-compilation*")
+                  (setq compilation-total-time (time-subtract nil compilation-start-time))
+                  (setq time-str (concat " (Time: " (format-time-string "%s.%3N" compilation-total-time) "s)"))
+            
+                  (if (with-current-buffer buffer
+                        (setq warnings (eval compilation-num-warnings-found))
+                        (setq warnings-str (concat " (Warnings: " (number-to-string warnings) ")"))
+                        (setq errors (eval compilation-num-errors-found))
+                        (if (eq errors 0) nil t))
+            
+                      ;;If Errors then
+                      (message (concat "Compiled with Errors" warnings-str time-str))
+            
+                    ;;If Compiled Successfully or with Warnings then
+                    (progn
+                      (bury-buffer buffer)
+                      (run-with-timer auto-hide-compile-buffer-delay nil 'delete-window (get-buffer-window buffer 'visible))
+                      (message (concat "Compiled Successfully" warnings-str time-str))))))
+            
+              (defun compilation-started (proc)
+                (setq compilation-start-time (current-time)))
+            
+              :hook
+              (compilation-start .  compilation-started)
+              (compilation-finish-functions . hide-compile-buffer-if-successful))
+    
+    2.  rmsbolt
+    
+        RMSbolt is a compiler output viewer in Emacs.
+        <https://github.com/emacsmirror/rmsbolt>
         
-              ;;If Errors then
-              (message (concat "Compiled with Errors" warnings-str time-str))
-        
-            ;;If Compiled Successfully or with Warnings then
-            (progn
-              (bury-buffer buffer)
-              (run-with-timer auto-hide-compile-buffer-delay nil 'delete-window (get-buffer-window buffer 'visible))
-              (message (concat "Compiled Successfully" warnings-str time-str))
-              )
-            )
-          )
-        
-        (make-variable-buffer-local 'compilation-start-time)
-        
-        (defun compilation-started (proc)
-          (setq compilation-start-time (current-time))
-          )
+            (use-package rmsbolt
+              :init
+              (defun rgr/rmsbolt() (interactive)
+                     (rmsbolt-mode))
+              :bind
+              (:map prog-mode-map
+                    ("C-c d" . rgr/rmsbolt)))
+    
+    3.  compiler-explorer
+    
+            (use-package compiler-explorer)
+    
+    4.  parrot
+    
+            (use-package parrot
+              :ensure t
+              :config
+              (defun my/parrot-animate-when-compile-success (buffer result)
+                (if (string-match "^finished" result)
+                    (parrot-start-animation)))    (parrot-mode)
+              (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
 2.  eldoc
 
@@ -2018,36 +2049,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     
         (use-package breadcrumb
           :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
-    
-    1.  rmsbolt
-    
-        RMSbolt is a compiler output viewer in Emacs.
-        <https://github.com/emacsmirror/rmsbolt>
-        DISABLED : effing ssh key expired.
-        
-            (use-package rmsbolt
-              :init
-              (defun rgr/rmsbolt() (interactive)
-                     (rmsbolt-mode))
-              :bind
-              (:map prog-mode-map
-                    ("C-c d" . rgr/rmsbolt)))
-    
-    2.  compiler-explorer
-    
-            (use-package compiler-explorer)
-    
-    3.  parrot
-    
-            (defun my/parrot-animate-when-compile-success (buffer result)
-              (if (string-match "^finished" result)
-                  (parrot-start-animation)))
-            
-            (use-package parrot
-              :ensure t
-              :config
-              (parrot-mode)
-              (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
 9.  prog-mode hack
 
@@ -2835,7 +2836,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc0cb085) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfc676cc) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2868,7 +2869,7 @@ to add to version control.
     fi
 
 
-<a id="orgc0cb085"></a>
+<a id="orgfc676cc"></a>
 
 ### Gnome protocol handler desktop file
 

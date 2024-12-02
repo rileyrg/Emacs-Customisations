@@ -1,42 +1,59 @@
-(add-hook 'compilation-start-hook 'compilation-started)
-(add-hook 'compilation-finish-functions 'hide-compile-buffer-if-successful)
+(use-package emacs
 
-(defcustom auto-hide-compile-buffer-delay 0
-  "Time in seconds before auto hiding compile buffer."
-  :group 'compilation
-  :type 'number
-  )
+  :init
 
-(defun hide-compile-buffer-if-successful (buffer string)
-  (setq compilation-total-time (time-subtract nil compilation-start-time))
-  (setq time-str (concat " (Time: " (format-time-string "%s.%3N" compilation-total-time) "s)"))
-
-  (if
-      (with-current-buffer buffer
-        (setq warnings (eval compilation-num-warnings-found))
-        (setq warnings-str (concat " (Warnings: " (number-to-string warnings) ")"))
-        (setq errors (eval compilation-num-errors-found))
-
-        (if (eq errors 0) nil t)
-        )
-
-      ;;If Errors then
-      (message (concat "Compiled with Errors" warnings-str time-str))
-
-    ;;If Compiled Successfully or with Warnings then
-    (progn
-      (bury-buffer buffer)
-      (run-with-timer auto-hide-compile-buffer-delay nil 'delete-window (get-buffer-window buffer 'visible))
-      (message (concat "Compiled Successfully" warnings-str time-str))
-      )
+  (defcustom auto-hide-compile-buffer-delay 0
+    "Time in seconds before auto hiding compile buffer."
+    :group 'compilation
+    :type 'number
     )
-  )
 
-(make-variable-buffer-local 'compilation-start-time)
+  (make-variable-buffer-local 'compilation-start-time)
 
-(defun compilation-started (proc)
-  (setq compilation-start-time (current-time))
-  )
+  (defun hide-compile-buffer-if-successful (buffer string)
+    (unless (string= (buffer-name buffer) "*rmsbolt-compilation*")
+      (setq compilation-total-time (time-subtract nil compilation-start-time))
+      (setq time-str (concat " (Time: " (format-time-string "%s.%3N" compilation-total-time) "s)"))
+
+      (if (with-current-buffer buffer
+            (setq warnings (eval compilation-num-warnings-found))
+            (setq warnings-str (concat " (Warnings: " (number-to-string warnings) ")"))
+            (setq errors (eval compilation-num-errors-found))
+            (if (eq errors 0) nil t))
+
+          ;;If Errors then
+          (message (concat "Compiled with Errors" warnings-str time-str))
+
+        ;;If Compiled Successfully or with Warnings then
+        (progn
+          (bury-buffer buffer)
+          (run-with-timer auto-hide-compile-buffer-delay nil 'delete-window (get-buffer-window buffer 'visible))
+          (message (concat "Compiled Successfully" warnings-str time-str))))))
+
+  (defun compilation-started (proc)
+    (setq compilation-start-time (current-time)))
+
+  :hook
+  (compilation-start .  compilation-started)
+  (compilation-finish-functions . hide-compile-buffer-if-successful))
+
+(use-package rmsbolt
+  :init
+  (defun rgr/rmsbolt() (interactive)
+         (rmsbolt-mode))
+  :bind
+  (:map prog-mode-map
+        ("C-c d" . rgr/rmsbolt)))
+
+(use-package compiler-explorer)
+
+(use-package parrot
+  :ensure t
+  :config
+  (defun my/parrot-animate-when-compile-success (buffer result)
+    (if (string-match "^finished" result)
+        (parrot-start-animation)))    (parrot-mode)
+  (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
 (use-package eldoc
   :custom
@@ -93,26 +110,6 @@
 
 (use-package breadcrumb
   :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
-
-(use-package rmsbolt
-  :init
-  (defun rgr/rmsbolt() (interactive)
-         (rmsbolt-mode))
-  :bind
-  (:map prog-mode-map
-        ("C-c d" . rgr/rmsbolt)))
-
-(use-package compiler-explorer)
-
-(defun my/parrot-animate-when-compile-success (buffer result)
-  (if (string-match "^finished" result)
-      (parrot-start-animation)))
-
-(use-package parrot
-  :ensure t
-  :config
-  (parrot-mode)
-  (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
 (unless (fboundp 'prog-mode)
   (defalias 'prog-mode 'fundamental-mode))
