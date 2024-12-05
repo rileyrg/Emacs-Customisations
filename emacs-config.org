@@ -2121,6 +2121,14 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-programming.el" elisp-dir)
 :END:
 
+**** tag matching
+#+begin_src  emacs-lisp
+  (use-package evil-matchit
+    :bind
+    ("M-(" . evilmi-jump-items-native))
+#+end_src
+
+
 **** compilation
 
 ***** hide compile buffer

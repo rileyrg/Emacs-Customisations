@@ -1,3 +1,7 @@
+(use-package evil-matchit
+  :bind
+  ("M-(" . evilmi-jump-items-native))
+
 (use-package compilation-hide
 :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
 
