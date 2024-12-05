@@ -1160,10 +1160,16 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
 #+begin_src emacs-lisp
   (use-package yasnippet
+    :demand t
     :config
     (use-package yasnippet-snippets)
-    :init
     (yas-global-mode))
+  (use-package yasnippet-capf
+    :after cape
+    :config
+    (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+
+
 #+end_src
 **** Abbrev Mode
 :PROPERTIES:

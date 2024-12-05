@@ -99,10 +99,14 @@
   :config (which-key-mode))
 
 (use-package yasnippet
+  :demand t
   :config
   (use-package yasnippet-snippets)
-  :init
   (yas-global-mode))
+(use-package yasnippet-capf
+  :after cape
+  :config
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (setq-default abbrev-mode 1)
 (defadvice expand-abbrev (after my-expand-abbrev activate)
