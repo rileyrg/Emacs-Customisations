@@ -1158,17 +1158,20 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 #+end_src
 **** Yasnippet                                                    :yasnippet:
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
+Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 #+begin_src emacs-lisp
   (use-package yasnippet
     :demand t
     :config
-    (use-package yasnippet-snippets)
-    (yas-global-mode))
-  (use-package yasnippet-capf
-    :after cape
-    :config
-    (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+    (use-package yasnippet-snippets))
 
+  (use-package yasnippet-treesitter-shim
+  :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
+                   :files ("snippets/*"))
+  :no-require t
+  :config
+  (add-to-list 'yas-snippet-dirs
+               (straight--build-dir "yasnippet-treesitter-shim")))
 
 #+end_src
 **** Abbrev Mode
@@ -2186,7 +2189,7 @@ https://github.com/emacsmirror/rmsbolt
   (use-package eldoc
     :custom
     (eldoc-idle-delay 1)
-    (eldoc-echo-area-use-multiline-p nil)
+    (eldoc-echo-area-use-multiline-p t)
     :config
     (use-package eldoc-box
       :after eldoc)
@@ -2470,7 +2473,8 @@ https://github.com/joaotavora/eglot
   (use-package eglot
     ;;:disabled t
     :custom
-    (eglot-send-changes-idle-time 3)
+    (eglot-stay-out-of '(ysnippet))
+    (eglot-send-changes-idle-time 0.5)
     (eglot-ignored-server-capabilities '( :documentHighlightProvider))
     :config
     (defun rgr/eglot-on-save()
@@ -2658,9 +2662,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
       (setq-local rgr/browser-doc-url rgr/rust-browser-doc-url)
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       (setq indent-tabs-mode nil)
-      (prettify-symbols-mode)
-      (if (featurep 'yasnippet)
-          (yas-minor-mode)))
+      (prettify-symbols-mode))
     :hook
     (rustic-mode . rgr/rust-mode-hook)
     :bind
@@ -2683,8 +2685,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
       (message "rgr/c-ts-mode-common-hook")
       ;; (if(featurep 'platformio-mode)
       ;;     (platformio-conditionally-enable))
-      (if (featurep 'yasnippet)
-          (yas-minor-mode t)))
+      )
     :hook
     (c-ts-mode . rgr/c-ts-mode-common-hook))
 #+end_src

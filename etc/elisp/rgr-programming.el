@@ -31,7 +31,7 @@
 (use-package eldoc
   :custom
   (eldoc-idle-delay 1)
-  (eldoc-echo-area-use-multiline-p nil)
+  (eldoc-echo-area-use-multiline-p t)
   :config
   (use-package eldoc-box
     :after eldoc)
@@ -259,9 +259,7 @@
     (setq-local rgr/browser-doc-url rgr/rust-browser-doc-url)
     (setq-local rgr/complete-line-f 'rgr/c-complete-line)
     (setq indent-tabs-mode nil)
-    (prettify-symbols-mode)
-    (if (featurep 'yasnippet)
-        (yas-minor-mode)))
+    (prettify-symbols-mode))
   :hook
   (rustic-mode . rgr/rust-mode-hook)
   :bind
@@ -276,8 +274,7 @@
     (message "rgr/c-ts-mode-common-hook")
     ;; (if(featurep 'platformio-mode)
     ;;     (platformio-conditionally-enable))
-    (if (featurep 'yasnippet)
-        (yas-minor-mode t)))
+    )
   :hook
   (c-ts-mode . rgr/c-ts-mode-common-hook))
 
