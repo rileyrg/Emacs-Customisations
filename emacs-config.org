@@ -1053,7 +1053,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    (corfu-auto t)                 ;; Enable auto completion
+    (corfu-auto nil)                 ;; Enable auto completion
     (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
     (corfu-quit-no-match t)      ;; Never quit, even if there is no match
     (corfu-preview-current t)    ;; Disable current candidate preview
@@ -2474,9 +2474,9 @@ https://github.com/joaotavora/eglot
     (eglot-ignored-server-capabilities '( :documentHighlightProvider))
     :config
     (defun rgr/eglot-on-save()
-      ;; (when eglot--managed-mode
-      ;;   (eglot-format-buffer)
-      ;;   )
+      (when eglot--managed-mode
+        (eglot-format-buffer)
+        )
       )
     (defun rgr/eglot-hook()
       (message "rgr/eglot hook")
@@ -2679,11 +2679,12 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :config
     (defun rgr/c-ts-mode-common-hook ()
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
+      (setq-local c-ts-mode-indent-offset 4)
       (message "rgr/c-ts-mode-common-hook")
       ;; (if(featurep 'platformio-mode)
       ;;     (platformio-conditionally-enable))
       (if (featurep 'yasnippet)
-          (yas-minor-mode)))
+          (yas-minor-mode t)))
     :hook
     (c-ts-mode . rgr/c-ts-mode-common-hook))
 #+end_src

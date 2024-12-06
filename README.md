@@ -930,7 +930,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;; Optional customizations
           :custom
           ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-          (corfu-auto t)                 ;; Enable auto completion
+          (corfu-auto nil)                 ;; Enable auto completion
           (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
           (corfu-quit-no-match t)      ;; Never quit, even if there is no match
           (corfu-preview-current t)    ;; Disable current candidate preview
@@ -1035,10 +1035,14 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     [YASnippet](https://github.com/joaotavora/yasnippet)  is a template system for Emacs.
     
         (use-package yasnippet
+          :demand t
           :config
           (use-package yasnippet-snippets)
-          :init
           (yas-global-mode))
+        (use-package yasnippet-capf
+          :after cape
+          :config
+          (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 4.  Abbrev Mode
 
@@ -1241,7 +1245,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org923e989)
+    See `org-agenda-files` [org-agenda-files](#orgb77582f)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2210,17 +2214,18 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   ;;:disabled t
                   :custom
                   (eglot-send-changes-idle-time 3)
-                  (eglot-ignored-server-capabilities '(:documentHighlightProvider))
+                  (eglot-ignored-server-capabilities '( :documentHighlightProvider))
                   :config
-                  (defun rgr/eglot-format-buffer()
+                  (defun rgr/eglot-on-save()
                     (when eglot--managed-mode
                       (eglot-format-buffer)
-                      ))
+                      )
+                    )
                   (defun rgr/eglot-hook()
                     (message "rgr/eglot hook")
                     )
                   :hook
-                  (before-save . rgr/eglot-format-buffer)
+                  (before-save . rgr/eglot-on-save)
                   (eglot-managed-mode . rgr/eglot-hook)
                   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
                   :bind
@@ -2394,11 +2399,12 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :config
               (defun rgr/c-ts-mode-common-hook ()
                 (setq-local rgr/complete-line-f 'rgr/c-complete-line)
+                (setq-local c-ts-mode-indent-offset 4)
                 (message "rgr/c-ts-mode-common-hook")
                 ;; (if(featurep 'platformio-mode)
                 ;;     (platformio-conditionally-enable))
                 (if (featurep 'yasnippet)
-                    (yas-minor-mode)))
+                    (yas-minor-mode t)))
               :hook
               (c-ts-mode . rgr/c-ts-mode-common-hook))
 
@@ -2518,7 +2524,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
         (use-package flymake
           :custom
-          (flymake-show-diagnostics-at-end-of-line t)
+          (flymake-show-diagnostics-at-end-of-line nil)
           (flymake-no-changes-timeout 1.5)
           :bind
           ("M-n" . flymake-goto-next-error)
@@ -2809,7 +2815,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7e5a6fb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org07b3671) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2842,7 +2848,7 @@ to add to version control.
     fi
 
 
-<a id="org7e5a6fb"></a>
+<a id="org07b3671"></a>
 
 ### Gnome protocol handler desktop file
 

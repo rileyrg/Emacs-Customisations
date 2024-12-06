@@ -272,11 +272,12 @@
   :config
   (defun rgr/c-ts-mode-common-hook ()
     (setq-local rgr/complete-line-f 'rgr/c-complete-line)
+    (setq-local c-ts-mode-indent-offset 4)
     (message "rgr/c-ts-mode-common-hook")
     ;; (if(featurep 'platformio-mode)
     ;;     (platformio-conditionally-enable))
     (if (featurep 'yasnippet)
-        (yas-minor-mode)))
+        (yas-minor-mode t)))
   :hook
   (c-ts-mode . rgr/c-ts-mode-common-hook))
 

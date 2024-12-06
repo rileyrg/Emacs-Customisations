@@ -5,9 +5,9 @@
   (eglot-ignored-server-capabilities '( :documentHighlightProvider))
   :config
   (defun rgr/eglot-on-save()
-    ;; (when eglot--managed-mode
-    ;;   (eglot-format-buffer)
-    ;;   )
+    (when eglot--managed-mode
+      (eglot-format-buffer)
+      )
     )
   (defun rgr/eglot-hook()
     (message "rgr/eglot hook")
