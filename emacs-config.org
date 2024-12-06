@@ -2471,17 +2471,18 @@ https://github.com/joaotavora/eglot
     ;;:disabled t
     :custom
     (eglot-send-changes-idle-time 3)
-    (eglot-ignored-server-capabilities '(:documentHighlightProvider))
+    (eglot-ignored-server-capabilities '( :documentHighlightProvider))
     :config
-    (defun rgr/eglot-format-buffer()
-      (when eglot--managed-mode
-        (eglot-format-buffer)
-        ))
+    (defun rgr/eglot-on-save()
+      ;; (when eglot--managed-mode
+      ;;   (eglot-format-buffer)
+      ;;   )
+      )
     (defun rgr/eglot-hook()
       (message "rgr/eglot hook")
       )
     :hook
-    (before-save . rgr/eglot-format-buffer)
+    (before-save . rgr/eglot-on-save)
     (eglot-managed-mode . rgr/eglot-hook)
     ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
     :bind
@@ -2850,7 +2851,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 #+begin_src  emacs-lisp
   (use-package flymake
     :custom
-    (flymake-show-diagnostics-at-end-of-line t)
+    (flymake-show-diagnostics-at-end-of-line nil)
     (flymake-no-changes-timeout 1.5)
     :bind
     ("M-n" . flymake-goto-next-error)

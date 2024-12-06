@@ -2,17 +2,18 @@
   ;;:disabled t
   :custom
   (eglot-send-changes-idle-time 3)
-  (eglot-ignored-server-capabilities '(:documentHighlightProvider))
+  (eglot-ignored-server-capabilities '( :documentHighlightProvider))
   :config
-  (defun rgr/eglot-format-buffer()
-    (when eglot--managed-mode
-      (eglot-format-buffer)
-      ))
+  (defun rgr/eglot-on-save()
+    ;; (when eglot--managed-mode
+    ;;   (eglot-format-buffer)
+    ;;   )
+    )
   (defun rgr/eglot-hook()
     (message "rgr/eglot hook")
     )
   :hook
-  (before-save . rgr/eglot-format-buffer)
+  (before-save . rgr/eglot-on-save)
   (eglot-managed-mode . rgr/eglot-hook)
   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
   :bind
