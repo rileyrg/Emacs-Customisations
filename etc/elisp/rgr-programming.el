@@ -269,13 +269,10 @@
 (use-package c-ts-mode
   :config
   (defun rgr/c-ts-mode-common-hook ()
-    (setq-local rgr/complete-line-f 'rgr/c-complete-line)
-    (setq-local c-ts-mode-indent-offset 4)
     (message "rgr/c-ts-mode-common-hook")
-    (yas-minor-mode t)
-    ;; (if(featurep 'platformio-mode)
-    ;;     (platformio-conditionally-enable))
-    )
+    ;;(yas-minor-mode t)
+    (setq-local rgr/complete-line-f 'rgr/c-complete-line)
+    (setq-local c-ts-mode-indent-offset 4))
   :hook
   (c-ts-mode . rgr/c-ts-mode-common-hook))
 

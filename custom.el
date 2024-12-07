@@ -29,7 +29,6 @@
  '(browse-url-secondary-browser-function 'browse-url-firefox)
  '(c-default-style
    '((c-mode . "k&r") (c++-mode . "k&r") (java-mode . "java") (awk-mode . "awk") (other . "gnu")))
- '(c-tab-always-indent t)
  '(calendar-mark-diary-entries-flag t)
  '(calendar-view-diary-initially-flag t)
  '(canlock-password "106923df36ef41eb263045249a447dac2d49649a")

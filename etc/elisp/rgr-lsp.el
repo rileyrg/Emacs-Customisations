@@ -1,20 +1,21 @@
 (use-package eglot
   :custom
+  (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.5)
   (eglot-ignored-server-capabilities '( :documentHighlightProvider))
   :config
-  (add-hook  'eglot-stay-out-of 'yasnippet)
+  ;;(add-hook  'eglot-stay-out-of 'yasnippet)
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
   (defun rgr/eglot-on-save()
     (when eglot--managed-mode
       (eglot-format-buffer)
       )
     )
-  (defun rgr/eglot-hook()
-    (message "rgr/eglot hook")
-    )
+  (defun rgr/eglot-managed-mode-hook()
+    (message "rgr/eglot hook"))
   :hook
   (before-save . rgr/eglot-on-save)
-  (eglot-managed-mode . rgr/eglot-hook)
+  (eglot-managed-mode . rgr/eglot-managed-mode-hook)
   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
   :bind
   (:map eglot-mode-map
