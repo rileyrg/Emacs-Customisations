@@ -1050,7 +1050,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 
 #+begin_src emacs-lisp
   (use-package corfu
-    :disabled t
+    ;;:disabled t
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -1071,7 +1071,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     ;; be used globally (M-/).  See also the customization variable
     ;; `global-corfu-modes' to exclude certain modes.
     :config
-    ;;(add-hook 'eglot-stay-out-of 'company)
+    (add-hook 'eglot-stay-out-of 'company)
     (use-package orderless
       :custom
       ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
@@ -1204,7 +1204,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 **** company
 #+begin_src emacs-lisp
   (use-package company
-    ;;:disabled t
+    :disabled t
     :config
     (use-package company-box
       :config
@@ -2472,12 +2472,13 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
+    :straight(:type built-in)
     :custom
     (eglot-autoshutdown t)
     (eglot-send-changes-idle-time 0.5)
     (eglot-ignored-server-capabilities '( :documentHighlightProvider))
     :config
-    (add-hook  'eglot-stay-out-of 'yasnippet)
+    ;;(add-hook  'eglot-stay-out-of 'yasnippet)
     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
     (defun rgr/eglot-on-save()
       (when eglot--managed-mode
@@ -2682,7 +2683,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :config
     (defun rgr/c-ts-mode-common-hook ()
       (message "rgr/c-ts-mode-common-hook")
-      (yas-minor-mode t)
+      ;(yas-minor-mode t)
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       (setq-local c-ts-mode-indent-offset 4))
     :hook
