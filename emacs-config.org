@@ -1163,17 +1163,20 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
 Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 #+begin_src emacs-lisp
-  (use-package yasnippet
-    :config
-    (use-package yasnippet-snippets))
+    (use-package yasnippet
+      :config
+      (use-package yasnippet-snippets)
+      :init
+      ;;(yas-global-mode)
+      )
 
-  (use-package yasnippet-treesitter-shim
-    :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
-                     :files ("snippets/*"))
-    :no-require t
-    :config
-    (add-to-list 'yas-snippet-dirs
-                 (straight--build-dir "yasnippet-treesitter-shim")))
+    (use-package yasnippet-treesitter-shim
+      :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
+                       :files ("snippets/*"))
+      :no-require t
+      :config
+      (add-to-list 'yas-snippet-dirs
+                   (straight--build-dir "yasnippet-treesitter-shim")))
 #+end_src
 **** Abbrev Mode
 :PROPERTIES:
