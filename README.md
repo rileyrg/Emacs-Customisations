@@ -1254,7 +1254,11 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
+<<<<<<< HEAD
     See `org-agenda-files` [org-agenda-files](#org93ecbe4)
+=======
+    See `org-agenda-files` [org-agenda-files](#org7ea3092)
+>>>>>>> f12ba00e37bd8aac5871440a909afe9afe726a63
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2408,7 +2412,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :config
               (defun rgr/c-ts-mode-common-hook ()
                 (message "rgr/c-ts-mode-common-hook")
+<<<<<<< HEAD
                 (yas-minor-mode t)
+=======
+                ;(yas-minor-mode t)
+>>>>>>> f12ba00e37bd8aac5871440a909afe9afe726a63
                 (setq-local rgr/complete-line-f 'rgr/c-complete-line)
                 (setq-local c-ts-mode-indent-offset 4))
               :hook
@@ -2821,7 +2829,11 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
+<<<<<<< HEAD
 `xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd1f77aa) documented below.
+=======
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org73fef7a) documented below.
+>>>>>>> f12ba00e37bd8aac5871440a909afe9afe726a63
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2854,7 +2866,11 @@ to add to version control.
     fi
 
 
+<<<<<<< HEAD
 <a id="orgd1f77aa"></a>
+=======
+<a id="org73fef7a"></a>
+>>>>>>> f12ba00e37bd8aac5871440a909afe9afe726a63
 
 ### Gnome protocol handler desktop file
 
