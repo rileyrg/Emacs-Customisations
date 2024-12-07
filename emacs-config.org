@@ -1050,7 +1050,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 
 #+begin_src emacs-lisp
   (use-package corfu
-    ;;:disabled t
+    :disabled t
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -1071,7 +1071,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     ;; be used globally (M-/).  See also the customization variable
     ;; `global-corfu-modes' to exclude certain modes.
     :config
-    (add-hook 'eglot-stay-out-of 'company)
+    ;;(add-hook 'eglot-stay-out-of 'company)
     (use-package orderless
       :custom
       ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
@@ -1204,7 +1204,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 **** company
 #+begin_src emacs-lisp
   (use-package company
-    :disabled t
+    ;;:disabled t
     :config
     (use-package company-box
       :config

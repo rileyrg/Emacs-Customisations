@@ -1,5 +1,5 @@
 (use-package corfu
-  ;;:disabled t
+  :disabled t
   ;; Optional customizations
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -20,7 +20,7 @@
   ;; be used globally (M-/).  See also the customization variable
   ;; `global-corfu-modes' to exclude certain modes.
   :config
-  (add-hook 'eglot-stay-out-of 'company)
+  ;;(add-hook 'eglot-stay-out-of 'company)
   (use-package orderless
     :custom
     ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
@@ -134,7 +134,7 @@
                                  ))))))
 
 (use-package company
-  :disabled t
+  ;;:disabled t
   :config
   (use-package company-box
     :config
