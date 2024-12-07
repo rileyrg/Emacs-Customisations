@@ -2477,7 +2477,7 @@ https://github.com/joaotavora/eglot
     (eglot-send-changes-idle-time 0.5)
     (eglot-ignored-server-capabilities '( :documentHighlightProvider))
     :config
-    ;;(add-hook  'eglot-stay-out-of 'yasnippet)
+    (add-hook  'eglot-stay-out-of 'yasnippet)
     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
     (defun rgr/eglot-on-save()
       (when eglot--managed-mode
@@ -2682,7 +2682,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :config
     (defun rgr/c-ts-mode-common-hook ()
       (message "rgr/c-ts-mode-common-hook")
-      ;;(yas-minor-mode t)
+      (yas-minor-mode t)
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       (setq-local c-ts-mode-indent-offset 4))
     :hook
