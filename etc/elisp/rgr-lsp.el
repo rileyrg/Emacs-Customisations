@@ -17,7 +17,7 @@
   :hook
   (before-save . rgr/eglot-on-save)
   (eglot-managed-mode . rgr/eglot-managed-mode-hook)
-  ;;((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
+  ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
   :bind
   (:map eglot-mode-map
         ("<C-return>" . eglot-code-actions)))
