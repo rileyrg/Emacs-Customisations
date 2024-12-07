@@ -1,10 +1,9 @@
 (use-package eglot
-  ;;:disabled t
   :custom
-  (eglot-stay-out-of '(ysnippet))
   (eglot-send-changes-idle-time 0.5)
   (eglot-ignored-server-capabilities '( :documentHighlightProvider))
   :config
+  (add-hook  'eglot-stay-out-of 'yasnippet)
   (defun rgr/eglot-on-save()
     (when eglot--managed-mode
       (eglot-format-buffer)

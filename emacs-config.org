@@ -1050,6 +1050,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 
 #+begin_src emacs-lisp
   (use-package corfu
+    ;;:disabled t
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -1069,6 +1070,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
     ;; be used globally (M-/).  See also the customization variable
     ;; `global-corfu-modes' to exclude certain modes.
     :config
+    (add-hook 'eglot-stay-out-of 'company)
     (use-package orderless
       :custom
       ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
@@ -1161,18 +1163,16 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 #+begin_src emacs-lisp
   (use-package yasnippet
-    :demand t
     :config
     (use-package yasnippet-snippets))
 
   (use-package yasnippet-treesitter-shim
-  :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
-                   :files ("snippets/*"))
-  :no-require t
-  :config
-  (add-to-list 'yas-snippet-dirs
-               (straight--build-dir "yasnippet-treesitter-shim")))
-
+    :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
+                     :files ("snippets/*"))
+    :no-require t
+    :config
+    (add-to-list 'yas-snippet-dirs
+                 (straight--build-dir "yasnippet-treesitter-shim")))
 #+end_src
 **** Abbrev Mode
 :PROPERTIES:
@@ -2471,12 +2471,11 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
-    ;;:disabled t
     :custom
-    (eglot-stay-out-of '(ysnippet))
     (eglot-send-changes-idle-time 0.5)
     (eglot-ignored-server-capabilities '( :documentHighlightProvider))
     :config
+    (add-hook  'eglot-stay-out-of 'yasnippet)
     (defun rgr/eglot-on-save()
       (when eglot--managed-mode
         (eglot-format-buffer)
@@ -2683,6 +2682,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       (setq-local c-ts-mode-indent-offset 4)
       (message "rgr/c-ts-mode-common-hook")
+      (yas-minor-mode t)
       ;; (if(featurep 'platformio-mode)
       ;;     (platformio-conditionally-enable))
       )

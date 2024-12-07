@@ -1,4 +1,5 @@
 (use-package corfu
+  ;;:disabled t
   ;; Optional customizations
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -18,6 +19,7 @@
   ;; be used globally (M-/).  See also the customization variable
   ;; `global-corfu-modes' to exclude certain modes.
   :config
+  (add-hook 'eglot-stay-out-of 'company)
   (use-package orderless
     :custom
     ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
@@ -99,17 +101,16 @@
   :config (which-key-mode))
 
 (use-package yasnippet
-  :demand t
   :config
   (use-package yasnippet-snippets))
 
 (use-package yasnippet-treesitter-shim
-:straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
-                 :files ("snippets/*"))
-:no-require t
-:config
-(add-to-list 'yas-snippet-dirs
-             (straight--build-dir "yasnippet-treesitter-shim")))
+  :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
+                   :files ("snippets/*"))
+  :no-require t
+  :config
+  (add-to-list 'yas-snippet-dirs
+               (straight--build-dir "yasnippet-treesitter-shim")))
 
 (setq-default abbrev-mode 1)
 (defadvice expand-abbrev (after my-expand-abbrev activate)

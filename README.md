@@ -1033,16 +1033,20 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 3.  Yasnippet
 
     [YASnippet](https://github.com/joaotavora/yasnippet)  is a template system for Emacs.
+    Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
     
         (use-package yasnippet
           :demand t
           :config
-          (use-package yasnippet-snippets)
-          (yas-global-mode))
-        (use-package yasnippet-capf
-          :after cape
-          :config
-          (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+          (use-package yasnippet-snippets))
+        
+        (use-package yasnippet-treesitter-shim
+        :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
+                         :files ("snippets/*"))
+        :no-require t
+        :config
+        (add-to-list 'yas-snippet-dirs
+                     (straight--build-dir "yasnippet-treesitter-shim")))
 
 4.  Abbrev Mode
 
@@ -1245,7 +1249,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgb77582f)
+    See `org-agenda-files` [org-agenda-files](#org9a03513)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1960,7 +1964,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         (use-package eldoc
           :custom
           (eldoc-idle-delay 1)
-          (eldoc-echo-area-use-multiline-p nil)
+          (eldoc-echo-area-use-multiline-p t)
           :config
           (use-package eldoc-box
             :after eldoc)
@@ -2213,7 +2217,8 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 (use-package eglot
                   ;;:disabled t
                   :custom
-                  (eglot-send-changes-idle-time 3)
+                  (eglot-stay-out-of '(ysnippet))
+                  (eglot-send-changes-idle-time 0.5)
                   (eglot-ignored-server-capabilities '( :documentHighlightProvider))
                   :config
                   (defun rgr/eglot-on-save()
@@ -2382,9 +2387,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (setq-local rgr/browser-doc-url rgr/rust-browser-doc-url)
             (setq-local rgr/complete-line-f 'rgr/c-complete-line)
             (setq indent-tabs-mode nil)
-            (prettify-symbols-mode)
-            (if (featurep 'yasnippet)
-                (yas-minor-mode)))
+            (prettify-symbols-mode))
           :hook
           (rustic-mode . rgr/rust-mode-hook)
           :bind
@@ -2403,8 +2406,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 (message "rgr/c-ts-mode-common-hook")
                 ;; (if(featurep 'platformio-mode)
                 ;;     (platformio-conditionally-enable))
-                (if (featurep 'yasnippet)
-                    (yas-minor-mode t)))
+                )
               :hook
               (c-ts-mode . rgr/c-ts-mode-common-hook))
 
@@ -2815,7 +2817,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org07b3671) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7b5e291) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2848,7 +2850,7 @@ to add to version control.
     fi
 
 
-<a id="org07b3671"></a>
+<a id="org7b5e291"></a>
 
 ### Gnome protocol handler desktop file
 
