@@ -927,12 +927,14 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 1.  corfu
 
         (use-package corfu
+          ;;:disabled t
           ;; Optional customizations
           :custom
           ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-          (corfu-auto nil)                 ;; Enable auto completion
+          (corfu-auto t)                 ;; Enable auto completion
           (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
           (corfu-quit-no-match t)      ;; Never quit, even if there is no match
+          (corfu-popupinfo-delay (cons nil 1.0))
           (corfu-preview-current t)    ;; Disable current candidate preview
           ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
           ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
@@ -946,6 +948,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;; be used globally (M-/).  See also the customization variable
           ;; `global-corfu-modes' to exclude certain modes.
           :config
+          (add-hook 'eglot-stay-out-of 'company)
           (use-package orderless
             :custom
             ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
@@ -1019,7 +1022,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           (add-hook 'completion-at-point-functions #'cape-elisp-block)
           ;; (add-hook 'completion-at-point-functions #'cape-history)
           ;; ...
-        )
+          )
 
 2.  Which Key
 
@@ -1036,17 +1039,19 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
     
         (use-package yasnippet
-          :demand t
           :config
-          (use-package yasnippet-snippets))
+          (use-package yasnippet-snippets)
+          :init
+          ;;(yas-global-mode)
+          )
         
         (use-package yasnippet-treesitter-shim
-        :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
-                         :files ("snippets/*"))
-        :no-require t
-        :config
-        (add-to-list 'yas-snippet-dirs
-                     (straight--build-dir "yasnippet-treesitter-shim")))
+          :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
+                           :files ("snippets/*"))
+          :no-require t
+          :config
+          (add-to-list 'yas-snippet-dirs
+                       (straight--build-dir "yasnippet-treesitter-shim")))
 
 4.  Abbrev Mode
 
@@ -1249,7 +1254,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org9a03513)
+    See `org-agenda-files` [org-agenda-files](#org93ecbe4)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2215,23 +2220,24 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             <https://github.com/joaotavora/eglot>
             
                 (use-package eglot
-                  ;;:disabled t
+                  :straight(:type built-in)
                   :custom
-                  (eglot-stay-out-of '(ysnippet))
+                  (eglot-autoshutdown t)
                   (eglot-send-changes-idle-time 0.5)
                   (eglot-ignored-server-capabilities '( :documentHighlightProvider))
                   :config
+                  ;;(add-hook  'eglot-stay-out-of 'yasnippet)
+                  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
                   (defun rgr/eglot-on-save()
                     (when eglot--managed-mode
                       (eglot-format-buffer)
                       )
                     )
-                  (defun rgr/eglot-hook()
-                    (message "rgr/eglot hook")
-                    )
+                  (defun rgr/eglot-managed-mode-hook()
+                    (message "rgr/eglot hook"))
                   :hook
                   (before-save . rgr/eglot-on-save)
-                  (eglot-managed-mode . rgr/eglot-hook)
+                  (eglot-managed-mode . rgr/eglot-managed-mode-hook)
                   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
                   :bind
                   (:map eglot-mode-map
@@ -2401,12 +2407,10 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package c-ts-mode
               :config
               (defun rgr/c-ts-mode-common-hook ()
-                (setq-local rgr/complete-line-f 'rgr/c-complete-line)
-                (setq-local c-ts-mode-indent-offset 4)
                 (message "rgr/c-ts-mode-common-hook")
-                ;; (if(featurep 'platformio-mode)
-                ;;     (platformio-conditionally-enable))
-                )
+                (yas-minor-mode t)
+                (setq-local rgr/complete-line-f 'rgr/c-complete-line)
+                (setq-local c-ts-mode-indent-offset 4))
               :hook
               (c-ts-mode . rgr/c-ts-mode-common-hook))
 
@@ -2817,7 +2821,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7b5e291) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd1f77aa) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2850,7 +2854,7 @@ to add to version control.
     fi
 
 
-<a id="org7b5e291"></a>
+<a id="orgd1f77aa"></a>
 
 ### Gnome protocol handler desktop file
 

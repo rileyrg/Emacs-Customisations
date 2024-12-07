@@ -103,7 +103,10 @@
 
 (use-package yasnippet
   :config
-  (use-package yasnippet-snippets))
+  (use-package yasnippet-snippets)
+  :init
+  ;;(yas-global-mode)
+  )
 
 (use-package yasnippet-treesitter-shim
   :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
