@@ -270,7 +270,7 @@
   :config
   (defun rgr/c-ts-mode-common-hook ()
     (message "rgr/c-ts-mode-common-hook")
-    (yas-minor-mode t)
+    (yas-minor-mode t) ;; This SHOULD be done by eglot but it doesnt work.
     (setq-local rgr/complete-line-f 'rgr/c-complete-line)
     (setq-local c-ts-mode-indent-offset 4))
   :hook

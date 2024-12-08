@@ -2479,7 +2479,7 @@ https://github.com/joaotavora/eglot
     :custom
     (eglot-autoshutdown t)
     (eglot-send-changes-idle-time 0.5)
-    (eglot-ignored-server-capabilities '( :documentHighlightProvider))
+    (eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
     :config
     ;;(add-hook  'eglot-stay-out-of 'yasnippet)
     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
@@ -2686,7 +2686,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :config
     (defun rgr/c-ts-mode-common-hook ()
       (message "rgr/c-ts-mode-common-hook")
-      (yas-minor-mode t)
+      (yas-minor-mode t) ;; This SHOULD be done by eglot but it doesnt work.
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       (setq-local c-ts-mode-indent-offset 4))
     :hook

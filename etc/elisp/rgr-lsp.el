@@ -3,7 +3,7 @@
   :custom
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.5)
-  (eglot-ignored-server-capabilities '( :documentHighlightProvider))
+  (eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
   :config
   ;;(add-hook  'eglot-stay-out-of 'yasnippet)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
