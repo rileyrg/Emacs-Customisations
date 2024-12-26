@@ -1254,7 +1254,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org636e33a)
+    See `org-agenda-files` [org-agenda-files](#org20cf6d0)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1570,27 +1570,52 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :bind
           ("C-S-a" . rgr/dash-search ))
 
-8.  devdocs-browser
+8.  API docs
 
-    <https://github.com/blahgeek/emacs-devdocs-browser> :
-    
-    Browse devdocs.io documents inside Emacs!
-    
-        (use-package devdocs-browser
-          :custom
-          (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
-          (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
-          (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
-          :config
+        
+        (use-package emacs
+          :init
           (defun rgr/devdocs()
             "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
             (interactive)
             (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
                                                              major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
                 (rgr/emacs-lisp-help)
-              (devdocs-browser-open)))
+              (let ((s (symbol-at-point)))
+                (message "symbol-at-point: %s" s)
+                (if (fboundp 'devdocs-browser-open)
+                    (devdocs-browser-open)
+                  (call-interactively 'devdocs-lookup (vector 't s ))))))
           :bind
           ("C-q" . rgr/devdocs))
+    
+    1.  devdocs-browser
+    
+        <https://github.com/blahgeek/emacs-devdocs-browser> :
+        
+        Browse devdocs.io documents inside Emacs!
+        
+            (use-package devdocs-browser
+              ;;:disabled t
+              :custom
+              (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
+              (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
+              (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
+              :hook
+              (c-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("c"))))
+              (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
+    
+    2.  devdocs
+    
+        <https://github.com/astoff/devdocs.el>
+        
+        Browse devdocs.io documents inside Emacs!
+        
+            (use-package devdocs
+              :disabled t
+              :hook
+              (c-ts-mode . (lambda()(setq-local devdocs-current-docs '("c"))))
+              (c++-ts-mode . (lambda()(setq-local devdocs-current-docs '("cpp")))))
 
 9.  Elfeed
 
@@ -2064,7 +2089,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 14. Project Management
 
-        (use-package project)
+        (use-package project
+          :bind(:map project-prefix-map
+                     ("s" . eat-project))
+          :hook
+          (project-switch-commands . '('eat-project "Shell")))
 
 15. BASH
 
@@ -2412,13 +2441,9 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 (setq-local rgr/complete-line-f 'rgr/c-complete-line)
                 (setq-local c-ts-mode-indent-offset 4))
               :hook
-              (c-ts-mode . rgr/c-ts-mode-common-hook))
+              ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 
-29. cc,cpp, C++, cc-mode
-
-        (add-hook 'c++-ts-mode-hook 'rgr/c-ts-mode-common-hook)
-
-30. Linux tools
+29. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2428,13 +2453,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-31. Assembler
+30. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-32. Web,Symfony and Twig
+31. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2494,7 +2519,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
-33. elf-mode - view the symbol list in a binary
+32. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2504,7 +2529,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
           (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
 
-34. provide
+33. provide
 
         (provide 'rgr/programming)
 
@@ -2821,7 +2846,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfc98039) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbf0e2e2) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2854,7 +2879,7 @@ to add to version control.
     fi
 
 
-<a id="orgfc98039"></a>
+<a id="orgbf0e2e2"></a>
 
 ### Gnome protocol handler desktop file
 

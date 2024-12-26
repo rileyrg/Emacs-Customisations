@@ -164,21 +164,37 @@
   :bind
   ("C-S-a" . rgr/dash-search ))
 
-(use-package devdocs-browser
-  :custom
-  (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
-  (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
-  (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
-  :config
+(use-package emacs
+  :init
   (defun rgr/devdocs()
     "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
     (interactive)
     (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
                                                      major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
         (rgr/emacs-lisp-help)
-      (devdocs-browser-open)))
+      (let ((s (symbol-at-point)))
+        (message "symbol-at-point: %s" s)
+        (if (fboundp 'devdocs-browser-open)
+            (devdocs-browser-open)
+          (call-interactively 'devdocs-lookup (vector 't s ))))))
   :bind
   ("C-q" . rgr/devdocs))
+
+(use-package devdocs-browser
+  ;;:disabled t
+  :custom
+  (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
+  (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
+  (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
+  :hook
+  (c-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("c"))))
+  (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
+
+(use-package devdocs
+  :disabled t
+  :hook
+  (c-ts-mode . (lambda()(setq-local devdocs-current-docs '("c"))))
+  (c++-ts-mode . (lambda()(setq-local devdocs-current-docs '("cpp")))))
 
 (use-package elfeed
   :config

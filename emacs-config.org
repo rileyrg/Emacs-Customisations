@@ -1751,7 +1751,28 @@ I'm not sure if this works unless you pay now.
     :bind
     ("C-S-a" . rgr/dash-search ))
 #+end_src
-**** devdocs-browser
+**** API docs
+#+begin_src emacs-lisp
+
+  (use-package emacs
+    :init
+    (defun rgr/devdocs()
+      "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
+      (interactive)
+      (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
+                                                       major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
+          (rgr/emacs-lisp-help)
+        (let ((s (symbol-at-point)))
+          (message "symbol-at-point: %s" s)
+          (if (fboundp 'devdocs-browser-open)
+              (devdocs-browser-open)
+            (call-interactively 'devdocs-lookup (vector 't s ))))))
+    :bind
+    ("C-q" . rgr/devdocs))
+
+#+end_src
+
+***** devdocs-browser
 
 https://github.com/blahgeek/emacs-devdocs-browser :
 
@@ -1759,20 +1780,28 @@ Browse devdocs.io documents inside Emacs!
 
 #+begin_src emacs-lisp
   (use-package devdocs-browser
+    ;;:disabled t
     :custom
     (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
     (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
     (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
-    :config
-    (defun rgr/devdocs()
-      "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
-      (interactive)
-      (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
-                                                       major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-          (rgr/emacs-lisp-help)
-        (devdocs-browser-open)))
-    :bind
-    ("C-q" . rgr/devdocs))
+    :hook
+    (c-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("c"))))
+    (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
+#+end_src
+
+***** devdocs
+
+https://github.com/astoff/devdocs.el
+
+Browse devdocs.io documents inside Emacs!
+
+#+begin_src emacs-lisp
+  (use-package devdocs
+    :disabled t
+    :hook
+    (c-ts-mode . (lambda()(setq-local devdocs-current-docs '("c"))))
+    (c++-ts-mode . (lambda()(setq-local devdocs-current-docs '("cpp")))))
 #+end_src
 
 **** Elfeed
@@ -2299,7 +2328,11 @@ https://github.com/joaotavora/breadcrumb
 #+end_src
 **** Project Management                                             :project:
 #+begin_src  emacs-lisp
-  (use-package project)
+  (use-package project
+    :bind(:map project-prefix-map
+               ("s" . eat-project))
+    :hook
+    (project-switch-commands . '('eat-project "Shell")))
 #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:
@@ -2690,14 +2723,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
       (setq-local rgr/complete-line-f 'rgr/c-complete-line)
       (setq-local c-ts-mode-indent-offset 4))
     :hook
-    (c-ts-mode . rgr/c-ts-mode-common-hook))
-#+end_src
-**** cc,cpp, C++, cc-mode                                               :cpp:
-:PROPERTIES:
-:ID:       db6327f5-6883-4f07-ac7d-2e0b3eb4276b
-:END:
-#+begin_src emacs-lisp
-  (add-hook 'c++-ts-mode-hook 'rgr/c-ts-mode-common-hook)
+    ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 #+end_src
 **** Linux tools
 :PROPERTIES:

@@ -98,7 +98,11 @@
   :config
   (apheleia-global-mode +1))
 
-(use-package project)
+(use-package project
+  :bind(:map project-prefix-map
+             ("s" . eat-project))
+  :hook
+  (project-switch-commands . '('eat-project "Shell")))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
@@ -274,9 +278,7 @@
     (setq-local rgr/complete-line-f 'rgr/c-complete-line)
     (setq-local c-ts-mode-indent-offset 4))
   :hook
-  (c-ts-mode . rgr/c-ts-mode-common-hook))
-
-(add-hook 'c++-ts-mode-hook 'rgr/c-ts-mode-common-hook)
+  ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 
 (use-package logview
   :demand t
