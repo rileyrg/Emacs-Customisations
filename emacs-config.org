@@ -2329,10 +2329,11 @@ https://github.com/joaotavora/breadcrumb
 **** Project Management                                             :project:
 #+begin_src  emacs-lisp
   (use-package project
-    :bind(:map project-prefix-map
-               ("s" . eat-project))
-    :hook
-    (project-switch-commands . '('eat-project "Shell")))
+    :custom
+     (project-vc-extra-root-markers '(".project" ".projectile" "Makefile"))
+     (project-mode-line t)
+     :config
+     (defalias 'project-shell 'eat-project))
 #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:

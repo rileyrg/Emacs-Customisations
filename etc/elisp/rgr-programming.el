@@ -99,10 +99,11 @@
   (apheleia-global-mode +1))
 
 (use-package project
-  :bind(:map project-prefix-map
-             ("s" . eat-project))
-  :hook
-  (project-switch-commands . '('eat-project "Shell")))
+  :custom
+   (project-vc-extra-root-markers '(".project" ".projectile" "Makefile"))
+   (project-mode-line t)
+   :config
+   (defalias 'project-shell 'eat-project))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
