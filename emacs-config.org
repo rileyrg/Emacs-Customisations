@@ -2302,12 +2302,6 @@ https://github.com/joaotavora/breadcrumb
   (unless (fboundp 'prog-mode)
     (defalias 'prog-mode 'fundamental-mode))
 #+end_src
-**** undo tree
-#+begin_src
-  (use-package undo-tree
-    :init
-    (global-undo-tree-mode))
-#+end_src
 ****  Show Line numbers
 :PROPERTIES:
 :ID:       1c88f735-c6b7-41d1-b7ea-b09b1e70b539
