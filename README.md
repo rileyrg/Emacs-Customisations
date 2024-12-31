@@ -1254,7 +1254,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org06df0f7)
+    See `org-agenda-files` [org-agenda-files](#orge8aa38a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1950,6 +1950,17 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 2.  compilation
 
+        (use-package compile
+          :init
+          (setq auto-mode-alist
+                (append
+                 '(("CMakeLists\\.txt\\'" . cmake-mode))
+                 '(("\\.cmake\\'" . cmake-mode))
+                 auto-mode-alist))
+          :hook
+          ; Add colour to compilation output
+          (compilation-filter . ansi-color-compilation-filter))
+    
     1.  hide compile buffer
     
         auto hide the compilation buffer after a successful compile. customise
@@ -2841,7 +2852,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org18bfa7f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org74dcddf) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2874,7 +2885,7 @@ to add to version control.
     fi
 
 
-<a id="org18bfa7f"></a>
+<a id="org74dcddf"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -2172,7 +2172,18 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 
 
 **** compilation
-
+#+begin_src  emacs-lisp
+  (use-package compile
+    :init
+    (setq auto-mode-alist
+          (append
+           '(("CMakeLists\\.txt\\'" . cmake-mode))
+           '(("\\.cmake\\'" . cmake-mode))
+           auto-mode-alist))
+    :hook
+    ; Add colour to compilation output
+    (compilation-filter . ansi-color-compilation-filter))
+#+end_src
 ***** hide compile buffer
 auto hide the compilation buffer after a successful compile. customise
 rgr/compilation-persistent-buffer-chunks to ignore certain compilation buffers.

@@ -2,6 +2,17 @@
   :bind
   ("M-(" . evilmi-jump-items-native))
 
+(use-package compile
+  :init
+  (setq auto-mode-alist
+        (append
+         '(("CMakeLists\\.txt\\'" . cmake-mode))
+         '(("\\.cmake\\'" . cmake-mode))
+         auto-mode-alist))
+  :hook
+  ; Add colour to compilation output
+  (compilation-filter . ansi-color-compilation-filter))
+
 (use-package compilation-hide
 :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
 
