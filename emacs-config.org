@@ -1905,7 +1905,7 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
 #+end_src
 **** VTERM
 #+begin_src  emacs-lisp
-  (use-package  vterm)
+  (use-package  multi-vterm)
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -2190,8 +2190,9 @@ rgr/compilation-persistent-buffer-chunks to ignore certain compilation buffers.
 
 #+begin_src  emacs-lisp
 
-    (use-package compilation-hide
-    :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
+  (use-package compilation-hide
+    :disabled t
+  :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
 
 #+end_src
 
@@ -2336,10 +2337,12 @@ https://github.com/joaotavora/breadcrumb
 #+begin_src  emacs-lisp
   (use-package project
     :custom
-     (project-vc-extra-root-markers '(".project" ".projectile" "Makefile"))
-     (project-mode-line t)
-     :config
-     (defalias 'project-shell 'eat-project))
+    (project-vc-extra-root-markers '(".project" ".projectile" "Makefile"))
+    (project-mode-line t)
+    :bind(:map project-prefix-map
+               ("v" . multi-vterm-project))
+    :hook
+    (project-switch-commands . '('multi-vterm-project "vterm")))
 #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:

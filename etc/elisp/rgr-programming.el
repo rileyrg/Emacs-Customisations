@@ -14,6 +14,7 @@
   (compilation-filter . ansi-color-compilation-filter))
 
 (use-package compilation-hide
+  :disabled t
 :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
 
 (use-package rmsbolt
@@ -112,10 +113,12 @@
 
 (use-package project
   :custom
-   (project-vc-extra-root-markers '(".project" ".projectile" "Makefile"))
-   (project-mode-line t)
-   :config
-   (defalias 'project-shell 'eat-project))
+  (project-vc-extra-root-markers '(".project" ".projectile" "Makefile"))
+  (project-mode-line t)
+  :bind(:map project-prefix-map
+             ("v" . multi-vterm-project))
+  :hook
+  (project-switch-commands . '('multi-vterm-project "vterm")))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile

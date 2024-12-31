@@ -17,6 +17,6 @@
                            ("integration" "integration/*")
                            (:exclude ".dir-locals.el" "*-tests.el"))))
 
-(use-package  vterm)
+(use-package  multi-vterm)
 
 (provide 'rgr/shells)
