@@ -2208,8 +2208,9 @@ https://github.com/emacsmirror/rmsbolt
           (rmsbolt)
         (progn
           (rmsbolt-mode -1)
-          (with-current-buffer  "*rmsbolt-output*"
-            (kill-buffer-and-window)))))
+          (when (get-buffer rmsbolt-output-buffer)
+              (with-current-buffer  rmsbolt-output-buffer
+                (kill-buffer-and-window))))))
     :bind
     (:map prog-mode-map
           ("C-c d" . rgr/rmsbolt)))

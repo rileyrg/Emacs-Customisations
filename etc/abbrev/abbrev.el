@@ -24,6 +24,11 @@ int main(void)
     ("sendl" "<< std::endl " nil :count 9)
    ))
 
+(define-abbrev-table 'c++-ts-mode-abbrev-table
+  '(
+    ("sel" "<< std::endl ;" nil :count 2)
+   ))
+
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table
   '(
     ("(use-package )" "up" nil :count 0)
