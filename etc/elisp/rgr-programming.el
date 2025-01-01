@@ -113,7 +113,7 @@
 
 (use-package project
   :custom
-  (project-vc-extra-root-markers '(".project" ".projectile" "Makefile"))
+  (project-vc-extra-root-markers '(".project"))
   (project-mode-line t)
   :bind(:map project-prefix-map
              ("v" . multi-vterm-project))

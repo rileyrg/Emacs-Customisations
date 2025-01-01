@@ -1905,7 +1905,9 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
 #+end_src
 **** VTERM
 #+begin_src  emacs-lisp
-  (use-package  multi-vterm)
+  (use-package  multi-vterm
+    :init
+    (add-to-list 'display-buffer-alist  '("vterm" (display-buffer-reuse-mode-window display-buffer-below-selected) (dedicated . t) (window-height . 0.3)) ))
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -2337,7 +2339,7 @@ https://github.com/joaotavora/breadcrumb
 #+begin_src  emacs-lisp
   (use-package project
     :custom
-    (project-vc-extra-root-markers '(".project" ".projectile" "Makefile"))
+    (project-vc-extra-root-markers '(".project"))
     (project-mode-line t)
     :bind(:map project-prefix-map
                ("v" . multi-vterm-project))

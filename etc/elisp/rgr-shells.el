@@ -17,6 +17,8 @@
                            ("integration" "integration/*")
                            (:exclude ".dir-locals.el" "*-tests.el"))))
 
-(use-package  multi-vterm)
+(use-package  multi-vterm
+  :init
+  (add-to-list 'display-buffer-alist  '("vterm" (display-buffer-reuse-mode-window display-buffer-below-selected) (dedicated . t) (window-height . 0.3)) ))
 
 (provide 'rgr/shells)
