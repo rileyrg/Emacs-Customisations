@@ -1254,7 +1254,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgfdcdb11)
+    See `org-agenda-files` [org-agenda-files](#org452f5ab)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2507,27 +2507,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             
                 ((php-mode
                   (eval php-mode-webserver-hook)))
-        
-        3.  webmode
-        
-                (use-package
-                  web-mode
-                  :disabled
-                  :demand t
-                  :config
-                  (defun rgr/web-mode-hook()
-                    )
-                  (add-hook 'web-mode-hook 'rgr/web-mode-hook)
-                  ;; (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-                  ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.twig\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-                  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
 
 31. elf-mode - view the symbol list in a binary
 
@@ -2536,8 +2515,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         (use-package elf-mode
           :demand t
           :config
-          (add-to-list 'magic-mode-alist '("\dELF" . elf-mode))
-          (add-to-list 'auto-mode-alist '("\\.\\(?:a\\|so\\)\\'" . elf-mode)))
+          (elf-setup-default))
 
 32. provide
 
@@ -2856,7 +2834,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org762360f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcc6c0ce) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2889,7 +2867,7 @@ to add to version control.
     fi
 
 
-<a id="org762360f"></a>
+<a id="orgcc6c0ce"></a>
 
 ### Gnome protocol handler desktop file
 
