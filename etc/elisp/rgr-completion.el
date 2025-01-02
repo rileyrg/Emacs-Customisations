@@ -4,7 +4,7 @@
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
-  (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   (corfu-quit-no-match t)      ;; Never quit, even if there is no match
   (corfu-popupinfo-delay (cons nil 1.0))
   (corfu-preview-current t)    ;; Disable current candidate preview
@@ -23,8 +23,6 @@
   (add-hook 'eglot-stay-out-of 'company)
   (use-package orderless
     :custom
-    ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
-    ;; (orderless-component-separator #'orderless-escapable-split-on-space)
     (orderless-component-separator " +\\|[-/]")
     (completion-styles '(orderless basic))
     (completion-category-defaults nil)

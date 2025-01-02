@@ -932,7 +932,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :custom
           ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
           (corfu-auto t)                 ;; Enable auto completion
-          (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+          ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
           (corfu-quit-no-match t)      ;; Never quit, even if there is no match
           (corfu-popupinfo-delay (cons nil 1.0))
           (corfu-preview-current t)    ;; Disable current candidate preview
@@ -951,8 +951,6 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           (add-hook 'eglot-stay-out-of 'company)
           (use-package orderless
             :custom
-            ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
-            ;; (orderless-component-separator #'orderless-escapable-split-on-space)
             (orderless-component-separator " +\\|[-/]")
             (completion-styles '(orderless basic))
             (completion-category-defaults nil)
@@ -1254,7 +1252,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org5f945f4)
+    See `org-agenda-files` [org-agenda-files](#org69efcbc)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2836,7 +2834,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org76fcb0f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7aca466) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2869,7 +2867,7 @@ to add to version control.
     fi
 
 
-<a id="org76fcb0f"></a>
+<a id="org7aca466"></a>
 
 ### Gnome protocol handler desktop file
 
