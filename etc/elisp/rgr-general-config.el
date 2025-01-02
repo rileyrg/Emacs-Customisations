@@ -103,9 +103,9 @@ The DWIM behaviour of this command is as follows:
   ;; :init
   ;; (defalias 'other-window 'ace-window)
   :bind
-  ("M-o" . other-window)
-  ("C-x o" . ace-window)
-  ("M-S o" . ace-delete-window))
+  ("M-o" . ace-window)
+  ("M-d" . delete-window)
+  ("M-0" . ace-delete-window))
 
 (use-package ace-link
   :demand
