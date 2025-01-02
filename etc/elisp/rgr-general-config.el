@@ -102,6 +102,8 @@ The DWIM behaviour of this command is as follows:
 (use-package ace-window
   :demand t
   ;; (defalias 'other-window 'ace-window)
+  :init
+  (windmove-default-keybindings)
   :bind
   ("M-o" . ace-window)
   ("M-0" . delete-window)
