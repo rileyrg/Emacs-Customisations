@@ -106,7 +106,6 @@ The DWIM behaviour of this command is as follows:
   (windmove-default-keybindings)
   :bind
   ("M-o" . ace-window)
-  ("M-0" . delete-window)
   ("M-d" . ace-delete-window))
 
 (use-package ace-link

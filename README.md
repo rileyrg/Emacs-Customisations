@@ -473,7 +473,6 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               (windmove-default-keybindings)
               :bind
               ("M-o" . ace-window)
-              ("M-0" . delete-window)
               ("M-d" . ace-delete-window))
     
     2.  hopping around links
@@ -1240,7 +1239,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org29b2041)
+    See `org-agenda-files` [org-agenda-files](#org282df29)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1376,6 +1375,10 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     1.  eww
     
             (use-package eww
+              :demand t
+              :init
+                      ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
+                      (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
               :config
               ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
               (defcustom rgr/eww-external-launch-url-chunks '("youtube")
@@ -1669,7 +1672,9 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
 
     [Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
     
+        ;; back to vterm
         (use-package  eat
+          :disabled  t
           :custom
           (eat-kill-buffer-on-exit t)
           :config
@@ -1692,7 +1697,13 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
 
         (use-package  multi-vterm
           :init
-          (add-to-list 'display-buffer-alist  '("vterm" (display-buffer-reuse-mode-window display-buffer-below-selected) (dedicated . t) (window-height . 0.3)) ))
+          (add-to-list 'display-buffer-alist  '((or (major-mode . vterm-mode))
+                                                (display-buffer-reuse-mode-window
+                                                 display-buffer-in-direction)
+                                                (direction . below)
+                                                (window-height . 0.3)))
+          :bind
+          ("M-g t" . multi-vterm-project))
 
 3.  provide
 
@@ -2821,7 +2832,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org458acf1) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1779a30) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2854,7 +2865,7 @@ to add to version control.
     fi
 
 
-<a id="org458acf1"></a>
+<a id="org1779a30"></a>
 
 ### Gnome protocol handler desktop file
 

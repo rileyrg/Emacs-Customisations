@@ -546,7 +546,6 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
     (windmove-default-keybindings)
     :bind
     ("M-o" . ace-window)
-    ("M-0" . delete-window)
     ("M-d" . ace-delete-window))
 #+end_src
 ***** hopping around links
@@ -1538,6 +1537,10 @@ https://ollama.ai/library/zephyr
 ***** eww
 #+begin_src emacs-lisp
   (use-package eww
+    :demand t
+    :init
+            ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
+            (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
     :config
     ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
     (defcustom rgr/eww-external-launch-url-chunks '("youtube")
@@ -1867,7 +1870,9 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
 **** EAT
 [[https://codeberg.org/akib/emacs-eat][Emulate A Terminal]], in a region, in a buffer and in Eshell
 #+begin_src  emacs-lisp
+  ;; back to vterm
   (use-package  eat
+    :disabled  t
     :custom
     (eat-kill-buffer-on-exit t)
     :config
@@ -1890,7 +1895,13 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
 #+begin_src  emacs-lisp
   (use-package  multi-vterm
     :init
-    (add-to-list 'display-buffer-alist  '("vterm" (display-buffer-reuse-mode-window display-buffer-below-selected) (dedicated . t) (window-height . 0.3)) ))
+    (add-to-list 'display-buffer-alist  '((or (major-mode . vterm-mode))
+                                          (display-buffer-reuse-mode-window
+                                           display-buffer-in-direction)
+                                          (direction . below)
+                                          (window-height . 0.3)))
+    :bind
+    ("M-g t" . multi-vterm-project))
 #+end_src
 **** provide
 #+begin_src emacs-lisp
