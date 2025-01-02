@@ -36,7 +36,6 @@
     (quit-window))
   :hook (eww-after-render . rgr/eww-after-render)
   :bind
-  ("C-c o" . 'eww)
   (:map eww-mode-map
         ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 

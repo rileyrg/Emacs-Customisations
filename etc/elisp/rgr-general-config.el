@@ -100,27 +100,17 @@ The DWIM behaviour of this command is as follows:
 (use-package posframe)
 
 (use-package ace-window
-  ;; :init
+  :demand t
   ;; (defalias 'other-window 'ace-window)
   :bind
   ("M-o" . ace-window)
-  ("M-d" . delete-window)
-  ("M-0" . ace-delete-window))
+  ("M-0" . delete-window)
+  ("M-d" . ace-delete-window))
 
 (use-package ace-link
   :demand
   :config
-  (ace-link-setup-default)
-  :bind*
-  (:map emacs-lisp-mode-map
-        ("C-c o" . ace-link-addr))
-  ("C-c o" . ace-link)
-  )
-
-(use-package ace-jump-mode
-  :bind
-  ("M-s c" . ace-jump-mode)
-  )
+  (ace-link-setup-default))
 
 (use-package pulsar
   :custom

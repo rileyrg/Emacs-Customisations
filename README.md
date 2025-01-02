@@ -467,12 +467,12 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
     
             (use-package ace-window
-              ;; :init
+              :demand t
               ;; (defalias 'other-window 'ace-window)
               :bind
               ("M-o" . ace-window)
-              ("M-d" . delete-window)
-              ("M-0" . ace-delete-window))
+              ("M-0" . delete-window)
+              ("M-d" . ace-delete-window))
     
     2.  hopping around links
     
@@ -481,21 +481,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
             (use-package ace-link
               :demand
               :config
-              (ace-link-setup-default)
-              :bind*
-              (:map emacs-lisp-mode-map
-                    ("C-c o" . ace-link-addr))
-              ("C-c o" . ace-link)
-              )
-    
-    3.  hopping around in the buffer
-    
-        Allows word, char and line hopping. The [wiki](https://github.com/winterTTr/ace-jump-mode/wiki) is a food source of info.
-        
-            (use-package ace-jump-mode
-              :bind
-              ("M-s c" . ace-jump-mode)
-              )
+              (ace-link-setup-default))
 
 4.  pulsar
 
@@ -1252,7 +1238,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org4cf9cbe)
+    See `org-agenda-files` [org-agenda-files](#org2dcbe9e)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1414,7 +1400,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (quit-window))
               :hook (eww-after-render . rgr/eww-after-render)
               :bind
-              ("C-c o" . 'eww)
               (:map eww-mode-map
                     ( "&" . rgr/eww-launch-external-browser-from-buffer)))
     
@@ -2834,7 +2819,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org252ed04) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org15a8170) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2867,7 +2852,7 @@ to add to version control.
     fi
 
 
-<a id="org252ed04"></a>
+<a id="org15a8170"></a>
 
 ### Gnome protocol handler desktop file
 

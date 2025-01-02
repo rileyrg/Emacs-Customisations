@@ -540,12 +540,12 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
 ***** [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
 #+begin_src emacs-lisp
   (use-package ace-window
-    ;; :init
+    :demand t
     ;; (defalias 'other-window 'ace-window)
     :bind
     ("M-o" . ace-window)
-    ("M-d" . delete-window)
-    ("M-0" . ace-delete-window))
+    ("M-0" . delete-window)
+    ("M-d" . ace-delete-window))
 #+end_src
 ***** hopping around links
 :PROPERTIES:
@@ -556,23 +556,7 @@ Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
   (use-package ace-link
     :demand
     :config
-    (ace-link-setup-default)
-    :bind*
-    (:map emacs-lisp-mode-map
-          ("C-c o" . ace-link-addr))
-    ("C-c o" . ace-link)
-    )
-#+end_src
-***** hopping around in the buffer
-:PROPERTIES:
-:ID:       a1befd07-164b-4ee3-a6cb-c0f4c11094f0
-:END:
-Allows word, char and line hopping. The [[https://github.com/winterTTr/ace-jump-mode/wiki][wiki]] is a food source of info.
-#+begin_src emacs-lisp
-  (use-package ace-jump-mode
-    :bind
-    ("M-s c" . ace-jump-mode)
-    )
+    (ace-link-setup-default))
 #+end_src
 **** pulsar                                                          :pulsar:
 visual feedback as to cursor position
@@ -1578,7 +1562,6 @@ https://ollama.ai/library/zephyr
       (quit-window))
     :hook (eww-after-render . rgr/eww-after-render)
     :bind
-    ("C-c o" . 'eww)
     (:map eww-mode-map
           ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 #+end_src
