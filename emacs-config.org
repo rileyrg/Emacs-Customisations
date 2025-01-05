@@ -2298,10 +2298,10 @@ https://github.com/emacsmirror/rmsbolt
     ("C-S-d" . 'duplicate-thing))
 #+end_src
 **** Breadcrumbs
-https://github.com/joaotavora/breadcrumb
 #+begin_src  emacs-lisp
   (use-package breadcrumb
-    :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
+    :config
+    (breadcrumb-mode))
 #+end_src
 **** prog-mode hack
 :PROPERTIES:

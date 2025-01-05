@@ -95,7 +95,8 @@
   ("C-S-d" . 'duplicate-thing))
 
 (use-package breadcrumb
-  :straight (breadcrumb :local-repo "~/development/projects/emacs/breadcrumb"))
+  :config
+  (breadcrumb-mode))
 
 (unless (fboundp 'prog-mode)
   (defalias 'prog-mode 'fundamental-mode))
