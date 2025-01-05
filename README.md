@@ -1239,7 +1239,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org0e61e09)
+    See `org-agenda-files` [org-agenda-files](#org26ac293)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1377,8 +1377,8 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (use-package eww
               :demand t
               :init
-                      ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
-                      (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
+              ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
+              (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
               :config
               ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
               (defcustom rgr/eww-external-launch-url-chunks '("youtube")
@@ -1403,6 +1403,8 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 (call-process-shell-command "swaymsg workspace number 2" nil 0)
                 (eww-browse-with-external-browser)
                 (quit-window))
+              :custom
+              (eww-history-limit 256)
               :hook (eww-after-render . rgr/eww-after-render)
               :bind
               (:map eww-mode-map
@@ -2831,7 +2833,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org14fdb4f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org43eca37) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2864,7 +2866,7 @@ to add to version control.
     fi
 
 
-<a id="org14fdb4f"></a>
+<a id="org43eca37"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -12,8 +12,8 @@
 (use-package eww
   :demand t
   :init
-          ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
-          (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
+  ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
+  (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
   :config
   ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
   (defcustom rgr/eww-external-launch-url-chunks '("youtube")
@@ -38,6 +38,8 @@
     (call-process-shell-command "swaymsg workspace number 2" nil 0)
     (eww-browse-with-external-browser)
     (quit-window))
+  :custom
+  (eww-history-limit 256)
   :hook (eww-after-render . rgr/eww-after-render)
   :bind
   (:map eww-mode-map
