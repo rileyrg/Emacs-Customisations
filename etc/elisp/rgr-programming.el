@@ -112,21 +112,6 @@
   :config
   (apheleia-global-mode +1))
 
-(use-package project     :straight(:type built-in)
-  :init
-  (defun rgr/project-url(url)
-    (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
-    (eww url))
-  :custom
-  (project-vc-extra-root-markers '(".project"))
-  (project-mode-line t)
-  :init
-  (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
-  (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
-  :bind(:map project-prefix-map
-             ("v" . multi-vterm-project)
-             ("u" . rgr/project-url)))
-
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
   :config

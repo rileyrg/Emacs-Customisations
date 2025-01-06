@@ -44,9 +44,9 @@
   (when (boundp 'native-comp-eln-load-path)
     (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
-(straight-use-package 'org)
+(straight-use-package '(org))
 (straight-use-package '(project :type built-in))
-(straight-use-package 'flymake)
+(straight-use-package '(flymake :type built-in))
 
 ;; look for a debug init file and load, trigger the debugger
 (defun debug-init (&optional fname)

@@ -118,9 +118,9 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (when (boundp 'native-comp-eln-load-path)
       (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
-  (straight-use-package 'org)
+  (straight-use-package '(org))
   (straight-use-package '(project :type built-in))
-  (straight-use-package 'flymake)
+  (straight-use-package '(flymake :type built-in))
 #+end_src
 
 ***
@@ -265,6 +265,24 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
 :END:
 
+**** Project Management                                             :project:
+#+begin_src  emacs-lisp
+  (use-package project  :straight(:type built-in)
+    :custom
+    (project-vc-extra-root-markers '(".project"))
+    (project-mode-line t)
+    :config
+    ;;(defvar rgr/project-url nil "project url to launch eg for cmake tutorial")
+    (defun rgr/project-url(url)
+      "launch url associated with this project 'rgr/project-url"
+      (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
+      (eww url))
+    (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
+    (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
+   :bind(:map project-prefix-map
+              ("v" . multi-vterm-project)
+              ("u" . rgr/project-url)))
+#+end_src
 
 **** toggle buffer
 :PROPERTIES:
@@ -2330,23 +2348,6 @@ https://github.com/emacsmirror/rmsbolt
     :ensure t
     :config
     (apheleia-global-mode +1))
-#+end_src
-**** Project Management                                             :project:
-#+begin_src  emacs-lisp
-  (use-package project     :straight(:type built-in)
-    :init
-    (defun rgr/project-url(url)
-      (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
-      (eww url))
-    :custom
-    (project-vc-extra-root-markers '(".project"))
-    (project-mode-line t)
-    :init
-    (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
-    (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
-    :bind(:map project-prefix-map
-               ("v" . multi-vterm-project)
-               ("u" . rgr/project-url)))
 #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:
