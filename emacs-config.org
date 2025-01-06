@@ -2334,13 +2334,19 @@ https://github.com/emacsmirror/rmsbolt
 **** Project Management                                             :project:
 #+begin_src  emacs-lisp
   (use-package project
+    :init
+    (defun rgr/project-url(url)
+      (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
+      (eww url))
     :custom
     (project-vc-extra-root-markers '(".project"))
     (project-mode-line t)
+    :config
+    (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm"))
+    (add-to-list  'project-switch-commands  '(rgr/project-url "url"))
     :bind(:map project-prefix-map
-               ("v" . multi-vterm-project))
-    :hook
-    (project-switch-commands . '('multi-vterm-project "vterm")))
+               ("v" . multi-vterm-project)
+               ("u" . rgr/project-url)))
 #+end_src
 **** BASH                                                              :bash:
 :PROPERTIES:

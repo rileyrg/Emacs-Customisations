@@ -113,13 +113,19 @@
   (apheleia-global-mode +1))
 
 (use-package project
+  :init
+  (defun rgr/project-url(url)
+    (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
+    (eww url))
   :custom
   (project-vc-extra-root-markers '(".project"))
   (project-mode-line t)
+  :config
+  (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm"))
+  (add-to-list  'project-switch-commands  '(rgr/project-url "url"))
   :bind(:map project-prefix-map
-             ("v" . multi-vterm-project))
-  :hook
-  (project-switch-commands . '('multi-vterm-project "vterm")))
+             ("v" . multi-vterm-project)
+             ("u" . rgr/project-url)))
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
