@@ -45,7 +45,7 @@
     (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
 (straight-use-package 'org)
-(straight-use-package 'project)
+(straight-use-package '(project :type built-in))
 (straight-use-package 'flymake)
 
 ;; look for a debug init file and load, trigger the debugger

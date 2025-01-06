@@ -119,7 +119,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
       (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
 
   (straight-use-package 'org)
-  (straight-use-package 'project)
+  (straight-use-package '(project :type built-in))
   (straight-use-package 'flymake)
 #+end_src
 
@@ -1540,7 +1540,7 @@ https://ollama.ai/library/zephyr
     :demand t
     :init
     ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
-    (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
+    (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
     :config
     ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
     (defcustom rgr/eww-external-launch-url-chunks '("youtube")
@@ -2333,7 +2333,7 @@ https://github.com/emacsmirror/rmsbolt
 #+end_src
 **** Project Management                                             :project:
 #+begin_src  emacs-lisp
-  (use-package project
+  (use-package project     :straight(:type built-in)
     :init
     (defun rgr/project-url(url)
       (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
@@ -2341,9 +2341,9 @@ https://github.com/emacsmirror/rmsbolt
     :custom
     (project-vc-extra-root-markers '(".project"))
     (project-mode-line t)
-    :config
-    (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm"))
-    (add-to-list  'project-switch-commands  '(rgr/project-url "url"))
+    :init
+    (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
+    (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
     :bind(:map project-prefix-map
                ("v" . multi-vterm-project)
                ("u" . rgr/project-url)))

@@ -92,7 +92,7 @@ invoke google translate on them. Stores history.
         (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
     
     (straight-use-package 'org)
-    (straight-use-package 'project)
+    (straight-use-package '(project :type built-in))
     (straight-use-package 'flymake)
 
 **\***
@@ -1239,7 +1239,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org592fab7)
+    See `org-agenda-files` [org-agenda-files](#org5bef09c)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1378,7 +1378,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               :demand t
               :init
               ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
-              (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
+              (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
               :config
               ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
               (defcustom rgr/eww-external-launch-url-chunks '("youtube")
@@ -2095,7 +2095,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 13. Project Management
 
-        (use-package project
+        (use-package project     :straight(:type built-in)
           :init
           (defun rgr/project-url(url)
             (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
@@ -2103,9 +2103,9 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :custom
           (project-vc-extra-root-markers '(".project"))
           (project-mode-line t)
-          :config
-          (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm"))
-          (add-to-list  'project-switch-commands  '(rgr/project-url "url"))
+          :init
+          (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
+          (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
           :bind(:map project-prefix-map
                      ("v" . multi-vterm-project)
                      ("u" . rgr/project-url)))
@@ -2839,7 +2839,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3b41785) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4b13deb) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2872,7 +2872,7 @@ to add to version control.
     fi
 
 
-<a id="org3b41785"></a>
+<a id="org4b13deb"></a>
 
 ### Gnome protocol handler desktop file
 

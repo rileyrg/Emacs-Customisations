@@ -112,7 +112,7 @@
   :config
   (apheleia-global-mode +1))
 
-(use-package project
+(use-package project     :straight(:type built-in)
   :init
   (defun rgr/project-url(url)
     (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
@@ -120,9 +120,9 @@
   :custom
   (project-vc-extra-root-markers '(".project"))
   (project-mode-line t)
-  :config
-  (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm"))
-  (add-to-list  'project-switch-commands  '(rgr/project-url "url"))
+  :init
+  (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
+  (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
   :bind(:map project-prefix-map
              ("v" . multi-vterm-project)
              ("u" . rgr/project-url)))
