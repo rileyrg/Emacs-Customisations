@@ -33,7 +33,7 @@
   :preface
   ;; By default dape shares the same keybinding prefix as `gud'
   ;; If you do not want to use any prefix, set it to nil.
-  (setq dape-key-prefix "\C-x\C-a")
+  ;;(setq dape-key-prefix "\C-x\C-a")
 
   :custom
   (dape-default-breakpoints-file (no-littering-expand-var-file-name  "dape/dape-breakpoints"))
@@ -43,13 +43,14 @@
   ;;(dape-cwd-fn 'projectile-project-root)
   :hook
   ;; Save breakpoints on quit
-  ((kill-emacs . dape-breakpoint-save)
-   (after-init . dape-breakpoint-load)
-   (dape-display-source . pulsar-pulse-line)
-   (dape-compile .  kill-buffer))
+  ;; (dape-stopped . dape-breakpoint-save)
+  (dape-start . dape-breakpoint-load)
+  (dape-display-source . pulsar-pulse-line)
+  (dape-compile .  kill-buffer)
 
   :config
   ;; Turn on global bindings for setting breakpoints with mouse
+  (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
   (add-to-list 'recentf-exclude "dape-breakpoints")
   (dape-breakpoint-global-mode)
   (add-hook 'dape-info-parent-mode-hook

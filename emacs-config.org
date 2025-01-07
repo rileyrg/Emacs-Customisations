@@ -269,18 +269,18 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
   (use-package project  :straight(:type built-in)
     :custom
     (project-vc-extra-root-markers '(".project"))
-    (project-mode-line t)
+    ;;(project-mode-line t)
     :config
-    ;;(defvar rgr/project-url nil "project url to launch eg for cmake tutorial")
+    ;; (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
+    ;; (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
     (defun rgr/project-url(url)
       "launch url associated with this project 'rgr/project-url"
       (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
       (eww url))
-    (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
-    (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
-   :bind(:map project-prefix-map
-              ("v" . multi-vterm-project)
-              ("u" . rgr/project-url)))
+    :bind(:map project-prefix-map
+               ("v" . multi-vterm-project)
+               ("u" . rgr/project-url))
+    )
 #+end_src
 
 **** toggle buffer
@@ -1550,7 +1550,7 @@ https://ollama.ai/library/zephyr
     :demand t
     :init
     ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
-    (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
+    (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)(major-mode . help-mode)) (display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
     :config
     ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
     (defcustom rgr/eww-external-launch-url-chunks '("youtube")
@@ -2556,7 +2556,7 @@ https://github.com/joaotavora/eglot
     :preface
     ;; By default dape shares the same keybinding prefix as `gud'
     ;; If you do not want to use any prefix, set it to nil.
-    (setq dape-key-prefix "\C-x\C-a")
+    ;;(setq dape-key-prefix "\C-x\C-a")
 
     :custom
     (dape-default-breakpoints-file (no-littering-expand-var-file-name  "dape/dape-breakpoints"))
@@ -2566,13 +2566,14 @@ https://github.com/joaotavora/eglot
     ;;(dape-cwd-fn 'projectile-project-root)
     :hook
     ;; Save breakpoints on quit
-    ((kill-emacs . dape-breakpoint-save)
-     (after-init . dape-breakpoint-load)
-     (dape-display-source . pulsar-pulse-line)
-     (dape-compile .  kill-buffer))
+    ;; (dape-stopped . dape-breakpoint-save)
+    (dape-start . dape-breakpoint-load)
+    (dape-display-source . pulsar-pulse-line)
+    (dape-compile .  kill-buffer)
 
     :config
     ;; Turn on global bindings for setting breakpoints with mouse
+    (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
     (add-to-list 'recentf-exclude "dape-breakpoints")
     (dape-breakpoint-global-mode)
     (add-hook 'dape-info-parent-mode-hook

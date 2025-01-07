@@ -224,18 +224,18 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
         (use-package project  :straight(:type built-in)
           :custom
           (project-vc-extra-root-markers '(".project"))
-          (project-mode-line t)
+          ;;(project-mode-line t)
           :config
-          ;;(defvar rgr/project-url nil "project url to launch eg for cmake tutorial")
+          ;; (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
+          ;; (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
           (defun rgr/project-url(url)
             "launch url associated with this project 'rgr/project-url"
             (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
             (eww url))
-          (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
-          (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
-         :bind(:map project-prefix-map
-                    ("v" . multi-vterm-project)
-                    ("u" . rgr/project-url)))
+          :bind(:map project-prefix-map
+                     ("v" . multi-vterm-project)
+                     ("u" . rgr/project-url))
+          )
 
 2.  toggle buffer
 
@@ -1249,7 +1249,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgc7ab479)
+    See `org-agenda-files` [org-agenda-files](#org56a8e0a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1388,7 +1388,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               :demand t
               :init
               ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
-              (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
+              (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)(major-mode . help-mode)) (display-buffer-in-direction) (direction . right)(window-width . 0.5)) )
               :config
               ;; Advice EWW to launch certain URLs using the generic launcher rather than EWW.
               (defcustom rgr/eww-external-launch-url-chunks '("youtube")
@@ -2295,7 +2295,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :preface
                   ;; By default dape shares the same keybinding prefix as `gud'
                   ;; If you do not want to use any prefix, set it to nil.
-                  (setq dape-key-prefix "\C-x\C-a")
+                  ;;(setq dape-key-prefix "\C-x\C-a")
                 
                   :custom
                   (dape-default-breakpoints-file (no-littering-expand-var-file-name  "dape/dape-breakpoints"))
@@ -2305,13 +2305,14 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   ;;(dape-cwd-fn 'projectile-project-root)
                   :hook
                   ;; Save breakpoints on quit
-                  ((kill-emacs . dape-breakpoint-save)
-                   (after-init . dape-breakpoint-load)
-                   (dape-display-source . pulsar-pulse-line)
-                   (dape-compile .  kill-buffer))
+                  ;; (dape-stopped . dape-breakpoint-save)
+                  (dape-start . dape-breakpoint-load)
+                  (dape-display-source . pulsar-pulse-line)
+                  (dape-compile .  kill-buffer)
                 
                   :config
                   ;; Turn on global bindings for setting breakpoints with mouse
+                  (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
                   (add-to-list 'recentf-exclude "dape-breakpoints")
                   (dape-breakpoint-global-mode)
                   (add-hook 'dape-info-parent-mode-hook
@@ -2834,7 +2835,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7172835) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgafbcd09) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2867,7 +2868,7 @@ to add to version control.
     fi
 
 
-<a id="org7172835"></a>
+<a id="orgafbcd09"></a>
 
 ### Gnome protocol handler desktop file
 

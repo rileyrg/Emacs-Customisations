@@ -1,18 +1,18 @@
 (use-package project  :straight(:type built-in)
   :custom
   (project-vc-extra-root-markers '(".project"))
-  (project-mode-line t)
+  ;;(project-mode-line t)
   :config
-  ;;(defvar rgr/project-url nil "project url to launch eg for cmake tutorial")
+  ;; (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
+  ;; (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
   (defun rgr/project-url(url)
     "launch url associated with this project 'rgr/project-url"
     (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
     (eww url))
-  (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
-  (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
- :bind(:map project-prefix-map
-            ("v" . multi-vterm-project)
-            ("u" . rgr/project-url)))
+  :bind(:map project-prefix-map
+             ("v" . multi-vterm-project)
+             ("u" . rgr/project-url))
+  )
 
 (defun rgr/toggle-buffer(n)
   "jump to or from buffer named n else default to *Messages*"
