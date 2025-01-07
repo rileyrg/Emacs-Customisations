@@ -44,6 +44,8 @@
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
+(with-eval-after-load "flycheck" (debug))
+
 ;; look for a debug init file and load, trigger the debugger
 (defun debug-init (&optional fname)
   (let* ((fname (if fname fname "debug-init.el"))

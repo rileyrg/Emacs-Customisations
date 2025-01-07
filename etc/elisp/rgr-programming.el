@@ -253,12 +253,14 @@
   )
 
 (use-package rust-mode
+  :disabled t
   :ensure t
   :init
   (defcustom rgr/rust-browser-doc-url (concat (format "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" (getenv "HOME")) "%s") "used to format variable `rgr/browser-doc-url'")
   (setq rust-mode-treesitter-derive t))
 
 (use-package rustic
+  :disabled t
   :ensure t
   :after (rust-mode)
   :custom

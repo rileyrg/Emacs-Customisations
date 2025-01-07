@@ -118,6 +118,8 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (setq auto-save-file-name-transforms
           `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
+  (with-eval-after-load "flycheck" (debug))
+
 #+end_src
 
 ***
@@ -2687,12 +2689,14 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 #+begin_src emacs-lisp
 
   (use-package rust-mode
+    :disabled t
     :ensure t
     :init
     (defcustom rgr/rust-browser-doc-url (concat (format "file://%s/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=" (getenv "HOME")) "%s") "used to format variable `rgr/browser-doc-url'")
     (setq rust-mode-treesitter-derive t))
 
   (use-package rustic
+    :disabled t
     :ensure t
     :after (rust-mode)
     :custom
