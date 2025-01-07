@@ -37,7 +37,6 @@
 (use-package ob-async)
 
 (use-package org-super-agenda
-  :disabled t
   :custom
   (org-super-agenda-groups
    '(;; Each group has an implicit boolean OR operator between its selectors.
@@ -95,10 +94,5 @@
      ))
   :init
   (org-super-agenda-mode))
-
-(use-package
-  ox-gfm
-  :disabled t
-  :demand)
 
 (provide 'rgr/org)

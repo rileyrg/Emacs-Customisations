@@ -1323,7 +1323,6 @@ create unique link IDs when sharing a link to an org section
 ***** org-super-agenda
 #+begin_src emacs-lisp
   (use-package org-super-agenda
-    :disabled t
     :custom
     (org-super-agenda-groups
      '(;; Each group has an implicit boolean OR operator between its selectors.
@@ -1381,14 +1380,6 @@ create unique link IDs when sharing a link to an org section
        ))
     :init
     (org-super-agenda-mode))
-#+end_src
-
-***** github compliant markup
-#+begin_src emacs-lisp
-  (use-package
-    ox-gfm
-    :disabled t
-    :demand)
 #+end_src
 
 **** provide
