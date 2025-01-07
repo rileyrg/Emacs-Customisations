@@ -118,9 +118,6 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (setq auto-save-file-name-transforms
           `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
-  (straight-use-package '(org))
-  (straight-use-package '(project :type built-in))
-  (straight-use-package '(flymake :type built-in))
 #+end_src
 
 ***
@@ -1272,7 +1269,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 :ID:       80d295c4-fe60-4bef-99e2-2f15bcb1e36a
 :END:
 #+begin_src emacs-lisp
-  (use-package org
+  (use-package org :straight (:type built-in)
     :custom
     (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
     (org-fontify-done-headline t)
@@ -1303,7 +1300,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 #+end_src
 ***** org-contrib
 #+begin_src  emacs-lisp
-  (use-package org-contrib)
+  ;;(use-package org-contrib)
 #+end_src
 ***** org-id
 :PROPERTIES:
@@ -1311,7 +1308,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 :END:
 create unique link IDs when sharing a link to an org section
 #+begin_src emacs-lisp
-  (require 'org-id)
+  ;;(require 'org-id)
 #+end_src
 ***** crypt
 #+begin_src emacs-lisp
@@ -1326,6 +1323,7 @@ create unique link IDs when sharing a link to an org section
 ***** org-super-agenda
 #+begin_src emacs-lisp
   (use-package org-super-agenda
+    :disabled t
     :custom
     (org-super-agenda-groups
      '(;; Each group has an implicit boolean OR operator between its selectors.
@@ -1389,6 +1387,7 @@ create unique link IDs when sharing a link to an org section
 #+begin_src emacs-lisp
   (use-package
     ox-gfm
+    :disabled t
     :demand)
 #+end_src
 
@@ -1445,7 +1444,7 @@ Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
     (TeX-parse-self t)
     (TeX-master nil)
     (TeX-PDF-mode t)
-    (org-preview-latex-default-process 'dvipng)
+;;    (org-preview-latex-default-process 'dvipng)
     :config
     (defun rgr/latex-mode-hook()
       ;; buggy as this then gets savd to the global abbrevs
@@ -2665,11 +2664,11 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   (setq python-shell-interpreter "ipython")
   (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 #+end_src
-***** virtualenv                                                 :virtualenv:
+***** PET                                                        :virtualenv:pet:
 #+begin_src emacs-lisp
-  (use-package auto-virtualenv
+  (use-package pet
     :config
-    (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
+    (add-hook 'python-base-mode-hook 'pet-mode -10))
 #+end_src
 **** Haskell                                                         :python:
 ***** haskell-mode
@@ -2870,7 +2869,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 
 **** Flymake
 #+begin_src  emacs-lisp
-  (use-package flymake
+  (use-package flymake :straight (:type built-in)
     :custom
     (flymake-show-diagnostics-at-end-of-line nil)
     (flymake-no-changes-timeout 1.5)

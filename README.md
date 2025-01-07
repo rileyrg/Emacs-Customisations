@@ -41,6 +41,8 @@ invoke google translate on them. Stores history.
 
     ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
     ;; Maintained in emacs-config.org
+    (when (boundp 'native-comp-eln-load-path)
+      (startup-redirect-eln-cache "var/eln-cache"))
     (setq max-specpdl-size 13000)
 
 
@@ -87,13 +89,7 @@ invoke google translate on them. Stores history.
       (setq backup-directory-alist
             `(("." . ,(no-littering-expand-var-file-name "backup/"))))
       (setq auto-save-file-name-transforms
-            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-      (when (boundp 'native-comp-eln-load-path)
-        (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
-    
-    (straight-use-package 'org)
-    (straight-use-package '(project :type built-in))
-    (straight-use-package 'flymake)
+            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
 **\***
 
@@ -221,7 +217,25 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
 ### library
 
-1.  toggle buffer
+1.  Project Management
+
+        (use-package project  :straight(:type built-in)
+          :custom
+          (project-vc-extra-root-markers '(".project"))
+          (project-mode-line t)
+          :config
+          ;;(defvar rgr/project-url nil "project url to launch eg for cmake tutorial")
+          (defun rgr/project-url(url)
+            "launch url associated with this project 'rgr/project-url"
+            (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
+            (eww url))
+          (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
+          (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
+         :bind(:map project-prefix-map
+                    ("v" . multi-vterm-project)
+                    ("u" . rgr/project-url)))
+
+2.  toggle buffer
 
         (defun rgr/toggle-buffer(n)
           "jump to or from buffer named n else default to *Messages*"
@@ -231,7 +245,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (switch-to-buffer (if (string= (buffer-name) n)
                                   (other-buffer) n))))
 
-2.  read and write elisp vars to file
+3.  read and write elisp vars to file
 
         
         (defun rgr/elisp-write-var (f v)
@@ -244,7 +258,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
             (cl-assert (eq (point) (point-min)))
             (read (current-buffer))))
 
-3.  completing lines
+4.  completing lines
 
         (use-package emacs
           :init
@@ -275,7 +289,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           :bind
           ("<C-S-return>" . rgr/complete-line))
 
-4.  Lazy Language Learning, lazy-lang-learn
+5.  Lazy Language Learning, lazy-lang-learn
 
     My own hack for popping up text to learn
     
@@ -286,7 +300,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           ("<f12>" . lazy-lang-learn-translate)
           ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
-5.  provide
+6.  provide
 
         (provide 'rgr/utils)
 
@@ -1118,7 +1132,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 1.  Org Mode, org-mode
 
-        (use-package org
+        (use-package org :straight (:type built-in)
           :custom
           (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
           (org-fontify-done-headline t)
@@ -1149,13 +1163,13 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
     
     1.  org-contrib
     
-            (use-package org-contrib)
+            ;;(use-package org-contrib)
     
     2.  org-id
     
         create unique link IDs when sharing a link to an org section
         
-            (require 'org-id)
+            ;;(require 'org-id)
     
     3.  crypt
     
@@ -1169,6 +1183,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
     5.  org-super-agenda
     
             (use-package org-super-agenda
+              :disabled t
               :custom
               (org-super-agenda-groups
                '(;; Each group has an implicit boolean OR operator between its selectors.
@@ -1231,6 +1246,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
     
             (use-package
               ox-gfm
+              :disabled t
               :demand)
 
 2.  provide
@@ -1239,7 +1255,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org5bef09c)
+    See `org-agenda-files` [org-agenda-files](#org99aaa7d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1266,30 +1282,30 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
 
 1.  auctex
 
-        (use-package auctex
-          :disabled t
-          :init
-          (require 'ox-latex)
-          ;;(use-package lsp-latex)
-          :custom
-          (TeX-auto-save t)
-          (TeX-parse-self t)
-          (TeX-master nil)
-          (TeX-PDF-mode t)
-          (org-preview-latex-default-process 'dvipng)
-          :config
-          (defun rgr/latex-mode-hook()
-            ;; buggy as this then gets savd to the global abbrevs
-            (load-file (no-littering-expand-etc-file-name "abbrev/latex-songbook-chords.el"))
-            (setq abbrevs-changed nil)
-            (turn-on-reftex)
-            (visual-line-mode)
-            (LaTeX-math-mode)
-            (flyspell-mode))
+          (use-package auctex
+            :disabled t
+            :init
+            (require 'ox-latex)
+            ;;(use-package lsp-latex)
+            :custom
+            (TeX-auto-save t)
+            (TeX-parse-self t)
+            (TeX-master nil)
+            (TeX-PDF-mode t)
+        ;;    (org-preview-latex-default-process 'dvipng)
+            :config
+            (defun rgr/latex-mode-hook()
+              ;; buggy as this then gets savd to the global abbrevs
+              (load-file (no-littering-expand-etc-file-name "abbrev/latex-songbook-chords.el"))
+              (setq abbrevs-changed nil)
+              (turn-on-reftex)
+              (visual-line-mode)
+              (LaTeX-math-mode)
+              (flyspell-mode))
         
-          :hook
-          (TeX-mode .
-                    (lambda () (rgr/latex-mode-hook)(TeX-fold-mode 1)))); Automatically activate TeX-fold-mode.
+            :hook
+            (TeX-mode .
+                      (lambda () (rgr/latex-mode-hook)(TeX-fold-mode 1)))); Automatically activate TeX-fold-mode.
 
 2.  lilypond
 
@@ -2093,24 +2109,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (apheleia-global-mode +1))
 
-13. Project Management
-
-        (use-package project     :straight(:type built-in)
-          :init
-          (defun rgr/project-url(url)
-            (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
-            (eww url))
-          :custom
-          (project-vc-extra-root-markers '(".project"))
-          (project-mode-line t)
-          :init
-          (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
-          (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
-          :bind(:map project-prefix-map
-                     ("v" . multi-vterm-project)
-                     ("u" . rgr/project-url)))
-
-14. BASH
+13. BASH
 
     1.  Navigating Bash set -x output
     
@@ -2123,11 +2122,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                            '(pascal
                              "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 
-15. PHP
+14. PHP
 
         (use-package php-mode)
 
-16. JSON, YAML Configuration files
+15. JSON, YAML Configuration files
 
     1.  YAML
     
@@ -2138,7 +2137,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package json-reformat)
             (use-package hydra)
 
-17. Version Control
+16. Version Control
 
     1.  It's [Magit](Https://github.com/magit/magit)! A Git porcelain inside Emacs
     
@@ -2193,7 +2192,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :bind
                   ("C-x v ="  . diff-hl-show-hunk))
 
-18. Dart/Flutter
+17. Dart/Flutter
 
     Running emulator from command line:
     
@@ -2204,7 +2203,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             ;; (use-package emacs
             ;;   )
 
-19. Tree Sitter
+18. Tree Sitter
 
     1.  treesit-auto
     
@@ -2248,7 +2247,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
               (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
-20. Language Server Protocol (LSP)
+19. Language Server Protocol (LSP)
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2330,7 +2329,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         
                 (provide 'rgr/lsp)
 
-21. Serial Port
+20. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2356,7 +2355,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                           (interactive)
                           (selectSerialPortBuffer)))
 
-22. PlatformIO
+21. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2378,20 +2377,20 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-23. Python
+22. Python
 
     1.  ipython
     
             (setq python-shell-interpreter "ipython")
             (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
     
-    2.  virtualenv
+    2.  PET
     
-            (use-package auto-virtualenv
+            (use-package pet
               :config
-              (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
+              (add-hook 'python-base-mode-hook 'pet-mode -10))
 
-24. Haskell
+23. Haskell
 
     1.  haskell-mode
     
@@ -2405,7 +2404,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-25. lldb debugging in emacs
+24. lldb debugging in emacs
 
     1.  voltron
     
@@ -2415,7 +2414,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               ;; (breadcrumb-mode t)
               )
 
-26. rust
+25. rust
 
         
         (use-package rust-mode
@@ -2444,7 +2443,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (:map rustic-mode-map
                 ("C-q" . rgr/browser-doc-search)))
 
-27. C
+26. C
 
     1.  c-mode-common-hook
     
@@ -2458,7 +2457,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :hook
               ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 
-28. Linux tools
+27. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2468,13 +2467,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-29. Assembler
+28. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-30. Web,Symfony and Twig
+29. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2513,7 +2512,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 ((php-mode
                   (eval php-mode-webserver-hook)))
 
-31. elf-mode - view the symbol list in a binary
+30. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2522,7 +2521,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (elf-setup-default))
 
-32. provide
+31. provide
 
         (provide 'rgr/programming)
 
@@ -2546,7 +2545,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 2.  Flymake
 
-        (use-package flymake
+        (use-package flymake :straight (:type built-in)
           :custom
           (flymake-show-diagnostics-at-end-of-line nil)
           (flymake-no-changes-timeout 1.5)
@@ -2839,7 +2838,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4b13deb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgee3c8c9) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2872,7 +2871,7 @@ to add to version control.
     fi
 
 
-<a id="org4b13deb"></a>
+<a id="orgee3c8c9"></a>
 
 ### Gnome protocol handler desktop file
 

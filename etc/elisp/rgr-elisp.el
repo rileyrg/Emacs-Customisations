@@ -3,7 +3,7 @@
   :bind
   ("M-w" . rgr/kill-dwim))
 
-(use-package flymake
+(use-package flymake :straight (:type built-in)
   :custom
   (flymake-show-diagnostics-at-end-of-line nil)
   (flymake-no-changes-timeout 1.5)

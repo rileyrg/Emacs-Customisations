@@ -210,7 +210,7 @@
  '(org-agenda-skip-scheduled-if-done t)
  '(org-agenda-start-on-weekday 0 nil nil "Customized with use-package org")
  '(org-babel-load-languages
-   '((latex . t) (emacs-lisp . t) (python . t) (shell . t) (css . t) (makefile . t)))
+   '((emacs-lisp . t) (python . t) (shell . t) (css . t) (makefile . t)))
  '(org-capture-templates
    '(("p" "Project Todo" entry
       #'#[0 "\304\305\306\307\310\311\12!\312\313!\206\26\0r\312\314!q\210\13)\"\315\300\316\12\317\301&\11!\207"
@@ -242,7 +242,7 @@
  '(org-log-done 'time nil nil "Customized with use-package org")
  '(org-log-into-drawer t nil nil "Customized with use-package org")
  '(org-modules
-   '(org-crypt ol-docview ol-eww ol-info ol-irc ol-mhe ol-rmail ol-w3m ol-eshell ol-bookmark ol-elisp-symbol ol-man))
+   '(org-crypt ol-docview ol-eww ol-info ol-irc ol-mhe ol-rmail ol-w3m ol-eshell ol-man))
  '(org-project-capture-projects-file "TODO.org")
  '(org-refile-allow-creating-parent-nodes 'confirm nil nil "Customized with use-package org")
  '(org-refile-targets

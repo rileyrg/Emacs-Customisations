@@ -1,4 +1,4 @@
-(use-package org
+(use-package org :straight (:type built-in)
   :custom
   (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
   (org-fontify-done-headline t)
@@ -27,9 +27,9 @@
   (:map org-mode-map
         ("M-." . find-function-at-point)))
 
-(use-package org-contrib)
+;;(use-package org-contrib)
 
-(require 'org-id)
+;;(require 'org-id)
 
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
@@ -37,6 +37,7 @@
 (use-package ob-async)
 
 (use-package org-super-agenda
+  :disabled t
   :custom
   (org-super-agenda-groups
    '(;; Each group has an implicit boolean OR operator between its selectors.
@@ -97,6 +98,7 @@
 
 (use-package
   ox-gfm
+  :disabled t
   :demand)
 
 (provide 'rgr/org)

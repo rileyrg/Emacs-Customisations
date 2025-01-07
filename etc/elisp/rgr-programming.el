@@ -232,9 +232,9 @@
 (setq python-shell-interpreter "ipython")
 (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 
-(use-package auto-virtualenv
+(use-package pet
   :config
-  (add-hook 'python-mode-hook  #'auto-virtualenv-set-virtualenv))
+  (add-hook 'python-base-mode-hook 'pet-mode -10))
 
 ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
 (use-package haskell-mode
