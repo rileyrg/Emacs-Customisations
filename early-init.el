@@ -1,5 +1,7 @@
 ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
 ;; Maintained in emacs-config.org
+(when (boundp 'native-comp-eln-load-path)
+  (startup-redirect-eln-cache "var/eln-cache"))
 (setq max-specpdl-size 13000)
 
 (setq package-enabled-at-startup nil)
@@ -40,9 +42,7 @@
   (setq backup-directory-alist
         `(("." . ,(no-littering-expand-var-file-name "backup/"))))
   (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-  (when (boundp 'native-comp-eln-load-path)
-    (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
 (straight-use-package '(org))
 (straight-use-package '(project :type built-in))

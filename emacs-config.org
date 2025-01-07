@@ -66,6 +66,8 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 #+begin_src emacs-lisp :tangle (expand-file-name "early-init.el" user-emacs-directory)
   ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
   ;; Maintained in emacs-config.org
+  (when (boundp 'native-comp-eln-load-path)
+    (startup-redirect-eln-cache "var/eln-cache"))
   (setq max-specpdl-size 13000)
 #+end_src
 
@@ -114,9 +116,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (setq backup-directory-alist
           `(("." . ,(no-littering-expand-var-file-name "backup/"))))
     (setq auto-save-file-name-transforms
-          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-    (when (boundp 'native-comp-eln-load-path)
-      (startup-redirect-eln-cache (no-littering-expand-var-file-name "eln-cache"))))
+          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
   (straight-use-package '(org))
   (straight-use-package '(project :type built-in))
