@@ -42,15 +42,17 @@
   (dape-inlay-hints t)
   ;;(dape-cwd-fn 'projectile-project-root)
   :hook
-  ;; Save breakpoints on quit
-  ;; (dape-stopped . dape-breakpoint-save)
-  (dape-start . dape-breakpoint-load)
+;; Save breakpoints on quit
+  (kill-emacs . dape-breakpoint-save)
+  ;; Load breakpoints on startup
+  (after-init . dape-breakpoint-load)
+  ;;(dape-start . dape-breakpoint-load)
   (dape-display-source . pulsar-pulse-line)
   (dape-compile .  kill-buffer)
 
   :config
   ;; Turn on global bindings for setting breakpoints with mouse
-  (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
+  ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
   (add-to-list 'recentf-exclude "dape-breakpoints")
   (dape-breakpoint-global-mode)
   (add-hook 'dape-info-parent-mode-hook

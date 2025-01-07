@@ -1249,7 +1249,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org56a8e0a)
+    See `org-agenda-files` [org-agenda-files](#org9ddaaaa)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2304,15 +2304,17 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   (dape-inlay-hints t)
                   ;;(dape-cwd-fn 'projectile-project-root)
                   :hook
-                  ;; Save breakpoints on quit
-                  ;; (dape-stopped . dape-breakpoint-save)
-                  (dape-start . dape-breakpoint-load)
+                ;; Save breakpoints on quit
+                  (kill-emacs . dape-breakpoint-save)
+                  ;; Load breakpoints on startup
+                  (after-init . dape-breakpoint-load)
+                  ;;(dape-start . dape-breakpoint-load)
                   (dape-display-source . pulsar-pulse-line)
                   (dape-compile .  kill-buffer)
                 
                   :config
                   ;; Turn on global bindings for setting breakpoints with mouse
-                  (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
+                  ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
                   (add-to-list 'recentf-exclude "dape-breakpoints")
                   (dape-breakpoint-global-mode)
                   (add-hook 'dape-info-parent-mode-hook
@@ -2835,7 +2837,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgafbcd09) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc5077ca) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2868,7 +2870,7 @@ to add to version control.
     fi
 
 
-<a id="orgafbcd09"></a>
+<a id="orgc5077ca"></a>
 
 ### Gnome protocol handler desktop file
 
