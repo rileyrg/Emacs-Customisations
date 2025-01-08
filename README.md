@@ -229,13 +229,10 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
           ;; (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
           ;; (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
           (defun rgr/project-url(url)
-            "launch url associated with this project 'rgr/project-url"
             (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
             (eww url))
-          :bind(:map project-prefix-map
-                     ("v" . multi-vterm-project)
-                     ("u" . rgr/project-url))
-          )
+          (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
+          (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
 
 2.  toggle buffer
 
@@ -1249,7 +1246,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org9ddaaaa)
+    See `org-agenda-files` [org-agenda-files](#org0787c94)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2837,7 +2834,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc5077ca) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org664864b) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2870,7 +2867,7 @@ to add to version control.
     fi
 
 
-<a id="orgc5077ca"></a>
+<a id="org664864b"></a>
 
 ### Gnome protocol handler desktop file
 
