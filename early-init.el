@@ -4,7 +4,7 @@
   (startup-redirect-eln-cache "var/eln-cache"))
 (setq max-specpdl-size 13000)
 
-(setq package-enabled-at-startup nil)
+(setq package-enable-at-startup nil)
 
 (defvar bootstrap-version)
 
@@ -29,24 +29,6 @@
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 
-(use-package notifications
-  :demand t
-  :config
-  (notifications-notify
-   :title "Emacs"
-   :body " ... is starting up..."))
-
-(use-package no-littering
-  :custom
-  (make-backup-files t)
-  :init
-  (setq backup-directory-alist
-        `(("." . ,(no-littering-expand-var-file-name "backup/"))))
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
-
-(with-eval-after-load "flycheck" (debug))
-
 ;; look for a debug init file and load, trigger the debugger
 (defun debug-init (&optional fname)
   (let* ((fname (if fname fname "debug-init.el"))
@@ -60,4 +42,15 @@
                 (debug)
               (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
       (message "No debug initfile, %s, found so ignoring" debug-init))))
-(debug-init)
+
+(use-package no-littering
+  :custom
+  (make-backup-files t)
+  :init
+  (setq backup-directory-alist
+        `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
+(load custom-file 'noerror)

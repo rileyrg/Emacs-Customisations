@@ -1,8 +1,12 @@
-(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
-(load custom-file 'noerror)
-
 ;; look for a debug init file and load, trigger the debugger
-(debug-init "debug-init-straight.el")
+(debug-init "debug-init.el")
+
+(use-package notifications
+  :demand t
+  :config
+  (notifications-notify
+   :title "Emacs"
+   :body " ... is starting up..."))
 
 (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
 (add-to-list 'load-path elisp-dir)

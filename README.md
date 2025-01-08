@@ -5,13 +5,6 @@
 Emacs customisation generates [init.el](init.el) and other [emacs elisp utility files](etc/elisp/)  using [org-babel-tangle](https://orgmode.org/manual/Extracting-Source-Code.html).
 
 
-## scratch
-
-    (let ((foo "foo")
-          (bar "bar"))
-      (concat bar foo))
-
-
 ## Own libraries
 
 These libraries are seperate stand alone github libraries.
@@ -32,12 +25,13 @@ invoke google translate on them. Stores history.
 <https://github.com/rileyrg/lazy-lang-learn>
 
 
-# early stuff
+# early-init
 
-
-## early-init.el
-
+Emacs early-init
 <https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html>
+
+
+## redirect emacs cache
 
     ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
     ;; Maintained in emacs-config.org
@@ -46,12 +40,18 @@ invoke google translate on them. Stores history.
     (setq max-specpdl-size 13000)
 
 
+## package management
+
+
+### disable built in package management
+
+    (setq package-enable-at-startup nil)
+
+
 ### straight.el package management
 
 [straight.el](https://github.com/raxod502/straight.el#features): next-generation, purely functional package manager for the Emacs hacker.
 
-    
-    (setq package-enabled-at-startup nil)
     
     (defvar bootstrap-version)
     
@@ -75,37 +75,11 @@ invoke google translate on them. Stores history.
       (straight-built-in-pseudo-packages '(emacs eglot nadvice python image-mode project flymake which-key org))
       (straight-use-package-by-default t)
       (straight-vc-git-default-protocol 'ssh))
-    
-    (use-package notifications
-      :demand t
-      :config
-      (notifications-notify
-       :title "Emacs"
-       :body " ... is starting up..."))
-    
-    (use-package no-littering
-      :custom
-      (make-backup-files t)
-      :init
-      (setq backup-directory-alist
-            `(("." . ,(no-littering-expand-var-file-name "backup/"))))
-      (setq auto-save-file-name-transforms
-            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
-    
-    (with-eval-after-load "flycheck" (debug))
-
-**\***
 
 
-## custom.el
+## other early init stuff
 
-    (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
-    (load custom-file 'noerror)
-
-
-## debug init
-
-    ;; look for a debug init file and load, trigger the debugger
+      ;; look for a debug init file and load, trigger the debugger
     (defun debug-init (&optional fname)
       (let* ((fname (if fname fname "debug-init.el"))
              (debug-init (expand-file-name fname user-emacs-directory)))
@@ -118,18 +92,45 @@ invoke google translate on them. Stores history.
                     (debug)
                   (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
           (message "No debug initfile, %s, found so ignoring" debug-init))))
-    (debug-init)
+
+
+## keep data tidy
+
+    (use-package no-littering
+      :custom
+      (make-backup-files t)
+      :init
+      (setq backup-directory-alist
+            `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+      (setq auto-save-file-name-transforms
+            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+
+
+## custom.el
+
+    (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
+    (load custom-file 'noerror)
 
 
 # config
 
 
-## post straight debug init
+## post early init  debug init
 
 Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to abort.
 
     ;; look for a debug init file and load, trigger the debugger
-    (debug-init "debug-init-straight.el")
+    (debug-init "debug-init.el")
+
+
+## notifications
+
+    (use-package notifications
+      :demand t
+      :config
+      (notifications-notify
+       :title "Emacs"
+       :body " ... is starting up..."))
 
 
 ## Paths
@@ -1244,7 +1245,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgba79f68)
+    See `org-agenda-files` [org-agenda-files](#org8211983)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2831,7 +2832,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga9ca2a3) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8fc87d5) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2864,7 +2865,7 @@ to add to version control.
     fi
 
 
-<a id="orga9ca2a3"></a>
+<a id="org8fc87d5"></a>
 
 ### Gnome protocol handler desktop file
 
