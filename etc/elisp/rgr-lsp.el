@@ -1,5 +1,4 @@
 (use-package eglot
-  :straight(:type built-in)
   :custom
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.5)

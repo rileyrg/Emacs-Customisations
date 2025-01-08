@@ -99,6 +99,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
   (use-package straight
     :custom
+    (straight-built-in-pseudo-packages '(emacs eglot nadvice python image-mode project flymake which-key org))
     (straight-use-package-by-default t)
     (straight-vc-git-default-protocol 'ssh))
 
@@ -266,7 +267,7 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 
 **** Project Management                                             :project:
 #+begin_src  emacs-lisp
-  (use-package project  :straight(:type built-in)
+  (use-package project
     :custom
     (project-vc-extra-root-markers '(".project"))
     ;;(project-mode-line t)
@@ -1149,8 +1150,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 :END:
 [[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
 #+begin_src emacs-lisp
-  (use-package
-    which-key
+  (use-package  which-key
     :demand t
     :config (which-key-mode))
 #+end_src
@@ -1266,7 +1266,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 :ID:       80d295c4-fe60-4bef-99e2-2f15bcb1e36a
 :END:
 #+begin_src emacs-lisp
-  (use-package org :straight (:type built-in)
+  (use-package org
     :custom
     (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
     (org-fontify-done-headline t)
@@ -2510,7 +2510,6 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
-    :straight(:type built-in)
     :custom
     (eglot-autoshutdown t)
     (eglot-send-changes-idle-time 0.5)
@@ -2862,7 +2861,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 
 **** Flymake
 #+begin_src  emacs-lisp
-  (use-package flymake :straight (:type built-in)
+  (use-package flymake
     :custom
     (flymake-show-diagnostics-at-end-of-line nil)
     (flymake-no-changes-timeout 1.5)

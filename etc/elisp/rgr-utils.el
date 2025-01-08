@@ -1,4 +1,4 @@
-(use-package project  :straight(:type built-in)
+(use-package project
   :custom
   (project-vc-extra-root-markers '(".project"))
   ;;(project-mode-line t)

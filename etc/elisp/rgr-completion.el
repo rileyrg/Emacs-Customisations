@@ -94,8 +94,7 @@
   ;; ...
   )
 
-(use-package
-  which-key
+(use-package  which-key
   :demand t
   :config (which-key-mode))
 

@@ -25,6 +25,7 @@
 
 (use-package straight
   :custom
+  (straight-built-in-pseudo-packages '(emacs eglot nadvice python image-mode project flymake which-key org))
   (straight-use-package-by-default t)
   (straight-vc-git-default-protocol 'ssh))
 

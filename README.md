@@ -72,6 +72,7 @@ invoke google translate on them. Stores history.
     
     (use-package straight
       :custom
+      (straight-built-in-pseudo-packages '(emacs eglot nadvice python image-mode project flymake which-key org))
       (straight-use-package-by-default t)
       (straight-vc-git-default-protocol 'ssh))
     
@@ -221,13 +222,11 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
 1.  Project Management
 
-        (use-package project  :straight(:type built-in)
+        (use-package project
           :custom
           (project-vc-extra-root-markers '(".project"))
           ;;(project-mode-line t)
           :config
-          ;; (add-to-list  'project-switch-commands  '(multi-vterm-project "vterm" "v"))
-          ;; (add-to-list  'project-switch-commands  '(rgr/project-url "url" "u"))
           (defun rgr/project-url(url)
             (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
             (eww url))
@@ -1026,8 +1025,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
     
-        (use-package
-          which-key
+        (use-package  which-key
           :demand t
           :config (which-key-mode))
 
@@ -1131,7 +1129,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 1.  Org Mode, org-mode
 
-        (use-package org :straight (:type built-in)
+        (use-package org
           :custom
           (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
           (org-fontify-done-headline t)
@@ -1246,7 +1244,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org0787c94)
+    See `org-agenda-files` [org-agenda-files](#orgba79f68)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2254,7 +2252,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             <https://github.com/joaotavora/eglot>
             
                 (use-package eglot
-                  :straight(:type built-in)
                   :custom
                   (eglot-autoshutdown t)
                   (eglot-send-changes-idle-time 0.5)
@@ -2541,7 +2538,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 2.  Flymake
 
-        (use-package flymake :straight (:type built-in)
+        (use-package flymake
           :custom
           (flymake-show-diagnostics-at-end-of-line nil)
           (flymake-no-changes-timeout 1.5)
@@ -2834,7 +2831,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org664864b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga9ca2a3) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2867,7 +2864,7 @@ to add to version control.
     fi
 
 
-<a id="org664864b"></a>
+<a id="orga9ca2a3"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -1,4 +1,4 @@
-(use-package org :straight (:type built-in)
+(use-package org
   :custom
   (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
   (org-fontify-done-headline t)
