@@ -22,7 +22,7 @@
         ("<C-return>" . eglot-code-actions)))
 
 (use-package eglot-booster
-  ;;:disabled t
+  :disabled t
   :straight (:type git :host github :repo "jdtsmith/eglot-booster")
   :after eglot
   :config	(eglot-booster-mode))

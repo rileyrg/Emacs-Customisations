@@ -144,6 +144,7 @@
 
 (use-package
   goldendict
+  :disabled t
   :commands (goldendict-dwim)
   :config
   (defun goldendict-dwim

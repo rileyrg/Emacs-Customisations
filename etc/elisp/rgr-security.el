@@ -12,6 +12,6 @@
         (funcall secret)
       secret)))
 
-(use-package pass)
+(use-package pass :disabled)
 
 (provide 'rgr/security)

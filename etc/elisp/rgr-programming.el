@@ -138,11 +138,6 @@
   :bind
   ("C-x g" . magit-status))
 
-(straight-use-package 'sqlite3)
-(use-package forge
-  :disabled
-  :after magit)
-
 (use-package diff-hl
   :hook
   (server-after-make-frame .  global-diff-hl-mode)
@@ -246,7 +241,7 @@
     '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-(use-package lldb-voltron
+(use-package lldb-voltron :disabled t
   :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
   ;;:config
   ;; (breadcrumb-mode t)

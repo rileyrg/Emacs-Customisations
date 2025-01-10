@@ -133,8 +133,10 @@
   )
 
 (use-package consult-xref-stack
-:straight
-(:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+  :disabled
+;; :straight
+;; (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+;;
 :bind
 (("C-," . consult-xref-stack-backward)))
 

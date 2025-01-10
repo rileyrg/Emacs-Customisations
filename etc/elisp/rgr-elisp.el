@@ -1,4 +1,4 @@
-(use-package rgr-kill-dwim
+(use-package rgr-kill-dwim  :disabled t
   :straight (rgr-kill-dwim :local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" )
   :bind
   ("M-w" . rgr/kill-dwim))
@@ -49,7 +49,7 @@
 
 (use-package helpful)
 
-(use-package el-docstring-sap
+(use-package el-docstring-sap  :disabled t
   :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
   :init
   (use-package quick-peek)

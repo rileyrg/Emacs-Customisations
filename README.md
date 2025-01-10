@@ -43,89 +43,6 @@ Emacs early-init
 ## package management
 
 
-### disable built in package management
-
-    (setq package-enable-at-startup nil)
-
-
-### straight.el package management
-
-[straight.el](https://github.com/raxod502/straight.el#features): next-generation, purely functional package manager for the Emacs hacker.
-
-    
-    (defvar bootstrap-version)
-    
-    (defvar bootstrap-version)
-    (let ((bootstrap-file
-           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-          (bootstrap-version 6))
-      (unless (file-exists-p bootstrap-file)
-        (with-current-buffer
-            (url-retrieve-synchronously
-             "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-             'silent 'inhibit-cookies)
-          (goto-char (point-max))
-          (eval-print-last-sexp)))
-      (load bootstrap-file nil 'nomessage))
-    
-    ;;(straight-use-package `(use-package ,@(when (>= emacs-major-version 29) '(:type built-in))))
-    
-    (use-package straight
-      :custom
-      (straight-built-in-pseudo-packages '(emacs eglot nadvice python image-mode project flymake which-key org))
-      (straight-use-package-by-default t)
-      (straight-vc-git-default-protocol 'ssh))
-
-
-### elpaca
-
-    
-    (setq package-enable-at-startup nil)
-    
-    (defvar elpaca-installer-version 0.8)
-    (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-    (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-    (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-    (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                                  :ref nil :depth 1
-                                  :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                                  :build (:not elpaca--activate-package)))
-    (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-           (build (expand-file-name "elpaca/" elpaca-builds-directory))
-           (order (cdr elpaca-order))
-           (default-directory repo))
-      (add-to-list 'load-path (if (file-exists-p build) build repo))
-      (unless (file-exists-p repo)
-        (make-directory repo t)
-        (when (< emacs-major-version 28) (require 'subr-x))
-        (condition-case-unless-debug err
-            (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                      ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                      ,@(when-let* ((depth (plist-get order :depth)))
-                                                          (list (format "--depth=%d" depth) "--no-single-branch"))
-                                                      ,(plist-get order :repo) ,repo))))
-                      ((zerop (call-process "git" nil buffer t "checkout"
-                                            (or (plist-get order :ref) "--"))))
-                      (emacs (concat invocation-directory invocation-name))
-                      ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                            "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                      ((require 'elpaca))
-                      ((elpaca-generate-autoloads "elpaca" repo)))
-                (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-              (error "%s" (with-current-buffer buffer (buffer-string))))
-          ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-      (unless (require 'elpaca-autoloads nil t)
-        (require 'elpaca)
-        (elpaca-generate-autoloads "elpaca" repo)
-        (load "./elpaca-autoloads")))
-    (add-hook 'after-init-hook #'elpaca-process-queues)
-    (elpaca `(,@elpaca-order))
-    ;; Install use-package support
-    (elpaca elpaca-use-package
-            ;; Enable use-package :ensure support for Elpaca.
-            (elpaca-use-package-mode))
-
-
 ## debug init
 
       ;; look for a debug init file and load, trigger the debugger
@@ -141,18 +58,6 @@ Emacs early-init
                     (debug)
                   (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
           (message "No debug initfile, %s, found so ignoring" debug-init))))
-
-
-## keep data tidy
-
-    (use-package no-littering
-      :custom
-      (make-backup-files t)
-      :init
-      (setq backup-directory-alist
-            `(("." . ,(no-littering-expand-var-file-name "backup/"))))
-      (setq auto-save-file-name-transforms
-            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
 
 ## custom.el
@@ -172,6 +77,23 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
     (debug-init "debug-init.el")
 
 
+## keep data tidy
+
+    (use-package no-littering
+      :demand t
+      :custom
+      (make-backup-files t)
+      :init
+      (setq backup-directory-alist
+            `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+      (setq auto-save-file-name-transforms
+            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+      (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
+      (add-to-list 'load-path elisp-dir)
+      (let ((default-directory elisp-dir))
+        (normal-top-level-add-subdirs-to-load-path)))
+
+
 ## notifications
 
     (use-package notifications
@@ -186,11 +108,6 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
 
 
 ### Path to our own elisp
-
-    (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
-    (add-to-list 'load-path elisp-dir)
-    (let ((default-directory elisp-dir))
-      (normal-top-level-add-subdirs-to-load-path))
 
 
 ## Load early stuff / gpg
@@ -254,7 +171,7 @@ Raw: [rgr/security](etc/elisp/rgr-security.el)
     
         (car (process-lines "pass" "Chat/slack-api-token"))
     
-        (use-package pass)
+        (use-package pass :disabled)
 
 3.  provide
 
@@ -341,7 +258,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
     My own hack for popping up text to learn
     
-        (use-package lazy-lang-learn
+        (use-package lazy-lang-learn  :disabled t
           :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
           :bind
           ("C-c L" . lazy-lang-learn-mode)
@@ -576,7 +493,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 6.  boxquote
 
         (use-package boxquote
-          :straight (:branch "main")
+          ;;:straight (:branch "main")
           :bind
           ("C-S-r" . boxquote-region))
 
@@ -915,8 +832,10 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     1.  consult-xref-stack
     
             (use-package consult-xref-stack
-            :straight
-            (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+              :disabled
+            ;; :straight
+            ;; (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+            ;;
             :bind
             (("C-," . consult-xref-stack-backward)))
 
@@ -1091,7 +1010,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;;(yas-global-mode)
           )
         
-        (use-package yasnippet-treesitter-shim
+        (use-package yasnippet-treesitter-shim  :disabled t
           :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
                            :files ("snippets/*"))
           :no-require t
@@ -1294,7 +1213,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org8410404)
+    See `org-agenda-files` [org-agenda-files](#org358cb04)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1365,7 +1284,7 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
 
 My own hack for popping up text to learn
 
-    (use-package lazy-lang-learn
+    (use-package lazy-lang-learn  :disabled t
       :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
       :bind
       ("C-c L" . lazy-lang-learn-mode)
@@ -1586,6 +1505,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
         (use-package
           goldendict
+          :disabled t
           :commands (goldendict-dwim)
           :config
           (defun goldendict-dwim
@@ -1730,8 +1650,7 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
     [Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
     
         ;; back to vterm
-        (use-package  eat
-          :disabled  t
+        (use-package  eat  :disabled t
           :custom
           (eat-kill-buffer-on-exit t)
           :config
@@ -1740,7 +1659,7 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
             (split-window)
             (eat))
           :bind
-          ("M-g t" . rgr/eat)
+          ("M-g t" . rgr/eat))
           :straight (:type git
                            :host codeberg
                            :repo "akib/emacs-eat"
@@ -1790,7 +1709,7 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
 2.  mu4e
 
         (use-package mu4e
-          ;;:disabled
+          :disabled
           :straight ( :host github
                       :branch "release/1.10"
                       :repo "djcb/mu"
@@ -2327,7 +2246,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             1.  eglot-booster
             
                     (use-package eglot-booster
-                      ;;:disabled t
+                      :disabled t
                       :straight (:type git :host github :repo "jdtsmith/eglot-booster")
                       :after eglot
                       :config	(eglot-booster-mode))
@@ -2449,7 +2368,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
     1.  voltron
     
-            (use-package lldb-voltron
+            (use-package lldb-voltron :disabled t
               :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
               ;;:config
               ;; (breadcrumb-mode t)
@@ -2581,7 +2500,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 1.  rgr/kill-dwim
 
-        (use-package rgr-kill-dwim
+        (use-package rgr-kill-dwim  :disabled t
           :straight (rgr-kill-dwim :local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" )
           :bind
           ("M-w" . rgr/kill-dwim))
@@ -2668,7 +2587,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     Display a poup containing docstring at point
     
-        (use-package el-docstring-sap
+        (use-package el-docstring-sap  :disabled t
           :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
           :init
           (use-package quick-peek)
@@ -2881,7 +2800,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org180c84f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org942db31) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2914,7 +2833,7 @@ to add to version control.
     fi
 
 
-<a id="org180c84f"></a>
+<a id="org942db31"></a>
 
 ### Gnome protocol handler desktop file
 

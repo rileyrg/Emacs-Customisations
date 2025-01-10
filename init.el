@@ -1,6 +1,20 @@
 ;; look for a debug init file and load, trigger the debugger
 (debug-init "debug-init.el")
 
+(use-package no-littering
+  :demand t
+  :custom
+  (make-backup-files t)
+  :init
+  (setq backup-directory-alist
+        `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+  (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
+  (add-to-list 'load-path elisp-dir)
+  (let ((default-directory elisp-dir))
+    (normal-top-level-add-subdirs-to-load-path)))
+
 (use-package notifications
   :demand t
   :config
@@ -8,10 +22,7 @@
    :title "Emacs"
    :body " ... is starting up..."))
 
-(defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
-(add-to-list 'load-path elisp-dir)
-(let ((default-directory elisp-dir))
-  (normal-top-level-add-subdirs-to-load-path))
+
 
 (defun load-el-gpg (load-dir)
   (message "attempting mass load from %s." load-dir)
@@ -42,7 +53,7 @@
 
 (require 'rgr/typesetting "rgr-typesetting" 'NOERROR)
 
-(use-package lazy-lang-learn
+(use-package lazy-lang-learn  :disabled t
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
   :bind
   ("C-c L" . lazy-lang-learn-mode)

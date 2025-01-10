@@ -105,7 +105,7 @@
   ;;(yas-global-mode)
   )
 
-(use-package yasnippet-treesitter-shim
+(use-package yasnippet-treesitter-shim  :disabled t
   :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
                    :files ("snippets/*"))
   :no-require t

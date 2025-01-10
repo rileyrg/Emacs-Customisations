@@ -56,7 +56,7 @@
   :bind
   ("<C-S-return>" . rgr/complete-line))
 
-(use-package lazy-lang-learn
+(use-package lazy-lang-learn  :disabled t
   :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
   :bind
   ("C-c L" . lazy-lang-learn-mode)

@@ -130,7 +130,7 @@
  '(erc-scrolltobottom-mode nil)
  '(erc-server-auto-reconnect t)
  '(erc-server-reconnect-attempts t)
- '(erc-stamp-mode t nil (erc-stamp))
+ '(erc-stamp-mode t)
  '(erc-startup-file-list nil)
  '(erc-system-name nil)
  '(erc-timestamp-format "[%T]")
@@ -253,6 +253,8 @@
  '(org-todo-state-tags-triggers
    '(("CANCELLED" ("CANCELLED" . t)) ("WAITING" ("WAITING" . t) ("NEXT")) ("SOMEDAY" ("WAITING" . t)) (done ("NEXT") ("WAITING")) ("TODO" ("WAITING") ("CANCELLED") ("NEXT")) ("STARTED" ("WAITING")) ("DONE" ("WAITING") ("CANCELLED") ("NEXT"))))
  '(org-use-property-inheritance t)
+ '(package-archives
+   '(("gnu" . "https://elpa.gnu.org/packages/") ("nongnu" . "https://elpa.nongnu.org/nongnu/") ("melpa" . "http://melpa.org/packages/")))
  '(persp-mode-prefix-key "\30P")
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)
@@ -280,7 +282,7 @@
  '(rgr/serialIOPort "/dev/ttyACM0")
  '(ring-bell-function 'ignore)
  '(safe-local-variable-values
-   '((rgr/project-url . "https://cmake.org/cmake/help/latest/guide/tutorial/index.html") (rgr/project-url . "ibm.com") (rgr/project-url-file . "ibm.com")
+   '((jinx-languages . "en") (rgr/project-url . "https://cmake.org/cmake/help/latest/guide/tutorial/index.html") (rgr/project-url . "ibm.com") (rgr/project-url-file . "ibm.com")
      (rgr/project-url . "https://cmake.org/cmake/help/latest/guide/tutorial/Packaging%20Debug%20and%20Release.html") (rgr/project-url . "https://cmake.org/cmake/help/latest/guide/tutorial/Adding%20Export%20Configuration.html")
      (rgr/project-url . "https://cmake.org/cmake/help/latest/guide/tutorial/Selecting%20Static%20or%20Shared%20Libraries.html") (rgr/project-url . "https://cmake.org/cmake/help/latest/guide/tutorial/Packaging%20an%20Installer.html")
      (rgr/project-url . "https://cmake.org/cmake/help/latest/guide/tutorial/Adding%20a%20Custom%20Command%20and%20Generated%20File.html") (rgr/project-url . "https://cmake.org/cmake/help/latest/guide/tutorial/Adding%20System%20Introspection.html")
@@ -322,6 +324,7 @@
  '(twittering-use-master-password t)
  '(uniquify-buffer-name-style 'forward nil (uniquify))
  '(url-standalone-mode nil)
+ '(use-package-always-ensure t)
  '(user-mail-address "rileyrg@gmx.de")
  '(vc-follow-symlinks t)
  '(version-control t)

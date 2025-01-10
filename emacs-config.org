@@ -68,93 +68,6 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
 ** package management
 
-*** disable built in package management
-#+begin_src  emacs-lisp
-    (setq package-enable-at-startup nil)
-#+end_src
-
-*** straight.el package management
-:PROPERTIES:
-:ID:       0ae9fe79-ab41-42ed-82d4-859b21576392
-:END:
-[[https://github.com/raxod502/straight.el#features][straight.el]]: next-generation, purely functional package manager for the Emacs hacker.
-
-#+begin_src emacs-lisp
-
-  (defvar bootstrap-version)
-
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 6))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-
-  ;;(straight-use-package `(use-package ,@(when (>= emacs-major-version 29) '(:type built-in))))
-
-  (use-package straight
-    :custom
-    (straight-built-in-pseudo-packages '(emacs eglot nadvice python image-mode project flymake which-key org))
-    (straight-use-package-by-default t)
-    (straight-vc-git-default-protocol 'ssh))
-
-#+end_src
-
-*** elpaca
-#+begin_src  emacs-lisp :tangle no
-
-  (setq package-enable-at-startup nil)
-
-  (defvar elpaca-installer-version 0.8)
-  (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-  (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-  (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-  (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                                :ref nil :depth 1
-                                :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                                :build (:not elpaca--activate-package)))
-  (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-         (build (expand-file-name "elpaca/" elpaca-builds-directory))
-         (order (cdr elpaca-order))
-         (default-directory repo))
-    (add-to-list 'load-path (if (file-exists-p build) build repo))
-    (unless (file-exists-p repo)
-      (make-directory repo t)
-      (when (< emacs-major-version 28) (require 'subr-x))
-      (condition-case-unless-debug err
-          (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                    ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                    ,@(when-let* ((depth (plist-get order :depth)))
-                                                        (list (format "--depth=%d" depth) "--no-single-branch"))
-                                                    ,(plist-get order :repo) ,repo))))
-                    ((zerop (call-process "git" nil buffer t "checkout"
-                                          (or (plist-get order :ref) "--"))))
-                    (emacs (concat invocation-directory invocation-name))
-                    ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                          "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                    ((require 'elpaca))
-                    ((elpaca-generate-autoloads "elpaca" repo)))
-              (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-            (error "%s" (with-current-buffer buffer (buffer-string))))
-        ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-    (unless (require 'elpaca-autoloads nil t)
-      (require 'elpaca)
-      (elpaca-generate-autoloads "elpaca" repo)
-      (load "./elpaca-autoloads")))
-  (add-hook 'after-init-hook #'elpaca-process-queues)
-  (elpaca `(,@elpaca-order))
-  ;; Install use-package support
-  (elpaca elpaca-use-package
-          ;; Enable use-package :ensure support for Elpaca.
-          (elpaca-use-package-mode))
-#+end_src
-
 ** debug init
 #+begin_src  emacs-lisp
     ;; look for a debug init file and load, trigger the debugger
@@ -172,25 +85,12 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
         (message "No debug initfile, %s, found so ignoring" debug-init))))
 #+end_src
 
-** keep data tidy
-#+begin_src  emacs-lisp
-  (use-package no-littering
-    :custom
-    (make-backup-files t)
-    :init
-    (setq backup-directory-alist
-          `(("." . ,(no-littering-expand-var-file-name "backup/"))))
-    (setq auto-save-file-name-transforms
-          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
-#+end_src
 
 ** custom.el
 #+begin_src emacs-lisp
   (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
   (load custom-file 'noerror)
 #+end_src
-
-
 
 * config
 :PROPERTIES:
@@ -202,6 +102,23 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
   ;; look for a debug init file and load, trigger the debugger
   (debug-init "debug-init.el")
 #+end_src
+** keep data tidy
+#+begin_src  emacs-lisp
+  (use-package no-littering
+    :demand t
+    :custom
+    (make-backup-files t)
+    :init
+    (setq backup-directory-alist
+          `(("." . ,(no-littering-expand-var-file-name "backup/"))))
+    (setq auto-save-file-name-transforms
+          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+    (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
+    (add-to-list 'load-path elisp-dir)
+    (let ((default-directory elisp-dir))
+      (normal-top-level-add-subdirs-to-load-path)))
+#+end_src
+
 ** notifications
 #+begin_src  emacs-lisp
   (use-package notifications
@@ -220,10 +137,6 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
 :ID:       64b907df-b368-455e-8568-c2449fc0440e
 :END:
 #+begin_src emacs-lisp
-  (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
-  (add-to-list 'load-path elisp-dir)
-  (let ((default-directory elisp-dir))
-    (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 ** Load early stuff / gpg
 :PROPERTIES:
@@ -297,7 +210,7 @@ Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package pass)
+  (use-package pass :disabled)
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -401,7 +314,7 @@ My own hack for popping up text to learn
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
-  (use-package lazy-lang-learn
+  (use-package lazy-lang-learn  :disabled t
     :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
     :bind
     ("C-c L" . lazy-lang-learn-mode)
@@ -648,14 +561,14 @@ https://protesilaos.com/emacs/pulsar
 #+end_src
 **** blackout modeline                                             :blackout:
 Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (straight-use-package
    '(blackout :host github :repo "raxod502/blackout"))
 #+end_src
 **** boxquote                                                      :boxquote:
 #+begin_src emacs-lisp
   (use-package boxquote
-    :straight (:branch "main")
+    ;;:straight (:branch "main")
     :bind
     ("C-S-r" . boxquote-region))
 
@@ -1031,8 +944,10 @@ Consult]] Provides various commands based on the Emacs completion function compl
 ***** consult-xref-stack
 #+begin_src  emacs-lisp
   (use-package consult-xref-stack
-  :straight
-  (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+    :disabled
+  ;; :straight
+  ;; (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+  ;;
   :bind
   (("C-," . consult-xref-stack-backward)))
 #+end_src
@@ -1219,7 +1134,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
       ;;(yas-global-mode)
       )
 
-    (use-package yasnippet-treesitter-shim
+    (use-package yasnippet-treesitter-shim  :disabled t
       :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
                        :files ("snippets/*"))
       :no-require t
@@ -1522,7 +1437,7 @@ My own hack for popping up text to learn
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
-  (use-package lazy-lang-learn
+  (use-package lazy-lang-learn  :disabled t
     :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
     :bind
     ("C-c L" . lazy-lang-learn-mode)
@@ -1770,6 +1685,7 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
 #+begin_src emacs-lisp
   (use-package
     goldendict
+    :disabled t
     :commands (goldendict-dwim)
     :config
     (defun goldendict-dwim
@@ -1930,10 +1846,9 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
 :END:
 **** EAT
 [[https://codeberg.org/akib/emacs-eat][Emulate A Terminal]], in a region, in a buffer and in Eshell
-#+begin_src  emacs-lisp
+#+begin_src  emacs-lisp :tangle no
   ;; back to vterm
-  (use-package  eat
-    :disabled  t
+  (use-package  eat  :disabled t
     :custom
     (eat-kill-buffer-on-exit t)
     :config
@@ -1942,7 +1857,7 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
       (split-window)
       (eat))
     :bind
-    ("M-g t" . rgr/eat)
+    ("M-g t" . rgr/eat))
     :straight (:type git
                      :host codeberg
                      :repo "akib/emacs-eat"
@@ -1999,7 +1914,7 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
 :END:
 #+begin_src emacs-lisp
   (use-package mu4e
-    ;;:disabled
+    :disabled
     :straight ( :host github
                 :branch "release/1.10"
                 :repo "djcb/mu"
@@ -2449,7 +2364,7 @@ always causes issues. disabled.
 :PROPERTIES:
 :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
 :END:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (straight-use-package 'sqlite3)
   (use-package forge
     :disabled
@@ -2591,7 +2506,7 @@ https://github.com/joaotavora/eglot
 
 #+begin_src  emacs-lisp
   (use-package eglot-booster
-    ;;:disabled t
+    :disabled t
     :straight (:type git :host github :repo "jdtsmith/eglot-booster")
     :after eglot
     :config	(eglot-booster-mode))
@@ -2730,7 +2645,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 **** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
 ***** voltron
 #+begin_src emacs-lisp
-  (use-package lldb-voltron
+  (use-package lldb-voltron :disabled t
     :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
     ;;:config
     ;; (breadcrumb-mode t)
@@ -2907,7 +2822,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 
 **** rgr/kill-dwim
 #+begin_src emacs-lisp
-  (use-package rgr-kill-dwim
+  (use-package rgr-kill-dwim  :disabled t
     :straight (rgr-kill-dwim :local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" )
     :bind
     ("M-w" . rgr/kill-dwim))
@@ -3023,7 +2938,7 @@ Use helpful if installed else built in
 :END:
 Display a poup containing docstring at point
 #+begin_src emacs-lisp
-  (use-package el-docstring-sap
+  (use-package el-docstring-sap  :disabled t
     :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
     :init
     (use-package quick-peek)
