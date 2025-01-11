@@ -2122,6 +2122,15 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
     ("M-(" . evilmi-jump-items-native))
 #+end_src
 
+**** consult xref stack
+#+begin_src  emacs-lisp
+  (use-package consult-xref-stack
+  :vc
+  (:url "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+  :bind
+  (("C-," . consult-xref-stack-backward)))
+#+end_src
+
 
 **** compilation
 #+begin_src  emacs-lisp
@@ -2486,8 +2495,11 @@ https://github.com/joaotavora/eglot
 
 #+begin_src  emacs-lisp
   (use-package eglot-booster
+    :vc
+    (:url "https://github.com/jdtsmith/eglot-booster" :branch "main")
     :after eglot
     :config	(eglot-booster-mode))
+
 #+end_src
 
 ****** dape

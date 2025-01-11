@@ -2,6 +2,12 @@
   :bind
   ("M-(" . evilmi-jump-items-native))
 
+(use-package consult-xref-stack
+:vc
+(:url "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+:bind
+(("C-," . consult-xref-stack-backward)))
+
 (use-package compile
   :init
   (setq auto-mode-alist
