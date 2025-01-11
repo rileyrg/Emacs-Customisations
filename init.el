@@ -1,5 +1,26 @@
 ;; look for a debug init file and load, trigger the debugger
-(debug-init "debug-init.el")
+(defun debug-init (&optional fname)
+  (let* ((fname (if fname fname "debug-init.el"))
+         (debug-init (expand-file-name fname user-emacs-directory)))
+    (if (file-exists-p debug-init)
+        (progn
+          (message "A debug-init, %s, was found, so loading." debug-init)
+          (let ((rgr/debug-init-debugger t)) ;; can set rgr/debug-init-debugger to false in the debug init to avoid triggering the debugger
+            (load-file debug-init)
+            (if rgr/debug-init-debugger
+                (debug)
+              (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
+      (message "No debug initfile, %s, found so ignoring" debug-init))))
+(debug-init)
+
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
+(load custom-file 'noerror)
+
+(defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 
 (use-package no-littering
   :ensure t
@@ -11,9 +32,9 @@
         `(("." . ,(no-littering-expand-var-file-name "backup/"))))
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-  (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
-  (add-to-list 'load-path elisp-dir)
-  (let ((default-directory elisp-dir))
+  (setq rgr/elisp-dir (no-littering-expand-etc-file-name "elisp"))
+  (add-to-list 'load-path rgr/elisp-dir)
+  (let ((default-directory rgr/elisp-dir))
     (normal-top-level-add-subdirs-to-load-path)))
 
 (use-package notifications
@@ -71,7 +92,7 @@
 
 (require 'rgr/programming "rgr-programming" 'NOERROR)
 
-(require 'rgr/elisp (expand-file-name "rgr-elisp" elisp-dir))
+(require 'rgr/elisp (expand-file-name "rgr-elisp" rgr/elisp-dir))
 
 (require 'rgr/themes "rgr-themes" 'NOERROR)
 

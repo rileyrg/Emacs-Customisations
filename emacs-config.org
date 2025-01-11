@@ -66,13 +66,11 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
   (setq max-specpdl-size 13000)
 #+end_src
 
-** package management
-#+begin_src  emacs-lisp
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
-#+end_src
 
+* config
+:PROPERTIES:
+:CUSTOM_ID: b477a755
+:END:
 ** debug init
 #+begin_src  emacs-lisp
     ;; look for a debug init file and load, trigger the debugger
@@ -88,25 +86,25 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
                   (debug)
                 (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
         (message "No debug initfile, %s, found so ignoring" debug-init))))
+  (debug-init)
 #+end_src
-
-
 ** custom.el
 #+begin_src emacs-lisp
   (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
   (load custom-file 'noerror)
 #+end_src
+** package management
 
-* config
-:PROPERTIES:
-:CUSTOM_ID: b477a755
-:END:
-** post early init  debug init
-Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to abort.
-#+begin_src emacs-lisp
-  ;; look for a debug init file and load, trigger the debugger
-  (debug-init "debug-init.el")
+#+begin_src  emacs-lisp
+    (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 #+end_src
+
+#+begin_src  emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
+#+end_src
+
 ** keep data tidy
 #+begin_src  emacs-lisp
   (use-package no-littering
@@ -119,9 +117,9 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
           `(("." . ,(no-littering-expand-var-file-name "backup/"))))
     (setq auto-save-file-name-transforms
           `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-    (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
-    (add-to-list 'load-path elisp-dir)
-    (let ((default-directory elisp-dir))
+    (setq rgr/elisp-dir (no-littering-expand-etc-file-name "elisp"))
+    (add-to-list 'load-path rgr/elisp-dir)
+    (let ((default-directory rgr/elisp-dir))
       (normal-top-level-add-subdirs-to-load-path)))
 #+end_src
 
@@ -182,7 +180,7 @@ Raw: [[file+sys:etc/elisp/rgr-security.el][rgr/security]]
 #+end_src
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-security.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-security.el" rgr/elisp-dir)
 :END:
 **** Auth-Sources, get-auth-info
 :PROPERTIES:
@@ -232,7 +230,7 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-utils.el" rgr/elisp-dir)
 :END:
 
 **** Project Management                                             :project:
@@ -345,7 +343,7 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 #+end_src
 *** library                                                         :startup:
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-startup.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-startup.el" rgr/elisp-dir)
 :ID:       ee7aaad4-5f12-4e5e-b7d7-91ed4296b129
 :END:
 **** persistence  and history
@@ -403,7 +401,7 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-general-config.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-general-config.el" rgr/elisp-dir)
 :END:
 **** general ui
 #+begin_src  emacs-lisp
@@ -776,7 +774,7 @@ Raw: [[file+sys:etc/elisp/rgr-minibuffer.el][rgr/minibuffer]]
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-minibuffer.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-minibuffer.el" rgr/elisp-dir)
 :ID:       1c6e6128-9063-478b-b8a5-14f1953dd0ea
 :END:
 **** file opening
@@ -997,7 +995,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-completion.el" rgr/elisp-dir)
 :END:
 
 
@@ -1207,7 +1205,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-org.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-org.el" rgr/elisp-dir)
 :ID:       f0550fa8-9b91-43df-bc36-ff06d7ff00a0
 :END:
 **** Org Mode, org-mode                                                 :org:
@@ -1366,7 +1364,7 @@ Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-typesetting.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-typesetting.el" rgr/elisp-dir)
 :END:
 
 **** auctex
@@ -1439,7 +1437,7 @@ Raw: [[file+sys:etc/elisp/rgr-reference.el][rgr/reference]]
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-reference.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-reference.el" rgr/elisp-dir)
 :ID:       e74c6135-2abc-46db-844e-a2c638b00bae
 :END:
 
@@ -1822,7 +1820,7 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-shells.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-shells.el" rgr/elisp-dir)
 :END:
 **** EAT
 [[https://codeberg.org/akib/emacs-eat][Emulate A Terminal]], in a region, in a buffer and in Eshell
@@ -1874,7 +1872,7 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
 #+end_src
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-email.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-email.el" rgr/elisp-dir)
 :END:
 
 **** notmuch
@@ -2062,7 +2060,7 @@ Raw: [[file+sys:etc/elisp/rgr-chat.el][rgr/chat]]
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-chat.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-chat.el" rgr/elisp-dir)
 :END:
 
 **** erc
@@ -2112,7 +2110,7 @@ Raw: [[file+sys:etc/elisp/rgr-programming.el][rgr/programming]]
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-programming.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-programming.el" rgr/elisp-dir)
 :END:
 
 **** tag matching
@@ -2459,7 +2457,7 @@ Raw: [[file+sys:etc/elisp/rgr-lsp.el][rgr/lsp]]
 
 ***** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-lsp.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-lsp.el" rgr/elisp-dir)
 :END:
 
 
@@ -2801,12 +2799,12 @@ Load this relatively early in order to have utils available if there's a faied l
 Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 
 #+begin_src emacs-lisp
-  (require 'rgr/elisp (expand-file-name "rgr-elisp" elisp-dir))
+  (require 'rgr/elisp (expand-file-name "rgr-elisp" rgr/elisp-dir))
 #+end_src
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-elisp.el" rgr/elisp-dir)
 :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
 :END:
 
@@ -2868,6 +2866,7 @@ Use helpful if installed else built in
 #+end_src
 ***** external info files
 #+begin_src emacs-lisp
+  (require 'info)
   (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 #+end_src
 
@@ -3030,7 +3029,7 @@ Raw: [[file+sys:etc/elisp/rgr-themes.el][rgr/themes]]
 
 *** library
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (expand-file-name "rgr-themes.el" elisp-dir)
+:header-args:emacs-lisp: :tangle (expand-file-name "rgr-themes.el" rgr/elisp-dir)
 :END:
 **** modus themes
 :PROPERTIES:

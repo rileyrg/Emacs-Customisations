@@ -47,6 +47,9 @@ Emacs early-init
     (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 
 
+# config
+
+
 ## debug init
 
       ;; look for a debug init file and load, trigger the debugger
@@ -62,23 +65,13 @@ Emacs early-init
                     (debug)
                   (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
           (message "No debug initfile, %s, found so ignoring" debug-init))))
+    (debug-init)
 
 
 ## custom.el
 
     (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
     (load custom-file 'noerror)
-
-
-# config
-
-
-## post early init  debug init
-
-Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to abort.
-
-    ;; look for a debug init file and load, trigger the debugger
-    (debug-init "debug-init.el")
 
 
 ## keep data tidy
@@ -1192,7 +1185,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org4b36888)
+    See `org-agenda-files` [org-agenda-files](#org214d22d)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2787,7 +2780,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8ff5720) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd52c686) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2820,7 +2813,7 @@ to add to version control.
     fi
 
 
-<a id="org8ff5720"></a>
+<a id="orgd52c686"></a>
 
 ### Gnome protocol handler desktop file
 

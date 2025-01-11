@@ -40,6 +40,7 @@
               (alert msg))
             (setq sym nil)))))))
 
+(require 'info)
 (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
 (defun rgr/elisp-edit-mode()
