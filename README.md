@@ -42,6 +42,9 @@ Emacs early-init
 
 ## package management
 
+    (require 'package)
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
 
 ## debug init
 
@@ -80,10 +83,10 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
 ## keep data tidy
 
     (use-package no-littering
-      :demand t
+      :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
       :custom
       (make-backup-files t)
-      :init
+      :config
       (setq backup-directory-alist
             `(("." . ,(no-littering-expand-var-file-name "backup/"))))
       (setq auto-save-file-name-transforms
@@ -170,8 +173,6 @@ Raw: [rgr/security](etc/elisp/rgr-security.el)
     Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     
         (car (process-lines "pass" "Chat/slack-api-token"))
-    
-        (use-package pass :disabled)
 
 3.  provide
 
@@ -258,8 +259,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
     My own hack for popping up text to learn
     
-        (use-package lazy-lang-learn  :disabled t
-          :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
+        (use-package lazy-lang-learn
           :bind
           ("C-c L" . lazy-lang-learn-mode)
           ("<f12>" . lazy-lang-learn-translate)
@@ -356,6 +356,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           ;; Also auto refresh dired, but be quiet about it
           (setq global-auto-revert-non-file-buffers t)
           (setq auto-revert-verbose nil)
+          (setq auto-revert-use-notify nil)
         
           (global-visual-line-mode 1)
         
@@ -483,37 +484,29 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (
            pulsar-global-mode 1))
 
-5.  blackout modeline
-
-    Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
-    
-        (straight-use-package
-         '(blackout :host github :repo "raxod502/blackout"))
-
-6.  boxquote
+5.  boxquote
 
         (use-package boxquote
           ;;:straight (:branch "main")
           :bind
           ("C-S-r" . boxquote-region))
 
-7.  volatile-highlights
+6.  volatile-highlights
 
     brings visual feedback to some operations by highlighting portions relating to the operations.
     
         (use-package
           volatile-highlights
-          :disabled
           :init (volatile-highlights-mode 1))
 
-8.  web pasting
+7.  web pasting
 
         (use-package
           dpaste
           :init
           :bind ("C-c y" . dpaste-region-or-buffer))
 
-9.  Accessibility
+8.  Accessibility
 
     1.  fonts
     
@@ -530,7 +523,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :bind
               ( "<C-f7>" . 'darkroom-mode))
 
-10. Ansi colour
+9.  Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
     
@@ -538,7 +531,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
         (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-11. Tabs
+10. Tabs
 
         
         (defun consult-buffer-other-tab ()
@@ -568,7 +561,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                        ("c" . tab-bar-new-tab)
                        ("s" . tab-bar-switch-to-tab))))
 
-12. bookmarks
+11. bookmarks
 
         (add-to-list 'recentf-exclude "current-bookmark.el")
     
@@ -585,7 +578,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               ("C-x x <right>" . bmkp-next-bookmark)
               ("C-x x <left>" . bmkp-previous-bookmark))
 
-13. emjois
+12. emjois
 
     <https://github.com/iqbalansari/emacs-emojify>
     
@@ -593,7 +586,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :init
           (global-emojify-mode))
 
-14. Cursor/Region related
+13. Cursor/Region related
 
         (defun centreCursorLineOn()
           "set properties to keep current line approx at centre of screen height. Useful for debugging."
@@ -623,7 +616,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                      ("C-c C-SPC" . mc/edit-lines)
                      ))
 
-15. Folding/Hide Show
+14. Folding/Hide Show
 
     [hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
     
@@ -649,21 +642,21 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     
     \#+end\_src
 
-16. jinx : the enchanted spell checker
+15. jinx : the enchanted spell checker
 
         (use-package jinx
           :hook (emacs-startup . global-jinx-mode)
           :bind (("<f8>" . jinx-correct)
                  ("C-<f8>" . jinx-languages)))
 
-17. rg, ripgrep
+16. rg, ripgrep
 
     rg is pretty quick
     
         (use-package
           ripgrep)
 
-18. provide
+17. provide
 
         (provide 'rgr/general-config)
 
@@ -828,16 +821,6 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
           ;; You may want to use `embark-prefix-help-command' or which-key instead.
           ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
           )
-    
-    1.  consult-xref-stack
-    
-            (use-package consult-xref-stack
-              :disabled
-            ;; :straight
-            ;; (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
-            ;;
-            :bind
-            (("C-," . consult-xref-stack-backward)))
 
 3.  [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
 
@@ -1007,16 +990,8 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :config
           (use-package yasnippet-snippets)
           :init
-          ;;(yas-global-mode)
+          (yas-global-mode)
           )
-        
-        (use-package yasnippet-treesitter-shim  :disabled t
-          :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
-                           :files ("snippets/*"))
-          :no-require t
-          :config
-          (add-to-list 'yas-snippet-dirs
-                       (straight--build-dir "yasnippet-treesitter-shim")))
 
 4.  Abbrev Mode
 
@@ -1213,7 +1188,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org358cb04)
+    See `org-agenda-files` [org-agenda-files](#orga10db7b)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2246,8 +2221,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             1.  eglot-booster
             
                     (use-package eglot-booster
-                      :disabled t
-                      :straight (:type git :host github :repo "jdtsmith/eglot-booster")
                       :after eglot
                       :config	(eglot-booster-mode))
         
@@ -2500,8 +2473,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 1.  rgr/kill-dwim
 
-        (use-package rgr-kill-dwim  :disabled t
-          :straight (rgr-kill-dwim :local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" )
+        (use-package rgr-kill-dwim :disabled t
           :bind
           ("M-w" . rgr/kill-dwim))
 
@@ -2587,10 +2559,8 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     Display a poup containing docstring at point
     
-        (use-package el-docstring-sap  :disabled t
-          :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
-          :init
-          (use-package quick-peek)
+        (use-package el-docstring-sap
+          ;;:straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
@@ -2800,7 +2770,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org942db31) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbfbea9a) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2833,7 +2803,7 @@ to add to version control.
     fi
 
 
-<a id="org942db31"></a>
+<a id="orgbfbea9a"></a>
 
 ### Gnome protocol handler desktop file
 

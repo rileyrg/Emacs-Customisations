@@ -560,12 +560,6 @@ https://protesilaos.com/emacs/pulsar
      pulsar-global-mode 1))
 
 #+end_src
-**** blackout modeline                                             :blackout:
-Blackout is a package which allows you to hide or customize the display of major and minor modes in the mode line.
-#+begin_src emacs-lisp :tangle no
-  (straight-use-package
-   '(blackout :host github :repo "raxod502/blackout"))
-#+end_src
 **** boxquote                                                      :boxquote:
 #+begin_src emacs-lisp
   (use-package boxquote
