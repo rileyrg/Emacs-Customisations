@@ -48,7 +48,7 @@
 
 (use-package helpful)
 
-(use-package el-docstring-sap :disabled t
+(use-package el-docstring-sap
   ;;:straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
   :hook
   (emacs-lisp-mode . el-docstring-sap-mode)

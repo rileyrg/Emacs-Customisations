@@ -112,7 +112,7 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
     :demand t
     :custom
     (make-backup-files t)
-    :init
+    :config
     (setq backup-directory-alist
           `(("." . ,(no-littering-expand-var-file-name "backup/"))))
     (setq auto-save-file-name-transforms

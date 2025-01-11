@@ -5,7 +5,7 @@
   :demand t
   :custom
   (make-backup-files t)
-  :init
+  :config
   (setq backup-directory-alist
         `(("." . ,(no-littering-expand-var-file-name "backup/"))))
   (setq auto-save-file-name-transforms
