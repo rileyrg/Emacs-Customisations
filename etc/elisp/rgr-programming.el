@@ -13,9 +13,10 @@
   ; Add colour to compilation output
   (compilation-filter . ansi-color-compilation-filter))
 
+(setq comphide-path (expand-file-name "compilation-hide" emacs-project-dir))
 (use-package compilation-hide
   :disabled t
-:straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
+  :load-path comphide-path)
 
 (use-package rmsbolt
   :demand t

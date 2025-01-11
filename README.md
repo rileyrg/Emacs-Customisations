@@ -44,6 +44,7 @@ Emacs early-init
 
     (require 'package)
     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+    (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 
 
 ## debug init
@@ -260,7 +261,9 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
     My own hack for popping up text to learn
     
+        (setq lll-path  (expand-file-name "lazy-lang-learn"  emacs-project-dir))
         (use-package lazy-lang-learn
+          :load-path lll-path
           :bind
           ("C-c L" . lazy-lang-learn-mode)
           ("<f12>" . lazy-lang-learn-translate)
@@ -1189,7 +1192,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org1a20787)
+    See `org-agenda-files` [org-agenda-files](#orga3458c8)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1449,7 +1452,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             "call function `browse-url' with a url variable `rgr/browser-doc-url' formatted with variable `sym'"
             (interactive
              (list
-              (let((sym (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim) )))
+              (let((sym (replace-regexp-in-string  "^\\." "" (kill-dwim) )))
                 (read-string (format "search(%s):" sym)
                              nil nil sym))))
             (browse-url (format rgr/browser-doc-url sym))))
@@ -1916,10 +1919,10 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         auto hide the compilation buffer after a successful compile. customise
         rgr/compilation-persistent-buffer-chunks to ignore certain compilation buffers.
         
-            
+            (setq comphide-path (expand-file-name "compilation-hide" emacs-project-dir))
             (use-package compilation-hide
               :disabled t
-            :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
+              :load-path comphide-path)
     
     2.  rmsbolt
     
@@ -2472,11 +2475,13 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 ### library
 
-1.  rgr/kill-dwim
+1.  kill-dwim
 
-        (use-package rgr-kill-dwim :disabled t
+        (setq kill-dwim-path (expand-file-name "kill-dwim"  emacs-project-dir))
+        (use-package kill-dwim
+          :load-path kill-dwim-path
           :bind
-          ("M-w" . rgr/kill-dwim))
+          ("M-w" . kill-dwim))
 
 2.  Flymake
 
@@ -2560,8 +2565,9 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     Display a poup containing docstring at point
     
+        (setq elsap-path  (expand-file-name "el-docstring-sap"  emacs-project-dir))
         (use-package el-docstring-sap
-          ;;:straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+          :load-path elsap-path
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
@@ -2771,7 +2777,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga3304bb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org24a0a06) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2804,7 +2810,7 @@ to add to version control.
     fi
 
 
-<a id="orga3304bb"></a>
+<a id="org24a0a06"></a>
 
 ### Gnome protocol handler desktop file
 

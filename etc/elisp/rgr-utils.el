@@ -56,7 +56,9 @@
   :bind
   ("<C-S-return>" . rgr/complete-line))
 
+(setq lll-path  (expand-file-name "lazy-lang-learn"  emacs-project-dir))
 (use-package lazy-lang-learn
+  :load-path lll-path
   :bind
   ("C-c L" . lazy-lang-learn-mode)
   ("<f12>" . lazy-lang-learn-translate)

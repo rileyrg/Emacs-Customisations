@@ -1,6 +1,8 @@
-(use-package rgr-kill-dwim :disabled t
+(setq kill-dwim-path (expand-file-name "kill-dwim"  emacs-project-dir))
+(use-package kill-dwim
+  :load-path kill-dwim-path
   :bind
-  ("M-w" . rgr/kill-dwim))
+  ("M-w" . kill-dwim))
 
 (use-package flymake
   :custom
@@ -48,8 +50,9 @@
 
 (use-package helpful)
 
+(setq elsap-path  (expand-file-name "el-docstring-sap"  emacs-project-dir))
 (use-package el-docstring-sap
-  ;;:straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+  :load-path elsap-path
   :hook
   (emacs-lisp-mode . el-docstring-sap-mode)
   :bind

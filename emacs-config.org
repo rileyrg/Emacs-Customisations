@@ -68,8 +68,9 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
 ** package management
 #+begin_src  emacs-lisp
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 #+end_src
 
 ** debug init
@@ -316,7 +317,9 @@ My own hack for popping up text to learn
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
+  (setq lll-path  (expand-file-name "lazy-lang-learn"  emacs-project-dir))
   (use-package lazy-lang-learn
+    :load-path lll-path
     :bind
     ("C-c L" . lazy-lang-learn-mode)
     ("<f12>" . lazy-lang-learn-translate)
@@ -1621,7 +1624,7 @@ A bit of a dogs dinner.
       "call function `browse-url' with a url variable `rgr/browser-doc-url' formatted with variable `sym'"
       (interactive
        (list
-        (let((sym (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim) )))
+        (let((sym (replace-regexp-in-string  "^\\." "" (kill-dwim) )))
           (read-string (format "search(%s):" sym)
                        nil nil sym))))
       (browse-url (format rgr/browser-doc-url sym))))
@@ -2138,10 +2141,10 @@ auto hide the compilation buffer after a successful compile. customise
 rgr/compilation-persistent-buffer-chunks to ignore certain compilation buffers.
 
 #+begin_src  emacs-lisp
-
+  (setq comphide-path (expand-file-name "compilation-hide" emacs-project-dir))
   (use-package compilation-hide
     :disabled t
-  :straight (compilation-hide :local-repo "~/development/projects/emacs/compilation-hide" :type git :host github :repo "rileyrg/compilation-hide.el" ))
+    :load-path comphide-path)
 
 #+end_src
 
@@ -2795,11 +2798,13 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 :ID:       5d0333be-352f-4412-aac5-f0e2095e850b
 :END:
 
-**** rgr/kill-dwim
+**** kill-dwim
 #+begin_src emacs-lisp
-  (use-package rgr-kill-dwim :disabled t
+  (setq kill-dwim-path (expand-file-name "kill-dwim"  emacs-project-dir))
+  (use-package kill-dwim
+    :load-path kill-dwim-path
     :bind
-    ("M-w" . rgr/kill-dwim))
+    ("M-w" . kill-dwim))
 #+end_src
 
 **** Flymake
@@ -2912,8 +2917,9 @@ Use helpful if installed else built in
 :END:
 Display a poup containing docstring at point
 #+begin_src emacs-lisp
+  (setq elsap-path  (expand-file-name "el-docstring-sap"  emacs-project-dir))
   (use-package el-docstring-sap
-    ;;:straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
+    :load-path elsap-path
     :hook
     (emacs-lisp-mode . el-docstring-sap-mode)
     :bind

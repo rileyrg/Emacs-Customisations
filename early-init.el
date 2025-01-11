@@ -6,6 +6,7 @@
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 
 ;; look for a debug init file and load, trigger the debugger
 (defun debug-init (&optional fname)

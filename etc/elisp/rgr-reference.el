@@ -122,7 +122,7 @@
     "call function `browse-url' with a url variable `rgr/browser-doc-url' formatted with variable `sym'"
     (interactive
      (list
-      (let((sym (replace-regexp-in-string  "^\\." "" (rgr/kill-dwim) )))
+      (let((sym (replace-regexp-in-string  "^\\." "" (kill-dwim) )))
         (read-string (format "search(%s):" sym)
                      nil nil sym))))
     (browse-url (format rgr/browser-doc-url sym))))
