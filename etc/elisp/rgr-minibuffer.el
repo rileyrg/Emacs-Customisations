@@ -132,14 +132,6 @@
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
 
-(use-package consult-xref-stack
-  :disabled
-;; :straight
-;; (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
-;;
-:bind
-(("C-," . consult-xref-stack-backward)))
-
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding

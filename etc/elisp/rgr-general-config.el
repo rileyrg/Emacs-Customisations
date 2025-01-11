@@ -135,7 +135,6 @@ The DWIM behaviour of this command is as follows:
 
 (use-package
   volatile-highlights
-  :disabled
   :init (volatile-highlights-mode 1))
 
 (use-package

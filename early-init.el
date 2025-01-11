@@ -4,6 +4,9 @@
   (startup-redirect-eln-cache "var/eln-cache"))
 (setq max-specpdl-size 13000)
 
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
 ;; look for a debug init file and load, trigger the debugger
 (defun debug-init (&optional fname)
   (let* ((fname (if fname fname "debug-init.el"))

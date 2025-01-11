@@ -255,6 +255,14 @@
  '(org-use-property-inheritance t)
  '(package-archives
    '(("gnu" . "https://elpa.gnu.org/packages/") ("nongnu" . "https://elpa.nongnu.org/nongnu/") ("melpa" . "http://melpa.org/packages/")))
+ '(package-selected-packages
+   '(ace-link all-the-icons-completion all-the-icons-dired boxquote breadcrumb browse-url-dwim cape consult corfu dape darkroom devdocs-browser diff-hl dpaste duplicate-thing edebug-x eglot-booster el-docstring-sap eldoc-box elf-mode elfeed-org elisp-format
+              ellama emojify evil-matchit go-translate gptel helpful jinx json-mode json-reformat lazy-lang-learn logview magit-filenotify marginalia modus-themes multi-vterm multiple-cursors no-littering notmuch ob-async orderless org-super-agenda
+              package-lint parrot pdf-tools pet php-mode pulsar quick-peek ripgrep rmsbolt strace-mode sudo-edit treemacs-magit treesit-auto vertico volatile-highlights yaml-mode yasnippet-snippets))
+ '(package-vc-selected-packages
+   '((el-docstring-sap :vc-backend Git :url "https://github.com/rileyrg/el-docstring-sap") (rgr-kill-dwim :vc-backend Git :url "https://github.com/rileyrg/rgr-kill-dwim")
+     (consult-xref-stack :vc-backend Git :url "https://github.com/brett-lempereur/consult-xref-stack") (lazy-lang-learn :vc-backend Git :url "https://github.com/rileyrg/lazy-lang-learn")
+     (eglot-booster :vc-backend Git :url "https://github.com/jdtsmith/eglot-booster")))
  '(persp-mode-prefix-key "\30P")
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)

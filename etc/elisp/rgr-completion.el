@@ -102,16 +102,8 @@
   :config
   (use-package yasnippet-snippets)
   :init
-  ;;(yas-global-mode)
+  (yas-global-mode)
   )
-
-(use-package yasnippet-treesitter-shim  :disabled t
-  :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
-                   :files ("snippets/*"))
-  :no-require t
-  :config
-  (add-to-list 'yas-snippet-dirs
-               (straight--build-dir "yasnippet-treesitter-shim")))
 
 (setq-default abbrev-mode 1)
 (defadvice expand-abbrev (after my-expand-abbrev activate)

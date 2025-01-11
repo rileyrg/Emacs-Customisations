@@ -67,6 +67,10 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 #+end_src
 
 ** package management
+#+begin_src  emacs-lisp
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+#+end_src
 
 ** debug init
 #+begin_src  emacs-lisp
@@ -209,9 +213,6 @@ Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
   (car (process-lines "pass" "Chat/slack-api-token"))
 #+end_src
 
-#+begin_src emacs-lisp
-  (use-package pass :disabled)
-#+end_src
 **** provide
 #+begin_src emacs-lisp
   (provide 'rgr/security)
@@ -314,8 +315,7 @@ My own hack for popping up text to learn
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
-  (use-package lazy-lang-learn  :disabled t
-    :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
+  (use-package lazy-lang-learn
     :bind
     ("C-c L" . lazy-lang-learn-mode)
     ("<f12>" . lazy-lang-learn-translate)
@@ -578,7 +578,6 @@ brings visual feedback to some operations by highlighting portions relating to t
 #+begin_src emacs-lisp
   (use-package
     volatile-highlights
-    :disabled
     :init (volatile-highlights-mode 1))
 #+end_src
 **** web pasting
@@ -941,16 +940,6 @@ Consult]] Provides various commands based on the Emacs completion function compl
     ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
     )
 #+end_src
-***** consult-xref-stack
-#+begin_src  emacs-lisp
-  (use-package consult-xref-stack
-    :disabled
-  ;; :straight
-  ;; (:repo "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
-  ;;
-  :bind
-  (("C-," . consult-xref-stack-backward)))
-#+end_src
 **** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] margin annotations for info on line
 are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
 :PROPERTIES:
@@ -1131,16 +1120,8 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
       :config
       (use-package yasnippet-snippets)
       :init
-      ;;(yas-global-mode)
+      (yas-global-mode)
       )
-
-    (use-package yasnippet-treesitter-shim  :disabled t
-      :straight (:host github :repo "fbrosda/yasnippet-treesitter-shim"
-                       :files ("snippets/*"))
-      :no-require t
-      :config
-      (add-to-list 'yas-snippet-dirs
-                   (straight--build-dir "yasnippet-treesitter-shim")))
 #+end_src
 **** Abbrev Mode
 :PROPERTIES:
@@ -2506,8 +2487,6 @@ https://github.com/joaotavora/eglot
 
 #+begin_src  emacs-lisp
   (use-package eglot-booster
-    :disabled t
-    :straight (:type git :host github :repo "jdtsmith/eglot-booster")
     :after eglot
     :config	(eglot-booster-mode))
 #+end_src
@@ -2822,8 +2801,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 
 **** rgr/kill-dwim
 #+begin_src emacs-lisp
-  (use-package rgr-kill-dwim  :disabled t
-    :straight (rgr-kill-dwim :local-repo "~/development/projects/emacs/rgr-kill-dwim" :type git :host github :repo "rileyrg/rgr-kill-dwim" )
+  (use-package rgr-kill-dwim :disabled t
     :bind
     ("M-w" . rgr/kill-dwim))
 #+end_src
@@ -2938,10 +2916,8 @@ Use helpful if installed else built in
 :END:
 Display a poup containing docstring at point
 #+begin_src emacs-lisp
-  (use-package el-docstring-sap  :disabled t
-    :straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
-    :init
-    (use-package quick-peek)
+  (use-package el-docstring-sap
+    ;;:straight (el-docstring-sap :local-repo "~/development/projects/emacs/el-docstring-sap" :type git :host github :repo "rileyrg/el-docstring-sap" )
     :hook
     (emacs-lisp-mode . el-docstring-sap-mode)
     :bind
