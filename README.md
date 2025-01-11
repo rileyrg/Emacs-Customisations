@@ -83,6 +83,7 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
 ## keep data tidy
 
     (use-package no-littering
+      :ensure t
       :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
       :custom
       (make-backup-files t)
@@ -1188,7 +1189,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga10db7b)
+    See `org-agenda-files` [org-agenda-files](#org1a20787)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2770,7 +2771,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbfbea9a) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga3304bb) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2803,7 +2804,7 @@ to add to version control.
     fi
 
 
-<a id="orgbfbea9a"></a>
+<a id="orga3304bb"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -2,6 +2,7 @@
 (debug-init "debug-init.el")
 
 (use-package no-littering
+  :ensure t
   :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
   :custom
   (make-backup-files t)
