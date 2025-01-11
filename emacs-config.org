@@ -66,13 +66,11 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
   (setq max-specpdl-size 13000)
 #+end_src
 
-** package management
-#+begin_src  emacs-lisp
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
-#+end_src
 
+* config
+:PROPERTIES:
+:CUSTOM_ID: b477a755
+:END:
 ** debug init
 #+begin_src  emacs-lisp
     ;; look for a debug init file and load, trigger the debugger
@@ -88,25 +86,20 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
                   (debug)
                 (message " After loading %s `rgr/debug-init-debugger was set to nil so not debugging." debug-init))))
         (message "No debug initfile, %s, found so ignoring" debug-init))))
+  (debug-init)
 #+end_src
-
-
 ** custom.el
 #+begin_src emacs-lisp
   (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
   (load custom-file 'noerror)
 #+end_src
-
-* config
-:PROPERTIES:
-:CUSTOM_ID: b477a755
-:END:
-** post early init  debug init
-Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to abort.
-#+begin_src emacs-lisp
-  ;; look for a debug init file and load, trigger the debugger
-  (debug-init "debug-init.el")
+** package management
+#+begin_src  emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 #+end_src
+
 ** keep data tidy
 #+begin_src  emacs-lisp
   (use-package no-littering
