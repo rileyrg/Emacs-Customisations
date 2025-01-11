@@ -109,7 +109,7 @@ Here can load a "bare bones" init. When hit debug can "c" to continue or "q" to 
 ** keep data tidy
 #+begin_src  emacs-lisp
   (use-package no-littering
-    :demand t
+    :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
     :custom
     (make-backup-files t)
     :config
