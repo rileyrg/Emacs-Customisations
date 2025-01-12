@@ -19,22 +19,8 @@
   ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
   ;; be used globally (M-/).  See also the customization variable
   ;; `global-corfu-modes' to exclude certain modes.
-  :config
-  (add-hook 'eglot-stay-out-of 'company)
-  (use-package orderless
-    :custom
-    (orderless-component-separator " +\\|[-/]")
-    (completion-styles '(orderless basic))
-    (completion-category-defaults nil)
-    (completion-category-overrides '((file (styles partial-completion)))))
-  :init
-  (global-corfu-mode)
-  (corfu-popupinfo-mode))
-
-;; A few more useful configurations...
-(use-package emacs
-  :custom
-  ;; TAB cycle if there are only few candidates
+  ;; A few more useful configurations...
+  ;;TAB cycle if there are only few candidates
   ;; (completion-cycle-threshold 3)
 
   ;; Enable indentation+completion using the TAB key.
@@ -48,7 +34,18 @@
   ;; Hide commands in M-x which do not apply to the current mode.  Corfu
   ;; commands are hidden, since they are not used via M-x. This setting is
   ;; useful beyond Corfu.
-  (read-extended-command-predicate #'command-completion-default-include-p))
+  (read-extended-command-predicate #'command-completion-default-include-p)
+:config
+(add-hook 'eglot-stay-out-of 'company)
+(use-package orderless
+  :custom
+  (orderless-component-separator " +\\|[-/]")
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
+:init
+(global-corfu-mode)
+(corfu-popupinfo-mode))
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
@@ -62,6 +59,7 @@
 
 ;; Use Dabbrev with Corfu!
 (use-package dabbrev
+  :elpaca nil
   ;; Swap M-/ and C-M-/
   :bind (("M-/" . dabbrev-completion)
          ("C-M-/" . dabbrev-expand))

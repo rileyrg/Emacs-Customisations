@@ -21,9 +21,7 @@
   (:map eglot-mode-map
         ("<C-return>" . eglot-code-actions)))
 
-(use-package eglot-booster
-  :vc
-  (:url "https://github.com/jdtsmith/eglot-booster" :branch "main")
+(use-package eglot-booster :ensure (:host github :repo "jdtsmith/eglot-booster")
   :after eglot
   :config	(eglot-booster-mode))
 

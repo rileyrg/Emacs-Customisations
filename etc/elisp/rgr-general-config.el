@@ -1,46 +1,39 @@
-(use-package emacs
-  :init
-  (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
+(require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
                                         ; t60
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (show-paren-mode 1)
-  (winner-mode 1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(show-paren-mode 1)
+(winner-mode 1)
 
-  (use-package repeat
-    ;;When Repeat mode is enabled, certain commands bound to multi-key
-    ;;sequences can be repeated by typing a single key, after typing the
-    ;;full key sequence once.
-    :config
-    (repeat-mode))
+(repeat-mode)
 
-  (global-auto-revert-mode 1)
-  ;; Also auto refresh dired, but be quiet about it
-  (setq global-auto-revert-non-file-buffers t)
-  (setq auto-revert-verbose nil)
-  (setq auto-revert-use-notify nil)
+(global-auto-revert-mode 1)
+;; Also auto refresh dired, but be quiet about it
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+(setq auto-revert-use-notify nil)
 
-  (global-visual-line-mode 1)
+(global-visual-line-mode 1)
 
-  (setq column-number-mode t)
+(setq column-number-mode t)
 
-  (delete-selection-mode 1)
+(delete-selection-mode 1)
 
-  (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+(setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
 
-  (defalias 'yes-or-no-p 'y-or-n-p)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
-  (setq disabled-command-function nil)
+(setq disabled-command-function nil)
 
-  (global-hl-line-mode t)
+(global-hl-line-mode t)
 
-  (use-package delsel
-    :ensure nil
-    :hook (after-init . delete-selection-mode))
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
 
-  (defun prot/keyboard-quit-dwim ()
-    "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+(defun prot/keyboard-quit-dwim ()
+  "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 
 The generic `keyboard-quit' does not do the expected thing when
 the minibuffer is open.  Whereas we want it to close the
@@ -52,51 +45,51 @@ The DWIM behaviour of this command is as follows:
 - When a minibuffer is open, but not focused, close the minibuffer.
 - When the Completions buffer is selected, close it.
 - In every other case use the regular `keyboard-quit'."
-    (interactive)
-    (cond
-     ((region-active-p)
-      (keyboard-quit))
-     ((derived-mode-p 'completion-list-mode)
-      (delete-completion-window))
-     ((> (minibuffer-depth) 0)
-      (abort-recursive-edit))
-     (t
-      (keyboard-quit))))
+  (interactive)
+  (cond
+   ((region-active-p)
+    (keyboard-quit))
+   ((derived-mode-p 'completion-list-mode)
+    (delete-completion-window))
+   ((> (minibuffer-depth) 0)
+    (abort-recursive-edit))
+   (t
+    (keyboard-quit))))
 
-  (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
-  ;; https://github.com/rolandwalker/browse-url-dwim
-  ;; Context-sensitive external browse URL or Internet search from Emacs.
-  (use-package
-    browse-url-dwim
-    :config
-    (browse-url-dwim-mode))
+(define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
+;; https://github.com/rolandwalker/browse-url-dwim
+;; Context-sensitive external browse URL or Internet search from Emacs.
+(use-package
+  browse-url-dwim
+  :config
+  (browse-url-dwim-mode))
 
-  (use-package alert)
+(use-package alert)
 
-  ;; display dir name when core name clashes
-  (require 'uniquify)
+;; display dir name when core name clashes
+(require 'uniquify)
 
-  (defun rgr/kill-current-buffer()
-    (interactive)
-    (if (member (buffer-name) '("*Messages*" "*scratch*"))
-        (progn
-          (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-          (delete-window))
-      (kill-current-buffer)
-      (delete-window)))
+(defun rgr/kill-current-buffer()
+  (interactive)
+  (if (member (buffer-name) '("*Messages*" "*scratch*"))
+      (progn
+        (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+        (delete-window))
+    (kill-current-buffer)
+    (delete-window)))
 
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  :bind
-  ("C-x C-q" . view-mode)
-  ("C-c e" . rgr/erc-start)
-  ("C-x C-b" . ibuffer)
-  ("C-x C-i" . imenu)
-  ("C-x k" . rgr/kill-current-buffer)
-  ("M-0" . delete-window)
-  ("M-1" . delete-other-windows)
-  ("S-<f1>" . describe-face)
-  ( "M-m"  . manual-entry)
-  ("S-<f10>" . menu-bar-open))
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+:bind
+(global-set-key (kbd "C-x C-q") 'view-mode)
+(global-set-key (kbd "C-c e") 'rgr/erc-start)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-i") 'imenu)
+(global-set-key (kbd "C-x k") 'rgr/kill-current-buffer)
+(global-set-key (kbd "M-0") 'delete-window)
+(global-set-key (kbd "M-1") 'delete-other-windows)
+(global-set-key (kbd "S-<f1>") 'describe-face)
+(global-set-key (kbd  "M-m" ) 'manual-entry)
+(global-set-key (kbd "S-<f10>") 'menu-bar-open)
 
 (use-package posframe)
 
@@ -157,6 +150,7 @@ The DWIM behaviour of this command is as follows:
     (consult-buffer)))
 
 (use-package tab-bar
+  :elpaca nil
   :defer t
   :custom
   (tab-bar-show t)
@@ -176,15 +170,6 @@ The DWIM behaviour of this command is as follows:
                ("n" . tab-next)
                ("c" . tab-bar-new-tab)
                ("s" . tab-bar-switch-to-tab))))
-
-(add-to-list 'recentf-exclude "current-bookmark.el")
-
-(use-package bookmark+
-  :disabled t
-  :demand t
-  :bind
-  ("C-x x <right>" . bmkp-next-bookmark)
-  ("C-x x <left>" . bmkp-previous-bookmark))
 
 (use-package emojify
   :init
@@ -215,6 +200,7 @@ The DWIM behaviour of this command is as follows:
          ))
 
 (use-package hideshow
+  :elpaca nil
   :config
   (defun toggle-selective-display (column)
     (interactive "P")

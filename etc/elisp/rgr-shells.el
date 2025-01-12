@@ -1,4 +1,6 @@
+(use-package vterm)
 (use-package  multi-vterm
+  :after vterm
   :init
   (add-to-list 'display-buffer-alist  '((or (major-mode . vterm-mode))
                                         (display-buffer-reuse-mode-window

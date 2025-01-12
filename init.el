@@ -55,7 +55,6 @@
     (elpaca-generate-autoloads "elpaca" repo)
     (load "./elpaca-autoloads")))
 (add-hook 'after-init-hook #'elpaca-process-queues)
-(setq elpaca-queue-limit 1)
 (elpaca `(,@elpaca-order))
 
 ;; Install use-package support
@@ -80,6 +79,7 @@
 
 (use-package notifications
   :elpaca nil
+  :ensure (:wait t)
   :demand t
   :config
   (notifications-notify

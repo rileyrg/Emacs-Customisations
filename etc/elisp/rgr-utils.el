@@ -1,4 +1,5 @@
 (use-package project
+  :elpaca nil
   :custom
   (project-vc-extra-root-markers '(".project"))
   ;;(project-mode-line t)
@@ -27,34 +28,31 @@
     (cl-assert (eq (point) (point-min)))
     (read (current-buffer))))
 
-(use-package emacs
-  :init
-  (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
-  :config
+(defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
 
-  (defun rgr/complete-line()
-    (interactive)
-    (funcall rgr/complete-line-f))
+(defun rgr/complete-line()
+  (interactive)
+  (funcall rgr/complete-line-f))
 
-  (defun rgr/c-complete-line()
-    (end-of-line)
-    (delete-trailing-whitespace)
-    (unless (eql ?\; (char-before (point-at-eol)))
-      (insert ";"))
-    (newline-and-indent))
+(defun rgr/c-complete-line()
+  (end-of-line)
+  (delete-trailing-whitespace)
+  (unless (eql ?\; (char-before (point-at-eol)))
+    (insert ";"))
+  (newline-and-indent))
 
-  (defun rgr/insert-previous-line()
-    (previous-line)
-    (end-of-line)
-    (newline-and-indent)
-    (insert (string-trim (current-kill 0))))
+(defun rgr/insert-previous-line()
+  (previous-line)
+  (end-of-line)
+  (newline-and-indent)
+  (insert (string-trim (current-kill 0))))
 
-  (defun rgr/newline-below()
-    (end-of-line)
-    (newline-and-indent))
+(defun rgr/newline-below()
+  (end-of-line)
+  (newline-and-indent))
 
-  :bind
-  ("<C-S-return>" . rgr/complete-line))
+
+(global-set-key (kbd "C-S-<return>")  'rgr/complete-line)
 
 (setq lll-path  (expand-file-name "lazy-lang-learn"  emacs-project-dir))
 (use-package lazy-lang-learn

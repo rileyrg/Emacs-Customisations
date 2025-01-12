@@ -2,27 +2,9 @@
   :bind
   ("M-(" . evilmi-jump-items-native))
 
-(use-package consult-xref-stack
-:vc
-(:url "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+(use-package consult-xref-stack :ensure (:host github :repo "brett-lempereur/consult-xref-stack")
 :bind
 (("C-," . consult-xref-stack-backward)))
-
-(use-package compile
-  :init
-  (setq auto-mode-alist
-        (append
-         '(("CMakeLists\\.txt\\'" . cmake-mode))
-         '(("\\.cmake\\'" . cmake-mode))
-         auto-mode-alist))
-  :hook
-  ; Add colour to compilation output
-  (compilation-filter . ansi-color-compilation-filter))
-
-(setq comphide-path (expand-file-name "compilation-hide" emacs-project-dir))
-(use-package compilation-hide
-  :disabled t
-  :load-path comphide-path)
 
 (use-package rmsbolt
   :demand t
@@ -121,6 +103,7 @@
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
+  :elpaca nil
   :config
   (add-to-list 'compilation-error-regexp-alist
                'bash-set-x)
@@ -135,8 +118,10 @@
 (use-package json-reformat)
 (use-package hydra)
 
+(use-package transient)
 (use-package
   magit
+  :after transient
   :init
   (use-package magit-filenotify)
   :hook
@@ -153,9 +138,6 @@
   :bind
   ("C-x v ="  . diff-hl-show-hunk))
 
-;; (use-package emacs
-;;   )
-
 (use-package treesit-auto
   :custom
   (treesit-auto-install 'prompt)
@@ -165,6 +147,7 @@
   (global-treesit-auto-mode))
 
 (use-package js
+  :elpaca nil
   :demand t
   :init
   (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
@@ -180,6 +163,7 @@
   (js-ts-mode . rgr/js-ts-mode-hook))
 
 (use-package typescript-ts-mode
+  :elpaca nil
   :demand t
   :init
   (defun rgr/typescript-ts-mode-hook ()
@@ -283,6 +267,7 @@
         ("C-q" . rgr/browser-doc-search)))
 
 (use-package c-ts-mode
+  :elpaca nil
   :config
   (defun rgr/c-ts-mode-common-hook ()
     (message "rgr/c-ts-mode-common-hook")

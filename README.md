@@ -40,6 +40,11 @@ Emacs early-init
     (setq max-specpdl-size 13000)
 
 
+## elpaca
+
+    (setq package-enable-at-startup nil)
+
+
 # config
 
 
@@ -69,17 +74,66 @@ Emacs early-init
 
 ## package management
 
+
+### package
+
     (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 
     (require 'package)
     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-    (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
+
+
+### elpaca
+
+    (defvar elpaca-installer-version 0.8)
+    (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+    (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+    (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+    (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                                  :ref nil :depth 1
+                                  :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                                  :build (:not elpaca--activate-package)))
+    (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+           (build (expand-file-name "elpaca/" elpaca-builds-directory))
+           (order (cdr elpaca-order))
+           (default-directory repo))
+      (add-to-list 'load-path (if (file-exists-p build) build repo))
+      (unless (file-exists-p repo)
+        (make-directory repo t)
+        (when (< emacs-major-version 28) (require 'subr-x))
+        (condition-case-unless-debug err
+            (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                      ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                      ,@(when-let* ((depth (plist-get order :depth)))
+                                                          (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                      ,(plist-get order :repo) ,repo))))
+                      ((zerop (call-process "git" nil buffer t "checkout"
+                                            (or (plist-get order :ref) "--"))))
+                      (emacs (concat invocation-directory invocation-name))
+                      ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                            "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                      ((require 'elpaca))
+                      ((elpaca-generate-autoloads "elpaca" repo)))
+                (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+              (error "%s" (with-current-buffer buffer (buffer-string))))
+          ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+      (unless (require 'elpaca-autoloads nil t)
+        (require 'elpaca)
+        (elpaca-generate-autoloads "elpaca" repo)
+        (load "./elpaca-autoloads")))
+    (add-hook 'after-init-hook #'elpaca-process-queues)
+    (elpaca `(,@elpaca-order))
+    
+    ;; Install use-package support
+    (elpaca elpaca-use-package
+            ;; Enable use-package :ensure support for Elpaca.
+            (elpaca-use-package-mode))
 
 
 ## keep data tidy
 
     (use-package no-littering
-      :ensure t
+      :ensure  (:wait t) :demand t
       :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
       :custom
       (make-backup-files t)
@@ -97,6 +151,8 @@ Emacs early-init
 ## notifications
 
     (use-package notifications
+      :elpaca nil
+      :ensure (:wait t)
       :demand t
       :config
       (notifications-notify
@@ -123,7 +179,7 @@ Load all files in certain directories.
                 (message "load-el-gpg loading %s" f)
                 (load f 'no-error))
             (error nil)))))
-    (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
+    (with-eval-after-load 'no-littering (load-el-gpg (no-littering-expand-etc-file-name "early-load")))
 
 
 ## host specific
@@ -132,7 +188,7 @@ Load all files in certain directories.
 
 Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/custom.el).
 
-    (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
+    (with-eval-after-load 'no-littering  (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts"))))
 
 
 ## Security
@@ -169,7 +225,7 @@ Raw: [rgr/security](etc/elisp/rgr-security.el)
 
     Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     
-        (car (process-lines "pass" "Chat/slack-api-token"))
+        ;;(car (process-lines "pass" "Chat/slack-api-token"))
 
 3.  provide
 
@@ -188,6 +244,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 1.  Project Management
 
         (use-package project
+          :elpaca nil
           :custom
           (project-vc-extra-root-markers '(".project"))
           ;;(project-mode-line t)
@@ -223,34 +280,31 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
 4.  completing lines
 
-        (use-package emacs
-          :init
-          (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
-          :config
+        (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
         
-          (defun rgr/complete-line()
-            (interactive)
-            (funcall rgr/complete-line-f))
+        (defun rgr/complete-line()
+          (interactive)
+          (funcall rgr/complete-line-f))
         
-          (defun rgr/c-complete-line()
-            (end-of-line)
-            (delete-trailing-whitespace)
-            (unless (eql ?\; (char-before (point-at-eol)))
-              (insert ";"))
-            (newline-and-indent))
+        (defun rgr/c-complete-line()
+          (end-of-line)
+          (delete-trailing-whitespace)
+          (unless (eql ?\; (char-before (point-at-eol)))
+            (insert ";"))
+          (newline-and-indent))
         
-          (defun rgr/insert-previous-line()
-            (previous-line)
-            (end-of-line)
-            (newline-and-indent)
-            (insert (string-trim (current-kill 0))))
+        (defun rgr/insert-previous-line()
+          (previous-line)
+          (end-of-line)
+          (newline-and-indent)
+          (insert (string-trim (current-kill 0))))
         
-          (defun rgr/newline-below()
-            (end-of-line)
-            (newline-and-indent))
+        (defun rgr/newline-below()
+          (end-of-line)
+          (newline-and-indent))
         
-          :bind
-          ("<C-S-return>" . rgr/complete-line))
+        
+        (global-set-key (kbd "C-S-<return>")  'rgr/complete-line)
 
 5.  Lazy Language Learning, lazy-lang-learn
 
@@ -280,13 +334,11 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 1.  persistence  and history
 
-        
         (recentf-mode)
         (savehist-mode)
         (save-place-mode)
         ;;(desktop-save-mode t)
         ;;(midnight-mode t)
-        
         
         (defun rgr/save-current-file-to-register ()
           "Save current file to register."
@@ -299,13 +351,11 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
           (when (featurep 'recentf)
             (recentf-open-most-recent-file 1)))
         
-        
         (if (daemonp)
             (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
           (add-hook 'after-init-hook #'rgr/startup-hook))
-
-2.  quitting emacs
-
+        
+        ;; quitting emacs
         (defun rgr/quit-or-close-emacs(&optional kill)
           (interactive)
           (if (or current-prefix-arg kill)
@@ -319,7 +369,10 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         
         (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
         
+        
         (provide 'rgr/startup)
+    
+    \#+end\_src
 
 
 ## General configuration
@@ -334,49 +387,42 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 1.  general ui
 
         
-        (use-package emacs
-          :init
-          (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
+        (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
                                                 ; t60
-          (scroll-bar-mode -1)
-          (tool-bar-mode -1)
-          (menu-bar-mode -1)
-          (show-paren-mode 1)
-          (winner-mode 1)
+        (scroll-bar-mode -1)
+        (tool-bar-mode -1)
+        (menu-bar-mode -1)
+        (show-paren-mode 1)
+        (winner-mode 1)
         
-          (use-package repeat
-            ;;When Repeat mode is enabled, certain commands bound to multi-key
-            ;;sequences can be repeated by typing a single key, after typing the
-            ;;full key sequence once.
-            :config
-            (repeat-mode))
+        (repeat-mode)
         
-          (global-auto-revert-mode 1)
-          ;; Also auto refresh dired, but be quiet about it
-          (setq global-auto-revert-non-file-buffers t)
-          (setq auto-revert-verbose nil)
-          (setq auto-revert-use-notify nil)
+        (global-auto-revert-mode 1)
+        ;; Also auto refresh dired, but be quiet about it
+        (setq global-auto-revert-non-file-buffers t)
+        (setq auto-revert-verbose nil)
+        (setq auto-revert-use-notify nil)
         
-          (global-visual-line-mode 1)
+        (global-visual-line-mode 1)
         
-          (setq column-number-mode t)
+        (setq column-number-mode t)
         
-          (delete-selection-mode 1)
+        (delete-selection-mode 1)
         
-          (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+        (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
         
-          (defalias 'yes-or-no-p 'y-or-n-p)
+        (defalias 'yes-or-no-p 'y-or-n-p)
         
-          (setq disabled-command-function nil)
+        (setq disabled-command-function nil)
         
-          (global-hl-line-mode t)
+        (global-hl-line-mode t)
         
-          (use-package delsel
-            :ensure nil
-            :hook (after-init . delete-selection-mode))
+        (use-package delsel
+          :ensure nil
+          :hook (after-init . delete-selection-mode))
         
-          (defun prot/keyboard-quit-dwim ()
-            "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+        (defun prot/keyboard-quit-dwim ()
+          "Do-What-I-Mean behaviour for a general `keyboard-quit'.
         
         The generic `keyboard-quit' does not do the expected thing when
         the minibuffer is open.  Whereas we want it to close the
@@ -388,51 +434,51 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         - When a minibuffer is open, but not focused, close the minibuffer.
         - When the Completions buffer is selected, close it.
         - In every other case use the regular `keyboard-quit'."
-            (interactive)
-            (cond
-             ((region-active-p)
-              (keyboard-quit))
-             ((derived-mode-p 'completion-list-mode)
-              (delete-completion-window))
-             ((> (minibuffer-depth) 0)
-              (abort-recursive-edit))
-             (t
-              (keyboard-quit))))
+          (interactive)
+          (cond
+           ((region-active-p)
+            (keyboard-quit))
+           ((derived-mode-p 'completion-list-mode)
+            (delete-completion-window))
+           ((> (minibuffer-depth) 0)
+            (abort-recursive-edit))
+           (t
+            (keyboard-quit))))
         
-          (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
-          ;; https://github.com/rolandwalker/browse-url-dwim
-          ;; Context-sensitive external browse URL or Internet search from Emacs.
-          (use-package
-            browse-url-dwim
-            :config
-            (browse-url-dwim-mode))
+        (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
+        ;; https://github.com/rolandwalker/browse-url-dwim
+        ;; Context-sensitive external browse URL or Internet search from Emacs.
+        (use-package
+          browse-url-dwim
+          :config
+          (browse-url-dwim-mode))
         
-          (use-package alert)
+        (use-package alert)
         
-          ;; display dir name when core name clashes
-          (require 'uniquify)
+        ;; display dir name when core name clashes
+        (require 'uniquify)
         
-          (defun rgr/kill-current-buffer()
-            (interactive)
-            (if (member (buffer-name) '("*Messages*" "*scratch*"))
-                (progn
-                  (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-                  (delete-window))
-              (kill-current-buffer)
-              (delete-window)))
+        (defun rgr/kill-current-buffer()
+          (interactive)
+          (if (member (buffer-name) '("*Messages*" "*scratch*"))
+              (progn
+                (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+                (delete-window))
+            (kill-current-buffer)
+            (delete-window)))
         
-          (add-hook 'before-save-hook 'delete-trailing-whitespace)
-          :bind
-          ("C-x C-q" . view-mode)
-          ("C-c e" . rgr/erc-start)
-          ("C-x C-b" . ibuffer)
-          ("C-x C-i" . imenu)
-          ("C-x k" . rgr/kill-current-buffer)
-          ("M-0" . delete-window)
-          ("M-1" . delete-other-windows)
-          ("S-<f1>" . describe-face)
-          ( "M-m"  . manual-entry)
-          ("S-<f10>" . menu-bar-open))
+        (add-hook 'before-save-hook 'delete-trailing-whitespace)
+        :bind
+        (global-set-key (kbd "C-x C-q") 'view-mode)
+        (global-set-key (kbd "C-c e") 'rgr/erc-start)
+        (global-set-key (kbd "C-x C-b") 'ibuffer)
+        (global-set-key (kbd "C-x C-i") 'imenu)
+        (global-set-key (kbd "C-x k") 'rgr/kill-current-buffer)
+        (global-set-key (kbd "M-0") 'delete-window)
+        (global-set-key (kbd "M-1") 'delete-other-windows)
+        (global-set-key (kbd "S-<f1>") 'describe-face)
+        (global-set-key (kbd  "M-m" ) 'manual-entry)
+        (global-set-key (kbd "S-<f10>") 'menu-bar-open)
 
 2.  posframe
 
@@ -540,6 +586,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
             (consult-buffer)))
         
         (use-package tab-bar
+          :elpaca nil
           :defer t
           :custom
           (tab-bar-show t)
@@ -560,24 +607,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                        ("c" . tab-bar-new-tab)
                        ("s" . tab-bar-switch-to-tab))))
 
-11. bookmarks
-
-        (add-to-list 'recentf-exclude "current-bookmark.el")
-    
-    1.  bookmark+
-    
-        Ive had to stop using this as the bookmark file is corrupted in emacs 30
-        
-        :ID:       02489c8b-1ce3-407e-a800-2b92f94827b9
-        
-            (use-package bookmark+
-              :disabled t
-              :demand t
-              :bind
-              ("C-x x <right>" . bmkp-next-bookmark)
-              ("C-x x <left>" . bmkp-previous-bookmark))
-
-12. emjois
+11. emjois
 
     <https://github.com/iqbalansari/emacs-emojify>
     
@@ -585,7 +615,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :init
           (global-emojify-mode))
 
-13. Cursor/Region related
+12. Cursor/Region related
 
         (defun centreCursorLineOn()
           "set properties to keep current line approx at centre of screen height. Useful for debugging."
@@ -615,11 +645,12 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                      ("C-c C-SPC" . mc/edit-lines)
                      ))
 
-14. Folding/Hide Show
+13. Folding/Hide Show
 
     [hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
     
         (use-package hideshow
+          :elpaca nil
           :config
           (defun toggle-selective-display (column)
             (interactive "P")
@@ -641,21 +672,21 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     
     \#+end\_src
 
-15. jinx : the enchanted spell checker
+14. jinx : the enchanted spell checker
 
         (use-package jinx
           :hook (emacs-startup . global-jinx-mode)
           :bind (("<f8>" . jinx-correct)
                  ("C-<f8>" . jinx-languages)))
 
-16. rg, ripgrep
+15. rg, ripgrep
 
     rg is pretty quick
     
         (use-package
           ripgrep)
 
-17. provide
+16. provide
 
         (provide 'rgr/general-config)
 
@@ -690,6 +721,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     3.  find file at point
     
             (use-package ffap
+              :elpaca nil
               :custom
               (ffap-require-prefix nil)
               :init
@@ -897,22 +929,8 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
           ;; be used globally (M-/).  See also the customization variable
           ;; `global-corfu-modes' to exclude certain modes.
-          :config
-          (add-hook 'eglot-stay-out-of 'company)
-          (use-package orderless
-            :custom
-            (orderless-component-separator " +\\|[-/]")
-            (completion-styles '(orderless basic))
-            (completion-category-defaults nil)
-            (completion-category-overrides '((file (styles partial-completion)))))
-          :init
-          (global-corfu-mode)
-          (corfu-popupinfo-mode))
-        
-        ;; A few more useful configurations...
-        (use-package emacs
-          :custom
-          ;; TAB cycle if there are only few candidates
+          ;; A few more useful configurations...
+          ;;TAB cycle if there are only few candidates
           ;; (completion-cycle-threshold 3)
         
           ;; Enable indentation+completion using the TAB key.
@@ -926,7 +944,18 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           ;; Hide commands in M-x which do not apply to the current mode.  Corfu
           ;; commands are hidden, since they are not used via M-x. This setting is
           ;; useful beyond Corfu.
-          (read-extended-command-predicate #'command-completion-default-include-p))
+          (read-extended-command-predicate #'command-completion-default-include-p)
+        :config
+        (add-hook 'eglot-stay-out-of 'company)
+        (use-package orderless
+          :custom
+          (orderless-component-separator " +\\|[-/]")
+          (completion-styles '(orderless basic))
+          (completion-category-defaults nil)
+          (completion-category-overrides '((file (styles partial-completion)))))
+        :init
+        (global-corfu-mode)
+        (corfu-popupinfo-mode))
         
         ;; Optionally use the `orderless' completion style.
         (use-package orderless
@@ -940,6 +969,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
         
         ;; Use Dabbrev with Corfu!
         (use-package dabbrev
+          :elpaca nil
           ;; Swap M-/ and C-M-/
           :bind (("M-/" . dabbrev-completion)
                  ("C-M-/" . dabbrev-expand))
@@ -1187,7 +1217,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org289f32a)
+    See `org-agenda-files` [org-agenda-files](#org33d607a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1311,6 +1341,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     1.  eww
     
             (use-package eww
+              :elpaca nil
               :demand t
               :init
               ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
@@ -1428,17 +1459,15 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 4.  use browser for docs
 
-        (use-package emacs
-          :init
-          (defcustom rgr/browser-doc-url "https://www.google.com/search?q=%s" "format url variable used for function `rgr/browser-doc-search'")
-          (defun rgr/browser-doc-search(&optional sym)
-            "call function `browse-url' with a url variable `rgr/browser-doc-url' formatted with variable `sym'"
-            (interactive
-             (list
-              (let((sym (replace-regexp-in-string  "^\\." "" (kill-dwim) )))
-                (read-string (format "search(%s):" sym)
-                             nil nil sym))))
-            (browse-url (format rgr/browser-doc-url sym))))
+        (defcustom rgr/browser-doc-url "https://www.google.com/search?q=%s" "format url variable used for function `rgr/browser-doc-search'")
+        (defun rgr/browser-doc-search(&optional sym)
+          "call function `browse-url' with a url variable `rgr/browser-doc-url' formatted with variable `sym'"
+          (interactive
+           (list
+            (let((sym (replace-regexp-in-string  "^\\." "" (kill-dwim) )))
+              (read-string (format "search(%s):" sym)
+                           nil nil sym))))
+          (browse-url (format rgr/browser-doc-url sym)))
 
 5.  Dictionary,Thesaurus
 
@@ -1499,22 +1528,18 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
 8.  API docs
 
-        
-        (use-package emacs
-          :init
-          (defun rgr/devdocs()
-            "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
-            (interactive)
-            (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
-                                                             major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-                (rgr/emacs-lisp-help)
-              (let ((s (symbol-at-point)))
-                (message "symbol-at-point: %s" s)
-                (if (fboundp 'devdocs-browser-open)
-                    (devdocs-browser-open)
-                  (call-interactively 'devdocs-lookup (vector 't s ))))))
-          :bind
-          ("C-q" . rgr/devdocs))
+        (defun rgr/devdocs()
+          "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
+          (interactive)
+          (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
+                                                           major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
+              (rgr/emacs-lisp-help)
+            (let ((s (symbol-at-point)))
+              (message "symbol-at-point: %s" s)
+              (if (fboundp 'devdocs-browser-open)
+                  (devdocs-browser-open)
+                (call-interactively 'devdocs-lookup (vector 't s ))))))
+        (global-set-key (kbd "C-q")  'rgr/devdocs)
     
     1.  devdocs-browser
     
@@ -1633,7 +1658,9 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
 
 2.  VTERM
 
+        (use-package vterm)
         (use-package  multi-vterm
+          :after vterm
           :init
           (add-to-list 'display-buffer-alist  '((or (major-mode . vterm-mode))
                                                 (display-buffer-reuse-mode-window
@@ -1886,36 +1913,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 
 2.  consult xref stack
 
-        (use-package consult-xref-stack
-        :vc
-        (:url "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+        (use-package consult-xref-stack :ensure (:host github :repo "brett-lempereur/consult-xref-stack")
         :bind
         (("C-," . consult-xref-stack-backward)))
-
-3.  compilation
-
-        (use-package compile
-          :init
-          (setq auto-mode-alist
-                (append
-                 '(("CMakeLists\\.txt\\'" . cmake-mode))
-                 '(("\\.cmake\\'" . cmake-mode))
-                 auto-mode-alist))
-          :hook
-          ; Add colour to compilation output
-          (compilation-filter . ansi-color-compilation-filter))
     
-    1.  hide compile buffer
-    
-        auto hide the compilation buffer after a successful compile. customise
-        rgr/compilation-persistent-buffer-chunks to ignore certain compilation buffers.
-        
-            (setq comphide-path (expand-file-name "compilation-hide" emacs-project-dir))
-            (use-package compilation-hide
-              :disabled t
-              :load-path comphide-path)
-    
-    2.  rmsbolt
+    1.  rmsbolt
     
         RMSbolt is a compiler output viewer in Emacs.
         <https://github.com/emacsmirror/rmsbolt>
@@ -1936,7 +1938,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (:map prog-mode-map
                     ("C-c d" . rgr/rmsbolt)))
     
-    3.  parrot
+    2.  parrot
     
             (use-package parrot
               :ensure t
@@ -1946,7 +1948,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                     (parrot-start-animation)))    (parrot-mode)
               (add-to-list 'compilation-finish-functions 'my/parrot-animate-when-compile-success))
 
-4.  eldoc
+3.  eldoc
 
         (use-package eldoc
           :custom
@@ -1965,7 +1967,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :bind
           ("C-." . eldoc-box-help-at-point))
 
-5.  compilation
+4.  compilation
 
         (global-set-key (kbd "C-c C-r") 'recompile)
         (global-set-key (kbd "<f9>")
@@ -1973,7 +1975,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (condition-case nil (next-error)
                  (error (next-error 1 t)))))
 
-6.  indent bars
+5.  indent bars
 
         (use-package indent-bars
           :disabled
@@ -1982,12 +1984,12 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :hook
           (prog-mode . indent-bars-mode))
 
-7.  JSON
+6.  JSON
 
         (use-package json-mode)
         (use-package jsonrpc)
 
-8.  Treemacs
+7.  Treemacs
 
         (use-package
           treemacs
@@ -2005,29 +2007,29 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (:map treemacs-mode-map
                 ("<right>" . treemacs-peek)))
 
-9.  duplicate thing
+8.  duplicate thing
 
         (use-package duplicate-thing
           :bind
           ("C-S-d" . 'duplicate-thing))
 
-10. Breadcrumbs
+9.  Breadcrumbs
 
         (use-package breadcrumb
           :config
           (breadcrumb-mode))
 
-11. prog-mode hack
+10. prog-mode hack
 
         (unless (fboundp 'prog-mode)
           (defalias 'prog-mode 'fundamental-mode))
 
-12. Show Line numbers
+11. Show Line numbers
 
         (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
         (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
 
-13. code format
+12. code format
 
         ;; auto-format different source code files extremely intelligently
         ;; https://github.com/radian-software/apheleia
@@ -2037,12 +2039,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (apheleia-global-mode +1))
 
-14. BASH
+13. BASH
 
     1.  Navigating Bash set -x output
     
             ;; try to work with next-error for bash's "set -x" output
             (use-package compile
+              :elpaca nil
               :config
               (add-to-list 'compilation-error-regexp-alist
                            'bash-set-x)
@@ -2050,11 +2053,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                            '(pascal
                              "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 
-15. PHP
+14. PHP
 
         (use-package php-mode)
 
-16. JSON, YAML Configuration files
+15. JSON, YAML Configuration files
 
     1.  YAML
     
@@ -2065,12 +2068,14 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package json-reformat)
             (use-package hydra)
 
-17. Version Control
+16. Version Control
 
     1.  It's [Magit](Https://github.com/magit/magit)! A Git porcelain inside Emacs
     
+            (use-package transient)
             (use-package
               magit
+              :after transient
               :init
               (use-package magit-filenotify)
               :hook
@@ -2120,18 +2125,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :bind
                   ("C-x v ="  . diff-hl-show-hunk))
 
-18. Dart/Flutter
+17. Dart/Flutter
 
     Running emulator from command line:
     
         emulator -avd Pixel_6_Pro_API_33
-    
-    1.  Java
-    
-            ;; (use-package emacs
-            ;;   )
 
-19. Tree Sitter
+18. Tree Sitter
 
     1.  treesit-auto
     
@@ -2150,6 +2150,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     2.  Javascript
     
             (use-package js
+              :elpaca nil
               :demand t
               :init
               (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
@@ -2167,6 +2168,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     3.  Typescript
     
             (use-package typescript-ts-mode
+              :elpaca nil
               :demand t
               :init
               (defun rgr/typescript-ts-mode-hook ()
@@ -2175,7 +2177,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
               (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
-20. Language Server Protocol (LSP)
+19. Language Server Protocol (LSP)
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2215,9 +2217,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             
             1.  eglot-booster
             
-                    (use-package eglot-booster
-                      :vc
-                      (:url "https://github.com/jdtsmith/eglot-booster" :branch "main")
+                    (use-package eglot-booster :ensure (:host github :repo "jdtsmith/eglot-booster")
                       :after eglot
                       :config	(eglot-booster-mode))
         
@@ -2259,7 +2259,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         
                 (provide 'rgr/lsp)
 
-21. Serial Port
+20. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2285,7 +2285,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                           (interactive)
                           (selectSerialPortBuffer)))
 
-22. PlatformIO
+21. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2307,7 +2307,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-23. Python
+22. Python
 
     1.  ipython
     
@@ -2320,7 +2320,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :config
               (add-hook 'python-base-mode-hook 'pet-mode -10))
 
-24. Haskell
+23. Haskell
 
     1.  haskell-mode
     
@@ -2334,7 +2334,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-25. lldb debugging in emacs
+24. lldb debugging in emacs
 
     1.  voltron
     
@@ -2344,7 +2344,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               ;; (breadcrumb-mode t)
               )
 
-26. rust
+25. rust
 
         
         (use-package rust-mode
@@ -2375,11 +2375,12 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (:map rustic-mode-map
                 ("C-q" . rgr/browser-doc-search)))
 
-27. C
+26. C
 
     1.  c-mode-common-hook
     
             (use-package c-ts-mode
+              :elpaca nil
               :config
               (defun rgr/c-ts-mode-common-hook ()
                 (message "rgr/c-ts-mode-common-hook")
@@ -2389,7 +2390,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :hook
               ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 
-28. Linux tools
+27. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2399,13 +2400,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-29. Assembler
+28. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-30. Web,Symfony and Twig
+29. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2444,7 +2445,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 ((php-mode
                   (eval php-mode-webserver-hook)))
 
-31. elf-mode - view the symbol list in a binary
+30. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2453,7 +2454,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (elf-setup-default))
 
-32. provide
+31. provide
 
         (provide 'rgr/programming)
 
@@ -2535,9 +2536,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     [auto insert closing brackets](info:emacs#Matching)
     
-        (use-package emacs
-          :hook
-          ((emacs-lisp-mode . electric-pair-mode)))
+        (add-hook 'emacs-lisp-mode  'electric-pair-mode)
 
 6.  elisp checks
 
@@ -2560,7 +2559,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     Display a poup containing docstring at point
     
         (setq elsap-path  (expand-file-name "el-docstring-sap"  emacs-project-dir))
-        (use-package el-docstring-sap
+        (use-package el-docstring-sap :disabled t
           :load-path elsap-path
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
@@ -2771,7 +2770,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org660a06d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc5c98eb) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2804,7 +2803,7 @@ to add to version control.
     fi
 
 
-<a id="org660a06d"></a>
+<a id="orgc5c98eb"></a>
 
 ### Gnome protocol handler desktop file
 
