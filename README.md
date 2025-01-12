@@ -40,13 +40,6 @@ Emacs early-init
     (setq max-specpdl-size 13000)
 
 
-## package management
-
-    (require 'package)
-    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-    (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
-
-
 # config
 
 
@@ -74,6 +67,15 @@ Emacs early-init
     (load custom-file 'noerror)
 
 
+## package management
+
+    (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
+
+    (require 'package)
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+    (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
+
+
 ## keep data tidy
 
     (use-package no-littering
@@ -86,9 +88,9 @@ Emacs early-init
             `(("." . ,(no-littering-expand-var-file-name "backup/"))))
       (setq auto-save-file-name-transforms
             `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-      (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
-      (add-to-list 'load-path elisp-dir)
-      (let ((default-directory elisp-dir))
+      (setq rgr/elisp-dir (no-littering-expand-etc-file-name "elisp"))
+      (add-to-list 'load-path rgr/elisp-dir)
+      (let ((default-directory rgr/elisp-dir))
         (normal-top-level-add-subdirs-to-load-path)))
 
 
@@ -1185,7 +1187,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org214d22d)
+    See `org-agenda-files` [org-agenda-files](#org289f32a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1250,18 +1252,6 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
 3.  provide
 
         (provide 'rgr/typesetting)
-
-
-## Lazy Language Learning, lazy-lang-learn
-
-My own hack for popping up text to learn
-
-    (use-package lazy-lang-learn  :disabled t
-      :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
-      :bind
-      ("C-c L" . lazy-lang-learn-mode)
-      ("<f12>" . lazy-lang-learn-translate)
-      ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
 
 ## Reference/Lookup/Media
@@ -2473,7 +2463,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
 Load this relatively early in order to have utils available if there's a faied load
 Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
-    (require 'rgr/elisp (expand-file-name "rgr-elisp" elisp-dir))
+    (require 'rgr/elisp (expand-file-name "rgr-elisp" rgr/elisp-dir))
 
 
 ### library
@@ -2532,6 +2522,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     
     1.  external info files
     
+            (require 'info)
             (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 
 4.  smartparens
@@ -2780,7 +2771,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd52c686) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org660a06d) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2813,7 +2804,7 @@ to add to version control.
     fi
 
 
-<a id="orgd52c686"></a>
+<a id="org660a06d"></a>
 
 ### Gnome protocol handler desktop file
 
