@@ -100,10 +100,12 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 #+end_src
 ** package management
 *** package
+#+begin_src  emacs-lisp
+    (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
+#+end_src
 #+begin_src  emacs-lisp :tangle no
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 #+end_src
 *** elpaca
 #+begin_src  emacs-lisp
@@ -2915,6 +2917,7 @@ Use helpful if installed else built in
 #+end_src
 ***** external info files
 #+begin_src emacs-lisp
+  (require 'info)
   (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
 #+end_src
 
