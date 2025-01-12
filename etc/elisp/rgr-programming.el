@@ -123,12 +123,12 @@
   magit
   :after transient
   :init
-  (use-package magit-filenotify)
   :hook
   (magit-status-mode . magit-filenotify-mode)
   (git-commit-post-finish . magit)
   :bind
   ("C-x g" . magit-status))
+(use-package magit-filenotify :after magit)
 
 (use-package diff-hl
   :hook

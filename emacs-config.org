@@ -2321,12 +2321,12 @@ https://github.com/emacsmirror/rmsbolt
     magit
     :after transient
     :init
-    (use-package magit-filenotify)
     :hook
     (magit-status-mode . magit-filenotify-mode)
     (git-commit-post-finish . magit)
     :bind
     ("C-x g" . magit-status))
+  (use-package magit-filenotify :after magit)
 #+end_src
 ***** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests :forge:git:github:
 always causes issues. disabled.
