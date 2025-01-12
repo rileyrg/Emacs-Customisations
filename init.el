@@ -72,9 +72,9 @@
         `(("." . ,(no-littering-expand-var-file-name "backup/"))))
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-  (defvar elisp-dir (expand-file-name "elisp" no-littering-etc-directory) "my elisp directory. directories are recursively added to path.")
-  (add-to-list 'load-path elisp-dir)
-  (let ((default-directory elisp-dir))
+  (setq rgr/elisp-dir (no-littering-expand-etc-file-name "elisp"))
+  (add-to-list 'load-path rgr/elisp-dir)
+  (let ((default-directory rgr/elisp-dir))
     (normal-top-level-add-subdirs-to-load-path)))
 
 (use-package notifications
@@ -133,7 +133,7 @@
 
 (require 'rgr/programming "rgr-programming" 'NOERROR)
 
-(require 'rgr/elisp (expand-file-name "rgr-elisp" elisp-dir))
+(require 'rgr/elisp (expand-file-name "rgr-elisp" rgr/elisp-dir))
 
 (require 'rgr/themes "rgr-themes" 'NOERROR)
 
