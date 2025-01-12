@@ -54,10 +54,4 @@
 
 (global-set-key (kbd "C-S-<return>")  'rgr/complete-line)
 
-(use-package lazy-lang-learn :ensure (:host github :repo "rileyrg/lazy-lang-learn")
-  :bind
-  ("C-c L" . lazy-lang-learn-mode)
-  ("<f12>" . lazy-lang-learn-translate)
-  ("S-<f12>" . lazy-lang-learn-translate-from-history))
-
 (provide 'rgr/utils)
