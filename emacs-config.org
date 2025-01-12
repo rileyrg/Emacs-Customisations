@@ -1410,18 +1410,6 @@ https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
 #+begin_src emacs-lisp
   (provide 'rgr/typesetting)
 #+end_src
-** Lazy Language Learning, lazy-lang-learn
-My own hack for popping up text to learn
-:PROPERTIES:
-:END:
-#+begin_src emacs-lisp
-  (use-package lazy-lang-learn  :disabled t
-    :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
-    :bind
-    ("C-c L" . lazy-lang-learn-mode)
-    ("<f12>" . lazy-lang-learn-translate)
-    ("S-<f12>" . lazy-lang-learn-translate-from-history))
-#+end_src
 
 ** Reference/Lookup/Media
 :PROPERTIES:

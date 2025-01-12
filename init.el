@@ -75,13 +75,6 @@
 
 (require 'rgr/typesetting "rgr-typesetting" 'NOERROR)
 
-(use-package lazy-lang-learn  :disabled t
-  :straight (lazy-lang-learn :local-repo "~/development/projects/emacs/lazy-lang-learn" :type git :host github :repo "rileyrg/lazy-lang-learn" )
-  :bind
-  ("C-c L" . lazy-lang-learn-mode)
-  ("<f12>" . lazy-lang-learn-translate)
-  ("S-<f12>" . lazy-lang-learn-translate-from-history))
-
 (require 'rgr/reference "rgr-reference" 'NOERROR)
 
 (require 'rgr/shells "rgr-shells" 'NOERROR)
