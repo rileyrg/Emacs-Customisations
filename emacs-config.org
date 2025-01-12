@@ -146,6 +146,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
       (elpaca-generate-autoloads "elpaca" repo)
       (load "./elpaca-autoloads")))
   (add-hook 'after-init-hook #'elpaca-process-queues)
+  (setq elpaca-queue-limit 1)
   (elpaca `(,@elpaca-order))
 
   ;; Install use-package support
@@ -158,7 +159,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 ** keep data tidy
 #+begin_src  emacs-lisp
   (use-package no-littering
-    :ensure t
+    :ensure  (:wait t) :demand t
     :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
     :custom
     (make-backup-files t)
@@ -208,7 +209,7 @@ Load all files in certain directories.
               (message "load-el-gpg loading %s" f)
               (load f 'no-error))
           (error nil)))))
-  (load-el-gpg (no-littering-expand-etc-file-name "early-load"))
+  (with-eval-after-load 'no-littering (load-el-gpg (no-littering-expand-etc-file-name "early-load")))
 #+end_src
 ** host specific
 
@@ -219,7 +220,7 @@ Load all files in certain directories.
 Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][custom file]].
 
 #+begin_src emacs-lisp
-  (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
+  (with-eval-after-load 'no-littering  (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts"))))
 #+end_src
 
 ** Security
@@ -2968,7 +2969,7 @@ Use helpful if installed else built in
 Display a poup containing docstring at point
 #+begin_src emacs-lisp
   (setq elsap-path  (expand-file-name "el-docstring-sap"  emacs-project-dir))
-  (use-package el-docstring-sap
+  (use-package el-docstring-sap :disabled t
     :load-path elsap-path
     :hook
     (emacs-lisp-mode . el-docstring-sap-mode)

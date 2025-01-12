@@ -52,7 +52,7 @@
 (use-package helpful)
 
 (setq elsap-path  (expand-file-name "el-docstring-sap"  emacs-project-dir))
-(use-package el-docstring-sap
+(use-package el-docstring-sap :disabled t
   :load-path elsap-path
   :hook
   (emacs-lisp-mode . el-docstring-sap-mode)

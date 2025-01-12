@@ -55,6 +55,7 @@
     (elpaca-generate-autoloads "elpaca" repo)
     (load "./elpaca-autoloads")))
 (add-hook 'after-init-hook #'elpaca-process-queues)
+(setq elpaca-queue-limit 1)
 (elpaca `(,@elpaca-order))
 
 ;; Install use-package support
@@ -63,7 +64,7 @@
         (elpaca-use-package-mode))
 
 (use-package no-littering
-  :ensure t
+  :ensure  (:wait t) :demand t
   :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
   :custom
   (make-backup-files t)
@@ -96,9 +97,9 @@
             (message "load-el-gpg loading %s" f)
             (load f 'no-error))
         (error nil)))))
-(load-el-gpg (no-littering-expand-etc-file-name "early-load"))
+(with-eval-after-load 'no-littering (load-el-gpg (no-littering-expand-etc-file-name "early-load")))
 
-(load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))
+(with-eval-after-load 'no-littering  (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts"))))
 
 (require 'rgr/security "rgr-security" 'NOERROR)
 
