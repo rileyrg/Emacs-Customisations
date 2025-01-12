@@ -7,9 +7,7 @@
   (notmuch-hello-mode . rgr/notmuch-new)
   )
 
-(use-package mu4e
-  :disabled
-  :straight ( :host github
+(use-package mu4e :ensure ( :host github
               :branch "release/1.10"
               :repo "djcb/mu"
               :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
@@ -33,7 +31,7 @@
   ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
   ( mu4e-decryption-policy 'ask )
   ( mu4e-hide-index-messages t )
-  ( mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu")) )
+  ( mu4e-mu-binary (expand-file-name "mu/build/mu/mu" elpaca-repos-directory) )
   ( mu4e-update-interval nil )
   ( mu4e-use-fancy-chars t )
   ( mu4e-view-prefer-html nil )

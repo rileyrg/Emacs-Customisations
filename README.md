@@ -66,12 +66,6 @@ Emacs early-init
     (debug-init)
 
 
-## custom.el
-
-    (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
-    (load custom-file 'noerror)
-
-
 ## package management
 
 
@@ -146,6 +140,12 @@ Emacs early-init
       (add-to-list 'load-path rgr/elisp-dir)
       (let ((default-directory rgr/elisp-dir))
         (normal-top-level-add-subdirs-to-load-path)))
+
+
+## custom.el
+
+    (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+    (eval-after-load 'no-littering (lambda()(load custom-file 'noerror)))
 
 
 ## notifications
@@ -334,8 +334,6 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         (recentf-mode)
         (savehist-mode)
         (save-place-mode)
-        ;;(desktop-save-mode t)
-        ;;(midnight-mode t)
         
         (defun rgr/save-current-file-to-register ()
           "Save current file to register."
@@ -350,7 +348,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
         
         (if (daemonp)
             (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-          (add-hook 'after-init-hook #'rgr/startup-hook))
+          (add-hook 'elpaca-after-init-hook #'rgr/startup-hook))
         
         ;; quitting emacs
         (defun rgr/quit-or-close-emacs(&optional kill)
@@ -1023,25 +1021,26 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
-        (setq-default abbrev-mode 1)
-        (defadvice expand-abbrev (after my-expand-abbrev activate)
-          ;; if there was an expansion
-          (if ad-return-value
-              ;; start idle timer to ensure insertion of abbrev activator
-              ;; character (e.g. space) is finished
-              (run-with-idle-timer 0 nil
-                                   (lambda ()
-                                     ;; if there is the string "@@" in the
-                                     ;; expansion then move cursor there and
-                                     ;; delete the string
-                                     (let ((cursor "%CHANGEME%"))
-                                       (when (search-backward  cursor last-abbrev-location t)
-                                         (goto-char  last-abbrev-location)
-                                         (search-forward cursor)
-                                         (backward-word)
-                                         (highlight-symbol-at-point)
-                                         (delete-char (length cursor))
-                                         ))))))
+          (setq-default abbrev-mode 1)
+        ;;  (load-file abbrev-file-name)
+          (defadvice expand-abbrev (after my-expand-abbrev activate)
+            ;; if there was an expansion
+            (if ad-return-value
+                ;; start idle timer to ensure insertion of abbrev activator
+                ;; character (e.g. space) is finished
+                (run-with-idle-timer 0 nil
+                                     (lambda ()
+                                       ;; if there is the string "@@" in the
+                                       ;; expansion then move cursor there and
+                                       ;; delete the string
+                                       (let ((cursor "%CHANGEME%"))
+                                         (when (search-backward  cursor last-abbrev-location t)
+                                           (goto-char  last-abbrev-location)
+                                           (search-forward cursor)
+                                           (backward-word)
+                                           (highlight-symbol-at-point)
+                                           (delete-char (length cursor))
+                                           ))))))
 
 5.  company
 
@@ -1214,7 +1213,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org4951ac9)
+    See `org-agenda-files` [org-agenda-files](#org0f1edba)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1694,9 +1693,7 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
 
 2.  mu4e
 
-        (use-package mu4e
-          :disabled
-          :straight ( :host github
+        (use-package mu4e :ensure ( :host github
                       :branch "release/1.10"
                       :repo "djcb/mu"
                       :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
@@ -1720,7 +1717,7 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
           ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
           ( mu4e-decryption-policy 'ask )
           ( mu4e-hide-index-messages t )
-          ( mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu")) )
+          ( mu4e-mu-binary (expand-file-name "mu/build/mu/mu" elpaca-repos-directory) )
           ( mu4e-update-interval nil )
           ( mu4e-use-fancy-chars t )
           ( mu4e-view-prefer-html nil )
@@ -2074,12 +2071,12 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               magit
               :after transient
               :init
-              (use-package magit-filenotify)
               :hook
               (magit-status-mode . magit-filenotify-mode)
               (git-commit-post-finish . magit)
               :bind
               ("C-x g" . magit-status))
+            (use-package magit-filenotify :after magit)
     
     2.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
     
@@ -2674,7 +2671,7 @@ Raw: [rgr/themes](etc/elisp/rgr-themes.el)
 
 ## Late load
 
-    (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
+    (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
 
 
 # Associated emacs things
@@ -2763,7 +2760,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4dc0e8f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8436f45) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2796,7 +2793,7 @@ to add to version control.
     fi
 
 
-<a id="org4dc0e8f"></a>
+<a id="org8436f45"></a>
 
 ### Gnome protocol handler desktop file
 
