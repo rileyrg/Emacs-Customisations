@@ -150,7 +150,7 @@ The DWIM behaviour of this command is as follows:
     (consult-buffer)))
 
 (use-package tab-bar
-  :elpaca nil
+  :ensure nil
   :defer t
   :custom
   (tab-bar-show t)
@@ -200,7 +200,7 @@ The DWIM behaviour of this command is as follows:
          ))
 
 (use-package hideshow
-  :elpaca nil
+  :ensure nil
   :config
   (defun toggle-selective-display (column)
     (interactive "P")

@@ -10,7 +10,7 @@
   (require 'llm-ollama))
 
 (use-package eww
-  :elpaca nil
+  :ensure nil
   :demand t
   :init
   ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )

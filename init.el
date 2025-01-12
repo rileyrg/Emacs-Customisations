@@ -78,8 +78,7 @@
     (normal-top-level-add-subdirs-to-load-path)))
 
 (use-package notifications
-  :elpaca nil
-  :ensure (:wait t)
+  :ensure nil
   :demand t
   :config
   (notifications-notify

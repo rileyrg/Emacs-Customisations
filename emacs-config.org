@@ -176,8 +176,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 ** notifications
 #+begin_src  emacs-lisp
   (use-package notifications
-    :elpaca nil
-    :ensure (:wait t)
+    :ensure nil
     :demand t
     :config
     (notifications-notify
@@ -288,7 +287,7 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 **** Project Management                                             :project:
 #+begin_src  emacs-lisp
   (use-package project
-    :elpaca nil
+    :ensure nil
     :custom
     (project-vc-extra-root-markers '(".project"))
     ;;(project-mode-line t)
@@ -663,7 +662,7 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
       (consult-buffer)))
 
   (use-package tab-bar
-    :elpaca nil
+    :ensure nil
     :defer t
     :custom
     (tab-bar-show t)
@@ -730,7 +729,7 @@ https://github.com/magnars/multiple-cursors.emacs-lisp
 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html][hs-minor-mode]] allows hiding and showing different blocks of text/code (folding).
 #+begin_src emacs-lisp
   (use-package hideshow
-    :elpaca nil
+    :ensure nil
     :config
     (defun toggle-selective-display (column)
       (interactive "P")
@@ -829,7 +828,7 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
 :END:
 #+begin_src emacs-lisp
   (use-package ffap
-    :elpaca nil
+    :ensure nil
     :custom
     (ffap-require-prefix nil)
     :init
@@ -1087,7 +1086,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 
   ;; Use Dabbrev with Corfu!
   (use-package dabbrev
-    :elpaca nil
+    :ensure nil
     ;; Swap M-/ and C-M-/
     :bind (("M-/" . dabbrev-completion)
            ("C-M-/" . dabbrev-expand))
@@ -1499,7 +1498,7 @@ https://ollama.ai/library/zephyr
 ***** eww
 #+begin_src emacs-lisp
   (use-package eww
-    :elpaca nil
+    :ensure nil
     :demand t
     :init
     ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
@@ -2283,7 +2282,7 @@ https://github.com/emacsmirror/rmsbolt
 #+begin_src emacs-lisp
   ;; try to work with next-error for bash's "set -x" output
   (use-package compile
-    :elpaca nil
+    :ensure nil
     :config
     (add-to-list 'compilation-error-regexp-alist
                  'bash-set-x)
@@ -2397,7 +2396,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
 :END:
 #+begin_src emacs-lisp
   (use-package js
-    :elpaca nil
+    :ensure nil
     :demand t
     :init
     (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
@@ -2415,7 +2414,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
 ***** Typescript
 #+begin_src emacs-lisp
   (use-package typescript-ts-mode
-    :elpaca nil
+    :ensure nil
     :demand t
     :init
     (defun rgr/typescript-ts-mode-hook ()
@@ -2657,7 +2656,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 
 #+begin_src emacs-lisp
   (use-package c-ts-mode
-    :elpaca nil
+    :ensure nil
     :config
     (defun rgr/c-ts-mode-common-hook ()
       (message "rgr/c-ts-mode-common-hook")

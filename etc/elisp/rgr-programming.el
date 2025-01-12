@@ -103,7 +103,7 @@
 
 ;; try to work with next-error for bash's "set -x" output
 (use-package compile
-  :elpaca nil
+  :ensure nil
   :config
   (add-to-list 'compilation-error-regexp-alist
                'bash-set-x)
@@ -147,7 +147,7 @@
   (global-treesit-auto-mode))
 
 (use-package js
-  :elpaca nil
+  :ensure nil
   :demand t
   :init
   (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
@@ -163,7 +163,7 @@
   (js-ts-mode . rgr/js-ts-mode-hook))
 
 (use-package typescript-ts-mode
-  :elpaca nil
+  :ensure nil
   :demand t
   :init
   (defun rgr/typescript-ts-mode-hook ()
@@ -267,7 +267,7 @@
         ("C-q" . rgr/browser-doc-search)))
 
 (use-package c-ts-mode
-  :elpaca nil
+  :ensure nil
   :config
   (defun rgr/c-ts-mode-common-hook ()
     (message "rgr/c-ts-mode-common-hook")

@@ -1,5 +1,5 @@
 (use-package project
-  :elpaca nil
+  :ensure nil
   :custom
   (project-vc-extra-root-markers '(".project"))
   ;;(project-mode-line t)

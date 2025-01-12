@@ -7,7 +7,7 @@
 (use-package sudo-edit)
 
 (use-package ffap
-  :elpaca nil
+  :ensure nil
   :custom
   (ffap-require-prefix nil)
   :init

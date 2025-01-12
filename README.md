@@ -151,7 +151,7 @@ Emacs early-init
 ## notifications
 
     (use-package notifications
-      :elpaca nil
+      :ensure nil
       :ensure (:wait t)
       :demand t
       :config
@@ -244,7 +244,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 1.  Project Management
 
         (use-package project
-          :elpaca nil
+          :ensure nil
           :custom
           (project-vc-extra-root-markers '(".project"))
           ;;(project-mode-line t)
@@ -310,9 +310,7 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
     My own hack for popping up text to learn
     
-        (setq lll-path  (expand-file-name "lazy-lang-learn"  emacs-project-dir))
-        (use-package lazy-lang-learn
-          :load-path lll-path
+        (use-package lazy-lang-learn :ensure (:host github :repo "rileyrg/lazy-lang-learn")
           :bind
           ("C-c L" . lazy-lang-learn-mode)
           ("<f12>" . lazy-lang-learn-translate)
@@ -586,7 +584,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
             (consult-buffer)))
         
         (use-package tab-bar
-          :elpaca nil
+          :ensure nil
           :defer t
           :custom
           (tab-bar-show t)
@@ -650,7 +648,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     [hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
     
         (use-package hideshow
-          :elpaca nil
+          :ensure nil
           :config
           (defun toggle-selective-display (column)
             (interactive "P")
@@ -721,7 +719,7 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
     3.  find file at point
     
             (use-package ffap
-              :elpaca nil
+              :ensure nil
               :custom
               (ffap-require-prefix nil)
               :init
@@ -969,7 +967,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
         
         ;; Use Dabbrev with Corfu!
         (use-package dabbrev
-          :elpaca nil
+          :ensure nil
           ;; Swap M-/ and C-M-/
           :bind (("M-/" . dabbrev-completion)
                  ("C-M-/" . dabbrev-expand))
@@ -1217,7 +1215,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org33d607a)
+    See `org-agenda-files` [org-agenda-files](#org4835108)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1341,7 +1339,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     1.  eww
     
             (use-package eww
-              :elpaca nil
+              :ensure nil
               :demand t
               :init
               ;; (add-to-list 'display-buffer-alist  '((or (major-mode . eww-mode)(major-mode . Info-mode)(major-mode . helpful-mode)) (display-buffer-reuse-mode-window display-buffer-in-side-window) (window-sides-vertical . t)(side . right)(slot . -1) (window-width . 0.5)) )
@@ -2045,7 +2043,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     
             ;; try to work with next-error for bash's "set -x" output
             (use-package compile
-              :elpaca nil
+              :ensure nil
               :config
               (add-to-list 'compilation-error-regexp-alist
                            'bash-set-x)
@@ -2150,7 +2148,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     2.  Javascript
     
             (use-package js
-              :elpaca nil
+              :ensure nil
               :demand t
               :init
               (add-to-list 'auto-mode-alist '("\\.mjs" . javascript-mode)) ;; js module file
@@ -2168,7 +2166,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     3.  Typescript
     
             (use-package typescript-ts-mode
-              :elpaca nil
+              :ensure nil
               :demand t
               :init
               (defun rgr/typescript-ts-mode-hook ()
@@ -2380,7 +2378,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     1.  c-mode-common-hook
     
             (use-package c-ts-mode
-              :elpaca nil
+              :ensure nil
               :config
               (defun rgr/c-ts-mode-common-hook ()
                 (message "rgr/c-ts-mode-common-hook")
@@ -2471,9 +2469,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 1.  kill-dwim
 
-        (setq kill-dwim-path (expand-file-name "kill-dwim"  emacs-project-dir))
-        (use-package kill-dwim
-          :load-path kill-dwim-path
+        (use-package kill-dwim :ensure (:host github :repo "rileyrg/kill-dwim")
           :bind
           ("M-w" . kill-dwim))
 
@@ -2558,9 +2554,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     Display a poup containing docstring at point
     
-        (setq elsap-path  (expand-file-name "el-docstring-sap"  emacs-project-dir))
-        (use-package el-docstring-sap :disabled t
-          :load-path elsap-path
+        (use-package el-docstring-sap :ensure (:host github :repo "rileyrg/el-docstring-sap")
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
@@ -2770,7 +2764,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc5c98eb) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2ebb562) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2803,7 +2797,7 @@ to add to version control.
     fi
 
 
-<a id="orgc5c98eb"></a>
+<a id="org2ebb562"></a>
 
 ### Gnome protocol handler desktop file
 
