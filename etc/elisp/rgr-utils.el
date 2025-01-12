@@ -54,9 +54,7 @@
 
 (global-set-key (kbd "C-S-<return>")  'rgr/complete-line)
 
-(setq lll-path  (expand-file-name "lazy-lang-learn"  emacs-project-dir))
-(use-package lazy-lang-learn
-  :load-path lll-path
+(use-package lazy-lang-learn :ensure (:host github :repo "rileyrg/lazy-lang-learn")
   :bind
   ("C-c L" . lazy-lang-learn-mode)
   ("<f12>" . lazy-lang-learn-translate)

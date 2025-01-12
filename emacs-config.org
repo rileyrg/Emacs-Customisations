@@ -365,9 +365,7 @@ My own hack for popping up text to learn
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
-  (setq lll-path  (expand-file-name "lazy-lang-learn"  emacs-project-dir))
-  (use-package lazy-lang-learn
-    :load-path lll-path
+  (use-package lazy-lang-learn :ensure (:host github :repo "rileyrg/lazy-lang-learn")
     :bind
     ("C-c L" . lazy-lang-learn-mode)
     ("<f12>" . lazy-lang-learn-translate)
@@ -2791,9 +2789,7 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 
 **** kill-dwim
 #+begin_src emacs-lisp
-  (setq kill-dwim-path (expand-file-name "kill-dwim"  emacs-project-dir))
-  (use-package kill-dwim
-    :load-path kill-dwim-path
+  (use-package kill-dwim :ensure (:host github :repo "rileyrg/kill-dwim")
     :bind
     ("M-w" . kill-dwim))
 #+end_src
@@ -2907,9 +2903,7 @@ Use helpful if installed else built in
 :END:
 Display a poup containing docstring at point
 #+begin_src emacs-lisp
-  (setq elsap-path  (expand-file-name "el-docstring-sap"  emacs-project-dir))
-  (use-package el-docstring-sap :disabled t
-    :load-path elsap-path
+  (use-package el-docstring-sap :ensure (:host github :repo "rileyrg/el-docstring-sap")
     :hook
     (emacs-lisp-mode . el-docstring-sap-mode)
     :bind

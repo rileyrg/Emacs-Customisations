@@ -1,6 +1,4 @@
-(setq kill-dwim-path (expand-file-name "kill-dwim"  emacs-project-dir))
-(use-package kill-dwim
-  :load-path kill-dwim-path
+(use-package kill-dwim :ensure (:host github :repo "rileyrg/kill-dwim")
   :bind
   ("M-w" . kill-dwim))
 
@@ -51,9 +49,7 @@
 
 (use-package helpful)
 
-(setq elsap-path  (expand-file-name "el-docstring-sap"  emacs-project-dir))
-(use-package el-docstring-sap :disabled t
-  :load-path elsap-path
+(use-package el-docstring-sap :ensure (:host github :repo "rileyrg/el-docstring-sap")
   :hook
   (emacs-lisp-mode . el-docstring-sap-mode)
   :bind
