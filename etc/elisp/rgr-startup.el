@@ -1,8 +1,6 @@
 (recentf-mode)
 (savehist-mode)
 (save-place-mode)
-;;(desktop-save-mode t)
-;;(midnight-mode t)
 
 (defun rgr/save-current-file-to-register ()
   "Save current file to register."
@@ -17,7 +15,7 @@
 
 (if (daemonp)
     (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-  (add-hook 'after-init-hook #'rgr/startup-hook))
+  (add-hook 'elpaca-after-init-hook #'rgr/startup-hook))
 
 ;; quitting emacs
 (defun rgr/quit-or-close-emacs(&optional kill)

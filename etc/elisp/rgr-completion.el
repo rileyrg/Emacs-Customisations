@@ -104,24 +104,25 @@
   )
 
 (setq-default abbrev-mode 1)
-(defadvice expand-abbrev (after my-expand-abbrev activate)
-  ;; if there was an expansion
-  (if ad-return-value
-      ;; start idle timer to ensure insertion of abbrev activator
-      ;; character (e.g. space) is finished
-      (run-with-idle-timer 0 nil
-                           (lambda ()
-                             ;; if there is the string "@@" in the
-                             ;; expansion then move cursor there and
-                             ;; delete the string
-                             (let ((cursor "%CHANGEME%"))
-                               (when (search-backward  cursor last-abbrev-location t)
-                                 (goto-char  last-abbrev-location)
-                                 (search-forward cursor)
-                                 (backward-word)
-                                 (highlight-symbol-at-point)
-                                 (delete-char (length cursor))
-                                 ))))))
+;;  (load-file abbrev-file-name)
+  (defadvice expand-abbrev (after my-expand-abbrev activate)
+    ;; if there was an expansion
+    (if ad-return-value
+        ;; start idle timer to ensure insertion of abbrev activator
+        ;; character (e.g. space) is finished
+        (run-with-idle-timer 0 nil
+                             (lambda ()
+                               ;; if there is the string "@@" in the
+                               ;; expansion then move cursor there and
+                               ;; delete the string
+                               (let ((cursor "%CHANGEME%"))
+                                 (when (search-backward  cursor last-abbrev-location t)
+                                   (goto-char  last-abbrev-location)
+                                   (search-forward cursor)
+                                   (backward-word)
+                                   (highlight-symbol-at-point)
+                                   (delete-char (length cursor))
+                                   ))))))
 
 (use-package company
   :disabled t

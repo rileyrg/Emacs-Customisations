@@ -93,11 +93,6 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
         (message "No debug initfile, %s, found so ignoring" debug-init))))
   (debug-init)
 #+end_src
-** custom.el
-#+begin_src emacs-lisp
-  (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
-  (load custom-file 'noerror)
-#+end_src
 ** package management
 *** package
 #+begin_src  emacs-lisp
@@ -172,7 +167,11 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (let ((default-directory rgr/elisp-dir))
       (normal-top-level-add-subdirs-to-load-path)))
 #+end_src
-
+** custom.el
+#+begin_src emacs-lisp
+  (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+  (eval-after-load 'no-littering (lambda()(load custom-file 'noerror)))
+#+end_src
 ** notifications
 #+begin_src  emacs-lisp
   (use-package notifications
@@ -398,8 +397,6 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
   (recentf-mode)
   (savehist-mode)
   (save-place-mode)
-  ;;(desktop-save-mode t)
-  ;;(midnight-mode t)
 
   (defun rgr/save-current-file-to-register ()
     "Save current file to register."
@@ -414,7 +411,7 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 
   (if (daemonp)
       (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-    (add-hook 'after-init-hook #'rgr/startup-hook))
+    (add-hook 'elpaca-after-init-hook #'rgr/startup-hook))
 
   ;; quitting emacs
   (defun rgr/quit-or-close-emacs(&optional kill)
@@ -826,6 +823,7 @@ Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]]
 :PROPERTIES:
 :ID:       bd247b04-92dc-4db6-911e-df716bd8574a
 :END:
+
 #+begin_src emacs-lisp
   (use-package ffap
     :ensure nil
@@ -1147,6 +1145,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
 #+begin_src emacs-lisp
   (setq-default abbrev-mode 1)
+;;  (load-file abbrev-file-name)
   (defadvice expand-abbrev (after my-expand-abbrev activate)
     ;; if there was an expansion
     (if ad-return-value
@@ -3041,7 +3040,7 @@ https://github.com/protesilaos/ef-themes
 :ID:       574516c0-a821-47fb-b01f-97ec19789d65
 :END:
 #+begin_src emacs-lisp
-  (load-el-gpg (no-littering-expand-etc-file-name "late-load"))
+  (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
 #+end_src
 * Associated emacs things
 :PROPERTIES:

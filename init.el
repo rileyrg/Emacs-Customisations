@@ -13,9 +13,6 @@
       (message "No debug initfile, %s, found so ignoring" debug-init))))
 (debug-init)
 
-(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory)) ;;
-(load custom-file 'noerror)
-
 (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 
 (defvar elpaca-installer-version 0.8)
@@ -77,6 +74,9 @@
   (let ((default-directory rgr/elisp-dir))
     (normal-top-level-add-subdirs-to-load-path)))
 
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+(eval-after-load 'no-littering (lambda()(load custom-file 'noerror)))
+
 (use-package notifications
   :ensure nil
   :demand t
@@ -130,4 +130,4 @@
 
 (require 'rgr/themes "rgr-themes" 'NOERROR)
 
-(load-el-gpg (no-littering-expand-etc-file-name "late-load"))
+(add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))

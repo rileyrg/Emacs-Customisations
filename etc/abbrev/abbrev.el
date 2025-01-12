@@ -1,9 +1,13 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'c++-mode-abbrev-table
   '(
-    ("cl" "class {
+    )
+
+  (define-abbrev-table 'c++-ts-mode-abbrev-table
+    '(
+      ("cl" "class {
 }" nil :count 1)
-    ("newf" "#include <iostream>
+      ("newf" "#include <iostream>
 #include <iostream>
 
 using std::cout;
@@ -16,29 +20,25 @@ int main(void)
      return 0;
 }
 " nil :count 1)
-    ("pr" "private" nil :count 0)
-    ("pu" "public" nil :count 1)
-    ("scerr" "std::cerr << " nil :count 2)
-    ("scin" "std::cin >> " nil :count 6)
-    ("scout" "std::cout << " nil :count 8)
-    ("sendl" "<< std::endl " nil :count 9)
-   ))
-
-(define-abbrev-table 'c++-ts-mode-abbrev-table
-  '(
-    ("sel" "<< std::endl ;" nil :count 2)
-   ))
+      ("pr" "private" nil :count 0)
+      ("pu" "public" nil :count 1)
+      ("scerr" "std::cerr << " nil :count 2)
+      ("scin" "std::cin >> " nil :count 6)
+      ("scout" "std::cout << " nil :count 8)
+      ("sendl" "<< std::endl " nil :count 9)
+      )
+    ))
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table
   '(
     ("(use-package )" "up" nil :count 0)
     ("upg" "(use-package )" nil :count 1)
-   ))
+    ))
 
 (define-abbrev-table 'global-abbrev-table
   '(
     ("ltx" "LaTeX" nil :count 0)
-   ))
+    ))
 
 (define-abbrev-table 'latex-mode-abbrev-table
   '(
@@ -46,11 +46,11 @@ int main(void)
     ("Dch" "\\gtab{E}{022100}" nil :count 0)
     ("Emch" "\\gtab{Em}{022000}" nil :count 1)
     ("Gch" "\\gtab{G}{320033}" nil :count 1)
-   ))
+    ))
 
 (define-abbrev-table 'org-mode-abbrev-table
   '(
-    ("bs" "#+begin_src " nil :count 3)
+    ("bs" "#+begin_src " nil :count 5)
     ("bsb" "#+begin_src bash " nil :count 1)
     ("bse" "#+begin_src emacs-lisp" nil :count 3)
     ("el" "emacs-lisp" nil :count 1)
@@ -71,5 +71,4 @@ int main(void)
 #+FILETAGS: :%CHANGEME%:
 
 #+PROPERTY: header-args:bash :tangle-mode (identity #o755)" nil :count 3)
-   ))
-
+    ))
