@@ -153,7 +153,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 ** keep data tidy
 #+begin_src  emacs-lisp
   (use-package no-littering
-    :ensure  (:wait t) :demand t
+    :ensure (:wait t) :demand t
     :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
     :custom
     (make-backup-files t)
@@ -162,10 +162,12 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
           `(("." . ,(no-littering-expand-var-file-name "backup/"))))
     (setq auto-save-file-name-transforms
           `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-    (setq rgr/elisp-dir (no-littering-expand-etc-file-name "elisp"))
+
+    (setq rgr/elisp-dir (no-littering-expand-etc-file-name  "elisp"))
     (add-to-list 'load-path rgr/elisp-dir)
     (let ((default-directory rgr/elisp-dir))
-      (normal-top-level-add-subdirs-to-load-path)))
+      (normal-top-level-add-subdirs-to-load-path))
+    )
 #+end_src
 ** custom.el
 #+begin_src emacs-lisp
@@ -207,7 +209,7 @@ Load all files in certain directories.
               (message "load-el-gpg loading %s" f)
               (load f 'no-error))
           (error nil)))))
-  (with-eval-after-load 'no-littering (load-el-gpg (no-littering-expand-etc-file-name "early-load")))
+  (eval-after-load 'no-littering (lambda()(load-el-gpg (no-littering-expand-etc-file-name "early-load"))))
 #+end_src
 ** host specific
 
@@ -243,6 +245,7 @@ example:
 #+end_src
 #+begin_src emacs-lisp
   (require 'auth-source)
+  (setq auth-sources '("~/.gnupg/auth/authinfo.gpg" "~/.gnupg/auth/authirc.gpg"))
   (defun get-auth-info (host user &optional port)
     "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
     (let* ((info (nth 0 (auth-source-search
@@ -756,7 +759,7 @@ https://github.com/magnars/multiple-cursors.emacs-lisp
 
 #+begin_src  emacs-lisp
   (use-package jinx
-    :hook (emacs-startup . global-jinx-mode)
+    :hook (elpaca-after-init-hook . global-jinx-mode)
     :bind (("<f8>" . jinx-correct)
            ("C-<f8>" . jinx-languages)))
 #+end_src
@@ -1125,6 +1128,7 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 [[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
 #+begin_src emacs-lisp
   (use-package  which-key
+    :ensure nil
     :demand t
     :config (which-key-mode))
 #+end_src
@@ -1144,26 +1148,27 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 :END:
 [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
 #+begin_src emacs-lisp
-  (setq-default abbrev-mode 1)
-;;  (load-file abbrev-file-name)
-  (defadvice expand-abbrev (after my-expand-abbrev activate)
-    ;; if there was an expansion
-    (if ad-return-value
-        ;; start idle timer to ensure insertion of abbrev activator
-        ;; character (e.g. space) is finished
-        (run-with-idle-timer 0 nil
-                             (lambda ()
-                               ;; if there is the string "@@" in the
-                               ;; expansion then move cursor there and
-                               ;; delete the string
-                               (let ((cursor "%CHANGEME%"))
-                                 (when (search-backward  cursor last-abbrev-location t)
-                                   (goto-char  last-abbrev-location)
-                                   (search-forward cursor)
-                                   (backward-word)
-                                   (highlight-symbol-at-point)
-                                   (delete-char (length cursor))
-                                   ))))))
+    (setq-default abbrev-mode 1)
+  (setq abbrev-file-name (no-littering-expand-etc-file-name "abbrev/abbrev.el"))
+  ;;  (load-file abbrev-file-name)
+    (defadvice expand-abbrev (after my-expand-abbrev activate)
+      ;; if there was an expansion
+      (if ad-return-value
+          ;; start idle timer to ensure insertion of abbrev activator
+          ;; character (e.g. space) is finished
+          (run-with-idle-timer 0 nil
+                               (lambda ()
+                                 ;; if there is the string "@@" in the
+                                 ;; expansion then move cursor there and
+                                 ;; delete the string
+                                 (let ((cursor "%CHANGEME%"))
+                                   (when (search-backward  cursor last-abbrev-location t)
+                                     (goto-char  last-abbrev-location)
+                                     (search-forward cursor)
+                                     (backward-word)
+                                     (highlight-symbol-at-point)
+                                     (delete-char (length cursor))
+                                     ))))))
 
 #+end_src
 **** company
@@ -1896,9 +1901,7 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
 :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
 :END:
 #+begin_src emacs-lisp
-  (use-package mu4e
-    :disabled
-    :straight ( :host github
+  (use-package mu4e :ensure ( :host github
                 :branch "release/1.10"
                 :repo "djcb/mu"
                 :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
@@ -1922,7 +1925,7 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
     ( mu4e-headers-show-threads nil ) ; Use "P" to toggle threading
     ( mu4e-decryption-policy 'ask )
     ( mu4e-hide-index-messages t )
-    ( mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu")) )
+    ( mu4e-mu-binary (expand-file-name "mu/build/mu/mu" elpaca-repos-directory) )
     ( mu4e-update-interval nil )
     ( mu4e-use-fancy-chars t )
     ( mu4e-view-prefer-html nil )

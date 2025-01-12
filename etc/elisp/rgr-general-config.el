@@ -221,7 +221,7 @@ The DWIM behaviour of this command is as follows:
   ("C-\\" . toggle-selective-display))
 
 (use-package jinx
-  :hook (emacs-startup . global-jinx-mode)
+  :hook (elpaca-after-init-hook . global-jinx-mode)
   :bind (("<f8>" . jinx-correct)
          ("C-<f8>" . jinx-languages)))
 

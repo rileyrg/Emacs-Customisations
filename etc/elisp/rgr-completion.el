@@ -93,6 +93,7 @@
   )
 
 (use-package  which-key
+  :ensure nil
   :demand t
   :config (which-key-mode))
 
@@ -104,6 +105,7 @@
   )
 
 (setq-default abbrev-mode 1)
+(setq abbrev-file-name (no-littering-expand-etc-file-name "abbrev/abbrev.el"))
 ;;  (load-file abbrev-file-name)
   (defadvice expand-abbrev (after my-expand-abbrev activate)
     ;; if there was an expansion
