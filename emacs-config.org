@@ -2546,7 +2546,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 #+end_src
 **** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
 ***** voltron
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq lldbv-dir (expand-file-name "emacs-lldb-voltron" emacs-project-dir))
   (use-package lldb-voltron
     :ensure `(:repo ,lldbv-dir)

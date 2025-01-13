@@ -229,11 +229,6 @@
     '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-(setq lldbv-dir (expand-file-name "emacs-lldb-voltron" emacs-project-dir))
-(use-package lldb-voltron
-  :ensure `(:repo ,lldbv-dir)
-  )
-
 (use-package rust-mode
   :disabled t
   :ensure t
