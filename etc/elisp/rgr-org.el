@@ -1,4 +1,5 @@
 (use-package org
+  :ensure nil
   :custom
   (org-agenda-files (expand-file-name "etc/org/agenda-files.txt" user-emacs-directory))
   (org-fontify-done-headline t)

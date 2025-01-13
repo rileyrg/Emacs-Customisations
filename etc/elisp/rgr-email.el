@@ -8,14 +8,14 @@
   )
 
 (use-package mu4e :ensure ( :host github
-              :branch "release/1.10"
-              :repo "djcb/mu"
-              :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
-              :main "mu4e/mu4e.el"
-              :pre-build (("./autogen.sh")
-                          ("ninja" "-C" "build")
-                          (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                              (expand-file-name "~/bin/mu") 'ok-if-exists)))
+                            :branch "release/1.10"
+                            :repo "djcb/mu"
+                            :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+                            :main "mu4e/mu4e.el"
+                            :pre-build (("./autogen.sh")
+                                        ("ninja" "-C" "build")
+                                        (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                                            (expand-file-name "~/bin/mu") 'ok-if-exists)))
   :commands (mu4e mu4e-update-index)
   :custom
   ( mayil-user-agent 'mu4e-user-agent )
@@ -39,10 +39,6 @@
   ( smtpmail-smtp-service 587 )
   ( user-full-name "Richard G.Riley" )
   :config
-
-  (use-package mu4e-alert
-    :init
-    (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
 
   (use-package mu4e-column-faces
     :after mu4e
@@ -157,5 +153,8 @@
                  ("C-c u" . mu4e-headers-mark-all-unread-read))))
 ;;:map mu4e-view-mode-map
 ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
+(use-package mu4e-alert
+  :init
+  (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
 
 (provide 'rgr/email)

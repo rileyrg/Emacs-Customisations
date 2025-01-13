@@ -52,10 +52,9 @@
 (use-package helpful)
 
 (setq elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir))
+(use-package quick-peek)
 (use-package el-docstring-sap
   :ensure `(:repo ,elsap-dir)
-  :config
-  (use-package quick-peek)
   :hook
   (emacs-lisp-mode . el-docstring-sap-mode)
   :bind

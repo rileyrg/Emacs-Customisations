@@ -126,6 +126,7 @@
                    nil nil sym))))
   (browse-url (format rgr/browser-doc-url sym)))
 
+(use-package mw-thesaurus)
 (use-package
   dictionary
   :commands (rgr/dictionary-search)
@@ -133,10 +134,9 @@
   (dictionary-server "dict.org")
   ;;(dictionary-server "localhost")
   :config
-  (use-package mw-thesaurus)
   (defun rgr/dictionary-search(&optional w)
     (interactive)
-    (dictionary-search (if w w (rgr/thing-at-point-dwim))))
+    (dictionary-search (if w w (kill-dwim))))
   :bind
   ("<f6>" . rgr/dictionary-search)
   ("S-<f6>" . mw-thesaurus-lookup-dwim))
@@ -186,11 +186,6 @@
 
 (use-package elfeed
   :config
-  (use-package elfeed-org
-    :custom
-    (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
-    :config
-    (elfeed-org))
   (run-at-time nil (* 8 60 60) #'elfeed-update)
   :bind
   ( "C-c w" . elfeed)
@@ -198,6 +193,11 @@
         ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-show-visit t))))
   (:map elfeed-search-mode-map
         ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-search-browse-url t)))))
+(use-package elfeed-org
+  :custom
+  (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
+  :config
+  (elfeed-org))
 
 
 
@@ -205,10 +205,9 @@
   :after (org-plus-contrib)
   :config
   (pdf-tools-install)
-  (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
-                                           ))
-  (use-package org-pdftools
-    :hook (org-mode . org-pdftools-setup-link)))
+  (add-hook 'pdf-isearch-minor-mode-hook (lambda ())))
+(use-package org-pdftools
+  :hook (org-mode . org-pdftools-setup-link))
 
 (use-package impatient-showdown
   :disabled

@@ -479,10 +479,6 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
 
     (global-hl-line-mode t)
 
-    (use-package delsel
-      :ensure nil
-      :hook (after-init . delete-selection-mode))
-
     (defun prot/keyboard-quit-dwim ()
       "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 
@@ -510,13 +506,6 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
     (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
     ;; https://github.com/rolandwalker/browse-url-dwim
     ;; Context-sensitive external browse URL or Internet search from Emacs.
-    (use-package
-      browse-url-dwim
-      :config
-      (browse-url-dwim-mode))
-
-    (use-package alert)
-
     ;; display dir name when core name clashes
     (require 'uniquify)
 
@@ -542,7 +531,14 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
     ( "S-<f1>" . describe-face)
     (  "M-m"  . manual-entry)
     ( "S-<f10>" . menu-bar-open))
-
+  (use-package alert)
+  (use-package delsel
+    :ensure nil
+    :hook (after-init . delete-selection-mode))
+  (use-package
+    browse-url-dwim
+    :config
+    (browse-url-dwim-mode))
 #+end_src
 **** posframe                                                      :posframe:
 :PROPERTIES:
@@ -1136,12 +1132,11 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
 Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 #+begin_src emacs-lisp
-    (use-package yasnippet
-      :config
-      (use-package yasnippet-snippets)
-      :init
-      (yas-global-mode)
-      )
+  (use-package yasnippet
+    :init
+    (yas-global-mode)
+    )
+  (use-package yasnippet-snippets)
 #+end_src
 **** Abbrev Mode
 :PROPERTIES:
@@ -1235,6 +1230,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 :END:
 #+begin_src emacs-lisp
   (use-package org
+    :ensure nil
     :custom
     (org-agenda-files (expand-file-name "etc/org/agenda-files.txt" user-emacs-directory))
     (org-fontify-done-headline t)
@@ -1642,6 +1638,7 @@ A bit of a dogs dinner.
 :END:
 The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
 #+begin_src emacs-lisp
+  (use-package mw-thesaurus)
   (use-package
     dictionary
     :commands (rgr/dictionary-search)
@@ -1649,10 +1646,9 @@ The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
     (dictionary-server "dict.org")
     ;;(dictionary-server "localhost")
     :config
-    (use-package mw-thesaurus)
     (defun rgr/dictionary-search(&optional w)
       (interactive)
-      (dictionary-search (if w w (rgr/thing-at-point-dwim))))
+      (dictionary-search (if w w (kill-dwim))))
     :bind
     ("<f6>" . rgr/dictionary-search)
     ("S-<f6>" . mw-thesaurus-lookup-dwim))
@@ -1740,11 +1736,6 @@ Browse devdocs.io documents inside Emacs!
 #+begin_src emacs-lisp
   (use-package elfeed
     :config
-    (use-package elfeed-org
-      :custom
-      (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
-      :config
-      (elfeed-org))
     (run-at-time nil (* 8 60 60) #'elfeed-update)
     :bind
     ( "C-c w" . elfeed)
@@ -1752,6 +1743,11 @@ Browse devdocs.io documents inside Emacs!
           ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-show-visit t))))
     (:map elfeed-search-mode-map
           ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-search-browse-url t)))))
+  (use-package elfeed-org
+    :custom
+    (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
+    :config
+    (elfeed-org))
 #+end_src
 ***** elfeed-org
 :PROPERTIES:
@@ -1769,10 +1765,9 @@ Browse devdocs.io documents inside Emacs!
     :after (org-plus-contrib)
     :config
     (pdf-tools-install)
-    (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
-                                             ))
-    (use-package org-pdftools
-      :hook (org-mode . org-pdftools-setup-link)))
+    (add-hook 'pdf-isearch-minor-mode-hook (lambda ())))
+  (use-package org-pdftools
+    :hook (org-mode . org-pdftools-setup-link))
 #+end_src
 ***** requirements
 #+begin_src bash
@@ -1881,14 +1876,14 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
 :END:
 #+begin_src emacs-lisp
   (use-package mu4e :ensure ( :host github
-                :branch "release/1.10"
-                :repo "djcb/mu"
-                :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
-                :main "mu4e/mu4e.el"
-                :pre-build (("./autogen.sh")
-                            ("ninja" "-C" "build")
-                            (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                                (expand-file-name "~/bin/mu") 'ok-if-exists)))
+                              :branch "release/1.10"
+                              :repo "djcb/mu"
+                              :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+                              :main "mu4e/mu4e.el"
+                              :pre-build (("./autogen.sh")
+                                          ("ninja" "-C" "build")
+                                          (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                                              (expand-file-name "~/bin/mu") 'ok-if-exists)))
     :commands (mu4e mu4e-update-index)
     :custom
     ( mayil-user-agent 'mu4e-user-agent )
@@ -1912,10 +1907,6 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
     ( smtpmail-smtp-service 587 )
     ( user-full-name "Richard G.Riley" )
     :config
-
-    (use-package mu4e-alert
-      :init
-      (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
 
     (use-package mu4e-column-faces
       :after mu4e
@@ -2030,6 +2021,9 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
                    ("C-c u" . mu4e-headers-mark-all-unread-read))))
   ;;:map mu4e-view-mode-map
   ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
+  (use-package mu4e-alert
+    :init
+    (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -2155,8 +2149,6 @@ https://github.com/emacsmirror/rmsbolt
     (eldoc-idle-delay 1)
     (eldoc-echo-area-use-multiline-p t)
     :config
-    (use-package eldoc-box
-      :after eldoc)
     (defun rgr/eldoc-mode-hook()
       ;;(eldoc-box-hover-at-point-mode)
       )
@@ -2166,6 +2158,10 @@ https://github.com/emacsmirror/rmsbolt
     (eldoc-mode . rgr/eldoc-mode-hook)
     :bind
     ("C-." . eldoc-box-help-at-point))
+
+  (use-package eldoc-box
+    :after eldoc)
+
 #+end_src
 
 **** compilation
@@ -2206,11 +2202,11 @@ https://github.com/emacsmirror/rmsbolt
     (treemacs-follow-mode +1)
     (treemacs-fringe-indicator-mode)
     (treemacs-git-mode 'deferred)
-    (use-package treemacs-magit)
     :bind
     ("M-9"   . 'treemacs-select-window)
     (:map treemacs-mode-map
           ("<right>" . treemacs-peek)))
+  (use-package treemacs-magit :after treemacs)
 
 #+end_src
 **** duplicate thing
@@ -2313,8 +2309,7 @@ always causes issues. disabled.
 :PROPERTIES:
 :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
 :END:
-#+begin_src emacs-lisp :tangle no
-  (straight-use-package 'sqlite3)
+#+begin_src emacs-lisp
   (use-package forge
     :disabled
     :after magit)
@@ -2885,15 +2880,15 @@ Use helpful if installed else built in
 Display a poup containing docstring at point
 #+begin_src emacs-lisp
   (setq elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir))
+  (use-package quick-peek)
   (use-package el-docstring-sap
     :ensure `(:repo ,elsap-dir)
-    :config
-    (use-package quick-peek)
     :hook
     (emacs-lisp-mode . el-docstring-sap-mode)
     :bind
     ("M-<f2>" . el-docstring-sap-display)
     ("M-<f1>" . el-docstring-sap-mode))
+
 
 #+end_src
 **** Elisp debugging

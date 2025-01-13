@@ -98,11 +98,10 @@
   :config (which-key-mode))
 
 (use-package yasnippet
-  :config
-  (use-package yasnippet-snippets)
   :init
   (yas-global-mode)
   )
+(use-package yasnippet-snippets)
 
 (use-package emacs
   :ensure nil

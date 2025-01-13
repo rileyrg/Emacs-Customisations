@@ -34,8 +34,6 @@
   (eldoc-idle-delay 1)
   (eldoc-echo-area-use-multiline-p t)
   :config
-  (use-package eldoc-box
-    :after eldoc)
   (defun rgr/eldoc-mode-hook()
     ;;(eldoc-box-hover-at-point-mode)
     )
@@ -45,6 +43,9 @@
   (eldoc-mode . rgr/eldoc-mode-hook)
   :bind
   ("C-." . eldoc-box-help-at-point))
+
+(use-package eldoc-box
+  :after eldoc)
 
 (global-set-key (kbd "C-c C-r") 'recompile)
 (global-set-key (kbd "<f9>")
@@ -72,11 +73,11 @@
   (treemacs-follow-mode +1)
   (treemacs-fringe-indicator-mode)
   (treemacs-git-mode 'deferred)
-  (use-package treemacs-magit)
   :bind
   ("M-9"   . 'treemacs-select-window)
   (:map treemacs-mode-map
         ("<right>" . treemacs-peek)))
+(use-package treemacs-magit :after treemacs)
 
 (use-package duplicate-thing
   :bind
@@ -128,6 +129,10 @@
   :bind
   ("C-x g" . magit-status))
 (use-package magit-filenotify :after magit)
+
+(use-package forge
+  :disabled
+  :after magit)
 
 (use-package diff-hl
   :hook

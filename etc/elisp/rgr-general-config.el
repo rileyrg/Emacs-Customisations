@@ -32,10 +32,6 @@
 
   (global-hl-line-mode t)
 
-  (use-package delsel
-    :ensure nil
-    :hook (after-init . delete-selection-mode))
-
   (defun prot/keyboard-quit-dwim ()
     "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 
@@ -63,13 +59,6 @@ The DWIM behaviour of this command is as follows:
   (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
   ;; https://github.com/rolandwalker/browse-url-dwim
   ;; Context-sensitive external browse URL or Internet search from Emacs.
-  (use-package
-    browse-url-dwim
-    :config
-    (browse-url-dwim-mode))
-
-  (use-package alert)
-
   ;; display dir name when core name clashes
   (require 'uniquify)
 
@@ -95,6 +84,14 @@ The DWIM behaviour of this command is as follows:
   ( "S-<f1>" . describe-face)
   (  "M-m"  . manual-entry)
   ( "S-<f10>" . menu-bar-open))
+(use-package alert)
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
+(use-package
+  browse-url-dwim
+  :config
+  (browse-url-dwim-mode))
 
 (use-package posframe)
 
