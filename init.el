@@ -130,6 +130,4 @@
 
 (require 'rgr/elisp (expand-file-name "rgr-elisp" rgr/elisp-dir))
 
-(require 'rgr/themes "rgr-themes" 'NOERROR)
-
 (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))

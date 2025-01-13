@@ -443,7 +443,8 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
            (t
             (keyboard-quit))))
         
-        (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
+        (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
+        
         ;; https://github.com/rolandwalker/browse-url-dwim
         ;; Context-sensitive external browse URL or Internet search from Emacs.
         (use-package
@@ -479,14 +480,41 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (  "M-m"  . manual-entry)
           ( "S-<f10>" . menu-bar-open))
 
-2.  posframe
+2.  modus themes
+
+    <https://github.com/protesilaos/modus-themes>
+    
+        (use-package modus-themes
+                                                ;:disabled
+          :init
+          ;; Add all your customizations prior to loading the themes
+          (setq modus-themes-slanted-constructs t
+                modus-themes-bold-constructs nil)
+        
+          ;; Load the theme files before enabling a theme
+          ;; (modus-themes-load-themes)
+          :config
+          (load-theme 'modus-operandi :no-confirm))
+        ;; (modus-themes-load-vivendi))
+
+3.  ef-themes
+
+    <https://github.com/protesilaos/ef-themes>
+    
+        (use-package ef-themes
+          :disabled
+          :demand t
+          :config
+          (ef-themes-select 'ef-duo-light))
+
+4.  posframe
 
     [Posframe](https://github.com/tumashu/posframe)
     can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
     
         (use-package posframe)
 
-3.  ACE utilities
+5.  ACE utilities
 
     1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
     
@@ -508,7 +536,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :config
               (ace-link-setup-default))
 
-4.  pulsar
+6.  pulsar
 
     visual feedback as to cursor position
     <https://protesilaos.com/emacs/pulsar>
@@ -528,14 +556,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (
            pulsar-global-mode 1))
 
-5.  boxquote
+7.  boxquote
 
         (use-package boxquote
           ;;:straight (:branch "main")
           :bind
           ("C-S-r" . boxquote-region))
 
-6.  volatile-highlights
+8.  volatile-highlights
 
     brings visual feedback to some operations by highlighting portions relating to the operations.
     
@@ -543,14 +571,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           volatile-highlights
           :init (volatile-highlights-mode 1))
 
-7.  web pasting
+9.  web pasting
 
         (use-package
           dpaste
           :init
           :bind ("C-c y" . dpaste-region-or-buffer))
 
-8.  Accessibility
+10. Accessibility
 
     1.  fonts
     
@@ -567,7 +595,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               :bind
               ( "<C-f7>" . 'darkroom-mode))
 
-9.  Ansi colour
+11. Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
     
@@ -575,7 +603,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
         (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-10. Tabs
+12. Tabs
 
         
         (defun consult-buffer-other-tab ()
@@ -606,7 +634,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                        ("c" . tab-bar-new-tab)
                        ("s" . tab-bar-switch-to-tab))))
 
-11. emjois
+13. emjois
 
     <https://github.com/iqbalansari/emacs-emojify>
     
@@ -614,7 +642,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           :init
           (global-emojify-mode))
 
-12. Cursor/Region related
+14. Cursor/Region related
 
         (defun centreCursorLineOn()
           "set properties to keep current line approx at centre of screen height. Useful for debugging."
@@ -644,7 +672,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
                      ("C-c C-SPC" . mc/edit-lines)
                      ))
 
-13. Folding/Hide Show
+15. Folding/Hide Show
 
     [hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
     
@@ -671,21 +699,21 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     
     \#+end\_src
 
-14. jinx : the enchanted spell checker
+16. jinx : the enchanted spell checker
 
         (use-package jinx
           :hook (emacs-startup . global-jinx-mode)
           :bind (("<f8>" . jinx-correct)
                  ("C-<f8>" . jinx-languages)))
 
-15. rg, ripgrep
+17. rg, ripgrep
 
     rg is pretty quick
     
         (use-package
           ripgrep)
 
-16. provide
+18. provide
 
         (provide 'rgr/general-config)
 
@@ -1213,7 +1241,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org0248fb8)
+    See `org-agenda-files` [org-agenda-files](#orgaf65224)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2614,47 +2642,6 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
         (provide 'rgr/elisp)
 
 
-## Themes
-
-Raw: [rgr/themes](etc/elisp/rgr-themes.el)
-
-    (require 'rgr/themes "rgr-themes" 'NOERROR)
-
-
-### library
-
-1.  modus themes
-
-    <https://github.com/protesilaos/modus-themes>
-    
-        (use-package modus-themes
-                                                ;:disabled
-          :init
-          ;; Add all your customizations prior to loading the themes
-          (setq modus-themes-slanted-constructs t
-                modus-themes-bold-constructs nil)
-        
-          ;; Load the theme files before enabling a theme
-          ;; (modus-themes-load-themes)
-          :config
-          (load-theme 'modus-operandi :no-confirm))
-        ;; (modus-themes-load-vivendi))
-
-2.  ef-themes
-
-    <https://github.com/protesilaos/ef-themes>
-    
-        (use-package ef-themes
-          :disabled
-          :demand t
-          :config
-          (ef-themes-select 'ef-duo-light))
-
-3.  provide
-
-        (provide 'rgr/themes)
-
-
 ## Late load
 
     (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))
@@ -2746,7 +2733,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org326fef6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0f288a6) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2779,7 +2766,7 @@ to add to version control.
     fi
 
 
-<a id="org326fef6"></a>
+<a id="org0f288a6"></a>
 
 ### Gnome protocol handler desktop file
 

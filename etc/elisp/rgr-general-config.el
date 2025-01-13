@@ -54,7 +54,8 @@ The DWIM behaviour of this command is as follows:
    (t
     (keyboard-quit))))
 
-(define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
+(define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
+
 ;; https://github.com/rolandwalker/browse-url-dwim
 ;; Context-sensitive external browse URL or Internet search from Emacs.
 (use-package
@@ -89,6 +90,25 @@ The DWIM behaviour of this command is as follows:
   ( "S-<f1>" . describe-face)
   (  "M-m"  . manual-entry)
   ( "S-<f10>" . menu-bar-open))
+
+(use-package modus-themes
+                                        ;:disabled
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-slanted-constructs t
+        modus-themes-bold-constructs nil)
+
+  ;; Load the theme files before enabling a theme
+  ;; (modus-themes-load-themes)
+  :config
+  (load-theme 'modus-operandi :no-confirm))
+;; (modus-themes-load-vivendi))
+
+(use-package ef-themes
+  :disabled
+  :demand t
+  :config
+  (ef-themes-select 'ef-duo-light))
 
 (use-package posframe)
 
