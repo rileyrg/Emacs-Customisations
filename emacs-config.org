@@ -733,16 +733,6 @@ https://github.com/magnars/multiple-cursors.el
     ("C-<f8>" . jinx-languages))
 #+end_src
 
-**** rg, ripgrep
-:PROPERTIES:
-:ID:       994cd90f-bba4-4a3d-87f1-6cb9faba1270
-:END:
-rg is pretty quick
-#+begin_src emacs-lisp
-  (use-package
-    ripgrep)
-#+end_src
-
 **** provide
 :PROPERTIES:
 :ID:       101d96b3-5d00-4d97-93c4-2c2f7aac8852

@@ -201,7 +201,4 @@ The DWIM behaviour of this command is as follows:
   ("S-<f8>" . jinx-correct-word)
   ("C-<f8>" . jinx-languages))
 
-(use-package
-  ripgrep)
-
 (provide 'rgr/general-config)
