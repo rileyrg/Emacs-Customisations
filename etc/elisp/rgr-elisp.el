@@ -41,7 +41,7 @@
             (setq sym nil)))))))
 
 (require 'info)
-(add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
+(add-to-list 'Info-directory-list (expand-file-name  "var/info" user-emacs-directory))
 
 (defun rgr/elisp-edit-mode()
   "return non nil if this buffer edits elisp"

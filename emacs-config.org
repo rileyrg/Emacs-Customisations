@@ -149,11 +149,16 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
           (elpaca-use-package-mode))
 
 #+end_src
+** custom.el
+#+begin_src emacs-lisp
+  (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+  (add-hook 'elpaca-after-init-hook (lambda()(load custom-file 'noerror)))
+#+end_src
+** no-littering - keep data tidy
 
-** keep data tidy
 #+begin_src  emacs-lisp
+  (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
   (use-package no-littering
-    :ensure (:wait t) :demand t
     :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
     :custom
     (make-backup-files t)
@@ -163,16 +168,10 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (setq auto-save-file-name-transforms
           `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
-    (setq rgr/elisp-dir (no-littering-expand-etc-file-name  "elisp"))
     (add-to-list 'load-path rgr/elisp-dir)
     (let ((default-directory rgr/elisp-dir))
       (normal-top-level-add-subdirs-to-load-path))
     )
-#+end_src
-** custom.el
-#+begin_src emacs-lisp
-  (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-  (eval-after-load 'no-littering (lambda()(load custom-file 'noerror)))
 #+end_src
 ** notifications
 #+begin_src  emacs-lisp
@@ -220,7 +219,7 @@ Load all files in certain directories.
 Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][custom file]].
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'no-littering  (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts"))))
+  (eval-after-load 'no-littering  (lambda()(load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))))
 #+end_src
 
 ** Security
@@ -1151,7 +1150,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
 #+begin_src emacs-lisp
     (setq-default abbrev-mode 1)
-  (setq abbrev-file-name (no-littering-expand-etc-file-name "abbrev/abbrev.el"))
+  (setq abbrev-file-name (expand-file-name "var/abbrev/abbrev.el" user-emacs-directory))
   ;;  (load-file abbrev-file-name)
     (defadvice expand-abbrev (after my-expand-abbrev activate)
       ;; if there was an expansion
@@ -1242,7 +1241,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 #+begin_src emacs-lisp
   (use-package org
     :custom
-    (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
+    (org-agenda-files (expand-file-name "var/etc/agenda-files.txt" user-emacs-directory))
     (org-fontify-done-headline t)
     (org-fontify-todo-headline t)
     (org-clock-idle-time 10)
@@ -1410,7 +1409,7 @@ Raw: [[file+sys:etc/elisp/rgr-typesetting.el][rgr/typesetting]]
     :config
     (defun rgr/latex-mode-hook()
       ;; buggy as this then gets savd to the global abbrevs
-      (load-file (no-littering-expand-etc-file-name "abbrev/latex-songbook-chords.el"))
+      (load-file (expand-file-name  "etc/abbrev/latex-songbook-chords.el" user-emacs-directory ))
       (setq abbrevs-changed nil)
       (turn-on-reftex)
       (visual-line-mode)
@@ -1493,7 +1492,7 @@ https://ollama.ai/library/zephyr
 #+begin_src  emacs-lisp
   (use-package ellama
     :custom
-    (ellama-sessions-directory (no-littering-expand-var-file-name "ellama-sessions"))
+    (ellama-sessions-directory (expand-file-name  "var/ellama-sessions/" user-emacs-directory))
     :init
     (setopt ellama-language "German")
     (require 'llm-ollama))
@@ -1689,23 +1688,6 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
         (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
     :bind (("C-x G" . goldendict-dwim)))
 #+end_src
-**** dash-docs
-I'm not sure if this works unless you pay now.
-#+begin_src  emacs-lisp
-  (use-package dash-docs
-    :disabled t
-    :custom
-    (dash-docs-common-docsets dash-docs-common-docsets)
-    (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs"))
-    :config
-    (defun rgr/dash-search(&optional s)
-      (interactive)
-      (let ((sym (if s s (thing-at-point 'symbol))))
-        (message "dash docs search %s" sym)
-        (dash-docs-search sym)))
-    :bind
-    ("C-S-a" . rgr/dash-search ))
-#+end_src
 **** API docs
 #+begin_src emacs-lisp
   (defun rgr/devdocs()
@@ -1733,9 +1715,9 @@ Browse devdocs.io documents inside Emacs!
   (use-package devdocs-browser
     ;;:disabled t
     :custom
-    (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
-    (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
-    (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
+    (devdocs-data-dir (expand-file-name  "var/devdocs-browser" user-emacs-directory))
+    (devdocs-browser-cache-directory (expand-file-name  "var/devdocs-browser/cache" user-emacs-directory))
+    (devdocs-browser-data-directory (expand-file-name  "var/devdocs-browser/data" user-emacs-directory))
     :hook
     (c-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("c"))))
     (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
@@ -1765,7 +1747,7 @@ Browse devdocs.io documents inside Emacs!
     :config
     (use-package elfeed-org
       :custom
-      (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
+      (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
       :config
       (elfeed-org))
     (run-at-time nil (* 8 60 60) #'elfeed-update)
@@ -2387,7 +2369,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
   (use-package treesit-auto
     :custom
     (treesit-auto-install 'prompt)
-    (treesit-extra-load-path `(,(no-littering-expand-var-file-name "tree-sitter")))
+    (treesit-extra-load-path `(,(expand-file-name  "var/tree-sitter" user-emacs-directory)))
     :config
     (treesit-auto-add-to-auto-mode-alist 'all)
     (global-treesit-auto-mode))
@@ -2490,7 +2472,7 @@ https://github.com/joaotavora/eglot
     ;;(setq dape-key-prefix "\C-x\C-a")
 
     :custom
-    (dape-default-breakpoints-file (no-littering-expand-var-file-name  "dape/dape-breakpoints"))
+    (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
     (dape-buffer-window-arrangement 'right)
     (dape-info-hide-mode-line nil)
     (dape-inlay-hints t)
@@ -2848,7 +2830,7 @@ Use helpful if installed else built in
 ***** external info files
 #+begin_src emacs-lisp
   (require 'info)
-  (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
+  (add-to-list 'Info-directory-list (expand-file-name  "var/info" user-emacs-directory))
 #+end_src
 
 **** smartparens

@@ -1,6 +1,6 @@
 (use-package org
   :custom
-  (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
+  (org-agenda-files (expand-file-name "var/etc/agenda-files.txt" user-emacs-directory))
   (org-fontify-done-headline t)
   (org-fontify-todo-headline t)
   (org-clock-idle-time 10)

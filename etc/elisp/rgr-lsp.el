@@ -33,7 +33,7 @@
   ;;(setq dape-key-prefix "\C-x\C-a")
 
   :custom
-  (dape-default-breakpoints-file (no-littering-expand-var-file-name  "dape/dape-breakpoints"))
+  (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
   (dape-buffer-window-arrangement 'right)
   (dape-info-hide-mode-line nil)
   (dape-inlay-hints t)

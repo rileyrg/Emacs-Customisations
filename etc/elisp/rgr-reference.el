@@ -4,7 +4,7 @@
 
 (use-package ellama
   :custom
-  (ellama-sessions-directory (no-littering-expand-var-file-name "ellama-sessions"))
+  (ellama-sessions-directory (expand-file-name  "var/ellama-sessions/" user-emacs-directory))
   :init
   (setopt ellama-language "German")
   (require 'llm-ollama))
@@ -155,20 +155,6 @@
       (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
   :bind (("C-x G" . goldendict-dwim)))
 
-(use-package dash-docs
-  :disabled t
-  :custom
-  (dash-docs-common-docsets dash-docs-common-docsets)
-  (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs"))
-  :config
-  (defun rgr/dash-search(&optional s)
-    (interactive)
-    (let ((sym (if s s (thing-at-point 'symbol))))
-      (message "dash docs search %s" sym)
-      (dash-docs-search sym)))
-  :bind
-  ("C-S-a" . rgr/dash-search ))
-
 (defun rgr/devdocs()
   "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
   (interactive)
@@ -185,9 +171,9 @@
 (use-package devdocs-browser
   ;;:disabled t
   :custom
-  (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
-  (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
-  (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
+  (devdocs-data-dir (expand-file-name  "var/devdocs-browser" user-emacs-directory))
+  (devdocs-browser-cache-directory (expand-file-name  "var/devdocs-browser/cache" user-emacs-directory))
+  (devdocs-browser-data-directory (expand-file-name  "var/devdocs-browser/data" user-emacs-directory))
   :hook
   (c-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("c"))))
   (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
@@ -202,7 +188,7 @@
   :config
   (use-package elfeed-org
     :custom
-    (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
+    (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
     :config
     (elfeed-org))
   (run-at-time nil (* 8 60 60) #'elfeed-update)

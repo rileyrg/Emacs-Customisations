@@ -12,7 +12,7 @@
     :config
     (defun rgr/latex-mode-hook()
       ;; buggy as this then gets savd to the global abbrevs
-      (load-file (no-littering-expand-etc-file-name "abbrev/latex-songbook-chords.el"))
+      (load-file (expand-file-name  "etc/abbrev/latex-songbook-chords.el" user-emacs-directory ))
       (setq abbrevs-changed nil)
       (turn-on-reftex)
       (visual-line-mode)
