@@ -102,9 +102,9 @@
             (message "load-el-gpg loading %s" f)
             (load f 'no-error))
         (error nil)))))
-(eval-after-load 'no-littering (lambda()(load-el-gpg (expand-file-name "etc/early-load" user-emacs-directory))))
+(load-el-gpg (expand-file-name "etc/early-load" user-emacs-directory))
 
-(eval-after-load 'no-littering  (lambda()(load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))))
+(load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))
 
 (require 'rgr/security "rgr-security" 'NOERROR)
 

@@ -212,9 +212,9 @@ Load all files in certain directories.
               (message "load-el-gpg loading %s" f)
               (load f 'no-error))
           (error nil)))))
-  (eval-after-load 'no-littering (lambda()(load-el-gpg (expand-file-name "etc/early-load" user-emacs-directory))))
+  (load-el-gpg (expand-file-name "etc/early-load" user-emacs-directory))
 #+end_src
-** host specific
+*** host specific
 
 :PROPERTIES:
 :ID:       efe9afb5-3779-407d-a7a9-fd8968ea0f69
@@ -223,7 +223,7 @@ Load all files in certain directories.
 Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][custom file]].
 
 #+begin_src emacs-lisp
-  (eval-after-load 'no-littering  (lambda()(load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))))
+  (load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))
 #+end_src
 
 ** Security

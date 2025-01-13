@@ -124,11 +124,23 @@ Emacs early-init
             (elpaca-use-package-mode))
 
 
-## keep data tidy
+## custom.el
 
+    (use-package emacs
+      :ensure nil
+      :after no-littering
+      :init
+      (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+      (load custom-file 'noerror))
+
+
+## no-littering - keep data tidy
+
+    (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
+    
     (use-package no-littering
-      :ensure (:wait t) :demand t
-      :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
+      :ensure (:wait t)
+      ;; :demand t
       :custom
       (make-backup-files t)
       :config
@@ -137,17 +149,9 @@ Emacs early-init
       (setq auto-save-file-name-transforms
             `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
     
-      (setq rgr/elisp-dir (no-littering-expand-etc-file-name  "elisp"))
       (add-to-list 'load-path rgr/elisp-dir)
       (let ((default-directory rgr/elisp-dir))
-        (normal-top-level-add-subdirs-to-load-path))
-      )
-
-
-## custom.el
-
-    (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-    (eval-after-load 'no-littering (lambda()(load custom-file 'noerror)))
+        (normal-top-level-add-subdirs-to-load-path)))
 
 
 ## notifications
@@ -180,16 +184,16 @@ Load all files in certain directories.
                 (message "load-el-gpg loading %s" f)
                 (load f 'no-error))
             (error nil)))))
-    (eval-after-load 'no-littering (lambda()(load-el-gpg (no-littering-expand-etc-file-name "early-load"))))
+    (load-el-gpg (expand-file-name "etc/early-load" user-emacs-directory))
 
 
-## host specific
+### host specific
 
 :ID:       efe9afb5-3779-407d-a7a9-fd8968ea0f69
 
 Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/custom.el).
 
-    (with-eval-after-load 'no-littering  (load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts"))))
+    (load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))
 
 
 ## Security
@@ -336,6 +340,8 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 
 1.  persistence  and history
 
+        (use-package emacs :ensure nil
+          :config
         (recentf-mode)
         (savehist-mode)
         (save-place-mode)
@@ -367,8 +373,7 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
           (interactive)
           (save-buffers-kill-emacs))
         
-        (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
-        
+        :bind ("C-c x" . rgr/quit-or-close-emacs))
         
         (provide 'rgr/startup)
     
@@ -386,43 +391,46 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
 1.  general ui
 
-        
-        (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
-                                                ; t60
-        (scroll-bar-mode -1)
-        (tool-bar-mode -1)
-        (menu-bar-mode -1)
-        (show-paren-mode 1)
-        (winner-mode 1)
-        
-        (repeat-mode)
-        
-        (global-auto-revert-mode 1)
-        ;; Also auto refresh dired, but be quiet about it
-        (setq global-auto-revert-non-file-buffers t)
-        (setq auto-revert-verbose nil)
-        (setq auto-revert-use-notify nil)
-        
-        (global-visual-line-mode 1)
-        
-        (setq column-number-mode t)
-        
-        (delete-selection-mode 1)
-        
-        (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
-        
-        (defalias 'yes-or-no-p 'y-or-n-p)
-        
-        (setq disabled-command-function nil)
-        
-        (global-hl-line-mode t)
-        
-        (use-package delsel
+        (use-package emacs
           :ensure nil
-          :hook (after-init . delete-selection-mode))
+          :config
         
-        (defun prot/keyboard-quit-dwim ()
-          "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+          (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
+                                                ; t60
+          (scroll-bar-mode -1)
+          (tool-bar-mode -1)
+          (menu-bar-mode -1)
+          (show-paren-mode 1)
+          (winner-mode 1)
+        
+          (repeat-mode)
+        
+          (global-auto-revert-mode 1)
+          ;; Also auto refresh dired, but be quiet about it
+          (setq global-auto-revert-non-file-buffers t)
+          (setq auto-revert-verbose nil)
+          (setq auto-revert-use-notify nil)
+        
+          (global-visual-line-mode 1)
+        
+          (setq column-number-mode t)
+        
+          (delete-selection-mode 1)
+        
+          (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+        
+          (defalias 'yes-or-no-p 'y-or-n-p)
+        
+          (setq disabled-command-function nil)
+        
+          (global-hl-line-mode t)
+        
+          (use-package delsel
+            :ensure nil
+            :hook (after-init . delete-selection-mode))
+        
+          (defun prot/keyboard-quit-dwim ()
+            "Do-What-I-Mean behaviour for a general `keyboard-quit'.
         
         The generic `keyboard-quit' does not do the expected thing when
         the minibuffer is open.  Whereas we want it to close the
@@ -434,51 +442,52 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         - When a minibuffer is open, but not focused, close the minibuffer.
         - When the Completions buffer is selected, close it.
         - In every other case use the regular `keyboard-quit'."
-          (interactive)
-          (cond
-           ((region-active-p)
-            (keyboard-quit))
-           ((derived-mode-p 'completion-list-mode)
-            (delete-completion-window))
-           ((> (minibuffer-depth) 0)
-            (abort-recursive-edit))
-           (t
-            (keyboard-quit))))
+            (interactive)
+            (cond
+             ((region-active-p)
+              (keyboard-quit))
+             ((derived-mode-p 'completion-list-mode)
+              (delete-completion-window))
+             ((> (minibuffer-depth) 0)
+              (abort-recursive-edit))
+             (t
+              (keyboard-quit))))
         
-        (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
-        ;; https://github.com/rolandwalker/browse-url-dwim
-        ;; Context-sensitive external browse URL or Internet search from Emacs.
-        (use-package
-          browse-url-dwim
-          :config
-          (browse-url-dwim-mode))
+          (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
+          ;; https://github.com/rolandwalker/browse-url-dwim
+          ;; Context-sensitive external browse URL or Internet search from Emacs.
+          (use-package
+            browse-url-dwim
+            :config
+            (browse-url-dwim-mode))
         
-        (use-package alert)
+          (use-package alert)
         
-        ;; display dir name when core name clashes
-        (require 'uniquify)
+          ;; display dir name when core name clashes
+          (require 'uniquify)
         
-        (defun rgr/kill-current-buffer()
-          (interactive)
-          (if (member (buffer-name) '("*Messages*" "*scratch*"))
-              (progn
-                (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-                (delete-window))
-            (kill-current-buffer)
-            (delete-window)))
+          (defun rgr/kill-current-buffer()
+            (interactive)
+            (if (member (buffer-name) '("*Messages*" "*scratch*"))
+                (progn
+                  (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+                  (delete-window))
+              (kill-current-buffer)
+              (delete-window)))
         
-        (add-hook 'before-save-hook 'delete-trailing-whitespace)
-        :bind
-        (global-set-key (kbd "C-x C-q") 'view-mode)
-        (global-set-key (kbd "C-c e") 'rgr/erc-start)
-        (global-set-key (kbd "C-x C-b") 'ibuffer)
-        (global-set-key (kbd "C-x C-i") 'imenu)
-        (global-set-key (kbd "C-x k") 'rgr/kill-current-buffer)
-        (global-set-key (kbd "M-0") 'delete-window)
-        (global-set-key (kbd "M-1") 'delete-other-windows)
-        (global-set-key (kbd "S-<f1>") 'describe-face)
-        (global-set-key (kbd  "M-m" ) 'manual-entry)
-        (global-set-key (kbd "S-<f10>") 'menu-bar-open)
+          :hook
+          (before-save  . delete-trailing-whitespace)
+          :bind
+          ("C-x C-q" . view-mode)
+          ( "C-c e" . rgr/erc-start)
+          ( "C-x C-b" . ibuffer)
+          ( "C-x C-i" . imenu)
+          ( "C-x k" . rgr/kill-current-buffer)
+          ( "M-0" . delete-window)
+          ( "M-1" . delete-other-windows)
+          ( "S-<f1>" . describe-face)
+          (  "M-m"  . manual-entry)
+          ( "S-<f10>" . menu-bar-open))
 
 2.  posframe
 
@@ -1027,9 +1036,12 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
 
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
+        (use-package emacs
+          :ensure nil
+          :config
           (setq-default abbrev-mode 1)
-        (setq abbrev-file-name (no-littering-expand-etc-file-name "abbrev/abbrev.el"))
-        ;;  (load-file abbrev-file-name)
+          (setq abbrev-file-name (expand-file-name "etc/abbrev/abbrev.el" user-emacs-directory))
+          ;;  (load-file abbrev-file-name)
           (defadvice expand-abbrev (after my-expand-abbrev activate)
             ;; if there was an expansion
             (if ad-return-value
@@ -1047,7 +1059,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
                                            (backward-word)
                                            (highlight-symbol-at-point)
                                            (delete-char (length cursor))
-                                           ))))))
+                                           )))))))
 
 5.  company
 
@@ -1081,13 +1093,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
           :init
           (vertico-mode))
 
-7.  Abbrev Mode
-
-    [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
-    
-        (setq-default abbrev-mode 1)
-
-8.  provide
+7.  provide
 
         (provide 'rgr/completion)
 
@@ -1107,7 +1113,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
         (use-package org
           :custom
-          (org-agenda-files (no-littering-expand-etc-file-name "org/agenda-files.txt"))
+          (org-agenda-files (expand-file-name "etc/org/agenda-files.txt" user-emacs-directory))
           (org-fontify-done-headline t)
           (org-fontify-todo-headline t)
           (org-clock-idle-time 10)
@@ -1220,7 +1226,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2dd9de9)
+    See `org-agenda-files` [org-agenda-files](#orgcc98dbb)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1261,7 +1267,7 @@ Raw: [rgr/typesetting](etc/elisp/rgr-typesetting.el)
             :config
             (defun rgr/latex-mode-hook()
               ;; buggy as this then gets savd to the global abbrevs
-              (load-file (no-littering-expand-etc-file-name "abbrev/latex-songbook-chords.el"))
+              (load-file (expand-file-name  "etc/abbrev/latex-songbook-chords.el" user-emacs-directory ))
               (setq abbrevs-changed nil)
               (turn-on-reftex)
               (visual-line-mode)
@@ -1334,7 +1340,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
         (use-package ellama
           :custom
-          (ellama-sessions-directory (no-littering-expand-var-file-name "ellama-sessions"))
+          (ellama-sessions-directory (expand-file-name  "var/ellama-sessions/" user-emacs-directory))
           :init
           (setopt ellama-language "German")
           (require 'llm-ollama))
@@ -1511,25 +1517,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
           :bind (("C-x G" . goldendict-dwim)))
 
-7.  dash-docs
-
-    I'm not sure if this works unless you pay now.
-    
-        (use-package dash-docs
-          :disabled t
-          :custom
-          (dash-docs-common-docsets dash-docs-common-docsets)
-          (dash-docs-docsets-path (no-littering-expand-var-file-name "dashdocs"))
-          :config
-          (defun rgr/dash-search(&optional s)
-            (interactive)
-            (let ((sym (if s s (thing-at-point 'symbol))))
-              (message "dash docs search %s" sym)
-              (dash-docs-search sym)))
-          :bind
-          ("C-S-a" . rgr/dash-search ))
-
-8.  API docs
+7.  API docs
 
         (defun rgr/devdocs()
           "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
@@ -1553,9 +1541,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
             (use-package devdocs-browser
               ;;:disabled t
               :custom
-              (devdocs-data-dir (no-littering-expand-var-file-name  "devdocs-browser"))
-              (devdocs-browser-cache-directory (no-littering-expand-var-file-name  "devdocs-browser/cache"))
-              (devdocs-browser-data-directory (no-littering-expand-var-file-name  "devdocs-browser/data"))
+              (devdocs-data-dir (expand-file-name  "var/devdocs-browser" user-emacs-directory))
+              (devdocs-browser-cache-directory (expand-file-name  "var/devdocs-browser/cache" user-emacs-directory))
+              (devdocs-browser-data-directory (expand-file-name  "var/devdocs-browser/data" user-emacs-directory))
               :hook
               (c-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("c"))))
               (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
@@ -1572,7 +1560,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
               (c-ts-mode . (lambda()(setq-local devdocs-current-docs '("c"))))
               (c++-ts-mode . (lambda()(setq-local devdocs-current-docs '("cpp")))))
 
-9.  Elfeed
+8.  Elfeed
 
     [Elfeed](https://github.com/skeeto/elfeed) is an extensible web feed reader for Emacs, supporting both Atom and RSS.
     
@@ -1580,7 +1568,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :config
           (use-package elfeed-org
             :custom
-            (rmh-elfeed-org-files (list (no-littering-expand-etc-file-name "elfeed/elfeed.org")))
+            (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
             :config
             (elfeed-org))
           (run-at-time nil (* 8 60 60) #'elfeed-update)
@@ -1593,7 +1581,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
     1.  elfeed-org
 
-10. pdf-tools
+9.  pdf-tools
 
     [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
     
@@ -1610,7 +1598,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
             sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 
-11. impatient-showdow, markdown view live
+10. impatient-showdow, markdown view live
 
     Preview markdown buffer live over HTTP using showdown.
     <https://github.com/jcs-elpa/impatient-showdown>
@@ -1619,7 +1607,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           :disabled
           :hook (markdown-mode . impatient-showdown-mode))
 
-12. provide
+11. provide
 
         (provide 'rgr/reference)
 
@@ -2140,7 +2128,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package treesit-auto
               :custom
               (treesit-auto-install 'prompt)
-              (treesit-extra-load-path `(,(no-littering-expand-var-file-name "tree-sitter")))
+              (treesit-extra-load-path `(,(expand-file-name  "var/tree-sitter" user-emacs-directory)))
               :config
               (treesit-auto-add-to-auto-mode-alist 'all)
               (global-treesit-auto-mode))
@@ -2231,7 +2219,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   ;;(setq dape-key-prefix "\C-x\C-a")
                 
                   :custom
-                  (dape-default-breakpoints-file (no-littering-expand-var-file-name  "dape/dape-breakpoints"))
+                  (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
                   (dape-buffer-window-arrangement 'right)
                   (dape-info-hide-mode-line nil)
                   (dape-inlay-hints t)
@@ -2524,7 +2512,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     1.  external info files
     
             (require 'info)
-            (add-to-list 'Info-directory-list (no-littering-expand-etc-file-name  "info"))
+            (add-to-list 'Info-directory-list (expand-file-name  "var/info" user-emacs-directory))
 
 4.  smartparens
 
@@ -2683,7 +2671,7 @@ Raw: [rgr/themes](etc/elisp/rgr-themes.el)
 
 ## Late load
 
-    (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
+    ;;(add-hook 'after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
 
 
 # Associated emacs things
@@ -2772,7 +2760,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org366b415) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9141de0) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2805,7 +2793,7 @@ to add to version control.
     fi
 
 
-<a id="org366b415"></a>
+<a id="org9141de0"></a>
 
 ### Gnome protocol handler desktop file
 
