@@ -104,9 +104,12 @@
   (yas-global-mode)
   )
 
-(setq-default abbrev-mode 1)
-(setq abbrev-file-name (expand-file-name "etc/abbrev/abbrev.el" user-emacs-directory))
-;;  (load-file abbrev-file-name)
+(use-package emacs
+  :ensure nil
+  :config
+  (setq-default abbrev-mode 1)
+  (setq abbrev-file-name (expand-file-name "etc/abbrev/abbrev.el" user-emacs-directory))
+  ;;  (load-file abbrev-file-name)
   (defadvice expand-abbrev (after my-expand-abbrev activate)
     ;; if there was an expansion
     (if ad-return-value
@@ -124,7 +127,7 @@
                                    (backward-word)
                                    (highlight-symbol-at-point)
                                    (delete-char (length cursor))
-                                   ))))))
+                                   )))))))
 
 (use-package company
   :disabled t
@@ -151,7 +154,5 @@
     (vertico-prescient-enable-sorting nil))
   :init
   (vertico-mode))
-
-(setq-default abbrev-mode 1)
 
 (provide 'rgr/completion)

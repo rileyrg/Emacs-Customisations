@@ -151,19 +151,23 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 #+end_src
 ** custom.el
 #+begin_src emacs-lisp
-  (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-  (load custom-file 'noerror)
+  (use-package emacs
+    :ensure nil
+    :after no-littering
+    :init
+    (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+    (load custom-file 'noerror))
 #+end_src
 ** no-littering - keep data tidy
-
 #+begin_src  emacs-lisp
+  (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
+
   (use-package no-littering
-    :ensure (:wait t) :demand t
-    :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
+    :ensure (:wait t)
+    ;; :demand t
     :custom
     (make-backup-files t)
     :config
-    (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
     (setq backup-directory-alist
           `(("." . ,(no-littering-expand-var-file-name "backup/"))))
     (setq auto-save-file-name-transforms
@@ -171,8 +175,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
     (add-to-list 'load-path rgr/elisp-dir)
     (let ((default-directory rgr/elisp-dir))
-      (normal-top-level-add-subdirs-to-load-path))
-    )
+      (normal-top-level-add-subdirs-to-load-path)))
 #+end_src
 ** notifications
 #+begin_src  emacs-lisp
@@ -209,7 +212,7 @@ Load all files in certain directories.
               (message "load-el-gpg loading %s" f)
               (load f 'no-error))
           (error nil)))))
-  (eval-after-load 'no-littering (lambda()(load-el-gpg (no-littering-expand-etc-file-name "early-load"))))
+  (eval-after-load 'no-littering (lambda()(load-el-gpg (expand-file-name "etc/early-load" user-emacs-directory))))
 #+end_src
 ** host specific
 
@@ -220,7 +223,7 @@ Load all files in certain directories.
 Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][custom file]].
 
 #+begin_src emacs-lisp
-  (eval-after-load 'no-littering  (lambda()(load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))))
+  (eval-after-load 'no-littering  (lambda()(load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))))
 #+end_src
 
 ** Security
@@ -399,6 +402,8 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 :END:
 **** persistence  and history
 #+begin_src emacs-lisp
+  (use-package emacs :ensure nil
+    :config
   (recentf-mode)
   (savehist-mode)
   (save-place-mode)
@@ -430,8 +435,7 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
     (interactive)
     (save-buffers-kill-emacs))
 
-  (global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
-
+  :bind ("C-c x" . rgr/quit-or-close-emacs))
 
   (provide 'rgr/startup)
   #+end_src
@@ -451,43 +455,46 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
 :END:
 **** general ui
 #+begin_src  emacs-lisp
-
-  (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
-                                          ; t60
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (show-paren-mode 1)
-  (winner-mode 1)
-
-  (repeat-mode)
-
-  (global-auto-revert-mode 1)
-  ;; Also auto refresh dired, but be quiet about it
-  (setq global-auto-revert-non-file-buffers t)
-  (setq auto-revert-verbose nil)
-  (setq auto-revert-use-notify nil)
-
-  (global-visual-line-mode 1)
-
-  (setq column-number-mode t)
-
-  (delete-selection-mode 1)
-
-  (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
-
-  (defalias 'yes-or-no-p 'y-or-n-p)
-
-  (setq disabled-command-function nil)
-
-  (global-hl-line-mode t)
-
-  (use-package delsel
+  (use-package emacs
     :ensure nil
-    :hook (after-init . delete-selection-mode))
+    :config
 
-  (defun prot/keyboard-quit-dwim ()
-    "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+    (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
+                                          ; t60
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+    (show-paren-mode 1)
+    (winner-mode 1)
+
+    (repeat-mode)
+
+    (global-auto-revert-mode 1)
+    ;; Also auto refresh dired, but be quiet about it
+    (setq global-auto-revert-non-file-buffers t)
+    (setq auto-revert-verbose nil)
+    (setq auto-revert-use-notify nil)
+
+    (global-visual-line-mode 1)
+
+    (setq column-number-mode t)
+
+    (delete-selection-mode 1)
+
+    (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+
+    (defalias 'yes-or-no-p 'y-or-n-p)
+
+    (setq disabled-command-function nil)
+
+    (global-hl-line-mode t)
+
+    (use-package delsel
+      :ensure nil
+      :hook (after-init . delete-selection-mode))
+
+    (defun prot/keyboard-quit-dwim ()
+      "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 
   The generic `keyboard-quit' does not do the expected thing when
   the minibuffer is open.  Whereas we want it to close the
@@ -499,51 +506,52 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
   - When a minibuffer is open, but not focused, close the minibuffer.
   - When the Completions buffer is selected, close it.
   - In every other case use the regular `keyboard-quit'."
-    (interactive)
-    (cond
-     ((region-active-p)
-      (keyboard-quit))
-     ((derived-mode-p 'completion-list-mode)
-      (delete-completion-window))
-     ((> (minibuffer-depth) 0)
-      (abort-recursive-edit))
-     (t
-      (keyboard-quit))))
+      (interactive)
+      (cond
+       ((region-active-p)
+        (keyboard-quit))
+       ((derived-mode-p 'completion-list-mode)
+        (delete-completion-window))
+       ((> (minibuffer-depth) 0)
+        (abort-recursive-edit))
+       (t
+        (keyboard-quit))))
 
-  (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
-  ;; https://github.com/rolandwalker/browse-url-dwim
-  ;; Context-sensitive external browse URL or Internet search from Emacs.
-  (use-package
-    browse-url-dwim
-    :config
-    (browse-url-dwim-mode))
+    (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
+    ;; https://github.com/rolandwalker/browse-url-dwim
+    ;; Context-sensitive external browse URL or Internet search from Emacs.
+    (use-package
+      browse-url-dwim
+      :config
+      (browse-url-dwim-mode))
 
-  (use-package alert)
+    (use-package alert)
 
-  ;; display dir name when core name clashes
-  (require 'uniquify)
+    ;; display dir name when core name clashes
+    (require 'uniquify)
 
-  (defun rgr/kill-current-buffer()
-    (interactive)
-    (if (member (buffer-name) '("*Messages*" "*scratch*"))
-        (progn
-          (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-          (delete-window))
-      (kill-current-buffer)
-      (delete-window)))
+    (defun rgr/kill-current-buffer()
+      (interactive)
+      (if (member (buffer-name) '("*Messages*" "*scratch*"))
+          (progn
+            (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+            (delete-window))
+        (kill-current-buffer)
+        (delete-window)))
 
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  :bind
-  (global-set-key (kbd "C-x C-q") 'view-mode)
-  (global-set-key (kbd "C-c e") 'rgr/erc-start)
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (global-set-key (kbd "C-x C-i") 'imenu)
-  (global-set-key (kbd "C-x k") 'rgr/kill-current-buffer)
-  (global-set-key (kbd "M-0") 'delete-window)
-  (global-set-key (kbd "M-1") 'delete-other-windows)
-  (global-set-key (kbd "S-<f1>") 'describe-face)
-  (global-set-key (kbd  "M-m" ) 'manual-entry)
-  (global-set-key (kbd "S-<f10>") 'menu-bar-open)
+    :hook
+    (before-save  . delete-trailing-whitespace)
+    :bind
+    ("C-x C-q" . view-mode)
+    ( "C-c e" . rgr/erc-start)
+    ( "C-x C-b" . ibuffer)
+    ( "C-x C-i" . imenu)
+    ( "C-x k" . rgr/kill-current-buffer)
+    ( "M-0" . delete-window)
+    ( "M-1" . delete-other-windows)
+    ( "S-<f1>" . describe-face)
+    (  "M-m"  . manual-entry)
+    ( "S-<f10>" . menu-bar-open))
 
 #+end_src
 **** posframe                                                      :posframe:
@@ -1150,9 +1158,12 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 :END:
 [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
 #+begin_src emacs-lisp
-  (setq-default abbrev-mode 1)
-  (setq abbrev-file-name (expand-file-name "etc/abbrev/abbrev.el" user-emacs-directory))
-  ;;  (load-file abbrev-file-name)
+  (use-package emacs
+    :ensure nil
+    :config
+    (setq-default abbrev-mode 1)
+    (setq abbrev-file-name (expand-file-name "etc/abbrev/abbrev.el" user-emacs-directory))
+    ;;  (load-file abbrev-file-name)
     (defadvice expand-abbrev (after my-expand-abbrev activate)
       ;; if there was an expansion
       (if ad-return-value
@@ -1170,7 +1181,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
                                      (backward-word)
                                      (highlight-symbol-at-point)
                                      (delete-char (length cursor))
-                                     ))))))
+                                     )))))))
 
 #+end_src
 **** company
@@ -1204,13 +1215,6 @@ https://github.com/minad/vertico
     :init
     (vertico-mode))
 
-#+end_src
-**** Abbrev Mode
-:PROPERTIES:
-:END:
-[[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
-#+begin_src emacs-lisp
-  (setq-default abbrev-mode 1)
 #+end_src
 **** provide
 :PROPERTIES:

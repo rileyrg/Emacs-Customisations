@@ -59,16 +59,21 @@
         ;; Enable use-package :ensure support for Elpaca.
         (elpaca-use-package-mode))
 
-(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-(load custom-file 'noerror)
+(use-package emacs
+  :ensure nil
+  :after no-littering
+  :init
+  (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+  (load custom-file 'noerror))
+
+(setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
 
 (use-package no-littering
-  :ensure (:wait t) :demand t
-  :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
+  :ensure (:wait t)
+  ;; :demand t
   :custom
   (make-backup-files t)
   :config
-  (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
   (setq backup-directory-alist
         `(("." . ,(no-littering-expand-var-file-name "backup/"))))
   (setq auto-save-file-name-transforms
@@ -76,8 +81,7 @@
 
   (add-to-list 'load-path rgr/elisp-dir)
   (let ((default-directory rgr/elisp-dir))
-    (normal-top-level-add-subdirs-to-load-path))
-  )
+    (normal-top-level-add-subdirs-to-load-path)))
 
 (use-package notifications
   :ensure nil
@@ -98,9 +102,9 @@
             (message "load-el-gpg loading %s" f)
             (load f 'no-error))
         (error nil)))))
-(eval-after-load 'no-littering (lambda()(load-el-gpg (no-littering-expand-etc-file-name "early-load"))))
+(eval-after-load 'no-littering (lambda()(load-el-gpg (expand-file-name "etc/early-load" user-emacs-directory))))
 
-(eval-after-load 'no-littering  (lambda()(load-el-gpg (expand-file-name (system-name)  (no-littering-expand-etc-file-name "hosts")))))
+(eval-after-load 'no-littering  (lambda()(load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))))
 
 (require 'rgr/security "rgr-security" 'NOERROR)
 

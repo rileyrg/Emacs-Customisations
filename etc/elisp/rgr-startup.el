@@ -1,3 +1,5 @@
+(use-package emacs :ensure nil
+  :config
 (recentf-mode)
 (savehist-mode)
 (save-place-mode)
@@ -29,7 +31,6 @@
   (interactive)
   (save-buffers-kill-emacs))
 
-(global-set-key (kbd "C-c x") 'rgr/quit-or-close-emacs)
-
+:bind ("C-c x" . rgr/quit-or-close-emacs))
 
 (provide 'rgr/startup)
