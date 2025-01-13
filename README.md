@@ -662,15 +662,16 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
     
     1.  multiple-cursors
     
-        <https://github.com/magnars/multiple-cursors.emacs-lisp>
+        <https://github.com/magnars/multiple-cursors.el>
         
             (use-package multiple-cursors
-              :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
-                     ("C->" . mc/mark-next-like-this)
-                     ("C-<" . mc/mark-previous-like-this)
-                     ("C-c C->" . mc/mark-all-like-this)
-                     ("C-c C-SPC" . mc/edit-lines)
-                     ))
+              :bind
+              ("C-<mouse-1>" . mc/add-cursor-on-click)
+              ("C-S-n" . mc/mark-next-like-this)
+              ("C-S-p" . mc/mark-previous-like-this)
+              ("C-c C->" . mc/mark-all-like-this)
+              ("C-c C-SPC" . mc/edit-lines)
+              )
 
 15. Folding/Hide Show
 
@@ -703,8 +704,10 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
 
         (use-package jinx
           :hook (emacs-startup . global-jinx-mode)
-          :bind (("<f8>" . jinx-correct)
-                 ("C-<f8>" . jinx-languages)))
+          :bind
+          ("<f8>" . jinx-correct)
+          ("S-<f8>" . jinx-correct-word)
+          ("C-<f8>" . jinx-languages))
 
 17. rg, ripgrep
 
@@ -1241,7 +1244,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgaf65224)
+    See `org-agenda-files` [org-agenda-files](#orgabe362e)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2733,7 +2736,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0f288a6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8b0795e) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2766,7 +2769,7 @@ to add to version control.
     fi
 
 
-<a id="org0f288a6"></a>
+<a id="org8b0795e"></a>
 
 ### Gnome protocol handler desktop file
 

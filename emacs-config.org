@@ -741,15 +741,16 @@ https://github.com/iqbalansari/emacs-emojify
            scroll-margin_t))
 #+end_src
 ***** multiple-cursors
-https://github.com/magnars/multiple-cursors.emacs-lisp
+https://github.com/magnars/multiple-cursors.el
 #+begin_src  emacs-lisp
   (use-package multiple-cursors
-    :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
-           ("C->" . mc/mark-next-like-this)
-           ("C-<" . mc/mark-previous-like-this)
-           ("C-c C->" . mc/mark-all-like-this)
-           ("C-c C-SPC" . mc/edit-lines)
-           ))
+    :bind
+    ("C-<mouse-1>" . mc/add-cursor-on-click)
+    ("C-S-n" . mc/mark-next-like-this)
+    ("C-S-p" . mc/mark-previous-like-this)
+    ("C-c C->" . mc/mark-all-like-this)
+    ("C-c C-SPC" . mc/edit-lines)
+    )
 #+end_src
 **** Folding/Hide Show
 :PROPERTIES:
@@ -789,8 +790,10 @@ https://github.com/magnars/multiple-cursors.emacs-lisp
 #+begin_src  emacs-lisp
   (use-package jinx
     :hook (emacs-startup . global-jinx-mode)
-    :bind (("<f8>" . jinx-correct)
-           ("C-<f8>" . jinx-languages)))
+    :bind
+    ("<f8>" . jinx-correct)
+    ("S-<f8>" . jinx-correct-word)
+    ("C-<f8>" . jinx-languages))
 #+end_src
 
 **** rg, ripgrep

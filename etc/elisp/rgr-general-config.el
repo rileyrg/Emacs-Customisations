@@ -211,12 +211,13 @@ The DWIM behaviour of this command is as follows:
          scroll-margin_t))
 
 (use-package multiple-cursors
-  :bind (("C-<mouse-1>" . mc/add-cursor-on-click)
-         ("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
-         ("C-c C->" . mc/mark-all-like-this)
-         ("C-c C-SPC" . mc/edit-lines)
-         ))
+  :bind
+  ("C-<mouse-1>" . mc/add-cursor-on-click)
+  ("C-S-n" . mc/mark-next-like-this)
+  ("C-S-p" . mc/mark-previous-like-this)
+  ("C-c C->" . mc/mark-all-like-this)
+  ("C-c C-SPC" . mc/edit-lines)
+  )
 
 (use-package hideshow
   :ensure nil
@@ -241,8 +242,10 @@ The DWIM behaviour of this command is as follows:
 
 (use-package jinx
   :hook (emacs-startup . global-jinx-mode)
-  :bind (("<f8>" . jinx-correct)
-         ("C-<f8>" . jinx-languages)))
+  :bind
+  ("<f8>" . jinx-correct)
+  ("S-<f8>" . jinx-correct-word)
+  ("C-<f8>" . jinx-languages))
 
 (use-package
   ripgrep)
