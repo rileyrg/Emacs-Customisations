@@ -627,38 +627,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
           (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
           :bind (:map tab-prefix-map
-                      (("x" . tab-close)
-                       ("b" . consult-buffer-other-tab)
-                       ("p" . tab-previous)
-                       ("n" . tab-next)
-                       ("c" . tab-bar-new-tab)
-                       ("s" . tab-bar-switch-to-tab))))
-
-13. emjois
-
-    <https://github.com/iqbalansari/emacs-emojify>
-    
-        (use-package emojify
-          :init
-          (global-emojify-mode))
-
-14. Cursor/Region related
-
-        (defun centreCursorLineOn()
-          "set properties to keep current line approx at centre of screen height. Useful for debugging."
-          ;; a faster more concise alternative to MELPA's centered-cursor-mode
-          (interactive)
-          (setq  scroll-preserve-screen-position_t scroll-preserve-screen-position scroll-conservatively_t
-                 scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
-                 scroll-margin)
-          (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
-                scroll-margin 99999))
-        
-        (defun centreCursorLineOff()
-          (interactive)
-          (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
-                 scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
-                 scroll-margin_t))
+                       ("b" . consult-buffer-other-tab)))
     
     1.  multiple-cursors
     
@@ -673,34 +642,7 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
               ("C-c C-SPC" . mc/edit-lines)
               )
 
-15. Folding/Hide Show
-
-    [hs-minor-mode](https://www.gnu.org/software/emacs/manual/html_node/emacs/Hideshow.html) allows hiding and showing different blocks of text/code (folding).
-    
-        (use-package hideshow
-          :ensure nil
-          :config
-          (defun toggle-selective-display (column)
-            (interactive "P")
-            (set-selective-display
-             (or column
-                 (unless selective-display
-                   (1+ (current-column))))))
-          (defun toggle-hiding (column)
-            (interactive "P")
-            (if hs-minor-mode
-                (if (condition-case nil
-                        (hs-toggle-hiding)
-                      (error t))
-                    (hs-show-all))
-              (toggle-selective-display column)))
-          (add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
-          :bind ( "C-+" . toggle-hiding)
-          ("C-\\" . toggle-selective-display))
-    
-    \#+end\_src
-
-16. jinx : the enchanted spell checker
+13. jinx : the enchanted spell checker
 
         (use-package jinx
           :hook (emacs-startup . global-jinx-mode)
@@ -709,14 +651,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           ("S-<f8>" . jinx-correct-word)
           ("C-<f8>" . jinx-languages))
 
-17. rg, ripgrep
+14. rg, ripgrep
 
     rg is pretty quick
     
         (use-package
           ripgrep)
 
-18. provide
+15. provide
 
         (provide 'rgr/general-config)
 
@@ -1244,7 +1186,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgabe362e)
+    See `org-agenda-files` [org-agenda-files](#org0bd13ef)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2736,7 +2678,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8b0795e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb51a291) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2769,7 +2711,7 @@ to add to version control.
     fi
 
 
-<a id="org8b0795e"></a>
+<a id="orgb51a291"></a>
 
 ### Gnome protocol handler desktop file
 

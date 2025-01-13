@@ -183,32 +183,7 @@ The DWIM behaviour of this command is as follows:
   (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
   (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
   :bind (:map tab-prefix-map
-              (("x" . tab-close)
-               ("b" . consult-buffer-other-tab)
-               ("p" . tab-previous)
-               ("n" . tab-next)
-               ("c" . tab-bar-new-tab)
-               ("s" . tab-bar-switch-to-tab))))
-
-(use-package emojify
-  :init
-  (global-emojify-mode))
-
-(defun centreCursorLineOn()
-  "set properties to keep current line approx at centre of screen height. Useful for debugging."
-  ;; a faster more concise alternative to MELPA's centered-cursor-mode
-  (interactive)
-  (setq  scroll-preserve-screen-position_t scroll-preserve-screen-position scroll-conservatively_t
-         scroll-conservatively maximum-scroll-margin_t maximum-scroll-margin scroll-margin_t
-         scroll-margin)
-  (setq scroll-preserve-screen-position t scroll-conservatively 0 maximum-scroll-margin 0.5
-        scroll-margin 99999))
-
-(defun centreCursorLineOff()
-  (interactive)
-  (setq  scroll-preserve-screen-position scroll-preserve-screen-position_t scroll-conservatively
-         scroll-conservatively_t maximum-scroll-margin maximum-scroll-margin_t scroll-margin
-         scroll-margin_t))
+               ("b" . consult-buffer-other-tab)))
 
 (use-package multiple-cursors
   :bind
@@ -218,27 +193,6 @@ The DWIM behaviour of this command is as follows:
   ("C-c C->" . mc/mark-all-like-this)
   ("C-c C-SPC" . mc/edit-lines)
   )
-
-(use-package hideshow
-  :ensure nil
-  :config
-  (defun toggle-selective-display (column)
-    (interactive "P")
-    (set-selective-display
-     (or column
-         (unless selective-display
-           (1+ (current-column))))))
-  (defun toggle-hiding (column)
-    (interactive "P")
-    (if hs-minor-mode
-        (if (condition-case nil
-                (hs-toggle-hiding)
-              (error t))
-            (hs-show-all))
-      (toggle-selective-display column)))
-  (add-hook 'prog-mode-hook (lambda()(hs-minor-mode t)))
-  :bind ( "C-+" . toggle-hiding)
-  ("C-\\" . toggle-selective-display))
 
 (use-package jinx
   :hook (emacs-startup . global-jinx-mode)
