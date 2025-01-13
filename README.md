@@ -120,38 +120,30 @@ Emacs early-init
     
     ;; Install use-package support
     (elpaca elpaca-use-package
-            ;; Enable use-package :ensure support for Elpaca.
-            (elpaca-use-package-mode))
+      ;; Enable use-package :ensure support for Elpaca.
+      (elpaca-use-package-mode))
 
 
 ## custom.el
 
-    (use-package emacs
-      :ensure nil
-      :after no-littering
-      :init
-      (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-      (load custom-file 'noerror))
+    (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+    (load custom-file 'noerror)
 
 
 ## no-littering - keep data tidy
 
     (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
-    
+    (add-to-list 'load-path rgr/elisp-dir)
+    (let ((default-directory rgr/elisp-dir))
+      (normal-top-level-add-subdirs-to-load-path))
     (use-package no-littering
-      :ensure (:wait t)
-      ;; :demand t
       :custom
       (make-backup-files t)
       :config
       (setq backup-directory-alist
             `(("." . ,(no-littering-expand-var-file-name "backup/"))))
       (setq auto-save-file-name-transforms
-            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-    
-      (add-to-list 'load-path rgr/elisp-dir)
-      (let ((default-directory rgr/elisp-dir))
-        (normal-top-level-add-subdirs-to-load-path)))
+            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
 
 ## notifications
@@ -341,39 +333,37 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 1.  persistence  and history
 
         (use-package emacs :ensure nil
+          :after no-littering
           :config
-        (recentf-mode)
-        (savehist-mode)
-        (save-place-mode)
+          (recentf-mode)
+          (savehist-mode)
+          (save-place-mode)
         
-        (defun rgr/save-current-file-to-register ()
-          "Save current file to register."
-          ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
-          (interactive)
-          (let ((reg (register-read-with-preview "File name to register: ")))
-            (set-register reg `(file . ,(buffer-file-name)))))
+          (defun rgr/save-current-file-to-register ()
+            "Save current file to register."
+            ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
+            (interactive)
+            (let ((reg (register-read-with-preview "File name to register: ")))
+              (set-register reg `(file . ,(buffer-file-name)))))
         
-        (defun rgr/startup-hook ()
-          (when (featurep 'recentf)
-            (recentf-open-most-recent-file 1)))
+          (defun rgr/startup-hook ()
+            (switch-to-buffer (recentf-open-most-recent-file 1)))
         
-        (if (daemonp)
-            (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-          (add-hook 'elpaca-after-init-hook #'rgr/startup-hook))
+          (add-hook 'elpaca-after-init-hook 'rgr/startup-hook)
         
-        ;; quitting emacs
-        (defun rgr/quit-or-close-emacs(&optional kill)
-          (interactive)
-          (if (or current-prefix-arg kill)
-              (rgr/server-shutdown)
-            (delete-frame)))
+          ;; quitting emacs
+          (defun rgr/quit-or-close-emacs(&optional kill)
+            (interactive)
+            (if (or current-prefix-arg kill)
+                (rgr/server-shutdown)
+              (delete-frame)))
         
-        (defun rgr/server-shutdown ()
-          "Save buffers, Quit, and Shutdown (kill) server"
-          (interactive)
-          (save-buffers-kill-emacs))
+          (defun rgr/server-shutdown ()
+            "Save buffers, Quit, and Shutdown (kill) server"
+            (interactive)
+            (save-buffers-kill-emacs))
         
-        :bind ("C-c x" . rgr/quit-or-close-emacs))
+          :bind ("C-c x" . rgr/quit-or-close-emacs))
         
         (provide 'rgr/startup)
     
@@ -1226,7 +1216,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgcc98dbb)
+    See `org-agenda-files` [org-agenda-files](#orgd2b7be0)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2237,11 +2227,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   ;; Turn on global bindings for setting breakpoints with mouse
                   ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
                   (add-to-list 'recentf-exclude "dape-breakpoints")
+                  (add-to-list 'recentf-exclude "var/org")
                   (dape-breakpoint-global-mode)
                   (add-hook 'dape-info-parent-mode-hook
                             (defun dape--info-rescale ()
-                              (face-remap-add-relative 'default :height 0.8)))
-                  )
+                              (face-remap-add-relative 'default :height 0.8))))
         
         3.  provide
         
@@ -2671,7 +2661,7 @@ Raw: [rgr/themes](etc/elisp/rgr-themes.el)
 
 ## Late load
 
-    ;;(add-hook 'after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
+    (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))
 
 
 # Associated emacs things
@@ -2760,7 +2750,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9141de0) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb602122) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2793,7 +2783,7 @@ to add to version control.
     fi
 
 
-<a id="org9141de0"></a>
+<a id="orgb602122"></a>
 
 ### Gnome protocol handler desktop file
 

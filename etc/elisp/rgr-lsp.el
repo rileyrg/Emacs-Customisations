@@ -51,10 +51,10 @@
   ;; Turn on global bindings for setting breakpoints with mouse
   ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
   (add-to-list 'recentf-exclude "dape-breakpoints")
+  (add-to-list 'recentf-exclude "var/org")
   (dape-breakpoint-global-mode)
   (add-hook 'dape-info-parent-mode-hook
             (defun dape--info-rescale ()
-              (face-remap-add-relative 'default :height 0.8)))
-  )
+              (face-remap-add-relative 'default :height 0.8))))
 
 (provide 'rgr/lsp)

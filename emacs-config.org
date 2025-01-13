@@ -145,37 +145,29 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
   ;; Install use-package support
   (elpaca elpaca-use-package
-          ;; Enable use-package :ensure support for Elpaca.
-          (elpaca-use-package-mode))
+    ;; Enable use-package :ensure support for Elpaca.
+    (elpaca-use-package-mode))
 
 #+end_src
 ** custom.el
 #+begin_src emacs-lisp
-  (use-package emacs
-    :ensure nil
-    :after no-littering
-    :init
     (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-    (load custom-file 'noerror))
+    (load custom-file 'noerror)
 #+end_src
 ** no-littering - keep data tidy
 #+begin_src  emacs-lisp
   (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
-
+  (add-to-list 'load-path rgr/elisp-dir)
+  (let ((default-directory rgr/elisp-dir))
+    (normal-top-level-add-subdirs-to-load-path))
   (use-package no-littering
-    :ensure (:wait t)
-    ;; :demand t
     :custom
     (make-backup-files t)
     :config
     (setq backup-directory-alist
           `(("." . ,(no-littering-expand-var-file-name "backup/"))))
     (setq auto-save-file-name-transforms
-          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-
-    (add-to-list 'load-path rgr/elisp-dir)
-    (let ((default-directory rgr/elisp-dir))
-      (normal-top-level-add-subdirs-to-load-path)))
+          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 #+end_src
 ** notifications
 #+begin_src  emacs-lisp
@@ -403,39 +395,37 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 **** persistence  and history
 #+begin_src emacs-lisp
   (use-package emacs :ensure nil
+    :after no-littering
     :config
-  (recentf-mode)
-  (savehist-mode)
-  (save-place-mode)
+    (recentf-mode)
+    (savehist-mode)
+    (save-place-mode)
 
-  (defun rgr/save-current-file-to-register ()
-    "Save current file to register."
-    ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
-    (interactive)
-    (let ((reg (register-read-with-preview "File name to register: ")))
-      (set-register reg `(file . ,(buffer-file-name)))))
+    (defun rgr/save-current-file-to-register ()
+      "Save current file to register."
+      ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
+      (interactive)
+      (let ((reg (register-read-with-preview "File name to register: ")))
+        (set-register reg `(file . ,(buffer-file-name)))))
 
-  (defun rgr/startup-hook ()
-    (when (featurep 'recentf)
-      (recentf-open-most-recent-file 1)))
+    (defun rgr/startup-hook ()
+      (switch-to-buffer (recentf-open-most-recent-file 1)))
 
-  (if (daemonp)
-      (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-    (add-hook 'elpaca-after-init-hook #'rgr/startup-hook))
+    (add-hook 'elpaca-after-init-hook 'rgr/startup-hook)
 
-  ;; quitting emacs
-  (defun rgr/quit-or-close-emacs(&optional kill)
-    (interactive)
-    (if (or current-prefix-arg kill)
-        (rgr/server-shutdown)
-      (delete-frame)))
+    ;; quitting emacs
+    (defun rgr/quit-or-close-emacs(&optional kill)
+      (interactive)
+      (if (or current-prefix-arg kill)
+          (rgr/server-shutdown)
+        (delete-frame)))
 
-  (defun rgr/server-shutdown ()
-    "Save buffers, Quit, and Shutdown (kill) server"
-    (interactive)
-    (save-buffers-kill-emacs))
+    (defun rgr/server-shutdown ()
+      "Save buffers, Quit, and Shutdown (kill) server"
+      (interactive)
+      (save-buffers-kill-emacs))
 
-  :bind ("C-c x" . rgr/quit-or-close-emacs))
+    :bind ("C-c x" . rgr/quit-or-close-emacs))
 
   (provide 'rgr/startup)
   #+end_src
@@ -2495,11 +2485,11 @@ https://github.com/joaotavora/eglot
     ;; Turn on global bindings for setting breakpoints with mouse
     ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
     (add-to-list 'recentf-exclude "dape-breakpoints")
+    (add-to-list 'recentf-exclude "var/org")
     (dape-breakpoint-global-mode)
     (add-hook 'dape-info-parent-mode-hook
               (defun dape--info-rescale ()
-                (face-remap-add-relative 'default :height 0.8)))
-    )
+                (face-remap-add-relative 'default :height 0.8))))
 #+end_src
 
 
@@ -3038,7 +3028,7 @@ https://github.com/protesilaos/ef-themes
 :ID:       574516c0-a821-47fb-b01f-97ec19789d65
 :END:
 #+begin_src emacs-lisp
-  ;;(add-hook 'after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
+  (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))
 #+end_src
 * Associated emacs things
 :PROPERTIES:

@@ -56,32 +56,24 @@
 
 ;; Install use-package support
 (elpaca elpaca-use-package
-        ;; Enable use-package :ensure support for Elpaca.
-        (elpaca-use-package-mode))
+  ;; Enable use-package :ensure support for Elpaca.
+  (elpaca-use-package-mode))
 
-(use-package emacs
-  :ensure nil
-  :after no-littering
-  :init
-  (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-  (load custom-file 'noerror))
+(setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
+(load custom-file 'noerror)
 
 (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
-
+(add-to-list 'load-path rgr/elisp-dir)
+(let ((default-directory rgr/elisp-dir))
+  (normal-top-level-add-subdirs-to-load-path))
 (use-package no-littering
-  :ensure (:wait t)
-  ;; :demand t
   :custom
   (make-backup-files t)
   :config
   (setq backup-directory-alist
         `(("." . ,(no-littering-expand-var-file-name "backup/"))))
   (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-
-  (add-to-list 'load-path rgr/elisp-dir)
-  (let ((default-directory rgr/elisp-dir))
-    (normal-top-level-add-subdirs-to-load-path)))
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
 (use-package notifications
   :ensure nil
@@ -136,4 +128,4 @@
 
 (require 'rgr/themes "rgr-themes" 'NOERROR)
 
-;;(add-hook 'after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
+(add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))
