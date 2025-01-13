@@ -35,7 +35,7 @@
       (error nil)))
   (defun rgr/eww-launch-external-browser-from-buffer()
     (interactive)
-    (alert "Launching external browser")
+    (emacs-alert "Launching external browser")
     (call-process-shell-command "swaymsg workspace number 2" nil 0)
     (eww-browse-with-external-browser)
     (quit-window))

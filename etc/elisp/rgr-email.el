@@ -8,14 +8,14 @@
   )
 
 (use-package mu4e :ensure ( :host github
-              :branch "release/1.10"
-              :repo "djcb/mu"
-              :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
-              :main "mu4e/mu4e.el"
-              :pre-build (("./autogen.sh")
-                          ("ninja" "-C" "build")
-                          (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                              (expand-file-name "~/bin/mu") 'ok-if-exists)))
+                            :branch "release/1.10"
+                            :repo "djcb/mu"
+                            :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+                            :main "mu4e/mu4e.el"
+                            :pre-build (("./autogen.sh")
+                                        ("ninja" "-C" "build")
+                                        (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                                            (expand-file-name "~/bin/mu") 'ok-if-exists)))
   :commands (mu4e mu4e-update-index)
   :custom
   ( mayil-user-agent 'mu4e-user-agent )
@@ -124,8 +124,7 @@
 
   (defun rgr/mu4e-refresh()
     (interactive)
-    (when (featurep 'alert)
-      (alert "refreshing mu4e indexes"))
+    (emacs-alert "refreshing mu4e indexes")
     (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
 
   (defun rgr/mu4e-default-context()

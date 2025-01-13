@@ -37,7 +37,7 @@
               (describe-variable sym))
           (progn
             (let ((msg (format "No elisp help for '%s" sym)))
-              (alert msg))
+              (emacs-alert msg))
             (setq sym nil)))))))
 
 (require 'info)

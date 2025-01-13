@@ -175,6 +175,10 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     :ensure nil
     :demand t
     :config
+    (defun emacs-alert(m)
+      (notifications-notify
+       :title "Emacs"
+       :body m))
     (notifications-notify
      :title "Emacs"
      :body " ... is starting up..."))
@@ -509,8 +513,6 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
     browse-url-dwim
     :config
     (browse-url-dwim-mode))
-
-  (use-package alert)
 
   ;; display dir name when core name clashes
   (require 'uniquify)
@@ -1518,7 +1520,7 @@ https://ollama.ai/library/zephyr
         (error nil)))
     (defun rgr/eww-launch-external-browser-from-buffer()
       (interactive)
-      (alert "Launching external browser")
+      (emacs-alert "Launching external browser")
       (call-process-shell-command "swaymsg workspace number 2" nil 0)
       (eww-browse-with-external-browser)
       (quit-window))
@@ -1876,14 +1878,14 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
 :END:
 #+begin_src emacs-lisp
   (use-package mu4e :ensure ( :host github
-                :branch "release/1.10"
-                :repo "djcb/mu"
-                :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
-                :main "mu4e/mu4e.el"
-                :pre-build (("./autogen.sh")
-                            ("ninja" "-C" "build")
-                            (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                                (expand-file-name "~/bin/mu") 'ok-if-exists)))
+                              :branch "release/1.10"
+                              :repo "djcb/mu"
+                              :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+                              :main "mu4e/mu4e.el"
+                              :pre-build (("./autogen.sh")
+                                          ("ninja" "-C" "build")
+                                          (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                                              (expand-file-name "~/bin/mu") 'ok-if-exists)))
     :commands (mu4e mu4e-update-index)
     :custom
     ( mayil-user-agent 'mu4e-user-agent )
@@ -1992,8 +1994,7 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
 
     (defun rgr/mu4e-refresh()
       (interactive)
-      (when (featurep 'alert)
-        (alert "refreshing mu4e indexes"))
+      (emacs-alert "refreshing mu4e indexes")
       (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
 
     (defun rgr/mu4e-default-context()
@@ -2815,7 +2816,7 @@ Use helpful if installed else built in
                 (describe-variable sym))
             (progn
               (let ((msg (format "No elisp help for '%s" sym)))
-                (alert msg))
+                (emacs-alert msg))
               (setq sym nil)))))))
 #+end_src
 ***** external info files

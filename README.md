@@ -152,6 +152,10 @@ Emacs early-init
       :ensure nil
       :demand t
       :config
+      (defun emacs-alert(m)
+        (notifications-notify
+         :title "Emacs"
+         :body m))
       (notifications-notify
        :title "Emacs"
        :body " ... is starting up..."))
@@ -445,8 +449,6 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           browse-url-dwim
           :config
           (browse-url-dwim-mode))
-        
-        (use-package alert)
         
         ;; display dir name when core name clashes
         (require 'uniquify)
@@ -1210,7 +1212,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org875c7ab)
+    See `org-agenda-files` [org-agenda-files](#org98bd199)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1359,7 +1361,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                   (error nil)))
               (defun rgr/eww-launch-external-browser-from-buffer()
                 (interactive)
-                (alert "Launching external browser")
+                (emacs-alert "Launching external browser")
                 (call-process-shell-command "swaymsg workspace number 2" nil 0)
                 (eww-browse-with-external-browser)
                 (quit-window))
@@ -1673,14 +1675,14 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
 2.  mu4e
 
         (use-package mu4e :ensure ( :host github
-                      :branch "release/1.10"
-                      :repo "djcb/mu"
-                      :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
-                      :main "mu4e/mu4e.el"
-                      :pre-build (("./autogen.sh")
-                                  ("ninja" "-C" "build")
-                                  (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                                      (expand-file-name "~/bin/mu") 'ok-if-exists)))
+                                    :branch "release/1.10"
+                                    :repo "djcb/mu"
+                                    :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+                                    :main "mu4e/mu4e.el"
+                                    :pre-build (("./autogen.sh")
+                                                ("ninja" "-C" "build")
+                                                (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                                                    (expand-file-name "~/bin/mu") 'ok-if-exists)))
           :commands (mu4e mu4e-update-index)
           :custom
           ( mayil-user-agent 'mu4e-user-agent )
@@ -1789,8 +1791,7 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
         
           (defun rgr/mu4e-refresh()
             (interactive)
-            (when (featurep 'alert)
-              (alert "refreshing mu4e indexes"))
+            (emacs-alert "refreshing mu4e indexes")
             (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
         
           (defun rgr/mu4e-default-context()
@@ -2491,7 +2492,7 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
                       (describe-variable sym))
                   (progn
                     (let ((msg (format "No elisp help for '%s" sym)))
-                      (alert msg))
+                      (emacs-alert msg))
                     (setq sym nil)))))))
     
     1.  external info files
@@ -2745,7 +2746,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbdbe97d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgacab6ce) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2778,7 +2779,7 @@ to add to version control.
     fi
 
 
-<a id="orgbdbe97d"></a>
+<a id="orgacab6ce"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -62,8 +62,6 @@ The DWIM behaviour of this command is as follows:
   :config
   (browse-url-dwim-mode))
 
-(use-package alert)
-
 ;; display dir name when core name clashes
 (require 'uniquify)
 

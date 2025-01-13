@@ -79,6 +79,10 @@
   :ensure nil
   :demand t
   :config
+  (defun emacs-alert(m)
+    (notifications-notify
+     :title "Emacs"
+     :body m))
   (notifications-notify
    :title "Emacs"
    :body " ... is starting up..."))
