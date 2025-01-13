@@ -1,7 +1,6 @@
 (recentf-mode)
 (savehist-mode)
 (save-place-mode)
-;;(require 'bookmark)
 
 (defun rgr/save-current-file-to-register ()
   "Save current file to register."
@@ -11,8 +10,11 @@
     (set-register reg `(file . ,(buffer-file-name)))))
 
 (defun rgr/startup-hook ()
-  (message "in rgr/startup-hook")
-  (recentf-open-most-recent-file 1))
+  (switch-to-buffer (recentf-open-most-recent-file 1)))
+
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+  (add-hook 'emacs-startup-hook 'rgr/startup-hook))
 
 ;; quitting emacs
 (defun rgr/quit-or-close-emacs(&optional kill)
@@ -26,8 +28,8 @@
   (interactive)
   (save-buffers-kill-emacs))
 
-(use-package emacs :ensure nil
-  :hook (elpaca-after-init . rgr/startup-hook)
+(use-package emacs
+  :ensure nil
   :bind ("C-c x" . rgr/quit-or-close-emacs))
 
 (provide 'rgr/startup)

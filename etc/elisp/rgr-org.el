@@ -11,7 +11,6 @@
   (org-refile-use-outline-path 'file)
   (org-outline-path-complete-in-steps nil)
   :config
-  (add-to-list 'recentf-exclude "var/org")
   (set-face-attribute 'org-headline-done nil :strike-through t)
   (defun rgr/org-agenda (&optional arg)
     (interactive "P")

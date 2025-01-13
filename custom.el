@@ -6,7 +6,7 @@
  '(Man-notify-method 'bully)
  '(TeX-macro-global
    '("/var/lib/texmf/tex/" "/usr/share/texlive/texmf-dist/tex/" "/usr/share/texlive/texmf-dist/bibtex/bst/" "/usr/share/texmf/tex/" "~/texmf"))
- '(abbrev-file-name "/home/rgr/.emacs.d/etc/abbrev.el")
+ '(abbrev-file-name "/home/rgr/.emacs.d/etc/abbrev/abbrev.el")
  '(ag-arguments '("--smart-case" "--stats" "--multiline" "-U"))
  '(ag-ignore-list '("value" "cache" "log" "data"))
  '(alert-default-style 'libnotify nil nil "Customized with use-package alert")

@@ -397,7 +397,6 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
   (recentf-mode)
   (savehist-mode)
   (save-place-mode)
-  ;;(require 'bookmark)
 
   (defun rgr/save-current-file-to-register ()
     "Save current file to register."
@@ -407,8 +406,11 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
       (set-register reg `(file . ,(buffer-file-name)))))
 
   (defun rgr/startup-hook ()
-    (message "in rgr/startup-hook")
-    (recentf-open-most-recent-file 1))
+    (switch-to-buffer (recentf-open-most-recent-file 1)))
+
+  (if (daemonp)
+      (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+    (add-hook 'emacs-startup-hook 'rgr/startup-hook))
 
   ;; quitting emacs
   (defun rgr/quit-or-close-emacs(&optional kill)
@@ -422,8 +424,8 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
     (interactive)
     (save-buffers-kill-emacs))
 
-  (use-package emacs :ensure nil
-    :hook (elpaca-after-init . rgr/startup-hook)
+  (use-package emacs
+    :ensure nil
     :bind ("C-c x" . rgr/quit-or-close-emacs))
 
   (provide 'rgr/startup)
@@ -472,6 +474,10 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
 
   (global-hl-line-mode t)
 
+  (use-package delsel
+    :ensure nil
+    :hook (after-init . delete-selection-mode))
+
   (defun prot/keyboard-quit-dwim ()
     "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 
@@ -499,6 +505,13 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
   (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
   ;; https://github.com/rolandwalker/browse-url-dwim
   ;; Context-sensitive external browse URL or Internet search from Emacs.
+  (use-package
+    browse-url-dwim
+    :config
+    (browse-url-dwim-mode))
+
+  (use-package alert)
+
   ;; display dir name when core name clashes
   (require 'uniquify)
 
@@ -510,15 +523,6 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
           (delete-window))
       (kill-current-buffer)
       (delete-window)))
-
-  (use-package alert)
-  (use-package delsel
-    :ensure nil
-    :hook (after-init . delete-selection-mode))
-  (use-package
-    browse-url-dwim
-    :config
-    (browse-url-dwim-mode))
 
   (use-package emacs
     :ensure nil
@@ -535,6 +539,7 @@ Raw: [[file+sys:etc/elisp/rgr-general-config.el][rgr/general-config]].
     ( "S-<f1>" . describe-face)
     (  "M-m"  . manual-entry)
     ( "S-<f10>" . menu-bar-open))
+
 #+end_src
 **** posframe                                                      :posframe:
 :PROPERTIES:
@@ -587,11 +592,14 @@ https://protesilaos.com/emacs/pulsar
     (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
     (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
     :config
-    (pulsar-global-mode 1))
+    (
+     pulsar-global-mode 1))
+
 #+end_src
 **** boxquote                                                      :boxquote:
 #+begin_src emacs-lisp
   (use-package boxquote
+    ;;:straight (:branch "main")
     :bind
     ("C-S-r" . boxquote-region))
 
@@ -748,7 +756,7 @@ https://github.com/magnars/multiple-cursors.emacs-lisp
 
 #+begin_src  emacs-lisp
   (use-package jinx
-    :hook (elpaca-after-init-hook . global-jinx-mode)
+    :hook (emacs-startup . global-jinx-mode)
     :bind (("<f8>" . jinx-correct)
            ("C-<f8>" . jinx-languages)))
 #+end_src
@@ -1125,16 +1133,18 @@ Raw:[[file+sys:etc/elisp/rgr-completion.el][rgr/completion]]
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
 Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 #+begin_src emacs-lisp
-  (use-package yasnippet
-    :init
-    (yas-global-mode)
-    )
-  (use-package yasnippet-snippets)
+    (use-package yasnippet
+      :config
+      (use-package yasnippet-snippets)
+      :init
+      (yas-global-mode)
+      )
 #+end_src
 **** Abbrev Mode
 :PROPERTIES:
 :END:
 [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
+
 #+begin_src emacs-lisp
   (setq-default abbrev-mode 1)
   ;;  (load-file abbrev-file-name)
@@ -1231,7 +1241,6 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
     (org-refile-use-outline-path 'file)
     (org-outline-path-complete-in-steps nil)
     :config
-    (add-to-list 'recentf-exclude "var/org")
     (set-face-attribute 'org-headline-done nil :strike-through t)
     (defun rgr/org-agenda (&optional arg)
       (interactive "P")
@@ -1628,7 +1637,6 @@ A bit of a dogs dinner.
 :END:
 The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
 #+begin_src emacs-lisp
-  (use-package mw-thesaurus)
   (use-package
     dictionary
     :commands (rgr/dictionary-search)
@@ -1636,9 +1644,10 @@ The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
     (dictionary-server "dict.org")
     ;;(dictionary-server "localhost")
     :config
+    (use-package mw-thesaurus)
     (defun rgr/dictionary-search(&optional w)
       (interactive)
-      (dictionary-search (if w w (kill-dwim))))
+      (dictionary-search (if w w (rgr/thing-at-point-dwim))))
     :bind
     ("<f6>" . rgr/dictionary-search)
     ("S-<f6>" . mw-thesaurus-lookup-dwim))
@@ -1726,6 +1735,11 @@ Browse devdocs.io documents inside Emacs!
 #+begin_src emacs-lisp
   (use-package elfeed
     :config
+    (use-package elfeed-org
+      :custom
+      (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
+      :config
+      (elfeed-org))
     (run-at-time nil (* 8 60 60) #'elfeed-update)
     :bind
     ( "C-c w" . elfeed)
@@ -1733,11 +1747,6 @@ Browse devdocs.io documents inside Emacs!
           ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-show-visit t))))
     (:map elfeed-search-mode-map
           ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-search-browse-url t)))))
-  (use-package elfeed-org
-    :custom
-    (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
-    :config
-    (elfeed-org))
 #+end_src
 ***** elfeed-org
 :PROPERTIES:
@@ -1752,9 +1761,13 @@ Browse devdocs.io documents inside Emacs!
 [[https://github.com/politza/pdf-tools][pdf-tools]] is, among other things, a replacement of DocView for PDF files
 #+begin_src emacs-lisp
   (use-package pdf-tools
+    :after (org-plus-contrib)
     :config
     (pdf-tools-install)
-    (add-hook 'pdf-isearch-minor-mode-hook (lambda ())))
+    (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
+                                             ))
+    (use-package org-pdftools
+      :hook (org-mode . org-pdftools-setup-link)))
 #+end_src
 ***** requirements
 #+begin_src bash
@@ -1791,6 +1804,29 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-shells.el" rgr/elisp-dir)
 :END:
+**** EAT
+[[https://codeberg.org/akib/emacs-eat][Emulate A Terminal]], in a region, in a buffer and in Eshell
+#+begin_src  emacs-lisp :tangle no
+  ;; back to vterm
+  (use-package  eat  :disabled t
+    :custom
+    (eat-kill-buffer-on-exit t)
+    :config
+    (defun rgr/eat()
+      (interactive)
+      (split-window)
+      (eat))
+    :bind
+    ("M-g t" . rgr/eat))
+    :straight (:type git
+                     :host codeberg
+                     :repo "akib/emacs-eat"
+                     :files ("*.el" ("term" "term/*.el") "*.texi"
+                             "*.ti" ("terminfo/e" "terminfo/e/*")
+                             ("terminfo/65" "terminfo/65/*")
+                             ("integration" "integration/*")
+                             (:exclude ".dir-locals.el" "*-tests.el"))))
+#+end_src
 **** VTERM
 #+begin_src  emacs-lisp
   (use-package vterm)
@@ -1840,14 +1876,14 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
 :END:
 #+begin_src emacs-lisp
   (use-package mu4e :ensure ( :host github
-                              :branch "release/1.10"
-                              :repo "djcb/mu"
-                              :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
-                              :main "mu4e/mu4e.el"
-                              :pre-build (("./autogen.sh")
-                                          ("ninja" "-C" "build")
-                                          (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                                              (expand-file-name "~/bin/mu") 'ok-if-exists)))
+                :branch "release/1.10"
+                :repo "djcb/mu"
+                :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+                :main "mu4e/mu4e.el"
+                :pre-build (("./autogen.sh")
+                            ("ninja" "-C" "build")
+                            (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                                (expand-file-name "~/bin/mu") 'ok-if-exists)))
     :commands (mu4e mu4e-update-index)
     :custom
     ( mayil-user-agent 'mu4e-user-agent )
@@ -1871,6 +1907,10 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
     ( smtpmail-smtp-service 587 )
     ( user-full-name "Richard G.Riley" )
     :config
+
+    (use-package mu4e-alert
+      :init
+      (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
 
     (use-package mu4e-column-faces
       :after mu4e
@@ -1985,9 +2025,6 @@ Raw: [[file+sys:etc/elisp/rgr-email.el][rgr/email]]
                    ("C-c u" . mu4e-headers-mark-all-unread-read))))
   ;;:map mu4e-view-mode-map
   ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
-  (use-package mu4e-alert
-    :init
-    (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -2113,6 +2150,8 @@ https://github.com/emacsmirror/rmsbolt
     (eldoc-idle-delay 1)
     (eldoc-echo-area-use-multiline-p t)
     :config
+    (use-package eldoc-box
+      :after eldoc)
     (defun rgr/eldoc-mode-hook()
       ;;(eldoc-box-hover-at-point-mode)
       )
@@ -2122,10 +2161,6 @@ https://github.com/emacsmirror/rmsbolt
     (eldoc-mode . rgr/eldoc-mode-hook)
     :bind
     ("C-." . eldoc-box-help-at-point))
-
-  (use-package eldoc-box
-    :after eldoc)
-
 #+end_src
 
 **** compilation
@@ -2135,6 +2170,15 @@ https://github.com/emacsmirror/rmsbolt
     '(lambda () (interactive)
         (condition-case nil (next-error)
            (error (next-error 1 t)))))
+#+end_src
+**** indent bars
+#+begin_src  emacs-lisp
+  (use-package indent-bars
+    :disabled
+    :ensure t
+    :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+    :hook
+    (prog-mode . indent-bars-mode))
 #+end_src
 **** JSON
 #+begin_src  emacs-lisp
@@ -2161,7 +2205,8 @@ https://github.com/emacsmirror/rmsbolt
     ("M-9"   . 'treemacs-select-window)
     (:map treemacs-mode-map
           ("<right>" . treemacs-peek)))
-  (use-package treemacs-magit :after treemacs)
+  (use-package treemacs-magit
+    :after treemacs)
 
 #+end_src
 **** duplicate thing
@@ -2264,7 +2309,8 @@ always causes issues. disabled.
 :PROPERTIES:
 :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
 :END:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
+  (straight-use-package 'sqlite3)
   (use-package forge
     :disabled
     :after magit)
@@ -2415,6 +2461,7 @@ https://github.com/joaotavora/eglot
     ;; By default dape shares the same keybinding prefix as `gud'
     ;; If you do not want to use any prefix, set it to nil.
     ;;(setq dape-key-prefix "\C-x\C-a")
+
     :custom
     (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
     (dape-buffer-window-arrangement 'right)
@@ -2425,7 +2472,7 @@ https://github.com/joaotavora/eglot
   ;; Save breakpoints on quit
     (kill-emacs . dape-breakpoint-save)
     ;; Load breakpoints on startup
-    (elpaca-after-init . dape-breakpoint-load)
+    (after-init . dape-breakpoint-load)
     ;;(dape-start . dape-breakpoint-load)
     (dape-display-source . pulsar-pulse-line)
     (dape-compile .  kill-buffer)
@@ -2434,6 +2481,7 @@ https://github.com/joaotavora/eglot
     ;; Turn on global bindings for setting breakpoints with mouse
     ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
     (add-to-list 'recentf-exclude "dape-breakpoints")
+    (add-to-list 'recentf-exclude "var/org")
     (dape-breakpoint-global-mode)
     (add-hook 'dape-info-parent-mode-hook
               (defun dape--info-rescale ()
@@ -2537,10 +2585,11 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 #+end_src
 **** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
 ***** voltron
-#+begin_src emacs-lisp :tangle no
-  (setq lldbv-dir (expand-file-name "emacs-lldb-voltron" emacs-project-dir))
-  (use-package lldb-voltron
-    :ensure `(:repo ,lldbv-dir)
+#+begin_src emacs-lisp
+  (use-package lldb-voltron :disabled t
+    :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
+    ;;:config
+    ;; (breadcrumb-mode t)
     )
 #+end_src
 **** rust
@@ -2832,15 +2881,15 @@ Use helpful if installed else built in
 Display a poup containing docstring at point
 #+begin_src emacs-lisp
   (setq elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir))
-  (use-package quick-peek)
   (use-package el-docstring-sap
     :ensure `(:repo ,elsap-dir)
+    :config
+    (use-package quick-peek)
     :hook
     (emacs-lisp-mode . el-docstring-sap-mode)
     :bind
     ("M-<f2>" . el-docstring-sap-display)
     ("M-<f1>" . el-docstring-sap-mode))
-
 
 #+end_src
 **** Elisp debugging

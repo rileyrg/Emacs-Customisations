@@ -26,6 +26,10 @@
 
 (global-hl-line-mode t)
 
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
+
 (defun prot/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 
@@ -53,6 +57,13 @@ The DWIM behaviour of this command is as follows:
 (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
 ;; https://github.com/rolandwalker/browse-url-dwim
 ;; Context-sensitive external browse URL or Internet search from Emacs.
+(use-package
+  browse-url-dwim
+  :config
+  (browse-url-dwim-mode))
+
+(use-package alert)
+
 ;; display dir name when core name clashes
 (require 'uniquify)
 
@@ -64,15 +75,6 @@ The DWIM behaviour of this command is as follows:
         (delete-window))
     (kill-current-buffer)
     (delete-window)))
-
-(use-package alert)
-(use-package delsel
-  :ensure nil
-  :hook (after-init . delete-selection-mode))
-(use-package
-  browse-url-dwim
-  :config
-  (browse-url-dwim-mode))
 
 (use-package emacs
   :ensure nil
@@ -118,9 +120,11 @@ The DWIM behaviour of this command is as follows:
   (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
   (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
   :config
-  (pulsar-global-mode 1))
+  (
+   pulsar-global-mode 1))
 
 (use-package boxquote
+  ;;:straight (:branch "main")
   :bind
   ("C-S-r" . boxquote-region))
 
@@ -218,7 +222,7 @@ The DWIM behaviour of this command is as follows:
   ("C-\\" . toggle-selective-display))
 
 (use-package jinx
-  :hook (elpaca-after-init-hook . global-jinx-mode)
+  :hook (emacs-startup . global-jinx-mode)
   :bind (("<f8>" . jinx-correct)
          ("C-<f8>" . jinx-languages)))
 
