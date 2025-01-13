@@ -1,39 +1,33 @@
-(use-package emacs
-  :ensure nil
-  :config
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(show-paren-mode 1)
+(winner-mode 1)
 
-  (require 'iso-transl) ;; supposed to cure deadkeys when my external kbd is plugged into my thinkpad T44460.  It doesnt.
-                                        ; t60
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (show-paren-mode 1)
-  (winner-mode 1)
+(repeat-mode)
 
-  (repeat-mode)
+(global-auto-revert-mode 1)
+;; Also auto refresh dired, but be quiet about it
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+(setq auto-revert-use-notify nil)
 
-  (global-auto-revert-mode 1)
-  ;; Also auto refresh dired, but be quiet about it
-  (setq global-auto-revert-non-file-buffers t)
-  (setq auto-revert-verbose nil)
-  (setq auto-revert-use-notify nil)
+(global-visual-line-mode 1)
 
-  (global-visual-line-mode 1)
+(setq column-number-mode t)
 
-  (setq column-number-mode t)
+(delete-selection-mode 1)
 
-  (delete-selection-mode 1)
+(setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
 
-  (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+(defalias 'yes-or-no-p 'y-or-n-p)
 
-  (defalias 'yes-or-no-p 'y-or-n-p)
+(setq disabled-command-function nil)
 
-  (setq disabled-command-function nil)
+(global-hl-line-mode t)
 
-  (global-hl-line-mode t)
-
-  (defun prot/keyboard-quit-dwim ()
-    "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+(defun prot/keyboard-quit-dwim ()
+  "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 
 The generic `keyboard-quit' does not do the expected thing when
 the minibuffer is open.  Whereas we want it to close the
@@ -45,32 +39,43 @@ The DWIM behaviour of this command is as follows:
 - When a minibuffer is open, but not focused, close the minibuffer.
 - When the Completions buffer is selected, close it.
 - In every other case use the regular `keyboard-quit'."
-    (interactive)
-    (cond
-     ((region-active-p)
-      (keyboard-quit))
-     ((derived-mode-p 'completion-list-mode)
-      (delete-completion-window))
-     ((> (minibuffer-depth) 0)
-      (abort-recursive-edit))
-     (t
-      (keyboard-quit))))
+  (interactive)
+  (cond
+   ((region-active-p)
+    (keyboard-quit))
+   ((derived-mode-p 'completion-list-mode)
+    (delete-completion-window))
+   ((> (minibuffer-depth) 0)
+    (abort-recursive-edit))
+   (t
+    (keyboard-quit))))
 
-  (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
-  ;; https://github.com/rolandwalker/browse-url-dwim
-  ;; Context-sensitive external browse URL or Internet search from Emacs.
-  ;; display dir name when core name clashes
-  (require 'uniquify)
+(define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
+;; https://github.com/rolandwalker/browse-url-dwim
+;; Context-sensitive external browse URL or Internet search from Emacs.
+;; display dir name when core name clashes
+(require 'uniquify)
 
-  (defun rgr/kill-current-buffer()
-    (interactive)
-    (if (member (buffer-name) '("*Messages*" "*scratch*"))
-        (progn
-          (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-          (delete-window))
-      (kill-current-buffer)
-      (delete-window)))
+(defun rgr/kill-current-buffer()
+  (interactive)
+  (if (member (buffer-name) '("*Messages*" "*scratch*"))
+      (progn
+        (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+        (delete-window))
+    (kill-current-buffer)
+    (delete-window)))
 
+(use-package alert)
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
+(use-package
+  browse-url-dwim
+  :config
+  (browse-url-dwim-mode))
+
+(use-package emacs
+  :ensure nil
   :hook
   (before-save  . delete-trailing-whitespace)
   :bind
@@ -84,14 +89,6 @@ The DWIM behaviour of this command is as follows:
   ( "S-<f1>" . describe-face)
   (  "M-m"  . manual-entry)
   ( "S-<f10>" . menu-bar-open))
-(use-package alert)
-(use-package delsel
-  :ensure nil
-  :hook (after-init . delete-selection-mode))
-(use-package
-  browse-url-dwim
-  :config
-  (browse-url-dwim-mode))
 
 (use-package posframe)
 
