@@ -152,13 +152,14 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 ** custom.el
 #+begin_src emacs-lisp
   (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-  (add-hook 'elpaca-after-init-hook (lambda()(load custom-file 'noerror)))
+  (load custom-file 'noerror)
 #+end_src
 ** no-littering - keep data tidy
 
 #+begin_src  emacs-lisp
   (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
   (use-package no-littering
+    :ensure (:wait t) :demand t
     :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
     :custom
     (make-backup-files t)
@@ -1241,7 +1242,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
 #+begin_src emacs-lisp
   (use-package org
     :custom
-    (org-agenda-files (expand-file-name "var/etc/agenda-files.txt" user-emacs-directory))
+    (org-agenda-files (expand-file-name "etc/org/agenda-files.txt" user-emacs-directory))
     (org-fontify-done-headline t)
     (org-fontify-todo-headline t)
     (org-clock-idle-time 10)
@@ -3033,7 +3034,7 @@ https://github.com/protesilaos/ef-themes
 :ID:       574516c0-a821-47fb-b01f-97ec19789d65
 :END:
 #+begin_src emacs-lisp
-  (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
+  ;;(add-hook 'after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
 #+end_src
 * Associated emacs things
 :PROPERTIES:

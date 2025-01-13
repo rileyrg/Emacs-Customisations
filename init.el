@@ -60,10 +60,11 @@
         (elpaca-use-package-mode))
 
 (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
-(add-hook 'elpaca-after-init-hook (lambda()(load custom-file 'noerror)))
+(load custom-file 'noerror)
 
 (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
 (use-package no-littering
+  :ensure (:wait t) :demand t
   :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
   :custom
   (make-backup-files t)
@@ -131,4 +132,4 @@
 
 (require 'rgr/themes "rgr-themes" 'NOERROR)
 
-(add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
+;;(add-hook 'after-init-hook (lambda()(load-el-gpg (no-littering-expand-etc-file-name "late-load"))))
