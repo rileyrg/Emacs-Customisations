@@ -1,8 +1,8 @@
-(let ((killdwim-dir (expand-file-name "kill-dwim" emacs-project-dir )))
-;;    (use-package kill-dwim :ensure `(:repo ,killdwim-dir)
-    (use-package kill-dwim :ensure (:repo "/home/rgr/development/projects/emacs/kill-dwim")
-      :bind
-      ("M-w" . kill-dwim))))
+(setq killdwim-dir (expand-file-name "kill-dwim" emacs-project-dir ))
+(use-package kill-dwim
+  :ensure `(:repo ,killdwim-dir)
+  :bind
+  ("M-w" . kill-dwim))
 
 (use-package flymake
   :custom
@@ -51,17 +51,16 @@
 
 (use-package helpful)
 
-(let (( elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir)))
-    (use-package el-docstring-sap
-;;      :ensure `(:repo ,elsap-dir)
-      :ensure (:repo "/home/rgr/development/projects/emacs/el-docstring-sap")
-      :config
-      (use-package quick-peek)
-      :hook
-      (emacs-lisp-mode . el-docstring-sap-mode)
-      :bind
-      ("M-<f2>" . el-docstring-sap-display)
-      ("M-<f1>" . el-docstring-sap-mode)))
+(setq elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir))
+(use-package el-docstring-sap
+  :ensure `(:repo ,elsap-dir)
+  :config
+  (use-package quick-peek)
+  :hook
+  (emacs-lisp-mode . el-docstring-sap-mode)
+  :bind
+  ("M-<f2>" . el-docstring-sap-display)
+  ("M-<f1>" . el-docstring-sap-mode))
 
 (use-package edebug-x
   :custom

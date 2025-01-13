@@ -209,6 +209,7 @@ Raw: [rgr/security](etc/elisp/rgr-security.el)
         (setq passw (get-auth-info "licenses" "my-auth-token"))
     
         (require 'auth-source)
+        (setq auth-sources '("~/.gnupg/auth/authinfo.gpg" "~/.gnupg/auth/authirc.gpg"))
         (defun get-auth-info (host user &optional port)
           "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
           (let* ((info (nth 0 (auth-source-search
@@ -311,7 +312,9 @@ Raw: [rgr-utils](etc/elisp/rgr-utils.el).
 
     My own hack for popping up text to learn
     
-        (use-package lazy-lang-learn :ensure (:host github :repo "rileyrg/lazy-lang-learn")
+        (setq lazyll-dir (expand-file-name "lazy-lang-learn" emacs-project-dir ))
+        (use-package lazy-lang-learn
+          :ensure  `(:repo ,lazyll-dir)
           :bind
           ("C-c L" . lazy-lang-learn-mode)
           ("<f12>" . lazy-lang-learn-translate)
@@ -1025,6 +1028,7 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     [Abbrev Mode](https://www.emacswiki.org/emacs/AbbrevMode#toc4) is very useful for expanding small text snippets
     
           (setq-default abbrev-mode 1)
+        (setq abbrev-file-name (no-littering-expand-etc-file-name "abbrev/abbrev.el"))
         ;;  (load-file abbrev-file-name)
           (defadvice expand-abbrev (after my-expand-abbrev activate)
             ;; if there was an expansion
@@ -1216,7 +1220,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org2f95ed5)
+    See `org-agenda-files` [org-agenda-files](#org2dd9de9)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1938,7 +1942,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
     2.  parrot
     
             (use-package parrot
-              :ensure t
               :config
               (defun my/parrot-animate-when-compile-success (buffer result)
                 (if (string-match "^finished" result)
@@ -2468,7 +2471,9 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
 1.  kill-dwim
 
-        (use-package kill-dwim :ensure (:host github :repo "rileyrg/kill-dwim")
+        (setq killdwim-dir (expand-file-name "kill-dwim" emacs-project-dir ))
+        (use-package kill-dwim
+          :ensure `(:repo ,killdwim-dir)
           :bind
           ("M-w" . kill-dwim))
 
@@ -2553,7 +2558,11 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
 
     Display a poup containing docstring at point
     
-        (use-package el-docstring-sap :ensure (:host github :repo "rileyrg/el-docstring-sap")
+        (setq elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir))
+        (use-package el-docstring-sap
+          :ensure `(:repo ,elsap-dir)
+          :config
+          (use-package quick-peek)
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
@@ -2763,7 +2772,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org49071d4) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org366b415) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2796,7 +2805,7 @@ to add to version control.
     fi
 
 
-<a id="org49071d4"></a>
+<a id="org366b415"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -365,15 +365,14 @@ Raw: [[file+sys:etc/elisp/rgr-utils.el][rgr-utils]].
 My own hack for popping up text to learn
 :PROPERTIES:
 :END:
-#+begin_src emacs-lisp :tangle no
-  (let ((lazyll-dir (expand-file-name "lazy-lang-learn" emacs-project-dir )))
-    (use-package lazy-lang-learn
-  ;;    :ensure  `(:repo ,lazyll-dir)
-      :ensure (:repo "/home/rgr/development/projects/emacs/lazy-lang-learn")
-      :bind
-      ("C-c L" . lazy-lang-learn-mode)
-      ("<f12>" . lazy-lang-learn-translate)
-      ("S-<f12>" . lazy-lang-learn-translate-from-history)))
+#+begin_src emacs-lisp
+  (setq lazyll-dir (expand-file-name "lazy-lang-learn" emacs-project-dir ))
+  (use-package lazy-lang-learn
+    :ensure  `(:repo ,lazyll-dir)
+    :bind
+    ("C-c L" . lazy-lang-learn-mode)
+    ("<f12>" . lazy-lang-learn-translate)
+    ("S-<f12>" . lazy-lang-learn-translate-from-history))
 #+end_src
 
 **** provide
@@ -2163,7 +2162,6 @@ https://github.com/emacsmirror/rmsbolt
 ***** parrot
 #+begin_src emacs-lisp
   (use-package parrot
-    :ensure t
     :config
     (defun my/parrot-animate-when-compile-success (buffer result)
       (if (string-match "^finished" result)
@@ -2793,11 +2791,11 @@ Raw: [[file+sys:etc/elisp/rgr-elisp-utils.el][rgr/elisp-utils]]
 
 **** kill-dwim
 #+begin_src emacs-lisp
-  (let ((killdwim-dir (expand-file-name "kill-dwim" emacs-project-dir )))
-;;    (use-package kill-dwim :ensure `(:repo ,killdwim-dir)
-    (use-package kill-dwim :ensure (:repo "/home/rgr/development/projects/emacs/kill-dwim")
-      :bind
-      ("M-w" . kill-dwim))))
+  (setq killdwim-dir (expand-file-name "kill-dwim" emacs-project-dir ))
+  (use-package kill-dwim
+    :ensure `(:repo ,killdwim-dir)
+    :bind
+    ("M-w" . kill-dwim))
 #+end_src
 
 **** Flymake
@@ -2909,17 +2907,16 @@ Use helpful if installed else built in
 :END:
 Display a poup containing docstring at point
 #+begin_src emacs-lisp
-  (let (( elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir)))
-    (use-package el-docstring-sap
-;;      :ensure `(:repo ,elsap-dir)
-      :ensure (:repo "/home/rgr/development/projects/emacs/el-docstring-sap")
-      :config
-      (use-package quick-peek)
-      :hook
-      (emacs-lisp-mode . el-docstring-sap-mode)
-      :bind
-      ("M-<f2>" . el-docstring-sap-display)
-      ("M-<f1>" . el-docstring-sap-mode)))
+  (setq elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir))
+  (use-package el-docstring-sap
+    :ensure `(:repo ,elsap-dir)
+    :config
+    (use-package quick-peek)
+    :hook
+    (emacs-lisp-mode . el-docstring-sap-mode)
+    :bind
+    ("M-<f2>" . el-docstring-sap-display)
+    ("M-<f1>" . el-docstring-sap-mode))
 
 #+end_src
 **** Elisp debugging

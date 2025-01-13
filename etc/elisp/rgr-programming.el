@@ -23,7 +23,6 @@
         ("C-c d" . rgr/rmsbolt)))
 
 (use-package parrot
-  :ensure t
   :config
   (defun my/parrot-animate-when-compile-success (buffer result)
     (if (string-match "^finished" result)
