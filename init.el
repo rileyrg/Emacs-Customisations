@@ -62,13 +62,13 @@
 (setq custom-file  (expand-file-name  "custom.el" user-emacs-directory))
 (load custom-file 'noerror)
 
-(setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
 (use-package no-littering
   :ensure (:wait t) :demand t
   :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
   :custom
   (make-backup-files t)
   :config
+  (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
   (setq backup-directory-alist
         `(("." . ,(no-littering-expand-var-file-name "backup/"))))
   (setq auto-save-file-name-transforms

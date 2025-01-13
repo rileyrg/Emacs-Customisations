@@ -157,13 +157,13 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 ** no-littering - keep data tidy
 
 #+begin_src  emacs-lisp
-  (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
   (use-package no-littering
     :ensure (:wait t) :demand t
     :commands (no-littering-expand-var-file-name no-littering-expand-etc-file-name)
     :custom
     (make-backup-files t)
     :config
+    (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
     (setq backup-directory-alist
           `(("." . ,(no-littering-expand-var-file-name "backup/"))))
     (setq auto-save-file-name-transforms
