@@ -333,11 +333,11 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
 1.  persistence  and history
 
         (use-package emacs :ensure nil
-          :after no-littering
           :config
           (recentf-mode)
           (savehist-mode)
           (save-place-mode)
+          ;;(require 'bookmark)
         
           (defun rgr/save-current-file-to-register ()
             "Save current file to register."
@@ -347,9 +347,8 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
               (set-register reg `(file . ,(buffer-file-name)))))
         
           (defun rgr/startup-hook ()
-            (switch-to-buffer (recentf-open-most-recent-file 1)))
-        
-          (add-hook 'elpaca-after-init-hook 'rgr/startup-hook)
+            (message "in rgr/startup-hook")
+            (switch-to-buffer (call-interactively 'recentf-open-most-recent-file)))
         
           ;; quitting emacs
           (defun rgr/quit-or-close-emacs(&optional kill)
@@ -363,6 +362,8 @@ Raw: [rgr/startup](etc/elisp/rgr-startup.el)
             (interactive)
             (save-buffers-kill-emacs))
         
+        
+          :hook (elpaca-after-init . rgr/startup-hook)
           :bind ("C-c x" . rgr/quit-or-close-emacs))
         
         (provide 'rgr/startup)
@@ -415,10 +416,6 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
         
           (global-hl-line-mode t)
         
-          (use-package delsel
-            :ensure nil
-            :hook (after-init . delete-selection-mode))
-        
           (defun prot/keyboard-quit-dwim ()
             "Do-What-I-Mean behaviour for a general `keyboard-quit'.
         
@@ -446,13 +443,6 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)t
           ;; https://github.com/rolandwalker/browse-url-dwim
           ;; Context-sensitive external browse URL or Internet search from Emacs.
-          (use-package
-            browse-url-dwim
-            :config
-            (browse-url-dwim-mode))
-        
-          (use-package alert)
-        
           ;; display dir name when core name clashes
           (require 'uniquify)
         
@@ -478,6 +468,14 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           ( "S-<f1>" . describe-face)
           (  "M-m"  . manual-entry)
           ( "S-<f10>" . menu-bar-open))
+        (use-package alert)
+        (use-package delsel
+          :ensure nil
+          :hook (after-init . delete-selection-mode))
+        (use-package
+          browse-url-dwim
+          :config
+          (browse-url-dwim-mode))
 
 2.  posframe
 
@@ -525,13 +523,11 @@ Raw: [rgr/general-config](etc/elisp/rgr-general-config.el).
           (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
           (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
           :config
-          (
-           pulsar-global-mode 1))
+          (pulsar-global-mode 1))
 
 5.  boxquote
 
         (use-package boxquote
-          ;;:straight (:branch "main")
           :bind
           ("C-S-r" . boxquote-region))
 
@@ -1016,11 +1012,10 @@ Raw:[rgr/completion](etc/elisp/rgr-completion.el)
     Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
     
         (use-package yasnippet
-          :config
-          (use-package yasnippet-snippets)
           :init
           (yas-global-mode)
           )
+        (use-package yasnippet-snippets)
 
 4.  Abbrev Mode
 
@@ -1102,6 +1097,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 1.  Org Mode, org-mode
 
         (use-package org
+          :ensure nil
           :custom
           (org-agenda-files (expand-file-name "etc/org/agenda-files.txt" user-emacs-directory))
           (org-fontify-done-headline t)
@@ -1113,6 +1109,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
           (org-refile-use-outline-path 'file)
           (org-outline-path-complete-in-steps nil)
           :config
+          (add-to-list 'recentf-exclude "var/org")
           (set-face-attribute 'org-headline-done nil :strike-through t)
           (defun rgr/org-agenda (&optional arg)
             (interactive "P")
@@ -1216,7 +1213,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgd2b7be0)
+    See `org-agenda-files` [org-agenda-files](#org4920cdd)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1472,6 +1469,7 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
 
     The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
     
+        (use-package mw-thesaurus)
         (use-package
           dictionary
           :commands (rgr/dictionary-search)
@@ -1479,10 +1477,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
           (dictionary-server "dict.org")
           ;;(dictionary-server "localhost")
           :config
-          (use-package mw-thesaurus)
           (defun rgr/dictionary-search(&optional w)
             (interactive)
-            (dictionary-search (if w w (rgr/thing-at-point-dwim))))
+            (dictionary-search (if w w (kill-dwim))))
           :bind
           ("<f6>" . rgr/dictionary-search)
           ("S-<f6>" . mw-thesaurus-lookup-dwim))
@@ -1556,11 +1553,6 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     
         (use-package elfeed
           :config
-          (use-package elfeed-org
-            :custom
-            (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
-            :config
-            (elfeed-org))
           (run-at-time nil (* 8 60 60) #'elfeed-update)
           :bind
           ( "C-c w" . elfeed)
@@ -1568,6 +1560,11 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
                 ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-show-visit t))))
           (:map elfeed-search-mode-map
                 ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-search-browse-url t)))))
+        (use-package elfeed-org
+          :custom
+          (rmh-elfeed-org-files (list (expand-file-name  "elfeed/elfeed.org" user-emacs-directory )))
+          :config
+          (elfeed-org))
     
     1.  elfeed-org
 
@@ -1576,13 +1573,9 @@ Raw: [rgr/reference](etc/elisp/rgr-reference.el)
     [pdf-tools](https://github.com/politza/pdf-tools) is, among other things, a replacement of DocView for PDF files
     
         (use-package pdf-tools
-          :after (org-plus-contrib)
           :config
           (pdf-tools-install)
-          (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
-                                                   ))
-          (use-package org-pdftools
-            :hook (org-mode . org-pdftools-setup-link)))
+          (add-hook 'pdf-isearch-minor-mode-hook (lambda ())))
     
     1.  requirements
     
@@ -1613,31 +1606,7 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
 
 ### library
 
-1.  EAT
-
-    [Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
-    
-        ;; back to vterm
-        (use-package  eat  :disabled t
-          :custom
-          (eat-kill-buffer-on-exit t)
-          :config
-          (defun rgr/eat()
-            (interactive)
-            (split-window)
-            (eat))
-          :bind
-          ("M-g t" . rgr/eat))
-          :straight (:type git
-                           :host codeberg
-                           :repo "akib/emacs-eat"
-                           :files ("*.el" ("term" "term/*.el") "*.texi"
-                                   "*.ti" ("terminfo/e" "terminfo/e/*")
-                                   ("terminfo/65" "terminfo/65/*")
-                                   ("integration" "integration/*")
-                                   (:exclude ".dir-locals.el" "*-tests.el"))))
-
-2.  VTERM
+1.  VTERM
 
         (use-package vterm)
         (use-package  multi-vterm
@@ -1651,7 +1620,7 @@ Raw: [rgr/shells](etc/elisp/rgr-shells.el)
           :bind
           ("M-g t" . multi-vterm-project))
 
-3.  provide
+2.  provide
 
         (provide 'rgr/shells)
 
@@ -1679,14 +1648,14 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
 2.  mu4e
 
         (use-package mu4e :ensure ( :host github
-                      :branch "release/1.10"
-                      :repo "djcb/mu"
-                      :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
-                      :main "mu4e/mu4e.el"
-                      :pre-build (("./autogen.sh")
-                                  ("ninja" "-C" "build")
-                                  (make-symbolic-link (expand-file-name "./build/mu/mu")
-                                                      (expand-file-name "~/bin/mu") 'ok-if-exists)))
+                                    :branch "release/1.10"
+                                    :repo "djcb/mu"
+                                    :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
+                                    :main "mu4e/mu4e.el"
+                                    :pre-build (("./autogen.sh")
+                                                ("ninja" "-C" "build")
+                                                (make-symbolic-link (expand-file-name "./build/mu/mu")
+                                                                    (expand-file-name "~/bin/mu") 'ok-if-exists)))
           :commands (mu4e mu4e-update-index)
           :custom
           ( mayil-user-agent 'mu4e-user-agent )
@@ -1710,10 +1679,6 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
           ( smtpmail-smtp-service 587 )
           ( user-full-name "Richard G.Riley" )
           :config
-        
-          (use-package mu4e-alert
-            :init
-            (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
         
           (use-package mu4e-column-faces
             :after mu4e
@@ -1828,6 +1793,9 @@ Raw: [rgr/email](etc/elisp/rgr-email.el)
                          ("C-c u" . mu4e-headers-mark-all-unread-read))))
         ;;:map mu4e-view-mode-map
         ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
+        (use-package mu4e-alert
+          :init
+          (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
 
 3.  provide
 
@@ -1933,8 +1901,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (eldoc-idle-delay 1)
           (eldoc-echo-area-use-multiline-p t)
           :config
-          (use-package eldoc-box
-            :after eldoc)
           (defun rgr/eldoc-mode-hook()
             ;;(eldoc-box-hover-at-point-mode)
             )
@@ -1944,6 +1910,9 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (eldoc-mode . rgr/eldoc-mode-hook)
           :bind
           ("C-." . eldoc-box-help-at-point))
+        
+        (use-package eldoc-box
+          :after eldoc)
 
 4.  compilation
 
@@ -1953,21 +1922,12 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (condition-case nil (next-error)
                  (error (next-error 1 t)))))
 
-5.  indent bars
-
-        (use-package indent-bars
-          :disabled
-          :ensure t
-          :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-          :hook
-          (prog-mode . indent-bars-mode))
-
-6.  JSON
+5.  JSON
 
         (use-package json-mode)
         (use-package jsonrpc)
 
-7.  Treemacs
+6.  Treemacs
 
         (use-package
           treemacs
@@ -1979,35 +1939,35 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (treemacs-follow-mode +1)
           (treemacs-fringe-indicator-mode)
           (treemacs-git-mode 'deferred)
-          (use-package treemacs-magit)
           :bind
           ("M-9"   . 'treemacs-select-window)
           (:map treemacs-mode-map
                 ("<right>" . treemacs-peek)))
+        (use-package treemacs-magit :after treemacs)
 
-8.  duplicate thing
+7.  duplicate thing
 
         (use-package duplicate-thing
           :bind
           ("C-S-d" . 'duplicate-thing))
 
-9.  Breadcrumbs
+8.  Breadcrumbs
 
         (use-package breadcrumb
           :config
           (breadcrumb-mode))
 
-10. prog-mode hack
+9.  prog-mode hack
 
         (unless (fboundp 'prog-mode)
           (defalias 'prog-mode 'fundamental-mode))
 
-11. Show Line numbers
+10. Show Line numbers
 
         (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
         (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
 
-12. code format
+11. code format
 
         ;; auto-format different source code files extremely intelligently
         ;; https://github.com/radian-software/apheleia
@@ -2017,7 +1977,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (apheleia-global-mode +1))
 
-13. BASH
+12. BASH
 
     1.  Navigating Bash set -x output
     
@@ -2031,11 +1991,11 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                            '(pascal
                              "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 
-14. PHP
+13. PHP
 
         (use-package php-mode)
 
-15. JSON, YAML Configuration files
+14. JSON, YAML Configuration files
 
     1.  YAML
     
@@ -2046,7 +2006,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
             (use-package json-reformat)
             (use-package hydra)
 
-16. Version Control
+15. Version Control
 
     1.  It's [Magit](Https://github.com/magit/magit)! A Git porcelain inside Emacs
     
@@ -2068,7 +2028,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         
         :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
         
-            (straight-use-package 'sqlite3)
             (use-package forge
               :disabled
               :after magit)
@@ -2103,13 +2062,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   :bind
                   ("C-x v ="  . diff-hl-show-hunk))
 
-17. Dart/Flutter
+16. Dart/Flutter
 
     Running emulator from command line:
     
         emulator -avd Pixel_6_Pro_API_33
 
-18. Tree Sitter
+17. Tree Sitter
 
     1.  treesit-auto
     
@@ -2155,7 +2114,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
               (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
-19. Language Server Protocol (LSP)
+18. Language Server Protocol (LSP)
 
     [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
     
@@ -2207,7 +2166,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   ;; By default dape shares the same keybinding prefix as `gud'
                   ;; If you do not want to use any prefix, set it to nil.
                   ;;(setq dape-key-prefix "\C-x\C-a")
-                
                   :custom
                   (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
                   (dape-buffer-window-arrangement 'right)
@@ -2218,7 +2176,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 ;; Save breakpoints on quit
                   (kill-emacs . dape-breakpoint-save)
                   ;; Load breakpoints on startup
-                  (after-init . dape-breakpoint-load)
+                  (elpaca-after-init . dape-breakpoint-load)
                   ;;(dape-start . dape-breakpoint-load)
                   (dape-display-source . pulsar-pulse-line)
                   (dape-compile .  kill-buffer)
@@ -2227,7 +2185,6 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                   ;; Turn on global bindings for setting breakpoints with mouse
                   ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
                   (add-to-list 'recentf-exclude "dape-breakpoints")
-                  (add-to-list 'recentf-exclude "var/org")
                   (dape-breakpoint-global-mode)
                   (add-hook 'dape-info-parent-mode-hook
                             (defun dape--info-rescale ()
@@ -2237,7 +2194,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
         
                 (provide 'rgr/lsp)
 
-20. Serial Port
+19. Serial Port
 
         (defgroup rgr/serial-ports nil
           "serial port customization"
@@ -2263,7 +2220,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                           (interactive)
                           (selectSerialPortBuffer)))
 
-21. PlatformIO
+20. PlatformIO
 
     [platformio-mode](https://github.com/emacsmirror/platformio-mode) is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
     The build and install process id documented [here](https://docs.platformio.org/en/latest/ide/emacs.html).
@@ -2285,7 +2242,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (add-hook 'compilation-finish-functions
                     'rgr/platformio-compilation-mode-filter))
 
-22. Python
+21. Python
 
     1.  ipython
     
@@ -2298,7 +2255,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :config
               (add-hook 'python-base-mode-hook 'pet-mode -10))
 
-23. Haskell
+22. Haskell
 
     1.  haskell-mode
     
@@ -2312,17 +2269,16 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
               (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-24. lldb debugging in emacs
+23. lldb debugging in emacs
 
     1.  voltron
     
-            (use-package lldb-voltron :disabled t
-              :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
-              ;;:config
-              ;; (breadcrumb-mode t)
+            (setq lldbv-dir (expand-file-name "emacs-lldb-voltron" emacs-project-dir))
+            (use-package lldb-voltron
+              :ensure `(:repo ,lldbv-dir)
               )
 
-25. rust
+24. rust
 
         
         (use-package rust-mode
@@ -2353,7 +2309,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           (:map rustic-mode-map
                 ("C-q" . rgr/browser-doc-search)))
 
-26. C
+25. C
 
     1.  c-mode-common-hook
     
@@ -2368,7 +2324,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               :hook
               ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 
-27. Linux tools
+26. Linux tools
 
     1.  [logview](https://github.com/doublep/logview) - view system logfiles
     
@@ -2378,13 +2334,13 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
               (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
               (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 
-28. Assembler
+27. Assembler
 
     1.  [x86Lookup](https://nullprogram.com/blog/2015/11/21/)
     
             (use-package strace-mode)
 
-29. Web,Symfony and Twig
+28. Web,Symfony and Twig
 
     1.  Symfony
     
@@ -2423,7 +2379,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
                 ((php-mode
                   (eval php-mode-webserver-hook)))
 
-30. elf-mode - view the symbol list in a binary
+29. elf-mode - view the symbol list in a binary
 
     [https://oremacs.com/2016/08/28/elf-mode/](https://oremacs.com/2016/08/28/elf-mode/)
     
@@ -2432,7 +2388,7 @@ Raw: [rgr/programming](etc/elisp/rgr-programming.el)
           :config
           (elf-setup-default))
 
-31. provide
+30. provide
 
         (provide 'rgr/programming)
 
@@ -2537,10 +2493,9 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     Display a poup containing docstring at point
     
         (setq elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir))
+        (use-package quick-peek)
         (use-package el-docstring-sap
           :ensure `(:repo ,elsap-dir)
-          :config
-          (use-package quick-peek)
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
@@ -2750,7 +2705,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb602122) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org30c50ee) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2783,7 +2738,7 @@ to add to version control.
     fi
 
 
-<a id="orgb602122"></a>
+<a id="org30c50ee"></a>
 
 ### Gnome protocol handler desktop file
 

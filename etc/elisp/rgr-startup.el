@@ -1,5 +1,4 @@
 (use-package emacs :ensure nil
-  :after no-littering
   :config
   (recentf-mode)
   (savehist-mode)
@@ -14,9 +13,8 @@
       (set-register reg `(file . ,(buffer-file-name)))))
 
   (defun rgr/startup-hook ()
-    (switch-to-buffer (recentf-open-most-recent-file 1)))
-
-  (add-hook 'elpaca-after-init-hook 'rgr/startup-hook)
+    (message "in rgr/startup-hook")
+    (switch-to-buffer (call-interactively 'recentf-open-most-recent-file)))
 
   ;; quitting emacs
   (defun rgr/quit-or-close-emacs(&optional kill)
@@ -30,6 +28,8 @@
     (interactive)
     (save-buffers-kill-emacs))
 
+
+  :hook (elpaca-after-init . rgr/startup-hook)
   :bind ("C-c x" . rgr/quit-or-close-emacs))
 
 (provide 'rgr/startup)

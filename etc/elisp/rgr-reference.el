@@ -202,12 +202,9 @@
 
 
 (use-package pdf-tools
-  :after (org-plus-contrib)
   :config
   (pdf-tools-install)
   (add-hook 'pdf-isearch-minor-mode-hook (lambda ())))
-(use-package org-pdftools
-  :hook (org-mode . org-pdftools-setup-link))
 
 (use-package impatient-showdown
   :disabled

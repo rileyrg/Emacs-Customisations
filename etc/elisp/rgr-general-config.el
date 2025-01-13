@@ -121,11 +121,9 @@ The DWIM behaviour of this command is as follows:
   (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
   (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
   :config
-  (
-   pulsar-global-mode 1))
+  (pulsar-global-mode 1))
 
 (use-package boxquote
-  ;;:straight (:branch "main")
   :bind
   ("C-S-r" . boxquote-region))
 

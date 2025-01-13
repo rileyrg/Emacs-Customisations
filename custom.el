@@ -123,7 +123,7 @@
  '(erc-scrolltobottom-mode nil nil (erc-goodies))
  '(erc-server-auto-reconnect t)
  '(erc-server-reconnect-attempts t)
- '(erc-stamp-mode t nil (erc-stamp))
+ '(erc-stamp-mode t)
  '(erc-startup-file-list nil)
  '(erc-system-name nil)
  '(erc-timestamp-format "[%T]")
@@ -223,8 +223,7 @@
  '(org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
  '(org-log-done 'time nil nil "Customized with use-package org")
  '(org-log-into-drawer t nil nil "Customized with use-package org")
- '(org-modules
-   '(org-crypt ol-docview ol-eww ol-info ol-irc ol-mhe ol-rmail ol-w3m ol-eshell ol-man))
+ '(org-modules '(org-crypt ol-eww ol-info))
  '(org-project-capture-projects-file "TODO.org")
  '(org-refile-allow-creating-parent-nodes 'confirm nil nil "Customized with use-package org")
  '(org-refile-targets
@@ -294,6 +293,8 @@
      (eval dap-register-debug-template "cpptools::Run Configuration" (list :type "cppdbg" :request "launch" :name "cpptools::Run Configuration" :MIMode "gdb" :target "${workspaceFolder}/hello-world" :cwd "${workspaceFolder}"))))
  '(save-abbrevs 'silently)
  '(save-interprogram-paste-before-kill t)
+ '(save-place-file "/home/rgr/.emacs.d/var/save-place.el")
+ '(savehist-file "/home/rgr/.emacs.d/var/savehist.el")
  '(scroll-bar-mode nil)
  '(scroll-conservatively 10000)
  '(scroll-step 1)

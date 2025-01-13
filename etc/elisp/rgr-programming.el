@@ -53,13 +53,6 @@
       (condition-case nil (next-error)
          (error (next-error 1 t)))))
 
-(use-package indent-bars
-  :disabled
-  :ensure t
-  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-  :hook
-  (prog-mode . indent-bars-mode))
-
 (use-package json-mode)
 (use-package jsonrpc)
 
@@ -236,10 +229,9 @@
     '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 
-(use-package lldb-voltron :disabled t
-  :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
-  ;;:config
-  ;; (breadcrumb-mode t)
+(setq lldbv-dir (expand-file-name "emacs-lldb-voltron" emacs-project-dir))
+(use-package lldb-voltron
+  :ensure `(:repo ,lldbv-dir)
   )
 
 (use-package rust-mode

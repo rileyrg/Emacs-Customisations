@@ -395,7 +395,6 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
 **** persistence  and history
 #+begin_src emacs-lisp
   (use-package emacs :ensure nil
-    :after no-littering
     :config
     (recentf-mode)
     (savehist-mode)
@@ -410,9 +409,8 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
         (set-register reg `(file . ,(buffer-file-name)))))
 
     (defun rgr/startup-hook ()
-      (switch-to-buffer (recentf-open-most-recent-file 1)))
-
-    (add-hook 'elpaca-after-init-hook 'rgr/startup-hook)
+      (message "in rgr/startup-hook")
+      (switch-to-buffer (call-interactively 'recentf-open-most-recent-file)))
 
     ;; quitting emacs
     (defun rgr/quit-or-close-emacs(&optional kill)
@@ -426,6 +424,8 @@ Raw: [[file+sys:etc/elisp/rgr-startup.el][rgr/startup]]
       (interactive)
       (save-buffers-kill-emacs))
 
+
+    :hook (elpaca-after-init . rgr/startup-hook)
     :bind ("C-c x" . rgr/quit-or-close-emacs))
 
   (provide 'rgr/startup)
@@ -592,14 +592,11 @@ https://protesilaos.com/emacs/pulsar
     (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
     (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
     :config
-    (
-     pulsar-global-mode 1))
-
+    (pulsar-global-mode 1))
 #+end_src
 **** boxquote                                                      :boxquote:
 #+begin_src emacs-lisp
   (use-package boxquote
-    ;;:straight (:branch "main")
     :bind
     ("C-S-r" . boxquote-region))
 
@@ -1243,6 +1240,7 @@ Raw: [[file+sys:etc/elisp/rgr-org.el][rgr/org]]
     (org-refile-use-outline-path 'file)
     (org-outline-path-complete-in-steps nil)
     :config
+    (add-to-list 'recentf-exclude "var/org")
     (set-face-attribute 'org-headline-done nil :strike-through t)
     (defun rgr/org-agenda (&optional arg)
       (interactive "P")
@@ -1763,12 +1761,9 @@ Browse devdocs.io documents inside Emacs!
 [[https://github.com/politza/pdf-tools][pdf-tools]] is, among other things, a replacement of DocView for PDF files
 #+begin_src emacs-lisp
   (use-package pdf-tools
-    :after (org-plus-contrib)
     :config
     (pdf-tools-install)
     (add-hook 'pdf-isearch-minor-mode-hook (lambda ())))
-  (use-package org-pdftools
-    :hook (org-mode . org-pdftools-setup-link))
 #+end_src
 ***** requirements
 #+begin_src bash
@@ -1805,29 +1800,6 @@ Raw: [[file+sys:etc/elisp/rgr-shells.el][rgr/shells]]
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (expand-file-name "rgr-shells.el" rgr/elisp-dir)
 :END:
-**** EAT
-[[https://codeberg.org/akib/emacs-eat][Emulate A Terminal]], in a region, in a buffer and in Eshell
-#+begin_src  emacs-lisp :tangle no
-  ;; back to vterm
-  (use-package  eat  :disabled t
-    :custom
-    (eat-kill-buffer-on-exit t)
-    :config
-    (defun rgr/eat()
-      (interactive)
-      (split-window)
-      (eat))
-    :bind
-    ("M-g t" . rgr/eat))
-    :straight (:type git
-                     :host codeberg
-                     :repo "akib/emacs-eat"
-                     :files ("*.el" ("term" "term/*.el") "*.texi"
-                             "*.ti" ("terminfo/e" "terminfo/e/*")
-                             ("terminfo/65" "terminfo/65/*")
-                             ("integration" "integration/*")
-                             (:exclude ".dir-locals.el" "*-tests.el"))))
-#+end_src
 **** VTERM
 #+begin_src  emacs-lisp
   (use-package vterm)
@@ -2173,15 +2145,6 @@ https://github.com/emacsmirror/rmsbolt
         (condition-case nil (next-error)
            (error (next-error 1 t)))))
 #+end_src
-**** indent bars
-#+begin_src  emacs-lisp
-  (use-package indent-bars
-    :disabled
-    :ensure t
-    :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-    :hook
-    (prog-mode . indent-bars-mode))
-#+end_src
 **** JSON
 #+begin_src  emacs-lisp
   (use-package json-mode)
@@ -2461,7 +2424,6 @@ https://github.com/joaotavora/eglot
     ;; By default dape shares the same keybinding prefix as `gud'
     ;; If you do not want to use any prefix, set it to nil.
     ;;(setq dape-key-prefix "\C-x\C-a")
-
     :custom
     (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
     (dape-buffer-window-arrangement 'right)
@@ -2472,7 +2434,7 @@ https://github.com/joaotavora/eglot
   ;; Save breakpoints on quit
     (kill-emacs . dape-breakpoint-save)
     ;; Load breakpoints on startup
-    (after-init . dape-breakpoint-load)
+    (elpaca-after-init . dape-breakpoint-load)
     ;;(dape-start . dape-breakpoint-load)
     (dape-display-source . pulsar-pulse-line)
     (dape-compile .  kill-buffer)
@@ -2481,7 +2443,6 @@ https://github.com/joaotavora/eglot
     ;; Turn on global bindings for setting breakpoints with mouse
     ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
     (add-to-list 'recentf-exclude "dape-breakpoints")
-    (add-to-list 'recentf-exclude "var/org")
     (dape-breakpoint-global-mode)
     (add-hook 'dape-info-parent-mode-hook
               (defun dape--info-rescale ()
@@ -2586,10 +2547,9 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 **** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
 ***** voltron
 #+begin_src emacs-lisp
-  (use-package lldb-voltron :disabled t
-    :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
-    ;;:config
-    ;; (breadcrumb-mode t)
+  (setq lldbv-dir (expand-file-name "emacs-lldb-voltron" emacs-project-dir))
+  (use-package lldb-voltron
+    :ensure `(:repo ,lldbv-dir)
     )
 #+end_src
 **** rust

@@ -31,7 +31,6 @@
   ;; By default dape shares the same keybinding prefix as `gud'
   ;; If you do not want to use any prefix, set it to nil.
   ;;(setq dape-key-prefix "\C-x\C-a")
-
   :custom
   (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
   (dape-buffer-window-arrangement 'right)
@@ -42,7 +41,7 @@
 ;; Save breakpoints on quit
   (kill-emacs . dape-breakpoint-save)
   ;; Load breakpoints on startup
-  (after-init . dape-breakpoint-load)
+  (elpaca-after-init . dape-breakpoint-load)
   ;;(dape-start . dape-breakpoint-load)
   (dape-display-source . pulsar-pulse-line)
   (dape-compile .  kill-buffer)
@@ -51,7 +50,6 @@
   ;; Turn on global bindings for setting breakpoints with mouse
   ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
   (add-to-list 'recentf-exclude "dape-breakpoints")
-  (add-to-list 'recentf-exclude "var/org")
   (dape-breakpoint-global-mode)
   (add-hook 'dape-info-parent-mode-hook
             (defun dape--info-rescale ()
