@@ -10,6 +10,7 @@
     (set-register reg `(file . ,(buffer-file-name)))))
 
 (defun rgr/startup-hook ()
+  (elpaca-wait)
   (switch-to-buffer (recentf-open-most-recent-file 1)))
 
 (if (daemonp)
