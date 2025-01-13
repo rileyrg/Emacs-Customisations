@@ -14,7 +14,7 @@
  '(async-shell-command-buffer 'confirm-kill-process)
  '(auto-save-interval 30)
  '(blink-cursor-interval 0.2)
- '(bookmark-default-file "~/.emacs.d/var/secrets/bmkp/current-bookmark.el")
+ '(bookmark-default-file "~/.emacs.d/var/secrets/current-bookmark.el")
  '(bookmark-save-flag 1)
  '(bookmark-version-control 'nospecial)
  '(browse-url-browser-function 'eww-browse-url)

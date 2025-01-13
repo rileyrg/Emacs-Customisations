@@ -4,6 +4,7 @@
   (recentf-mode)
   (savehist-mode)
   (save-place-mode)
+  ;;(require 'bookmark)
 
   (defun rgr/save-current-file-to-register ()
     "Save current file to register."
