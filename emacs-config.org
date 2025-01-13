@@ -762,18 +762,6 @@ Raw: [[file+sys:etc/elisp/rgr-minibuffer.el][rgr/minibuffer]]
 :PROPERTIES:
 :ID:       42a5cc93-ab6e-46bd-bae6-0517215cdc47
 :END:
-***** read only by default
-:PROPERTIES:
-:ID:       2e4d7063-2cc1-428c-ad44-21387feda57d
-:END:
-Increasingly editing by mistake. Can use [[help:read-only-mode][read-only-mode]] to edit it.
-#+begin_src emacs-lisp
-  (defun maybe-read-only-mode()
-    (when (cond ((eq major-mode 'org-mode) t))
-      (message "Setting readonly mode for %s buffer" major-mode)
-      (read-only-mode +1)))
-                                          ;(add-hook 'find-file-hook 'maybe-read-only-mode)
-#+end_src
 ***** [[https://github.com/nflath/sudo-edit][sudo-edit]] Priviliged file editing
 :PROPERTIES:
 :ID:       cfdbc3a9-af09-4608-86bb-de6b3d2f2b3a

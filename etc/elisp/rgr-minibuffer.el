@@ -1,9 +1,3 @@
-(defun maybe-read-only-mode()
-  (when (cond ((eq major-mode 'org-mode) t))
-    (message "Setting readonly mode for %s buffer" major-mode)
-    (read-only-mode +1)))
-                                        ;(add-hook 'find-file-hook 'maybe-read-only-mode)
-
 (use-package sudo-edit)
 
 (use-package ffap

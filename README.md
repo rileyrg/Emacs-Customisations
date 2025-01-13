@@ -669,21 +669,11 @@ Raw: [rgr/minibuffer](etc/elisp/rgr-minibuffer.el)
 
 1.  file opening
 
-    1.  read only by default
-    
-        Increasingly editing by mistake. Can use [read-only-mode](help:read-only-mode) to edit it.
-        
-            (defun maybe-read-only-mode()
-              (when (cond ((eq major-mode 'org-mode) t))
-                (message "Setting readonly mode for %s buffer" major-mode)
-                (read-only-mode +1)))
-                                                    ;(add-hook 'find-file-hook 'maybe-read-only-mode)
-    
-    2.  [sudo-edit](https://github.com/nflath/sudo-edit) Priviliged file editing
+    1.  [sudo-edit](https://github.com/nflath/sudo-edit) Priviliged file editing
     
             (use-package sudo-edit)
     
-    3.  find file at point
+    2.  find file at point
     
             (use-package ffap
               :ensure nil
@@ -1179,7 +1169,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orga1c204a)
+    See `org-agenda-files` [org-agenda-files](#org337b077)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2671,7 +2661,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf78b326) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc90affb) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2704,7 +2694,7 @@ to add to version control.
     fi
 
 
-<a id="orgf78b326"></a>
+<a id="orgc90affb"></a>
 
 ### Gnome protocol handler desktop file
 
