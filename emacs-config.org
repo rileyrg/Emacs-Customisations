@@ -2883,10 +2883,9 @@ Use helpful if installed else built in
 Display a poup containing docstring at point
 #+begin_src emacs-lisp
   (setq elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir))
+  (use-package quick-peek)
   (use-package el-docstring-sap
     :ensure `(:repo ,elsap-dir)
-    :config
-    (use-package quick-peek)
     :hook
     (emacs-lisp-mode . el-docstring-sap-mode)
     :bind

@@ -1213,7 +1213,7 @@ Raw: [rgr/org](etc/elisp/rgr-org.el)
 
 3.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#orgdf03a46)
+    See `org-agenda-files` [org-agenda-files](#org0248fb8)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2534,10 +2534,9 @@ Raw: [rgr/elisp-utils](etc/elisp/rgr-elisp-utils.el)
     Display a poup containing docstring at point
     
         (setq elsap-dir (expand-file-name "el-docstring-sap" emacs-project-dir))
+        (use-package quick-peek)
         (use-package el-docstring-sap
           :ensure `(:repo ,elsap-dir)
-          :config
-          (use-package quick-peek)
           :hook
           (emacs-lisp-mode . el-docstring-sap-mode)
           :bind
@@ -2747,7 +2746,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb868027) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org326fef6) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2780,7 +2779,7 @@ to add to version control.
     fi
 
 
-<a id="orgb868027"></a>
+<a id="org326fef6"></a>
 
 ### Gnome protocol handler desktop file
 
