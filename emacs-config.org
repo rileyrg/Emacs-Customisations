@@ -222,12 +222,12 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
   (load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))
 #+end_src
 
-** Emacs startup                                             :startup:
+** Emacs startup                                                    :startup:
 :PROPERTIES:
 :ID:       77ded746-89ff-4051-a4eb-a4d75d7917bc
 :END:
 
-**** persistence  and history
+*** persistence  and history
 #+begin_src emacs-lisp
 
   (recentf-mode)
