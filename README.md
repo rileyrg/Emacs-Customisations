@@ -721,7 +721,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org5ccc4d3"></a>
+<a id="org9ce6bde"></a>
 
 ### Org Mode, org-mode
 
@@ -838,7 +838,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org5ccc4d3)
+See `org-agenda-files` [org-agenda-files](#org9ce6bde)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1215,31 +1215,6 @@ Preview markdown buffer live over HTTP using showdown.
 ## Shells and Terminals
 
 lookup and reference uilities and config
-
-
-### EAT
-
-[Emulate A Terminal](https://codeberg.org/akib/emacs-eat), in a region, in a buffer and in Eshell
-
-    ;; back to vterm
-    (use-package  eat  :disabled t
-      :custom
-      (eat-kill-buffer-on-exit t)
-      :config
-      (defun rgr/eat()
-        (interactive)
-        (split-window)
-        (eat))
-      :bind
-      ("M-g t" . rgr/eat))
-      :straight (:type git
-                       :host codeberg
-                       :repo "akib/emacs-eat"
-                       :files ("*.el" ("term" "term/*.el") "*.texi"
-                               "*.ti" ("terminfo/e" "terminfo/e/*")
-                               ("terminfo/65" "terminfo/65/*")
-                               ("integration" "integration/*")
-                               (:exclude ".dir-locals.el" "*-tests.el"))))
 
 
 ### VTERM
@@ -2548,6 +2523,8 @@ to add to version control.
     
     !etc/elisp
     !etc/elisp/*.el
+    !etc/elisp/README
+    
     
     !etc/hosts
     !etc/hosts/thinkpadx270
@@ -2578,7 +2555,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgadc5cdc) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf65ac2a) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2611,7 +2588,7 @@ to add to version control.
     fi
 
 
-<a id="orgadc5cdc"></a>
+<a id="orgf65ac2a"></a>
 
 ### Gnome protocol handler desktop file
 
