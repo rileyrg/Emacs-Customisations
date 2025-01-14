@@ -14,9 +14,6 @@
 !info
 !info/*
 
-!tree-sitter
-!tree-sitter/*
-
 !etc
 !var
 !var/secrets

@@ -1200,8 +1200,7 @@
 
 (use-package treesit-auto
   :custom
-  (treesit-auto-install 'prompt)
-  (treesit-extra-load-path `(,(expand-file-name  "var/tree-sitter" user-emacs-directory)))
+  (treesit-auto-install t)
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
