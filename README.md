@@ -721,7 +721,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org9ce6bde"></a>
+<a id="org07feb68"></a>
 
 ### Org Mode, org-mode
 
@@ -838,7 +838,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org9ce6bde)
+See `org-agenda-files` [org-agenda-files](#org07feb68)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1620,12 +1620,12 @@ Chat SW
         (use-package
           magit
           :after transient
-          :init
           :hook
           (magit-status-mode . magit-filenotify-mode)
           (git-commit-post-finish . magit)
           :bind
           ("C-x g" . magit-status))
+        
         (use-package magit-filenotify :after magit)
 
 2.  [Forge](https://github.com/magit/forge) ahead with Pull Requests
@@ -1655,19 +1655,15 @@ Chat SW
         =MsQY
         &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
 
-3.  Git Gutter
+3.  Git Window Gutter Support
 
     1.  diff-hl mode
     
-        I prefer this to [git-gutter.el](https://github.com/emacsorphanage/git-gutter).
-        
             (use-package diff-hl
+              :demand t
               :hook
-              (server-after-make-frame .  global-diff-hl-mode)
-              (magit-pre-refresh . diff-hl-magit-pre-refresh)
-              (magit-post-refresh . diff-hl-magit-post-refresh)
-              :bind
-              ("C-x v ="  . diff-hl-show-hunk))
+              (elpaca-after-init .  global-diff-hl-mode)
+              (magit-post-refresh . diff-hl-magit-post-refresh))
 
 
 ### Dart/Flutter
@@ -1685,8 +1681,7 @@ Running emulator from command line:
     
         (use-package treesit-auto
           :custom
-          (treesit-auto-install 'prompt)
-          (treesit-extra-load-path `(,(expand-file-name  "var/tree-sitter" user-emacs-directory)))
+          (treesit-auto-install t)
           :config
           (treesit-auto-add-to-auto-mode-alist 'all)
           (global-treesit-auto-mode))
@@ -2494,9 +2489,6 @@ to add to version control.
     !info
     !info/*
     
-    !tree-sitter
-    !tree-sitter/*
-    
     !etc
     !var
     !var/secrets
@@ -2555,7 +2547,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf65ac2a) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7cd2d78) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2588,7 +2580,7 @@ to add to version control.
     fi
 
 
-<a id="orgf65ac2a"></a>
+<a id="org7cd2d78"></a>
 
 ### Gnome protocol handler desktop file
 

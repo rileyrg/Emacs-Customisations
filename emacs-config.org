@@ -1706,12 +1706,12 @@ https://github.com/emacsmirror/rmsbolt
   (use-package
     magit
     :after transient
-    :init
     :hook
     (magit-status-mode . magit-filenotify-mode)
     (git-commit-post-finish . magit)
     :bind
     ("C-x g" . magit-status))
+
   (use-package magit-filenotify :after magit)
 #+end_src
 **** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests :forge:git:github:
@@ -1740,20 +1740,17 @@ Y0lSPvXH7dBCTWu2rSWhIvgCQfv6Nihs3Jc455oZgajN7G/rgZNb0ER8YTYncZjY
 gtVhIJfSArVFXuCGLnZMoMHSC4rV
 =MsQY
 -----END PGP MESSAGE-----
-**** Git Gutter
+**** Git Window Gutter Support
 :PROPERTIES:
 :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
 :END:
 ***** diff-hl mode
-I prefer this to [[https://github.com/emacsorphanage/git-gutter][git-gutter.el]].
 #+begin_src emacs-lisp
   (use-package diff-hl
+    :demand t
     :hook
-    (server-after-make-frame .  global-diff-hl-mode)
-    (magit-pre-refresh . diff-hl-magit-pre-refresh)
-    (magit-post-refresh . diff-hl-magit-post-refresh)
-    :bind
-    ("C-x v ="  . diff-hl-show-hunk))
+    (elpaca-after-init .  global-diff-hl-mode)
+    (magit-post-refresh . diff-hl-magit-post-refresh))
 #+end_src
 
 *** Dart/Flutter

@@ -1182,21 +1182,19 @@
 (use-package
   magit
   :after transient
-  :init
   :hook
   (magit-status-mode . magit-filenotify-mode)
   (git-commit-post-finish . magit)
   :bind
   ("C-x g" . magit-status))
+
 (use-package magit-filenotify :after magit)
 
 (use-package diff-hl
+  :demand t
   :hook
-  (server-after-make-frame .  global-diff-hl-mode)
-  (magit-pre-refresh . diff-hl-magit-pre-refresh)
-  (magit-post-refresh . diff-hl-magit-post-refresh)
-  :bind
-  ("C-x v ="  . diff-hl-show-hunk))
+  (elpaca-after-init .  global-diff-hl-mode)
+  (magit-post-refresh . diff-hl-magit-post-refresh))
 
 (use-package treesit-auto
   :custom
