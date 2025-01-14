@@ -68,6 +68,13 @@
  '(delete-active-region 'kill)
  '(delete-old-versions t)
  '(delete-selection-mode t)
+ '(desktop-globals-to-save
+   '(desktop-missing-file-warning tags-file-name tags-table-list search-ring regexp-search-ring register-alist file-name-history extended-command-history minibuffer-history))
+ '(desktop-lazy-idle-delay 10000)
+ '(desktop-load-locked-desktop t)
+ '(desktop-locals-to-save nil)
+ '(desktop-restore-eager 8)
+ '(desktop-save t)
  '(diary-file "~/.diary")
  '(diary-list-include-blanks t)
  '(diary-mark-entries-hook '(diary-mark-included-diary-files))
@@ -79,6 +86,7 @@
  '(eglot-extend-to-xref t)
  '(el-docstring-sap--display-func 'el-docstring-sap--quick-peek)
  '(elpy-formatter 'autopep8)
+ '(elscreen-display-tab nil)
  '(enable-recursive-minibuffers t)
  '(epa-file-cache-passphrase-for-symmetric-encryption nil)
  '(erc-autojoin-channels-alist
@@ -238,6 +246,14 @@
  '(org-todo-state-tags-triggers
    '(("CANCELLED" ("CANCELLED" . t)) ("WAITING" ("WAITING" . t) ("NEXT")) ("SOMEDAY" ("WAITING" . t)) (done ("NEXT") ("WAITING")) ("TODO" ("WAITING") ("CANCELLED") ("NEXT")) ("STARTED" ("WAITING")) ("DONE" ("WAITING") ("CANCELLED") ("NEXT"))))
  '(org-use-property-inheritance t)
+ '(package-archives
+   '(("gnu" . "https://elpa.gnu.org/packages/") ("nongnu" . "https://elpa.nongnu.org/nongnu/") ("melpa" . "http://melpa.org/packages/")))
+ '(package-selected-packages
+   '(ace-link all-the-icons-completion all-the-icons-dired boxquote breadcrumb browse-url-dwim cape consult consult-xref-stack corfu dape darkroom devdocs-browser diff-hl dpaste duplicate-thing edebug-x eglot-booster eldoc-box elf-mode elfeed-org elisp-format
+              ellama emojify evil-matchit go-translate gptel helpful jinx json-mode json-reformat lazy-lang-learn logview magit-filenotify marginalia modus-themes multi-vterm multiple-cursors no-littering notmuch ob-async orderless org-super-agenda
+              package-lint parrot pdf-tools pet php-mode pulsar quick-peek ripgrep rmsbolt strace-mode sudo-edit treemacs-magit treesit-auto vertico volatile-highlights yaml-mode yasnippet-snippets))
+ '(package-vc-selected-packages
+   '((consult-xref-stack :url "https://github.com/brett-lempereur/consult-xref-stack" :branch "main") (eglot-booster :vc-backend Git :url "https://github.com/jdtsmith/eglot-booster")))
  '(persp-mode-prefix-key "\30P")
  '(php-manual-url "http://www.php.net")
  '(php-mode-speedbar-open nil)
@@ -258,6 +274,7 @@
  '(read-quoted-char-radix 16)
  '(rebox-style-loop '(27 25 21) t)
  '(recentf-max-saved-items 50)
+ '(recentf-save-file "/home/rgr/.emacs.d/var/recentf-save.el")
  '(rgr/alert-learn-period 300)
  '(rgr/chat-close-functions '(slack-ws-close rgr/erc-quit))
  '(rgr/chat-functions '(rgr/erc-start))
@@ -277,6 +294,8 @@
      (eval dap-register-debug-template "cpptools::Run Configuration" (list :type "cppdbg" :request "launch" :name "cpptools::Run Configuration" :MIMode "gdb" :target "${workspaceFolder}/hello-world" :cwd "${workspaceFolder}"))))
  '(save-abbrevs 'silently)
  '(save-interprogram-paste-before-kill t)
+ '(save-place-file "/home/rgr/.emacs.d/var/save-place.el")
+ '(savehist-file "/home/rgr/.emacs.d/var/savehist.el")
  '(scroll-bar-mode nil)
  '(scroll-conservatively 10000)
  '(scroll-step 1)
@@ -307,6 +326,7 @@
  '(twittering-use-master-password t)
  '(uniquify-buffer-name-style 'forward nil (uniquify))
  '(url-standalone-mode nil)
+ '(use-package-always-ensure t)
  '(user-mail-address "rileyrg@gmx.de")
  '(vc-follow-symlinks t)
  '(version-control t)
@@ -315,7 +335,9 @@
  '(warning-minimum-level :error)
  '(warning-suppress-log-types '((comp) (comp)))
  '(warning-suppress-types '((comp)))
+ '(wg-session-file "~/.config/emacs/emacs_workgroups")
  '(whitespace-style '(tabs trailing lines-tail empty))
+ '(windmove-wrap-around t)
  '(xref-prompt-for-identifier nil)
  '(yank-pop-change-selection t)
  '(zone-programs [zone-matrix] t))
