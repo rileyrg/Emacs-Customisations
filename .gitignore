@@ -43,6 +43,8 @@
 
 !etc/elisp
 !etc/elisp/*.el
+!etc/elisp/README
+
 
 !etc/hosts
 !etc/hosts/thinkpadx270
