@@ -94,10 +94,11 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
   (debug-init)
 #+end_src
 ** package management
-*** package
+*** own projects
 #+begin_src  emacs-lisp
     (defvar emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 #+end_src
+*** package
 #+begin_src  emacs-lisp :tangle no
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -156,10 +157,12 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 #+end_src
 ** no-littering - keep data tidy
 #+begin_src  emacs-lisp
+  ;; put extra emacs-lisp files into etc/elisp
   (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
   (add-to-list 'load-path rgr/elisp-dir)
   (let ((default-directory rgr/elisp-dir))
     (normal-top-level-add-subdirs-to-load-path))
+
   (use-package no-littering
     :custom
     (make-backup-files t)
@@ -182,16 +185,6 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
     (notifications-notify
      :title "Emacs"
      :body " ... is starting up..."))
-#+end_src
-** Paths
-:PROPERTIES:
-:CUSTOM_ID: Paths_and_clutter
-:END:
-*** Path to our own elisp
-:PROPERTIES:
-:ID:       64b907df-b368-455e-8568-c2449fc0440e
-:END:
-#+begin_src emacs-lisp
 #+end_src
 ** Load early stuff / gpg
 :PROPERTIES:
@@ -226,8 +219,6 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
 :PROPERTIES:
 :ID:       77ded746-89ff-4051-a4eb-a4d75d7917bc
 :END:
-
-*** persistence  and history
 #+begin_src emacs-lisp
 
   (recentf-mode)
@@ -260,14 +251,12 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
     (interactive)
     (save-buffers-kill-emacs))
 
-  (use-package emacs
-    :ensure nil
-    :bind ("C-c x" . rgr/quit-or-close-emacs))
+   (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
 #+end_src
 
 ** Utilities
 
-**** Project Management                                             :project:
+*** Project Management                                              :project:
 #+begin_src  emacs-lisp
   (use-package project
     :ensure nil
@@ -282,7 +271,7 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
     (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
 #+end_src
 
-**** toggle buffer
+*** toggle buffer
 :PROPERTIES:
 :ID:       cf781280-b126-402f-9700-c061a385bf81
 :END:
@@ -295,7 +284,7 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
       (switch-to-buffer (if (string= (buffer-name) n)
                             (other-buffer) n))))
 #+end_src
-**** read and write elisp vars to file
+*** read and write elisp vars to file
 :PROPERTIES:
 :ID:       82905a95-6e37-4114-ba77-4be0dd31a9ec
 :END:
@@ -312,7 +301,7 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
       (read (current-buffer))))
 #+end_src
 
-**** completing lines
+*** completing lines
 #+begin_src  emacs-lisp
   (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
 
@@ -342,7 +331,7 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
 
 #+end_src
 
-**** Lazy Language Learning, lazy-lang-learn
+*** Lazy Language Learning, lazy-lang-learn
 My own hack for popping up text to learn
 :PROPERTIES:
 :END:
@@ -358,7 +347,7 @@ My own hack for popping up text to learn
 
 ** Security
 
-**** Auth-Sources, get-auth-info
+*** Auth-Sources, get-auth-info
 :PROPERTIES:
 :ID:       8f8f4b02-bdd2-4ad9-81bb-c3dd14b2fe9d
 :END:
@@ -384,309 +373,25 @@ example:
         secret)))
 #+end_src
 
-**** Pass
+*** Pass
 Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
 #+begin_src emacs-lisp :tangle yes
   ;;(car (process-lines "pass" "Chat/slack-api-token"))
 #+end_src
-** General configuration
-**** general ui
-#+begin_src  emacs-lisp
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (show-paren-mode 1)
-  (winner-mode 1)
-
-  (repeat-mode)
-
-  (global-auto-revert-mode 1)
-  ;; Also auto refresh dired, but be quiet about it
-  (setq global-auto-revert-non-file-buffers t)
-  (setq auto-revert-verbose nil)
-  (setq auto-revert-use-notify nil)
-
-  (global-visual-line-mode 1)
-
-  (setq column-number-mode t)
-
-  (delete-selection-mode 1)
-
-  (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
-
-  (defalias 'yes-or-no-p 'y-or-n-p)
-
-  (setq disabled-command-function nil)
-
-  (global-hl-line-mode t)
-
-  (use-package delsel
-    :ensure nil
-    :hook (after-init . delete-selection-mode))
-
-  (defun prot/keyboard-quit-dwim ()
-    "Do-What-I-Mean behaviour for a general `keyboard-quit'.
-
-  The generic `keyboard-quit' does not do the expected thing when
-  the minibuffer is open.  Whereas we want it to close the
-  minibuffer, even without explicitly focusing it.
-
-  The DWIM behaviour of this command is as follows:
-
-  - When the region is active, disable it.
-  - When a minibuffer is open, but not focused, close the minibuffer.
-  - When the Completions buffer is selected, close it.
-  - In every other case use the regular `keyboard-quit'."
-    (interactive)
-    (cond
-     ((region-active-p)
-      (keyboard-quit))
-     ((derived-mode-p 'completion-list-mode)
-      (delete-completion-window))
-     ((> (minibuffer-depth) 0)
-      (abort-recursive-edit))
-     (t
-      (keyboard-quit))))
-
-  (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
-
-  ;; https://github.com/rolandwalker/browse-url-dwim
-  ;; Context-sensitive external browse URL or Internet search from Emacs.
-  (use-package
-    browse-url-dwim
-    :config
-    (browse-url-dwim-mode))
-
-  ;; display dir name when core name clashes
-  (require 'uniquify)
-
-  (defun rgr/kill-current-buffer()
-    (interactive)
-    (if (member (buffer-name) '("*Messages*" "*scratch*"))
-        (progn
-          (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
-          (delete-window))
-      (kill-current-buffer)
-      (delete-window)))
-
-  (use-package emacs
-    :ensure nil
-    :hook
-    (before-save  . delete-trailing-whitespace)
-    :bind
-    ("C-x C-q" . view-mode)
-    ( "C-c e" . rgr/erc-start)
-    ( "C-x C-b" . ibuffer)
-    ( "C-x C-i" . imenu)
-    ( "C-x k" . rgr/kill-current-buffer)
-    ( "M-0" . delete-window)
-    ( "M-1" . delete-other-windows)
-    ( "S-<f1>" . describe-face)
-    (  "M-m"  . manual-entry)
-    ( "S-<f10>" . menu-bar-open))
-
-#+end_src
-**** modus themes
-:PROPERTIES:
-:ID:       fa3ac5bf-2fbe-4e67-9032-0cb23a84c434
-:END:
-https://github.com/protesilaos/modus-themes
-#+begin_src emacs-lisp
-  (use-package modus-themes
-                                          ;:disabled
-    :init
-    ;; Add all your customizations prior to loading the themes
-    (setq modus-themes-slanted-constructs t
-          modus-themes-bold-constructs nil)
-
-    ;; Load the theme files before enabling a theme
-    ;; (modus-themes-load-themes)
-    :config
-    (load-theme 'modus-operandi :no-confirm))
-  ;; (modus-themes-load-vivendi))
-#+end_src
-**** ef-themes
-https://github.com/protesilaos/ef-themes
-#+begin_src  emacs-lisp
-  (use-package ef-themes
-    :disabled
-    :demand t
-    :config
-    (ef-themes-select 'ef-duo-light))
-#+end_src
-**** posframe                                                      :posframe:
-:PROPERTIES:
-:ID:       0f03bab9-b745-451a-a8ad-ab7703977c61
-:END:
-[[https://github.com/tumashu/posframe][Posframe]]
-can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
-#+begin_src emacs-lisp
-  (use-package posframe)
-#+end_src
-**** ACE utilities
-:PROPERTIES:
-:ID:       024175d8-f05e-4c41-9c04-4a61d55a5d66
-:END:
-***** [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
-#+begin_src emacs-lisp
-  (use-package ace-window
-    :demand t
-    ;; (defalias 'other-window 'ace-window)
-    :init
-    (windmove-default-keybindings)
-    :bind
-    ("M-o" . ace-window)
-    ("M-d" . ace-delete-window))
-#+end_src
-***** hopping around links
-:PROPERTIES:
-:ID:       6a50d585-4163-4b7e-9dd8-b25fd0ee4e6b
-:END:
-Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
-#+begin_src emacs-lisp
-  (use-package ace-link
-    :demand
-    :config
-    (ace-link-setup-default))
-#+end_src
-**** pulsar                                                          :pulsar:
-visual feedback as to cursor position
-https://protesilaos.com/emacs/pulsar
-#+begin_src emacs-lisp
-  (use-package pulsar
-    :custom
-    (pulsar-pulse t)
-    (pulsar-delay 0.2)
-    (pulsar-iterations 15)
-    (pulsar-face 'isearch)
-    (pulsar-highlight-face 'pulsar-green)
-    :init
-    (add-hook 'minibuffer-setup-hook #'pulsar-pulse-line)
-    (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
-    (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
-    :config
-    (
-     pulsar-global-mode 1))
-
-#+end_src
-**** boxquote                                                      :boxquote:
-#+begin_src emacs-lisp
-  (use-package boxquote
-    ;;:straight (:branch "main")
-    :bind
-    ("C-S-r" . boxquote-region))
-
-#+end_src
-**** volatile-highlights                        :volatilehighlights:volatile:
-brings visual feedback to some operations by highlighting portions relating to the operations.
-#+begin_src emacs-lisp
-  (use-package
-    volatile-highlights
-    :init (volatile-highlights-mode 1))
-#+end_src
-**** web pasting
-#+begin_src emacs-lisp
-  (use-package
-    dpaste
-    :init
-    :bind ("C-c y" . dpaste-region-or-buffer))
-
-#+end_src
-**** Accessibility
-***** fonts
-:PROPERTIES:
-:END:
-JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]]
-:PROPERTIES:
-:END:
-#+begin_src emacs-lisp
-  ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
-#+end_src
-***** Darkroom
-:PROPERTIES:
-:END:
-Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
-#+begin_src emacs-lisp
-  (use-package
-    darkroom
-    :bind
-    ( "<C-f7>" . 'darkroom-mode))
-#+end_src
-
-**** Ansi colour
-:PROPERTIES:
-:END:
-[[https://www.emacswiki.org/emacs/AnsiColor][Ansi colour hooks]] to enable emacs buffers to handle ansi.
-#+begin_src emacs-lisp :tangle no
-  (require 'ansi-color)
-  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-  (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-#+end_src
-**** Tabs
-#+begin_src emacs-lisp
-
-  (defun consult-buffer-other-tab ()
-    "Variant of `consult-buffer' which opens in other tab."
-    (interactive)
-    (let ((consult--buffer-display #'switch-to-buffer-other-tab))
-      (consult-buffer)))
-
-  (use-package tab-bar
-    :ensure nil
-    :defer t
-    :custom
-    (tab-bar-show t)
-    (tab-bar-close-button-show nil)
-    (tab-bar-new-button-show nil)
-    (tab-bar-tab-hints t)
-    (tab-bar-new-tab-choice "*scratch*")
-    (tab-bar-select-tab-modifiers '(control))
-    :custom-face
-    (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
-    (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
-    (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
-    :bind (:map tab-prefix-map
-                 ("b" . consult-buffer-other-tab)))
-#+end_src
-***** multiple-cursors
-https://github.com/magnars/multiple-cursors.el
-#+begin_src  emacs-lisp
-  (use-package multiple-cursors
-    :bind
-    ("C-<mouse-1>" . mc/add-cursor-on-click)
-    ("C-S-n" . mc/mark-next-like-this)
-    ("C-S-p" . mc/mark-previous-like-this)
-    ("C-c C->" . mc/mark-all-like-this)
-    ("C-c C-SPC" . mc/edit-lines)
-    )
-#+end_src
-**** jinx : the enchanted spell checker
-:PROPERTIES:
-:ID:       3e64582f-bf01-4ac1-8afb-7c4c51410be0
-:END:
-
-#+begin_src  emacs-lisp
-  (use-package jinx
-    :bind
-    ("<f8>" . jinx-correct)
-    ("S-<f8>" . jinx-correct-word)
-    ("C-<f8>" . jinx-languages))
-#+end_src
-
 ** Minibuffer Enrichment (search, sudo edit...)                  :minibuffer:
 :PROPERTIES:
 :ID:       ccdf6738-f921-4d2f-81ea-6dd00883867c
 :END:
 Various plugins for minibuffer enrichment
 
-***** [[https://github.com/nflath/sudo-edit][sudo-edit]] Priviliged file editing
+*** [[https://github.com/nflath/sudo-edit][sudo-edit]] Priviliged file editing
 :PROPERTIES:
 :ID:       cfdbc3a9-af09-4608-86bb-de6b3d2f2b3a
 :END:
 #+begin_src emacs-lisp
   (use-package sudo-edit)
 #+end_src
-***** find file at point
+*** find file at point
 :PROPERTIES:
 :ID:       bd247b04-92dc-4db6-911e-df716bd8574a
 :END:
@@ -711,7 +416,7 @@ Various plugins for minibuffer enrichment
     :bind
     ( "C-x C-f" . rgr/ffap))
 #+end_src
-**** Consult                                                        :consult:
+*** Consult                                                         :consult:
 Consult]] Provides various commands based on the Emacs completion function completing-read
 :PROPERTIES:
 :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
@@ -825,7 +530,7 @@ Consult]] Provides various commands based on the Emacs completion function compl
     ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
     )
 #+end_src
-**** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] margin annotations for info on line
+*** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] margin annotations for info on line
 are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
 :PROPERTIES:
 :ID:       f3802197-c745-40b2-ac0d-72d7da291aaf
@@ -848,7 +553,7 @@ are marks or annotations placed at the margin of the page of a book or in this c
     ;; package.
     (marginalia-mode))
 #+end_src
-**** all-the-icons
+*** all-the-icons
 Remember to run *all-the-icons-install-fonts*.
 #+begin_src  emacs-lisp
   (use-package all-the-icons
@@ -869,7 +574,7 @@ Remember to run *all-the-icons-install-fonts*.
 :END:
 Let emacs suggest completions
 
-**** corfu
+*** corfu
 
 #+begin_src emacs-lisp
   (use-package corfu
@@ -968,7 +673,7 @@ Let emacs suggest completions
 #+end_src
 
 
-**** Which Key                                                    :which:key:
+*** Which Key                                                     :which:key:
 :PROPERTIES:
 :END:
 [[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
@@ -978,7 +683,7 @@ Let emacs suggest completions
     :demand t
     :config (which-key-mode))
 #+end_src
-**** Yasnippet                                                    :yasnippet:
+*** Yasnippet                                                     :yasnippet:
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
 Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 #+begin_src emacs-lisp
@@ -989,7 +694,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
       (yas-global-mode)
       )
 #+end_src
-**** Abbrev Mode
+*** Abbrev Mode
 :PROPERTIES:
 :END:
 [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
@@ -1017,7 +722,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
                                    ))))))
 
 #+end_src
-**** company
+*** company
 #+begin_src emacs-lisp
   (use-package company
     :disabled t
@@ -1031,7 +736,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
     :bind( :map company-mode-map
            ("<tab>" .  company-indent-or-complete-common)))
 #+end_src
-**** vertico , vertical interactive completion
+*** vertico , vertical interactive completion
 https://github.com/minad/vertico
 #+begin_src emacs-lisp
   ;; Enable vertico
@@ -1055,7 +760,7 @@ https://github.com/minad/vertico
 :END:
 General org-mode config
 
-**** Org Mode, org-mode                                                 :org:
+*** Org Mode, org-mode                                                  :org:
 :PROPERTIES:
 :ID:       80d295c4-fe60-4bef-99e2-2f15bcb1e36a
 :END:
@@ -1090,11 +795,11 @@ General org-mode config
     (:map org-mode-map
           ("M-." . find-function-at-point)))
 #+end_src
-***** org-contrib
+**** org-contrib
 #+begin_src  emacs-lisp
   ;;(use-package org-contrib)
 #+end_src
-***** org-id
+**** org-id
 :PROPERTIES:
 :ID:       40320a82-ceaf-463f-a2fc-f68e3e92fccd
 :END:
@@ -1102,17 +807,17 @@ create unique link IDs when sharing a link to an org section
 #+begin_src emacs-lisp
   ;;(require 'org-id)
 #+end_src
-***** crypt
+**** crypt
 #+begin_src emacs-lisp
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
 #+end_src
-***** async babel blocks
+**** async babel blocks
 #+begin_src emacs-lisp
   (use-package ob-async)
 #+end_src
 
-***** org-super-agenda
+**** org-super-agenda
 #+begin_src emacs-lisp
   (use-package org-super-agenda
     :custom
@@ -1174,7 +879,7 @@ create unique link IDs when sharing a link to an org section
     (org-super-agenda-mode))
 #+end_src
 
-**** org agenda files
+*** org agenda files
 :PROPERTIES:
 :ID:       1a27d0a1-8b17-4b86-84f7-aa7f0c006005
 :header-args:conf: :tangle no
@@ -1196,7 +901,7 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 ** Typesetting
 
 Need to install dvipng, texlive, texlive-latex-extra
-**** auctex
+*** auctex
 #+begin_src  emacs-lisp
   (use-package auctex
     :disabled t
@@ -1224,7 +929,7 @@ Need to install dvipng, texlive, texlive-latex-extra
               (lambda () (rgr/latex-mode-hook)(TeX-fold-mode 1)))); Automatically activate TeX-fold-mode.
 #+end_src
 
-**** lilypond
+*** lilypond
 https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
 #+begin_src  emacs-lisp
   (use-package
@@ -1232,7 +937,7 @@ https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
     :disabled)
 #+end_src
 
-***** example
+**** example
 [[id:88f71d40-2697-48c2-8849-7553ea581cff][Chorded]]
 
 ** Reference/Lookup/Media
@@ -1241,9 +946,9 @@ https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
 :END:
 lookup and reference uilities and config
 
-**** chatgpt
+*** chatgpt
 
-***** GPTel
+**** GPTel
 https://github.com/karthink/gptel
 
 #+begin_src  emacs-lisp
@@ -1252,7 +957,7 @@ https://github.com/karthink/gptel
     ("C-c q" . #'gptel-send))
 #+end_src
 
-****** secret openAPI key                                             :crypt:
+***** secret openAPI key                                              :crypt:
 -----BEGIN PGP MESSAGE-----
 
 hQEMA7IjL5SkHG4iAQf+N61j3/62smGNrhRPOrE3U8JMpJlcDf7d0gukqvXXYD3r
@@ -1267,7 +972,7 @@ DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
 =UHS1
 -----END PGP MESSAGE-----
 
-**** Ellama
+*** Ellama
 
 https://github.com/s-kostyaev/ellama
 https://github.com/s-kostyaev/ellama
@@ -1282,9 +987,9 @@ https://ollama.ai/library/zephyr
     (require 'llm-ollama))
 #+end_src
 
-**** web lookup/view
+*** web lookup/view
 
-***** eww
+**** eww
 #+begin_src emacs-lisp
   (use-package eww
     :ensure nil
@@ -1324,7 +1029,7 @@ https://ollama.ai/library/zephyr
           ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 #+end_src
 
-***** go-translate
+**** go-translate
 This is a translation framework for emacs, and is flexible and powerful.
 #+begin_src  emacs-lisp
   (use-package go-translate
@@ -1340,7 +1045,7 @@ This is a translation framework for emacs, and is flexible and powerful.
     ("C-c T" . gts-do-translate))
 #+end_src
 
-****** Google translate
+***** Google translate
 :PROPERTIES:
 :ID:       e410cd79-39c4-4724-b424-6082b20c70f1
 :END:
@@ -1406,13 +1111,13 @@ This is a translation framework for emacs, and is flexible and powerful.
 
 #+end_src
 
-***** utility funcs
+**** utility funcs
 :PROPERTIES:
 :ID:       a32c8536-be64-43fe-b740-210f0d891f14
 :END:
 A bit of a dogs dinner.
 
-**** use browser for docs
+*** use browser for docs
 #+begin_src  emacs-lisp
   (defcustom rgr/browser-doc-url "https://www.google.com/search?q=%s" "format url variable used for function `rgr/browser-doc-search'")
   (defun rgr/browser-doc-search(&optional sym)
@@ -1425,7 +1130,7 @@ A bit of a dogs dinner.
     (browse-url (format rgr/browser-doc-url sym)))
 #+end_src
 
-**** Dictionary,Thesaurus
+*** Dictionary,Thesaurus
 :PROPERTIES:
 :ID:       d6770b25-024f-45f4-b86f-7c98db38b34f
 :END:
@@ -1446,7 +1151,7 @@ The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
     ("<f6>" . rgr/dictionary-search)
     ("S-<f6>" . mw-thesaurus-lookup-dwim))
 #+end_src
-**** GoldenDict - external lookup and reference
+*** GoldenDict - external lookup and reference
 :PROPERTIES:
 :ID:       f0cfea23-9466-4c55-8308-dc1dc478a591
 :END:
@@ -1472,7 +1177,7 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
         (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
     :bind (("C-x G" . goldendict-dwim)))
 #+end_src
-**** API docs
+*** API docs
 #+begin_src emacs-lisp
   (defun rgr/devdocs()
     "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
@@ -1489,7 +1194,7 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
 
 #+end_src
 
-***** devdocs-browser
+**** devdocs-browser
 
 https://github.com/blahgeek/emacs-devdocs-browser :
 
@@ -1507,7 +1212,7 @@ Browse devdocs.io documents inside Emacs!
     (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
 #+end_src
 
-***** devdocs
+**** devdocs
 
 https://github.com/astoff/devdocs.el
 
@@ -1521,7 +1226,7 @@ Browse devdocs.io documents inside Emacs!
     (c++-ts-mode . (lambda()(setq-local devdocs-current-docs '("cpp")))))
 #+end_src
 
-**** Elfeed
+*** Elfeed
 :PROPERTIES:
 :ID:       381fc830-2854-4eda-9744-efe1b0239f43
 :END:
@@ -1542,13 +1247,13 @@ Browse devdocs.io documents inside Emacs!
     (:map elfeed-search-mode-map
           ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-search-browse-url t)))))
 #+end_src
-***** elfeed-org
+**** elfeed-org
 :PROPERTIES:
 :ID:       63b211b7-3b48-451b-878e-0a6aa9e72c81
 :END:
 #+begin_src emacs-lisp
 #+end_src
-**** pdf-tools
+*** pdf-tools
 :PROPERTIES:
 :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
 :END:
@@ -1563,11 +1268,11 @@ Browse devdocs.io documents inside Emacs!
     (use-package org-pdftools
       :hook (org-mode . org-pdftools-setup-link)))
 #+end_src
-***** requirements
+**** requirements
 #+begin_src bash
   sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 #+end_src
-**** impatient-showdow, markdown view live
+*** impatient-showdow, markdown view live
 Preview markdown buffer live over HTTP using showdown.
 https://github.com/jcs-elpa/impatient-showdown
 #+begin_src emacs-lisp
@@ -1581,7 +1286,7 @@ https://github.com/jcs-elpa/impatient-showdown
 :END:
 lookup and reference uilities and config
 
-**** EAT
+*** EAT
 [[https://codeberg.org/akib/emacs-eat][Emulate A Terminal]], in a region, in a buffer and in Eshell
 #+begin_src  emacs-lisp :tangle no
   ;; back to vterm
@@ -1604,7 +1309,7 @@ lookup and reference uilities and config
                              ("integration" "integration/*")
                              (:exclude ".dir-locals.el" "*-tests.el"))))
 #+end_src
-**** VTERM
+*** VTERM
 #+begin_src  emacs-lisp
   (use-package vterm)
   (use-package  multi-vterm
@@ -1621,7 +1326,7 @@ lookup and reference uilities and config
 
 ** Email
 
-**** notmuch
+*** notmuch
 #+begin_src  emacs-lisp
   (use-package notmuch
     :init
@@ -1632,7 +1337,7 @@ lookup and reference uilities and config
     (notmuch-hello-mode . rgr/notmuch-new)
     )
 #+end_src
-**** mu4e                                                        :email:mu4e:
+*** mu4e                                                         :email:mu4e:
 :PROPERTIES:
 :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
 :END:
@@ -1792,7 +1497,7 @@ lookup and reference uilities and config
 
 Chat SW
 
-**** erc
+*** erc
 :PROPERTIES:
 :END:
 #+begin_src  emacs-lisp
@@ -2663,12 +2368,297 @@ Display a poup containing docstring at point
     (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 #+end_src
 
-** Late load
+** General configuration
+*** general ui
+#+begin_src  emacs-lisp
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (show-paren-mode 1)
+  (winner-mode 1)
+
+  (repeat-mode)
+
+  (global-auto-revert-mode 1)
+  ;; Also auto refresh dired, but be quiet about it
+  (setq global-auto-revert-non-file-buffers t)
+  (setq auto-revert-verbose nil)
+  (setq auto-revert-use-notify nil)
+
+  (global-visual-line-mode 1)
+
+  (setq column-number-mode t)
+
+  (delete-selection-mode 1)
+
+  (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  (setq disabled-command-function nil)
+
+  (global-hl-line-mode t)
+
+  (use-package delsel
+    :ensure nil
+    :hook (after-init . delete-selection-mode))
+
+  (defun prot/keyboard-quit-dwim ()
+    "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+
+  The generic `keyboard-quit' does not do the expected thing when
+  the minibuffer is open.  Whereas we want it to close the
+  minibuffer, even without explicitly focusing it.
+
+  The DWIM behaviour of this command is as follows:
+
+  - When the region is active, disable it.
+  - When a minibuffer is open, but not focused, close the minibuffer.
+  - When the Completions buffer is selected, close it.
+  - In every other case use the regular `keyboard-quit'."
+    (interactive)
+    (cond
+     ((region-active-p)
+      (keyboard-quit))
+     ((derived-mode-p 'completion-list-mode)
+      (delete-completion-window))
+     ((> (minibuffer-depth) 0)
+      (abort-recursive-edit))
+     (t
+      (keyboard-quit))))
+
+  (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
+
+  ;; https://github.com/rolandwalker/browse-url-dwim
+  ;; Context-sensitive external browse URL or Internet search from Emacs.
+  (use-package
+    browse-url-dwim
+    :config
+    (browse-url-dwim-mode))
+
+  ;; display dir name when core name clashes
+  (require 'uniquify)
+
+  (defun rgr/kill-current-buffer()
+    (interactive)
+    (if (member (buffer-name) '("*Messages*" "*scratch*"))
+        (progn
+          (message "Can't delete %s. Are you mad? Closing window instead." (buffer-name))
+          (delete-window))
+      (kill-current-buffer)
+      (delete-window)))
+
+  (use-package emacs
+    :ensure nil
+    :hook
+    (before-save  . delete-trailing-whitespace)
+    :bind
+    ("C-x C-q" . view-mode)
+    ( "C-c e" . rgr/erc-start)
+    ( "C-x C-b" . ibuffer)
+    ( "C-x C-i" . imenu)
+    ( "C-x k" . rgr/kill-current-buffer)
+    ( "M-0" . delete-window)
+    ( "M-1" . delete-other-windows)
+    ( "S-<f1>" . describe-face)
+    (  "M-m"  . manual-entry)
+    ( "S-<f10>" . menu-bar-open))
+
+#+end_src
+*** themes
+**** modus themes
 :PROPERTIES:
-:ID:       574516c0-a821-47fb-b01f-97ec19789d65
+:ID:       fa3ac5bf-2fbe-4e67-9032-0cb23a84c434
+:END:
+https://github.com/protesilaos/modus-themes
+#+begin_src emacs-lisp
+  (use-package modus-themes
+                                          ;:disabled
+    :init
+    ;; Add all your customizations prior to loading the themes
+    (setq modus-themes-slanted-constructs t
+          modus-themes-bold-constructs nil)
+
+    ;; Load the theme files before enabling a theme
+    ;; (modus-themes-load-themes)
+    :config
+    (load-theme 'modus-operandi :no-confirm))
+  ;; (modus-themes-load-vivendi))
+#+end_src
+**** ef-themes
+https://github.com/protesilaos/ef-themes
+#+begin_src  emacs-lisp
+  (use-package ef-themes
+    :disabled
+    :demand t
+    :config
+    (ef-themes-select 'ef-duo-light))
+#+end_src
+*** posframe                                                       :posframe:
+:PROPERTIES:
+:ID:       0f03bab9-b745-451a-a8ad-ab7703977c61
+:END:
+[[https://github.com/tumashu/posframe][Posframe]]
+can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
+#+begin_src emacs-lisp
+  (use-package posframe)
+#+end_src
+*** ACE utilities
+:PROPERTIES:
+:ID:       024175d8-f05e-4c41-9c04-4a61d55a5d66
+:END:
+**** [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :demand t
+    ;; (defalias 'other-window 'ace-window)
+    :init
+    (windmove-default-keybindings)
+    :bind
+    ("M-o" . ace-window)
+    ("M-d" . ace-delete-window))
+#+end_src
+**** hopping around links
+:PROPERTIES:
+:ID:       6a50d585-4163-4b7e-9dd8-b25fd0ee4e6b
+:END:
+Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
+#+begin_src emacs-lisp
+  (use-package ace-link
+    :demand
+    :config
+    (ace-link-setup-default))
+#+end_src
+*** pulsar                                                           :pulsar:
+visual feedback as to cursor position
+https://protesilaos.com/emacs/pulsar
+#+begin_src emacs-lisp
+  (use-package pulsar
+    :custom
+    (pulsar-pulse t)
+    (pulsar-delay 0.2)
+    (pulsar-iterations 15)
+    (pulsar-face 'isearch)
+    (pulsar-highlight-face 'pulsar-green)
+    :init
+    (add-hook 'minibuffer-setup-hook #'pulsar-pulse-line)
+    (add-hook 'consult-after-jump-hook #'pulsar-recenter-middle)
+    (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
+    :config
+    (
+     pulsar-global-mode 1))
+
+#+end_src
+*** boxquote                                                       :boxquote:
+#+begin_src emacs-lisp
+  (use-package boxquote
+    ;;:straight (:branch "main")
+    :bind
+    ("C-S-r" . boxquote-region))
+
+#+end_src
+*** volatile-highlights                         :volatilehighlights:volatile:
+brings visual feedback to some operations by highlighting portions relating to the operations.
+#+begin_src emacs-lisp
+  (use-package
+    volatile-highlights
+    :init (volatile-highlights-mode 1))
+#+end_src
+*** web pasting
+#+begin_src emacs-lisp
+  (use-package
+    dpaste
+    :init
+    :bind ("C-c y" . dpaste-region-or-buffer))
+
+#+end_src
+*** Accessibility
+**** fonts
+:PROPERTIES:
+:END:
+JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]]
+:PROPERTIES:
 :END:
 #+begin_src emacs-lisp
-  (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))
+  ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
+#+end_src
+**** Darkroom
+:PROPERTIES:
+:END:
+Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
+#+begin_src emacs-lisp
+  (use-package
+    darkroom
+    :bind
+    ( "<C-f7>" . 'darkroom-mode))
+#+end_src
+
+*** Ansi colour
+:PROPERTIES:
+:END:
+[[https://www.emacswiki.org/emacs/AnsiColor][Ansi colour hooks]] to enable emacs buffers to handle ansi.
+#+begin_src emacs-lisp :tangle no
+  (require 'ansi-color)
+  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+  (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+#+end_src
+*** Tabs
+#+begin_src emacs-lisp
+
+  (defun consult-buffer-other-tab ()
+    "Variant of `consult-buffer' which opens in other tab."
+    (interactive)
+    (let ((consult--buffer-display #'switch-to-buffer-other-tab))
+      (consult-buffer)))
+
+  (use-package tab-bar
+    :ensure nil
+    :defer t
+    :custom
+    (tab-bar-show t)
+    (tab-bar-close-button-show nil)
+    (tab-bar-new-button-show nil)
+    (tab-bar-tab-hints t)
+    (tab-bar-new-tab-choice "*scratch*")
+    (tab-bar-select-tab-modifiers '(control))
+    :custom-face
+    (tab-bar ((t (:background "gray24" :foreground "#ffffff"))))
+    (tab-bar-tab-inactive ((t (:background "gray24" :foreground "#ffffff"))))
+    (tab-bar-tab ((t (:background "black" :foreground "#ffffff"))))
+    :bind (:map tab-prefix-map
+                 ("b" . consult-buffer-other-tab)))
+#+end_src
+**** multiple-cursors
+https://github.com/magnars/multiple-cursors.el
+#+begin_src  emacs-lisp
+  (use-package multiple-cursors
+    :bind
+    ("C-<mouse-1>" . mc/add-cursor-on-click)
+    ("C-S-n" . mc/mark-next-like-this)
+    ("C-S-p" . mc/mark-previous-like-this)
+    ("C-c C->" . mc/mark-all-like-this)
+    ("C-c C-SPC" . mc/edit-lines)
+    )
+#+end_src
+*** jinx : the enchanted spell checker
+:PROPERTIES:
+:ID:       3e64582f-bf01-4ac1-8afb-7c4c51410be0
+:END:
+
+#+begin_src  emacs-lisp
+    (use-package jinx
+      :bind
+      ("<f8>" . jinx-correct)
+      ("S-<f8>" . jinx-correct-word)
+      ("C-<f8>" . jinx-languages))
+
+#+end_src
+** Late load
+  :PROPERTIES:
+  :ID:       574516c0-a821-47fb-b01f-97ec19789d65
+  :END:
+  ,#+begin_src emacs-lisp
+    (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))
 #+end_src
 * Associated emacs things
 :PROPERTIES:
