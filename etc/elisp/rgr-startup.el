@@ -1,6 +1,15 @@
+(setq recentf-save-file (expand-file-name "var/recentf-save.el" user-emacs-directory))
 (recentf-mode)
+
+(setq savehist-file (expand-file-name "var/savehist.el" user-emacs-directory))
 (savehist-mode)
-(save-place-mode)
+
+(use-package saveplace
+  :ensure nil
+  :custom
+  (save-place-file (expand-file-name "var/save-place.el" user-emacs-directory))
+  :config
+  (save-place-mode))
 
 (defun rgr/save-current-file-to-register ()
   "Save current file to register."
