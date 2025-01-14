@@ -1623,11 +1623,7 @@ The DWIM behaviour of this command is as follows:
     (kill-current-buffer)
     (delete-window)))
 
-(use-package emacs
-  :ensure nil
-  :hook
-  (before-save  . delete-trailing-whitespace)
-  :bind
+(bind-keys
   ("C-x C-q" . view-mode)
   ( "C-c e" . rgr/erc-start)
   ( "C-x C-b" . ibuffer)
