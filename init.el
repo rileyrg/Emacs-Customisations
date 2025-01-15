@@ -1046,6 +1046,7 @@
   (defun rgr/erc-start()
     (interactive)
     (when (string= server-name "erc")
+      (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
       (setq kill-emacs-hook nil))
     (if(get-buffer "Libera.Chat")
         (rgr/erc-switch-to-channel)

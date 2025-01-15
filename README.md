@@ -721,7 +721,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="orgbb7ff28"></a>
+<a id="org52ac37e"></a>
 
 ### Org Mode, org-mode
 
@@ -838,7 +838,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgbb7ff28)
+See `org-agenda-files` [org-agenda-files](#org52ac37e)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1418,6 +1418,7 @@ Chat SW
       (defun rgr/erc-start()
         (interactive)
         (when (string= server-name "erc")
+          (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
           (setq kill-emacs-hook nil))
         (if(get-buffer "Libera.Chat")
             (rgr/erc-switch-to-channel)
@@ -2552,7 +2553,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org50a9e10) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9ee0d12) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2585,7 +2586,7 @@ to add to version control.
     fi
 
 
-<a id="org50a9e10"></a>
+<a id="org9ee0d12"></a>
 
 ### Gnome protocol handler desktop file
 
