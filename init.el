@@ -1045,6 +1045,8 @@
 
   (defun rgr/erc-start()
     (interactive)
+    (when (string= server-name "erc")
+      (setq kill-emacs-hook nil))
     (if(get-buffer "Libera.Chat")
         (rgr/erc-switch-to-channel)
       (progn
@@ -1053,7 +1055,9 @@
 
   (defun rgr/erc-quit()
     (interactive)
-    (erc-quit-server ""))
+    (erc-quit-server "")
+    (when (string= server-name "erc")
+      (kill-emacs)))
 
   :bind
   (:map erc-mode-map
