@@ -669,7 +669,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
           ;; character (e.g. space) is finished
           (run-with-idle-timer 0 nil
                                (lambda ()
-                                 ;; if there is the string "@@" in the
+                                 ;; if there is the string "%CHANGEME%" in the
                                  ;; expansion then move cursor there and
                                  ;; delete the string
                                  (let ((cursor "%CHANGEME%"))
@@ -721,7 +721,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org07feb68"></a>
+<a id="org8900746"></a>
 
 ### Org Mode, org-mode
 
@@ -838,7 +838,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org07feb68)
+See `org-agenda-files` [org-agenda-files](#org8900746)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2547,7 +2547,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7cd2d78) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org482c4c2) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2580,7 +2580,7 @@ to add to version control.
     fi
 
 
-<a id="org7cd2d78"></a>
+<a id="org482c4c2"></a>
 
 ### Gnome protocol handler desktop file
 

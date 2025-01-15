@@ -51,12 +51,15 @@ int main(void)
 
 (define-abbrev-table 'org-mode-abbrev-table
   '(
-    ("bs" "#+begin_src " nil :count 6)
+    ("bs" "#+begin_src " nil :count 7)
     ("bsb" "#+begin_src bash " nil :count 1)
     ("bse" "#+begin_src emacs-lisp" nil :count 3)
-    ("el" "emacs-lisp" nil :count 1)
+    ("el" "emacs-lisp" nil :count 2)
     ("eml" "emacs-lisp" nil :count 6)
-    ("es" "#+end_src" nil :count 3)
+    ("es" "#+end_src" nil :count 4)
+    ("esb" "#+begin_src  emacs-lisp
+   %CHANGEME%  
+#+end_src" nil :count 1)
     ("mls" "ehll\\nthere\\nend" nil :count 1)
     ("otem" "#+TITLE: %CHANGEME%
 #+AUTHOR: rileyrg

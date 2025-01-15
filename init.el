@@ -484,7 +484,7 @@
       ;; character (e.g. space) is finished
       (run-with-idle-timer 0 nil
                            (lambda ()
-                             ;; if there is the string "@@" in the
+                             ;; if there is the string "%CHANGEME%" in the
                              ;; expansion then move cursor there and
                              ;; delete the string
                              (let ((cursor "%CHANGEME%"))

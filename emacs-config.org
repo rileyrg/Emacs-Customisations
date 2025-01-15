@@ -709,7 +709,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
         ;; character (e.g. space) is finished
         (run-with-idle-timer 0 nil
                              (lambda ()
-                               ;; if there is the string "@@" in the
+                               ;; if there is the string "%CHANGEME%" in the
                                ;; expansion then move cursor there and
                                ;; delete the string
                                (let ((cursor "%CHANGEME%"))
