@@ -233,7 +233,8 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
       (set-register reg `(file . ,(buffer-file-name)))))
 
   (defun rgr/startup-hook ()
-    (switch-to-buffer (recentf-open-most-recent-file 1)))
+    (when (not(string= "erc" server-name))
+      (switch-to-buffer (recentf-open-most-recent-file 1))))
 
   (if (daemonp)
       (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
@@ -251,7 +252,7 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
     (interactive)
     (save-buffers-kill-emacs))
 
-   (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
+  (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
 #+end_src
 
 ** Utilities

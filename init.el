@@ -114,7 +114,8 @@
     (set-register reg `(file . ,(buffer-file-name)))))
 
 (defun rgr/startup-hook ()
-  (switch-to-buffer (recentf-open-most-recent-file 1)))
+  (when (not(string= "erc" server-name))
+    (switch-to-buffer (recentf-open-most-recent-file 1))))
 
 (if (daemonp)
     (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
@@ -132,7 +133,7 @@
   (interactive)
   (save-buffers-kill-emacs))
 
- (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
+(global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
 
 (use-package project
   :ensure nil

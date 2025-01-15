@@ -206,7 +206,8 @@ Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/cu
         (set-register reg `(file . ,(buffer-file-name)))))
     
     (defun rgr/startup-hook ()
-      (switch-to-buffer (recentf-open-most-recent-file 1)))
+      (when (not(string= "erc" server-name))
+        (switch-to-buffer (recentf-open-most-recent-file 1))))
     
     (if (daemonp)
         (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
@@ -224,7 +225,7 @@ Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/cu
       (interactive)
       (save-buffers-kill-emacs))
     
-     (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
+    (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
 
 
 ## Utilities
@@ -721,7 +722,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org52ac37e"></a>
+<a id="org23c1b2c"></a>
 
 ### Org Mode, org-mode
 
@@ -838,7 +839,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org52ac37e)
+See `org-agenda-files` [org-agenda-files](#org23c1b2c)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2553,7 +2554,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9ee0d12) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org939a80f) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2586,7 +2587,7 @@ to add to version control.
     fi
 
 
-<a id="org9ee0d12"></a>
+<a id="org939a80f"></a>
 
 ### Gnome protocol handler desktop file
 
