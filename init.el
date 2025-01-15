@@ -1045,7 +1045,8 @@
 
   (defun rgr/erc-start()
     (interactive)
-    (unless(get-buffer "libera.chat:6697")
+    (if(get-buffer "Libera.Chat")
+        (rgr/erc-switch-to-channel)
       (progn
         (erc-tls :server "irc.libera.chat" :port 6697)
         (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
