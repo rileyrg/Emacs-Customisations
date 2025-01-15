@@ -210,6 +210,40 @@ Stick a custom in here. eg my thinkpad [[./etc/hosts/thinkpadx270/custom.el][cus
   (load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))
 #+end_src
 
+** Security
+
+*** Auth-Sources, get-auth-info
+:PROPERTIES:
+:ID:       8f8f4b02-bdd2-4ad9-81bb-c3dd14b2fe9d
+:END:
+Let emacs take care of security things automagically.
+example:
+#+begin_src emacs-lisp :tangle no
+  (setq passw (get-auth-info "licenses" "my-auth-token"))
+#+end_src
+#+begin_src emacs-lisp
+  (require 'auth-source)
+  (setq auth-sources '("~/.gnupg/auth/authinfo.gpg" "~/.gnupg/auth/authirc.gpg"))
+  (defun get-auth-info (host user &optional port)
+    "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
+    (let* ((info (nth 0 (auth-source-search
+                         :host host
+                         :user user
+                         :port port
+                         :require '(:user :secret)
+                         :create nil)))
+           (secret (plist-get info :secret)))
+      (if (functionp secret)
+          (funcall secret)
+        secret)))
+#+end_src
+
+*** Pass
+Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
+#+begin_src emacs-lisp :tangle yes
+  ;;(car (process-lines "pass" "Chat/slack-api-token"))
+#+end_src
+
 ** Emacs startup                                                    :startup:
 :PROPERTIES:
 :ID:       77ded746-89ff-4051-a4eb-a4d75d7917bc
@@ -393,39 +427,6 @@ My own hack for popping up text to learn
     ("S-<f12>" . lazy-lang-learn-translate-from-history))
 #+end_src
 
-*** Security
-
-**** Auth-Sources, get-auth-info
-:PROPERTIES:
-:ID:       8f8f4b02-bdd2-4ad9-81bb-c3dd14b2fe9d
-:END:
-Let emacs take care of security things automagically.
-example:
-#+begin_src emacs-lisp :tangle no
-  (setq passw (get-auth-info "licenses" "my-auth-token"))
-#+end_src
-#+begin_src emacs-lisp
-  (require 'auth-source)
-  (setq auth-sources '("~/.gnupg/auth/authinfo.gpg" "~/.gnupg/auth/authirc.gpg"))
-  (defun get-auth-info (host user &optional port)
-    "Interface to `auth-source-search' to fetch a secret for the HOST and USER."
-    (let* ((info (nth 0 (auth-source-search
-                         :host host
-                         :user user
-                         :port port
-                         :require '(:user :secret)
-                         :create nil)))
-           (secret (plist-get info :secret)))
-      (if (functionp secret)
-          (funcall secret)
-        secret)))
-#+end_src
-
-**** Pass
-Uses the unix command line ~pass~ utility. Can be used via ~process-lines~  e.g
-#+begin_src emacs-lisp :tangle yes
-  ;;(car (process-lines "pass" "Chat/slack-api-token"))
-#+end_src
 *** Minibuffer Enrichment (search, sudo edit...)                 :minibuffer:
 :PROPERTIES:
 :ID:       ccdf6738-f921-4d2f-81ea-6dd00883867c

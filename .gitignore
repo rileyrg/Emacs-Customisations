@@ -8,6 +8,8 @@
 !emacs-config.org
 !early-init.el
 !init.el
+!init-erc.el
+!init-normal.el
 !README.md
 !custom.el
 
