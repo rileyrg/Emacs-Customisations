@@ -102,9 +102,13 @@
 
 (load-el-gpg (expand-file-name (system-name)  (expand-file-name "etc/hosts" user-emacs-directory)))
 
-(recentf-mode)
-(save-place-mode)
-(savehist-mode)
+(defun rgr/erc-session()
+  (and (boundp 'server-name) (string= "erc" server-name)))
+  
+(when (not(rgr/erc-session))
+  (recentf-mode)
+  (save-place-mode)
+  (savehist-mode))
 
 (defun rgr/save-current-file-to-register ()
   "Save current file to register."
@@ -1046,8 +1050,9 @@
 
   (defun rgr/erc-start()
     (interactive)
-    (when (string= server-name "erc")
+    (when (rgr/erc-session)
       (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
+      (global-set-key (kbd "C-c x")  'rgr/erc-quit)
       (setq kill-emacs-hook nil))
     (if(get-buffer "Libera.Chat")
         (rgr/erc-switch-to-channel)

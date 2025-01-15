@@ -194,9 +194,13 @@ Stick a custom in here. eg my thinkpad [custom file](./etc/hosts/thinkpadx270/cu
 ## Emacs startup
 
     
-    (recentf-mode)
-    (save-place-mode)
-    (savehist-mode)
+    (defun rgr/erc-session()
+      (and (boundp 'server-name) (string= "erc" server-name)))
+    
+    (when (not(rgr/erc-session))
+      (recentf-mode)
+      (save-place-mode)
+      (savehist-mode))
     
     (defun rgr/save-current-file-to-register ()
       "Save current file to register."
@@ -722,7 +726,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org23c1b2c"></a>
+<a id="org1132c0d"></a>
 
 ### Org Mode, org-mode
 
@@ -839,7 +843,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org23c1b2c)
+See `org-agenda-files` [org-agenda-files](#org1132c0d)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1418,8 +1422,9 @@ Chat SW
     
       (defun rgr/erc-start()
         (interactive)
-        (when (string= server-name "erc")
+        (when (rgr/erc-session)
           (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
+          (global-set-key (kbd "C-c x")  'rgr/erc-quit)
           (setq kill-emacs-hook nil))
         (if(get-buffer "Libera.Chat")
             (rgr/erc-switch-to-channel)
@@ -2554,7 +2559,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org939a80f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org03a827b) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2587,7 +2592,7 @@ to add to version control.
     fi
 
 
-<a id="org939a80f"></a>
+<a id="org03a827b"></a>
 
 ### Gnome protocol handler desktop file
 
