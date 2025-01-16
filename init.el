@@ -133,6 +133,10 @@
 
 (defun rgr/ef(f)
   (expand-file-name f rgr/elisp-dir))
+
+(when (daemonp)
+  (modify-frame-parameters nil
+         (list (cons 'name (format "emacs-%s" (daemonp))))))
   
 (defun rgr/init-file()
   (if (daemonp)
