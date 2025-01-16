@@ -1,13 +1,8 @@
+(emacs-alert "... is starting up...")
+
 (recentf-mode)
 (save-place-mode)
 (savehist-mode)
-
-(defun rgr/save-current-file-to-register ()
-  "Save current file to register."
-  ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
-  (interactive)
-  (let ((reg (register-read-with-preview "File name to register: ")))
-    (set-register reg `(file . ,(buffer-file-name)))))
 
 (defun rgr/startup-hook ()
   (when (not(rgr/erc-session))
@@ -1403,9 +1398,6 @@
   :bind
   (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
 (show-paren-mode 1)
 (winner-mode 1)
 
@@ -1491,25 +1483,6 @@ The DWIM behaviour of this command is as follows:
   ( "S-<f1>" . describe-face)
   (  "M-m"  . manual-entry)
   ( "S-<f10>" . menu-bar-open))
-
-(use-package modus-themes
-                                        ;:disabled
-  :init
-  ;; Add all your customizations prior to loading the themes
-  (setq modus-themes-slanted-constructs t
-        modus-themes-bold-constructs nil)
-
-  ;; Load the theme files before enabling a theme
-  ;; (modus-themes-load-themes)
-  :config
-  (load-theme 'modus-operandi :no-confirm))
-;; (modus-themes-load-vivendi))
-
-(use-package ef-themes
-  :disabled
-  :demand t
-  :config
-  (ef-themes-select 'ef-duo-light))
 
 (use-package posframe)
 

@@ -77,17 +77,11 @@
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 
-(use-package notifications
-  :ensure nil
-  :demand t
-  :config
-  (defun emacs-alert(m)
-    (notifications-notify
-     :title "Emacs"
-     :body m))
+(require 'notifications)
+(defun emacs-alert(m)
   (notifications-notify
    :title "Emacs"
-   :body " ... is starting up..."))
+   :body m))
 
 (defun load-el-gpg (load-dir)
   (message "attempting mass load from %s." load-dir)
@@ -116,6 +110,23 @@
     (if (functionp secret)
         (funcall secret)
       secret)))
+
+(use-package modus-themes
+                                        ;:disabled
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-slanted-constructs t
+        modus-themes-bold-constructs nil)
+
+  ;; Load the theme files before enabling a theme
+  ;; (modus-themes-load-themes)
+  :config
+  (load-theme 'modus-operandi :no-confirm))
+;; (modus-themes-load-vivendi))
+
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
 
 (defun rgr/erc-session()
   (string= "erc" (daemonp)))

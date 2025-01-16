@@ -147,17 +147,11 @@ Emacs early-init
 
 ## notifications
 
-    (use-package notifications
-      :ensure nil
-      :demand t
-      :config
-      (defun emacs-alert(m)
-        (notifications-notify
-         :title "Emacs"
-         :body m))
+    (require 'notifications)
+    (defun emacs-alert(m)
       (notifications-notify
        :title "Emacs"
-       :body " ... is starting up..."))
+       :body m))
 
 
 ## Load early stuff / gpg
@@ -218,8 +212,33 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     ;;(car (process-lines "pass" "Chat/slack-api-token"))
 
 
+## themes
+
+
+### modus themes
+
+<https://github.com/protesilaos/modus-themes>
+
+    (use-package modus-themes
+                                            ;:disabled
+      :init
+      ;; Add all your customizations prior to loading the themes
+      (setq modus-themes-slanted-constructs t
+            modus-themes-bold-constructs nil)
+    
+      ;; Load the theme files before enabling a theme
+      ;; (modus-themes-load-themes)
+      :config
+      (load-theme 'modus-operandi :no-confirm))
+    ;; (modus-themes-load-vivendi))
+
+
 ## Emacs startup
 
+    
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
     
     (defun rgr/erc-session()
       (string= "erc" (daemonp)))
@@ -232,49 +251,41 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 ## erc
 
     
-    (use-package erc
-      :demand
-      :config
-      (defun rgr/erc-switch-to-channel(&optional channel)
-        (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
-          (switch-to-buffer (current-buffer))))
+    (require 'erc)
+    (defun rgr/erc-switch-to-channel(&optional channel)
+      (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
+        (switch-to-buffer (current-buffer))))
     
-      (defun rgr/erc-start()
-        (interactive)
-        (when (rgr/erc-session)
-          (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
-          (global-set-key (kbd "C-c x")  'rgr/erc-quit)
-          (setq kill-emacs-hook nil))
-        (if(get-buffer "Libera.Chat")
-            (rgr/erc-switch-to-channel)
-          (progn
-            (erc-tls :server "irc.libera.chat" :port 6697)
-            (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
+    (defun rgr/erc-start()
+      (interactive)
+      (emacs-alert "IRC Starting...")
+      (when (rgr/erc-session)
+        (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
+        (global-set-key (kbd "C-c x")  'rgr/erc-quit)
+        (setq kill-emacs-hook nil))
+      (if(get-buffer "Libera.Chat")
+          (rgr/erc-switch-to-channel)
+        (progn
+          (erc-tls :server "irc.libera.chat" :port 6697)
+          (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
     
-      (defun rgr/erc-quit()
-        (interactive)
-        (erc-quit-server "")
-        (when (rgr/erc-session)
-          (kill-emacs)))
+    (defun rgr/erc-quit()
+      (interactive)
+      (erc-quit-server "")
+      (when (rgr/erc-session)
+        (kill-emacs)))
     
-      :bind
-      (:map erc-mode-map
-            (("C-c C-q" . rgr/erc-quit))))
+    (define-key erc-mode-map (kbd "C-c C-q") 'rgr/erc-quit )
 
 
 ## normal emacs
 
     
+    (emacs-alert "... is starting up...")
+    
     (recentf-mode)
     (save-place-mode)
     (savehist-mode)
-    
-    (defun rgr/save-current-file-to-register ()
-      "Save current file to register."
-      ;; https://www.reddit.com/r/emacs/comments/oui4c6/using_register_to_save_current_file
-      (interactive)
-      (let ((reg (register-read-with-preview "File name to register: ")))
-        (set-register reg `(file . ,(buffer-file-name)))))
     
     (defun rgr/startup-hook ()
       (when (not(rgr/erc-session))
@@ -857,7 +868,7 @@ General org-mode config
 
 2.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org52abef6)
+    See `org-agenda-files` [org-agenda-files](#org3967477)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2110,9 +2121,6 @@ Load this relatively early in order to have utils available if there's a faied l
 
 1.  general ui
 
-        (scroll-bar-mode -1)
-        (tool-bar-mode -1)
-        (menu-bar-mode -1)
         (show-paren-mode 1)
         (winner-mode 1)
         
@@ -2199,43 +2207,14 @@ Load this relatively early in order to have utils available if there's a faied l
           (  "M-m"  . manual-entry)
           ( "S-<f10>" . menu-bar-open))
 
-2.  themes
-
-    1.  modus themes
-    
-        <https://github.com/protesilaos/modus-themes>
-        
-            (use-package modus-themes
-                                                    ;:disabled
-              :init
-              ;; Add all your customizations prior to loading the themes
-              (setq modus-themes-slanted-constructs t
-                    modus-themes-bold-constructs nil)
-            
-              ;; Load the theme files before enabling a theme
-              ;; (modus-themes-load-themes)
-              :config
-              (load-theme 'modus-operandi :no-confirm))
-            ;; (modus-themes-load-vivendi))
-    
-    2.  ef-themes
-    
-        <https://github.com/protesilaos/ef-themes>
-        
-            (use-package ef-themes
-              :disabled
-              :demand t
-              :config
-              (ef-themes-select 'ef-duo-light))
-
-3.  posframe
+2.  posframe
 
     [Posframe](https://github.com/tumashu/posframe)
     can pop up a frame at point, this posframe is a child-frame connected to its root window's buffer.
     
         (use-package posframe)
 
-4.  ACE utilities
+3.  ACE utilities
 
     1.  [Ace-Window](https://github.com/abo-abo/ace-window) provides better window switching.
     
@@ -2257,7 +2236,7 @@ Load this relatively early in order to have utils available if there's a faied l
               :config
               (ace-link-setup-default))
 
-5.  pulsar
+4.  pulsar
 
     visual feedback as to cursor position
     <https://protesilaos.com/emacs/pulsar>
@@ -2277,14 +2256,14 @@ Load this relatively early in order to have utils available if there's a faied l
           (
            pulsar-global-mode 1))
 
-6.  boxquote
+5.  boxquote
 
         (use-package boxquote
           ;;:straight (:branch "main")
           :bind
           ("C-S-r" . boxquote-region))
 
-7.  volatile-highlights
+6.  volatile-highlights
 
     brings visual feedback to some operations by highlighting portions relating to the operations.
     
@@ -2292,14 +2271,14 @@ Load this relatively early in order to have utils available if there's a faied l
           volatile-highlights
           :init (volatile-highlights-mode 1))
 
-8.  web pasting
+7.  web pasting
 
         (use-package
           dpaste
           :init
           :bind ("C-c y" . dpaste-region-or-buffer))
 
-9.  Accessibility
+8.  Accessibility
 
     1.  fonts
     
@@ -2316,7 +2295,7 @@ Load this relatively early in order to have utils available if there's a faied l
               :bind
               ( "<C-f7>" . 'darkroom-mode))
 
-10. Ansi colour
+9.  Ansi colour
 
     [Ansi colour hooks](https://www.emacswiki.org/emacs/AnsiColor) to enable emacs buffers to handle ansi.
     
@@ -2324,7 +2303,7 @@ Load this relatively early in order to have utils available if there's a faied l
         (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
         (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
-11. Tabs
+10. Tabs
 
         
         (defun consult-buffer-other-tab ()
@@ -2363,7 +2342,7 @@ Load this relatively early in order to have utils available if there's a faied l
               ("C-c C-SPC" . mc/edit-lines)
               )
 
-12. jinx : the enchanted spell checker
+11. jinx : the enchanted spell checker
 
         (use-package jinx
           :bind
@@ -2400,6 +2379,8 @@ to add to version control.
     !emacs-config.org
     !early-init.el
     !init.el
+    !init-erc.el
+    !init-normal.el
     !README.md
     !custom.el
     
@@ -2464,7 +2445,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc34e149) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3424029) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2497,7 +2478,7 @@ to add to version control.
     fi
 
 
-<a id="orgc34e149"></a>
+<a id="org3424029"></a>
 
 ### Gnome protocol handler desktop file
 
