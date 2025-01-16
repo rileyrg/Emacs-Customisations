@@ -141,7 +141,7 @@
        (message "setting frame title to %s" (format "emacs-%s" (daemonp)))
        (modify-frame-parameters
                nil
-               (list (cons 'name (format "emacs-%s" (daemonp))))))))
+               (list (cons 'name (format "Emacs-%s" (daemonp))))))))
 
 (defun rgr/init-file()
   (if (daemonp)

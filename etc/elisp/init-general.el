@@ -1417,7 +1417,7 @@
 
 (delete-selection-mode 1)
 
-(setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+;; (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 

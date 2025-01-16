@@ -4,6 +4,7 @@
 !.gitignore
 !.gitattributes
 !.ignore
+!.project
 
 !emacs-config.org
 !early-init.el

@@ -283,7 +283,7 @@ https://github.com/protesilaos/modus-themes
          (message "setting frame title to %s" (format "emacs-%s" (daemonp)))
          (modify-frame-parameters
                  nil
-                 (list (cons 'name (format "emacs-%s" (daemonp))))))))
+                 (list (cons 'name (format "Emacs-%s" (daemonp))))))))
 
   (defun rgr/init-file()
     (if (daemonp)
@@ -2406,7 +2406,7 @@ Display a poup containing docstring at point
 
   (delete-selection-mode 1)
 
-  (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+  ;; (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
 
   (defalias 'yes-or-no-p 'y-or-n-p)
 
