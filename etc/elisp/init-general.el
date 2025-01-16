@@ -26,8 +26,6 @@
 
 (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
 
-(load-file (rgr/ef "init-erc.el"))
-
 (use-package project
   :ensure nil
   :custom
@@ -1513,7 +1511,6 @@ The DWIM behaviour of this command is as follows:
 (bind-keys
   ("C-x C-q" . view-mode)
   ( "C-x C-b" . ibuffer)
-  ( "C-c e" . rgr/erc-start)
   ( "C-x C-i" . imenu)
   ( "C-x k" . rgr/kill-current-buffer)
   ( "M-0" . delete-window)

@@ -243,27 +243,32 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     (defun rgr/erc-session()
       (string= "erc" (daemonp)))
     
-    (defun rgr/ef(f)
+    (defun rgr/user-elisp-file(f)
       (expand-file-name f rgr/elisp-dir))
     
+    ;; trying to set title
     (when (daemonp)
       (add-to-list
        'elpaca-after-init-hook
          (lambda()
-           (message "setting frame title to %s" (format "emacs-%s" (daemonp)))
+           (message "setting frame title to %s" (format "Emacs-%s" (daemonp)))
            (modify-frame-parameters
                    nil
                    (list (cons 'name (format "Emacs-%s" (daemonp))))))))
     
     (defun rgr/init-file()
       (if (daemonp)
-          (rgr/ef (format "init-%s.el" (daemonp)))
-        (rgr/ef "init-general.el")))
+          (rgr/user-elisp-file (format "init-%s.el" (daemonp)))
+        (rgr/user-elisp-file "init-general.el")))
     (message "Loading %s init file" (rgr/init-file))
     (load-file (rgr/init-file))
 
 
 ## erc
+
+This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
+
+:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-erc.el") 
 
     
     (require 'erc)
@@ -292,6 +297,8 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
       (erc-quit-server "")
       (when (rgr/erc-session)
         (kill-emacs)))
+    
+    (rgr/erc-start)
 
 
 ## normal emacs
@@ -326,89 +333,86 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
 
 
-### erc
+### Project Management
 
-    (load-file (rgr/ef "init-erc.el"))
+    (use-package project
+      :ensure nil
+      :custom
+      (project-vc-extra-root-markers '(".project"))
+      ;;(project-mode-line t)
+      :config
+      (defun rgr/project-url(url)
+        (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
+        (eww url))
+      (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
+      (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
 
 
-### Utilities
+### toggle buffer
 
-1.  Project Management
+    (defun rgr/toggle-buffer(n)
+      "jump to or from buffer named n else default to *Messages*"
+      (interactive "bbuffer:")
+      (let ((n (or n
+                   "*Messages*")))
+        (switch-to-buffer (if (string= (buffer-name) n)
+                              (other-buffer) n))))
 
-        (use-package project
-          :ensure nil
-          :custom
-          (project-vc-extra-root-markers '(".project"))
-          ;;(project-mode-line t)
-          :config
-          (defun rgr/project-url(url)
-            (interactive (if (boundp 'rgr/project-url) `(,rgr/project-url) (list (read-string "url: "))))
-            (eww url))
-          (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-          (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
 
-2.  toggle buffer
+### read and write elisp vars to file
 
-        (defun rgr/toggle-buffer(n)
-          "jump to or from buffer named n else default to *Messages*"
-          (interactive "bbuffer:")
-          (let ((n (or n
-                       "*Messages*")))
-            (switch-to-buffer (if (string= (buffer-name) n)
-                                  (other-buffer) n))))
-
-3.  read and write elisp vars to file
-
-        
-        (defun rgr/elisp-write-var (f v)
-          (with-temp-file f
-            (prin1 v (current-buffer))))
-        
-        (defun rgr/elisp-read-var (f)
-          (with-temp-buffer
-            (insert-file-contents f)
-            (cl-assert (eq (point) (point-min)))
-            (read (current-buffer))))
-
-4.  completing lines
-
-        (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
-        
-        (defun rgr/complete-line()
-          (interactive)
-          (funcall rgr/complete-line-f))
-        
-        (defun rgr/c-complete-line()
-          (end-of-line)
-          (delete-trailing-whitespace)
-          (unless (eql ?\; (char-before (point-at-eol)))
-            (insert ";"))
-          (newline-and-indent))
-        
-        (defun rgr/insert-previous-line()
-          (previous-line)
-          (end-of-line)
-          (newline-and-indent)
-          (insert (string-trim (current-kill 0))))
-        
-        (defun rgr/newline-below()
-          (end-of-line)
-          (newline-and-indent))
-        
-        
-        (global-set-key (kbd "C-S-<return>")  'rgr/complete-line)
-
-5.  Lazy Language Learning, lazy-lang-learn
-
-    My own hack for popping up text to learn
     
-        (setq lazyll-dir (expand-file-name "lazy-lang-learn" emacs-project-dir ))
-        (use-package lazy-lang-learn
-          :ensure  `(:repo ,lazyll-dir)
-          :bind
-          ("C-c L" . lazy-lang-learn-mode)
-          ("<f12>" . lazy-lang-learn-translate)
-          ("S-<f12>" . lazy-lang-learn-translate-from-history))
+    (defun rgr/elisp-write-var (f v)
+      (with-temp-file f
+        (prin1 v (current-buffer))))
+    
+    (defun rgr/elisp-read-var (f)
+      (with-temp-buffer
+        (insert-file-contents f)
+        (cl-assert (eq (point) (point-min)))
+        (read (current-buffer))))
+
+
+### completing lines
+
+    (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
+    
+    (defun rgr/complete-line()
+      (interactive)
+      (funcall rgr/complete-line-f))
+    
+    (defun rgr/c-complete-line()
+      (end-of-line)
+      (delete-trailing-whitespace)
+      (unless (eql ?\; (char-before (point-at-eol)))
+        (insert ";"))
+      (newline-and-indent))
+    
+    (defun rgr/insert-previous-line()
+      (previous-line)
+      (end-of-line)
+      (newline-and-indent)
+      (insert (string-trim (current-kill 0))))
+    
+    (defun rgr/newline-below()
+      (end-of-line)
+      (newline-and-indent))
+    
+    
+    (global-set-key (kbd "C-S-<return>")  'rgr/complete-line)
+
+
+### Lazy Language Learning, lazy-lang-learn
+
+My own hack for popping up text to learn
+
+    (setq lazyll-dir (expand-file-name "lazy-lang-learn" emacs-project-dir ))
+    (use-package lazy-lang-learn
+      :ensure  `(:repo ,lazyll-dir)
+      :bind
+      ("C-c L" . lazy-lang-learn-mode)
+      ("<f12>" . lazy-lang-learn-translate)
+      ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
 
 ### Minibuffer Enrichment (search, sudo edit&#x2026;)
@@ -927,7 +931,7 @@ General org-mode config
 
 2.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org84e0a06)
+    See `org-agenda-files` [org-agenda-files](#org27d8e8c)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2257,7 +2261,6 @@ Load this relatively early in order to have utils available if there's a faied l
         (bind-keys
           ("C-x C-q" . view-mode)
           ( "C-x C-b" . ibuffer)
-          ( "C-c e" . rgr/erc-start)
           ( "C-x C-i" . imenu)
           ( "C-x k" . rgr/kill-current-buffer)
           ( "M-0" . delete-window)
@@ -2503,7 +2506,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org06da0d2) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org17a2f18) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2536,7 +2539,7 @@ to add to version control.
     fi
 
 
-<a id="org06da0d2"></a>
+<a id="org17a2f18"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -24,3 +24,5 @@
   (erc-quit-server "")
   (when (rgr/erc-session)
     (kill-emacs)))
+
+(rgr/erc-start)

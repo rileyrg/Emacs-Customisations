@@ -148,7 +148,6 @@
  '(expand-region-smart-cursor t)
  '(f 'el-docstring-sap--display)
  '(fci-rule-color "#14151E" t)
- '(fill-column 256)
  '(gdb-display-io-nopopup t)
  '(gdb-many-windows t)
  '(gdb-show-main t)

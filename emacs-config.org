@@ -93,6 +93,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
         (message "No debug initfile, %s, found so ignoring" debug-init))))
   (debug-init)
 #+end_src
+
 ** package management
 *** own projects
 #+begin_src  emacs-lisp
@@ -273,29 +274,32 @@ https://github.com/protesilaos/modus-themes
   (defun rgr/erc-session()
     (string= "erc" (daemonp)))
 
-  (defun rgr/ef(f)
+  (defun rgr/user-elisp-file(f)
     (expand-file-name f rgr/elisp-dir))
 
+  ;; trying to set title
   (when (daemonp)
     (add-to-list
      'elpaca-after-init-hook
        (lambda()
-         (message "setting frame title to %s" (format "emacs-%s" (daemonp)))
+         (message "setting frame title to %s" (format "Emacs-%s" (daemonp)))
          (modify-frame-parameters
                  nil
                  (list (cons 'name (format "Emacs-%s" (daemonp))))))))
 
   (defun rgr/init-file()
     (if (daemonp)
-        (rgr/ef (format "init-%s.el" (daemonp)))
-      (rgr/ef "init-general.el")))
+        (rgr/user-elisp-file (format "init-%s.el" (daemonp)))
+      (rgr/user-elisp-file "init-general.el")))
   (message "Loading %s init file" (rgr/init-file))
   (load-file (rgr/init-file))
 #+end_src 
 
 ** erc
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle (rgr/ef "init-erc.el") 
+This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
+
+:Properties:
+:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-erc.el") 
 :END:
 #+begin_src  emacs-lisp
 
@@ -326,10 +330,13 @@ https://github.com/protesilaos/modus-themes
     (when (rgr/erc-session)
       (kill-emacs)))
 
+  (rgr/erc-start)
+
 #+end_src
+
 ** normal emacs
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (rgr/ef "init-general.el")
+:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-general.el")
 :END:
 
 #+begin_src emacs-lisp
@@ -363,13 +370,7 @@ https://github.com/protesilaos/modus-themes
   (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
 #+end_src
 
-*** erc
-#+begin_src  emacs-lisp
-  (load-file (rgr/ef "init-erc.el"))
-#+end_src 
-*** Utilities
-
-**** Project Management                                             :project:
+*** Project Management                                              :project:
 #+begin_src  emacs-lisp
   (use-package project
     :ensure nil
@@ -384,7 +385,7 @@ https://github.com/protesilaos/modus-themes
     (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
 #+end_src
 
-**** toggle buffer
+*** toggle buffer
 :PROPERTIES:
 :ID:       cf781280-b126-402f-9700-c061a385bf81
 :END:
@@ -397,7 +398,7 @@ https://github.com/protesilaos/modus-themes
       (switch-to-buffer (if (string= (buffer-name) n)
                             (other-buffer) n))))
 #+end_src
-**** read and write elisp vars to file
+*** read and write elisp vars to file
 :PROPERTIES:
 :ID:       82905a95-6e37-4114-ba77-4be0dd31a9ec
 :END:
@@ -414,7 +415,7 @@ https://github.com/protesilaos/modus-themes
       (read (current-buffer))))
 #+end_src
 
-**** completing lines
+*** completing lines
 #+begin_src  emacs-lisp
   (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
 
@@ -444,7 +445,7 @@ https://github.com/protesilaos/modus-themes
 
 #+end_src
 
-**** Lazy Language Learning, lazy-lang-learn
+*** Lazy Language Learning, lazy-lang-learn
 My own hack for popping up text to learn
 :PROPERTIES:
 :END:
@@ -2508,7 +2509,6 @@ Display a poup containing docstring at point
   (bind-keys
     ("C-x C-q" . view-mode)
     ( "C-x C-b" . ibuffer)
-    ( "C-c e" . rgr/erc-start)
     ( "C-x C-i" . imenu)
     ( "C-x k" . rgr/kill-current-buffer)
     ( "M-0" . delete-window)
