@@ -26,7 +26,7 @@
 
 (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
 
-(load-file (expand-file-name "init-erc.el" user-emacs-directory))
+(load-file (rgr/ef "init-erc.el"))
 
 (use-package project
   :ensure nil

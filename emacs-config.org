@@ -272,18 +272,21 @@ https://github.com/protesilaos/modus-themes
 
   (defun rgr/erc-session()
     (string= "erc" (daemonp)))
+
+  (defun rgr/ef(f)
+    (expand-file-name f rgr/elisp-dir))
     
   (defun rgr/init-file()
     (if (daemonp)
-        (format "init-%s.el" (daemonp))
-    "init-general.el"))
-
-  (load-file (expand-file-name (rgr/init-file) user-emacs-directory))
+        (rgr/ef (format "init-%s.el" (daemonp)))
+    (rgr/ef "init-general.el")))
+  (message "Loading %s init file" (rgr/init-file))
+  (load-file (rgr/init-file))
 #+end_src 
 
 ** erc
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle init-erc.el
+:header-args:emacs-lisp: :tangle (rgr/ef "init-erc.el") 
 :END:
 #+begin_src  emacs-lisp
 
@@ -315,7 +318,7 @@ https://github.com/protesilaos/modus-themes
 #+end_src
 ** normal emacs
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle init-general.el
+:header-args:emacs-lisp: :tangle (rgr/ef "init-general.el")
 :END:
 
 #+begin_src emacs-lisp
@@ -351,7 +354,7 @@ https://github.com/protesilaos/modus-themes
 
 *** erc
 #+begin_src  emacs-lisp
-  (load-file (expand-file-name "init-erc.el" user-emacs-directory))
+  (load-file (rgr/ef "init-erc.el"))
 #+end_src 
 *** Utilities
 
