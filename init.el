@@ -130,7 +130,10 @@
 
 (defun rgr/erc-session()
   (string= "erc" (daemonp)))
+  
+(defun rgr/init-file()
+  (if (daemonp)
+      (format "init-%s.el" (daemonp))
+  "init-general.el"))
 
-(if  (rgr/erc-session)
-    (load-file (expand-file-name "init-erc.el" user-emacs-directory))
-  (load-file (expand-file-name "init-normal.el" user-emacs-directory)))
+(load-file (expand-file-name (rgr/init-file) user-emacs-directory))

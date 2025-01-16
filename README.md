@@ -243,9 +243,12 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     (defun rgr/erc-session()
       (string= "erc" (daemonp)))
     
-    (if  (rgr/erc-session)
-        (load-file (expand-file-name "init-erc.el" user-emacs-directory))
-      (load-file (expand-file-name "init-normal.el" user-emacs-directory)))
+    (defun rgr/init-file()
+      (if (daemonp)
+          (format "init-%s.el" (daemonp))
+      "init-general.el"))
+    
+    (load-file (expand-file-name (rgr/init-file) user-emacs-directory))
 
 
 ## erc
@@ -258,6 +261,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     
     (defun rgr/erc-start()
       (interactive)
+      (define-key erc-mode-map (kbd "C-c C-q") 'rgr/erc-quit )
       (emacs-alert "IRC Starting...")
       (when (rgr/erc-session)
         (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
@@ -274,8 +278,6 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
       (erc-quit-server "")
       (when (rgr/erc-session)
         (kill-emacs)))
-    
-    (define-key erc-mode-map (kbd "C-c C-q") 'rgr/erc-quit )
 
 
 ## normal emacs
@@ -308,6 +310,11 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
       (save-buffers-kill-emacs))
     
     (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
+
+
+### erc
+
+    (load-file (expand-file-name "init-erc.el" user-emacs-directory))
 
 
 ### Utilities
@@ -868,7 +875,7 @@ General org-mode config
 
 2.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org3967477)
+    See `org-agenda-files` [org-agenda-files](#org55ada6a)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2197,8 +2204,8 @@ Load this relatively early in order to have utils available if there's a faied l
         
         (bind-keys
           ("C-x C-q" . view-mode)
-          ( "C-c e" . rgr/erc-start)
           ( "C-x C-b" . ibuffer)
+          ( "C-c e" . rgr/erc-start)
           ( "C-x C-i" . imenu)
           ( "C-x k" . rgr/kill-current-buffer)
           ( "M-0" . delete-window)
@@ -2378,9 +2385,7 @@ to add to version control.
     
     !emacs-config.org
     !early-init.el
-    !init.el
-    !init-erc.el
-    !init-normal.el
+    !init-*.el
     !README.md
     !custom.el
     
@@ -2445,7 +2450,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3424029) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2005e86) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2478,7 +2483,7 @@ to add to version control.
     fi
 
 
-<a id="org3424029"></a>
+<a id="org2005e86"></a>
 
 ### Gnome protocol handler desktop file
 

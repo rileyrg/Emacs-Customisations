@@ -5,6 +5,7 @@
 
 (defun rgr/erc-start()
   (interactive)
+  (define-key erc-mode-map (kbd "C-c C-q") 'rgr/erc-quit )
   (emacs-alert "IRC Starting...")
   (when (rgr/erc-session)
     (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
@@ -21,5 +22,3 @@
   (erc-quit-server "")
   (when (rgr/erc-session)
     (kill-emacs)))
-
-(define-key erc-mode-map (kbd "C-c C-q") 'rgr/erc-quit )
