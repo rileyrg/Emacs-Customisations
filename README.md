@@ -248,11 +248,12 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     
     (when (daemonp)
       (add-to-list
-       'after-make-frame-functions
-       (lambda()
-         (lambda()(modify-frame-parameters
+       'elpaca-after-init-hook
+         (lambda()
+           (message "setting frame title to %s" (format "emacs-%s" (daemonp)))
+           (modify-frame-parameters
                    nil
-                   (list (cons 'name (format "emacs-%s" (daemonp)))))))))
+                   (list (cons 'name (format "Emacs-%s" (daemonp))))))))
     
     (defun rgr/init-file()
       (if (daemonp)
@@ -563,7 +564,7 @@ Various plugins for minibuffer enrichment
           ;; available in the *Completions* buffer, add it to the
           ;; `completion-list-mode-map'.
           :bind (:map minibuffer-local-map
-                      ("M-A" . marginalia-cycle))
+                 ("M-A" . marginalia-cycle))
         
           ;; The :init section is always executed.
           :init
@@ -573,7 +574,45 @@ Various plugins for minibuffer enrichment
           ;; package.
           (marginalia-mode))
 
-5.  all-the-icons
+5.  embark
+
+        (use-package embark
+          :ensure t
+        
+          :bind
+          (("C-." . embark-act)         ;; pick some comfortable binding
+           ("C-;" . embark-dwim)        ;; good alternative: M-.
+           ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+        
+          :init
+        
+          ;; Optionally replace the key help with a completing-read interface
+          (setq prefix-help-command #'embark-prefix-help-command)
+        
+          ;; Show the Embark target at point via Eldoc. You may adjust the
+          ;; Eldoc strategy, if you want to see the documentation from
+          ;; multiple providers. Beware that using this can be a little
+          ;; jarring since the message shown in the minibuffer can be more
+          ;; than one line, causing the modeline to move up and down:
+        
+          ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+          ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+        
+          :config
+        
+          ;; Hide the mode line of the Embark live/completions buffers
+          (add-to-list 'display-buffer-alist
+                       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                         nil
+                         (window-parameters (mode-line-format . none)))))
+        
+        ;; Consult users will also want the embark-consult package.
+        (use-package embark-consult
+          :demand t ; only need to install it, embark loads it after consult if found
+          :hook
+          (embark-collect-mode . consult-preview-at-point-mode))
+
+6.  all-the-icons
 
     Remember to run **all-the-icons-install-fonts**.
     
@@ -886,7 +925,7 @@ General org-mode config
 
 2.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org60094b7)
+    See `org-agenda-files` [org-agenda-files](#org3cfb423)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -1484,17 +1523,17 @@ lookup and reference uilities and config
           (eldoc-idle-delay 1)
           (eldoc-echo-area-use-multiline-p t)
           :config
-          (use-package eldoc-box
-            :after eldoc)
           (defun rgr/eldoc-mode-hook()
             ;;(eldoc-box-hover-at-point-mode)
             )
-          :init
+          :config
           (global-eldoc-mode)
           :hook
           (eldoc-mode . rgr/eldoc-mode-hook)
           :bind
-          ("C-." . eldoc-box-help-at-point))
+          ("C-h p" . eldoc-box-help-at-point))
+        (use-package eldoc-box
+          :after eldoc)
 
 4.  compilation
 
@@ -2156,7 +2195,7 @@ Load this relatively early in order to have utils available if there's a faied l
         
         (delete-selection-mode 1)
         
-        (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
+        ;; (setq frame-title-format (if (member "-chat" command-line-args)  "Chat: %b" '("%b@" (:eval (or (file-remote-p default-directory 'host) system-name)) " — Emacs")))
         
         (defalias 'yes-or-no-p 'y-or-n-p)
         
@@ -2393,6 +2432,7 @@ to add to version control.
     !.gitignore
     !.gitattributes
     !.ignore
+    !.project
     
     !emacs-config.org
     !early-init.el
@@ -2461,7 +2501,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org385f2cf) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga753b69) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2494,7 +2534,7 @@ to add to version control.
     fi
 
 
-<a id="org385f2cf"></a>
+<a id="orga753b69"></a>
 
 ### Gnome protocol handler desktop file
 
