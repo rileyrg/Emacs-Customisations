@@ -277,13 +277,18 @@ https://github.com/protesilaos/modus-themes
     (expand-file-name f rgr/elisp-dir))
 
   (when (daemonp)
-    (modify-frame-parameters nil
-           (list (cons 'name (format "emacs-%s" (daemonp))))))
-    
+    (add-to-list
+     'elpaca-after-init-hook
+       (lambda()
+         (message "setting frame title to %s" (format "emacs-%s" (daemonp)))
+         (modify-frame-parameters
+                 nil
+                 (list (cons 'name (format "emacs-%s" (daemonp))))))))
+
   (defun rgr/init-file()
     (if (daemonp)
         (rgr/ef (format "init-%s.el" (daemonp)))
-    (rgr/ef "init-general.el")))
+      (rgr/ef "init-general.el")))
   (message "Loading %s init file" (rgr/init-file))
   (load-file (rgr/init-file))
 #+end_src 
