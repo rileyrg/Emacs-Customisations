@@ -307,14 +307,16 @@ https://github.com/protesilaos/modus-themes
   (defun rgr/erc-start()
     (interactive)
     (define-key erc-mode-map (kbd "C-c C-q") 'rgr/erc-quit )
-    (emacs-alert "IRC Starting...")
     (when (rgr/erc-session)
       (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
       (global-set-key (kbd "C-c x")  'rgr/erc-quit)
       (setq kill-emacs-hook nil))
     (if(get-buffer "Libera.Chat")
-        (rgr/erc-switch-to-channel)
+        (progn
+          (emacs-alert "Switching to IRC...")
+          (rgr/erc-switch-to-channel))
       (progn
+        (emacs-alert "IRC Starting...")
         (erc-tls :server "irc.libera.chat" :port 6697)
         (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
 
