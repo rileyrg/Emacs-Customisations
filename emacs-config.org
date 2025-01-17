@@ -82,7 +82,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 * emacs main init
 :PROPERTIES:
 :CUSTOM_ID: b477a755
-:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init.el")
+:header-args:emacs-lisp: :tangle (expand-file-name "init.el" user-emacs-directory)
 :END:
 ** debug init
 #+begin_src  emacs-lisp
@@ -290,16 +290,16 @@ https://github.com/protesilaos/modus-themes
          ;; (modify-frame-parameters
          ;;         nil
          ;;         (list (cons 'name (format "Emacs-%s" (daemonp))))))))
-  ;; 
+
   (defun rgr/init-file()
     (if (daemonp)
         (rgr/user-elisp-file (format "init-%s.el" (daemonp)))
       (rgr/user-elisp-file "init-general.el")))
-  (message "Loading %s init file" (rgr/init-file))
+  (message "*** Loading %s init file" (rgr/init-file))
   (load-file (rgr/init-file))
 #+end_src 
 
-** erc
+* erc init file
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-erc.el")
 :END:
@@ -339,13 +339,13 @@ This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] an
 
 #+end_src
 
-** general init
+* general init
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-general.el")
 :END:
 
 #+begin_src emacs-lisp
-
+  ;;***
   (emacs-alert "... is starting up...")
 
   (recentf-mode)
@@ -375,7 +375,7 @@ This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] an
   (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
 #+end_src
 
-*** Project Management                                              :project:
+** Project Management                                               :project:
 #+begin_src  emacs-lisp
   (use-package project
     :ensure nil
@@ -390,7 +390,7 @@ This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] an
     (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
 #+end_src
 
-*** toggle buffer
+** toggle buffer
 :PROPERTIES:
 :ID:       cf781280-b126-402f-9700-c061a385bf81
 :END:
@@ -403,7 +403,7 @@ This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] an
       (switch-to-buffer (if (string= (buffer-name) n)
                             (other-buffer) n))))
 #+end_src
-*** read and write elisp vars to file
+** read and write elisp vars to file
 :PROPERTIES:
 :ID:       82905a95-6e37-4114-ba77-4be0dd31a9ec
 :END:
@@ -420,7 +420,7 @@ This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] an
       (read (current-buffer))))
 #+end_src
 
-*** completing lines
+** completing lines
 #+begin_src  emacs-lisp
   (defvar rgr/complete-line-f 'rgr/newline-below "The fname called by `rgr/complete-line'")
 
@@ -450,7 +450,7 @@ This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] an
 
 #+end_src
 
-*** Lazy Language Learning, lazy-lang-learn
+** Lazy Language Learning, lazy-lang-learn
 My own hack for popping up text to learn
 :PROPERTIES:
 :END:
@@ -464,20 +464,20 @@ My own hack for popping up text to learn
     ("S-<f12>" . lazy-lang-learn-translate-from-history))
 #+end_src
 
-*** Minibuffer Enrichment (search, sudo edit...)                 :minibuffer:
+** Minibuffer Enrichment (search, sudo edit...)                  :minibuffer:
 :PROPERTIES:
 :ID:       ccdf6738-f921-4d2f-81ea-6dd00883867c
 :END:
 Various plugins for minibuffer enrichment
 
-**** [[https://github.com/nflath/sudo-edit][sudo-edit]] Priviliged file editing
+*** [[https://github.com/nflath/sudo-edit][sudo-edit]] Priviliged file editing
 :PROPERTIES:
 :ID:       cfdbc3a9-af09-4608-86bb-de6b3d2f2b3a
 :END:
 #+begin_src emacs-lisp
   (use-package sudo-edit)
 #+end_src
-**** find file at point
+*** find file at point
 :PROPERTIES:
 :ID:       bd247b04-92dc-4db6-911e-df716bd8574a
 :END:
@@ -502,7 +502,7 @@ Various plugins for minibuffer enrichment
     :bind
     ( "C-x C-f" . rgr/ffap))
 #+end_src
-**** Consult                                                        :consult:
+*** Consult                                                         :consult:
 Consult]] Provides various commands based on the Emacs completion function completing-read
 :PROPERTIES:
 :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
@@ -616,7 +616,7 @@ Consult]] Provides various commands based on the Emacs completion function compl
     ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
     )
 #+end_src
-**** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] margin annotations for info on line
+*** [[https://en.wikipedia.org/wiki/Marginalia][Marginalia]] margin annotations for info on line
 are marks or annotations placed at the margin of the page of a book or in this case helpful colorful annotations placed at the margin of the minibuffer for your completion candidates
 :PROPERTIES:
 :ID:       f3802197-c745-40b2-ac0d-72d7da291aaf
@@ -640,7 +640,7 @@ are marks or annotations placed at the margin of the page of a book or in this c
     (marginalia-mode))
 #+end_src
 
-**** embark
+*** embark
 #+begin_src  emacs-lisp
   (use-package embark
     :ensure t
@@ -679,7 +679,7 @@ are marks or annotations placed at the margin of the page of a book or in this c
     (embark-collect-mode . consult-preview-at-point-mode))
 
 #+end_src 
-**** all-the-icons
+*** all-the-icons
 Remember to run *all-the-icons-install-fonts*.
 #+begin_src  emacs-lisp
   (use-package all-the-icons
@@ -695,12 +695,12 @@ Remember to run *all-the-icons-install-fonts*.
 
 #+end_src
 
-*** Completion                                                   :completion:
+** Completion                                                    :completion:
 :PROPERTIES:
 :END:
 Let emacs suggest completions
 
-**** corfu
+*** corfu
 
 #+begin_src emacs-lisp
   (use-package corfu
@@ -799,7 +799,7 @@ Let emacs suggest completions
 #+end_src
 
 
-**** Which Key                                                    :which:key:
+*** Which Key                                                     :which:key:
 :PROPERTIES:
 :END:
 [[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
@@ -809,7 +809,7 @@ Let emacs suggest completions
     :demand t
     :config (which-key-mode))
 #+end_src
-**** Yasnippet                                                    :yasnippet:
+*** Yasnippet                                                     :yasnippet:
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
 Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 #+begin_src emacs-lisp
@@ -820,7 +820,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
       (yas-global-mode)
       )
 #+end_src
-**** Abbrev Mode
+*** Abbrev Mode
 :PROPERTIES:
 :END:
 [[https://www.emacswiki.org/emacs/AbbrevMode#toc4][Abbrev Mode]] is very useful for expanding small text snippets
@@ -848,7 +848,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
                                    ))))))
 
 #+end_src
-**** company
+*** company
 #+begin_src emacs-lisp
   (use-package company
     :disabled t
@@ -862,7 +862,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
     :bind( :map company-mode-map
            ("<tab>" .  company-indent-or-complete-common)))
 #+end_src
-**** vertico , vertical interactive completion
+*** vertico , vertical interactive completion
 https://github.com/minad/vertico
 #+begin_src emacs-lisp
   ;; Enable vertico
@@ -880,13 +880,13 @@ https://github.com/minad/vertico
     (vertico-mode))
 
 #+end_src
-*** Org functionality
+** Org functionality
 :PROPERTIES:
 :ID:       98f4dbe1-6f34-4246-8ee6-96e8ab24d1b1
 :END:
 General org-mode config
 
-**** Org Mode, org-mode                                                 :org:
+*** Org Mode, org-mode                                                  :org:
 :PROPERTIES:
 :ID:       80d295c4-fe60-4bef-99e2-2f15bcb1e36a
 :END:
@@ -921,11 +921,11 @@ General org-mode config
     (:map org-mode-map
           ("M-." . find-function-at-point)))
 #+end_src
-***** org-contrib
+**** org-contrib
 #+begin_src  emacs-lisp
   ;;(use-package org-contrib)
 #+end_src
-***** org-id
+**** org-id
 :PROPERTIES:
 :ID:       40320a82-ceaf-463f-a2fc-f68e3e92fccd
 :END:
@@ -933,17 +933,17 @@ create unique link IDs when sharing a link to an org section
 #+begin_src emacs-lisp
   ;;(require 'org-id)
 #+end_src
-***** crypt
+**** crypt
 #+begin_src emacs-lisp
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
 #+end_src
-***** async babel blocks
+**** async babel blocks
 #+begin_src emacs-lisp
   (use-package ob-async)
 #+end_src
 
-***** org-super-agenda
+**** org-super-agenda
 #+begin_src emacs-lisp
   (use-package org-super-agenda
     :custom
@@ -1005,7 +1005,7 @@ create unique link IDs when sharing a link to an org section
     (org-super-agenda-mode))
 #+end_src
 
-**** org agenda files
+*** org agenda files
 :PROPERTIES:
 :ID:       1a27d0a1-8b17-4b86-84f7-aa7f0c006005
 :header-args:conf: :tangle no
@@ -1024,10 +1024,10 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
   ~/development/education/lessons/elisp
 #+end_src
 
-*** Typesetting
+** Typesetting
 
 Need to install dvipng, texlive, texlive-latex-extra
-**** auctex
+*** auctex
 #+begin_src  emacs-lisp
   (use-package auctex
     :disabled t
@@ -1055,7 +1055,7 @@ Need to install dvipng, texlive, texlive-latex-extra
               (lambda () (rgr/latex-mode-hook)(TeX-fold-mode 1)))); Automatically activate TeX-fold-mode.
 #+end_src
 
-**** lilypond
+*** lilypond
 https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
 #+begin_src  emacs-lisp
   (use-package
@@ -1063,18 +1063,18 @@ https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
     :disabled)
 #+end_src
 
-***** example
+**** example
 [[id:88f71d40-2697-48c2-8849-7553ea581cff][Chorded]]
 
-*** Reference/Lookup/Media
+** Reference/Lookup/Media
 :PROPERTIES:
 :ID:       959f68c3-8447-4eb8-aaa8-86f828859f49
 :END:
 lookup and reference uilities and config
 
-**** chatgpt
+*** chatgpt
 
-***** GPTel
+**** GPTel
 https://github.com/karthink/gptel
 
 #+begin_src  emacs-lisp
@@ -1083,7 +1083,7 @@ https://github.com/karthink/gptel
     ("C-c q" . #'gptel-send))
 #+end_src
 
-****** secret openAPI key                                             :crypt:
+***** secret openAPI key                                              :crypt:
 -----BEGIN PGP MESSAGE-----
 
 hQEMA7IjL5SkHG4iAQf+N61j3/62smGNrhRPOrE3U8JMpJlcDf7d0gukqvXXYD3r
@@ -1098,7 +1098,7 @@ DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
 =UHS1
 -----END PGP MESSAGE-----
 
-**** Ellama
+*** Ellama
 
 https://github.com/s-kostyaev/ellama
 https://github.com/s-kostyaev/ellama
@@ -1113,9 +1113,9 @@ https://ollama.ai/library/zephyr
     (require 'llm-ollama))
 #+end_src
 
-**** web lookup/view
+*** web lookup/view
 
-***** eww
+**** eww
 #+begin_src emacs-lisp
   (use-package eww
     :ensure nil
@@ -1155,7 +1155,7 @@ https://ollama.ai/library/zephyr
           ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 #+end_src
 
-***** go-translate
+**** go-translate
 This is a translation framework for emacs, and is flexible and powerful.
 #+begin_src  emacs-lisp
   (use-package go-translate
@@ -1171,7 +1171,7 @@ This is a translation framework for emacs, and is flexible and powerful.
     ("C-c T" . gts-do-translate))
 #+end_src
 
-****** Google translate
+***** Google translate
 :PROPERTIES:
 :ID:       e410cd79-39c4-4724-b424-6082b20c70f1
 :END:
@@ -1237,13 +1237,13 @@ This is a translation framework for emacs, and is flexible and powerful.
 
 #+end_src
 
-***** utility funcs
+**** utility funcs
 :PROPERTIES:
 :ID:       a32c8536-be64-43fe-b740-210f0d891f14
 :END:
 A bit of a dogs dinner.
 
-**** use browser for docs
+*** use browser for docs
 #+begin_src  emacs-lisp
   (defcustom rgr/browser-doc-url "https://www.google.com/search?q=%s" "format url variable used for function `rgr/browser-doc-search'")
   (defun rgr/browser-doc-search(&optional sym)
@@ -1256,7 +1256,7 @@ A bit of a dogs dinner.
     (browse-url (format rgr/browser-doc-url sym)))
 #+end_src
 
-**** Dictionary,Thesaurus
+*** Dictionary,Thesaurus
 :PROPERTIES:
 :ID:       d6770b25-024f-45f4-b86f-7c98db38b34f
 :END:
@@ -1277,7 +1277,7 @@ The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
     ("<f6>" . rgr/dictionary-search)
     ("S-<f6>" . mw-thesaurus-lookup-dwim))
 #+end_src
-**** GoldenDict - external lookup and reference
+*** GoldenDict - external lookup and reference
 :PROPERTIES:
 :ID:       f0cfea23-9466-4c55-8308-dc1dc478a591
 :END:
@@ -1303,7 +1303,7 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
         (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
     :bind (("C-x G" . goldendict-dwim)))
 #+end_src
-**** API docs
+*** API docs
 #+begin_src emacs-lisp
   (defun rgr/devdocs()
     "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
@@ -1320,7 +1320,7 @@ When using goldendict-dwim why not add your program to the wonderful [[http://go
 
 #+end_src
 
-***** devdocs-browser
+**** devdocs-browser
 
 https://github.com/blahgeek/emacs-devdocs-browser :
 
@@ -1338,7 +1338,7 @@ Browse devdocs.io documents inside Emacs!
     (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
 #+end_src
 
-***** devdocs
+**** devdocs
 
 https://github.com/astoff/devdocs.el
 
@@ -1352,7 +1352,7 @@ Browse devdocs.io documents inside Emacs!
     (c++-ts-mode . (lambda()(setq-local devdocs-current-docs '("cpp")))))
 #+end_src
 
-**** Elfeed
+*** Elfeed
 :PROPERTIES:
 :ID:       381fc830-2854-4eda-9744-efe1b0239f43
 :END:
@@ -1373,13 +1373,13 @@ Browse devdocs.io documents inside Emacs!
     (:map elfeed-search-mode-map
           ("b" . (lambda()(call-process-shell-command "swaymsg workspace number 2" nil 0)(interactive)(elfeed-search-browse-url t)))))
 #+end_src
-***** elfeed-org
+**** elfeed-org
 :PROPERTIES:
 :ID:       63b211b7-3b48-451b-878e-0a6aa9e72c81
 :END:
 #+begin_src emacs-lisp
 #+end_src
-**** pdf-tools
+*** pdf-tools
 :PROPERTIES:
 :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
 :END:
@@ -1394,11 +1394,11 @@ Browse devdocs.io documents inside Emacs!
     (use-package org-pdftools
       :hook (org-mode . org-pdftools-setup-link)))
 #+end_src
-***** requirements
+**** requirements
 #+begin_src bash
   sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 #+end_src
-**** impatient-showdow, markdown view live
+*** impatient-showdow, markdown view live
 Preview markdown buffer live over HTTP using showdown.
 https://github.com/jcs-elpa/impatient-showdown
 #+begin_src emacs-lisp
@@ -1407,12 +1407,12 @@ https://github.com/jcs-elpa/impatient-showdown
     :hook (markdown-mode . impatient-showdown-mode))
 #+end_src
 
-*** Shells and Terminals
+** Shells and Terminals
 :PROPERTIES:
 :END:
 lookup and reference uilities and config
 
-**** VTERM
+*** VTERM
 #+begin_src  emacs-lisp
   (use-package vterm)
   (use-package  multi-vterm
@@ -1427,9 +1427,9 @@ lookup and reference uilities and config
     ("M-g t" . multi-vterm-project))
 #+end_src
 
-*** Email
+** Email
 
-**** notmuch
+*** notmuch
 #+begin_src  emacs-lisp
   (use-package notmuch
     :init
@@ -1440,7 +1440,7 @@ lookup and reference uilities and config
     (notmuch-hello-mode . rgr/notmuch-new)
     )
 #+end_src
-**** mu4e                                                        :email:mu4e:
+*** mu4e                                                         :email:mu4e:
 :PROPERTIES:
 :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
 :END:
@@ -1596,16 +1596,16 @@ lookup and reference uilities and config
   ;;   ("V" . '(lambda()(message "%s" (mu4e-message-at-point))))))) ;; mu4e-action-view-in-browser))))
 #+end_src
 
-*** Programming Language related                                :programming:
+** Programming Language related                                 :programming:
 
-**** tag matching
+*** tag matching
 #+begin_src  emacs-lisp
   (use-package evil-matchit
     :bind
     ("M-(" . evilmi-jump-items-native))
 #+end_src
 
-**** consult xref stack
+*** consult xref stack
 #+begin_src  emacs-lisp
   (use-package consult-xref-stack :ensure (:host github :repo "brett-lempereur/consult-xref-stack")
   :bind
@@ -1613,7 +1613,7 @@ lookup and reference uilities and config
 #+end_src
 
 
-***** rmsbolt
+**** rmsbolt
 RMSbolt is a compiler output viewer in Emacs.
 https://github.com/emacsmirror/rmsbolt
 #+begin_src emacs-lisp
@@ -1634,7 +1634,7 @@ https://github.com/emacsmirror/rmsbolt
           ("C-c d" . rgr/rmsbolt)))
 #+end_src
 
-***** parrot
+**** parrot
 #+begin_src emacs-lisp
   (use-package parrot
     :config
@@ -1645,7 +1645,7 @@ https://github.com/emacsmirror/rmsbolt
 #+end_src
 
 
-**** eldoc
+*** eldoc
 
 #+begin_src  emacs-lisp
   (use-package eldoc
@@ -1666,7 +1666,7 @@ https://github.com/emacsmirror/rmsbolt
     :after eldoc)
 #+end_src
 
-**** compilation
+*** compilation
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-r") 'recompile)
   (global-set-key (kbd "<f9>")
@@ -1674,7 +1674,7 @@ https://github.com/emacsmirror/rmsbolt
         (condition-case nil (next-error)
            (error (next-error 1 t)))))
 #+end_src
-**** indent bars
+*** indent bars
 #+begin_src  emacs-lisp
   (use-package indent-bars
     :disabled
@@ -1683,13 +1683,13 @@ https://github.com/emacsmirror/rmsbolt
     :hook
     (prog-mode . indent-bars-mode))
 #+end_src
-**** JSON
+*** JSON
 #+begin_src  emacs-lisp
   (use-package json-mode)
   (use-package jsonrpc)
 #+end_src
 
-**** Treemacs
+*** Treemacs
 :PROPERTIES:
 :ID:       ecaca0b4-39b3-4978-90f3-d07713c58516
 :END:
@@ -1712,19 +1712,19 @@ https://github.com/emacsmirror/rmsbolt
     :after treemacs)
 
 #+end_src
-**** duplicate thing
+*** duplicate thing
 #+begin_src emacs-lisp
   (use-package duplicate-thing
     :bind
     ("C-S-d" . 'duplicate-thing))
 #+end_src
-**** Breadcrumbs
+*** Breadcrumbs
 #+begin_src  emacs-lisp
   (use-package breadcrumb
     :config
     (breadcrumb-mode))
 #+end_src
-**** prog-mode hack
+*** prog-mode hack
 :PROPERTIES:
 :ID:       2e3c4e82-1056-47ea-ba0a-e4492fe56709
 :END:
@@ -1732,7 +1732,7 @@ https://github.com/emacsmirror/rmsbolt
   (unless (fboundp 'prog-mode)
     (defalias 'prog-mode 'fundamental-mode))
 #+end_src
-****  Show Line numbers
+***  Show Line numbers
 :PROPERTIES:
 :ID:       1c88f735-c6b7-41d1-b7ea-b09b1e70b539
 :END:
@@ -1740,7 +1740,7 @@ https://github.com/emacsmirror/rmsbolt
   (global-set-key (kbd "S-<f2>") 'display-line-numbers-mode)
   (add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode t)))
 #+end_src
-**** code format
+*** code format
 #+begin_src emacs-lisp
   ;; auto-format different source code files extremely intelligently
   ;; https://github.com/radian-software/apheleia
@@ -1750,11 +1750,11 @@ https://github.com/emacsmirror/rmsbolt
     :config
     (apheleia-global-mode +1))
 #+end_src
-**** BASH                                                              :bash:
+*** BASH                                                               :bash:
 :PROPERTIES:
 :ID:       4dd2f546-25a2-498f-ad8c-25a29c09a303
 :END:
-***** Navigating Bash set -x output
+**** Navigating Bash set -x output
 :PROPERTIES:
 :ID:       043858ea-c607-49f5-bf6e-74622398d1e5
 :END:
@@ -1769,31 +1769,31 @@ https://github.com/emacsmirror/rmsbolt
                  '(pascal
                    "\\(.+?\\)\\(\\([0-9]+\\),\\([0-9]+\\)\\).*" 1 2 3)))
 #+end_src
-**** PHP
+*** PHP
 #+begin_src  emacs-lisp
   (use-package php-mode)
 #+end_src
-**** JSON, YAML Configuration files                                    :json:
+*** JSON, YAML Configuration files                                     :json:
 :PROPERTIES:
 :ID:       7004e983-2669-43a2-9a59-449b6cbfe7d2
 :END:
-***** YAML
+**** YAML
 :PROPERTIES:
 :ID:       26c28417-3965-452a-a180-61de98d44ef5
 :END:
 #+begin_src emacs-lisp
   (use-package yaml-mode)
 #+end_src
-***** json
+**** json
 #+begin_src emacs-lisp
   (use-package json-reformat)
   (use-package hydra)
 #+end_src
-**** Version Control
+*** Version Control
 :PROPERTIES:
 :ID:       c3959a2b-72b6-4dc0-ab9c-17e9a3b49fa1
 :END:
-***** It's [[Https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs
+**** It's [[Https://github.com/magit/magit][Magit]]! A Git porcelain inside Emacs
 #+begin_src emacs-lisp
   (use-package transient)
   (use-package
@@ -1807,7 +1807,7 @@ https://github.com/emacsmirror/rmsbolt
 
   (use-package magit-filenotify :after magit)
 #+end_src
-***** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests :forge:git:github:
+**** [[https://github.com/magit/forge][Forge]] ahead with Pull Requests :forge:git:github:
 always causes issues. disabled.
 :PROPERTIES:
 :ID:       ed290161-c9c1-455d-ac1a-927c906ab599
@@ -1819,7 +1819,7 @@ always causes issues. disabled.
     :after magit)
 #+end_src
 
-****** token                                                          :crypt:
+***** token                                                           :crypt:
 -----BEGIN PGP MESSAGE-----
 
 hQEMA7IjL5SkHG4iAQgAhMUIMTYGMMJOxJT9Cpd4yXSe7D3nYO1JLdyFFADgiHDq
@@ -1833,11 +1833,11 @@ Y0lSPvXH7dBCTWu2rSWhIvgCQfv6Nihs3Jc455oZgajN7G/rgZNb0ER8YTYncZjY
 gtVhIJfSArVFXuCGLnZMoMHSC4rV
 =MsQY
 -----END PGP MESSAGE-----
-***** Git Window Gutter Support
+**** Git Window Gutter Support
 :PROPERTIES:
 :ID:       0ea55ead-920a-45dd-add1-08ce1a24c512
 :END:
-****** diff-hl mode
+***** diff-hl mode
 #+begin_src emacs-lisp
   (use-package diff-hl
     :demand t
@@ -1846,15 +1846,15 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
     (magit-post-refresh . diff-hl-magit-post-refresh))
 #+end_src
 
-**** Dart/Flutter
+*** Dart/Flutter
 Running emulator from command line:
 
 #+begin_src bash
   emulator -avd Pixel_6_Pro_API_33
 #+end_src
 
-**** Tree Sitter
-***** treesit-auto
+*** Tree Sitter
+**** treesit-auto
 Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
 #+begin_src  emacs-lisp
   (use-package treesit-auto
@@ -1866,7 +1866,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
 #+end_src
 ****JavaScript Family
 
-**** Javascript                                                          :js:
+*** Javascript                                                           :js:
 :PROPERTIES:
 :ID:       27571c84-2c40-487d-abd0-3013c53b731b
 :END:
@@ -1888,7 +1888,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     (js-ts-mode . rgr/js-ts-mode-hook))
 #+end_src
 
-**** Typescript
+*** Typescript
 #+begin_src emacs-lisp
   (use-package typescript-ts-mode
     :ensure nil
@@ -1902,12 +1902,12 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
 #+end_src
 
 
-**** Language Server Protocol (LSP)                                     :lsp:
+*** Language Server Protocol (LSP)                                      :lsp:
 :PROPERTIES:
 :END:
 [[https://github.com/emacs-lsp][Emacs-lsp]] : Language Server Protocol client for Emacs
 
-****** eglot
+***** eglot
 Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
@@ -1935,7 +1935,7 @@ https://github.com/joaotavora/eglot
           ("<C-return>" . eglot-code-actions)))
 #+end_src
 
-******* eglot-booster
+****** eglot-booster
 
 #+begin_src  emacs-lisp
   (use-package eglot-booster :ensure (:host github :repo "jdtsmith/eglot-booster")
@@ -1944,7 +1944,7 @@ https://github.com/joaotavora/eglot
 
 #+end_src
 
-****** dape
+***** dape
 #+begin_src  emacs-lisp
   (use-package dape
     :demand t
@@ -1975,7 +1975,7 @@ https://github.com/joaotavora/eglot
 #+end_src
 
 
-**** Serial Port
+*** Serial Port
 :PROPERTIES:
 :END:
 #+begin_src emacs-lisp
@@ -2003,7 +2003,7 @@ https://github.com/joaotavora/eglot
                     (interactive)
                     (selectSerialPortBuffer)))
 #+end_src
-**** PlatformIO
+*** PlatformIO
 :PROPERTIES:
 :END:
 [[https://github.com/emacsmirror/platformio-mode][platformio-mode]] is an Emacs minor mode which allows quick building and uploading of PlatformIO projects with a few short key sequences.
@@ -2026,17 +2026,17 @@ The build and install process id documented [[https://docs.platformio.org/en/lat
     (add-hook 'compilation-finish-functions
               'rgr/platformio-compilation-mode-filter))
 #+end_src
-***** CANCELLED [#A] get compilation errors to work and submit ansi color fix? :CANCELLED:
+**** CANCELLED [#A] get compilation errors to work and submit ansi color fix? :CANCELLED:
 CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 :LOGBOOK:
 - State "CANCELLED"  from "TODO"       [2023-11-27 Mon 04:59]
 - State "TODO"       from              [2021-09-26 Sun 21:13]
 :END:
-**** Python                                                          :python:
+*** Python                                                           :python:
 :PROPERTIES:
 :ID:       2c18bd9b-6244-4c67-841e-c82a5270b1ba
 :END:
-***** ipython
+**** ipython
 :LOGBOOK:
 - State "SOMEDAY"    from              [2021-04-03 Sa 09:41]
 :END:
@@ -2044,14 +2044,14 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   (setq python-shell-interpreter "ipython")
   (setq python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
 #+end_src
-***** PET                                                    :virtualenv:pet:
+**** PET                                                     :virtualenv:pet:
 #+begin_src emacs-lisp
   (use-package pet
     :config
     (add-hook 'python-base-mode-hook 'pet-mode -10))
 #+end_src
-**** Haskell                                                         :python:
-***** haskell-mode
+*** Haskell                                                          :python:
+**** haskell-mode
 #+begin_src emacs-lisp
   ;; I'm typically confused when it comes to haskell. Note that the interactive stuff I cribbed doesnt work.
   (use-package haskell-mode
@@ -2063,8 +2063,8 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
       '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
     (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 #+end_src
-**** lldb debugging in emacs                         :lldb:llvm:voltron:tmux:
-***** voltron
+*** lldb debugging in emacs                          :lldb:llvm:voltron:tmux:
+**** voltron
 #+begin_src emacs-lisp
   (use-package lldb-voltron :disabled t
     :straight (lldb-voltron :local-repo "~/development/projects/emacs/emacs-lldb-voltron" :type git :host github :repo "rileyrg/emacs-lldb-voltron" )
@@ -2072,7 +2072,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     ;; (breadcrumb-mode t)
     )
 #+end_src
-**** rust
+*** rust
 #+begin_src emacs-lisp
 
   (use-package rust-mode
@@ -2104,11 +2104,11 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
           ("C-q" . rgr/browser-doc-search)))
 
 #+end_src
-**** C                                                                    :c:
+*** C                                                                     :c:
 :PROPERTIES:
 :ID:       6aa8065f-66b4-4c1f-8994-0a1723eb055d
 :END:
-***** c-mode-common-hook
+**** c-mode-common-hook
 
 #+begin_src emacs-lisp
   (use-package c-ts-mode
@@ -2122,10 +2122,10 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :hook
     ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 #+end_src
-**** Linux tools
+*** Linux tools
 :PROPERTIES:
 :END:
-***** [[https://github.com/doublep/logview][logview]] - view system logfiles
+**** [[https://github.com/doublep/logview][logview]] - view system logfiles
 :PROPERTIES:
 :ID:       bfd57f96-8cc4-41a1-81ab-e683345664e1
 :END:
@@ -2136,31 +2136,31 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     (add-to-list 'auto-mode-alist '("\\.log\\'" . logview-mode))
     (add-to-list 'auto-mode-alist '("log\\'" . logview-mode)))
 #+end_src
-**** Assembler
+*** Assembler
 :PROPERTIES:
 :ID:       2bc81dc1-4f5f-47b9-9446-464af96a2365
 :END:
-***** [[https://nullprogram.com/blog/2015/11/21/][x86Lookup]]
+**** [[https://nullprogram.com/blog/2015/11/21/][x86Lookup]]
 :PROPERTIES:
 :ID:       feb458b6-b2ab-4553-b2d9-95c121b29e7e
 :END:
 #+begin_src emacs-lisp
   (use-package strace-mode)
 #+end_src
-**** Web,Symfony and Twig
+*** Web,Symfony and Twig
 :PROPERTIES:
 :ID:       5c88e4a3-3af1-42e4-81ec-913b4fa88853
 :END:
-***** Tasks                                                        :tasklist:
+**** Tasks                                                         :tasklist:
 :PROPERTIES:
 :ID:       0d8f29bf-bbd2-4387-a8fa-e2907704dc82
 :END:
 
-***** Symfony
+**** Symfony
 :PROPERTIES:
 :ID:       02d41cb7-37c1-4e61-aec1-7014650f29bc
 :END:
-****** custom
+***** custom
 :PROPERTIES:
 :ID:       0af7ade2-dc61-4d8c-a98b-b39db18b8370
 :END:
@@ -2176,7 +2176,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :group 'rgr/symfony)
 #+end_src
 
-****** Start a symfony web server when applicable
+***** Start a symfony web server when applicable
 :PROPERTIES:
 :ID:       e985339e-df07-40f2-b0c6-0356749a21c4
 :END:
@@ -2208,7 +2208,7 @@ We can trigger it using a .dir-locals.el
 
 
 
-**** elf-mode - view the symbol list in a binary
+*** elf-mode - view the symbol list in a binary
 :PROPERTIES:
 :ID:       41cf30f2-5a70-4aab-aa93-2bd9a249b72f
 :END:
@@ -2222,12 +2222,12 @@ We can trigger it using a .dir-locals.el
 
 #+end_src
 
-*** Emacs Lisp, ELisp Utils                                     :elisp:utils:
+** Emacs Lisp, ELisp Utils                                      :elisp:utils:
 :PROPERTIES:
 :ID:       eb119ffb-f073-4fe0-a8f4-b031291d9e4d
 :END:
 Load this relatively early in order to have utils available if there's a faied load
-**** kill-dwim
+*** kill-dwim
 #+begin_src emacs-lisp
   (setq killdwim-dir (expand-file-name "kill-dwim" emacs-project-dir ))
   (use-package kill-dwim
@@ -2236,7 +2236,7 @@ Load this relatively early in order to have utils available if there's a faied l
     ("M-w" . kill-dwim))
 #+end_src
 
-**** Flymake
+*** Flymake
 #+begin_src  emacs-lisp
   (use-package flymake
     :custom
@@ -2246,7 +2246,7 @@ Load this relatively early in order to have utils available if there's a faied l
     ("M-n" . flymake-goto-next-error)
     ("M-p" . flymake-goto-prev-error))
 #+end_src
-***** shellcheck
+**** shellcheck
 #+begin_src emacs-lisp
   (use-package flymake-shellcheck
     :disabled t
@@ -2258,7 +2258,7 @@ Load this relatively early in order to have utils available if there's a faied l
     :hook (sh-mode . rgr/sh-mode-hook))
 #+end_src
 
-**** rgr/emacs-lisp-help
+*** rgr/emacs-lisp-help
 :PROPERTIES:
 :ID:       f2e666e0-e5ee-460d-95d2-c4eac568db1e
 :END:
@@ -2283,13 +2283,13 @@ Use helpful if installed else built in
                 (emacs-alert msg))
               (setq sym nil)))))))
 #+end_src
-***** external info files
+**** external info files
 #+begin_src emacs-lisp
   (require 'info)
   (add-to-list 'Info-directory-list (expand-file-name  "var/info" user-emacs-directory))
 #+end_src
 
-**** smartparens
+*** smartparens
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
@@ -2302,7 +2302,7 @@ Use helpful if installed else built in
     :hook
     ((emacs-lisp-mode . smartparens-mode)))
 #+end_src
-**** electric-pair-mode
+*** electric-pair-mode
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle no
 :END:
@@ -2313,7 +2313,7 @@ Use helpful if installed else built in
 #+begin_src emacs-lisp
   (add-hook 'emacs-lisp-mode  'electric-pair-mode)
 #+end_src
-**** elisp checks
+*** elisp checks
 :PROPERTIES:
 :ID:       ca5b425c-df7f-47e9-a095-a5c59159ceb4
 :END:
@@ -2322,7 +2322,7 @@ Use helpful if installed else built in
     "return non nil if this buffer edits elisp"
     (member major-mode '(emacs-lisp-mode lisp-interaction-mode)))
 #+end_src
-**** linting                                                           :lint:
+*** linting                                                            :lint:
 :PROPERTIES:
 :ID:       2f4d8bac-b94c-4bd8-bf58-b08cb86bc0a7
 :END:
@@ -2330,14 +2330,14 @@ Use helpful if installed else built in
 #+begin_src emacs-lisp
   (use-package package-lint)
 #+end_src
-**** helpful, enriched elisp help
+*** helpful, enriched elisp help
 :PROPERTIES:
 :ID:       e5517321-9188-4c5f-abfe-6511580c6193
 :END:
 #+begin_src emacs-lisp
   (use-package helpful)
 #+end_src
-**** elisp popup context help                                   :popup:elisp:
+*** elisp popup context help                                    :popup:elisp:
 :LOGBOOK:
 - State "STARTED"    from "CANCELLED"  [2021-04-20 Di 08:11]
 - State "CANCELLED"  from              [2021-04-20 Di 01:04] \\
@@ -2356,11 +2356,11 @@ Display a poup containing docstring at point
     ("M-<f1>" . el-docstring-sap-mode))
 
 #+end_src
-**** Elisp debugging
+*** Elisp debugging
 :PROPERTIES:
 :ID:       8cde63d8-6be5-4f70-84f5-a9d1d1c85386
 :END:
-***** edebug
+**** edebug
 #+begin_src emacs-lisp
   (use-package edebug-x
     :custom
@@ -2375,7 +2375,7 @@ Display a poup containing docstring at point
     ("C-S-<f9>" . toggle-debug-on-error)
     ("C-<f9>" . rgr/instrumentForDebugging))
 #+end_src
-***** display value at point in edebug
+**** display value at point in edebug
 #+begin_src  emacs-lisp
 
   ;; bit more convoluted than it needs to be
@@ -2406,7 +2406,7 @@ Display a poup containing docstring at point
 
 #+RESULTS:
 | myELisp | edebug-x-mode |
-**** Formatting
+*** Formatting
 :PROPERTIES:
 :ID:       d360a0c5-e21a-445b-a9ae-d97d33dce966
 :END:
@@ -2417,7 +2417,7 @@ Display a poup containing docstring at point
     (:map emacs-lisp-mode-map
           ("C-c f" . elisp-format-region)))
 #+end_src
-**** popup query symbol
+*** popup query symbol
 :PROPERTIES:
 :ID:       4745e152-bad7-4a31-8f9b-79cb62cdb430
 :END:
@@ -2434,8 +2434,8 @@ Display a poup containing docstring at point
     (:map emacs-lisp-mode-map (("M-6" . #'rgr/show-symbol-details))))
 #+end_src
 
-*** General configuration
-**** general ui
+** General configuration
+*** general ui
 #+begin_src  emacs-lisp
   (show-paren-mode 1)
   (winner-mode 1)
@@ -2523,7 +2523,7 @@ Display a poup containing docstring at point
     ( "S-<f10>" . menu-bar-open))
 
 #+end_src
-**** posframe                                                      :posframe:
+*** posframe                                                       :posframe:
 :PROPERTIES:
 :ID:       0f03bab9-b745-451a-a8ad-ab7703977c61
 :END:
@@ -2532,11 +2532,11 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
 #+begin_src emacs-lisp
   (use-package posframe)
 #+end_src
-**** ACE utilities
+*** ACE utilities
 :PROPERTIES:
 :ID:       024175d8-f05e-4c41-9c04-4a61d55a5d66
 :END:
-***** [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
+**** [[https://github.com/abo-abo/ace-window][Ace-Window]] provides better window switching.
 #+begin_src emacs-lisp
   (use-package ace-window
     :demand t
@@ -2547,7 +2547,7 @@ can pop up a frame at point, this posframe is a child-frame connected to its roo
     ("M-o" . ace-window)
     ("M-d" . ace-delete-window))
 #+end_src
-***** hopping around links
+**** hopping around links
 :PROPERTIES:
 :ID:       6a50d585-4163-4b7e-9dd8-b25fd0ee4e6b
 :END:
@@ -2558,7 +2558,7 @@ Quickly follow [[https://github.com/abo-abo/ace-link][links]] in Emacs.
     :config
     (ace-link-setup-default))
 #+end_src
-**** pulsar                                                          :pulsar:
+*** pulsar                                                           :pulsar:
 visual feedback as to cursor position
 https://protesilaos.com/emacs/pulsar
 #+begin_src emacs-lisp
@@ -2578,7 +2578,7 @@ https://protesilaos.com/emacs/pulsar
      pulsar-global-mode 1))
 
 #+end_src
-**** boxquote                                                      :boxquote:
+*** boxquote                                                       :boxquote:
 #+begin_src emacs-lisp
   (use-package boxquote
     ;;:straight (:branch "main")
@@ -2586,14 +2586,14 @@ https://protesilaos.com/emacs/pulsar
     ("C-S-r" . boxquote-region))
 
 #+end_src
-**** volatile-highlights                        :volatilehighlights:volatile:
+*** volatile-highlights                         :volatilehighlights:volatile:
 brings visual feedback to some operations by highlighting portions relating to the operations.
 #+begin_src emacs-lisp
   (use-package
     volatile-highlights
     :init (volatile-highlights-mode 1))
 #+end_src
-**** web pasting
+*** web pasting
 #+begin_src emacs-lisp
   (use-package
     dpaste
@@ -2601,8 +2601,8 @@ brings visual feedback to some operations by highlighting portions relating to t
     :bind ("C-c y" . dpaste-region-or-buffer))
 
 #+end_src
-**** Accessibility
-***** fonts
+*** Accessibility
+**** fonts
 :PROPERTIES:
 :END:
 JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fonts]]
@@ -2611,7 +2611,7 @@ JetBrains fonts are nice. See [[https://github.com/ryanoasis/nerd-fonts][nerd-fo
 #+begin_src emacs-lisp
   ;;(set-frame-font "-JB-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-*-0-fontset-auto1" nil t)
 #+end_src
-***** Darkroom
+**** Darkroom
 :PROPERTIES:
 :END:
 Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
@@ -2622,7 +2622,7 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
     ( "<C-f7>" . 'darkroom-mode))
 #+end_src
 
-**** Ansi colour
+*** Ansi colour
 :PROPERTIES:
 :END:
 [[https://www.emacswiki.org/emacs/AnsiColor][Ansi colour hooks]] to enable emacs buffers to handle ansi.
@@ -2631,7 +2631,7 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 #+end_src
-**** Tabs
+*** Tabs
 #+begin_src emacs-lisp
 
   (defun consult-buffer-other-tab ()
@@ -2657,7 +2657,7 @@ Zoom in and center using [[https://github.com/joaotavora/darkroom][darkroom]].
     :bind (:map tab-prefix-map
                  ("b" . consult-buffer-other-tab)))
 #+end_src
-***** multiple-cursors
+**** multiple-cursors
 https://github.com/magnars/multiple-cursors.el
 #+begin_src  emacs-lisp
   (use-package multiple-cursors
@@ -2669,7 +2669,7 @@ https://github.com/magnars/multiple-cursors.el
     ("C-c C-SPC" . mc/edit-lines)
     )
 #+end_src
-**** jinx : the enchanted spell checker
+*** jinx : the enchanted spell checker
 :PROPERTIES:
 :ID:       3e64582f-bf01-4ac1-8afb-7c4c51410be0
 :END:
@@ -2682,7 +2682,7 @@ https://github.com/magnars/multiple-cursors.el
       ("C-<f8>" . jinx-languages))
 
 #+end_src
-*** Late load-dir
+** Late load-dir
 :PROPERTIES:
   :ID:       574516c0-a821-47fb-b01f-97ec19789d65
 :END:

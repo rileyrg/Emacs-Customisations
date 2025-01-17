@@ -1,3 +1,4 @@
+;;***
 (emacs-alert "... is starting up...")
 
 (recentf-mode)
