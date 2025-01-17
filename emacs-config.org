@@ -298,10 +298,7 @@ https://github.com/protesilaos/modus-themes
 ** erc
 This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
 
-:Properties:
-:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-erc.el") 
-:END:
-#+begin_src  emacs-lisp
+#+begin_src  emacs-lisp :tangle (rgr/user-elisp-file "init-erc.el") 
 
   (require 'erc)
   (defun rgr/erc-switch-to-channel(&optional channel)

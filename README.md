@@ -268,8 +268,6 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 
 This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
 
-:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-erc.el") 
-
     
     (require 'erc)
     (defun rgr/erc-switch-to-channel(&optional channel)
@@ -931,7 +929,7 @@ General org-mode config
 
 2.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org27d8e8c)
+    See `org-agenda-files` [org-agenda-files](#org437c8c6)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2506,7 +2504,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org17a2f18) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf3bb9a5) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2539,7 +2537,7 @@ to add to version control.
     fi
 
 
-<a id="org17a2f18"></a>
+<a id="orgf3bb9a5"></a>
 
 ### Gnome protocol handler desktop file
 
