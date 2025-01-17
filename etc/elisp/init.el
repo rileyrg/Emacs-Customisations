@@ -64,6 +64,8 @@
 
 ;; put extra emacs-lisp files into etc/elisp
 (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
+(defun rgr/user-elisp-file(f)
+  (expand-file-name f rgr/elisp-dir))
 (add-to-list 'load-path rgr/elisp-dir)
 (let ((default-directory rgr/elisp-dir))
   (normal-top-level-add-subdirs-to-load-path))
@@ -130,9 +132,6 @@
 
 (defun rgr/erc-session()
   (string= "erc" (daemonp)))
-
-(defun rgr/user-elisp-file(f)
-  (expand-file-name f rgr/elisp-dir))
 
 ;; trying to set title
 (when (daemonp)

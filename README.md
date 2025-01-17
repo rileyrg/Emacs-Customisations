@@ -45,7 +45,7 @@ Emacs early-init
     (setq package-enable-at-startup nil)
 
 
-# config
+# emacs main init
 
 
 ## debug init
@@ -131,6 +131,8 @@ Emacs early-init
 
     ;; put extra emacs-lisp files into etc/elisp
     (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
+    (defun rgr/user-elisp-file(f)
+      (expand-file-name f rgr/elisp-dir))
     (add-to-list 'load-path rgr/elisp-dir)
     (let ((default-directory rgr/elisp-dir))
       (normal-top-level-add-subdirs-to-load-path))
@@ -243,9 +245,6 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     (defun rgr/erc-session()
       (string= "erc" (daemonp)))
     
-    (defun rgr/user-elisp-file(f)
-      (expand-file-name f rgr/elisp-dir))
-    
     ;; trying to set title
     (when (daemonp)
       (add-to-list
@@ -300,7 +299,7 @@ This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks
     (rgr/erc-start)
 
 
-## normal emacs
+## general init
 
     
     (emacs-alert "... is starting up...")
@@ -930,7 +929,7 @@ General org-mode config
 
 2.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org89d4c3e)
+    See `org-agenda-files` [org-agenda-files](#org49bc0b7)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2502,7 +2501,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4f73b41) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8af06b3) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2535,7 +2534,7 @@ to add to version control.
     fi
 
 
-<a id="org4f73b41"></a>
+<a id="org8af06b3"></a>
 
 ### Gnome protocol handler desktop file
 
