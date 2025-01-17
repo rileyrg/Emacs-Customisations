@@ -269,6 +269,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
 
     
+    ;; generally loaded from init-erc.el ins a kiosk like mode
     (require 'erc)
     (defun rgr/erc-switch-to-channel(&optional channel)
       (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
@@ -929,7 +930,7 @@ General org-mode config
 
 2.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org437c8c6)
+    See `org-agenda-files` [org-agenda-files](#org2b58656)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2411,11 +2412,9 @@ Load this relatively early in order to have utils available if there's a faied l
           ("C-<f8>" . jinx-languages))
 
 
-### Late load
+### Late load-dir
 
-  ,#+begin\_src emacs-lisp
     (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))
-\#+end\_src
 
 
 # Associated emacs things
@@ -2504,7 +2503,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf3bb9a5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6f96fcf) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2537,7 +2536,7 @@ to add to version control.
     fi
 
 
-<a id="orgf3bb9a5"></a>
+<a id="org6f96fcf"></a>
 
 ### Gnome protocol handler desktop file
 

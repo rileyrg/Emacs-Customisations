@@ -1,3 +1,4 @@
+;; generally loaded from init-erc.el ins a kiosk like mode
 (require 'erc)
 (defun rgr/erc-switch-to-channel(&optional channel)
   (when (string= (or channel "#emacs") (buffer-name (current-buffer)))

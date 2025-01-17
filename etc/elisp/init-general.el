@@ -1608,3 +1608,5 @@ The DWIM behaviour of this command is as follows:
   ("<f8>" . jinx-correct)
   ("S-<f8>" . jinx-correct-word)
   ("C-<f8>" . jinx-languages))
+
+(add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))

@@ -22,7 +22,7 @@
 #+PROPERTY: header-args    :results silent
 #+PROPERTY: header-args:bash :tangle-mode (identity #o555)
 #+PROPERTY: header-args:conf :tangle-mode (identity #o444)
-#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :tangle-mode (identity #o644)
+#+PROPERTY: header-args:emacs-lisp :tangle-mode (identity #o444)
 #+PROPERTY: header-args:gpg :cache no :tangle-mode (identity #o600)
 
 #+FILETAGS: :emacs:programming:
@@ -75,6 +75,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 * config
 :PROPERTIES:
 :CUSTOM_ID: b477a755
+:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init.el")
 :END:
 ** debug init
 #+begin_src  emacs-lisp
@@ -296,10 +297,14 @@ https://github.com/protesilaos/modus-themes
 #+end_src 
 
 ** erc
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-erc.el")
+:END:
 This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
 
-#+begin_src  emacs-lisp :tangle (rgr/user-elisp-file "init-erc.el") 
+#+begin_src  emacs-lisp 
 
+  ;; generally loaded from init-erc.el ins a kiosk like mode
   (require 'erc)
   (defun rgr/erc-switch-to-channel(&optional channel)
     (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
@@ -2674,13 +2679,14 @@ https://github.com/magnars/multiple-cursors.el
       ("C-<f8>" . jinx-languages))
 
 #+end_src
-*** Late load
-  :PROPERTIES:
+*** Late load-dir
+:PROPERTIES:
   :ID:       574516c0-a821-47fb-b01f-97ec19789d65
-  :END:
-  ,#+begin_src emacs-lisp
+:END:
+#+begin_src emacs-lisp
     (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))
 #+end_src
+
 * Associated emacs things
 :PROPERTIES:
 :ID:       c77645d3-d03f-47ab-a30f-fc649c70ef31
