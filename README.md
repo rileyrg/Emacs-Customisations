@@ -45,6 +45,14 @@ Emacs early-init
     (setq package-enable-at-startup nil)
 
 
+## elisp locations
+
+    (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
+    (defun rgr/user-elisp-file(f)
+      (expand-file-name f rgr/elisp-dir))
+    (add-to-list 'load-path rgr/elisp-dir)
+
+
 # emacs main init
 
 
@@ -130,10 +138,6 @@ Emacs early-init
 ## no-littering - keep data tidy
 
     ;; put extra emacs-lisp files into etc/elisp
-    (setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
-    (defun rgr/user-elisp-file(f)
-      (expand-file-name f rgr/elisp-dir))
-    (add-to-list 'load-path rgr/elisp-dir)
     (let ((default-directory rgr/elisp-dir))
       (normal-top-level-add-subdirs-to-load-path))
     
@@ -250,11 +254,12 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
       (add-to-list
        'elpaca-after-init-hook
          (lambda()
-           (message "setting frame title to %s" (format "Emacs-%s" (daemonp)))
-           (modify-frame-parameters
-                   nil
-                   (list (cons 'name (format "Emacs-%s" (daemonp))))))))
-    
+           (set-frame-name (format "Emacs-%s" (daemonp))))))
+           ;; (message "setting frame title to %s" (format "Emacs-%s" (daemonp)))
+           ;; (modify-frame-parameters
+           ;;         nil
+           ;;         (list (cons 'name (format "Emacs-%s" (daemonp))))))))
+    ;; 
     (defun rgr/init-file()
       (if (daemonp)
           (rgr/user-elisp-file (format "init-%s.el" (daemonp)))
@@ -929,7 +934,7 @@ General org-mode config
 
 2.  org agenda files
 
-    See `org-agenda-files` [org-agenda-files](#org49bc0b7)
+    See `org-agenda-files` [org-agenda-files](#org77e6ba1)
     maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
     
         ~/.emacs.d/var/org/orgfiles
@@ -2501,7 +2506,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org8af06b3) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3e50b17) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2534,7 +2539,7 @@ to add to version control.
     fi
 
 
-<a id="org8af06b3"></a>
+<a id="org3e50b17"></a>
 
 ### Gnome protocol handler desktop file
 

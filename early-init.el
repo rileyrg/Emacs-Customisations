@@ -5,3 +5,8 @@
 (setq max-specpdl-size 13000)
 
 (setq package-enable-at-startup nil)
+
+(setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
+(defun rgr/user-elisp-file(f)
+  (expand-file-name f rgr/elisp-dir))
+(add-to-list 'load-path rgr/elisp-dir)

@@ -63,10 +63,6 @@
 (load custom-file 'noerror)
 
 ;; put extra emacs-lisp files into etc/elisp
-(setq rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory))
-(defun rgr/user-elisp-file(f)
-  (expand-file-name f rgr/elisp-dir))
-(add-to-list 'load-path rgr/elisp-dir)
 (let ((default-directory rgr/elisp-dir))
   (normal-top-level-add-subdirs-to-load-path))
 
@@ -138,11 +134,12 @@
   (add-to-list
    'elpaca-after-init-hook
      (lambda()
-       (message "setting frame title to %s" (format "Emacs-%s" (daemonp)))
-       (modify-frame-parameters
-               nil
-               (list (cons 'name (format "Emacs-%s" (daemonp))))))))
-
+       (set-frame-name (format "Emacs-%s" (daemonp))))))
+       ;; (message "setting frame title to %s" (format "Emacs-%s" (daemonp)))
+       ;; (modify-frame-parameters
+       ;;         nil
+       ;;         (list (cons 'name (format "Emacs-%s" (daemonp))))))))
+;; 
 (defun rgr/init-file()
   (if (daemonp)
       (rgr/user-elisp-file (format "init-%s.el" (daemonp)))
