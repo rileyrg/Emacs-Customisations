@@ -249,23 +249,23 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     (defun rgr/erc-session()
       (string= "erc" (daemonp)))
     
-    ;; trying to set title
-    (when (daemonp)
-      (add-to-list
-       'elpaca-after-init-hook
-         (lambda()
-           (set-frame-name (format "Emacs-%s" (daemonp))))))
-           ;; (message "setting frame title to %s" (format "Emacs-%s" (daemonp)))
-           ;; (modify-frame-parameters
-           ;;         nil
-           ;;         (list (cons 'name (format "Emacs-%s" (daemonp))))))))
-    
     (defun rgr/init-file()
       (if (daemonp)
           (rgr/user-elisp-file (format "init-%s.el" (daemonp)))
         (rgr/user-elisp-file "init-general.el")))
     (message "*** Loading %s init file" (rgr/init-file))
     (load-file (rgr/init-file))
+    
+    (defun rgr/startup-hook ()
+      ;; trying to set title
+      (when (daemonp)
+        (set-frame-name (format "Emacs-%s" (daemonp))))
+      (when (not(rgr/erc-session))
+        (switch-to-buffer (recentf-open-most-recent-file 1))))
+    
+    (if (daemonp)
+        (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+      (add-hook 'emacs-startup-hook 'rgr/startup-hook))
 
 
 # erc init file
@@ -312,14 +312,6 @@ This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks
     (recentf-mode)
     (save-place-mode)
     (savehist-mode)
-    
-    (defun rgr/startup-hook ()
-      (when (not(rgr/erc-session))
-        (switch-to-buffer (recentf-open-most-recent-file 1))))
-    
-    (if (daemonp)
-        (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-      (add-hook 'emacs-startup-hook 'rgr/startup-hook))
     
     ;;quitting emacs
     (defun rgr/quit-or-close-emacs(&optional kill)
@@ -833,7 +825,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org6bf5c3d"></a>
+<a id="org22c6f66"></a>
 
 ### Org Mode, org-mode
 
@@ -950,7 +942,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org6bf5c3d)
+See `org-agenda-files` [org-agenda-files](#org22c6f66)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2592,7 +2584,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0fdfd49) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgddfc61b) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2625,7 +2617,7 @@ to add to version control.
     fi
 
 
-<a id="org0fdfd49"></a>
+<a id="orgddfc61b"></a>
 
 ### Gnome protocol handler desktop file
 

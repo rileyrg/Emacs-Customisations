@@ -5,14 +5,6 @@
 (save-place-mode)
 (savehist-mode)
 
-(defun rgr/startup-hook ()
-  (when (not(rgr/erc-session))
-    (switch-to-buffer (recentf-open-most-recent-file 1))))
-
-(if (daemonp)
-    (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-  (add-hook 'emacs-startup-hook 'rgr/startup-hook))
-
 ;;quitting emacs
 (defun rgr/quit-or-close-emacs(&optional kill)
   (interactive)

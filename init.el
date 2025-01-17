@@ -129,20 +129,20 @@
 (defun rgr/erc-session()
   (string= "erc" (daemonp)))
 
-;; trying to set title
-(when (daemonp)
-  (add-to-list
-   'elpaca-after-init-hook
-     (lambda()
-       (set-frame-name (format "Emacs-%s" (daemonp))))))
-       ;; (message "setting frame title to %s" (format "Emacs-%s" (daemonp)))
-       ;; (modify-frame-parameters
-       ;;         nil
-       ;;         (list (cons 'name (format "Emacs-%s" (daemonp))))))))
-
 (defun rgr/init-file()
   (if (daemonp)
       (rgr/user-elisp-file (format "init-%s.el" (daemonp)))
     (rgr/user-elisp-file "init-general.el")))
 (message "*** Loading %s init file" (rgr/init-file))
 (load-file (rgr/init-file))
+
+(defun rgr/startup-hook ()
+  ;; trying to set title
+  (when (daemonp)
+    (set-frame-name (format "Emacs-%s" (daemonp))))
+  (when (not(rgr/erc-session))
+    (switch-to-buffer (recentf-open-most-recent-file 1))))
+
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+  (add-hook 'emacs-startup-hook 'rgr/startup-hook))
