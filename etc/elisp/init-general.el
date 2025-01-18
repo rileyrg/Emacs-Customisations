@@ -1,11 +1,9 @@
-;;***
 (emacs-alert "... is starting up...")
 
 (recentf-mode)
 (save-place-mode)
 (savehist-mode)
 
-;;quitting emacs
 (defun rgr/quit-or-close-emacs(&optional kill)
   (interactive)
   (if (or current-prefix-arg kill)

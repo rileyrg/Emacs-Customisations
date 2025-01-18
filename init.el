@@ -131,8 +131,12 @@
 
 (defun rgr/init-file()
   (if (daemonp)
-      (rgr/user-elisp-file (format "init-%s.el" (daemonp)))
+      (let((i (rgr/user-elisp-file (format "init-%s.el" (daemonp)))))
+        (if (file-exists-p i)
+            i
+          (rgr/user-elisp-file "init-general.el")))
     (rgr/user-elisp-file "init-general.el")))
+
 (message "*** Loading %s init file" (rgr/init-file))
 (load-file (rgr/init-file))
 
@@ -140,8 +144,10 @@
   ;; trying to set title
   (when (daemonp)
     (set-frame-name (format "Emacs-%s" (daemonp))))
-  (when (not(rgr/erc-session))
-    (switch-to-buffer (recentf-open-most-recent-file 1))))
+  (if (string= "general" (daemonp))
+       (switch-to-buffer (recentf-open-most-recent-file 1))))
+
+;;quitting emacs)
 
 (if (daemonp)
     (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)

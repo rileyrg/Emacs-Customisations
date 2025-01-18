@@ -282,8 +282,12 @@ https://github.com/protesilaos/modus-themes
 
   (defun rgr/init-file()
     (if (daemonp)
-        (rgr/user-elisp-file (format "init-%s.el" (daemonp)))
+        (let((i (rgr/user-elisp-file (format "init-%s.el" (daemonp)))))
+          (if (file-exists-p i)
+              i
+            (rgr/user-elisp-file "init-general.el")))
       (rgr/user-elisp-file "init-general.el")))
+
   (message "*** Loading %s init file" (rgr/init-file))
   (load-file (rgr/init-file))
 
@@ -291,8 +295,10 @@ https://github.com/protesilaos/modus-themes
     ;; trying to set title
     (when (daemonp)
       (set-frame-name (format "Emacs-%s" (daemonp))))
-    (when (not(rgr/erc-session))
-      (switch-to-buffer (recentf-open-most-recent-file 1))))
+    (if (string= "general" (daemonp))
+         (switch-to-buffer (recentf-open-most-recent-file 1))))
+
+  ;;quitting emacs)
 
   (if (daemonp)
       (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
@@ -346,14 +352,12 @@ This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] an
 :END:
 
 #+begin_src emacs-lisp
-  ;;***
   (emacs-alert "... is starting up...")
 
   (recentf-mode)
   (save-place-mode)
   (savehist-mode)
-
-  ;;quitting emacs
+  
   (defun rgr/quit-or-close-emacs(&optional kill)
     (interactive)
     (if (or current-prefix-arg kill)
