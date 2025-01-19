@@ -277,8 +277,8 @@ https://github.com/protesilaos/modus-themes
   (tool-bar-mode -1)
   (menu-bar-mode -1)
 
-  (defun rgr/erc-session()
-    (string= "erc" (daemonp)))
+  (defun rgr/irc-session()
+    (string= "irc" (daemonp)))
 
   (defun rgr/startup-hook ()
     (when (daemonp)
@@ -303,12 +303,13 @@ https://github.com/protesilaos/modus-themes
   (load-file (rgr/init-file))
 #+end_src 
 
-* erc init file
+* IRC init file
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-erc.el")
+:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-irc.el")
 :END:
-This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
+This tangles to its own init file [[file:etc/elisp/init-irc.el][init-irc.el]] and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
 
+** erc
 #+begin_src  emacs-lisp 
   ;; generally loaded from init-erc.el ins a kiosk like mode
   (require 'erc)
@@ -369,10 +370,14 @@ This tangles to its own init file [[file:etc/elisp/init-erc.el][init-erc.el]] an
   (defun rgr/erc-quit()
     (interactive)
     (erc-quit-server "")
-    (when (rgr/erc-session)
+    (when (rgr/irc-session)
       (kill-emacs)))
 #+end_src
 
+** ement
+#+begin_src  emacs-lisp
+  (use-package ement)
+#+end_src 
 * general init
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-general.el")

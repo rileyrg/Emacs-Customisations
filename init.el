@@ -126,8 +126,8 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
-(defun rgr/erc-session()
-  (string= "erc" (daemonp)))
+(defun rgr/irc-session()
+  (string= "irc" (daemonp)))
 
 (defun rgr/startup-hook ()
   (when (daemonp)

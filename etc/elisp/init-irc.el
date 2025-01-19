@@ -57,5 +57,7 @@
 (defun rgr/erc-quit()
   (interactive)
   (erc-quit-server "")
-  (when (rgr/erc-session)
+  (when (rgr/irc-session)
     (kill-emacs)))
+
+(use-package ement)

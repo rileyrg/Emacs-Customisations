@@ -246,8 +246,8 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     (tool-bar-mode -1)
     (menu-bar-mode -1)
     
-    (defun rgr/erc-session()
-      (string= "erc" (daemonp)))
+    (defun rgr/irc-session()
+      (string= "irc" (daemonp)))
     
     (defun rgr/startup-hook ()
       (when (daemonp)
@@ -272,9 +272,12 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     (load-file (rgr/init-file))
 
 
-# erc init file
+# IRC init file
 
-This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
+This tangles to its own init file [init-irc.el](etc/elisp/init-irc.el) and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
+
+
+## erc
 
     ;; generally loaded from init-erc.el ins a kiosk like mode
     (require 'erc)
@@ -335,8 +338,13 @@ This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks
     (defun rgr/erc-quit()
       (interactive)
       (erc-quit-server "")
-      (when (rgr/erc-session)
+      (when (rgr/irc-session)
         (kill-emacs)))
+
+
+## ement
+
+    (use-package ement)
 
 
 # general init
@@ -867,7 +875,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org883c896"></a>
+<a id="org9e9b533"></a>
 
 ### Org Mode, org-mode
 
@@ -984,7 +992,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org883c896)
+See `org-agenda-files` [org-agenda-files](#org9e9b533)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2673,7 +2681,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgae9e876) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga822ecd) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2706,7 +2714,7 @@ to add to version control.
     fi
 
 
-<a id="orgae9e876"></a>
+<a id="orga822ecd"></a>
 
 ### Gnome protocol handler desktop file
 
