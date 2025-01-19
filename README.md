@@ -320,16 +320,16 @@ This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks
             (rgr/erc-switch-to-channel)
           (progn
             (emacs-alert "Connecting to IRC")
-            (erc :server "irc.libera.chat" :port 6667)
-            (sleep-for 2)
-            (rgr/erc-switch-to-channel)))))
+            (erc :server "irc.libera.chat" :port 6667)))))
     
     (defun rgr/erc-switch-to-channel(&optional channel)
       (let ((c (or channel "#emacs")))
         (if (get-buffer c)
             (switch-to-buffer c))))
     
-    (setq kill-emacs-hook nil))
+    (setq kill-emacs-hook nil)
+    
+    (add-hook 'server-after-make-frame-hook 'my/erc-start-or-switch)
     
     (defun rgr/erc-quit()
       (interactive)
@@ -866,7 +866,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org5433bff"></a>
+<a id="org1a27cff"></a>
 
 ### Org Mode, org-mode
 
@@ -983,7 +983,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org5433bff)
+See `org-agenda-files` [org-agenda-files](#org1a27cff)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2672,7 +2672,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org22d376b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org14251dc) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2705,7 +2705,7 @@ to add to version control.
     fi
 
 
-<a id="org22d376b"></a>
+<a id="org14251dc"></a>
 
 ### Gnome protocol handler desktop file
 

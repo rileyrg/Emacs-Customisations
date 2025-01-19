@@ -42,16 +42,16 @@
         (rgr/erc-switch-to-channel)
       (progn
         (emacs-alert "Connecting to IRC")
-        (erc :server "irc.libera.chat" :port 6667)
-        (sleep-for 2)
-        (rgr/erc-switch-to-channel)))))
+        (erc :server "irc.libera.chat" :port 6667)))))
 
 (defun rgr/erc-switch-to-channel(&optional channel)
   (let ((c (or channel "#emacs")))
     (if (get-buffer c)
         (switch-to-buffer c))))
 
-(setq kill-emacs-hook nil))
+(setq kill-emacs-hook nil)
+
+(add-hook 'server-after-make-frame-hook 'my/erc-start-or-switch)
 
 (defun rgr/erc-quit()
   (interactive)
