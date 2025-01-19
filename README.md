@@ -278,36 +278,66 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 
 This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks down emacs a little. This is so I can run an erc "session" without interfering with other emacsy things.
 
-    
     ;; generally loaded from init-erc.el ins a kiosk like mode
     (require 'erc)
-    (defun rgr/erc-switch-to-channel(&optional channel)
-      (when (string= (or channel "#emacs") (buffer-name (current-buffer)))
-        (switch-to-buffer (current-buffer))))
+    (setq erc-join-buffer 'buffer)
+    (defun my/erc-buffer-connected-p (buffer)
+      "Check if ERC BUFFER is connected."
+      (with-current-buffer buffer
+        (and (erc-server-process-alive)
+             erc-server-connected)))
     
-    (defun rgr/erc-start()
+    ;;https://emacs.stackexchange.com/questions/64361/how-to-check-if-erc-is-running
+    (defun my/erc-start-or-switch ()
+      "Connects to ERC, or switch to last active buffer.
+    
+      This function serves multiple purposes:
+    
+      1. Check Active Buffers: It iterates through a predefined list of ERC buffers
+         to determine if any of them are actively connected to an IRC server.
+    
+      2. Verify Connection Status: For each buffer, it checks whether the associated
+         ERC process is alive and whether there is an established network connection
+         to the server. This is done using the `erc-server-process-alive' function and
+         the `erc-server-connected' variable.
+    
+      3. Switch to Active Buffer: If any buffer is found to be actively connected,
+         the function switches to that buffer using `erc-track-switch-buffer'.
+    
+      4. Reconnect if Disconnected: If none of the checked buffers are connected,
+         the function prompts the user to reconnect to the IRC server. If the user
+         confirms, a new connection is initiated using the `erc' command with the
+         server and port specified (`irc.libera.chat` on port 6667)."
       (interactive)
-      (define-key erc-mode-map (kbd "C-c C-q") 'rgr/erc-quit )
-      (when (rgr/erc-session)
-        (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
-        (global-set-key (kbd "C-c x")  'rgr/erc-quit)
-        (setq kill-emacs-hook nil))
-      (if(get-buffer "Libera.Chat")
+      (global-set-key (kbd "C-c C-q") 'rgr/erc-quit )
+      (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
+      (global-set-key (kbd "C-c x")  'rgr/erc-quit)
+      (let ((erc-buffers '("Libera.Chat" "irc.libera.chat" "irc.libera.chat:6667"))
+            (connected nil))
+        (dolist (buffer erc-buffers)
+          (when (and (get-buffer buffer)
+                     (my/erc-buffer-connected-p buffer))
+            (setq connected t)))
+        (if connected
+            (rgr/erc-switch-to-channel)
           (progn
-            (emacs-alert "Switching to IRC...")
-            (rgr/erc-switch-to-channel))
-        (progn
-          (emacs-alert "IRC Starting...")
-          (erc-tls :server "irc.libera.chat" :port 6697)
-          (add-hook 'erc-join-hook 'rgr/erc-switch-to-channel))))
+            (emacs-alert "Connecting to IRC")
+            (erc :server "irc.libera.chat" :port 6667)
+            (sleep-for 2)
+            (rgr/erc-switch-to-channel)))))
+    
+    (defun rgr/erc-switch-to-channel(&optional channel)
+      (let ((c (or channel "#emacs")))
+        (if (get-buffer c)
+            (switch-to-buffer c))))
+    
+    (setq kill-emacs-hook nil))
     
     (defun rgr/erc-quit()
       (interactive)
       (erc-quit-server "")
       (when (rgr/erc-session)
         (kill-emacs)))
-    
-    (rgr/erc-start)
 
 
 # general init
@@ -838,7 +868,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org4a12980"></a>
+<a id="orgfd01a7a"></a>
 
 ### Org Mode, org-mode
 
@@ -955,7 +985,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4a12980)
+See `org-agenda-files` [org-agenda-files](#orgfd01a7a)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2644,7 +2674,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9b3e768) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org51963a6) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2677,7 +2707,7 @@ to add to version control.
     fi
 
 
-<a id="org9b3e768"></a>
+<a id="org51963a6"></a>
 
 ### Gnome protocol handler desktop file
 

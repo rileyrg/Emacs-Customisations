@@ -90,12 +90,11 @@
  '(enable-recursive-minibuffers t)
  '(epa-file-cache-passphrase-for-symmetric-encryption nil)
  '(erc-autojoin-channels-alist
-   '((Libera.Chat "##rust" "#rust" "#linux" "#emacs" "#sway" "#debian")))
+   '((Libera.Chat "##rust" "#rust" "#linux" "#sway" "#debian" "#emacs" )))
  '(erc-autojoin-delay 1)
  '(erc-autojoin-domain-only nil)
  '(erc-autojoin-mode t)
  '(erc-autojoin-timing 'ident)
- '(erc-buffer-display 'bury)
  '(erc-fill-column 128)
  '(erc-fill-function 'erc-fill-static)
  '(erc-fill-mode t)
