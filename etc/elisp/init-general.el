@@ -210,6 +210,11 @@
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
 
+(use-package consult-omni
+  :disabled t ;; https://github.com/armindarvish/consult-omni/issues/47
+      :ensure  (:host github :repo "armindarvish/consult-omni" :files (:defaults "sources/*.el"))
+      :after consult)
+
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
