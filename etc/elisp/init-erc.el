@@ -1,6 +1,6 @@
 ;; generally loaded from init-erc.el ins a kiosk like mode
 (require 'erc)
-(setq erc-join-buffer 'buffer)
+
 (defun my/erc-buffer-connected-p (buffer)
   "Check if ERC BUFFER is connected."
   (with-current-buffer buffer
@@ -29,9 +29,6 @@
      confirms, a new connection is initiated using the `erc' command with the
      server and port specified (`irc.libera.chat` on port 6667)."
   (interactive)
-  (global-set-key (kbd "C-c C-q") 'rgr/erc-quit )
-  (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
-  (global-set-key (kbd "C-c x")  'rgr/erc-quit)
   (let ((erc-buffers '("Libera.Chat" "irc.libera.chat" "irc.libera.chat:6667"))
         (connected nil))
     (dolist (buffer erc-buffers)
@@ -42,7 +39,11 @@
         (rgr/erc-switch-to-channel)
       (progn
         (emacs-alert "Connecting to IRC")
-        (erc :server "irc.libera.chat" :port 6667)))))
+        (erc :server "irc.libera.chat" :port 6667)
+        (global-set-key (kbd "C-c C-q") 'rgr/erc-quit )
+        (define-key erc-mode-map  (kbd "C-c C-q") 'rgr/erc-quit )
+        (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
+        (global-set-key (kbd "C-c x")  'rgr/erc-quit)))))
 
 (defun rgr/erc-switch-to-channel(&optional channel)
   (let ((c (or channel "#emacs")))

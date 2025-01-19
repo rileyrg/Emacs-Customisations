@@ -278,7 +278,7 @@ This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks
 
     ;; generally loaded from init-erc.el ins a kiosk like mode
     (require 'erc)
-    (setq erc-join-buffer 'buffer)
+    
     (defun my/erc-buffer-connected-p (buffer)
       "Check if ERC BUFFER is connected."
       (with-current-buffer buffer
@@ -307,9 +307,6 @@ This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks
          confirms, a new connection is initiated using the `erc' command with the
          server and port specified (`irc.libera.chat` on port 6667)."
       (interactive)
-      (global-set-key (kbd "C-c C-q") 'rgr/erc-quit )
-      (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
-      (global-set-key (kbd "C-c x")  'rgr/erc-quit)
       (let ((erc-buffers '("Libera.Chat" "irc.libera.chat" "irc.libera.chat:6667"))
             (connected nil))
         (dolist (buffer erc-buffers)
@@ -320,7 +317,11 @@ This tangles to its own init file [init-erc.el](etc/elisp/init-erc.el) and locks
             (rgr/erc-switch-to-channel)
           (progn
             (emacs-alert "Connecting to IRC")
-            (erc :server "irc.libera.chat" :port 6667)))))
+            (erc :server "irc.libera.chat" :port 6667)
+            (global-set-key (kbd "C-c C-q") 'rgr/erc-quit )
+            (define-key erc-mode-map  (kbd "C-c C-q") 'rgr/erc-quit )
+            (global-set-key (kbd "C-x b") 'erc-switch-to-buffer)
+            (global-set-key (kbd "C-c x")  'rgr/erc-quit)))))
     
     (defun rgr/erc-switch-to-channel(&optional channel)
       (let ((c (or channel "#emacs")))
@@ -866,7 +867,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org1a27cff"></a>
+<a id="org883c896"></a>
 
 ### Org Mode, org-mode
 
@@ -983,7 +984,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org1a27cff)
+See `org-agenda-files` [org-agenda-files](#org883c896)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2672,7 +2673,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org14251dc) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgae9e876) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2705,7 +2706,7 @@ to add to version control.
     fi
 
 
-<a id="org14251dc"></a>
+<a id="orgae9e876"></a>
 
 ### Gnome protocol handler desktop file
 
