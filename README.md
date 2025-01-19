@@ -249,6 +249,18 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
     (defun rgr/erc-session()
       (string= "erc" (daemonp)))
     
+    (defun rgr/startup-hook ()
+      (when (daemonp)
+        (set-frame-name (format "Emacs-%s" (daemonp))))
+      (if (string= "general" (daemonp))
+          (switch-to-buffer (recentf-open-most-recent-file 1))))
+    
+    ;;quitting emacs)
+    
+    (if (daemonp)
+        (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+      (add-hook 'emacs-startup-hook 'rgr/startup-hook))
+    
     (defun rgr/init-file()
       (if (daemonp)
           (let((i (rgr/user-elisp-file (format "init-%s.el" (daemonp)))))
@@ -257,21 +269,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
               (rgr/user-elisp-file "init-general.el")))
         (rgr/user-elisp-file "init-general.el")))
     
-    (message "*** Loading %s init file" (rgr/init-file))
     (load-file (rgr/init-file))
-    
-    (defun rgr/startup-hook ()
-      ;; trying to set title
-      (when (daemonp)
-        (set-frame-name (format "Emacs-%s" (daemonp))))
-      (if (string= "general" (daemonp))
-           (switch-to-buffer (recentf-open-most-recent-file 1))))
-    
-    ;;quitting emacs)
-    
-    (if (daemonp)
-        (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-      (add-hook 'emacs-startup-hook 'rgr/startup-hook))
 
 
 # erc init file
@@ -868,7 +866,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="orgfd01a7a"></a>
+<a id="org5433bff"></a>
 
 ### Org Mode, org-mode
 
@@ -985,7 +983,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgfd01a7a)
+See `org-agenda-files` [org-agenda-files](#org5433bff)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2674,7 +2672,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org51963a6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org22d376b) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2707,7 +2705,7 @@ to add to version control.
     fi
 
 
-<a id="org51963a6"></a>
+<a id="org22d376b"></a>
 
 ### Gnome protocol handler desktop file
 

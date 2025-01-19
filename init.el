@@ -129,6 +129,18 @@
 (defun rgr/erc-session()
   (string= "erc" (daemonp)))
 
+(defun rgr/startup-hook ()
+  (when (daemonp)
+    (set-frame-name (format "Emacs-%s" (daemonp))))
+  (if (string= "general" (daemonp))
+      (switch-to-buffer (recentf-open-most-recent-file 1))))
+
+;;quitting emacs)
+
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
+  (add-hook 'emacs-startup-hook 'rgr/startup-hook))
+
 (defun rgr/init-file()
   (if (daemonp)
       (let((i (rgr/user-elisp-file (format "init-%s.el" (daemonp)))))
@@ -137,18 +149,4 @@
           (rgr/user-elisp-file "init-general.el")))
     (rgr/user-elisp-file "init-general.el")))
 
-(message "*** Loading %s init file" (rgr/init-file))
 (load-file (rgr/init-file))
-
-(defun rgr/startup-hook ()
-  ;; trying to set title
-  (when (daemonp)
-    (set-frame-name (format "Emacs-%s" (daemonp))))
-  (if (string= "general" (daemonp))
-       (switch-to-buffer (recentf-open-most-recent-file 1))))
-
-;;quitting emacs)
-
-(if (daemonp)
-    (add-hook 'server-after-make-frame-hook #'rgr/startup-hook)
-  (add-hook 'emacs-startup-hook 'rgr/startup-hook))
