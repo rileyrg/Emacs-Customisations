@@ -448,117 +448,126 @@ Various plugins for minibuffer enrichment
 
 ### Consult
 
-Consult]] Provides various commands based on the Emacs completion function completing-read
+1.  Consult Core
 
-:ID:       ec5375c7-4387-42a1-8938-5fad532be79b
+    Consult]] Provides various commands based on the Emacs completion function completing-read
+    
+    :ID:       ec5375c7-4387-42a1-8938-5fad532be79b
+    
+        ;; Example configuration for Consult
+        ;; Example configuration for Consult
+        (use-package consult
+          ;; Replace bindings. Lazily loaded by `use-package'.
+          :bind (;; C-c bindings in `mode-specific-map'
+                 ("C-c M-x" . consult-mode-command)
+                 ("C-c h" . consult-history)
+                 ("C-c k" . consult-kmacro)
+                 ("C-c m" . consult-man)
+                 ("C-c i" . consult-info)
+                 ([remap Info-search] . consult-info)
+                 ;; C-x bindings in `ctl-x-map'
+                 ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+                 ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+                 ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+                 ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+                 ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+                 ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+                 ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+                 ;; Custom M-# bindings for fast register access
+                 ("M-#" . consult-register-load)
+                 ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+                 ("C-M-#" . consult-register)
+                 ;; Other custom bindings
+                 ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+                 ;; M-g bindings in `goto-map'
+                 ("M-g e" . consult-compile-error)
+                 ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
+                 ("M-g g" . consult-goto-line)             ;; orig. goto-line
+                 ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+                 ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+                 ("M-g m" . consult-mark)
+                 ("M-g k" . consult-global-mark)
+                 ("M-g i" . consult-imenu)
+                 ("M-g I" . consult-imenu-multi)
+                 ;; M-s bindings in `search-map'
+                 ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+                 ("M-s c" . consult-locate)
+                 ("M-s g" . consult-grep)
+                 ("M-s G" . consult-git-grep)
+                 ("M-s r" . consult-ripgrep)
+                 ("M-s l" . consult-line)
+                 ("M-s L" . consult-line-multi)
+                 ("M-s k" . consult-keep-lines)
+                 ("M-s u" . consult-focus-lines)
+                 ;; Isearch integration
+                 ("M-s e" . consult-isearch-history)
+                 :map isearch-mode-map
+                 ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+                 ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+                 ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+                 ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+                 ;; Minibuffer history
+                 :map minibuffer-local-map
+                 ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+                 ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+        
+          ;; Enable automatic preview at point in the *Completions* buffer. This is
+          ;; relevant when you use the default completion UI.
+          :hook (completion-list-mode . consult-preview-at-point-mode)
+        
+          ;; The :init configuration is always executed (Not lazy)
+          :init
+        
+          ;; Optionally configure the register formatting. This improves the register
+          ;; preview for `consult-register', `consult-register-load',
+          ;; `consult-register-store' and the Emacs built-ins.
+          (setq register-preview-delay 0.5
+                register-preview-function #'consult-register-format)
+        
+          ;; Optionally tweak the register preview window.
+          ;; This adds thin lines, sorting and hides the mode line of the window.
+          (advice-add #'register-preview :override #'consult-register-window)
+        
+          ;; Use Consult to select xref locations with preview
+          (setq xref-show-xrefs-function #'consult-xref
+                xref-show-definitions-function #'consult-xref)
+        
+        
+          ;; Configure other variables and modes in the :config section,
+          ;; after lazily loading the package.
+          :config
+        
+          ;; Optionally configure preview. The default value
+          ;; is 'any, such that any key triggers the preview.
+          ;; (setq consult-preview-key 'any)
+          ;; (setq consult-preview-key "M-.")
+          ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
+          ;; For some commands and buffer sources it is useful to configure the
+          ;; :preview-key on a per-command basis using the `consult-customize' macro.
+          (consult-customize
+           consult-theme :preview-key '(:debounce 0.2 any)
+           consult-ripgrep consult-git-grep consult-grep
+           consult-bookmark consult-recent-file consult-xref
+           consult--source-bookmark consult--source-file-register
+           consult--source-recent-file consult--source-project-recent-file
+           ;; :preview-key "M-."
+           :preview-key '(:debounce 0.4 any))
+        
+          ;; Optionally configure the narrowing key.
+          ;; Both < and C-+ work reasonably well.
+          (setq consult-narrow-key "<") ;; "C-+"
+        
+          ;; Optionally make narrowing help available in the minibuffer.
+          ;; You may want to use `embark-prefix-help-command' or which-key instead.
+          ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
+          )
 
-    ;; Example configuration for Consult
-    ;; Example configuration for Consult
-    (use-package consult
-      ;; Replace bindings. Lazily loaded by `use-package'.
-      :bind (;; C-c bindings in `mode-specific-map'
-             ("C-c M-x" . consult-mode-command)
-             ("C-c h" . consult-history)
-             ("C-c k" . consult-kmacro)
-             ("C-c m" . consult-man)
-             ("C-c i" . consult-info)
-             ([remap Info-search] . consult-info)
-             ;; C-x bindings in `ctl-x-map'
-             ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-             ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-             ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-             ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-             ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
-             ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-             ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
-             ;; Custom M-# bindings for fast register access
-             ("M-#" . consult-register-load)
-             ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-             ("C-M-#" . consult-register)
-             ;; Other custom bindings
-             ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-             ;; M-g bindings in `goto-map'
-             ("M-g e" . consult-compile-error)
-             ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
-             ("M-g g" . consult-goto-line)             ;; orig. goto-line
-             ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-             ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-             ("M-g m" . consult-mark)
-             ("M-g k" . consult-global-mark)
-             ("M-g i" . consult-imenu)
-             ("M-g I" . consult-imenu-multi)
-             ;; M-s bindings in `search-map'
-             ("M-s d" . consult-find)                  ;; Alternative: consult-fd
-             ("M-s c" . consult-locate)
-             ("M-s g" . consult-grep)
-             ("M-s G" . consult-git-grep)
-             ("M-s r" . consult-ripgrep)
-             ("M-s l" . consult-line)
-             ("M-s L" . consult-line-multi)
-             ("M-s k" . consult-keep-lines)
-             ("M-s u" . consult-focus-lines)
-             ;; Isearch integration
-             ("M-s e" . consult-isearch-history)
-             :map isearch-mode-map
-             ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-             ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-             ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-             ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
-             ;; Minibuffer history
-             :map minibuffer-local-map
-             ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-             ("M-r" . consult-history))                ;; orig. previous-matching-history-element
-    
-      ;; Enable automatic preview at point in the *Completions* buffer. This is
-      ;; relevant when you use the default completion UI.
-      :hook (completion-list-mode . consult-preview-at-point-mode)
-    
-      ;; The :init configuration is always executed (Not lazy)
-      :init
-    
-      ;; Optionally configure the register formatting. This improves the register
-      ;; preview for `consult-register', `consult-register-load',
-      ;; `consult-register-store' and the Emacs built-ins.
-      (setq register-preview-delay 0.5
-            register-preview-function #'consult-register-format)
-    
-      ;; Optionally tweak the register preview window.
-      ;; This adds thin lines, sorting and hides the mode line of the window.
-      (advice-add #'register-preview :override #'consult-register-window)
-    
-      ;; Use Consult to select xref locations with preview
-      (setq xref-show-xrefs-function #'consult-xref
-            xref-show-definitions-function #'consult-xref)
-    
-    
-      ;; Configure other variables and modes in the :config section,
-      ;; after lazily loading the package.
-      :config
-    
-      ;; Optionally configure preview. The default value
-      ;; is 'any, such that any key triggers the preview.
-      ;; (setq consult-preview-key 'any)
-      ;; (setq consult-preview-key "M-.")
-      ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
-      ;; For some commands and buffer sources it is useful to configure the
-      ;; :preview-key on a per-command basis using the `consult-customize' macro.
-      (consult-customize
-       consult-theme :preview-key '(:debounce 0.2 any)
-       consult-ripgrep consult-git-grep consult-grep
-       consult-bookmark consult-recent-file consult-xref
-       consult--source-bookmark consult--source-file-register
-       consult--source-recent-file consult--source-project-recent-file
-       ;; :preview-key "M-."
-       :preview-key '(:debounce 0.4 any))
-    
-      ;; Optionally configure the narrowing key.
-      ;; Both < and C-+ work reasonably well.
-      (setq consult-narrow-key "<") ;; "C-+"
-    
-      ;; Optionally make narrowing help available in the minibuffer.
-      ;; You may want to use `embark-prefix-help-command' or which-key instead.
-      ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
-      )
+2.  consult-omni
+
+        (use-package consult-omni
+          :disabled t ;; https://github.com/armindarvish/consult-omni/issues/47
+              :ensure  (:host github :repo "armindarvish/consult-omni" :files (:defaults "sources/*.el"))
+              :after consult)
 
 
 ### [Marginalia](https://en.wikipedia.org/wiki/Marginalia) margin annotations for info on line
@@ -829,7 +838,7 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 General org-mode config
 
 
-<a id="org81ca53b"></a>
+<a id="org4a12980"></a>
 
 ### Org Mode, org-mode
 
@@ -946,7 +955,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org81ca53b)
+See `org-agenda-files` [org-agenda-files](#org4a12980)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2475,18 +2484,65 @@ brings visual feedback to some operations by highlighting portions relating to t
       :bind (:map tab-prefix-map
                    ("b" . consult-buffer-other-tab)))
 
-1.  multiple-cursors
 
-    <https://github.com/magnars/multiple-cursors.el>
+### buffer utlities
+
+    (defun get-buffers-with-minor-mode (minor-mode)
+      "Get a list of buffers in which minor-mode is active"
+      (interactive)
+      (let ((minor-mode-buffers))
+        (dolist (buf (buffer-list) minor-mode-buffers)
+          (with-current-buffer buf
+            (when (memq minor-mode (manage-minor-mode--active-list))
+              (push buf minor-mode-buffers))))))
     
-        (use-package multiple-cursors
-          :bind
-          ("C-<mouse-1>" . mc/add-cursor-on-click)
-          ("C-S-n" . mc/mark-next-like-this)
-          ("C-S-p" . mc/mark-previous-like-this)
-          ("C-c C->" . mc/mark-all-like-this)
-          ("C-c C-SPC" . mc/edit-lines)
-          )
+    
+    (defun get-buffers-with-major-mode (m-mode)
+      "Get a list of buffers in which minor-mode is active"
+      (interactive)
+      (let ((major-mode-buffers)) 
+        (dolist (buf (buffer-list) major-mode-buffers)
+          (with-current-buffer buf
+            (when (string= major-mode m-mode)
+              (push buf major-mode-buffers))))))   ;; (nth 0 (get-buffers-with-major-mode "dired-mod"))
+    
+    ;; Taken from https://github.com/ShingoFukuyama/manage-minor-mode
+    (defun manage-minor-mode--active-list ()
+      "Get a list of which minor modes are enabled in the current buffer."
+      (let ($list)
+        (mapc (lambda ($mode)
+                (condition-case nil
+                    (if (and (symbolp $mode) (symbol-value $mode))
+                        (setq $list (cons $mode $list)))
+                  (error nil)))
+              minor-mode-list)
+        (sort $list 'string<)))
+
+
+### switch to dired buffer else open it
+
+    (defvar rgr/last-dired nil "last dired buffer opened")
+    (add-hook 'dired-after-readin-hook (lambda()(setq rgr/last-dired (buffer-name))))
+    (defun switch-to-dired(&optional d)
+      (if (and rgr/last-dired (get-buffer rgr/last-dired))
+          (switch-to-buffer rgr/last-dired)
+        (let ((db (nth 0 (last (get-buffers-with-major-mode "dired-mode")))))
+          (if db (switch-to-buffer db)
+            (dired (if d d "~"))))))
+
+
+### multiple-cursors
+
+<https://github.com/magnars/multiple-cursors.el>
+
+    (use-package multiple-cursors
+      :bind
+      ("C-<mouse-1>" . mc/add-cursor-on-click)
+      ("C-S-n" . mc/mark-next-like-this)
+      ("C-S-p" . mc/mark-previous-like-this)
+      ("C-c C->" . mc/mark-all-like-this)
+      ("C-c C-SPC" . mc/edit-lines)
+      )
 
 
 ### jinx : the enchanted spell checker
@@ -2588,7 +2644,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge30033c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9b3e768) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2621,7 +2677,7 @@ to add to version control.
     fi
 
 
-<a id="orge30033c"></a>
+<a id="org9b3e768"></a>
 
 ### Gnome protocol handler desktop file
 

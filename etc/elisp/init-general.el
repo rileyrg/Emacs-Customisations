@@ -1590,6 +1590,46 @@ The DWIM behaviour of this command is as follows:
   :bind (:map tab-prefix-map
                ("b" . consult-buffer-other-tab)))
 
+(defun get-buffers-with-minor-mode (minor-mode)
+  "Get a list of buffers in which minor-mode is active"
+  (interactive)
+  (let ((minor-mode-buffers))
+    (dolist (buf (buffer-list) minor-mode-buffers)
+      (with-current-buffer buf
+        (when (memq minor-mode (manage-minor-mode--active-list))
+          (push buf minor-mode-buffers))))))
+
+
+(defun get-buffers-with-major-mode (m-mode)
+  "Get a list of buffers in which minor-mode is active"
+  (interactive)
+  (let ((major-mode-buffers)) 
+    (dolist (buf (buffer-list) major-mode-buffers)
+      (with-current-buffer buf
+        (when (string= major-mode m-mode)
+          (push buf major-mode-buffers))))))   ;; (nth 0 (get-buffers-with-major-mode "dired-mod"))
+
+;; Taken from https://github.com/ShingoFukuyama/manage-minor-mode
+(defun manage-minor-mode--active-list ()
+  "Get a list of which minor modes are enabled in the current buffer."
+  (let ($list)
+    (mapc (lambda ($mode)
+            (condition-case nil
+                (if (and (symbolp $mode) (symbol-value $mode))
+                    (setq $list (cons $mode $list)))
+              (error nil)))
+          minor-mode-list)
+    (sort $list 'string<)))
+
+(defvar rgr/last-dired nil "last dired buffer opened")
+(add-hook 'dired-after-readin-hook (lambda()(setq rgr/last-dired (buffer-name))))
+(defun switch-to-dired(&optional d)
+  (if (and rgr/last-dired (get-buffer rgr/last-dired))
+      (switch-to-buffer rgr/last-dired)
+    (let ((db (nth 0 (last (get-buffers-with-major-mode "dired-mode")))))
+      (if db (switch-to-buffer db)
+        (dired (if d d "~"))))))
+
 (use-package multiple-cursors
   :bind
   ("C-<mouse-1>" . mc/add-cursor-on-click)
