@@ -1,0 +1,16 @@
+#+TITLE: %CHANGEME%
+#+AUTHOR: rileyrg
+#+EMAIL: rileyrg at g m x dot de
+
+#+LANGUAGE: en
+#+STARTUP: showall
+
+#+EXPORT_FILE_NAME: README.md
+#+OPTIONS: toc:8 num:nil
+
+#+category: %CHANGEME%
+#+FILETAGS: :%CHANGEME%:
+
+#+PROPERTY: header-args:bash :tangle-mode (identity #o755)
+
+### NOTE THIS IS ADDED AS AN ORG MODE ABBREV "tem"
