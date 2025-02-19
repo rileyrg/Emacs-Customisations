@@ -1,0 +1,12 @@
+#!/bin/bash
+if ! pidof "emacs"; then
+    emacsclient -n -c -a "" "$@"
+else
+    emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
+    if [ "$?" = 1 ]; then
+        emacsclient -n -c -a "" "$@"
+    else
+        emacsclient -n -a "" "$@"
+        pop-window "Emacs"
+    fi
+fi

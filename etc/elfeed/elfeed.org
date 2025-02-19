@@ -1,0 +1,16 @@
+* elfeed rss                                                         :elfeed:
+** Literature                                                    :literature:
+*** https://feeds.megaphone.fm/somethingrhymeswithpurple             :purple:
+** German                                                            :german:
+*** http://angelikasgerman.co.uk/blog/feed
+** Guitar                                                            :guitar:
+*** https://www.theguitarlesson.com/guitar-lesson-blog/feed
+** Software Development                                                 :dev:
+*** Emacs                                                       :emacs:elisp:
+**** https://stackoverflow.com/feeds/tag?tagnames=emacs+elisp&sort=newest
+*** JS Dev                                                       :javascript:react:reactjs:react-native:node.js:
+**** https://stackoverflow.com/feeds/tag?tagnames=node.js+javascript+react-native+reactjs&sort=newest
+*** Git                                                                 :git:
+**** https://stackoverflow.com/feeds/tag?tagnames=git&sort=newest
+*** Bash                                                               :bash:
+**** https://stackoverflow.com/feeds/tag?tagnames=bash&sort=newest

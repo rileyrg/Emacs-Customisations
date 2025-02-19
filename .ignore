@@ -1,0 +1,6 @@
+# Maintained in emacs-config.org
+*.md
+auto-save
+history
+undohist
+var/*.el
