@@ -1,6 +1,0 @@
-#!/usr/bin/bash
-#Maintained in emacs-config.org
-cd ~/development/projects/C/emacs/
-mkdir -p emacs-build
-./configure --prefix=`pwd`/emacs-build --with-x-toolkit=lucid
-make && make install

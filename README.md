@@ -309,7 +309,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org547d7f3"></a>
+<a id="orgdc49ac4"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +350,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org547d7f3)
+See `org-agenda-files` [org-agenda-files](#orgdc49ac4)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2438,6 +2438,25 @@ This tangles to its own init file [init-irc.el](etc/elisp/init-irc.el) and locks
 # Associated emacs things
 
 
+## building emacs
+
+
+### configure
+
+    #!/usr/bin/env bash
+    # Maintained in emacs-config.org
+    cd ~/development/emacs/emacs/
+    ./configure --with-x-toolkit=lucid -with-tree-sitter --with-native-compilation --prefix="/usr/local/" 
+
+
+### make
+
+    #!/usr/bin/env bash
+    # Maintained in emacs-config.org
+    cd ~/development/emacs/emacs/
+    make -j$(nproc) && sudo make install
+
+
 ## Project version control with  git
 
 
@@ -2523,7 +2542,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd273989) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfdf8b70) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2540,7 +2559,7 @@ to add to version control.
 
 ### [emacsclient-linenumber](bin/emacsclient-linenumber) script to correctly parse the protocol in order to start emacs frame at correct line
 
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
     # Maintained in emacs-config.org
     export GDK_NATIVE_WINDOWS=1
     file=`echo "$@" | sed 's/.*://;s/@.*$//'`
@@ -2556,7 +2575,7 @@ to add to version control.
     fi
 
 
-<a id="orgd273989"></a>
+<a id="orgfdf8b70"></a>
 
 ### Gnome protocol handler desktop file
 

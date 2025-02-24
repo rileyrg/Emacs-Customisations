@@ -2587,6 +2587,24 @@ This tangles to its own init file [[file:etc/elisp/init-irc.el][init-irc.el]] an
 :PROPERTIES:
 :ID:       c77645d3-d03f-47ab-a30f-fc649c70ef31
 :END:
+** building emacs
+*** configure
+#+begin_src bash :tangle "~/.emacs.d/bin/emacs-configure"
+  #!/usr/bin/env bash
+  # Maintained in emacs-config.org
+  cd ~/development/emacs/emacs/
+  ./configure --with-x-toolkit=lucid -with-tree-sitter --with-native-compilation --prefix="/usr/local/" 
+#+end_src
+
+*** make
+#+begin_src bash :tangle "~/.emacs.d/bin/emacs-make"
+  #!/usr/bin/env bash
+  # Maintained in emacs-config.org
+  cd ~/development/emacs/emacs/
+  make -j$(nproc) && sudo make install
+#+end_src
+
+
 ** Project version control with  git
 
 *** .gitignore
@@ -2618,7 +2636,7 @@ to add to version control.
 :ID:       6e22d271-57bb-47a0-853e-acbc91f1cbd4
 :END:
 #+begin_src bash :tangle bin/emacsclient-linenumber
-  #!/usr/bin/bash
+  #!/usr/bin/env bash
   # Maintained in emacs-config.org
   export GDK_NATIVE_WINDOWS=1
   file=`echo "$@" | sed 's/.*://;s/@.*$//'`

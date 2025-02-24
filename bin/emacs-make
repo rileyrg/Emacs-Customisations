@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Maintained in emacs-config.org
+cd ~/development/emacs/emacs/
+make -j$(nproc) && sudo make install

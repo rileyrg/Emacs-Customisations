@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # Maintained in emacs-config.org
 export GDK_NATIVE_WINDOWS=1
 file=`echo "$@" | sed 's/.*://;s/@.*$//'`
