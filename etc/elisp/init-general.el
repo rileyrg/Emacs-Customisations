@@ -1342,11 +1342,12 @@ The DWIM behaviour of this command is as follows:
 
 (use-package multiple-cursors
   :bind
-  ("C-<mouse-1>" . mc/add-cursor-on-click)
+  ("C-<mouse-1>" . add-cursor-on-click)
   ("C-S-n" . mc/mark-next-like-this)
   ("C-S-p" . mc/mark-previous-like-this)
-  ("C-c C->" . mc/mark-all-like-this)
-  ("C-c C-SPC" . mc/edit-lines)
+  ("C-S-d" . mc/mark-all-dwim)
+  ("C-S-a" . mc/mark-all-like-this)
+  ("C-S-SPC" . mc/edit-lines)
   )
 
 (use-package jinx

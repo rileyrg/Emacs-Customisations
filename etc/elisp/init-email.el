@@ -56,14 +56,14 @@
   (setq mu4e-contexts
         `( ,(make-mu4e-context
              :name "aGmx"
-             :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
+             :enter-func (lambda () (mu4e-message "gmx context")(mu4e-update-index))
              :match-func (lambda (msg)
                            (when msg
                              (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
              :vars `( ( user-mail-address . ,email-gmx-email )
+                      ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
                       ( user-full-name . ,email-gmx-full-name )
                       ( smtpmail-smtp-server . "smtp.gmail.com")
-                      ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
                       ( mu4e-refile-folder . "/gmx/Archive" )
                       ( mu4e-sent-folder . "/gmx/Sent" )
                       ( mu4e-sent-messages-behavior . sent)
@@ -89,7 +89,7 @@
                         )))
            ,(make-mu4e-context
              :name "bGmail"
-             :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
+             :enter-func (lambda () (mu4e-message "gmail context") (mu4e-update-index))
              ;; no leave-func
              ;; we match based on the maildir of the message
              ;; this matches maildir /Arkham and its sub-directories
@@ -126,11 +126,6 @@
     (set-fill-column 72)
     )
 
-  (defun rgr/mu4e-refresh()
-    (interactive)
-    (emacs-alert "refreshing mu4e indexes")
-    (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
-
   (defun rgr/mu4e-default-context()
     (interactive)
     (mu4e)
@@ -154,7 +149,7 @@
            (:map mu4e-main-mode-map
                  ("m" . mu4e-compose-new))
            (:map mu4e-main-mode-map
-                 ("g" . rgr/mu4e-refresh))
+                 ("u" . mu4e-update-index))
            (:map mu4e-headers-mode-map
                  ("v" . mu4e-view-action)
                  ("C-c u" . mu4e-headers-mark-all-unread-read))))

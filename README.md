@@ -309,7 +309,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgdc49ac4"></a>
+<a id="org0d01084"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +350,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgdc49ac4)
+See `org-agenda-files` [org-agenda-files](#org0d01084)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2158,11 +2158,12 @@ brings visual feedback to some operations by highlighting portions relating to t
 
     (use-package multiple-cursors
       :bind
-      ("C-<mouse-1>" . mc/add-cursor-on-click)
+      ("C-<mouse-1>" . add-cursor-on-click)
       ("C-S-n" . mc/mark-next-like-this)
       ("C-S-p" . mc/mark-previous-like-this)
-      ("C-c C->" . mc/mark-all-like-this)
-      ("C-c C-SPC" . mc/edit-lines)
+      ("C-S-d" . mc/mark-all-dwim)
+      ("C-S-a" . mc/mark-all-like-this)
+      ("C-S-SPC" . mc/edit-lines)
       )
 
 
@@ -2257,14 +2258,14 @@ This tangles to its own init file [init-email.el](etc/elisp/init-email.el).
       (setq mu4e-contexts
             `( ,(make-mu4e-context
                  :name "aGmx"
-                 :enter-func (lambda () (mu4e-message "gmx context")(rgr/mu4e-refresh))
+                 :enter-func (lambda () (mu4e-message "gmx context")(mu4e-update-index))
                  :match-func (lambda (msg)
                                (when msg
                                  (string-match-p "^/gmx" (mu4e-message-field msg :maildir))))
                  :vars `( ( user-mail-address . ,email-gmx-email )
+                          ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
                           ( user-full-name . ,email-gmx-full-name )
                           ( smtpmail-smtp-server . "smtp.gmail.com")
-                          ( mu4e-get-mail-command . "getmails gmx gmx-special-interest")
                           ( mu4e-refile-folder . "/gmx/Archive" )
                           ( mu4e-sent-folder . "/gmx/Sent" )
                           ( mu4e-sent-messages-behavior . sent)
@@ -2290,7 +2291,7 @@ This tangles to its own init file [init-email.el](etc/elisp/init-email.el).
                             )))
                ,(make-mu4e-context
                  :name "bGmail"
-                 :enter-func (lambda () (mu4e-message "gmail context") (rgr/mu4e-refresh))
+                 :enter-func (lambda () (mu4e-message "gmail context") (mu4e-update-index))
                  ;; no leave-func
                  ;; we match based on the maildir of the message
                  ;; this matches maildir /Arkham and its sub-directories
@@ -2327,11 +2328,6 @@ This tangles to its own init file [init-email.el](etc/elisp/init-email.el).
         (set-fill-column 72)
         )
     
-      (defun rgr/mu4e-refresh()
-        (interactive)
-        (emacs-alert "refreshing mu4e indexes")
-        (call-interactively #'(lambda () (interactive)(mu4e-update-mail-and-index t))))
-    
       (defun rgr/mu4e-default-context()
         (interactive)
         (mu4e)
@@ -2355,7 +2351,7 @@ This tangles to its own init file [init-email.el](etc/elisp/init-email.el).
                (:map mu4e-main-mode-map
                      ("m" . mu4e-compose-new))
                (:map mu4e-main-mode-map
-                     ("g" . rgr/mu4e-refresh))
+                     ("u" . mu4e-update-index))
                (:map mu4e-headers-mode-map
                      ("v" . mu4e-view-action)
                      ("C-c u" . mu4e-headers-mark-all-unread-read))))
@@ -2542,7 +2538,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgfdf8b70) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd1717d7) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2575,7 +2571,7 @@ to add to version control.
     fi
 
 
-<a id="orgfdf8b70"></a>
+<a id="orgd1717d7"></a>
 
 ### Gnome protocol handler desktop file
 
