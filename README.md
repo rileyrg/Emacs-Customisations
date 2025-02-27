@@ -85,7 +85,7 @@ Emacs early-init
 
 ### elpaca
 
-    (defvar elpaca-installer-version 0.9)
+    (defvar elpaca-installer-version 0.10)
     (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
     (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
     (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -100,7 +100,7 @@ Emacs early-init
       (add-to-list 'load-path (if (file-exists-p build) build repo))
       (unless (file-exists-p repo)
         (make-directory repo t)
-        (when (< emacs-major-version 28) (require 'subr-x))
+        (when (<= emacs-major-version 28) (require 'subr-x))
         (condition-case-unless-debug err
             (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
                       ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
@@ -309,7 +309,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org0d01084"></a>
+<a id="orgdbab43a"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +350,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org0d01084)
+See `org-agenda-files` [org-agenda-files](#orgdbab43a)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2474,6 +2474,8 @@ to add to version control.
     !README.md
     !custom.el
     
+    !elpaca.versions.lock
+    
     !info
     !info/*
     
@@ -2538,7 +2540,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd1717d7) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org05748db) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2571,7 +2573,7 @@ to add to version control.
     fi
 
 
-<a id="orgd1717d7"></a>
+<a id="org05748db"></a>
 
 ### Gnome protocol handler desktop file
 
