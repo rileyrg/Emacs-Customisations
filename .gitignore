@@ -20,7 +20,7 @@
 !var
 !var/secrets
 !var/secrets/bmkp
-!var/secrets/bmkp/**
+!var/secrets/bmkp/*
 !var/secrets/ement-sessions.el
 
 
