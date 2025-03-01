@@ -1087,6 +1087,14 @@ This is a translation framework for emacs, and is flexible and powerful.
 :END:
 A bit of a dogs dinner.
 
+*** rgr/open-buffer-file-in external-browser
+#+begin_src  emacs-lisp
+  (defun rgr/open-buffer-file-in-external-browser()
+    (interactive)
+    (eww-browse-with-external-browser buffer-file-name)
+    (quit-window))
+#+end_src 
+
 *** use browser for docs
 #+begin_src  emacs-lisp
   (defcustom rgr/browser-doc-url "https://www.google.com/search?q=%s" "format url variable used for function `rgr/browser-doc-search'")
@@ -1212,10 +1220,13 @@ Browse devdocs.io documents inside Emacs!
 files : faster, more otions and you can annotatePDFs. 
 #+begin_src emacs-lisp
   (use-package pdf-tools
+    :demand t
     :config
     (pdf-loader-install)
-    (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
-                                             )))
+    :bind
+    (:map pdf-view-mode-map
+          ("&" . rgr/open-buffer-file-in-external-browser)))
+
 #+end_src
 **** requirements
 #+begin_src bash
@@ -2056,13 +2067,6 @@ Display a poup containing docstring at point
       (keyboard-quit))))
 
   (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
-
-  ;; https://github.com/rolandwalker/browse-url-dwim
-  ;; Context-sensitive external browse URL or Internet search from Emacs.
-  (use-package
-    browse-url-dwim
-    :config
-    (browse-url-dwim-mode))
 
   ;; display dir name when core name clashes
   (require 'uniquify)

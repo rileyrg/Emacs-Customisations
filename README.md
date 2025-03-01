@@ -309,7 +309,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgdbab43a"></a>
+<a id="org3129019"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +350,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgdbab43a)
+See `org-agenda-files` [org-agenda-files](#org3129019)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1044,6 +1044,14 @@ lookup and reference uilities and config
     A bit of a dogs dinner.
 
 
+### rgr/open-buffer-file-in external-browser
+
+    (defun rgr/open-buffer-file-in-external-browser()
+      (interactive)
+      (eww-browse-with-external-browser buffer-file-name)
+      (quit-window))
+
+
 ### use browser for docs
 
     (defcustom rgr/browser-doc-url "https://www.google.com/search?q=%s" "format url variable used for function `rgr/browser-doc-search'")
@@ -1154,10 +1162,12 @@ gives us google translate:-
 files : faster, more otions and you can annotatePDFs. 
 
     (use-package pdf-tools
+      :demand t
       :config
       (pdf-loader-install)
-      (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
-                                               )))
+      :bind
+      (:map pdf-view-mode-map
+            ("&" . rgr/open-buffer-file-in-external-browser)))
 
 1.  requirements
 
@@ -1927,13 +1937,6 @@ The build and install process id documented [here](https://docs.platformio.org/e
     
     (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
     
-    ;; https://github.com/rolandwalker/browse-url-dwim
-    ;; Context-sensitive external browse URL or Internet search from Emacs.
-    (use-package
-      browse-url-dwim
-      :config
-      (browse-url-dwim-mode))
-    
     ;; display dir name when core name clashes
     (require 'uniquify)
     
@@ -2474,7 +2477,7 @@ to add to version control.
     !README.md
     !custom.el
     
-    !elpaca.versions.lock
+    !elpaca-versions.lock
     
     !info
     !info/*
@@ -2483,7 +2486,7 @@ to add to version control.
     !var
     !var/secrets
     !var/secrets/bmkp
-    !var/secrets/bmkp/**
+    !var/secrets/bmkp/*
     !var/secrets/ement-sessions.el
     
     
@@ -2540,7 +2543,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org05748db) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org64e365a) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2573,7 +2576,7 @@ to add to version control.
     fi
 
 
-<a id="org05748db"></a>
+<a id="org64e365a"></a>
 
 ### Gnome protocol handler desktop file
 

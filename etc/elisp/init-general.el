@@ -583,6 +583,11 @@
 ;; Initialize the default translator, let it send all paragraphs in the buffer to Bing and Google,
 ;; and output the results with a new Buffer.
 
+(defun rgr/open-buffer-file-in-external-browser()
+  (interactive)
+  (eww-browse-with-external-browser buffer-file-name)
+  (quit-window))
+
 (defcustom rgr/browser-doc-url "https://www.google.com/search?q=%s" "format url variable used for function `rgr/browser-doc-search'")
 (defun rgr/browser-doc-search(&optional sym)
   "call function `browse-url' with a url variable `rgr/browser-doc-url' formatted with variable `sym'"
@@ -652,10 +657,12 @@
   (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
 
 (use-package pdf-tools
+  :demand t
   :config
   (pdf-loader-install)
-  (add-hook 'pdf-isearch-minor-mode-hook (lambda () ;; (ctrlf-local-mode -1)
-                                           )))
+  :bind
+  (:map pdf-view-mode-map
+        ("&" . rgr/open-buffer-file-in-external-browser)))
 
 (use-package impatient-showdown
   :disabled
@@ -1182,13 +1189,6 @@ The DWIM behaviour of this command is as follows:
     (keyboard-quit))))
 
 (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
-
-;; https://github.com/rolandwalker/browse-url-dwim
-;; Context-sensitive external browse URL or Internet search from Emacs.
-(use-package
-  browse-url-dwim
-  :config
-  (browse-url-dwim-mode))
 
 ;; display dir name when core name clashes
 (require 'uniquify)
