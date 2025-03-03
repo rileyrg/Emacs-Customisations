@@ -749,8 +749,8 @@
         (("C-h t" . hs-toggle-hiding))))
 
 (use-package duplicate-thing
-  :bind
-  ("C-S-d" . 'duplicate-thing))
+  :demand t
+  :bind   ("C-S-d" . 'duplicate-thing))
 
 (use-package breadcrumb)
 
@@ -1345,7 +1345,7 @@ The DWIM behaviour of this command is as follows:
   ("C-<mouse-1>" . add-cursor-on-click)
   ("C-S-n" . mc/mark-next-like-this)
   ("C-S-p" . mc/mark-previous-like-this)
-  ("C-S-d" . mc/mark-all-dwim)
+  ("C-S-w" . mc/mark-all-dwim)
   ("C-S-a" . mc/mark-all-like-this)
   ("C-S-SPC" . mc/edit-lines)
   )
