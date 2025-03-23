@@ -1212,6 +1212,8 @@ Browse devdocs.io documents inside Emacs!
     (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
 #+end_src
 
+
+
 *** pdf-tools
 :PROPERTIES:
 :ID:       0646f2ee-757a-4001-ae4f-9f614805e33b
@@ -1232,6 +1234,22 @@ files : faster, more otions and you can annotatePDFs.
 #+begin_src bash
   sudo apt install libpng-dev zlib1g-dev libpoppler-glib-dev libpoppler-private-dev imagemagick
 #+end_src
+
+*** epub
+#+begin_src emacs-lisp
+  (use-package nov
+    :demand t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+
+  ;; (use-package nov-xwidget
+  ;;   :after nov
+  ;;   :config
+  ;;   (define-key nov-mode-map (kbd "o") 'nov-xwidget-view)
+  ;;   (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))
+
+#+end_src
+
 *** impatient-showdow, markdown view live
 Preview markdown buffer live over HTTP using showdown.
 https://github.com/jcs-elpa/impatient-showdown

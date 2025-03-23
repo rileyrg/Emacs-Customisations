@@ -664,6 +664,17 @@
   (:map pdf-view-mode-map
         ("&" . rgr/open-buffer-file-in-external-browser)))
 
+(use-package nov
+  :demand t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+
+;; (use-package nov-xwidget
+;;   :after nov
+;;   :config
+;;   (define-key nov-mode-map (kbd "o") 'nov-xwidget-view)
+;;   (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))
+
 (use-package impatient-showdown
   :disabled
   :hook (markdown-mode . impatient-showdown-mode))
