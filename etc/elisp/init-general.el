@@ -1024,6 +1024,10 @@
   ("C-h k" . #'helpful-key)
   ("C-h x" . #'helpful-command))
 
+(use-package fretboard
+  :ensure (:host github :repo "skyefreeman/fretboard.el")
+  :defer t)
+
 (show-paren-mode 1)
 (setq blink-matching-delay 2.5)
 

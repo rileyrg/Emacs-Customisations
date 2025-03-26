@@ -309,7 +309,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orge8a8ed3"></a>
+<a id="org124d031"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +350,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orge8a8ed3)
+See `org-agenda-files` [org-agenda-files](#org124d031)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1732,6 +1732,13 @@ The build and install process id documented [here](https://docs.platformio.org/e
       ("C-h x" . #'helpful-command))
 
 
+### guitar
+
+    (use-package fretboard
+      :ensure (:host github :repo "skyefreeman/fretboard.el")
+      :defer t)
+
+
 ### bracket matching
 
     (show-paren-mode 1)
@@ -2557,7 +2564,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcff91a6) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7d1ab34) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2590,7 +2597,7 @@ to add to version control.
     fi
 
 
-<a id="orgcff91a6"></a>
+<a id="org7d1ab34"></a>
 
 ### Gnome protocol handler desktop file
 

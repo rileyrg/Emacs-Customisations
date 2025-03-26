@@ -1846,6 +1846,13 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     ("C-h k" . #'helpful-key)
     ("C-h x" . #'helpful-command))
 #+end_src
+*** guitar
+#+begin_src  emacs-lisp
+  (use-package fretboard
+    :ensure (:host github :repo "skyefreeman/fretboard.el")
+    :defer t)
+#+end_src
+
 *** bracket matching
 #+begin_src  emacs-lisp
   (show-paren-mode 1)
