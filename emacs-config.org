@@ -1849,8 +1849,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 *** guitar
 #+begin_src  emacs-lisp
   (use-package fretboard
-    :ensure (:host github :repo "skyefreeman/fretboard.el")
-    :defer t)
+    :ensure (:host github :repo "skyefreeman/fretboard.el"))
 #+end_src
 
 *** bracket matching
