@@ -85,7 +85,7 @@ Emacs early-init
 
 ### elpaca
 
-    (defvar elpaca-installer-version 0.10)
+    (defvar elpaca-installer-version 0.11)
     (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
     (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
     (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -120,7 +120,7 @@ Emacs early-init
       (unless (require 'elpaca-autoloads nil t)
         (require 'elpaca)
         (elpaca-generate-autoloads "elpaca" repo)
-        (load "./elpaca-autoloads")))
+        (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
     (add-hook 'after-init-hook #'elpaca-process-queues)
     (elpaca `(,@elpaca-order))
 
@@ -309,7 +309,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgf2aea82"></a>
+<a id="orga24c213"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +350,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgf2aea82)
+See `org-agenda-files` [org-agenda-files](#orga24c213)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1477,6 +1477,19 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
       (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
 
+### Kotlin
+
+    (use-package kotlin-ts-mode
+      :demand t
+      :init
+      (defun rgr/kotlin-ts-mode-hook ()
+        (eglot-ensure)
+        )
+      (add-to-list 'auto-mode-alist '("\\.kt\\'" . kotlin-ts-mode))
+      :hook
+      (kotlin-ts-mode .  rgr/kotlin-ts-mode-hook))
+
+
 ### Language Server Protocol (LSP)
 
 [Emacs-lsp](https://github.com/emacs-lsp) : Language Server Protocol client for Emacs
@@ -2563,7 +2576,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgee58283) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc1b9444) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2596,7 +2609,7 @@ to add to version control.
     fi
 
 
-<a id="orgee58283"></a>
+<a id="orgc1b9444"></a>
 
 ### Gnome protocol handler desktop file
 

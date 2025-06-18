@@ -842,6 +842,16 @@
   (typescript-ts-mode .  rgr/javascript-typescript-common-mode-hook)
   (typescript-ts-mode .  rgr/typescript-ts-mode-hook))
 
+(use-package kotlin-ts-mode
+  :demand t
+  :init
+  (defun rgr/kotlin-ts-mode-hook ()
+    (eglot-ensure)
+    )
+  (add-to-list 'auto-mode-alist '("\\.kt\\'" . kotlin-ts-mode))
+  :hook
+  (kotlin-ts-mode .  rgr/kotlin-ts-mode-hook))
+
 (use-package eglot
   :custom
   (eglot-autoshutdown t)
