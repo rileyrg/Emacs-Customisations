@@ -568,7 +568,7 @@
         ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 
 (use-package go-translate
-  ;;:disabled
+  :disabled
   :custom
   (gt-langs '("en" "de"))
   (gt-default-translator

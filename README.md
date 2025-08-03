@@ -309,7 +309,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orga24c213"></a>
+<a id="orgecb45d4"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +350,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orga24c213)
+See `org-agenda-files` [org-agenda-files](#orgecb45d4)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -459,7 +459,7 @@ My own hack for popping up text to learn
       ("S-<f12>" . lazy-lang-learn-translate-from-history))
 
 
-## Minibuffer Enrichment (search, sudo edit&#x2026;)
+## Minibuffer Enrichment (search, sudo edit&hellip;)
 
 Various plugins for minibuffer enrichment
 
@@ -953,7 +953,7 @@ lookup and reference uilities and config
     
     1.  secret openAPI key
     
-        &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
+        &ndash;&mdash;BEGIN PGP MESSAGE&ndash;&mdash;
         
         hQEMA7IjL5SkHG4iAQf+N61j3/62smGNrhRPOrE3U8JMpJlcDf7d0gukqvXXYD3r
         A0t7kLn3T4t0zfwDq/TvXRXhdB+IMkkB5vK+A4HGQv9jPuVGzoalYvzGlJpSGw2O
@@ -965,7 +965,7 @@ lookup and reference uilities and config
         F4czehuTpGF0+QVLOpzgvOzPHZdbtiFiH47PdN/rXlHpwAX0cqhpe8WPAYBzNd22
         DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
         =UHS1
-        &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
+        &ndash;&mdash;END PGP MESSAGE&ndash;&mdash;
 
 
 ### Ellama
@@ -1024,7 +1024,7 @@ lookup and reference uilities and config
     This is a translation framework for emacs, and is flexible and powerful.
     
         (use-package go-translate
-          ;;:disabled
+          :disabled
           :custom
           (gt-langs '("en" "de"))
           (gt-default-translator
@@ -1408,7 +1408,7 @@ lookup and reference uilities and config
     
     1.  token
     
-        &#x2013;&#x2014;BEGIN PGP MESSAGE&#x2013;&#x2014;
+        &ndash;&mdash;BEGIN PGP MESSAGE&ndash;&mdash;
         
         hQEMA7IjL5SkHG4iAQgAhMUIMTYGMMJOxJT9Cpd4yXSe7D3nYO1JLdyFFADgiHDq
         1D68ig/iJdH5aPZNmKOOqSeI3zObJjDOnQ95+PK+DBDaDHlwJ/LWYdR/A4eWAh5G
@@ -1420,7 +1420,7 @@ lookup and reference uilities and config
         Y0lSPvXH7dBCTWu2rSWhIvgCQfv6Nihs3Jc455oZgajN7G/rgZNb0ER8YTYncZjY
         gtVhIJfSArVFXuCGLnZMoMHSC4rV
         =MsQY
-        &#x2013;&#x2014;END PGP MESSAGE&#x2013;&#x2014;
+        &ndash;&mdash;END PGP MESSAGE&ndash;&mdash;
 
 3.  Git Window Gutter Support
 
@@ -2576,7 +2576,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc1b9444) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org722b88e) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2609,11 +2609,11 @@ to add to version control.
     fi
 
 
-<a id="orgc1b9444"></a>
+<a id="org722b88e"></a>
 
 ### Gnome protocol handler desktop file
 
-Copy [emacsclient.desktop](editor-config/emacsclient.desktop) to  ~/.local/share/applications (Debian & Gnome - your mileage may vary&#x2026;)
+Copy [emacsclient.desktop](editor-config/emacsclient.desktop) to  ~/.local/share/applications (Debian & Gnome - your mileage may vary&hellip;)
 
     [Desktop Entry]
     Name=Emacs (Client)
