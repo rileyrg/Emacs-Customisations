@@ -654,7 +654,7 @@
   (devdocs-browser-data-directory (expand-file-name  "var/devdocs-browser/data" user-emacs-directory))
   :hook
   (c-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("c"))))
-  (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp")))))
+  (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp" "qt")))))
 
 (use-package pdf-tools
   :demand t
