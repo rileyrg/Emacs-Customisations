@@ -809,6 +809,15 @@
   (elpaca-after-init .  global-diff-hl-mode)
   (magit-post-refresh . diff-hl-magit-post-refresh))
 
+;; install claude-code.el
+(use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
+  ;; optional hook for Monet IDE integration:
+  :hook (claude-code-process-environment-functions . monet-start-server-function)
+  :config 
+  ;;(monet-mode 1) ; optional IDE integration
+  (claude-code-mode)
+  :bind-keymap ("C-c c" . claude-code-command-map))
+
 (use-package treesit-auto
   :custom
   (treesit-auto-install t)

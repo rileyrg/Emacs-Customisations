@@ -1510,6 +1510,19 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
     (elpaca-after-init .  global-diff-hl-mode)
     (magit-post-refresh . diff-hl-magit-post-refresh))
 #+end_src
+***  AI
+**** Claude
+#+begin_src  emacs-lisp
+    ;; install claude-code.el
+  (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
+    ;; optional hook for Monet IDE integration:
+    :hook (claude-code-process-environment-functions . monet-start-server-function)
+    :config 
+    ;;(monet-mode 1) ; optional IDE integration
+    (claude-code-mode)
+    :bind-keymap ("C-c c" . claude-code-command-map))
+  
+#+end_src 
 
 *** Tree Sitter
 Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
