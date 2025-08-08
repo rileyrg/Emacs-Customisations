@@ -981,47 +981,6 @@ https://lilypond.org/doc/v2.23/Documentation/usage/text-editor-support
 :END:
 lookup and reference uilities and config
 
-*** chatgpt
-
-**** GPTel
-https://github.com/karthink/gptel
-
-#+begin_src  emacs-lisp
-  (use-package gptel
-    :bind
-    ("C-c q" . #'gptel-send))
-#+end_src
-
-***** secret openAPI key                                              :crypt:
------BEGIN PGP MESSAGE-----
-
-hQEMA7IjL5SkHG4iAQf+N61j3/62smGNrhRPOrE3U8JMpJlcDf7d0gukqvXXYD3r
-A0t7kLn3T4t0zfwDq/TvXRXhdB+IMkkB5vK+A4HGQv9jPuVGzoalYvzGlJpSGw2O
-/Q6EHYmtms31r71LCFYMDg+8FsVFN+l43QRCOeFmJNv+paEbB0xH9xzrpaIqUQV3
-LwBrriEfRo0PPwq3164HT/cjdzGLGLchSsBbfbXfAzN/JnN2olaHxiz+6kL+IWvZ
-kI9IRBhOFnPigbQ+QXzni0JimSavFE/qTaPpiFIh+PUp8ETt2TcjarzrpLetk8lA
-fIhRyWuu3+GTDuc5iASXGcGKHMusNE+xC20FNcwWDdKbAd2N2BRg2gwO/jzlm7Gc
-l8/YEKMfbaubRX/hG2qOV8OnS+Io8cZx9cN3L7X6QbCzkW0KPwMt2O+CNYvKADFU
-F4czehuTpGF0+QVLOpzgvOzPHZdbtiFiH47PdN/rXlHpwAX0cqhpe8WPAYBzNd22
-DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
-=UHS1
------END PGP MESSAGE-----
-
-*** Ellama
-
-https://github.com/s-kostyaev/ellama
-https://github.com/s-kostyaev/ellama
-https://ollama.ai/library/zephyr
-
-#+begin_src  emacs-lisp
-  (use-package ellama
-    :custom
-    (ellama-sessions-directory (expand-file-name  "var/ellama-sessions/" user-emacs-directory))
-    :init
-    (setopt ellama-language "German")
-    (require 'llm-ollama))
-#+end_src
-
 *** web lookup/view
 
 **** eww
@@ -1511,6 +1470,17 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
     (magit-post-refresh . diff-hl-magit-post-refresh))
 #+end_src
 ***  AI
+**** gptel
+#+begin_src  emacs-lisp
+  (use-package gptel 
+    :config
+    (setq
+   gptel-model 'gemini-1.5-flash
+   gptel-backend (gptel-make-gemini "Gemini"
+                   :key (get-auth-info "api.openai.com" "apikey")
+                   :stream t))
+    )
+#+end_src 
 **** Claude
 #+begin_src  emacs-lisp
     ;; install claude-code.el

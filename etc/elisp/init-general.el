@@ -523,17 +523,6 @@
   lilypond
   :disabled)
 
-(use-package gptel
-  :bind
-  ("C-c q" . #'gptel-send))
-
-(use-package ellama
-  :custom
-  (ellama-sessions-directory (expand-file-name  "var/ellama-sessions/" user-emacs-directory))
-  :init
-  (setopt ellama-language "German")
-  (require 'llm-ollama))
-
 (use-package eww
   :ensure nil
   :config
@@ -808,6 +797,15 @@
   :hook
   (elpaca-after-init .  global-diff-hl-mode)
   (magit-post-refresh . diff-hl-magit-post-refresh))
+
+(use-package gptel 
+  :config
+  (setq
+ gptel-model 'gemini-1.5-flash
+ gptel-backend (gptel-make-gemini "Gemini"
+                 :key (get-auth-info "api.openai.com" "apikey")
+                 :stream t))
+  )
 
 ;; install claude-code.el
 (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")

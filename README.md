@@ -309,7 +309,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org01390ac"></a>
+<a id="org2b80484"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +350,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org01390ac)
+See `org-agenda-files` [org-agenda-files](#org2b80484)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -941,47 +941,6 @@ Need to install dvipng, texlive, texlive-latex-extra
 lookup and reference uilities and config
 
 
-### chatgpt
-
-1.  GPTel
-
-    <https://github.com/karthink/gptel>
-    
-        (use-package gptel
-          :bind
-          ("C-c q" . #'gptel-send))
-    
-    1.  secret openAPI key
-    
-        &ndash;&mdash;BEGIN PGP MESSAGE&ndash;&mdash;
-        
-        hQEMA7IjL5SkHG4iAQf+N61j3/62smGNrhRPOrE3U8JMpJlcDf7d0gukqvXXYD3r
-        A0t7kLn3T4t0zfwDq/TvXRXhdB+IMkkB5vK+A4HGQv9jPuVGzoalYvzGlJpSGw2O
-        /Q6EHYmtms31r71LCFYMDg+8FsVFN+l43QRCOeFmJNv+paEbB0xH9xzrpaIqUQV3
-        LwBrriEfRo0PPwq3164HT/cjdzGLGLchSsBbfbXfAzN/JnN2olaHxiz+6kL+IWvZ
-        kI9IRBhOFnPigbQ+QXzni0JimSavFE/qTaPpiFIh+PUp8ETt2TcjarzrpLetk8lA
-        fIhRyWuu3+GTDuc5iASXGcGKHMusNE+xC20FNcwWDdKbAd2N2BRg2gwO/jzlm7Gc
-        l8/YEKMfbaubRX/hG2qOV8OnS+Io8cZx9cN3L7X6QbCzkW0KPwMt2O+CNYvKADFU
-        F4czehuTpGF0+QVLOpzgvOzPHZdbtiFiH47PdN/rXlHpwAX0cqhpe8WPAYBzNd22
-        DvWoHsRLGhCVC8YTZrhVs48WbzJxHKBEnoswqlEk4534cIiL7NbwhlJPWg8=
-        =UHS1
-        &ndash;&mdash;END PGP MESSAGE&ndash;&mdash;
-
-
-### Ellama
-
-<https://github.com/s-kostyaev/ellama>
-<https://github.com/s-kostyaev/ellama>
-<https://ollama.ai/library/zephyr>
-
-    (use-package ellama
-      :custom
-      (ellama-sessions-directory (expand-file-name  "var/ellama-sessions/" user-emacs-directory))
-      :init
-      (setopt ellama-language "German")
-      (require 'llm-ollama))
-
-
 ### web lookup/view
 
 1.  eww
@@ -1435,7 +1394,18 @@ lookup and reference uilities and config
 
 ### AI
 
-1.  Claude
+1.  gptel
+
+        (use-package gptel 
+          :config
+          (setq
+         gptel-model 'gemini-1.5-flash
+         gptel-backend (gptel-make-gemini "Gemini"
+                         :key (get-auth-info "api.openai.com" "apikey")
+                         :stream t))
+          )
+
+2.  Claude
 
           ;; install claude-code.el
         (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
@@ -2590,7 +2560,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1a0c097) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4e6bfcd) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2623,7 +2593,7 @@ to add to version control.
     fi
 
 
-<a id="org1a0c097"></a>
+<a id="org4e6bfcd"></a>
 
 ### Gnome protocol handler desktop file
 
