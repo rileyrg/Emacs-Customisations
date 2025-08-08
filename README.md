@@ -309,7 +309,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org2b80484"></a>
+<a id="org3de4906"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +350,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org2b80484)
+See `org-agenda-files` [org-agenda-files](#org3de4906)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1396,14 +1396,16 @@ lookup and reference uilities and config
 
 1.  gptel
 
-        (use-package gptel 
+        (use-package gptel
+          :custom
+          (gptel-model 'gemini-2.5-flash)
+          (gptel-default-mode 'org-mode)
           :config
-          (setq
-         gptel-model 'gemini-1.5-flash
-         gptel-backend (gptel-make-gemini "Gemini"
-                         :key (get-auth-info "api.openai.com" "apikey")
-                         :stream t))
-          )
+          (setq gptel-backend (gptel-make-gemini "Gemini"
+                           :key (get-auth-info "api.openai.com" "apikey")
+                           :stream t))
+          :bind
+          ("C-c q" . gptel))
 
 2.  Claude
 
@@ -2560,7 +2562,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4e6bfcd) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf9655ac) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2593,7 +2595,7 @@ to add to version control.
     fi
 
 
-<a id="org4e6bfcd"></a>
+<a id="orgf9655ac"></a>
 
 ### Gnome protocol handler desktop file
 

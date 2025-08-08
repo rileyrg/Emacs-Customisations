@@ -798,14 +798,16 @@
   (elpaca-after-init .  global-diff-hl-mode)
   (magit-post-refresh . diff-hl-magit-post-refresh))
 
-(use-package gptel 
+(use-package gptel
+  :custom
+  (gptel-model 'gemini-2.5-flash)
+  (gptel-default-mode 'org-mode)
   :config
-  (setq
- gptel-model 'gemini-1.5-flash
- gptel-backend (gptel-make-gemini "Gemini"
-                 :key (get-auth-info "api.openai.com" "apikey")
-                 :stream t))
-  )
+  (setq gptel-backend (gptel-make-gemini "Gemini"
+                   :key (get-auth-info "api.openai.com" "apikey")
+                   :stream t))
+  :bind
+  ("C-c q" . gptel))
 
 ;; install claude-code.el
 (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
