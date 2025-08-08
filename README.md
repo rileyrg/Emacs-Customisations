@@ -48,10 +48,20 @@ Emacs early-init
 
 ## elisp locations
 
-    (defcustom rgr/elisp-dir (expand-file-name  "etc/elisp" user-emacs-directory) "Where user elisp files should be stored")
-    (defun rgr/user-elisp-file(f)
+    (defcustom rgr/elisp-dir (expand-file-name "etc/elisp" user-emacs-directory)
+      "Where user elisp files should be stored."
+      :type 'directory
+      :group 'rgr)
+    
+    (defun rgr/user-elisp-file (f)
+      "Return the full path to a user Emacs Lisp file F."
       (expand-file-name f rgr/elisp-dir))
-    (setq load-path (cons rgr/elisp-dir load-path))
+    
+    ;; Ensure the directory exists before adding it to load-path
+    (make-directory rgr/elisp-dir t)
+    
+    ;; Add the directory to the load-path, preferring to the front and avoiding duplicates.
+    (add-to-list 'load-path rgr/elisp-dir)
 
 
 # emacs main init
@@ -309,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org3de4906"></a>
+<a id="orge98945f"></a>
 
 ### Org Mode, org-mode
 
@@ -350,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org3de4906)
+See `org-agenda-files` [org-agenda-files](#orge98945f)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1402,10 +1412,10 @@ lookup and reference uilities and config
           (gptel-default-mode 'org-mode)
           :config
           (setq gptel-backend (gptel-make-gemini "Gemini"
-                           :key (get-auth-info "api.openai.com" "apikey")
-                           :stream t))
+                                                 :key (get-auth-info "api.openai.com" "apikey")
+                                                 :stream t))
           :bind
-          ("C-c q" . gptel))
+          ("C-c q" . gptel-send))
 
 2.  Claude
 
@@ -2562,7 +2572,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf9655ac) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3b7cc9b) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2595,7 +2605,7 @@ to add to version control.
     fi
 
 
-<a id="orgf9655ac"></a>
+<a id="org3b7cc9b"></a>
 
 ### Gnome protocol handler desktop file
 

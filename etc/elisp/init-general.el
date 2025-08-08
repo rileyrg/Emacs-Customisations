@@ -804,10 +804,10 @@
   (gptel-default-mode 'org-mode)
   :config
   (setq gptel-backend (gptel-make-gemini "Gemini"
-                   :key (get-auth-info "api.openai.com" "apikey")
-                   :stream t))
+                                         :key (get-auth-info "api.openai.com" "apikey")
+                                         :stream t))
   :bind
-  ("C-c q" . gptel))
+  ("C-c q" . gptel-send))
 
 ;; install claude-code.el
 (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
