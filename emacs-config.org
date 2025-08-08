@@ -1485,7 +1485,7 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
 #+begin_src  emacs-lisp
   (use-package gptel
     :custom
-    (gptel-model 'gemini-2.5-flash)
+    (gptel-model 'gemini-2.5-pro)
     (gptel-default-mode 'org-mode)
     :config
     (setq gptel-backend (gptel-make-gemini "Gemini"
@@ -1494,8 +1494,15 @@ gtVhIJfSArVFXuCGLnZMoMHSC4rV
     :bind
     ("C-c q" . gptel-send))
 #+end_src
-
-
+**** Aider
+#+begin_src  emacs-lisp
+  (use-package aider :ensure (:host github :repo "tninja/aider.el")
+    :config
+    (setenv "GEMINI_API_KEY" (get-auth-info "api.openai.com" "apikey"))
+    (setq aider-args `("--model" "gemini-2.5-pro"))
+    ;;(global-set-key (kbd "C-c a") 'aider-transient-menu) ;; for wider screen
+    (aider-magit-setup-transients))
+#+end_src 
 **** Claude
 #+begin_src  emacs-lisp
     ;; install claude-code.el

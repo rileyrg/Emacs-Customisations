@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orge98945f"></a>
+<a id="org43204ee"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orge98945f)
+See `org-agenda-files` [org-agenda-files](#org43204ee)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1408,7 +1408,7 @@ lookup and reference uilities and config
 
         (use-package gptel
           :custom
-          (gptel-model 'gemini-2.5-flash)
+          (gptel-model 'gemini-2.5-pro)
           (gptel-default-mode 'org-mode)
           :config
           (setq gptel-backend (gptel-make-gemini "Gemini"
@@ -1417,7 +1417,16 @@ lookup and reference uilities and config
           :bind
           ("C-c q" . gptel-send))
 
-2.  Claude
+2.  Aider
+
+        (use-package aider :ensure (:host github :repo "tninja/aider.el")
+          :config
+          (setenv "GEMINI_API_KEY" (get-auth-info "api.openai.com" "apikey"))
+          (setq aider-args `("--model" "gemini-2.5-pro"))
+          ;;(global-set-key (kbd "C-c a") 'aider-transient-menu) ;; for wider screen
+          (aider-magit-setup-transients))
+
+3.  Claude
 
           ;; install claude-code.el
         (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
@@ -2572,7 +2581,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3b7cc9b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd80987d) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2605,7 +2614,7 @@ to add to version control.
     fi
 
 
-<a id="org3b7cc9b"></a>
+<a id="orgd80987d"></a>
 
 ### Gnome protocol handler desktop file
 

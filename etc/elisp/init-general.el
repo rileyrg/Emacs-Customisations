@@ -800,7 +800,7 @@
 
 (use-package gptel
   :custom
-  (gptel-model 'gemini-2.5-flash)
+  (gptel-model 'gemini-2.5-pro)
   (gptel-default-mode 'org-mode)
   :config
   (setq gptel-backend (gptel-make-gemini "Gemini"
@@ -808,6 +808,13 @@
                                          :stream t))
   :bind
   ("C-c q" . gptel-send))
+
+(use-package aider :ensure (:host github :repo "tninja/aider.el")
+  :config
+  (setenv "GEMINI_API_KEY" (get-auth-info "api.openai.com" "apikey"))
+  (setq aider-args `("--model" "gemini-2.5-pro"))
+  ;;(global-set-key (kbd "C-c a") 'aider-transient-menu) ;; for wider screen
+  (aider-magit-setup-transients))
 
 ;; install claude-code.el
 (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
