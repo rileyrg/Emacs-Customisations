@@ -74,6 +74,10 @@
   (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
   (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
 
+;; (require 'project)
+;; (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
+;; (define-key project-prefix-map "u" '("project url" .  rgr/project-url))
+
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture
   :after org
@@ -1265,8 +1269,8 @@ The DWIM behaviour of this command is as follows:
   (popper-mode +1)
   (popper-echo-mode +1)
   :bind (("C-´"   . popper-toggle)
-         ("M-´"   . popper-toggle-type)
-         ("C-M-´" . popper-cycle)))
+         ("M-´"   . popper-cycle)
+         ("C-M-´" . popper-toggle-type)))
 
 (use-package posframe
   :demand t)

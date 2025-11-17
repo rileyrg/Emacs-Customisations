@@ -419,6 +419,11 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
     :config
     (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
     (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
+
+  ;; (require 'project)
+  ;; (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
+  ;; (define-key project-prefix-map "u" '("project url" .  rgr/project-url))
+
 #+end_src
 *** add project based TODO
 #+begin_src  emacs-lisp
@@ -2146,8 +2151,8 @@ Display a poup containing docstring at point
     (popper-mode +1)
     (popper-echo-mode +1)
     :bind (("C-´"   . popper-toggle)
-           ("M-´"   . popper-toggle-type)
-           ("C-M-´" . popper-cycle)))
+           ("M-´"   . popper-cycle)
+           ("C-M-´" . popper-toggle-type)))
 #+end_src 
 *** posframe                                                       :posframe:
 :PROPERTIES:
