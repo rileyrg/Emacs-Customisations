@@ -883,7 +883,7 @@
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
   (defun rgr/eglot-on-save()
     (when eglot--managed-mode
-      (eglot-format-buffer)
+      ;;(eglot-format-buffer)
       )
     )
   (defun rgr/eglot-managed-mode-hook()
