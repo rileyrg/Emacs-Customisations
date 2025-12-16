@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgaf1dede"></a>
+<a id="orgb61da79"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgaf1dede)
+See `org-agenda-files` [org-agenda-files](#orgb61da79)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1535,9 +1535,12 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           :bind
           (:map eglot-mode-map (
                 ("C-<return>" . eglot-code-actions))))
-        (use-package eglot-booster :ensure (:host github :repo "jdtsmith/eglot-booster")
-          :after eglot
-          :config	(eglot-booster-mode))
+        
+        ;; emacs 30 makes this redundant.
+        (when (< emacs-major-version 30)
+          (use-package eglot-booster :ensure (:host github :repo "jdtsmith/eglot-booster")
+            :after eglot
+            :config	(eglot-booster-mode)))
 
 2.  dape
 
@@ -2586,7 +2589,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org669c575) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org01d2fb8) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2619,7 +2622,7 @@ to add to version control.
     fi
 
 
-<a id="org669c575"></a>
+<a id="org01d2fb8"></a>
 
 ### Gnome protocol handler desktop file
 
