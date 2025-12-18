@@ -899,9 +899,12 @@
   :bind
   (:map eglot-mode-map (
         ("C-<return>" . eglot-code-actions))))
-(use-package eglot-booster :ensure (:host github :repo "jdtsmith/eglot-booster")
-  :after eglot
-  :config	(eglot-booster-mode))
+
+;; emacs 30 makes this redundant.
+(when (< emacs-major-version 30)
+  (use-package eglot-booster :ensure (:host github :repo "jdtsmith/eglot-booster")
+    :after eglot
+    :config	(eglot-booster-mode)))
 
 (use-package dape
   :demand t
