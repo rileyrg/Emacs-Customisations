@@ -1788,6 +1788,13 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 **** c-mode-common-hook
 
 #+begin_src emacs-lisp
+  (use-package flymake-cppcheck
+    :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
+    :custom
+    (flymake-cppcheck-enable "warning,performance,information,style")
+    :hook
+      ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
+
   (use-package c-ts-mode
     :ensure nil
     :config
@@ -1916,6 +1923,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :bind
     ("M-n" . flymake-goto-next-error)
     ("M-p" . flymake-goto-prev-error))
+  (use-package flymake-easy)
 #+end_src
 **** shellcheck
 #+begin_src emacs-lisp
