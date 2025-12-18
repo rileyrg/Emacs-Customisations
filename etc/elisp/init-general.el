@@ -1113,7 +1113,13 @@
   ("M-n" . flymake-goto-next-error)
   ("M-p" . flymake-goto-prev-error))
 
+(use-package flycheck-inline
+  :after flycheck
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+
 (use-package flycheck-posframe
+  :disabled t
   :ensure t
   :after flycheck
   :config
