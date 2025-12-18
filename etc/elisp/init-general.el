@@ -162,19 +162,19 @@
   :bind
   ( "C-x C-f" . rgr/ffap))
 
-(unload-feature 'eldoc t)
-(setq custom-delayed-init-variables '())
-(elpaca eldoc
-  (require 'eldoc)
-  (global-eldoc-mode)
-  (defun rgr/eldoc-at-point()
-    (interactive)
-    (if eldoc-mode
-        (eldoc-box-help-at-point)
-      (message "eldoc not active")))
-  (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
-(use-package eldoc-box
-  :after eldoc)
+;; (unload-feature 'eldoc t)
+;; (setq custom-delayed-init-variables '())
+;; (elpaca eldoc
+;;   (require 'eldoc)
+;;   (global-eldoc-mode)
+;;   (defun rgr/eldoc-at-point()
+;;     (interactive)
+;;     (if eldoc-mode
+;;         (eldoc-box-help-at-point)
+;;       (message "eldoc not active")))
+;;   (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
+;; (use-package eldoc-box
+;;   :after eldoc)
 
 ;; Example configuration for Consult
 ;; Example configuration for Consult
@@ -877,7 +877,7 @@
   :custom
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.5)
-  (eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
+  ;;(eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
   :config
   ;;(add-hook  'eglot-stay-out-of 'yasnippet)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
@@ -1022,23 +1022,23 @@
         ("C-q" . rgr/browser-doc-search)))
 
 (use-package flymake-cppcheck
-    :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
-    :custom
-;;    (flymake-cppcheck-enable "warning,performance,information,style")
-    (flymake-cppcheck-enable "warning,performance,information,style")
-    :hook
-      ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
+  :disabled t
+  :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
+  :custom
+  (flymake-cppcheck-enable "warning,performance,information,style")
+  :hook
+    ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
 
-  (use-package c-ts-mode
-    :ensure nil
-    :config
-    (defun rgr/c-ts-mode-common-hook ()
-      (message "rgr/c-ts-mode-common-hook")
-      (yas-minor-mode t) ;; This SHOULD be done by eglot but it doesn't work
-      (setq-local rgr/complete-line-f 'rgr/c-complete-line)
-      (setq-local c-ts-mode-indent-offset 4))
-    :hook
-    ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
+(use-package c-ts-mode
+  :ensure nil
+  :config
+  (defun rgr/c-ts-mode-common-hook ()
+    (message "rgr/c-ts-mode-common-hook")
+    (yas-minor-mode t) ;; This SHOULD be done by eglot but it doesn't work
+    (setq-local rgr/complete-line-f 'rgr/c-complete-line)
+    (setq-local c-ts-mode-indent-offset 4))
+  :hook
+  ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 
 (setq auto-mode-alist
         (append
@@ -1094,13 +1094,30 @@
   ("M-w" . kill-dwim))
 
 (use-package flymake
+  :disabled t
   :custom
   (flymake-show-diagnostics-at-end-of-line nil)
   (flymake-no-changes-timeout 1.5)
+  :config
+    (use-package flymake-easy)
   :bind
   ("M-n" . flymake-goto-next-error)
   ("M-p" . flymake-goto-prev-error))
-(use-package flymake-easy)
+
+(use-package flycheck
+  :ensure t
+  :custom
+  (flycheck-auto-display-errors-after-checking nil)
+  :init (global-flycheck-mode)
+  :bind
+  ("M-n" . flymake-goto-next-error)
+  ("M-p" . flymake-goto-prev-error))
+
+(use-package flycheck-posframe
+  :ensure t
+  :after flycheck
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
 
 (use-package flymake-shellcheck
   :disabled t
@@ -1119,6 +1136,7 @@
 
 (setq load-path (cons (expand-file-name "el-docstring-sap" rgr/emacs-project-dir ) load-path))
 (use-package el-docstring-sap
+  :disabled t
   :after (eldoc posframe)
   :ensure nil
   :hook
