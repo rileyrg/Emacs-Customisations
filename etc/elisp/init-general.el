@@ -1031,21 +1031,21 @@
 (use-package c-ts-mode
   :ensure nil
   :config
-  (add-to-list 'eglot-server-programs
-               '((c-ts-mode c++-ts-mode c-mode c++-mode)
-                 . ("clangd"
-                    "-j=8"
-                    "--enable-config"
-                    "--query-driver=/**/*"
-                    "--log=error"
-                    "--malloc-trim"
-                    "--background-index"
-                    "--clang-tidy"
-                    "--all-scopes-completion"
-                    "--completion-style=detailed"
-                    "--pch-storage=memory"
-                    "--header-insertion=never"
-                    "--header-insertion-decorators=0")))
+  ;; (add-to-list 'eglot-server-programs
+  ;;              '((c-ts-mode c++-ts-mode c-mode c++-mode)
+  ;;                . ("clangd"
+  ;;                   "-j=8"
+  ;;                   "--enable-config"
+  ;;                   "--query-driver=/**/*"
+  ;;                   "--log=error"
+  ;;                   "--malloc-trim"
+  ;;                   "--background-index"
+  ;;                   "--clang-tidy"
+  ;;                   "--all-scopes-completion"
+  ;;                   "--completion-style=detailed"
+  ;;                   "--pch-storage=memory"
+  ;;                   "--header-insertion=never"
+  ;;                   "--header-insertion-decorators=0")))
 
   (defun rgr/c-ts-mode-common-hook ()
     (message "rgr/c-ts-mode-common-hook")

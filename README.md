@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org21f9cb9"></a>
+<a id="orgb010813"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org21f9cb9)
+See `org-agenda-files` [org-agenda-files](#orgb010813)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1524,7 +1524,6 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
               )
             )
           (defun rgr/eglot-managed-mode-hook()
-            (flymake-cppcheck-setup)
             (hs-minor-mode t)
             (auto-fill-mode t)
         
@@ -1698,11 +1697,29 @@ The build and install process id documented [here](https://docs.platformio.org/e
 1.  c-mode-common-hook
 
         (use-package flymake-cppcheck
-          :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck"))
+          :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck")
+          :hook
+          (eglot-managed-mode . flymake-cppcheck-setup))
         
         (use-package c-ts-mode
           :ensure nil
           :config
+          ;; (add-to-list 'eglot-server-programs
+          ;;              '((c-ts-mode c++-ts-mode c-mode c++-mode)
+          ;;                . ("clangd"
+          ;;                   "-j=8"
+          ;;                   "--enable-config"
+          ;;                   "--query-driver=/**/*"
+          ;;                   "--log=error"
+          ;;                   "--malloc-trim"
+          ;;                   "--background-index"
+          ;;                   "--clang-tidy"
+          ;;                   "--all-scopes-completion"
+          ;;                   "--completion-style=detailed"
+          ;;                   "--pch-storage=memory"
+          ;;                   "--header-insertion=never"
+          ;;                   "--header-insertion-decorators=0")))
+        
           (defun rgr/c-ts-mode-common-hook ()
             (message "rgr/c-ts-mode-common-hook")
             (yas-minor-mode t) ;; This SHOULD be done by eglot but it doesn't work
@@ -2623,7 +2640,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org78f9588) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org63436a2) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2656,7 +2673,7 @@ to add to version control.
     fi
 
 
-<a id="org78f9588"></a>
+<a id="org63436a2"></a>
 
 ### Gnome protocol handler desktop file
 
