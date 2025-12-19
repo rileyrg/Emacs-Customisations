@@ -319,7 +319,11 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
+<<<<<<< HEAD
 <a id="orgbce1757"></a>
+=======
+<a id="org9a05be1"></a>
+>>>>>>> flycheck-cppcheck
 
 ### Org Mode, org-mode
 
@@ -360,7 +364,11 @@ General org-mode config
 
 ### org agenda files
 
+<<<<<<< HEAD
 See `org-agenda-files` [org-agenda-files](#orgbce1757)
+=======
+See `org-agenda-files` [org-agenda-files](#org9a05be1)
+>>>>>>> flycheck-cppcheck
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -559,7 +567,7 @@ Various plugins for minibuffer enrichment
                  ("M-y" . consult-yank-pop)                ;; orig. yank-pop
                  ;; M-g bindings in `goto-map'
                  ("M-g e" . consult-compile-error)
-                 ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
+                 ;;("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
                  ("M-g g" . consult-goto-line)             ;; orig. goto-line
                  ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
                  ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -1513,7 +1521,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           :custom
           (eglot-autoshutdown t)
           (eglot-send-changes-idle-time 0.5)
-          (eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
+          ;;(eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
           :config
           ;;(add-hook  'eglot-stay-out-of 'yasnippet)
           (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
@@ -1525,6 +1533,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           (defun rgr/eglot-managed-mode-hook()
             (hs-minor-mode t)
             (auto-fill-mode t)
+            (flymake-mode -1)
             (if (featurep 'breadcrumb)
                 (breadcrumb-local-mode)))
           :hook
@@ -1695,9 +1704,16 @@ The build and install process id documented [here](https://docs.platformio.org/e
 1.  c-mode-common-hook
 
         (use-package flymake-cppcheck
+<<<<<<< HEAD
           :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
           :custom
           (flymake-cppcheck-enable "error,warning,performance,information,style")
+=======
+          :disabled t
+          :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
+          :custom
+          (flymake-cppcheck-enable "warning,performance,information,style")
+>>>>>>> flycheck-cppcheck
           :hook
             ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
         
@@ -1804,13 +1820,40 @@ The build and install process id documented [here](https://docs.platformio.org/e
 ### Flymake
 
     (use-package flymake
+      :disabled t
       :custom
       (flymake-show-diagnostics-at-end-of-line nil)
       (flymake-no-changes-timeout 1.5)
+      :config
+        (use-package flymake-easy)
       :bind
       ("M-n" . flymake-goto-next-error)
       ("M-p" . flymake-goto-prev-error))
     (use-package flymake-easy)
+
+
+### Flycheck
+
+    (use-package flycheck
+      :ensure t
+      :custom
+      (flycheck-auto-display-errors-after-checking nil)
+      :init (global-flycheck-mode)
+      :bind
+      ("M-n" . flycheck-next-error)
+      ("M-p" . flycheck-prev-error))
+    
+    (use-package flycheck-inline
+      :disabled t
+      :after flycheck
+      :config
+      (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+    
+    (use-package flycheck-posframe
+      :ensure t
+      :after flycheck
+      :config
+      (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
 
 1.  shellcheck
 
@@ -1846,6 +1889,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
     
         (setq load-path (cons (expand-file-name "el-docstring-sap" rgr/emacs-project-dir ) load-path))
         (use-package el-docstring-sap
+          :disabled t
           :after (eldoc posframe)
           :ensure nil
           :hook
@@ -2597,7 +2641,11 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
+<<<<<<< HEAD
 `xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4099be0) documented below.
+=======
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7017a0c) documented below.
+>>>>>>> flycheck-cppcheck
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2630,7 +2678,11 @@ to add to version control.
     fi
 
 
+<<<<<<< HEAD
 <a id="org4099be0"></a>
+=======
+<a id="org7017a0c"></a>
+>>>>>>> flycheck-cppcheck
 
 ### Gnome protocol handler desktop file
 

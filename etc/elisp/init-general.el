@@ -204,7 +204,7 @@
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ;; M-g bindings in `goto-map'
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
+         ;;("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -877,7 +877,7 @@
   :custom
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.5)
-  (eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
+  ;;(eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
   :config
   ;;(add-hook  'eglot-stay-out-of 'yasnippet)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
@@ -889,6 +889,7 @@
   (defun rgr/eglot-managed-mode-hook()
     (hs-minor-mode t)
     (auto-fill-mode t)
+    (flymake-mode -1)
     (if (featurep 'breadcrumb)
         (breadcrumb-local-mode)))
   :hook
@@ -1022,6 +1023,7 @@
         ("C-q" . rgr/browser-doc-search)))
 
 (use-package flymake-cppcheck
+  :disabled t
   :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
   :custom
   (flymake-cppcheck-enable "error,warning,performance,information,style")
@@ -1093,13 +1095,36 @@
   ("M-w" . kill-dwim))
 
 (use-package flymake
+  :disabled t
   :custom
   (flymake-show-diagnostics-at-end-of-line nil)
   (flymake-no-changes-timeout 1.5)
+  :config
+    (use-package flymake-easy)
   :bind
   ("M-n" . flymake-goto-next-error)
   ("M-p" . flymake-goto-prev-error))
-(use-package flymake-easy)
+
+(use-package flycheck
+  :ensure t
+  :custom
+  (flycheck-auto-display-errors-after-checking nil)
+  :init (global-flycheck-mode)
+  :bind
+  ("M-n" . flycheck-next-error)
+  ("M-p" . flycheck-prev-error))
+
+(use-package flycheck-inline
+  :disabled t
+  :after flycheck
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+
+(use-package flycheck-posframe
+  :ensure t
+  :after flycheck
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
 
 (use-package flymake-shellcheck
   :disabled t
@@ -1118,6 +1143,7 @@
 
 (setq load-path (cons (expand-file-name "el-docstring-sap" rgr/emacs-project-dir ) load-path))
 (use-package el-docstring-sap
+  :disabled t
   :after (eldoc posframe)
   :ensure nil
   :hook
