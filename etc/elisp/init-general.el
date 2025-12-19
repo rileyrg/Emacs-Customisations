@@ -162,19 +162,19 @@
   :bind
   ( "C-x C-f" . rgr/ffap))
 
-;; (unload-feature 'eldoc t)
-;; (setq custom-delayed-init-variables '())
-;; (elpaca eldoc
-;;   (require 'eldoc)
-;;   (global-eldoc-mode)
-;;   (defun rgr/eldoc-at-point()
-;;     (interactive)
-;;     (if eldoc-mode
-;;         (eldoc-box-help-at-point)
-;;       (message "eldoc not active")))
-;;   (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
-;; (use-package eldoc-box
-;;   :after eldoc)
+(unload-feature 'eldoc t)
+(setq custom-delayed-init-variables '())
+(elpaca eldoc
+  (require 'eldoc)
+  (global-eldoc-mode)
+  (defun rgr/eldoc-at-point()
+    (interactive)
+    (if eldoc-mode
+        (eldoc-box-help-at-point)
+      (message "eldoc not active")))
+  (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
+(use-package eldoc-box
+  :after eldoc)
 
 ;; Example configuration for Consult
 ;; Example configuration for Consult
@@ -204,7 +204,7 @@
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ;; M-g bindings in `goto-map'
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
+         ;;("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -1110,16 +1110,16 @@
   (flycheck-auto-display-errors-after-checking nil)
   :init (global-flycheck-mode)
   :bind
-  ("M-n" . flymake-goto-next-error)
-  ("M-p" . flymake-goto-prev-error))
+  ("M-n" . flycheck-next-error)
+  ("M-p" . flycheck-prev-error))
 
 (use-package flycheck-inline
+  :disabled t
   :after flycheck
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
 
 (use-package flycheck-posframe
-  :disabled t
   :ensure t
   :after flycheck
   :config

@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgb452fe9"></a>
+<a id="org9a05be1"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb452fe9)
+See `org-agenda-files` [org-agenda-files](#org9a05be1)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -508,19 +508,19 @@ Various plugins for minibuffer enrichment
 
 ### eldoc
 
-    ;; (unload-feature 'eldoc t)
-    ;; (setq custom-delayed-init-variables '())
-    ;; (elpaca eldoc
-    ;;   (require 'eldoc)
-    ;;   (global-eldoc-mode)
-    ;;   (defun rgr/eldoc-at-point()
-    ;;     (interactive)
-    ;;     (if eldoc-mode
-    ;;         (eldoc-box-help-at-point)
-    ;;       (message "eldoc not active")))
-    ;;   (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
-    ;; (use-package eldoc-box
-    ;;   :after eldoc)
+    (unload-feature 'eldoc t)
+    (setq custom-delayed-init-variables '())
+    (elpaca eldoc
+      (require 'eldoc)
+      (global-eldoc-mode)
+      (defun rgr/eldoc-at-point()
+        (interactive)
+        (if eldoc-mode
+            (eldoc-box-help-at-point)
+          (message "eldoc not active")))
+      (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
+    (use-package eldoc-box
+      :after eldoc)
 
 
 ### Consult
@@ -559,7 +559,7 @@ Various plugins for minibuffer enrichment
                  ("M-y" . consult-yank-pop)                ;; orig. yank-pop
                  ;; M-g bindings in `goto-map'
                  ("M-g e" . consult-compile-error)
-                 ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
+                 ;;("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
                  ("M-g g" . consult-goto-line)             ;; orig. goto-line
                  ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
                  ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -1525,6 +1525,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           (defun rgr/eglot-managed-mode-hook()
             (hs-minor-mode t)
             (auto-fill-mode t)
+            (flymake-mode -1)
             (if (featurep 'breadcrumb)
                 (breadcrumb-local-mode)))
           :hook
@@ -1824,16 +1825,16 @@ The build and install process id documented [here](https://docs.platformio.org/e
       (flycheck-auto-display-errors-after-checking nil)
       :init (global-flycheck-mode)
       :bind
-      ("M-n" . flymake-goto-next-error)
-      ("M-p" . flymake-goto-prev-error))
+      ("M-n" . flycheck-next-error)
+      ("M-p" . flycheck-prev-error))
     
     (use-package flycheck-inline
+      :disabled t
       :after flycheck
       :config
       (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
     
     (use-package flycheck-posframe
-      :disabled t
       :ensure t
       :after flycheck
       :config
@@ -2625,7 +2626,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd8ce836) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7017a0c) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2658,7 +2659,7 @@ to add to version control.
     fi
 
 
-<a id="orgd8ce836"></a>
+<a id="org7017a0c"></a>
 
 ### Gnome protocol handler desktop file
 
