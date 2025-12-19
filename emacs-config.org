@@ -554,19 +554,20 @@ Various plugins for minibuffer enrichment
 *** eldoc
 
 #+begin_src  emacs-lisp
-  (unload-feature 'eldoc t)
-  (setq custom-delayed-init-variables '())
-  (elpaca eldoc
-    (require 'eldoc)
+  (use-package  eldoc
+    :ensure t
+    :config
     (global-eldoc-mode)
     (defun rgr/eldoc-at-point()
       (interactive)
       (if eldoc-mode
           (eldoc-box-help-at-point)
         (message "eldoc not active")))
-    (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
+    :bind
+    ("C-." .  rgr/eldoc-at-point))
   (use-package eldoc-box
     :after eldoc)
+
 #+end_src
 *** Consult
 **** Consult Core                                                   :consult:
@@ -1590,6 +1591,7 @@ Emacs lsp client
 https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
   (use-package eglot
+    :ensure t
     :custom
     (eglot-autoshutdown t)
     (eglot-send-changes-idle-time 0.5)
@@ -1922,15 +1924,15 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 *** Flymake
 #+begin_src  emacs-lisp
   (use-package flymake
-    :disabled t
+    :ensure t
     :custom
     (flymake-show-diagnostics-at-end-of-line nil)
     (flymake-no-changes-timeout 1.5)
     :config
-      (use-package flymake-easy)
+      (use-package flymake-easy))
     :bind
-    ("M-n" . flymake-goto-next-error)
-    ("M-p" . flymake-goto-prev-error))
+    ;; ("M-n" . flymake-goto-next-error)
+    ;; ("M-p" . flymake-goto-prev-error))
 #+end_src
 *** Flycheck
 #+begin_src  emacs-lisp

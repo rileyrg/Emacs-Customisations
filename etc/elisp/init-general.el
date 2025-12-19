@@ -162,17 +162,17 @@
   :bind
   ( "C-x C-f" . rgr/ffap))
 
-(unload-feature 'eldoc t)
-(setq custom-delayed-init-variables '())
-(elpaca eldoc
-  (require 'eldoc)
+(use-package  eldoc
+  :ensure t
+  :config
   (global-eldoc-mode)
   (defun rgr/eldoc-at-point()
     (interactive)
     (if eldoc-mode
         (eldoc-box-help-at-point)
       (message "eldoc not active")))
-  (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
+  :bind
+  ("C-." .  rgr/eldoc-at-point))
 (use-package eldoc-box
   :after eldoc)
 
@@ -874,6 +874,7 @@
   (kotlin-ts-mode .  rgr/kotlin-ts-mode-hook))
 
 (use-package eglot
+  :ensure t
   :custom
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.5)
@@ -1095,15 +1096,15 @@
   ("M-w" . kill-dwim))
 
 (use-package flymake
-  :disabled t
+  :ensure t
   :custom
   (flymake-show-diagnostics-at-end-of-line nil)
   (flymake-no-changes-timeout 1.5)
   :config
-    (use-package flymake-easy)
+    (use-package flymake-easy))
   :bind
-  ("M-n" . flymake-goto-next-error)
-  ("M-p" . flymake-goto-prev-error))
+  ;; ("M-n" . flymake-goto-next-error)
+  ;; ("M-p" . flymake-goto-prev-error))
 
 (use-package flycheck
   :ensure t
