@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgb010813"></a>
+<a id="orgda954a9"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb010813)
+See `org-agenda-files` [org-agenda-files](#orgda954a9)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1824,9 +1824,12 @@ The build and install process id documented [here](https://docs.platformio.org/e
       :custom
       (flymake-show-diagnostics-at-end-of-line nil)
       (flymake-no-changes-timeout 1.5)
-      :bind
+      :bind(
+            ("C-<f1>" . flymake-mode)
+      :map flymake-mode-map
+           ("C-S-<f1>" . flymake-show-diagnostics-buffer)
       ("M-n" . flymake-goto-next-error)
-      ("M-p" . flymake-goto-prev-error))
+      ("M-p" . flymake-goto-prev-error)))
 
 
 ### Flycheck
@@ -2640,7 +2643,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org63436a2) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org9652fe7) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2673,7 +2676,7 @@ to add to version control.
     fi
 
 
-<a id="org63436a2"></a>
+<a id="org9652fe7"></a>
 
 ### Gnome protocol handler desktop file
 

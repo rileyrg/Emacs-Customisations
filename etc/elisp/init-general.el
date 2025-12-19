@@ -1113,9 +1113,12 @@
   :custom
   (flymake-show-diagnostics-at-end-of-line nil)
   (flymake-no-changes-timeout 1.5)
-  :bind
+  :bind(
+        ("C-<f1>" . flymake-mode)
+  :map flymake-mode-map
+       ("C-S-<f1>" . flymake-show-diagnostics-buffer)
   ("M-n" . flymake-goto-next-error)
-  ("M-p" . flymake-goto-prev-error))
+  ("M-p" . flymake-goto-prev-error)))
 
 (use-package flycheck
   :disabled t

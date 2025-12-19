@@ -1941,9 +1941,12 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :custom
     (flymake-show-diagnostics-at-end-of-line nil)
     (flymake-no-changes-timeout 1.5)
-    :bind
+    :bind(
+          ("C-<f1>" . flymake-mode)
+    :map flymake-mode-map
+         ("C-S-<f1>" . flymake-show-diagnostics-buffer)
     ("M-n" . flymake-goto-next-error)
-    ("M-p" . flymake-goto-prev-error))
+    ("M-p" . flymake-goto-prev-error)))
 
 #+end_src
 *** Flycheck
