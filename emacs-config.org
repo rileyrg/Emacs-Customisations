@@ -1789,10 +1789,9 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 
 #+begin_src emacs-lisp
   (use-package flymake-cppcheck
-    :disabled t
     :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
     :custom
-    (flymake-cppcheck-enable "warning,performance,information,style")
+    (flymake-cppcheck-enable "error,warning,performance,information,style")
     :hook
       ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
 

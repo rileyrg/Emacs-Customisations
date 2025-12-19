@@ -1022,10 +1022,9 @@
         ("C-q" . rgr/browser-doc-search)))
 
 (use-package flymake-cppcheck
-  :disabled t
   :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
   :custom
-  (flymake-cppcheck-enable "warning,performance,information,style")
+  (flymake-cppcheck-enable "error,warning,performance,information,style")
   :hook
     ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
 
