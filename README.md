@@ -319,11 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<<<<<<< HEAD
-<a id="orge9d638f"></a>
-=======
-<a id="orgb61da79"></a>
->>>>>>> 1ed024737c0d790d4abcc703908f99d0bbb3fa80
+<a id="org61d962e"></a>
 
 ### Org Mode, org-mode
 
@@ -364,11 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-<<<<<<< HEAD
-See `org-agenda-files` [org-agenda-files](#orge9d638f)
-=======
-See `org-agenda-files` [org-agenda-files](#orgb61da79)
->>>>>>> 1ed024737c0d790d4abcc703908f99d0bbb3fa80
+See `org-agenda-files` [org-agenda-files](#org61d962e)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1702,6 +1694,14 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 1.  c-mode-common-hook
 
+        (use-package flymake-cppcheck
+          :disabled t
+          :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
+          :custom
+          (flymake-cppcheck-enable "warning,performance,information,style")
+          :hook
+            ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
+        
         (use-package c-ts-mode
           :ensure nil
           :config
@@ -1811,6 +1811,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
       :bind
       ("M-n" . flymake-goto-next-error)
       ("M-p" . flymake-goto-prev-error))
+    (use-package flymake-easy)
 
 1.  shellcheck
 
@@ -2597,11 +2598,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-<<<<<<< HEAD
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgee6b346) documented below.
-=======
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org01d2fb8) documented below.
->>>>>>> 1ed024737c0d790d4abcc703908f99d0bbb3fa80
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb94b09f) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2634,11 +2631,7 @@ to add to version control.
     fi
 
 
-<<<<<<< HEAD
-<a id="orgee6b346"></a>
-=======
-<a id="org01d2fb8"></a>
->>>>>>> 1ed024737c0d790d4abcc703908f99d0bbb3fa80
+<a id="orgb94b09f"></a>
 
 ### Gnome protocol handler desktop file
 

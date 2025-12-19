@@ -1022,23 +1022,23 @@
         ("C-q" . rgr/browser-doc-search)))
 
 (use-package flymake-cppcheck
-    :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
-    :custom
-;;    (flymake-cppcheck-enable "warning,performance,information,style")
-    (flymake-cppcheck-enable "warning,performance,information,style")
-    :hook
-      ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
+  :disabled t
+  :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
+  :custom
+  (flymake-cppcheck-enable "warning,performance,information,style")
+  :hook
+    ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
 
-  (use-package c-ts-mode
-    :ensure nil
-    :config
-    (defun rgr/c-ts-mode-common-hook ()
-      (message "rgr/c-ts-mode-common-hook")
-      (yas-minor-mode t) ;; This SHOULD be done by eglot but it doesn't work
-      (setq-local rgr/complete-line-f 'rgr/c-complete-line)
-      (setq-local c-ts-mode-indent-offset 4))
-    :hook
-    ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
+(use-package c-ts-mode
+  :ensure nil
+  :config
+  (defun rgr/c-ts-mode-common-hook ()
+    (message "rgr/c-ts-mode-common-hook")
+    (yas-minor-mode t) ;; This SHOULD be done by eglot but it doesn't work
+    (setq-local rgr/complete-line-f 'rgr/c-complete-line)
+    (setq-local c-ts-mode-indent-offset 4))
+  :hook
+  ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 
 (setq auto-mode-alist
         (append
