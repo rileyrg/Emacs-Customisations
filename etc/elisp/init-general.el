@@ -888,9 +888,10 @@
       )
     )
   (defun rgr/eglot-managed-mode-hook()
+    (flymake-cppcheck-setup)
     (hs-minor-mode t)
     (auto-fill-mode t)
-    (flymake-mode -1)
+    
     (if (featurep 'breadcrumb)
         (breadcrumb-local-mode)))
   :hook
@@ -1024,12 +1025,7 @@
         ("C-q" . rgr/browser-doc-search)))
 
 (use-package flymake-cppcheck
-  :disabled t
-  :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
-  :custom
-  (flymake-cppcheck-enable "error,warning,performance,information,style")
-  :hook
-    ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
+  :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck"))
 
 (use-package c-ts-mode
   :ensure nil
@@ -1100,13 +1096,12 @@
   :custom
   (flymake-show-diagnostics-at-end-of-line nil)
   (flymake-no-changes-timeout 1.5)
-  :config
-    (use-package flymake-easy))
   :bind
-  ;; ("M-n" . flymake-goto-next-error)
-  ;; ("M-p" . flymake-goto-prev-error))
+  ("M-n" . flymake-goto-next-error)
+  ("M-p" . flymake-goto-prev-error))
 
 (use-package flycheck
+  :disabled t
   :ensure t
   :custom
   (flycheck-auto-display-errors-after-checking nil)
@@ -1122,6 +1117,7 @@
   (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
 
 (use-package flycheck-posframe
+  :disabled t
   :ensure t
   :after flycheck
   :config

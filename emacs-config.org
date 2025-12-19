@@ -1605,9 +1605,10 @@ https://github.com/joaotavora/eglot
         )
       )
     (defun rgr/eglot-managed-mode-hook()
+      (flymake-cppcheck-setup)
       (hs-minor-mode t)
       (auto-fill-mode t)
-      (flymake-mode -1)
+      
       (if (featurep 'breadcrumb)
           (breadcrumb-local-mode)))
     :hook
@@ -1792,12 +1793,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 
 #+begin_src emacs-lisp
   (use-package flymake-cppcheck
-    :disabled t
-    :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
-    :custom
-    (flymake-cppcheck-enable "error,warning,performance,information,style")
-    :hook
-      ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
+    :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck"))
 
   (use-package c-ts-mode
     :ensure nil
@@ -1810,7 +1806,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :hook
     ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 
-  
+
 
 #+end_src
 **** cmake
@@ -1928,15 +1924,15 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     :custom
     (flymake-show-diagnostics-at-end-of-line nil)
     (flymake-no-changes-timeout 1.5)
-    :config
-      (use-package flymake-easy))
     :bind
-    ;; ("M-n" . flymake-goto-next-error)
-    ;; ("M-p" . flymake-goto-prev-error))
+    ("M-n" . flymake-goto-next-error)
+    ("M-p" . flymake-goto-prev-error))
+
 #+end_src
 *** Flycheck
 #+begin_src  emacs-lisp
   (use-package flycheck
+    :disabled t
     :ensure t
     :custom
     (flycheck-auto-display-errors-after-checking nil)
@@ -1952,6 +1948,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
     (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
 
   (use-package flycheck-posframe
+    :disabled t
     :ensure t
     :after flycheck
     :config

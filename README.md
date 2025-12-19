@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org7dc65b6"></a>
+<a id="org21f9cb9"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7dc65b6)
+See `org-agenda-files` [org-agenda-files](#org21f9cb9)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1524,9 +1524,10 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
               )
             )
           (defun rgr/eglot-managed-mode-hook()
+            (flymake-cppcheck-setup)
             (hs-minor-mode t)
             (auto-fill-mode t)
-            (flymake-mode -1)
+        
             (if (featurep 'breadcrumb)
                 (breadcrumb-local-mode)))
           :hook
@@ -1697,12 +1698,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
 1.  c-mode-common-hook
 
         (use-package flymake-cppcheck
-          :disabled t
-          :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
-          :custom
-          (flymake-cppcheck-enable "error,warning,performance,information,style")
-          :hook
-            ((c-ts-mode c++-ts-mode) . flymake-cppcheck-load))
+          :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck"))
         
         (use-package c-ts-mode
           :ensure nil
@@ -1811,16 +1807,15 @@ The build and install process id documented [here](https://docs.platformio.org/e
       :custom
       (flymake-show-diagnostics-at-end-of-line nil)
       (flymake-no-changes-timeout 1.5)
-      :config
-        (use-package flymake-easy))
       :bind
-      ;; ("M-n" . flymake-goto-next-error)
-      ;; ("M-p" . flymake-goto-prev-error))
+      ("M-n" . flymake-goto-next-error)
+      ("M-p" . flymake-goto-prev-error))
 
 
 ### Flycheck
 
     (use-package flycheck
+      :disabled t
       :ensure t
       :custom
       (flycheck-auto-display-errors-after-checking nil)
@@ -1836,6 +1831,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
       (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
     
     (use-package flycheck-posframe
+      :disabled t
       :ensure t
       :after flycheck
       :config
@@ -2627,7 +2623,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org017b8cc) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org78f9588) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2660,7 +2656,7 @@ to add to version control.
     fi
 
 
-<a id="org017b8cc"></a>
+<a id="org78f9588"></a>
 
 ### Gnome protocol handler desktop file
 
