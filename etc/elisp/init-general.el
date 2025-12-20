@@ -1030,6 +1030,15 @@
   :hook
   (eglot-managed-mode . flymake-cppcheck-setup))
 
+(use-package flymake-cppcheck
+  :disabled t ;; doesnt work
+  :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
+  :custom
+  (flymake-cppcheck-enable "warning,performance,information,style")
+  :hook
+  (eglot-managed-mode . flymake-cppcheck-load))
+
+
 (use-package c-ts-mode
   :ensure nil
   :config
