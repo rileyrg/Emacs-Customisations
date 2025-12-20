@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgb05d4b7"></a>
+<a id="org1d18f5a"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb05d4b7)
+See `org-agenda-files` [org-agenda-files](#org1d18f5a)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1833,7 +1833,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
     (use-package flymake
       :ensure t
       :custom
-      (flymake-show-diagnostics-at-end-of-line t)
+      (flymake-show-diagnostics-at-end-of-line nil)
       (flymake-no-changes-timeout 1.5)
       :config
       (defun rgr/flymake-cycle()
@@ -1846,9 +1846,10 @@ The build and install process id documented [here](https://docs.platformio.org/e
                   (flymake-mode -1))
               (progn
                 (setq flymake-show-diagnostics-at-end-of-line t)
-                (flymake-mode -1)
-                (flymake-mode 1)))
-          (flymake-mode 1)))
+                (flymake-start)
+                ))
+          (flymake-mode)))
+    
     
       :bind(
             ("C-<f1>" . rgr/flymake-cycle)
@@ -2669,7 +2670,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org93b0ec1) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org080859c) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2702,7 +2703,7 @@ to add to version control.
     fi
 
 
-<a id="org93b0ec1"></a>
+<a id="org080859c"></a>
 
 ### Gnome protocol handler desktop file
 

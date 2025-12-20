@@ -1950,7 +1950,7 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
   (use-package flymake
     :ensure t
     :custom
-    (flymake-show-diagnostics-at-end-of-line t)
+    (flymake-show-diagnostics-at-end-of-line nil)
     (flymake-no-changes-timeout 1.5)
     :config
     (defun rgr/flymake-cycle()
@@ -1963,9 +1963,10 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
                 (flymake-mode -1))
             (progn
               (setq flymake-show-diagnostics-at-end-of-line t)
-              (flymake-mode -1)
-              (flymake-mode 1)))
-        (flymake-mode 1)))
+              (flymake-start)
+              ))
+        (flymake-mode)))
+    
     
     :bind(
           ("C-<f1>" . rgr/flymake-cycle)

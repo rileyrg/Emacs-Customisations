@@ -1122,7 +1122,7 @@
 (use-package flymake
   :ensure t
   :custom
-  (flymake-show-diagnostics-at-end-of-line t)
+  (flymake-show-diagnostics-at-end-of-line nil)
   (flymake-no-changes-timeout 1.5)
   :config
   (defun rgr/flymake-cycle()
@@ -1135,9 +1135,10 @@
               (flymake-mode -1))
           (progn
             (setq flymake-show-diagnostics-at-end-of-line t)
-            (flymake-mode -1)
-            (flymake-mode 1)))
-      (flymake-mode 1)))
+            (flymake-start)
+            ))
+      (flymake-mode)))
+  
   
   :bind(
         ("C-<f1>" . rgr/flymake-cycle)
