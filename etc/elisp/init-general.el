@@ -878,7 +878,7 @@
   :custom
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.5)
-  ;;(eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
+  (eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
   :config
   ;;(add-hook  'eglot-stay-out-of 'yasnippet)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
@@ -890,7 +890,6 @@
   (defun rgr/eglot-managed-mode-hook()
     (hs-minor-mode t)
     (auto-fill-mode t)
-    
     (if (featurep 'breadcrumb)
         (breadcrumb-local-mode)))
   :hook
@@ -900,7 +899,7 @@
   ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
   :bind
   (:map eglot-mode-map (
-        ("C-<return>" . eglot-code-actions))))
+                        ("C-<return>" . eglot-code-actions))))
 
 ;; emacs 30 makes this redundant.
 (when (< emacs-major-version 30)
@@ -1023,22 +1022,6 @@
   (:map rustic-mode-map
         ("C-q" . rgr/browser-doc-search)))
 
-(use-package flymake-cppcheck
-  :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck")
-  :custom
-  (flymake-cppcheck-additional-checks '(warning style  portability information))
-  :hook
-  (eglot-managed-mode . flymake-cppcheck-setup))
-
-(use-package flymake-cppcheck
-  :disabled t ;; doesnt work
-  :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
-  :custom
-  (flymake-cppcheck-enable "warning,performance,information,style")
-  :hook
-  (eglot-managed-mode . flymake-cppcheck-load))
-
-
 (use-package c-ts-mode
   :ensure nil
   :config
@@ -1138,14 +1121,29 @@
             (flymake-start)
             ))
       (flymake-mode)))
-  
-  
   :bind(
         ("C-<f1>" . rgr/flymake-cycle)
         :map flymake-mode-map
         ("C-S-<f1>" . flymake-show-diagnostics-buffer)
         ("M-n" . flymake-goto-next-error)
         ("M-p" . flymake-goto-prev-error)))
+
+(use-package flymake-easy :ensure t)
+
+(use-package flymake-cppcheck
+  :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck")
+  :custom
+  (flymake-cppcheck-additional-checks '(warning style  portability information))
+  :hook
+  (eglot-managed-mode . flymake-cppcheck-setup))
+
+;; (use-package flymake-cppcheck
+;;   :disabled t ;; doesnt work
+;;   :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
+;;   :custom
+;;   (flymake-cppcheck-enable "warning,performance,information,style")
+;;   :hook
+;;   (eglot-managed-mode . flymake-cppcheck-load))
 
 (use-package flycheck
   :disabled t

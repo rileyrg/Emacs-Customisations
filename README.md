@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org1d18f5a"></a>
+<a id="org691caeb"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org1d18f5a)
+See `org-agenda-files` [org-agenda-files](#org691caeb)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1514,7 +1514,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           :custom
           (eglot-autoshutdown t)
           (eglot-send-changes-idle-time 0.5)
-          ;;(eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
+          (eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
           :config
           ;;(add-hook  'eglot-stay-out-of 'yasnippet)
           (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
@@ -1526,7 +1526,6 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           (defun rgr/eglot-managed-mode-hook()
             (hs-minor-mode t)
             (auto-fill-mode t)
-        
             (if (featurep 'breadcrumb)
                 (breadcrumb-local-mode)))
           :hook
@@ -1536,7 +1535,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           ((js-ts-mode c-ts-mode c++-ts-mode php-mode auctex-mode) . #'eglot-ensure)
           :bind
           (:map eglot-mode-map (
-                ("C-<return>" . eglot-code-actions))))
+                                ("C-<return>" . eglot-code-actions))))
         
         ;; emacs 30 makes this redundant.
         (when (< emacs-major-version 30)
@@ -1696,22 +1695,6 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 1.  c-mode-common-hook
 
-        (use-package flymake-cppcheck
-          :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck")
-          :custom
-          (flymake-cppcheck-additional-checks '(warning style  portability information))
-          :hook
-          (eglot-managed-mode . flymake-cppcheck-setup))
-        
-        (use-package flymake-cppcheck
-          :disabled t ;; doesnt work
-          :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
-          :custom
-          (flymake-cppcheck-enable "warning,performance,information,style")
-          :hook
-          (eglot-managed-mode . flymake-cppcheck-load))
-        
-        
         (use-package c-ts-mode
           :ensure nil
           :config
@@ -1849,14 +1832,29 @@ The build and install process id documented [here](https://docs.platformio.org/e
                 (flymake-start)
                 ))
           (flymake-mode)))
-    
-    
       :bind(
             ("C-<f1>" . rgr/flymake-cycle)
             :map flymake-mode-map
             ("C-S-<f1>" . flymake-show-diagnostics-buffer)
             ("M-n" . flymake-goto-next-error)
             ("M-p" . flymake-goto-prev-error)))
+    
+    (use-package flymake-easy :ensure t)
+    
+    (use-package flymake-cppcheck
+      :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck")
+      :custom
+      (flymake-cppcheck-additional-checks '(warning style  portability information))
+      :hook
+      (eglot-managed-mode . flymake-cppcheck-setup))
+    
+    ;; (use-package flymake-cppcheck
+    ;;   :disabled t ;; doesnt work
+    ;;   :ensure (:host github :repo "https://github.com/flymake/flymake-cppcheck")
+    ;;   :custom
+    ;;   (flymake-cppcheck-enable "warning,performance,information,style")
+    ;;   :hook
+    ;;   (eglot-managed-mode . flymake-cppcheck-load))
 
 
 ### Flycheck
@@ -2670,7 +2668,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org080859c) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3d8b3dc) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2703,7 +2701,7 @@ to add to version control.
     fi
 
 
-<a id="org080859c"></a>
+<a id="org3d8b3dc"></a>
 
 ### Gnome protocol handler desktop file
 
