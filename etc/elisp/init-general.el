@@ -204,7 +204,7 @@
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ;; M-g bindings in `goto-map'
          ("M-g e" . consult-compile-error)
-         ;;("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -1111,14 +1111,28 @@
 (use-package flymake
   :ensure t
   :custom
-  (flymake-show-diagnostics-at-end-of-line nil)
+  (flymake-show-diagnostics-at-end-of-line t)
   (flymake-no-changes-timeout 1.5)
+  :config
+  (defun rgr/flymake-cycle()
+    (interactive)
+    (if flymake-mode
+        (if flymake-show-diagnostics-at-end-of-line
+            (progn
+              (setq flymake-show-diagnostics-at-end-of-line nil)
+              (flymake-mode -1))
+          (progn
+            (setq flymake-show-diagnostics-at-end-of-line t)
+            (flymake-mode -1)
+            (flymake-mode 1)))
+      (flymake-mode)))
+  
   :bind(
-        ("C-<f1>" . flymake-mode)
-  :map flymake-mode-map
-       ("C-S-<f1>" . flymake-show-diagnostics-buffer)
-  ("M-n" . flymake-goto-next-error)
-  ("M-p" . flymake-goto-prev-error)))
+        ("C-<f1>" . rgr/flymake-cycle)
+        :map flymake-mode-map
+        ("C-S-<f1>" . flymake-show-diagnostics-buffer)
+        ("M-n" . flymake-goto-next-error)
+        ("M-p" . flymake-goto-prev-error)))
 
 (use-package flycheck
   :disabled t

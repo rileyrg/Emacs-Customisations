@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org53e9f86"></a>
+<a id="org85a9358"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org53e9f86)
+See `org-agenda-files` [org-agenda-files](#org85a9358)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -559,7 +559,7 @@ Various plugins for minibuffer enrichment
                  ("M-y" . consult-yank-pop)                ;; orig. yank-pop
                  ;; M-g bindings in `goto-map'
                  ("M-g e" . consult-compile-error)
-                 ;;("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
+                 ("M-g f" . consult-flymake)               ;; Alternative: consult-flymake
                  ("M-g g" . consult-goto-line)             ;; orig. goto-line
                  ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
                  ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -1822,14 +1822,28 @@ The build and install process id documented [here](https://docs.platformio.org/e
     (use-package flymake
       :ensure t
       :custom
-      (flymake-show-diagnostics-at-end-of-line nil)
+      (flymake-show-diagnostics-at-end-of-line t)
       (flymake-no-changes-timeout 1.5)
+      :config
+      (defun rgr/flymake-cycle()
+        (interactive)
+        (if flymake-mode
+            (if flymake-show-diagnostics-at-end-of-line
+                (progn
+                  (setq flymake-show-diagnostics-at-end-of-line nil)
+                  (flymake-mode -1))
+              (progn
+                (setq flymake-show-diagnostics-at-end-of-line t)
+                (flymake-mode -1)
+                (flymake-mode 1)))
+          (flymake-mode)))
+    
       :bind(
-            ("C-<f1>" . flymake-mode)
-      :map flymake-mode-map
-           ("C-S-<f1>" . flymake-show-diagnostics-buffer)
-      ("M-n" . flymake-goto-next-error)
-      ("M-p" . flymake-goto-prev-error)))
+            ("C-<f1>" . rgr/flymake-cycle)
+            :map flymake-mode-map
+            ("C-S-<f1>" . flymake-show-diagnostics-buffer)
+            ("M-n" . flymake-goto-next-error)
+            ("M-p" . flymake-goto-prev-error)))
 
 
 ### Flycheck
@@ -2643,7 +2657,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgac0f41d) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org949536b) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2676,7 +2690,7 @@ to add to version control.
     fi
 
 
-<a id="orgac0f41d"></a>
+<a id="org949536b"></a>
 
 ### Gnome protocol handler desktop file
 
