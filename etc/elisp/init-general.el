@@ -1115,6 +1115,7 @@
   (flymake-no-changes-timeout 1.5)
   :config
   (defun rgr/flymake-cycle()
+    "if flymake isnt on, turn it on. If it is on and eol diagnostics are shown turn flymake off, else turn eol diagnostics on."
     (interactive)
     (if flymake-mode
         (if flymake-show-diagnostics-at-end-of-line
@@ -1125,7 +1126,7 @@
             (setq flymake-show-diagnostics-at-end-of-line t)
             (flymake-mode -1)
             (flymake-mode 1)))
-      (flymake-mode)))
+      (flymake-mode 1)))
   
   :bind(
         ("C-<f1>" . rgr/flymake-cycle)
