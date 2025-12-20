@@ -1025,6 +1025,8 @@
 
 (use-package flymake-cppcheck
   :ensure (:host codeberg :repo "https://codeberg.org/shaohme/flymake-cppcheck")
+  :custom
+  (flymake-cppcheck-additional-checks '(warning style  portability information))
   :hook
   (eglot-managed-mode . flymake-cppcheck-setup))
 
