@@ -241,22 +241,27 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
   (setq rgr/fileRestored nil)
   (defun rgr/after-display()
+    (message "%s in rgr/after-display" (current-time-string))
+    
+    (when (get-buffer "*elpaca-log*")
+      (kill-buffer "*elpaca-log*"))
     (if rgr/session-history
         (set-face-background 'mode-line "lightgreen")
       (set-face-background 'mode-line "orangered"))
     (when rgr/daemonName
-      (set-frame-name (format "Emacs-%s" rgr/daemonName))
-     (when (get-buffer "*elpaca-log*")
-       (kill-buffer "*elpaca-log*")))
+      (set-frame-name (format "Emacs-%s" rgr/daemonName)))
     (when (and rgr/session-history (not rgr/fileRestored))
       ;;(setq rgr/fileRestored t)
-      (run-with-idle-timer 0.3 nil (lambda()(switch-to-buffer (recentf-open-most-recent-file 1))))
-      )) 
+      (run-with-idle-timer 1 nil
+                           (lambda()
+                             (when (not (string-equal (buffer-name) "COMMIT_EDITMSG"))
+                               (switch-to-buffer (recentf-open-most-recent-file 1)))))))
 
   (if rgr/daemonName
-      (add-hook 'server-after-make-frame-hook #'rgr/after-display)
+      (progn
+        (message "adding hook rgr/after-display to server-after-make-frame-hook")
+        (add-hook 'server-after-make-frame-hook #'rgr/after-display))
     (add-hook 'elpaca-after-init-hook 'rgr/after-display))
-
 #+end_src
 
 
