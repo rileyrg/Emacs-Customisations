@@ -174,8 +174,8 @@
     (if eldoc-mode
         (eldoc-box-help-at-point)
       (message "eldoc not active")))
-  :bind
-  ("C-." .  rgr/eldoc-at-point))
+  (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
+
 (use-package eldoc-box
   :after eldoc)
 
