@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (emacs-alert " ... is starting up..." )
 
 (defun load-el-gpg (load-dir)
@@ -163,8 +164,10 @@
   ( "C-x C-f" . rgr/ffap))
 
 (use-package  eldoc
-  :ensure t
+  :ensure (:wait t)
   :config
+  (use-package eldoc-box
+    :after eldoc)
   (global-eldoc-mode)
   (defun rgr/eldoc-at-point()
     (interactive)
@@ -173,8 +176,6 @@
       (message "eldoc not active")))
   :bind
   ("C-." .  rgr/eldoc-at-point))
-(use-package eldoc-box
-  :after eldoc)
 
 ;; Example configuration for Consult
 ;; Example configuration for Consult
@@ -362,6 +363,7 @@
 
 (use-package corfu
   ;;:disabled t
+   :ensure (:wait t)
   ;; Optional customizations
   :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'

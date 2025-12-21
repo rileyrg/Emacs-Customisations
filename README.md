@@ -34,11 +34,12 @@ Emacs early-init
 
 ## redirect emacs cache
 
-    ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+    ;;; early-init.el --- early bird  -*- no-byte-compile: t; lexical-binding: t; -*-
     ;; Maintained in emacs-config.org
     (when (boundp 'native-comp-eln-load-path)
       (startup-redirect-eln-cache "var/eln-cache"))
     (setq max-specpdl-size 13000)
+    (setq warning-suppress-log-types '((files missing-lexbind-cookie)))
 
 
 ## elpaca
@@ -248,6 +249,7 @@ Emacs early-init
 
 ## startup
 
+    ;; -*- lexical-binding: t; -*-
     (emacs-alert " ... is starting up..." )
 
 
@@ -325,7 +327,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org4ceb3f1"></a>
+<a id="org06fbdc4"></a>
 
 ### Org Mode, org-mode
 
@@ -366,7 +368,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4ceb3f1)
+See `org-agenda-files` [org-agenda-files](#org06fbdc4)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -515,8 +517,10 @@ Various plugins for minibuffer enrichment
 ### eldoc
 
     (use-package  eldoc
-      :ensure t
+      :ensure (:wait t)
       :config
+      (use-package eldoc-box
+        :after eldoc)
       (global-eldoc-mode)
       (defun rgr/eldoc-at-point()
         (interactive)
@@ -525,8 +529,6 @@ Various plugins for minibuffer enrichment
           (message "eldoc not active")))
       :bind
       ("C-." .  rgr/eldoc-at-point))
-    (use-package eldoc-box
-      :after eldoc)
 
 
 ### Consult
@@ -751,6 +753,7 @@ Let emacs suggest completions
 
     (use-package corfu
       ;;:disabled t
+       :ensure (:wait t)
       ;; Optional customizations
       :custom
       ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -2674,7 +2677,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org7454550) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org84989c8) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2707,7 +2710,7 @@ to add to version control.
     fi
 
 
-<a id="org7454550"></a>
+<a id="org84989c8"></a>
 
 ### Gnome protocol handler desktop file
 

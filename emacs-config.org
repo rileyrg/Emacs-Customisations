@@ -59,11 +59,12 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
 ** redirect emacs cache
 #+begin_src emacs-lisp
-  ;;; early-init.el --- early bird  -*- no-byte-compile: t -*-
+  ;;; early-init.el --- early bird  -*- no-byte-compile: t; lexical-binding: t; -*-
   ;; Maintained in emacs-config.org
   (when (boundp 'native-comp-eln-load-path)
     (startup-redirect-eln-cache "var/eln-cache"))
   (setq max-specpdl-size 13000)
+  (setq warning-suppress-log-types '((files missing-lexbind-cookie)))
 #+end_src
 
 ** elpaca
@@ -272,6 +273,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
 ** startup
 #+begin_src emacs-lisp
+  ;; -*- lexical-binding: t; -*-
   (emacs-alert " ... is starting up..." )
 #+end_src
 
@@ -560,8 +562,10 @@ Various plugins for minibuffer enrichment
 
 #+begin_src  emacs-lisp
   (use-package  eldoc
-    :ensure t
+    :ensure (:wait t)
     :config
+    (use-package eldoc-box
+      :after eldoc)
     (global-eldoc-mode)
     (defun rgr/eldoc-at-point()
       (interactive)
@@ -570,9 +574,6 @@ Various plugins for minibuffer enrichment
         (message "eldoc not active")))
     :bind
     ("C-." .  rgr/eldoc-at-point))
-  (use-package eldoc-box
-    :after eldoc)
-
 #+end_src
 *** Consult
 **** Consult Core                                                   :consult:
@@ -795,6 +796,7 @@ Let emacs suggest completions
 #+begin_src emacs-lisp
   (use-package corfu
     ;;:disabled t
+     :ensure (:wait t)
     ;; Optional customizations
     :custom
     ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
