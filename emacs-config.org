@@ -561,11 +561,11 @@ Various plugins for minibuffer enrichment
 *** eldoc
 
 #+begin_src  emacs-lisp
-  (use-package  eldoc
-    :ensure (:wait t)
+  (unload-feature 'eldoc t)
+  (setq custom-delayed-init-variables '())
+  (elpaca eldoc
+    (require 'eldoc)
     :config
-    (use-package eldoc-box
-      :after eldoc)
     (global-eldoc-mode)
     (defun rgr/eldoc-at-point()
       (interactive)
@@ -574,6 +574,8 @@ Various plugins for minibuffer enrichment
         (message "eldoc not active")))
     :bind
     ("C-." .  rgr/eldoc-at-point))
+  (use-package eldoc-box
+    :after eldoc)
 #+end_src
 *** Consult
 **** Consult Core                                                   :consult:
