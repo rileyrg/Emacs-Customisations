@@ -124,13 +124,13 @@
       (set-face-background 'mode-line "lightgreen")
     (set-face-background 'mode-line "orangered"))
   (when rgr/daemonName
-    (set-frame-name (format "Emacs-%s" rgr/daemonName)))
-  ;; (when (get-buffer "*elpaca-log*")
-  ;;   (kill-buffer "*elpaca-log*"))
+    (set-frame-name (format "Emacs-%s" rgr/daemonName))
+   (when (get-buffer "*elpaca-log*")
+     (kill-buffer "*elpaca-log*")))
   (when (and rgr/session-history (not rgr/fileRestored))
-    (setq rgr/fileRestored t)
+    ;;(setq rgr/fileRestored t)
     (run-with-idle-timer 0.3 nil (lambda()(switch-to-buffer (recentf-open-most-recent-file 1))))
-    ))
+    )) 
 
 (if rgr/daemonName
     (add-hook 'server-after-make-frame-hook #'rgr/after-display)

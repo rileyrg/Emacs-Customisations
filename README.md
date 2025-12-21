@@ -224,13 +224,13 @@ Emacs early-init
           (set-face-background 'mode-line "lightgreen")
         (set-face-background 'mode-line "orangered"))
       (when rgr/daemonName
-        (set-frame-name (format "Emacs-%s" rgr/daemonName)))
-      ;; (when (get-buffer "*elpaca-log*")
-      ;;   (kill-buffer "*elpaca-log*"))
+        (set-frame-name (format "Emacs-%s" rgr/daemonName))
+       (when (get-buffer "*elpaca-log*")
+         (kill-buffer "*elpaca-log*")))
       (when (and rgr/session-history (not rgr/fileRestored))
-        (setq rgr/fileRestored t)
+        ;;(setq rgr/fileRestored t)
         (run-with-idle-timer 0.3 nil (lambda()(switch-to-buffer (recentf-open-most-recent-file 1))))
-        ))
+        )) 
     
     (if rgr/daemonName
         (add-hook 'server-after-make-frame-hook #'rgr/after-display)
@@ -319,7 +319,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org691caeb"></a>
+<a id="org9f85f1b"></a>
 
 ### Org Mode, org-mode
 
@@ -360,7 +360,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org691caeb)
+See `org-agenda-files` [org-agenda-files](#org9f85f1b)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2668,7 +2668,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3d8b3dc) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga616b27) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2701,7 +2701,7 @@ to add to version control.
     fi
 
 
-<a id="org3d8b3dc"></a>
+<a id="orga616b27"></a>
 
 ### Gnome protocol handler desktop file
 
