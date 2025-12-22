@@ -327,7 +327,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgf5e87ec"></a>
+<a id="orgabbe134"></a>
 
 ### Org Mode, org-mode
 
@@ -368,7 +368,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgf5e87ec)
+See `org-agenda-files` [org-agenda-files](#orgabbe134)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -388,18 +388,12 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 ### use emacs project package
 
     (use-package project
-      :ensure t
-      :after (org)
       :custom
       (project-vc-extra-root-markers '(".project"))
       :config
       (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
       (define-key project-prefix-map "V" '("terminal" .  (lambda()(interactive)(shell-command "kitty"))))
       (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
-    
-    ;; (require 'project)
-    ;; (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-    ;; (define-key project-prefix-map "u" '("project url" .  rgr/project-url))
 
 
 ### add project based TODO
@@ -2286,12 +2280,14 @@ brings visual feedback to some operations by highlighting portions relating to t
     (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))
 
 
-# DIRED Daemon Init File
+# INFO Daemon Init File
 
-This tangles to its own init file [init-dired.el](etc/elisp/init-dired.el).
+This tangles to its own init file [init-info.el](etc/elisp/init-info.el).
 
-    (add-hook 'elpaca-after-init-hook (lambda()(run-with-idle-timer 1 nil  (lambda()(dired "~")))))
-    (add-hook 'server-after-make-frame-hook (lambda(&optional f)(run-with-idle-timer 1 nil  (lambda()(switch-to-buffer (other-buffer))))))
+    ;; -*- lexical-binding: t; -*-
+    (run-with-idle-timer 1 nil
+                         (lambda()
+                           (info)))
 
 
 # Email Init File
@@ -2301,6 +2297,7 @@ This tangles to its own init file [init-email.el](etc/elisp/init-email.el).
 
 ## mu4e
 
+    ;; -*- lexical-binding: t; -*-
     (emacs-alert "Starting Email - MU4E")
     (use-package mu4e :ensure ( :host github
                                 :branch "release/1.10"
@@ -2468,6 +2465,7 @@ This tangles to its own init file [init-irc.el](etc/elisp/init-irc.el) and locks
 
 ## erc
 
+    ;; -*- lexical-binding: t; -*-
     ;; generally loaded from init-erc.el ins a kiosk like mode
     (require 'erc)
     
@@ -2641,7 +2639,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3a07209) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0952cb0) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2674,7 +2672,7 @@ to add to version control.
     fi
 
 
-<a id="org3a07209"></a>
+<a id="org0952cb0"></a>
 
 ### Gnome protocol handler desktop file
 

@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; generally loaded from init-erc.el ins a kiosk like mode
 (require 'erc)
 

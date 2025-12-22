@@ -419,19 +419,12 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 *** use emacs project package
 #+begin_src  emacs-lisp
   (use-package project
-    :ensure t
-    :after (org)
     :custom
     (project-vc-extra-root-markers '(".project"))
     :config
     (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
     (define-key project-prefix-map "V" '("terminal" .  (lambda()(interactive)(shell-command "kitty"))))
     (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
-
-  ;; (require 'project)
-  ;; (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-  ;; (define-key project-prefix-map "u" '("project url" .  rgr/project-url))
-
 #+end_src
 *** add project based TODO
 #+begin_src  emacs-lisp
@@ -2430,15 +2423,17 @@ https://github.com/magnars/multiple-cursors.el
 #+end_src
 
 
-* DIRED Daemon Init File
+* INFO Daemon Init File
 :PROPERTIES:
-:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-dired.el")
+:header-args:emacs-lisp: :tangle (rgr/user-elisp-file "init-info.el")
 :END:
-This tangles to its own init file [[file:etc/elisp/init-dired.el][init-dired.el]].
+This tangles to its own init file [[file:etc/elisp/init-info.el][init-info.el]].
 
 #+begin_src  emacs-lisp
-  (add-hook 'elpaca-after-init-hook (lambda()(run-with-idle-timer 1 nil  (lambda()(dired "~")))))
-  (add-hook 'server-after-make-frame-hook (lambda(&optional f)(run-with-idle-timer 1 nil  (lambda()(switch-to-buffer (other-buffer))))))
+  ;; -*- lexical-binding: t; -*-
+  (run-with-idle-timer 1 nil
+                       (lambda()
+                         (info)))
 #+end_src 
 
 * Email Init File
@@ -2451,6 +2446,7 @@ This tangles to its own init file [[file:etc/elisp/init-email.el][init-email.el]
 :ID:       afa258b5-0cda-41f5-9b4f-c7475b402aca
 :END:
 #+begin_src emacs-lisp
+  ;; -*- lexical-binding: t; -*-
   (emacs-alert "Starting Email - MU4E")
   (use-package mu4e :ensure ( :host github
                               :branch "release/1.10"
@@ -2621,6 +2617,7 @@ This tangles to its own init file [[file:etc/elisp/init-irc.el][init-irc.el]] an
 
 ** erc
 #+begin_src  emacs-lisp 
+  ;; -*- lexical-binding: t; -*-
   ;; generally loaded from init-erc.el ins a kiosk like mode
   (require 'erc)
 

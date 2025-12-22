@@ -67,18 +67,12 @@
         ("M-." . find-function-at-point)))
 
 (use-package project
-  :ensure t
-  :after (org)
   :custom
   (project-vc-extra-root-markers '(".project"))
   :config
   (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
   (define-key project-prefix-map "V" '("terminal" .  (lambda()(interactive)(shell-command "kitty"))))
   (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
-
-;; (require 'project)
-;; (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-;; (define-key project-prefix-map "u" '("project url" .  rgr/project-url))
 
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture

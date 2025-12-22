@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (emacs-alert "Starting Email - MU4E")
 (use-package mu4e :ensure ( :host github
                             :branch "release/1.10"
