@@ -163,22 +163,6 @@
   :bind
   ( "C-x C-f" . rgr/ffap))
 
-(unload-feature 'eldoc t)
-(setq custom-delayed-init-variables '())
-(elpaca eldoc
-  (require 'eldoc)
-  :config
-  (global-eldoc-mode)
-  (defun rgr/eldoc-at-point()
-    (interactive)
-    (if eldoc-mode
-        (eldoc-box-help-at-point)
-      (message "eldoc not active")))
-  (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
-
-(use-package eldoc-box
-  :after eldoc)
-
 ;; Example configuration for Consult
 ;; Example configuration for Consult
 (use-package consult
@@ -911,6 +895,12 @@
     :after eglot
     :config	(eglot-booster-mode)))
 
+(use-package eldoc-mouse :ensure t
+  :config
+  :bind (:map eldoc-mouse-mode-map
+              ("C-." . eldoc-mouse-pop-doc-at-cursor)) ;; optional
+  :hook (eglot-managed-mode emacs-lisp-mode))
+
 (use-package dape
   :demand t
   :custom
@@ -923,7 +913,6 @@
   ;;(dape-start . dape-breakpoint-load)
   (dape-display-source . pulsar-pulse-line)
   (dape-compile .  kill-buffer)
-
   :config
   ;; Turn on global bindings for setting breakpoints with mouse
   ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
@@ -1107,7 +1096,7 @@
   ("M-w" . kill-dwim))
 
 (use-package flymake
-  :ensure t
+  :ensure nil
   :custom
   (flymake-show-diagnostics-at-end-of-line nil)
   (flymake-no-changes-timeout 1.5)
@@ -1149,29 +1138,6 @@
 ;;   :hook
 ;;   (eglot-managed-mode . flymake-cppcheck-load))
 
-(use-package flycheck
-  :disabled t
-  :ensure t
-  :custom
-  (flycheck-auto-display-errors-after-checking nil)
-  :init (global-flycheck-mode)
-  :bind
-  ("M-n" . flycheck-next-error)
-  ("M-p" . flycheck-prev-error))
-
-(use-package flycheck-inline
-  :disabled t
-  :after flycheck
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
-
-(use-package flycheck-posframe
-  :disabled t
-  :ensure t
-  :after flycheck
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
-
 (use-package flymake-shellcheck
   :disabled t
   :commands flymake-shellcheck-load
@@ -1187,16 +1153,16 @@
 
 (use-package package-lint)
 
-(setq load-path (cons (expand-file-name "el-docstring-sap" rgr/emacs-project-dir ) load-path))
-(use-package el-docstring-sap
-  :disabled t
-  :after (eldoc posframe)
-  :ensure nil
-  :hook
-  (emacs-lisp-mode . el-docstring-sap-mode)
-  :bind
-  ("M-<f2>" . el-docstring-sap-display)
-  ("M-<f1>" . el-docstring-sap-mode))
+;; (setq load-path (cons (expand-file-name "el-docstring-sap" rgr/emacs-project-dir ) load-path))
+;; (use-package el-docstring-sap
+;;   :disabled t
+;;   :after (eldoc posframe)
+;;   :ensure nil
+;;   :hook
+;;   (emacs-lisp-mode . el-docstring-sap-mode)
+;;   :bind
+;;   ("M-<f2>" . el-docstring-sap-display)
+;;   ("M-<f1>" . el-docstring-sap-mode))
 
 (use-package edebug-x
   :custom

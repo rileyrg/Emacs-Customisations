@@ -327,7 +327,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org158f9de"></a>
+<a id="orgf5e87ec"></a>
 
 ### Org Mode, org-mode
 
@@ -368,7 +368,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org158f9de)
+See `org-agenda-files` [org-agenda-files](#orgf5e87ec)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -512,25 +512,6 @@ Various plugins for minibuffer enrichment
             (call-interactively 'find-file-at-point))))
       :bind
       ( "C-x C-f" . rgr/ffap))
-
-
-### eldoc
-
-    (unload-feature 'eldoc t)
-    (setq custom-delayed-init-variables '())
-    (elpaca eldoc
-      (require 'eldoc)
-      :config
-      (global-eldoc-mode)
-      (defun rgr/eldoc-at-point()
-        (interactive)
-        (if eldoc-mode
-            (eldoc-box-help-at-point)
-          (message "eldoc not active")))
-      (global-set-key (kbd "C-.")  'rgr/eldoc-at-point))
-    
-    (use-package eldoc-box
-      :after eldoc)
 
 
 ### Consult
@@ -1554,30 +1535,37 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
             :after eglot
             :config	(eglot-booster-mode)))
 
-2.  dape
+2.  Eldoc
 
-        (use-package dape
-          :demand t
-          :custom
-          (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
-          (dape-buffer-window-arrangement 'right)
-          (dape-info-hide-mode-line nil)
-          (dape-inlay-hints t)
-          ;;(dape-cwd-fn 'projectile-project-root)
-          :hook
-          ;;(dape-start . dape-breakpoint-load)
-          (dape-display-source . pulsar-pulse-line)
-          (dape-compile .  kill-buffer)
-        
+        (use-package eldoc-mouse :ensure t
           :config
-          ;; Turn on global bindings for setting breakpoints with mouse
-          ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
-          (add-to-list 'recentf-exclude "dape-breakpoints")
-          (add-to-list 'recentf-exclude "var/org")
-          (dape-breakpoint-global-mode)
-          (add-hook 'dape-info-parent-mode-hook
-                    (defun dape--info-rescale ()
-                      (face-remap-add-relative 'default :height 0.8))))
+          :bind (:map eldoc-mouse-mode-map
+                      ("C-." . eldoc-mouse-pop-doc-at-cursor)) ;; optional
+          :hook (eglot-managed-mode emacs-lisp-mode))
+    
+    1.  dape
+    
+            (use-package dape
+              :demand t
+              :custom
+              (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
+              (dape-buffer-window-arrangement 'right)
+              (dape-info-hide-mode-line nil)
+              (dape-inlay-hints t)
+              ;;(dape-cwd-fn 'projectile-project-root)
+              :hook
+              ;;(dape-start . dape-breakpoint-load)
+              (dape-display-source . pulsar-pulse-line)
+              (dape-compile .  kill-buffer)
+              :config
+              ;; Turn on global bindings for setting breakpoints with mouse
+              ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
+              (add-to-list 'recentf-exclude "dape-breakpoints")
+              (add-to-list 'recentf-exclude "var/org")
+              (dape-breakpoint-global-mode)
+              (add-hook 'dape-info-parent-mode-hook
+                        (defun dape--info-rescale ()
+                          (face-remap-add-relative 'default :height 0.8))))
 
 
 ### Serial Port
@@ -1825,7 +1813,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
 ### Flymake
 
     (use-package flymake
-      :ensure t
+      :ensure nil
       :custom
       (flymake-show-diagnostics-at-end-of-line nil)
       (flymake-no-changes-timeout 1.5)
@@ -1867,32 +1855,6 @@ The build and install process id documented [here](https://docs.platformio.org/e
     ;;   :hook
     ;;   (eglot-managed-mode . flymake-cppcheck-load))
 
-
-### Flycheck
-
-    (use-package flycheck
-      :disabled t
-      :ensure t
-      :custom
-      (flycheck-auto-display-errors-after-checking nil)
-      :init (global-flycheck-mode)
-      :bind
-      ("M-n" . flycheck-next-error)
-      ("M-p" . flycheck-prev-error))
-    
-    (use-package flycheck-inline
-      :disabled t
-      :after flycheck
-      :config
-      (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
-    
-    (use-package flycheck-posframe
-      :disabled t
-      :ensure t
-      :after flycheck
-      :config
-      (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
-
 1.  shellcheck
 
         (use-package flymake-shellcheck
@@ -1925,16 +1887,16 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
     Display a poup containing docstring at point
     
-        (setq load-path (cons (expand-file-name "el-docstring-sap" rgr/emacs-project-dir ) load-path))
-        (use-package el-docstring-sap
-          :disabled t
-          :after (eldoc posframe)
-          :ensure nil
-          :hook
-          (emacs-lisp-mode . el-docstring-sap-mode)
-          :bind
-          ("M-<f2>" . el-docstring-sap-display)
-          ("M-<f1>" . el-docstring-sap-mode))
+        ;; (setq load-path (cons (expand-file-name "el-docstring-sap" rgr/emacs-project-dir ) load-path))
+        ;; (use-package el-docstring-sap
+        ;;   :disabled t
+        ;;   :after (eldoc posframe)
+        ;;   :ensure nil
+        ;;   :hook
+        ;;   (emacs-lisp-mode . el-docstring-sap-mode)
+        ;;   :bind
+        ;;   ("M-<f2>" . el-docstring-sap-display)
+        ;;   ("M-<f1>" . el-docstring-sap-mode))
 
 5.  Elisp debugging
 
@@ -2679,7 +2641,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org0007c23) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3a07209) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2712,7 +2674,7 @@ to add to version control.
     fi
 
 
-<a id="org0007c23"></a>
+<a id="org3a07209"></a>
 
 ### Gnome protocol handler desktop file
 
