@@ -70,6 +70,13 @@
   :custom
   (project-vc-extra-root-markers '(".project"))
   :config
+  
+  ;;;; colorize output in compile buffer
+  (require 'ansi-color)
+  (defun colorize-compilation-buffer ()
+    (ansi-color-apply-on-region compilation-filter-start (point-max)))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
   (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
   (define-key project-prefix-map "V" '("terminal" .  (lambda()(interactive)(shell-command "kitty"))))
   (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
