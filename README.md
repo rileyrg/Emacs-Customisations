@@ -327,7 +327,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org1c8b2d2"></a>
+<a id="orgcdd8045"></a>
 
 ### Org Mode, org-mode
 
@@ -368,7 +368,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org1c8b2d2)
+See `org-agenda-files` [org-agenda-files](#orgcdd8045)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -392,7 +392,7 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
       (project-vc-extra-root-markers '(".project"))
       :config
     
-      ;;;; colorize output in compile buffer
+        ;;;; colorize output in compile buffer
       (require 'ansi-color)
       (defun colorize-compilation-buffer ()
         (ansi-color-apply-on-region compilation-filter-start (point-max)))
@@ -1161,6 +1161,22 @@ lookup and reference uilities and config
 
 
 ## Programming Language related
+
+
+## dired execute
+
+    (use-package dired 
+      :config
+      (defun execute-file-at-point ()
+        "Execute the file at point. The user may provide additionnal arguments."
+        (interactive)
+        (let* ((exec-file (dired-file-name-at-point))
+               (command-base (concat "./" (file-name-nondirectory exec-file) " "))
+               (command (read-string "Additionnal arguments : " command-base)))
+          (shell-command command)))
+      :bind
+      (:map dired-mode-map
+            ( "e" . execute-file-at-point)))
 
 
 ### tag matching
@@ -2632,7 +2648,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgf538259) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org798624e) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2665,7 +2681,7 @@ to add to version control.
     fi
 
 
-<a id="orgf538259"></a>
+<a id="org798624e"></a>
 
 ### Gnome protocol handler desktop file
 

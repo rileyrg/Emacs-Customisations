@@ -71,7 +71,7 @@
   (project-vc-extra-root-markers '(".project"))
   :config
   
-  ;;;; colorize output in compile buffer
+    ;;;; colorize output in compile buffer
   (require 'ansi-color)
   (defun colorize-compilation-buffer ()
     (ansi-color-apply-on-region compilation-filter-start (point-max)))
@@ -648,6 +648,19 @@
   :commands (multi-vterm-project)
   :bind
   ("M-g t" . multi-vterm-project))
+
+(use-package dired 
+  :config
+  (defun execute-file-at-point ()
+    "Execute the file at point. The user may provide additionnal arguments."
+    (interactive)
+    (let* ((exec-file (dired-file-name-at-point))
+           (command-base (concat "./" (file-name-nondirectory exec-file) " "))
+           (command (read-string "Additionnal arguments : " command-base)))
+      (shell-command command)))
+  :bind
+  (:map dired-mode-map
+        ( "e" . execute-file-at-point)))
 
 (use-package evil-matchit
   :bind
