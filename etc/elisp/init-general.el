@@ -545,6 +545,12 @@
 ;; Initialize the default translator, let it send all paragraphs in the buffer to Bing and Google,
 ;; and output the results with a new Buffer.
 
+(use-package javelin
+  :disabled t ;; bugs in dired bookmarks so skipped
+  :ensure (:host github :repo "DamianB-BitFlipper/javelin.el")
+:config
+(global-javelin-minor-mode 1))
+
 (defun rgr/open-buffer-file-in-external-browser()
   (interactive)
   (eww-browse-with-external-browser buffer-file-name)

@@ -1034,6 +1034,14 @@ This is a translation framework for emacs, and is flexible and powerful.
 :END:
 A bit of a dogs dinner.
 
+*** javelin - quick project aware bookmarks
+#+begin_src emacs-lisp
+  (use-package javelin
+    :disabled t ;; bugs in dired bookmarks so skipped
+    :ensure (:host github :repo "DamianB-BitFlipper/javelin.el")
+  :config
+  (global-javelin-minor-mode 1))
+#+end_src 
 *** rgr/open-buffer-file-in external-browser
 #+begin_src  emacs-lisp
   (defun rgr/open-buffer-file-in-external-browser()
@@ -1221,6 +1229,7 @@ lookup and reference uilities and config
     :bind
     ("M-g t" . multi-vterm-project))
 #+end_src
+
 
 
 ** Programming Language related                                 :programming:

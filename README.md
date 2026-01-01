@@ -327,7 +327,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgcdd8045"></a>
+<a id="orgd8c7a3a"></a>
 
 ### Org Mode, org-mode
 
@@ -368,7 +368,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgcdd8045)
+See `org-agenda-files` [org-agenda-files](#orgd8c7a3a)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -988,6 +988,15 @@ lookup and reference uilities and config
 3.  utility funcs
 
     A bit of a dogs dinner.
+
+
+### javelin - quick project aware bookmarks
+
+    (use-package javelin
+      :disabled t ;; bugs in dired bookmarks so skipped
+      :ensure (:host github :repo "DamianB-BitFlipper/javelin.el")
+    :config
+    (global-javelin-minor-mode 1))
 
 
 ### rgr/open-buffer-file-in external-browser
@@ -2648,7 +2657,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org798624e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge082976) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2681,7 +2690,7 @@ to add to version control.
     fi
 
 
-<a id="org798624e"></a>
+<a id="orge082976"></a>
 
 ### Gnome protocol handler desktop file
 
