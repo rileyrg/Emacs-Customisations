@@ -245,7 +245,6 @@
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
 
-
   ;; Configure other variables and modes in the :config section,
   ;; after lazily loading the package.
   :config
@@ -673,6 +672,7 @@
   ("M-(" . evilmi-jump-items-native))
 
 (use-package consult-xref-stack :ensure (:host github :repo "brett-lempereur/consult-xref-stack")
+  :disabled t
 :bind
 (("M-," . consult-xref-stack-backward)))
 

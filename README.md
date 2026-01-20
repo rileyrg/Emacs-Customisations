@@ -327,7 +327,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgd8c7a3a"></a>
+<a id="orgf6a425e"></a>
 
 ### Org Mode, org-mode
 
@@ -368,7 +368,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgd8c7a3a)
+See `org-agenda-files` [org-agenda-files](#orgf6a425e)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -603,7 +603,6 @@ Various plugins for minibuffer enrichment
           ;; Use Consult to select xref locations with preview
           (setq xref-show-xrefs-function #'consult-xref
                 xref-show-definitions-function #'consult-xref)
-        
         
           ;; Configure other variables and modes in the :config section,
           ;; after lazily loading the package.
@@ -1198,6 +1197,7 @@ lookup and reference uilities and config
 ### consult xref stack
 
     (use-package consult-xref-stack :ensure (:host github :repo "brett-lempereur/consult-xref-stack")
+      :disabled t
     :bind
     (("M-," . consult-xref-stack-backward)))
 
@@ -2657,7 +2657,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge082976) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org00f1f99) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2690,7 +2690,7 @@ to add to version control.
     fi
 
 
-<a id="orge082976"></a>
+<a id="org00f1f99"></a>
 
 ### Gnome protocol handler desktop file
 
