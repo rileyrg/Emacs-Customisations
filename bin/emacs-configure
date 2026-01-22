@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 # Maintained in emacs-config.org
-cd ~/development/emacs/emacs/
-./configure --with-x-toolkit=lucid -with-tree-sitter --with-native-compilation --prefix="/usr/local/"
+cd ~/development/projects/emacs/
+./configure \
+    --prefix=/usr/local \
+    --with-x-toolkit=lucid \
+    --with-native-compilation=aot \
+    --with-tree-sitter \
+    CFLAGS="-O0 -ggdb -g3 -mtune=native -march=native -fomit-frame-pointer"

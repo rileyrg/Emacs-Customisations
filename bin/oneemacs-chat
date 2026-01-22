@@ -1,9 +1,0 @@
-#!/bin/bash
-WID=`xdotool search --name "Chat:"|head -1`
-if [[ -z ${WID} ]]; then
-    notify-send "Starting Chats in Emacs..."
-    emacs -chat
-else
-    notify-send "restoring Chat instance..."
-    xdotool windowactivate $WID
-fi
