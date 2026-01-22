@@ -327,7 +327,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgf6a425e"></a>
+<a id="orgbf34851"></a>
 
 ### Org Mode, org-mode
 
@@ -368,7 +368,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgf6a425e)
+See `org-agenda-files` [org-agenda-files](#orgbf34851)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2073,20 +2073,22 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 ### taming windows
 
-    (use-package popper
-      :ensure t
-      :custom
-      (popper-window-height 'rgr/popper-window-height)
-      :config
-      (defun rgr/popper-window-height(win)
-        (interactive)
-        (/ (frame-height) 3))
-      :init
-      (popper-mode +1)
-      (popper-echo-mode +1)
-      :bind (("C-´"   . popper-toggle)
-             ("M-´"   . popper-cycle)
-             ("C-M-´" . popper-toggle-type)))
+1.  <https://www.reddit.com/r/emacs/comments/1qjeijs/popperel_not_respecting_popperwindowheight_value/>
+
+        (use-package popper
+          :ensure t
+          :custom
+          (popper-window-height 'rgr/popper-window-height)
+          :config
+          (defun rgr/popper-window-height(win)
+            (interactive)
+            (/ (frame-height) 3))
+          :init
+          (popper-mode +1)
+          (popper-echo-mode +1)
+          :bind (("C-´"   . popper-toggle)
+                 ("M-´"   . popper-cycle)
+                 ("C-M-´" . popper-toggle-type)))
 
 
 ### posframe
@@ -2657,7 +2659,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org00f1f99) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgbfd9106) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2690,7 +2692,7 @@ to add to version control.
     fi
 
 
-<a id="org00f1f99"></a>
+<a id="orgbfd9106"></a>
 
 ### Gnome protocol handler desktop file
 

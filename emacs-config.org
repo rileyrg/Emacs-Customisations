@@ -2209,6 +2209,7 @@ Display a poup containing docstring at point
 
 #+end_src
 *** taming windows
+**** TODO https://www.reddit.com/r/emacs/comments/1qjeijs/popperel_not_respecting_popperwindowheight_value/
 #+begin_src  emacs-lisp
   (use-package popper
     :ensure t
