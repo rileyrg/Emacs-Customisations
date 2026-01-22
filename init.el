@@ -13,7 +13,7 @@
       (message "No debug initfile, %s, found so ignoring" debug-init))))
 (debug-init)
 
-(defcustom rgr/emacs-project-dir "~/development/emacs" "personal elisp libraries" )
+(defcustom rgr/emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 
 (defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -57,6 +57,11 @@
 (elpaca elpaca-use-package
   ;; Enable use-package :ensure support for Elpaca.
   (elpaca-use-package-mode))
+
+(use-package auto-compile :ensure t
+  :config
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
 
 (setq custom-file  (expand-file-name  "var/secrets/custom.el" user-emacs-directory))
 (load custom-file 'noerror)

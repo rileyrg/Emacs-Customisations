@@ -45,6 +45,7 @@ Emacs early-init
 ## elpaca
 
     (setq package-enable-at-startup nil)
+    (setq load-prefer-newer t)
 
 
 ## elisp locations
@@ -91,7 +92,7 @@ Emacs early-init
 
 ### own projects
 
-    (defcustom rgr/emacs-project-dir "~/development/emacs" "personal elisp libraries" )
+    (defcustom rgr/emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 
 
 ### elpaca
@@ -141,6 +142,11 @@ Emacs early-init
     (elpaca elpaca-use-package
       ;; Enable use-package :ensure support for Elpaca.
       (elpaca-use-package-mode))
+    
+    (use-package auto-compile :ensure t
+      :config
+      (auto-compile-on-load-mode)
+      (auto-compile-on-save-mode))
 
 
 ## custom.el
@@ -327,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org855f570"></a>
+<a id="org39b2a27"></a>
 
 ### Org Mode, org-mode
 
@@ -368,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org855f570)
+See `org-agenda-files` [org-agenda-files](#org39b2a27)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2664,7 +2670,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgecfc27e) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge34aac7) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2697,7 +2703,7 @@ to add to version control.
     fi
 
 
-<a id="orgecfc27e"></a>
+<a id="orge34aac7"></a>
 
 ### Gnome protocol handler desktop file
 

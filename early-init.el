@@ -6,6 +6,7 @@
 (setq warning-suppress-log-types '((files missing-lexbind-cookie)))
 
 (setq package-enable-at-startup nil)
+(setq load-prefer-newer t)
 
 (defcustom rgr/elisp-dir (expand-file-name "etc/elisp" user-emacs-directory)
   "Where user elisp files should be stored."

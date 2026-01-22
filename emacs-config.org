@@ -69,7 +69,8 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 
 ** elpaca
 #+begin_src  emacs-lisp
-(setq package-enable-at-startup nil)
+  (setq package-enable-at-startup nil)
+  (setq load-prefer-newer t)
 #+end_src
 
 ** elisp locations
@@ -116,7 +117,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
 ** package management
 *** own projects
 #+begin_src  emacs-lisp
-    (defcustom rgr/emacs-project-dir "~/development/emacs" "personal elisp libraries" )
+    (defcustom rgr/emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 #+end_src
 *** elpaca
 #+begin_src  emacs-lisp
@@ -165,6 +166,11 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
   (elpaca elpaca-use-package
     ;; Enable use-package :ensure support for Elpaca.
     (elpaca-use-package-mode))
+
+  (use-package auto-compile :ensure t
+    :config
+    (auto-compile-on-load-mode)
+    (auto-compile-on-save-mode))
 #+end_src 
 ** custom.el
 #+begin_src emacs-lisp
