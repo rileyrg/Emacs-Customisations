@@ -260,8 +260,8 @@
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-file-register
-   consult--source-recent-file consult--source-project-recent-file
+   consult-source-bookmark consult-source-file-register
+   consult-source-recent-file consult-source-project-recent-file
    ;; :preview-key "M-."
    :preview-key '(:debounce 0.4 any))
 
@@ -624,6 +624,7 @@
   (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp" "qt")))))
 
 (use-package pdf-tools
+  :disabled t
   :demand t
   :config
   (pdf-loader-install)
@@ -654,7 +655,8 @@
   :bind
   ("M-g t" . multi-vterm-project))
 
-(use-package dired 
+(use-package dired
+  :ensure nil
   :config
   (defun execute-file-at-point ()
     "Execute the file at point. The user may provide additionnal arguments."
@@ -791,6 +793,7 @@
   (magit-post-refresh . diff-hl-magit-post-refresh))
 
 (use-package gptel
+  :disabled t
   :custom
   (gptel-model 'gemini-2.5-pro)
   (gptel-default-mode 'org-mode)
@@ -802,6 +805,7 @@
   ("C-c q" . gptel-send))
 
 (use-package aider :ensure (:host github :repo "tninja/aider.el")
+  :disabled t
   :config
   (setenv "GEMINI_API_KEY" (get-auth-info "api.openai.com" "apikey"))
   (setq aider-args `("--model" "gemini-2.5-pro"))
@@ -810,6 +814,7 @@
 
 ;; install claude-code.el
 (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
+  :disabled t
   ;; optional hook for Monet IDE integration:
   :hook (claude-code-process-environment-functions . monet-start-server-function)
   :config 
@@ -861,11 +866,18 @@
   (kotlin-ts-mode .  rgr/kotlin-ts-mode-hook))
 
 (use-package eglot
-  :ensure t
+  :ensure nil
   :custom
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.5)
-  (eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
+  (eglot-ignored-server-capabilities
+   '(:hoverProvider
+     :documentHighlightProvider
+     :documentFormattingProvider
+     :documentRangeFormattingProvider
+     :documentOnTypeFormattingProvider
+     :colorProvider
+     :foldingRangeProvider))
   :config
   ;;(add-hook  'eglot-stay-out-of 'yasnippet)
   (defun my/eglot-capf ()

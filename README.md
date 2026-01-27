@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org39b2a27"></a>
+<a id="org0cd4d26"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org39b2a27)
+See `org-agenda-files` [org-agenda-files](#org0cd4d26)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -625,8 +625,8 @@ Various plugins for minibuffer enrichment
            consult-theme :preview-key '(:debounce 0.2 any)
            consult-ripgrep consult-git-grep consult-grep
            consult-bookmark consult-recent-file consult-xref
-           consult--source-bookmark consult--source-file-register
-           consult--source-recent-file consult--source-project-recent-file
+           consult-source-bookmark consult-source-file-register
+           consult-source-recent-file consult-source-project-recent-file
            ;; :preview-key "M-."
            :preview-key '(:debounce 0.4 any))
         
@@ -1122,6 +1122,7 @@ gives us google translate:-
 files : faster, more otions and you can annotatePDFs. 
 
     (use-package pdf-tools
+      :disabled t
       :demand t
       :config
       (pdf-loader-install)
@@ -1179,7 +1180,8 @@ lookup and reference uilities and config
 
 ## dired execute
 
-    (use-package dired 
+    (use-package dired
+      :ensure nil
       :config
       (defun execute-file-at-point ()
         "Execute the file at point. The user may provide additionnal arguments."
@@ -1415,6 +1417,7 @@ lookup and reference uilities and config
 1.  gptel
 
         (use-package gptel
+          :disabled t
           :custom
           (gptel-model 'gemini-2.5-pro)
           (gptel-default-mode 'org-mode)
@@ -1428,6 +1431,7 @@ lookup and reference uilities and config
 2.  Aider
 
         (use-package aider :ensure (:host github :repo "tninja/aider.el")
+          :disabled t
           :config
           (setenv "GEMINI_API_KEY" (get-auth-info "api.openai.com" "apikey"))
           (setq aider-args `("--model" "gemini-2.5-pro"))
@@ -1438,6 +1442,7 @@ lookup and reference uilities and config
 
           ;; install claude-code.el
         (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
+          :disabled t
           ;; optional hook for Monet IDE integration:
           :hook (claude-code-process-environment-functions . monet-start-server-function)
           :config 
@@ -1513,11 +1518,18 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
     <https://github.com/joaotavora/eglot>
     
         (use-package eglot
-          :ensure t
+          :ensure nil
           :custom
           (eglot-autoshutdown t)
           (eglot-send-changes-idle-time 0.5)
-          (eglot-ignored-server-capabilities '( :documentHighlightProvider));; dont let eglot/eldoc show doc, rather flymake.
+          (eglot-ignored-server-capabilities
+           '(:hoverProvider
+             :documentHighlightProvider
+             :documentFormattingProvider
+             :documentRangeFormattingProvider
+             :documentOnTypeFormattingProvider
+             :colorProvider
+             :foldingRangeProvider))
           :config
           ;;(add-hook  'eglot-stay-out-of 'yasnippet)
           (defun my/eglot-capf ()
@@ -2670,7 +2682,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orge34aac7) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1ddc597) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2703,7 +2715,7 @@ to add to version control.
     fi
 
 
-<a id="orge34aac7"></a>
+<a id="org1ddc597"></a>
 
 ### Gnome protocol handler desktop file
 
