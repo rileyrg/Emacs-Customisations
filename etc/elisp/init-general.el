@@ -78,8 +78,11 @@
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
   (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-  (define-key project-prefix-map "V" '("terminal" .  (lambda()(interactive)(shell-command "kitty"))))
-  (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
+  (define-key project-prefix-map "V" '("terminal" .  (lambda()
+                                                       (interactive)
+                                                       (shell-command
+                                                        (concat "kitty " (project-root (project-current))))))))
+  ;; (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
 
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture

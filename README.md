@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org0cd4d26"></a>
+<a id="org144b52d"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org0cd4d26)
+See `org-agenda-files` [org-agenda-files](#org144b52d)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -405,8 +405,11 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
       (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
     
       (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-      (define-key project-prefix-map "V" '("terminal" .  (lambda()(interactive)(shell-command "kitty"))))
-      (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
+      (define-key project-prefix-map "V" '("terminal" .  (lambda()
+                                                           (interactive)
+                                                           (shell-command
+                                                            (concat "kitty " (project-root (project-current))))))))
+      ;; (define-key project-prefix-map "u" '("project url" .  rgr/project-url)))
 
 
 ### add project based TODO
@@ -2682,7 +2685,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1ddc597) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org15f2294) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2715,7 +2718,7 @@ to add to version control.
     fi
 
 
-<a id="org1ddc597"></a>
+<a id="org15f2294"></a>
 
 ### Gnome protocol handler desktop file
 
