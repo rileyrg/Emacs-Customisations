@@ -81,8 +81,8 @@
   (define-key project-prefix-map "V" '("terminal" .  (lambda()
                                                        (interactive)
                                                        (let ((root (project-root (project-current))))
-                                                         (shell-command
-                                                          (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " kitty " root)))))))
+                                                         (call-process-shell-command
+                                                          (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " kitty " root) nil 0))))))
 
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture

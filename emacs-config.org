@@ -439,8 +439,8 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
     (define-key project-prefix-map "V" '("terminal" .  (lambda()
                                                          (interactive)
                                                          (let ((root (project-root (project-current))))
-                                                           (shell-command
-                                                            (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " kitty " root)))))))
+                                                           (call-process-shell-command
+                                                            (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " kitty " root) nil 0))))))
 #+end_src
 *** add project based TODO
 #+begin_src  emacs-lisp
