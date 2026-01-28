@@ -874,13 +874,15 @@
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.5)
   (eglot-ignored-server-capabilities
-   '(:hoverProvider
-     :documentHighlightProvider
-     :documentFormattingProvider
-     :documentRangeFormattingProvider
-     :documentOnTypeFormattingProvider
-     :colorProvider
-     :foldingRangeProvider))
+   '(
+     ;;:hoverProvider
+     ;;:documentHighlightProvider
+     ;;:documentFormattingProvider
+     ;;:documentRangeFormattingProvider
+     ;;:documentOnTypeFormattingProvider
+     ;;:colorProvider
+     ;;:foldingRangeProvider
+     ))
   :config
   ;;(add-hook  'eglot-stay-out-of 'yasnippet)
   (defun my/eglot-capf ()
