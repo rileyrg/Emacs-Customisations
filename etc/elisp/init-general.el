@@ -417,7 +417,6 @@
                       (list #'cape-dabbrev #'cape-file #'cape-abbrev))))
 
 (use-package  which-key
-  :ensure nil
   :demand t
   :config (which-key-mode))
 
@@ -657,6 +656,8 @@
   :commands (multi-vterm-project)
   :bind
   ("M-g t" . multi-vterm-project))
+
+
 
 (use-package dired
   :ensure nil
@@ -924,28 +925,6 @@
               ("C-." . eldoc-mouse-pop-doc-at-cursor)) ;; optional
   :hook (eglot-managed-mode emacs-lisp-mode))
 
-(use-package dape
-  :demand t
-  :custom
-  (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
-  (dape-buffer-window-arrangement 'right)
-  (dape-info-hide-mode-line nil)
-  (dape-inlay-hints t)
-  ;;(dape-cwd-fn 'projectile-project-root)
-  :hook
-  ;;(dape-start . dape-breakpoint-load)
-  (dape-display-source . pulsar-pulse-line)
-  (dape-compile .  kill-buffer)
-  :config
-  ;; Turn on global bindings for setting breakpoints with mouse
-  ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
-  (add-to-list 'recentf-exclude "dape-breakpoints")
-  (add-to-list 'recentf-exclude "var/org")
-  (dape-breakpoint-global-mode)
-  (add-hook 'dape-info-parent-mode-hook
-            (defun dape--info-rescale ()
-              (face-remap-add-relative 'default :height 0.8))))
-
 (defgroup rgr/serial-ports nil
   "serial port customization"
   :group 'rgr)
@@ -1097,21 +1076,6 @@
 (show-paren-mode 1)
 (setq blink-matching-delay 2.5)
 
-(electric-pair-mode 1)
-(setq electric-pair-inhibit-predicate
-      (lambda (c)
-        (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
-
-;; stolen from emacs info
-(defun rgr/match-paren (arg)
-  "Go to the matching paren if on a paren; otherwise insert %."
-  (interactive "p")
-  (cond ((looking-at "\\s(") (forward-list 1) (backward-char 1))
-        ((looking-at "\\s)") (forward-char 1) (backward-list 1))
-        (t (self-insert-command (or arg 1)))))
-
-(global-set-key (kbd "%") 'rgr/match-paren)
-
 (setq load-path (cons (expand-file-name "kill-dwim" rgr/emacs-project-dir ) load-path))
 (use-package kill-dwim
   :ensure nil
@@ -1248,7 +1212,7 @@
 
 (winner-mode 1)
 
-(repeat-mode)
+(repeat-mode 1)
 
 (global-auto-revert-mode 1)
 ;; Also auto refresh dired, but be quiet about it

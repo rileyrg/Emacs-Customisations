@@ -860,7 +860,6 @@ Let emacs suggest completions
 [[https://github.com/justbur/emacs-which-key][which-key]] shows you what further key options you have if you pause on a multi key command.
 #+begin_src emacs-lisp
   (use-package  which-key
-    :ensure nil
     :demand t
     :config (which-key-mode))
 #+end_src
@@ -1242,6 +1241,10 @@ lookup and reference uilities and config
 
 
 ** Programming Language related                                 :programming:
+
+** debugging
+#+begin_src  emacs-lisp
+#+end_src 
 
 ** dired execute
 #+begin_src  emacs-lisp
@@ -1659,32 +1662,6 @@ https://github.com/joaotavora/eglot
     :hook (eglot-managed-mode emacs-lisp-mode))
 #+end_src 
 
-******* dape
-#+begin_src  emacs-lisp
-  (use-package dape
-    :demand t
-    :custom
-    (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
-    (dape-buffer-window-arrangement 'right)
-    (dape-info-hide-mode-line nil)
-    (dape-inlay-hints t)
-    ;;(dape-cwd-fn 'projectile-project-root)
-    :hook
-    ;;(dape-start . dape-breakpoint-load)
-    (dape-display-source . pulsar-pulse-line)
-    (dape-compile .  kill-buffer)
-    :config
-    ;; Turn on global bindings for setting breakpoints with mouse
-    ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
-    (add-to-list 'recentf-exclude "dape-breakpoints")
-    (add-to-list 'recentf-exclude "var/org")
-    (dape-breakpoint-global-mode)
-    (add-hook 'dape-info-parent-mode-hook
-              (defun dape--info-rescale ()
-                (face-remap-add-relative 'default :height 0.8))))
-
-#+end_src
-
 
 *** Serial Port
 :PROPERTIES:
@@ -1934,21 +1911,6 @@ CLOSED: [2023-11-27 Mon 04:59] SCHEDULED: <2021-09-26 Sun>
 #+begin_src  emacs-lisp
   (show-paren-mode 1)
   (setq blink-matching-delay 2.5)
-
-  (electric-pair-mode 1)
-  (setq electric-pair-inhibit-predicate
-        (lambda (c)
-          (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
-
-  ;; stolen from emacs info
-  (defun rgr/match-paren (arg)
-    "Go to the matching paren if on a paren; otherwise insert %."
-    (interactive "p")
-    (cond ((looking-at "\\s(") (forward-list 1) (backward-char 1))
-          ((looking-at "\\s)") (forward-char 1) (backward-list 1))
-          (t (self-insert-command (or arg 1)))))
-
-  (global-set-key (kbd "%") 'rgr/match-paren)
 #+end_src
 
 *** kill-dwim
@@ -2148,7 +2110,7 @@ Display a poup containing docstring at point
 
   (winner-mode 1)
 
-  (repeat-mode)
+  (repeat-mode 1)
 
   (global-auto-revert-mode 1)
   ;; Also auto refresh dired, but be quiet about it
@@ -2232,7 +2194,6 @@ Display a poup containing docstring at point
 
 #+end_src
 *** taming windows
-**** TODO https://www.reddit.com/r/emacs/comments/1qjeijs/popperel_not_respecting_popperwindowheight_value/
 #+begin_src  emacs-lisp
   (use-package popper
     :ensure t
@@ -2489,7 +2450,9 @@ This tangles to its own init file [[file:etc/elisp/init-email.el][init-email.el]
 #+begin_src emacs-lisp
   ;; -*- lexical-binding: t; -*-
   (emacs-alert "Starting Email - MU4E")
-  (use-package mu4e :ensure ( :host github
+  (use-package mu4e
+    :ensure t
+    ( :host github
                               :branch "release/1.10"
                               :repo "djcb/mu"
                               :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
@@ -2753,7 +2716,6 @@ This tangles to its own init file [[file:etc/elisp/init-irc.el][init-irc.el]] an
   cd ~/development/projects/emacs/
   make -j$(nproc)
 #+end_src
-
 ** Project version control with  git
 
 *** .gitignore

@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 (emacs-alert "Starting Email - MU4E")
-(use-package mu4e :ensure ( :host github
+(use-package mu4e
+  :ensure t
+  ( :host github
                             :branch "release/1.10"
                             :repo "djcb/mu"
                             :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")

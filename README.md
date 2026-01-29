@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org4301e6e"></a>
+<a id="orgc34609b"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4301e6e)
+See `org-agenda-files` [org-agenda-files](#orgc34609b)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -815,7 +815,6 @@ Let emacs suggest completions
 [which-key](https://github.com/justbur/emacs-which-key) shows you what further key options you have if you pause on a multi key command.
 
     (use-package  which-key
-      :ensure nil
       :demand t
       :config (which-key-mode))
 
@@ -1181,6 +1180,9 @@ lookup and reference uilities and config
 ## Programming Language related
 
 
+## debugging
+
+
 ## dired execute
 
     (use-package dired
@@ -1526,13 +1528,15 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           (eglot-autoshutdown t)
           (eglot-send-changes-idle-time 0.5)
           (eglot-ignored-server-capabilities
-           '(:hoverProvider
-             :documentHighlightProvider
-             :documentFormattingProvider
-             :documentRangeFormattingProvider
-             :documentOnTypeFormattingProvider
-             :colorProvider
-             :foldingRangeProvider))
+           '(
+             ;;:hoverProvider
+             ;;:documentHighlightProvider
+             ;;:documentFormattingProvider
+             ;;:documentRangeFormattingProvider
+             ;;:documentOnTypeFormattingProvider
+             ;;:colorProvider
+             ;;:foldingRangeProvider
+             ))
           :config
           ;;(add-hook  'eglot-stay-out-of 'yasnippet)
           (defun my/eglot-capf ()
@@ -1575,30 +1579,6 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           :bind (:map eldoc-mouse-mode-map
                       ("C-." . eldoc-mouse-pop-doc-at-cursor)) ;; optional
           :hook (eglot-managed-mode emacs-lisp-mode))
-    
-    1.  dape
-    
-            (use-package dape
-              :demand t
-              :custom
-              (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
-              (dape-buffer-window-arrangement 'right)
-              (dape-info-hide-mode-line nil)
-              (dape-inlay-hints t)
-              ;;(dape-cwd-fn 'projectile-project-root)
-              :hook
-              ;;(dape-start . dape-breakpoint-load)
-              (dape-display-source . pulsar-pulse-line)
-              (dape-compile .  kill-buffer)
-              :config
-              ;; Turn on global bindings for setting breakpoints with mouse
-              ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
-              (add-to-list 'recentf-exclude "dape-breakpoints")
-              (add-to-list 'recentf-exclude "var/org")
-              (dape-breakpoint-global-mode)
-              (add-hook 'dape-info-parent-mode-hook
-                        (defun dape--info-rescale ()
-                          (face-remap-add-relative 'default :height 0.8))))
 
 
 ### Serial Port
@@ -1817,21 +1797,6 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
     (show-paren-mode 1)
     (setq blink-matching-delay 2.5)
-    
-    (electric-pair-mode 1)
-    (setq electric-pair-inhibit-predicate
-          (lambda (c)
-            (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
-    
-    ;; stolen from emacs info
-    (defun rgr/match-paren (arg)
-      "Go to the matching paren if on a paren; otherwise insert %."
-      (interactive "p")
-      (cond ((looking-at "\\s(") (forward-list 1) (backward-char 1))
-            ((looking-at "\\s)") (forward-char 1) (backward-list 1))
-            (t (self-insert-command (or arg 1)))))
-    
-    (global-set-key (kbd "%") 'rgr/match-paren)
 
 
 ### kill-dwim
@@ -2009,7 +1974,7 @@ The build and install process id documented [here](https://docs.platformio.org/e
     
     (winner-mode 1)
     
-    (repeat-mode)
+    (repeat-mode 1)
     
     (global-auto-revert-mode 1)
     ;; Also auto refresh dired, but be quiet about it
@@ -2094,22 +2059,20 @@ The build and install process id documented [here](https://docs.platformio.org/e
 
 ### taming windows
 
-1.  <https://www.reddit.com/r/emacs/comments/1qjeijs/popperel_not_respecting_popperwindowheight_value/>
-
-        (use-package popper
-          :ensure t
-          :custom
-          (popper-window-height 'rgr/popper-window-height)
-          :config
-          (defun rgr/popper-window-height(win)
-            (interactive)
-            (/ (frame-height) 3))
-          :init
-          (popper-mode +1)
-          (popper-echo-mode +1)
-          :bind (("C-´"   . popper-toggle)
-                 ("M-´"   . popper-cycle)
-                 ("C-M-´" . popper-toggle-type)))
+    (use-package popper
+      :ensure t
+      :custom
+      (popper-window-height 'rgr/popper-window-height)
+      :config
+      (defun rgr/popper-window-height(win)
+        (interactive)
+        (/ (frame-height) 3))
+      :init
+      (popper-mode +1)
+      (popper-echo-mode +1)
+      :bind (("C-´"   . popper-toggle)
+             ("M-´"   . popper-cycle)
+             ("C-M-´" . popper-toggle-type)))
 
 
 ### posframe
@@ -2340,7 +2303,9 @@ This tangles to its own init file [init-email.el](etc/elisp/init-email.el).
 
     ;; -*- lexical-binding: t; -*-
     (emacs-alert "Starting Email - MU4E")
-    (use-package mu4e :ensure ( :host github
+    (use-package mu4e
+      :ensure t
+      ( :host github
                                 :branch "release/1.10"
                                 :repo "djcb/mu"
                                 :files ("mu4e/*.el" "build/mu4e/mu4e-meta.el" "build/mu4e/mu4e-config.el" "build/mu4e/mu4e.info")
@@ -2685,7 +2650,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga09487b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6461f54) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2718,7 +2683,7 @@ to add to version control.
     fi
 
 
-<a id="orga09487b"></a>
+<a id="org6461f54"></a>
 
 ### Gnome protocol handler desktop file
 
