@@ -82,7 +82,7 @@
                                                        (interactive)
                                                        (let ((root (project-root (project-current))))
                                                          (call-process-shell-command
-                                                          (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " sway-kitty " root) nil 0))))))
+                                                          (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " sway-kitty tmux new -A -s \""root " \"" root) nil ))))))
 
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture
