@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgc34609b"></a>
+<a id="org8158e0a"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgc34609b)
+See `org-agenda-files` [org-agenda-files](#org8158e0a)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -409,7 +409,7 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
                                                            (interactive)
                                                            (let ((root (project-root (project-current))))
                                                              (call-process-shell-command
-                                                              (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " kitty " root) nil 0))))))
+                                                              (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " sway-kitty " root) nil 0))))))
 
 
 ### add project based TODO
@@ -2650,7 +2650,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6461f54) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgb524da1) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2683,7 +2683,7 @@ to add to version control.
     fi
 
 
-<a id="org6461f54"></a>
+<a id="orgb524da1"></a>
 
 ### Gnome protocol handler desktop file
 
