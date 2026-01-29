@@ -66,6 +66,12 @@
   (:map org-mode-map
         ("M-." . find-function-at-point)))
 
+(defun rgr/project-open-tmux-shell()
+  (interactive)
+  (let ((root (project-root (project-current))))
+    (call-process-shell-command
+     (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " sway-kitty tmux new -A -s \""root " \"" root) nil )))
+
 (use-package project
   :custom
   (project-vc-extra-root-markers '(".project"))
@@ -78,11 +84,7 @@
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
   (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-  (define-key project-prefix-map "V" '("terminal" .  (lambda()
-                                                       (interactive)
-                                                       (let ((root (project-root (project-current))))
-                                                         (call-process-shell-command
-                                                          (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " sway-kitty tmux new -A -s \""root " \"" root) nil ))))))
+  (define-key project-prefix-map "V" '("terminal" .  rgr/project-open-tmux-shell)))
 
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture
