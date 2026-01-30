@@ -945,11 +945,6 @@
   :config
   :bind (:map flymake-mode-map
               ("C-." . eldoc-mouse-pop-doc-at-cursor)))
-  ;; :hook (
-  ;;        (prog-mode . eldoc-mouse-mode)))
-
-         ;; (dape-stopped . (lambda()(message "eldoc mouse ON") eldoc-mouse-mode 1))
-         ;; (dape-start . (lambda()(message "eldoc mouse OFF") (eldoc-mouse-mode -1)))))
 
 (defgroup rgr/serial-ports nil
   "serial port customization" 

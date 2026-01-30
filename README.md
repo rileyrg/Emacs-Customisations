@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org9706905"></a>
+<a id="org13b2deb"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org9706905)
+See `org-agenda-files` [org-agenda-files](#org13b2deb)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1606,11 +1606,6 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
           :config
           :bind (:map flymake-mode-map
                       ("C-." . eldoc-mouse-pop-doc-at-cursor)))
-          ;; :hook (
-          ;;        (prog-mode . eldoc-mouse-mode)))
-        
-                 ;; (dape-stopped . (lambda()(message "eldoc mouse ON") eldoc-mouse-mode 1))
-                 ;; (dape-start . (lambda()(message "eldoc mouse OFF") (eldoc-mouse-mode -1)))))
 
 
 ### Serial Port
@@ -2682,7 +2677,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org60ba6b5) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org83e0205) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2715,7 +2710,7 @@ to add to version control.
     fi
 
 
-<a id="org60ba6b5"></a>
+<a id="org83e0205"></a>
 
 ### Gnome protocol handler desktop file
 
