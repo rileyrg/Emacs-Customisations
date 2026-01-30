@@ -659,7 +659,27 @@
   :bind
   ("M-g t" . multi-vterm-project))
 
-
+(use-package dape
+  :demand t
+  :custom
+  (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
+  (dape-buffer-window-arrangement 'right)
+  (dape-info-hide-mode-line nil)
+  (dape-inlay-hints t)
+  ;;(dape-cwd-fn 'projectile-project-root)
+  :hook
+  ;;(dape-start . dape-breakpoint-load)
+  (dape-display-source . pulsar-pulse-line)
+  (dape-compile .  kill-buffer)
+  :config
+  ;; Turn on global bindings for setting breakpoints with mouse
+  ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
+  (add-to-list 'recentf-exclude "dape-breakpoints")
+  (add-to-list 'recentf-exclude "var/org")
+  (dape-breakpoint-global-mode)
+  (add-hook 'dape-info-parent-mode-hook
+            (defun dape--info-rescale ()
+              (face-remap-add-relative 'default :height 0.8))))
 
 (use-package dired
   :ensure nil
@@ -921,15 +941,19 @@
     :after eglot
     :config	(eglot-booster-mode)))
 
-(use-package eldoc-mouse :ensure t
+(use-package eldoc-mouse 
   :config
-  :bind (:map eldoc-mouse-mode-map
-              ("C-." . eldoc-mouse-pop-doc-at-cursor)) ;; optional
-  :hook (eglot-managed-mode emacs-lisp-mode))
+  :bind (:map flymake-mode-map
+              ("C-." . eldoc-mouse-pop-doc-at-cursor)))
+  ;; :hook (
+  ;;        (prog-mode . eldoc-mouse-mode)))
+
+         ;; (dape-stopped . (lambda()(message "eldoc mouse ON") eldoc-mouse-mode 1))
+         ;; (dape-start . (lambda()(message "eldoc mouse OFF") (eldoc-mouse-mode -1)))))
 
 (defgroup rgr/serial-ports nil
-  "serial port customization"
-  :group 'rgr)
+  "serial port customization" 
+ :group 'rgr)
 
 (defcustom rgr/serialIOPort "/dev/ttyACM0"
   "Serial device for emacs to display"

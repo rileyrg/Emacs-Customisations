@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgacf87b3"></a>
+<a id="org9706905"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgacf87b3)
+See `org-agenda-files` [org-agenda-files](#org9706905)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -393,6 +393,13 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 
 ### use emacs project package
 
+    
+    (defun rgr/project-open-tmux-shell()
+      (interactive)
+      (let ((root (project-root (project-current))))
+        (call-process-shell-command
+         (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " sway-kitty tmux new -A -s \""root " \"" root) nil )))
+    
     (use-package project
       :custom
       (project-vc-extra-root-markers '(".project"))
@@ -405,11 +412,7 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
       (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
     
       (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-      (define-key project-prefix-map "V" '("terminal" .  (lambda()
-                                                           (interactive)
-                                                           (let ((root (project-root (project-current))))
-                                                             (call-process-shell-command
-                                                              (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " sway-kitty tmux new -A -s \""root " \"" root) nil ))))))
+      (define-key project-prefix-map "V" '("terminal" .  rgr/project-open-tmux-shell)))
 
 
 ### add project based TODO
@@ -1183,6 +1186,31 @@ lookup and reference uilities and config
 ## debugging
 
 
+### dape
+
+    (use-package dape
+      :demand t
+      :custom
+      (dape-default-breakpoints-file (expand-file-name  "var/dape/dape-breakpoints" user-emacs-directory ))
+      (dape-buffer-window-arrangement 'right)
+      (dape-info-hide-mode-line nil)
+      (dape-inlay-hints t)
+      ;;(dape-cwd-fn 'projectile-project-root)
+      :hook
+      ;;(dape-start . dape-breakpoint-load)
+      (dape-display-source . pulsar-pulse-line)
+      (dape-compile .  kill-buffer)
+      :config
+      ;; Turn on global bindings for setting breakpoints with mouse
+      ;; (advice-add 'dape-quit :after (lambda(&rest r)(dape-breakpoint-save dape-default-breakpoints-file)))
+      (add-to-list 'recentf-exclude "dape-breakpoints")
+      (add-to-list 'recentf-exclude "var/org")
+      (dape-breakpoint-global-mode)
+      (add-hook 'dape-info-parent-mode-hook
+                (defun dape--info-rescale ()
+                  (face-remap-add-relative 'default :height 0.8))))
+
+
 ## dired execute
 
     (use-package dired
@@ -1574,18 +1602,22 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
 
 2.  Eldoc
 
-        (use-package eldoc-mouse :ensure t
+        (use-package eldoc-mouse 
           :config
-          :bind (:map eldoc-mouse-mode-map
-                      ("C-." . eldoc-mouse-pop-doc-at-cursor)) ;; optional
-          :hook (eglot-managed-mode emacs-lisp-mode))
+          :bind (:map flymake-mode-map
+                      ("C-." . eldoc-mouse-pop-doc-at-cursor)))
+          ;; :hook (
+          ;;        (prog-mode . eldoc-mouse-mode)))
+        
+                 ;; (dape-stopped . (lambda()(message "eldoc mouse ON") eldoc-mouse-mode 1))
+                 ;; (dape-start . (lambda()(message "eldoc mouse OFF") (eldoc-mouse-mode -1)))))
 
 
 ### Serial Port
 
     (defgroup rgr/serial-ports nil
-      "serial port customization"
-      :group 'rgr)
+      "serial port customization" 
+     :group 'rgr)
     
     (defcustom rgr/serialIOPort "/dev/ttyACM0"
       "Serial device for emacs to display"
@@ -2650,7 +2682,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org6c5ad8b) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org60ba6b5) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2683,7 +2715,7 @@ to add to version control.
     fi
 
 
-<a id="org6c5ad8b"></a>
+<a id="org60ba6b5"></a>
 
 ### Gnome protocol handler desktop file
 
