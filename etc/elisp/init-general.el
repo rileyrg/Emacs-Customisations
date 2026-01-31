@@ -82,7 +82,6 @@
                    (directory-file-name
                     (file-name-directory root))))
           (res (concat project-external-terminal " tmux -L " projname " new  -A -s \"project:" projname "\"")))
-    (message "terminal string: %s" res)
     res))
 
 
@@ -95,7 +94,6 @@
   (interactive)
   (let* ((root (project-root (project-current)))
          (cmd (concat "cd " root " && (" (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root) ")")))
-    (message "full shell command : %s" cmd)
     (call-process-shell-command cmd nil 0)))
 
 (use-package project

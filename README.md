@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org6036622"></a>
+<a id="orgb7f9e78"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org6036622)
+See `org-agenda-files` [org-agenda-files](#orgb7f9e78)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -410,7 +410,6 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
                        (directory-file-name
                         (file-name-directory root))))
               (res (concat project-external-terminal " tmux -L " projname " new  -A -s \"project:" projname "\"")))
-        (message "terminal string: %s" res)
         res))
     
     
@@ -423,7 +422,6 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
       (interactive)
       (let* ((root (project-root (project-current)))
              (cmd (concat "cd " root " && (" (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root) ")")))
-        (message "full shell command : %s" cmd)
         (call-process-shell-command cmd nil 0)))
     
     (use-package project
@@ -2720,7 +2718,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org75d7e49) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2fcef19) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2753,7 +2751,7 @@ to add to version control.
     fi
 
 
-<a id="org75d7e49"></a>
+<a id="org2fcef19"></a>
 
 ### Gnome protocol handler desktop file
 
