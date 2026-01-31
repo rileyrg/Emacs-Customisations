@@ -70,16 +70,8 @@
   :custom
   (project-vc-extra-root-markers '(".project"))
   :config
-
-    ;;;; colorize output in compile buffer
-  (require 'ansi-color)
-  (defun colorize-compilation-buffer ()
-    (ansi-color-apply-on-region compilation-filter-start (point-max)))
-  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-
+  (Load-file (rgr/user-elisp-file "project-external-terminal.el"))
   (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project)))
-
-(load-file (rgr/user-elisp-file "project-external-terminal.el"))
 
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture
