@@ -66,11 +66,36 @@
   (:map org-mode-map
         ("M-." . find-function-at-point)))
 
-(defun rgr/project-open-tmux-shell()
+(defcustom project-gdb-local-history 't
+  "set to true to turn on project local gdb history"
+  :type 'boolean
+  :group 'project)
+
+(defcustom project-external-terminal "kitty"
+  "name of external terminal to launch from a project"
+  :type 'string
+  :group 'project)
+
+(defun project-external-terminal-string(root)
+  "the terminal string to launch the terminal. It will usually  be prefixed by `project-gdb-history-prefix'"
+  (let*  ((projname (file-name-nondirectory
+                   (directory-file-name
+                    (file-name-directory root))))
+          (res (concat project-external-terminal " tmux new -A -s \"" projname "\" \"" root "\"")))
+    (message res)
+    res))
+
+(defun project-gdb-history-prefix(root)
+  "return a prefix to set env HISTFILE if `project-gdb-local-history' is set to true"
+  (when project-gdb-local-history (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\" ")))))
+
+(defun project-open-external-terminal()
+  "open a terminal in the current project root. see `project-gdb-local-history' and `project-external-terminal'. The string used to launch the terminal is created by `project-external-terminal-string'"
   (interactive)
-  (let ((root (project-root (project-current))))
-    (call-process-shell-command
-     (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " sway-kitty tmux new -A -s \""root " \"" root) nil )))
+  (let* ((root (project-root (project-current)))
+         (cmd (concat (project-gdb-history-prefix root) (project-external-terminal-string root))))
+    (message cmd)
+    (call-process-shell-command cmd nil )))
 
 (use-package project
   :custom
@@ -84,7 +109,7 @@
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
   (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-  (define-key project-prefix-map "V" '("terminal" .  rgr/project-open-tmux-shell)))
+  (define-key project-prefix-map "V" '("terminal" .  project-open-external-terminal)))
 
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture

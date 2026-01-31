@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgdd591ea"></a>
+<a id="orga9c77ce"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgdd591ea)
+See `org-agenda-files` [org-agenda-files](#orga9c77ce)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -394,11 +394,36 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 ### use emacs project package
 
     
-    (defun rgr/project-open-tmux-shell()
+    (defcustom project-gdb-local-history 't
+      "set to true to turn on project local gdb history"
+      :type 'boolean
+      :group 'project)
+    
+    (defcustom project-external-terminal "kitty"
+      "name of external terminal to launch from a project"
+      :type 'string
+      :group 'project)
+    
+    (defun project-external-terminal-string(root)
+      "the terminal string to launch the terminal. It will usually  be prefixed by `project-gdb-history-prefix'"
+      (let*  ((projname (file-name-nondirectory
+                       (directory-file-name
+                        (file-name-directory root))))
+              (res (concat project-external-terminal " tmux new -A -s \"" projname "\" \"" root "\"")))
+        (message res)
+        res))
+    
+    (defun project-gdb-history-prefix(root)
+      "return a prefix to set env HISTFILE if `project-gdb-local-history' is set to true"
+      (when project-gdb-local-history (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\" ")))))
+    
+    (defun project-open-external-terminal()
+      "open a terminal in the current project root. see `project-gdb-local-history' and `project-external-terminal'. The string used to launch the terminal is created by `project-external-terminal-string'"
       (interactive)
-      (let ((root (project-root (project-current))))
-        (call-process-shell-command
-         (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\"")) " sway-kitty tmux new -A -s \""root " \"" root) nil )))
+      (let* ((root (project-root (project-current)))
+             (cmd (concat (project-gdb-history-prefix root) (project-external-terminal-string root))))
+        (message cmd)
+        (call-process-shell-command cmd nil )))
     
     (use-package project
       :custom
@@ -412,7 +437,7 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
       (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
     
       (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-      (define-key project-prefix-map "V" '("terminal" .  rgr/project-open-tmux-shell)))
+      (define-key project-prefix-map "V" '("terminal" .  project-open-external-terminal)))
 
 
 ### add project based TODO
@@ -2677,7 +2702,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org585fd84) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org4b5929e) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2710,7 +2735,7 @@ to add to version control.
     fi
 
 
-<a id="org585fd84"></a>
+<a id="org4b5929e"></a>
 
 ### Gnome protocol handler desktop file
 
