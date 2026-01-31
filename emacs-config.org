@@ -425,8 +425,8 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 *** use emacs project package
 #+begin_src  emacs-lisp
 
-  (defcustom project-gdb-local-history 't
-    "set to true to turn on project local gdb history"
+  (defcustom project-local-history 't
+    "set to true to turn on project local history"
     :type 'boolean
     :group 'project)
 
@@ -435,26 +435,27 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
     :type 'string
     :group 'project)
 
-  (defun project-external-terminal-string(root)
-    "the terminal string to launch the terminal. It will usually  be prefixed by `project-gdb-history-prefix'"
+  (defun project-external-terminal-string(root) 
+    "the terminal string to launch the terminal. It will usually  be prefixed by `project-history-prefix'"
     (let*  ((projname (file-name-nondirectory
                      (directory-file-name
                       (file-name-directory root))))
-            (res (concat project-external-terminal " tmux new -A -s \"" projname "\" \"" root "\"")))
-      (message res)
+            (res (concat project-external-terminal " tmux -L " projname " new  -A -s \"" projname "\"")))
+      (message "terminal string: %s" res)
       res))
 
-  (defun project-gdb-history-prefix(root)
-    "return a prefix to set env HISTFILE if `project-gdb-local-history' is set to true"
-    (when project-gdb-local-history (concat "HISTFILE=\"" (expand-file-name (concat root ".project-history\" ")))))
+
+  (defun project-history-prefix(root)
+    "return a prefix to set env HISTFILE if `project-local-history' is set to true" 
+    (when project-local-history (concat "HISTFILE=\"" (expand-file-name ".project-history" root) "\"")))
 
   (defun project-open-external-terminal()
-    "open a terminal in the current project root. see `project-gdb-local-history' and `project-external-terminal'. The string used to launch the terminal is created by `project-external-terminal-string'"
+    "open a terminal in the current project root. see `project-local-history' and `project-history-prefix'. The terminal launch string is created by `project-external-terminal-string'"
     (interactive)
     (let* ((root (project-root (project-current)))
-           (cmd (concat (project-gdb-history-prefix root) (project-external-terminal-string root))))
-      (message cmd)
-      (call-process-shell-command cmd nil )))
+           (cmd (concat "cd " root " && (" (project-history-prefix root) " " (project-external-terminal-string root) ")")))
+      (message "full shell command : %s" cmd)
+      (call-process-shell-command cmd nil 0)))
 
   (use-package project
     :custom
