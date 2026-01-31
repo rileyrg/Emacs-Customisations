@@ -70,7 +70,7 @@
   :custom
   (project-vc-extra-root-markers '(".project"))
   :config
-  (Load-file (rgr/user-elisp-file "project-external-terminal.el"))
+  (load-file (rgr/user-elisp-file "project-external-terminal.el"))
   (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project)))
 
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
