@@ -81,7 +81,7 @@
   (let*  ((projname (file-name-nondirectory
                    (directory-file-name
                     (file-name-directory root))))
-          (res (concat project-external-terminal " tmux -L aaa new  -A -s \"" projname "\"")))
+          (res (concat project-external-terminal " tmux -L " projname " new  -A -s \"" projname "\"")))
     (message "terminal string: %s" res)
     res))
 
