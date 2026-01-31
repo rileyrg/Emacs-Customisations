@@ -430,7 +430,7 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
     :custom
     (project-vc-extra-root-markers '(".project"))
     :config
-    
+
       ;;;; colorize output in compile buffer
     (require 'ansi-color)
     (defun colorize-compilation-buffer ()
@@ -438,14 +438,16 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
     (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
     (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project)))
-  
+
+  (load-file (rgr/user-elisp-file "project-external-terminal.el"))
 #+end_src
+
 **** project-external-terminal
 The idea here is launch an external terminal (me with tmux) that
 maintains its own project specific history.Handy for special make
 commands that are applicable only locally.
 
-#+begin_src  emacs-lisp
+#+begin_src emacs-lisp: :tangle (rgr/user-elisp-file "project-external-terminal.el")
 
   (defcustom project-external-terminal-local-history 't
     "set to true to turn on project local history"
