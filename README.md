@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org8cdc160"></a>
+<a id="orgdd591ea"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org8cdc160)
+See `org-agenda-files` [org-agenda-files](#orgdd591ea)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -2677,7 +2677,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgda8dc07) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org585fd84) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2710,7 +2710,7 @@ to add to version control.
     fi
 
 
-<a id="orgda8dc07"></a>
+<a id="org585fd84"></a>
 
 ### Gnome protocol handler desktop file
 
