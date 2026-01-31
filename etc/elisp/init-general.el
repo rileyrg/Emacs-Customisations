@@ -66,6 +66,19 @@
   (:map org-mode-map
         ("M-." . find-function-at-point)))
 
+(use-package project
+  :custom
+  (project-vc-extra-root-markers '(".project"))
+  :config
+  
+    ;;;; colorize output in compile buffer
+  (require 'ansi-color)
+  (defun colorize-compilation-buffer ()
+    (ansi-color-apply-on-region compilation-filter-start (point-max)))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
+  (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project)))
+
 (defcustom project-external-terminal-local-history 't
   "set to true to turn on project local history"
   :type 'boolean
@@ -79,8 +92,8 @@
 (defun project-external-terminal-launch-string(root) 
   "the terminal string to launch the terminal. It will usually  be prefixed by `project-external-terminal-history-prefix'"
   (let*  ((projname (file-name-nondirectory
-                   (directory-file-name
-                    (file-name-directory root))))
+                     (directory-file-name
+                      (file-name-directory root))))
           (res (concat project-external-terminal " tmux -L " projname " new  -A -s \"project:" projname "\"")))
     res))
 
@@ -96,19 +109,7 @@
          (cmd (concat "cd " root " && (" (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root) ")")))
     (call-process-shell-command cmd nil 0)))
 
-(use-package project
-  :custom
-  (project-vc-extra-root-markers '(".project"))
-  :config
-  
-    ;;;; colorize output in compile buffer
-  (require 'ansi-color)
-  (defun colorize-compilation-buffer ()
-    (ansi-color-apply-on-region compilation-filter-start (point-max)))
-  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-
-  (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-  (define-key project-prefix-map "V" '("terminal" .  project-external-terminal-open)))
+(define-key project-prefix-map "V" '("terminal" .  project-external-terminal-open))
 
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture

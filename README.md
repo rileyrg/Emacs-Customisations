@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgb7f9e78"></a>
+<a id="org9df9216"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgb7f9e78)
+See `org-agenda-files` [org-agenda-files](#org9df9216)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -393,37 +393,6 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 
 ### use emacs project package
 
-    
-    (defcustom project-external-terminal-local-history 't
-      "set to true to turn on project local history"
-      :type 'boolean
-      :group 'project)
-    
-    (defcustom project-external-terminal "kitty"
-      "name of external terminal to launch from a project"
-      :type 'string
-      :group 'project)
-    
-    (defun project-external-terminal-launch-string(root) 
-      "the terminal string to launch the terminal. It will usually  be prefixed by `project-external-terminal-history-prefix'"
-      (let*  ((projname (file-name-nondirectory
-                       (directory-file-name
-                        (file-name-directory root))))
-              (res (concat project-external-terminal " tmux -L " projname " new  -A -s \"project:" projname "\"")))
-        res))
-    
-    
-    (defun project-external-terminal-history-prefix(root)
-      "return a prefix to set env HISTFILE if `project-external-terminal-local-history' is set to true" 
-      (when project-external-terminal-local-history (concat "HISTFILE=\"" (expand-file-name ".project-history" root) "\"")))
-    
-    (defun project-external-terminal-open()
-      "open a terminal in the current project root. see `project-external-terminal-local-history' and `project-external-terminal-history-prefix'. The terminal launch string is created by `project-external-terminal-launch-string'"
-      (interactive)
-      (let* ((root (project-root (project-current)))
-             (cmd (concat "cd " root " && (" (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root) ")")))
-        (call-process-shell-command cmd nil 0)))
-    
     (use-package project
       :custom
       (project-vc-extra-root-markers '(".project"))
@@ -435,8 +404,46 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
         (ansi-color-apply-on-region compilation-filter-start (point-max)))
       (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
     
-      (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project))
-      (define-key project-prefix-map "V" '("terminal" .  project-external-terminal-open)))
+      (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project)))
+
+1.  project-external-terminal
+
+    The idea here is launch an external terminal (me with tmux) that
+    maintains its own project specific history.Handy for special make
+    commands that are applicable only locally.
+    
+        
+        (defcustom project-external-terminal-local-history 't
+          "set to true to turn on project local history"
+          :type 'boolean
+          :group 'project)
+        
+        (defcustom project-external-terminal "kitty"
+          "name of external terminal to launch from a project"
+          :type 'string
+          :group 'project)
+        
+        (defun project-external-terminal-launch-string(root) 
+          "the terminal string to launch the terminal. It will usually  be prefixed by `project-external-terminal-history-prefix'"
+          (let*  ((projname (file-name-nondirectory
+                             (directory-file-name
+                              (file-name-directory root))))
+                  (res (concat project-external-terminal " tmux -L " projname " new  -A -s \"project:" projname "\"")))
+            res))
+        
+        
+        (defun project-external-terminal-history-prefix(root)
+          "return a prefix to set env HISTFILE if `project-external-terminal-local-history' is set to true" 
+          (when project-external-terminal-local-history (concat "HISTFILE=\"" (expand-file-name ".project-history" root) "\"")))
+        
+        (defun project-external-terminal-open()
+          "open a terminal in the current project root. see `project-external-terminal-local-history' and `project-external-terminal-history-prefix'. The terminal launch string is created by `project-external-terminal-launch-string'"
+          (interactive)
+          (let* ((root (project-root (project-current)))
+                 (cmd (concat "cd " root " && (" (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root) ")")))
+            (call-process-shell-command cmd nil 0)))
+        
+        (define-key project-prefix-map "V" '("terminal" .  project-external-terminal-open))
 
 
 ### add project based TODO
@@ -2718,7 +2725,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2fcef19) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3114109) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2751,7 +2758,7 @@ to add to version control.
     fi
 
 
-<a id="org2fcef19"></a>
+<a id="org3114109"></a>
 
 ### Gnome protocol handler desktop file
 
