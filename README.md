@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org7c463de"></a>
+<a id="org86e2203"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7c463de)
+See `org-agenda-files` [org-agenda-files](#org86e2203)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -404,7 +404,13 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 
     The idea here is launch an external terminal (me with tmux) that
     maintains its own project specific history.Handy for special make
-    commands that are applicable only locally.
+    commands that are applicable only locally. There is a complication in
+    that we need to start a differetn server (socket) for each project or
+    it wont have its own HISTFILE env. If you've opened a tmux terminal
+    fora project than its HISTFILE is set until probably reboot since
+    the server stays aive&hellip;.. I think ;)  Of course if you want to revret
+    to the general HISTFILE then just symbolically link the prject local
+    .project-history to it.
     
         
         (defcustom project-external-terminal-local-history 't
@@ -418,7 +424,7 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
           :group 'project)
         
         (defun project-external-terminal-launch-string(root) 
-          "the terminal string to launch the terminal. It will usually  be prefixed by `project-external-terminal-history-prefix'"
+          "the terminal string to launch the terminal. It will usually  be prefixed by `project-external-terminal-history-prefix'. The tumx example here uses a socket -L per session to ensure own env"
           (let*  ((projname (file-name-nondirectory
                              (directory-file-name
                               (file-name-directory root))))
@@ -428,16 +434,19 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
         
         (defun project-external-terminal-history-prefix(root)
           "return a prefix to set env HISTFILE if `project-external-terminal-local-history' is set to true" 
-          (when project-external-terminal-local-history (concat "HISTFILE=\"" (expand-file-name ".project-history" root) "\"")))
+          (if  project-external-terminal-local-history
+              (concat "HISTFILE=\"" (expand-file-name ".project-history" root) "\"")
+            nil))
         
         (defun project-external-terminal-open()
           "open a terminal in the current project root. see `project-external-terminal-local-history' and `project-external-terminal-history-prefix'. The terminal launch string is created by `project-external-terminal-launch-string'"
           (interactive)
           (let* ((root (project-root (project-current)))
-                 (cmd (concat "cd " root " && (" (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root) ")")))
+                 (cmd (concat "cd " root " && " (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root))))
+            (message cmd)
             (call-process-shell-command cmd nil 0)))
         
-        (define-key project-prefix-map "V" '("terminal" .  project-external-terminal-open))
+        (define-key project-prefix-map "V" '("ext terminal" .  project-external-terminal-open))
 
 
 ### add project based TODO
@@ -2719,7 +2728,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org66786da) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcbbac52) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2752,7 +2761,7 @@ to add to version control.
     fi
 
 
-<a id="org66786da"></a>
+<a id="orgcbbac52"></a>
 
 ### Gnome protocol handler desktop file
 

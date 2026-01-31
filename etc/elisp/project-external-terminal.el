@@ -28,6 +28,7 @@
   (interactive)
   (let* ((root (project-root (project-current)))
          (cmd (concat "cd " root " && " (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root))))
+    (message cmd)
     (call-process-shell-command cmd nil 0)))
 
-(define-key project-prefix-map "V" '("terminal" .  project-external-terminal-open))
+(define-key project-prefix-map "V" '("ext terminal" .  project-external-terminal-open))

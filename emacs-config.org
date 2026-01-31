@@ -437,7 +437,13 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 **** project-external-terminal
 The idea here is launch an external terminal (me with tmux) that
 maintains its own project specific history.Handy for special make
-commands that are applicable only locally.
+commands that are applicable only locally. There is a complication in
+that we need to start a differetn server (socket) for each project or
+it wont have its own HISTFILE env. If you've opened a tmux terminal
+fora project than its HISTFILE is set until probably reboot since
+the server stays aive..... I think ;)  Of course if you want to revret
+to the general HISTFILE then just symbolically link the prject local
+.project-history to it.
 
 #+begin_src emacs-lisp :tangle (rgr/user-elisp-file "project-external-terminal.el")
 
@@ -471,9 +477,10 @@ commands that are applicable only locally.
     (interactive)
     (let* ((root (project-root (project-current)))
            (cmd (concat "cd " root " && " (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root))))
+      (message cmd)
       (call-process-shell-command cmd nil 0)))
 
-  (define-key project-prefix-map "V" '("terminal" .  project-external-terminal-open))
+  (define-key project-prefix-map "V" '("ext terminal" .  project-external-terminal-open))
 
 #+end_src 
 *** add project based TODO
