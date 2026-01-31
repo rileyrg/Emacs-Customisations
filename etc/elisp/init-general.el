@@ -967,10 +967,27 @@
     :after eglot
     :config	(eglot-booster-mode)))
 
-(use-package eldoc-mouse 
-  :config
+(use-package eldoc-mouse
+  :demand t
+  :hook ( prog-mode)
   :bind (:map flymake-mode-map
               ("C-." . eldoc-mouse-pop-doc-at-cursor)))
+
+;; https://github.com/svaante/dape/issues/287#issuecomment-3828663281
+(defun dape-turn-off-eldoc-mouse-mode ()
+  (if dape-active-mode
+      (progn
+        (remove-hook 'eldoc-mode-hook 'eldoc-mouse-mode)
+        (cl-loop for buffer in (buffer-list)
+                 do (with-current-buffer buffer
+                      (eldoc-mouse-mode -1))))
+    (add-hook 'eldoc-mode-hook 'eldoc-mouse-mode)
+    (cl-loop for buffer in (buffer-list)
+             do (with-current-buffer buffer
+                  (when eldoc-mode
+                    (eldoc-mouse-mode +1))))))
+
+(add-hook 'dape-active-mode-hook #'dape-turn-off-eldoc-mouse-mode)
 
 (defgroup rgr/serial-ports nil
   "serial port customization" 

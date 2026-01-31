@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgbfe9906"></a>
+<a id="org0d047e8"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgbfe9906)
+See `org-agenda-files` [org-agenda-files](#org0d047e8)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1628,10 +1628,27 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
 
 2.  Eldoc
 
-        (use-package eldoc-mouse 
-          :config
+        (use-package eldoc-mouse
+          :demand t
+          :hook ( prog-mode)
           :bind (:map flymake-mode-map
                       ("C-." . eldoc-mouse-pop-doc-at-cursor)))
+        
+        ;; https://github.com/svaante/dape/issues/287#issuecomment-3828663281
+        (defun dape-turn-off-eldoc-mouse-mode ()
+          (if dape-active-mode
+              (progn
+                (remove-hook 'eldoc-mode-hook 'eldoc-mouse-mode)
+                (cl-loop for buffer in (buffer-list)
+                         do (with-current-buffer buffer
+                              (eldoc-mouse-mode -1))))
+            (add-hook 'eldoc-mode-hook 'eldoc-mouse-mode)
+            (cl-loop for buffer in (buffer-list)
+                     do (with-current-buffer buffer
+                          (when eldoc-mode
+                            (eldoc-mouse-mode +1))))))
+        
+        (add-hook 'dape-active-mode-hook #'dape-turn-off-eldoc-mouse-mode)
 
 
 ### Serial Port
@@ -2703,7 +2720,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgc9ab89f) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgeb01e77) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2736,7 +2753,7 @@ to add to version control.
     fi
 
 
-<a id="orgc9ab89f"></a>
+<a id="orgeb01e77"></a>
 
 ### Gnome protocol handler desktop file
 
