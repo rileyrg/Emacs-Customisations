@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org86e2203"></a>
+<a id="org4e8bf7e"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org86e2203)
+See `org-agenda-files` [org-agenda-files](#org4e8bf7e)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -423,20 +423,24 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
           :type 'string
           :group 'project)
         
-        (defun project-external-terminal-launch-string(root) 
-          "the terminal string to launch the terminal. It will usually  be prefixed by `project-external-terminal-history-prefix'. The tumx example here uses a socket -L per session to ensure own env"
-          (let*  ((projname (file-name-nondirectory
-                             (directory-file-name
-                              (file-name-directory root))))
-                  (res (concat project-external-terminal " tmux -L " projname " new  -A -s \"project:" projname "\"")))
-            res))
-        
+        (defun project-external-terminal-script(root projname)
+          ;; (concat "tm.sh " root " " projname)
+          (concat "tmux -L " projname " new -A -s " projname)
+          )
         
         (defun project-external-terminal-history-prefix(root)
           "return a prefix to set env HISTFILE if `project-external-terminal-local-history' is set to true" 
           (if  project-external-terminal-local-history
               (concat "HISTFILE=\"" (expand-file-name ".project-history" root) "\"")
             nil))
+        
+        (defun project-external-terminal-launch-string(root) 
+          "the terminal string to launch the terminal. It will usually  be prefixed by `project-external-terminal-history-prefix'. The tumx example here uses a socket -L per session to ensure own env"
+          (let*  ((projname (file-name-nondirectory
+                             (directory-file-name
+                              (file-name-directory root))))
+                  (res (concat project-external-terminal " " (project-external-terminal-script root projname))))
+            res))
         
         (defun project-external-terminal-open()
           "open a terminal in the current project root. see `project-external-terminal-local-history' and `project-external-terminal-history-prefix'. The terminal launch string is created by `project-external-terminal-launch-string'"
@@ -2728,7 +2732,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgcbbac52) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org937ef02) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2761,7 +2765,7 @@ to add to version control.
     fi
 
 
-<a id="orgcbbac52"></a>
+<a id="org937ef02"></a>
 
 ### Gnome protocol handler desktop file
 
