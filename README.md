@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org4e8bf7e"></a>
+<a id="orgc9ad693"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org4e8bf7e)
+See `org-agenda-files` [org-agenda-files](#orgc9ad693)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -404,12 +404,14 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 
     The idea here is launch an external terminal (me with tmux) that
     maintains its own project specific history.Handy for special make
-    commands that are applicable only locally. There is a complication in
-    that we need to start a differetn server (socket) for each project or
-    it wont have its own HISTFILE env. If you've opened a tmux terminal
-    fora project than its HISTFILE is set until probably reboot since
-    the server stays aive&hellip;.. I think ;)  Of course if you want to revret
-    to the general HISTFILE then just symbolically link the prject local
+    commands that are applicable only locally. With tmux There is a
+    complication in that we need to start a different server (socket) for
+    each project or it wont have its own HISTFILE env. If you've opened a
+    tmux terminal fora project than its HISTFILE is set until probably
+    reboot since the server stays alive&hellip;.. you can of course kill it,
+    but I doubt there much of a use case for toggling local history. Of
+    course if you want to revert to the general HISTFILE for one or two
+    projects but not all then just symbolically link the project local
     .project-history to it.
     
         
@@ -2732,7 +2734,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org937ef02) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3f85589) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2765,7 +2767,7 @@ to add to version control.
     fi
 
 
-<a id="org937ef02"></a>
+<a id="org3f85589"></a>
 
 ### Gnome protocol handler desktop file
 

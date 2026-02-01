@@ -437,12 +437,14 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
 **** project-external-terminal
 The idea here is launch an external terminal (me with tmux) that
 maintains its own project specific history.Handy for special make
-commands that are applicable only locally. There is a complication in
-that we need to start a differetn server (socket) for each project or
-it wont have its own HISTFILE env. If you've opened a tmux terminal
-fora project than its HISTFILE is set until probably reboot since
-the server stays aive..... I think ;)  Of course if you want to revret
-to the general HISTFILE then just symbolically link the prject local
+commands that are applicable only locally. With tmux There is a
+complication in that we need to start a different server (socket) for
+each project or it wont have its own HISTFILE env. If you've opened a
+tmux terminal fora project than its HISTFILE is set until probably
+reboot since the server stays alive..... you can of course kill it,
+but I doubt there much of a use case for toggling local history. Of
+course if you want to revert to the general HISTFILE for one or two
+projects but not all then just symbolically link the project local
 .project-history to it.
 
 #+begin_src emacs-lisp :tangle (rgr/user-elisp-file "project-external-terminal.el")
