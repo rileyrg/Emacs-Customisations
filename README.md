@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orge231211"></a>
+<a id="org1743d5c"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orge231211)
+See `org-agenda-files` [org-agenda-files](#org1743d5c)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -400,7 +400,7 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
       (load-file (rgr/user-elisp-file "project-external-script.el"))
       (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project)))
 
-1.  project-external-script
+1.  project-launch-external-script
 
     Run a script from  a project passing root and optionally projname.
     
@@ -418,7 +418,12 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
             cd ${root}
             export HISTFILE=${1:-"."}/.project-history
             exec kitty tmux -L  ${projName} new -A -s ${projName}
+    
+    2.  project-launch-external-script
+    
+        includes an example calling \`project-external-terminal-script'
         
+            
             
             (defcustom project-external-terminal-script "emacs-project-tmux"
               "script to launch your external terminal - all scripts called with project-root as parameter and optional project name"
@@ -2717,7 +2722,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1484fad) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd01d588) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2750,7 +2755,7 @@ to add to version control.
     fi
 
 
-<a id="org1484fad"></a>
+<a id="orgd01d588"></a>
 
 ### Gnome protocol handler desktop file
 
