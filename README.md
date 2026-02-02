@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org1743d5c"></a>
+<a id="org38fc021"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org1743d5c)
+See `org-agenda-files` [org-agenda-files](#org38fc021)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -422,6 +422,8 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
     2.  project-launch-external-script
     
         includes an example calling \`project-external-terminal-script'
+        
+        ![img](./images/project-launch-external-script.png "two tmux instances open for two different projects")
         
             
             
@@ -2722,7 +2724,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgd01d588) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1985565) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2755,7 +2757,7 @@ to add to version control.
     fi
 
 
-<a id="orgd01d588"></a>
+<a id="org1985565"></a>
 
 ### Gnome protocol handler desktop file
 

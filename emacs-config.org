@@ -458,6 +458,12 @@ symlink .project-history to your general one - or tailor to your own taste.
 
 ***** project-launch-external-script
 includes an example calling `project-external-terminal-script'
+
+
+#+CAPTION: two tmux instances open for two different projects
+#+NAME:   project-external-terminal-script
+[[./images/project-launch-external-script.png]]
+
 #+begin_src emacs-lisp :tangle (rgr/user-elisp-file "project-external-script.el")
 
   
