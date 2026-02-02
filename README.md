@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgc9ad693"></a>
+<a id="orge231211"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgc9ad693)
+See `org-agenda-files` [org-agenda-files](#orge231211)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -397,62 +397,45 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
       :custom
       (project-vc-extra-root-markers '(".project"))
       :config
-      (load-file (rgr/user-elisp-file "project-external-terminal.el"))
+      (load-file (rgr/user-elisp-file "project-external-script.el"))
       (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project)))
 
-1.  project-external-terminal
+1.  project-external-script
 
-    The idea here is launch an external terminal (me with tmux) that
-    maintains its own project specific history.Handy for special make
-    commands that are applicable only locally. With tmux There is a
-    complication in that we need to start a different server (socket) for
-    each project or it wont have its own HISTFILE env. If you've opened a
-    tmux terminal fora project than its HISTFILE is set until probably
-    reboot since the server stays alive&hellip;.. you can of course kill it,
-    but I doubt there much of a use case for toggling local history. Of
-    course if you want to revert to the general HISTFILE for one or two
-    projects but not all then just symbolically link the project local
-    .project-history to it.
+    Run a script from  a project passing root and optionally projname.
     
+    1.  emacs-project-tmux
+    
+        sample script to maintain a tmux session per project with own history.
+        Handy for gdb and such like. If you dont want own history then
+        symlink .project-history to your general one - or tailor to your own taste.
         
-        (defcustom project-external-terminal-local-history 't
-          "set to true to turn on project local history"
-          :type 'boolean
-          :group 'project)
+            #!/usr/bin/env bash
+            # Maintained in emacs-config.org
+            [[ -z "$1" ]] && { echo "usage: emacs-project-tmux ROOTDIRECTORY [PROJECTNAME]" ; exit 1; }
+            root=${1}
+            projName=${2:-"default"}
+            cd ${root}
+            export HISTFILE=${1:-"."}/.project-history
+            exec kitty tmux -L  ${projName} new -A -s ${projName}
         
-        (defcustom project-external-terminal "kitty"
-          "name of external terminal to launch from a project"
-          :type 'string
-          :group 'project)
-        
-        (defun project-external-terminal-script(root projname)
-          ;; (concat "tm.sh " root " " projname)
-          (concat "tmux -L " projname " new -A -s " projname)
-          )
-        
-        (defun project-external-terminal-history-prefix(root)
-          "return a prefix to set env HISTFILE if `project-external-terminal-local-history' is set to true" 
-          (if  project-external-terminal-local-history
-              (concat "HISTFILE=\"" (expand-file-name ".project-history" root) "\"")
-            nil))
-        
-        (defun project-external-terminal-launch-string(root) 
-          "the terminal string to launch the terminal. It will usually  be prefixed by `project-external-terminal-history-prefix'. The tumx example here uses a socket -L per session to ensure own env"
-          (let*  ((projname (file-name-nondirectory
-                             (directory-file-name
-                              (file-name-directory root))))
-                  (res (concat project-external-terminal " " (project-external-terminal-script root projname))))
-            res))
-        
-        (defun project-external-terminal-open()
-          "open a terminal in the current project root. see `project-external-terminal-local-history' and `project-external-terminal-history-prefix'. The terminal launch string is created by `project-external-terminal-launch-string'"
-          (interactive)
-          (let* ((root (project-root (project-current)))
-                 (cmd (concat "cd " root " && " (project-external-terminal-history-prefix root) " " (project-external-terminal-launch-string root))))
-            (message cmd)
-            (call-process-shell-command cmd nil 0)))
-        
-        (define-key project-prefix-map "V" '("ext terminal" .  project-external-terminal-open))
+            
+            (defcustom project-external-terminal-script "emacs-project-tmux"
+              "script to launch your external terminal - all scripts called with project-root as parameter and optional project name"
+              :type 'string
+              :group 'project)
+            
+            (defun project-launch-external-script(&optional script projname )
+              "Two parameters passed to the script  : the project home directory and the project name"
+              (interactive)
+              (let*  ((root (project-root (project-current)))
+                      (pn (if projname  projname (file-name-nondirectory
+                                                  (directory-file-name
+                                                   (file-name-directory root)))))
+                      (cmd (concat  script " " root " " pn)))
+                (call-process-shell-command cmd  nil 0)))
+            
+            (define-key project-prefix-map "V" '("ext terminal" . (lambda()(interactive)(project-launch-external-script project-external-terminal-script))))
 
 
 ### add project based TODO
@@ -2734,7 +2717,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org3f85589) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org1484fad) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2767,7 +2750,7 @@ to add to version control.
     fi
 
 
-<a id="org3f85589"></a>
+<a id="org1484fad"></a>
 
 ### Gnome protocol handler desktop file
 
