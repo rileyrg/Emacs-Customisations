@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Maintained in emacs-config.org
+[[ -z "$1" ]] && { echo "usage: emacs-project-tmux ROOTDIRECTORY [PROJECTNAME]" ; exit 1; }
+root=${1}
+projName=${2:-"default"}
+cd ${root}
+export HISTFILE=${1:-"."}/.project-history
+exec kitty tmux -L  ${projName} new -A -s ${projName}
