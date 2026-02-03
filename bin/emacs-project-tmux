@@ -4,5 +4,5 @@
 root=${1}
 projName=${2:-"default"}
 cd ${root}
-export HISTFILE=${1:-"."}/.project-history
+export HISTFILE=${1:-"./"}.project-history
 exec kitty tmux -L  ${projName} new -A -s ${projName}
