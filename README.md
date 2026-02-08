@@ -333,7 +333,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org3a22fd6"></a>
+<a id="org42750a5"></a>
 
 ### Org Mode, org-mode
 
@@ -374,7 +374,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org3a22fd6)
+See `org-agenda-files` [org-agenda-files](#org42750a5)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -416,7 +416,6 @@ maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-e
             root=${1}
             projName=${2:-"default"}
             cd ${root}
-            echo $root > ~/t1
             export HISTFILE=${1:-"./"}.project-history
             exec kitty tmux -L  ${projName} new -A -s ${projName}
     
@@ -698,19 +697,9 @@ are marks or annotations placed at the margin of the page of a book or in this c
 
 :ID:       f3802197-c745-40b2-ac0d-72d7da291aaf
 
-    ;; Enable rich annotations using the Marginalia package
     (use-package marginalia
-      ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
-      ;; available in the *Completions* buffer, add it to the
-      ;; `completion-list-mode-map'.
-      :bind (:map minibuffer-local-map
-             ("M-m" . marginalia-cycle))
-    
-      ;; The :init section is always executed.
-      :init
-      ;; Marginalia must be activated in the :init section of use-package such that
-      ;; the mode gets enabled right away. Note that this forces loading the
-      ;; package.
+      :ensure t
+      :config
       (marginalia-mode))
 
 
@@ -720,8 +709,7 @@ are marks or annotations placed at the margin of the page of a book or in this c
       :ensure t
     
       :bind
-      (("C-," . embark-act)         ;; pick some comfortable binding
-       ("C-:" . embark-act-all)
+      (("C-." . embark-act)         ;; pick some comfortable binding
        ("C-;" . embark-dwim)        ;; good alternative: M-.
        ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
     
@@ -739,6 +727,10 @@ are marks or annotations placed at the margin of the page of a book or in this c
       ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
       ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
     
+      ;; Add Embark to the mouse context menu. Also enable `context-menu-mode'.
+      ;; (context-menu-mode 1)
+      ;; (add-hook 'context-menu-functions #'embark-context-menu 100)
+    
       :config
     
       ;; Hide the mode line of the Embark live/completions buffers
@@ -749,7 +741,7 @@ are marks or annotations placed at the margin of the page of a book or in this c
     
     ;; Consult users will also want the embark-consult package.
     (use-package embark-consult
-      :demand t ; only need to install it, embark loads it after consult if found
+      :ensure t ; only need to install it, embark loads it after consult if found
       :hook
       (embark-collect-mode . consult-preview-at-point-mode))
 
@@ -779,7 +771,7 @@ Let emacs suggest completions
 
     (use-package corfu
       ;;:disabled t
-       :ensure (:wait t)
+      :ensure (:wait t)
       ;; Optional customizations
       :custom
       ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -814,18 +806,21 @@ Let emacs suggest completions
       ;; commands are hidden, since they are not used via M-x. This setting is
       ;; useful beyond Corfu.
       (read-extended-command-predicate #'command-completion-default-include-p)
-    :init
-    (global-corfu-mode)
-    (corfu-popupinfo-mode))
+      :init
+      (global-corfu-mode)
+      (corfu-popupinfo-mode))
     
+    ;; Optionally use the `orderless' completion style.
     ;; Optionally use the `orderless' completion style.
     (use-package orderless
       :custom
-      ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
+      ;; Configure a custom style dispatcher (see the Consult wiki)
+      ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
       ;; (orderless-component-separator #'orderless-escapable-split-on-space)
       (completion-styles '(orderless basic))
-      (completion-category-defaults nil)
-      (completion-category-overrides '((file (styles partial-completion)))))
+      (completion-category-overrides '((file (styles partial-completion))))
+      (completion-category-defaults nil) ;; Disable defaults, use our settings
+      (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
     
     
     ;; Add extensions
@@ -840,8 +835,8 @@ Let emacs suggest completions
       ;;        ...)
       :init
       (setq-default completion-at-point-functions
-                  (append (default-value 'completion-at-point-functions)
-                          (list #'cape-dabbrev #'cape-file #'cape-abbrev))))
+                    (append (default-value 'completion-at-point-functions)
+                            (list #'cape-dabbrev #'cape-file #'cape-abbrev))))
 
 
 ### Which Key
@@ -913,11 +908,30 @@ Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 
     ;; Enable vertico
     (use-package vertico
-      ;;:disabled
       :custom
-      (vertico-cycle t)
-      :config
+      ;; (vertico-scroll-margin 0) ;; Different scroll margin
+      ;; (vertico-count 20) ;; Show more candidates
+      ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+      (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+      :init
       (vertico-mode))
+    
+      ;; Emacs minibuffer configurations.
+    (use-package emacs
+      :ensure nil
+      :custom
+      ;; Enable context menu. `vertico-multiform-mode' adds a menu in the minibuffer
+      ;; to switch display modes.
+      (context-menu-mode t)
+      ;; Support opening new minibuffers from inside existing minibuffers.
+      (enable-recursive-minibuffers t)
+      ;; Hide commands in M-x which do not work in the current mode.  Vertico
+      ;; commands are hidden in normal buffers. This setting is useful beyond
+      ;; Vertico.
+      (read-extended-command-predicate #'command-completion-default-include-p)
+      ;; Do not allow the cursor in the minibuffer prompt
+      (minibuffer-prompt-properties
+       '(read-only t cursor-intangible t face minibuffer-prompt)))
 
 
 ## Typesetting
@@ -2725,7 +2739,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orga671e30) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org5b90998) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2758,7 +2772,7 @@ to add to version control.
     fi
 
 
-<a id="orga671e30"></a>
+<a id="org5b90998"></a>
 
 ### Gnome protocol handler desktop file
 
