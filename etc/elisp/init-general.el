@@ -965,30 +965,6 @@
 
 (add-hook 'dape-active-mode-hook #'dape-turn-off-eldoc-mouse-mode)
 
-(defgroup rgr/serial-ports nil
-  "serial port customization" 
- :group 'rgr)
-
-(defcustom rgr/serialIOPort "/dev/ttyACM0"
-  "Serial device for emacs to display"
-  :type 'string
-  :group 'rgr/serial-ports)
-
-(defcustom rgr/serialIOPortBaud 9600
-  "Default serial baud rate"
-  :type 'integer
-  :group 'rgr/serial-ports)
-
-(defun selectSerialPortBuffer()
-  (setq ser (get-buffer rgr/serialIOPort))
-  (if ser (switch-to-buffer ser)
-    (serial-term rgr/serialIOPort rgr/serialIOPortBaud)))
-
-(global-set-key (kbd "C-c s")
-                (lambda()
-                  (interactive)
-                  (selectSerialPortBuffer)))
-
 (use-package platformio-mode
   :disabled t
   :custom
