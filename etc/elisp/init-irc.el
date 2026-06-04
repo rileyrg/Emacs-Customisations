@@ -40,6 +40,8 @@
 
 (setq kill-emacs-hook '(rgr/irc-quit))
 
+
+
 (use-package ement
   :disabled t
   :demand t
@@ -55,3 +57,4 @@
 
 (add-hook 'server-after-make-frame-hook #'rgr/irc-reconnect)
 ;;  (add-hook 'elpaca-after-init-hook (lambda()(run-with-idle-timer 1 nil #'rgr/irc-reconnect)))
+

@@ -1,3 +1,5 @@
+
+
 (defcustom project-external-terminal-script "emacs-project-tmux"
   "script to launch your external terminal - all scripts called with project-root as parameter and optional project name"
   :type 'string
@@ -14,3 +16,4 @@
     (call-process-shell-command cmd  nil 0)))
 
 (define-key project-prefix-map "V" '("ext terminal" . (lambda()(interactive)(project-launch-external-script project-external-terminal-script))))
+

@@ -1,4 +1,4 @@
-;; look for a debug init file and load, trigger the debugger
+  ;; look for a debug init file and load, trigger the debugger
 (defun debug-init (&optional fname)
   (let* ((fname (if fname fname "debug-init.el"))
          (debug-init (expand-file-name fname user-emacs-directory)))
@@ -66,6 +66,8 @@
 (setq custom-file  (expand-file-name  "var/secrets/custom.el" user-emacs-directory))
 (load custom-file 'noerror)
 
+(use-package compat)
+
 ;; put extra emacs-lisp files into etc/elisp
 (let ((default-directory rgr/elisp-dir))
   (normal-top-level-add-subdirs-to-load-path))
@@ -85,6 +87,7 @@
    :title "Emacs"
    :body (format m rest)))
 
+
 (defun rgr/quit-or-close-emacs(&optional kill)
   (interactive)
   (if (or current-prefix-arg kill)
@@ -97,6 +100,8 @@
   (save-buffers-kill-emacs))
 
 (global-set-key (kbd "C-c x")  'rgr/quit-or-close-emacs)
+
+
 
 (setq rgr/daemonName (daemonp))
 ;; we dont always want a session to use/update history

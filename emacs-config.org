@@ -177,6 +177,11 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
   (setq custom-file  (expand-file-name  "var/secrets/custom.el" user-emacs-directory))
   (load custom-file 'noerror)
 #+end_src
+
+** compat - aargh!
+#+begin_src  emacs-lisp
+  (use-package compat)
+#+end_src 
 ** no-littering - keep data tidy
 #+begin_src  emacs-lisp
   ;; put extra emacs-lisp files into etc/elisp

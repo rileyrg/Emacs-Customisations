@@ -73,6 +73,7 @@
   (load-file (rgr/user-elisp-file "project-external-script.el"))
   (define-key project-prefix-map "v" '("vterm" .  multi-vterm-project)))
 
+
 (setq load-path (cons (expand-file-name "project-org-todo-capture" rgr/emacs-project-dir ) load-path))
 (use-package project-org-todo-capture
   :after org
@@ -90,6 +91,7 @@
                "*Messages*")))
     (switch-to-buffer (if (string= (buffer-name) n)
                           (other-buffer) n))))
+
 
 (defun rgr/elisp-write-var (f v)
   (with-temp-file f
@@ -126,6 +128,7 @@
 
 
 (global-set-key (kbd "C-S-<return>")  'rgr/complete-line)
+
 
 (setq load-path (cons (expand-file-name "lazy-lang-learn" rgr/emacs-project-dir ) load-path))
 (use-package lazy-lang-learn
@@ -274,7 +277,7 @@
 (use-package stillness-mode
   :ensure '( :host github :repo "neeasade/stillness-mode.el" :branch "main")
   :config
-  (stillness-mode 1))
+  (stillness-mode 1)) 
 
 (use-package marginalia
   :ensure t
@@ -331,6 +334,7 @@
     :config
     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
   :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
+
 
 (use-package corfu
   ;;:disabled t
@@ -433,6 +437,7 @@
                                  (delete-char (length cursor))
                                  ))))))
 
+
 (use-package company
   :disabled t
   :config
@@ -472,7 +477,9 @@
   (minibuffer-prompt-properties
    '(read-only t cursor-intangible t face minibuffer-prompt)))
 
-(use-package auctex
+
+
+  (use-package auctex
     :disabled t
     :init
     (require 'ox-latex)
@@ -582,7 +589,7 @@
   ;;(dictionary-server "dict.org")
   (dictionary-server "localhost")
   :bind
-  ("<f6>" . dictionary-lookup-definition))
+  ("<f6>" . dictionary-lookup-definition)) 
 
 (use-package mw-thesaurus
   :bind
@@ -619,6 +626,7 @@
         (call-interactively 'devdocs-lookup (vector 't s ))))))
 (global-set-key (kbd "C-q")  'rgr/devdocs)
 
+
 (use-package devdocs-browser
   ;;:disabled t
   :custom
@@ -638,6 +646,7 @@
   (:map pdf-view-mode-map
         ("&" . rgr/open-buffer-file-in-external-browser)))
 
+
 (use-package nov
   :demand t
   :config
@@ -648,6 +657,7 @@
 ;;   :config
 ;;   (define-key nov-mode-map (kbd "o") 'nov-xwidget-view)
 ;;   (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))
+
 
 (use-package impatient-showdown
   :disabled
@@ -762,6 +772,7 @@
 (use-package treemacs-magit
   :after treemacs)
 
+
 (use-package hideshow
   :ensure nil
   :hook
@@ -814,6 +825,7 @@
   :bind
   ("C-x g" . magit-status))
 
+
 (use-package diff-hl
   :demand t
   :hook
@@ -840,7 +852,7 @@
   ;;(global-set-key (kbd "C-c a") 'aider-transient-menu) ;; for wider screen
   (aider-magit-setup-transients))
 
-;; install claude-code.el
+  ;; install claude-code.el
 (use-package claude-code :ensure (:host github :repo "stevemolitor/claude-code.el")
   :disabled t
   ;; optional hook for Monet IDE integration:
@@ -849,6 +861,7 @@
   ;;(monet-mode 1) ; optional IDE integration
   (claude-code-mode)
   :bind-keymap ("C-c c" . claude-code-command-map))
+
 
 (use-package treesit-auto
   :custom
@@ -943,6 +956,7 @@
     :after eglot
     :config	(eglot-booster-mode)))
 
+
 (use-package eldoc-mouse
   :demand t
   :hook ( prog-mode)
@@ -1005,6 +1019,7 @@
   ;; (breadcrumb-mode t)
   )
 
+
 (use-package rust-mode
   :disabled t
   :ensure t
@@ -1033,6 +1048,7 @@
   (:map rustic-mode-map
         ("C-q" . rgr/browser-doc-search)))
 
+
 (use-package c-ts-mode
   :ensure nil
   :config
@@ -1060,6 +1076,9 @@
   :hook
   ((c-ts-mode c++-ts-mode) . rgr/c-ts-mode-common-hook))
 
+
+
+
 (setq auto-mode-alist
         (append
          '(("CMakeLists\\.txt\\'" . cmake-mode))
@@ -1078,6 +1097,7 @@
   :demand t
   :config
   (elf-setup-default))
+
 
 (use-package helpful
   :bind
@@ -1141,6 +1161,7 @@
 ;;   :hook
 ;;   (eglot-managed-mode . flymake-cppcheck-load))
 
+
 (use-package flymake-shellcheck
   :disabled t
   :commands flymake-shellcheck-load
@@ -1167,6 +1188,7 @@
 ;;   ("M-<f2>" . el-docstring-sap-display)
 ;;   ("M-<f1>" . el-docstring-sap-mode))
 
+
 (use-package edebug-x
   :custom
   (debugger-stack-frame-as-list t)
@@ -1179,6 +1201,7 @@
   :bind
   ("C-S-<f9>" . toggle-debug-on-error)
   ("C-<f9>" . rgr/instrumentForDebugging))
+
 
 ;; bit more convoluted than it needs to be
 ;; but I fancied using thing-at-point
@@ -1310,6 +1333,7 @@ The DWIM behaviour of this command is as follows:
  (  "M-m"  . manual-entry)
  ( "S-<f10>" . menu-bar-open))
 
+
 (use-package popper
   :ensure t
   :custom
@@ -1353,10 +1377,12 @@ The DWIM behaviour of this command is as follows:
   (
    pulsar-global-mode 1))
 
+
 (use-package boxquote
   ;;:straight (:branch "main")
   :bind
   ("C-S-r" . boxquote-region))
+
 
 (use-package
   volatile-highlights
@@ -1366,6 +1392,7 @@ The DWIM behaviour of this command is as follows:
   dpaste
   :init
   :bind ("C-c y" . dpaste-region-or-buffer))
+
 
 (use-package
   darkroom
@@ -1381,11 +1408,13 @@ The DWIM behaviour of this command is as follows:
   :bind 
   ("C-S-<f7>" . writeroom-mode))
 
+
 (defun consult-buffer-other-tab ()
   "Variant of `consult-buffer' which opens in other tab."
   (interactive)
   (let ((consult--buffer-display #'switch-to-buffer-other-tab))
     (consult-buffer)))
+
 
 (use-package modern-tab-bar
 :ensure (:host github :repo "aaronjensen/emacs-modern-tab-bar")
@@ -1454,5 +1483,6 @@ The DWIM behaviour of this command is as follows:
   ("<f8>" . jinx-correct)
   ("S-<f8>" . jinx-correct-word)
   ("C-<f8>" . jinx-languages))
+
 
 (add-hook 'elpaca-after-init-hook (lambda()(load-el-gpg (expand-file-name "etc/late-load" user-emacs-directory))))

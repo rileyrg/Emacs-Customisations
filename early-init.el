@@ -22,3 +22,4 @@
 
 ;; Add the directory to the load-path, preferring to the front and avoiding duplicates.
 (add-to-list 'load-path rgr/elisp-dir)
+
