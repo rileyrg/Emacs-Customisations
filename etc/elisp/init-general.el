@@ -410,11 +410,11 @@
   :config (which-key-mode))
 
 (use-package yasnippet
-  :config
-  (use-package yasnippet-snippets)
   :init
   (yas-global-mode)
   )
+(use-package yasnippet-snippets :after yasnippet)
+
 
 (setq-default abbrev-mode 1)
 ;;  (load-file abbrev-file-name)

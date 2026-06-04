@@ -165,11 +165,11 @@
       
       (recentf-mode)
       (save-place-mode)
+      (savehist-mode)
       (add-to-list 'savehist-additional-variables 'kill-ring)
       (add-to-list 'savehist-additional-variables 'mark-ring)
       (add-to-list 'savehist-additional-variables 'search-ring)
       (add-to-list 'savehist-additional-variables 'regexp-search-ring))
-      (savehist-mode)
   )
 
 (setq rgr/fileRestored nil)

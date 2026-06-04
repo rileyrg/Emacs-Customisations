@@ -288,11 +288,11 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html
         
         (recentf-mode)
         (save-place-mode)
+        (savehist-mode)
         (add-to-list 'savehist-additional-variables 'kill-ring)
         (add-to-list 'savehist-additional-variables 'mark-ring)
         (add-to-list 'savehist-additional-variables 'search-ring)
         (add-to-list 'savehist-additional-variables 'regexp-search-ring))
-        (savehist-mode)
     )
 
   (setq rgr/fileRestored nil)
@@ -958,12 +958,12 @@ Let emacs suggest completions
 [[https://github.com/joaotavora/yasnippet][YASnippet]]  is a template system for Emacs.
 Note that eglot 1.4 auto enables snippets so no need to yas-minor or global mode
 #+begin_src emacs-lisp
-    (use-package yasnippet
-      :config
-      (use-package yasnippet-snippets)
-      :init
-      (yas-global-mode)
-      )
+  (use-package yasnippet
+    :init
+    (yas-global-mode)
+    )
+  (use-package yasnippet-snippets :after yasnippet)
+
 #+end_src
 *** Abbrev Mode
 :PROPERTIES:
