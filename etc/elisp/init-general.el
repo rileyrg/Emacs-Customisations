@@ -913,7 +913,7 @@
   (eglot-send-changes-idle-time 0.5)
   (eglot-ignored-server-capabilities
    '(
-     ;;:hoverProvider
+     :hoverProvider
      ;;:documentHighlightProvider
      ;;:documentFormattingProvider
      ;;:documentRangeFormattingProvider
