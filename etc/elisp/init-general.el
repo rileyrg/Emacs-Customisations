@@ -541,21 +541,18 @@
   (:map eww-mode-map
         ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 
-(use-package go-translate
-  :disabled
-  :custom
-  (gt-langs '("en" "de"))
-  (gt-default-translator
-   (gt-translator
-    :taker   (gt-taker :text 'buffer :pick 'paragraph)  ; config the Taker
-    :engines (list (gt-bing-engine) (gt-google-engine)) ; specify the Engines
-    :render  (gt-buffer-render)))                       ; config the Render
-  :bind
-  ("C-c T" . gt-do-translate))
+(use-package pdd)
 
-;; This configuration means:
-;; Initialize the default translator, let it send all paragraphs in the buffer to Bing and Google,
-;; and output the results with a new Buffer.
+(use-package gt
+  :config
+  (setq gt-langs '(en de))
+  (setq gt-default-translator
+        (gt-translator
+         :taker   (gt-taker :text 'buffer :pick 'paragraph)  ; config the Taker
+         :engines (list (gt-bing-engine) (gt-google-engine)) ; specify the Engines
+         :render  (gt-buffer-render)))                       ; config the Render
+  :bind
+  ("C-c T" . gt-translate))
 
 (use-package javelin
   :disabled t ;; bugs in dired bookmarks so skipped
@@ -913,7 +910,7 @@
   (eglot-send-changes-idle-time 0.5)
   (eglot-ignored-server-capabilities
    '(
-     :hoverProvider
+     ;;:hoverProvider
      ;;:documentHighlightProvider
      ;;:documentFormattingProvider
      ;;:documentRangeFormattingProvider
@@ -956,28 +953,6 @@
     :after eglot
     :config	(eglot-booster-mode)))
 
-
-(use-package eldoc-mouse
-  :demand t
-  :hook ( prog-mode)
-  :bind (:map flymake-mode-map
-              ("C-." . eldoc-mouse-pop-doc-at-cursor)))
-
-;; https://github.com/svaante/dape/issues/287#issuecomment-3828663281
-(defun dape-turn-off-eldoc-mouse-mode ()
-  (if dape-active-mode
-      (progn
-        (remove-hook 'eldoc-mode-hook 'eldoc-mouse-mode)
-        (cl-loop for buffer in (buffer-list)
-                 do (with-current-buffer buffer
-                      (eldoc-mouse-mode -1))))
-    (add-hook 'eldoc-mode-hook 'eldoc-mouse-mode)
-    (cl-loop for buffer in (buffer-list)
-             do (with-current-buffer buffer
-                  (when eldoc-mode
-                    (eldoc-mouse-mode +1))))))
-
-(add-hook 'dape-active-mode-hook #'dape-turn-off-eldoc-mouse-mode)
 
 (use-package platformio-mode
   :disabled t

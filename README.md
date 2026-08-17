@@ -97,7 +97,7 @@ Emacs early-init
 
 ### elpaca
 
-    (defvar elpaca-installer-version 0.11)
+    (defvar elpaca-installer-version 0.12)
     (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
     (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
     (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -251,10 +251,10 @@ Emacs early-init
             (setq easysession-switch-to-exclude-current nil)
     
             ;; Display the active session name in the mode-line lighter.
-            ;; (setq easysession-save-mode-lighter-show-session-name t)
+            (setq easysession-save-mode-lighter-show-session-name t)
     
             ;; Optionally, the session name can be shown in the modeline info area:
-            ;; (setq easysession-mode-line-misc-info t)
+            (setq easysession-mode-line-misc-info t)
             ;; non-nil: Make `easysession-setup' load the session automatically.
             ;; (nil: session is not loaded automatically; the user can load it manually.)
             (setq easysession-setup-load-session t)
@@ -278,8 +278,8 @@ Emacs early-init
     (defun rgr/after-display()
       (message "%s in rgr/after-display" (current-time-string))
     
-      (when (get-buffer "*elpaca-log*")
-        (kill-buffer "*elpaca-log*"))
+      ;; (when (get-buffer "*elpaca-log*")
+      ;;   (kill-buffer "*elpaca-log*"))
       (if rgr/session-history
           (set-face-background 'mode-line "lightgreen")
         (set-face-background 'mode-line "orangered"))
@@ -384,7 +384,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="orgdacb490"></a>
+<a id="org7967810"></a>
 
 ### Org Mode, org-mode
 
@@ -425,7 +425,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#orgdacb490)
+See `org-agenda-files` [org-agenda-files](#org7967810)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1074,21 +1074,18 @@ lookup and reference uilities and config
 
     This is a translation framework for emacs, and is flexible and powerful.
     
-        (use-package go-translate
-          :disabled
-          :custom
-          (gt-langs '("en" "de"))
-          (gt-default-translator
-           (gt-translator
-            :taker   (gt-taker :text 'buffer :pick 'paragraph)  ; config the Taker
-            :engines (list (gt-bing-engine) (gt-google-engine)) ; specify the Engines
-            :render  (gt-buffer-render)))                       ; config the Render
-          :bind
-          ("C-c T" . gt-do-translate))
+        (use-package pdd)
         
-        ;; This configuration means:
-        ;; Initialize the default translator, let it send all paragraphs in the buffer to Bing and Google,
-        ;; and output the results with a new Buffer.
+        (use-package gt
+          :config
+          (setq gt-langs '(en de))
+          (setq gt-default-translator
+                (gt-translator
+                 :taker   (gt-taker :text 'buffer :pick 'paragraph)  ; config the Taker
+                 :engines (list (gt-bing-engine) (gt-google-engine)) ; specify the Engines
+                 :render  (gt-buffer-render)))                       ; config the Render
+          :bind
+          ("C-c T" . gt-translate))
 
 3.  utility funcs
 
@@ -1697,27 +1694,7 @@ Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-
 
 2.  Eldoc
 
-        (use-package eldoc-mouse
-          :demand t
-          :hook ( prog-mode)
-          :bind (:map flymake-mode-map
-                      ("C-." . eldoc-mouse-pop-doc-at-cursor)))
-        
-        ;; https://github.com/svaante/dape/issues/287#issuecomment-3828663281
-        (defun dape-turn-off-eldoc-mouse-mode ()
-          (if dape-active-mode
-              (progn
-                (remove-hook 'eldoc-mode-hook 'eldoc-mouse-mode)
-                (cl-loop for buffer in (buffer-list)
-                         do (with-current-buffer buffer
-                              (eldoc-mouse-mode -1))))
-            (add-hook 'eldoc-mode-hook 'eldoc-mouse-mode)
-            (cl-loop for buffer in (buffer-list)
-                     do (with-current-buffer buffer
-                          (when eldoc-mode
-                            (eldoc-mouse-mode +1))))))
-        
-        (add-hook 'dape-active-mode-hook #'dape-turn-off-eldoc-mouse-mode)
+    Eldoc mouse rmeoved
 
 
 ### Serial Port
@@ -2789,7 +2766,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#orgac0a3ec) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2e631db) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2822,7 +2799,7 @@ to add to version control.
     fi
 
 
-<a id="orgac0a3ec"></a>
+<a id="org2e631db"></a>
 
 ### Gnome protocol handler desktop file
 

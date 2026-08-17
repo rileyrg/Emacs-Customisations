@@ -15,7 +15,7 @@
 
 (defcustom rgr/emacs-project-dir "~/development/projects/emacs" "personal elisp libraries" )
 
-(defvar elpaca-installer-version 0.11)
+(defvar elpaca-installer-version 0.12)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -149,10 +149,10 @@
         (setq easysession-switch-to-exclude-current nil)
 
         ;; Display the active session name in the mode-line lighter.
-        ;; (setq easysession-save-mode-lighter-show-session-name t)
+        (setq easysession-save-mode-lighter-show-session-name t)
 
         ;; Optionally, the session name can be shown in the modeline info area:
-        ;; (setq easysession-mode-line-misc-info t)
+        (setq easysession-mode-line-misc-info t)
         ;; non-nil: Make `easysession-setup' load the session automatically.
         ;; (nil: session is not loaded automatically; the user can load it manually.)
         (setq easysession-setup-load-session t)
@@ -176,8 +176,8 @@
 (defun rgr/after-display()
   (message "%s in rgr/after-display" (current-time-string))
   
-  (when (get-buffer "*elpaca-log*")
-    (kill-buffer "*elpaca-log*"))
+  ;; (when (get-buffer "*elpaca-log*")
+  ;;   (kill-buffer "*elpaca-log*"))
   (if rgr/session-history
       (set-face-background 'mode-line "lightgreen")
     (set-face-background 'mode-line "orangered"))
