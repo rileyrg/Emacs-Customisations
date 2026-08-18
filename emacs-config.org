@@ -1208,9 +1208,9 @@ The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
 
 **** devdocs-browser
 
-https://github.com/blahgeek/emacs-devdocs-browser :
-
 Browse devdocs.io documents inside Emacs!
+
+https://github.com/blahgeek/emacs-devdocs-browser :
 
 #+begin_src emacs-lisp
   (use-package devdocs-browser
@@ -1234,7 +1234,6 @@ Browse devdocs.io documents inside Emacs!
 files : faster, more otions and you can annotatePDFs. 
 #+begin_src emacs-lisp
   (use-package pdf-tools
-    :disabled t
     :demand t
     :config
     (pdf-loader-install)
