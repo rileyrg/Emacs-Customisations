@@ -384,7 +384,7 @@ Uses the unix command line `pass` utility. Can be used via `process-lines`  e.g
 General org-mode config
 
 
-<a id="org7967810"></a>
+<a id="org71d1fd7"></a>
 
 ### Org Mode, org-mode
 
@@ -425,7 +425,7 @@ General org-mode config
 
 ### org agenda files
 
-See `org-agenda-files` [org-agenda-files](#org7967810)
+See `org-agenda-files` [org-agenda-files](#org71d1fd7)
 maintain a file pointing to agenda sources : NOTE, NOT tangled. ((no-littering-expand-etc-file-name "org/agenda-files.txt"))
 
     ~/.emacs.d/var/org/orgfiles
@@ -1070,7 +1070,7 @@ lookup and reference uilities and config
           (:map eww-mode-map
                 ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 
-2.  go-translate
+2.  gt (ne: go-translate)
 
     This is a translation framework for emacs, and is flexible and powerful.
     
@@ -1124,13 +1124,7 @@ lookup and reference uilities and config
 
 ### natural vernacular reference
 
-1.  Define word
-
-        (use-package define-word 
-          :bind
-          ("C-<f6>" . define-word-at-point))
-
-2.  Dictionary dictd
+1.  Dictionary dictd
 
     The more emacsy [Dictionary](https://melpa.org/#/dictionary) .
     
@@ -1143,60 +1137,15 @@ lookup and reference uilities and config
           :bind
           ("<f6>" . dictionary-lookup-definition)) 
 
-3.  Thesaurus
+2.  Thesaurus
 
     1.  mw-thesaurus
     
             (use-package mw-thesaurus
               :bind
               ("S-<f7>" . mw-thesaurus-lookup-dwim))
-    
-    2.  powerthesaurus
-    
-            (use-package powerthesaurus
-              :bind
-              ("S-<f6>" . powerthesaurus-lookup-word-dwim))
 
-
-### GoldenDict - external lookup and reference
-
-When using goldendict-dwim why not add your program to the wonderful
-[GoldenDict](http://goldendict.org/)? A call to [trans-shell](https://github.com/soimort/translate-shell) in the dictionary  programs tab
-gives us google translate:-
-
-    trans -e google -s de -t en -show-original y -show-original-phonetics n -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary n -show-dictionary n -show-alternatives n "%GDWORD%"
-
-    (use-package
-      goldendict
-      :disabled t
-      :commands (goldendict-dwim)
-      :config
-      (defun goldendict-dwim
-          (&optional
-           w)
-        "lookup word at region, thing at point or prompt for something, in goldendict.  Use a prefix to force prompting. "
-        (interactive)
-        (let ((w (if w w (kill-dwim))))
-          (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
-      :bind (("C-x G" . goldendict-dwim)))
-
-
-### API docs
-
-    (defun rgr/devdocs()
-      "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
-      (interactive)
-      (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
-                                                       major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-          (helpful-at-point)
-        (let ((s (symbol-at-point)))
-          (message "symbol-at-point: %s" s)
-          (if (fboundp 'devdocs-browser-open)
-              (devdocs-browser-open)
-            (call-interactively 'devdocs-lookup (vector 't s ))))))
-    (global-set-key (kbd "C-q")  'rgr/devdocs)
-
-1.  devdocs-browser
+3.  devdocs-browser
 
     <https://github.com/blahgeek/emacs-devdocs-browser> :
     
@@ -2766,7 +2715,7 @@ to add to version control.
 
 ### [php.ini](editor-config/php.ini) changes e.g /etc/php/7.3/php.ini
 
-`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org2e631db) documented below.
+`xdebug.file_link_format` is used by compliant apps to format a protocol uri. This is handled on my Linux system as a result of [emacsclient.desktop](#org143138c) documented below.
 
     xdebug.file_link_format = "emacsclient://%f@%l"
     
@@ -2799,7 +2748,7 @@ to add to version control.
     fi
 
 
-<a id="org2e631db"></a>
+<a id="org143138c"></a>
 
 ### Gnome protocol handler desktop file
 

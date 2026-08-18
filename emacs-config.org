@@ -1126,7 +1126,7 @@ lookup and reference uilities and config
           ( "&" . rgr/eww-launch-external-browser-from-buffer)))
 #+end_src
 
-**** go-translate
+**** gt (ne: go-translate)
 This is a translation framework for emacs, and is flexible and powerful.
 #+begin_src  emacs-lisp
   (use-package pdd)
@@ -1184,13 +1184,6 @@ A bit of a dogs dinner.
 :ID:       d6770b25-024f-45f4-b86f-7c98db38b34f
 :END:
 
-**** Define word
-#+begin_src  emacs-lisp
-  (use-package define-word 
-    :bind
-    ("C-<f6>" . define-word-at-point))
-#+end_src 
-
 **** Dictionary dictd
 The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
 #+begin_src emacs-lisp
@@ -1211,58 +1204,6 @@ The more emacsy [[https://melpa.org/#/dictionary][Dictionary]] .
   (use-package mw-thesaurus
     :bind
     ("S-<f7>" . mw-thesaurus-lookup-dwim))
-#+end_src
-
-***** powerthesaurus
-#+begin_src  emacs-lisp
-  (use-package powerthesaurus
-    :bind
-    ("S-<f6>" . powerthesaurus-lookup-word-dwim))
-#+end_src
-
-*** GoldenDict - external lookup and reference
-:PROPERTIES:
-:ID:       f0cfea23-9466-4c55-8308-dc1dc478a591
-:END:
-
-When using goldendict-dwim why not add your program to the wonderful
-[[http://goldendict.org/][GoldenDict]]? A call to [[https://github.com/soimort/translate-shell][trans-shell]] in the dictionary  programs tab
-gives us google translate:-
-
-#+begin_src bash
-  trans -e google -s de -t en -show-original y -show-original-phonetics n -show-translation y -no-ansi -show-translation-phonetics n -show-prompt-message n -show-languages y -show-original-dictionary n -show-dictionary n -show-alternatives n "%GDWORD%"
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package
-    goldendict
-    :disabled t
-    :commands (goldendict-dwim)
-    :config
-    (defun goldendict-dwim
-        (&optional
-         w)
-      "lookup word at region, thing at point or prompt for something, in goldendict.  Use a prefix to force prompting. "
-      (interactive)
-      (let ((w (if w w (kill-dwim))))
-        (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
-    :bind (("C-x G" . goldendict-dwim)))
-#+end_src
-*** API docs
-#+begin_src emacs-lisp
-  (defun rgr/devdocs()
-    "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
-    (interactive)
-    (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
-                                                     major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-        (helpful-at-point)
-      (let ((s (symbol-at-point)))
-        (message "symbol-at-point: %s" s)
-        (if (fboundp 'devdocs-browser-open)
-            (devdocs-browser-open)
-          (call-interactively 'devdocs-lookup (vector 't s ))))))
-  (global-set-key (kbd "C-q")  'rgr/devdocs)
-
 #+end_src
 
 **** devdocs-browser

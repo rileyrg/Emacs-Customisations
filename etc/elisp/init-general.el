@@ -575,10 +575,6 @@
                    nil nil sym))))
   (browse-url (format rgr/browser-doc-url sym)))
 
-(use-package define-word 
-  :bind
-  ("C-<f6>" . define-word-at-point))
-
 (use-package
   dictionary
   :ensure nil
@@ -591,38 +587,6 @@
 (use-package mw-thesaurus
   :bind
   ("S-<f7>" . mw-thesaurus-lookup-dwim))
-
-(use-package powerthesaurus
-  :bind
-  ("S-<f6>" . powerthesaurus-lookup-word-dwim))
-
-(use-package
-  goldendict
-  :disabled t
-  :commands (goldendict-dwim)
-  :config
-  (defun goldendict-dwim
-      (&optional
-       w)
-    "lookup word at region, thing at point or prompt for something, in goldendict.  Use a prefix to force prompting. "
-    (interactive)
-    (let ((w (if w w (kill-dwim))))
-      (call-process-shell-command (format  "goldendict \"%s\"" w ) nil 0)))
-  :bind (("C-x G" . goldendict-dwim)))
-
-(defun rgr/devdocs()
-  "If in an emacs-lisp buffer or bable block use `rgr/elisp-lookup-reference' else devdocs."
-  (interactive)
-  (if (or (derived-mode-p  'emacs-lisp-mode) (and (eq
-                                                   major-mode 'org-mode) (string= "emacs-lisp" (car (org-babel-get-src-block-info)))))
-      (helpful-at-point)
-    (let ((s (symbol-at-point)))
-      (message "symbol-at-point: %s" s)
-      (if (fboundp 'devdocs-browser-open)
-          (devdocs-browser-open)
-        (call-interactively 'devdocs-lookup (vector 't s ))))))
-(global-set-key (kbd "C-q")  'rgr/devdocs)
-
 
 (use-package devdocs-browser
   ;;:disabled t
