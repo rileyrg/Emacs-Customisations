@@ -1,5 +1,8 @@
 #+TITLE: Emacs configuration
 
+#+AUTHOR: rileyrg
+#+EMAIL: rgr DOT linux AT gmx DOT de
+
 #+DESCRIPTION: emacs configuration
 #+STARTUP: showall
 

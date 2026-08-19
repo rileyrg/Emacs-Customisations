@@ -599,7 +599,6 @@
   (c++-ts-mode . (lambda()(setq-local devdocs-browser-active-docs '("cpp" "qt")))))
 
 (use-package pdf-tools
-  :disabled t
   :demand t
   :config
   (pdf-loader-install)
